@@ -12,17 +12,17 @@ public final class NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem model
-            = BinaryData.fromString("{\"id\":\"bowxe\"}")
+            = BinaryData.fromString("{\"id\":\"ufuzboy\"}")
                 .toObject(NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem.class);
-        Assertions.assertEquals("bowxe", model.id());
+        Assertions.assertEquals("ufuzboy", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem model
-            = new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem().withId("bowxe");
+            = new NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem().withId("ufuzboy");
         model = BinaryData.fromObject(model)
             .toObject(NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem.class);
-        Assertions.assertEquals("bowxe", model.id());
+        Assertions.assertEquals("ufuzboy", model.id());
     }
 }

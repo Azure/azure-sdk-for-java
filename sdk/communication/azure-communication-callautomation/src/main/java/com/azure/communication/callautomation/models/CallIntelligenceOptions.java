@@ -37,11 +37,10 @@ public final class CallIntelligenceOptions {
      * attached.
      *
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
-     * @return the CreateGroupCallOptions object itself.
+     * @return the CallIntelligenceOptions object itself.
      */
     public CallIntelligenceOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
         this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
-
 }

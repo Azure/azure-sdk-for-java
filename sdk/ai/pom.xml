@@ -11,5 +11,7 @@
 
   <modules>
     <module>azure-ai-inference</module>
+    <module>azure-ai-projects</module>
+    <module>azure-ai-agents-persistent</module>
   </modules>
 </project>

@@ -13,24 +13,24 @@ public final class InconsistentVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InconsistentVmDetails model = BinaryData.fromString(
-            "{\"vmName\":\"laimouxwk\",\"cloudName\":\"mud\",\"details\":[\"oibi\",\"ziuswsw\",\"rk\",\"qsj\"],\"errorIds\":[\"qqvyfscyrfw\",\"iv\"]}")
+            "{\"vmName\":\"ppuacvfyeowp\",\"cloudName\":\"x\",\"details\":[\"hsoymhpvtyqf\",\"tehdpboujs\",\"kfvvdshxcde\"],\"errorIds\":[\"enygnxcgjtfrnquk\",\"rf\",\"s\"]}")
             .toObject(InconsistentVmDetails.class);
-        Assertions.assertEquals("laimouxwk", model.vmName());
-        Assertions.assertEquals("mud", model.cloudName());
-        Assertions.assertEquals("oibi", model.details().get(0));
-        Assertions.assertEquals("qqvyfscyrfw", model.errorIds().get(0));
+        Assertions.assertEquals("ppuacvfyeowp", model.vmName());
+        Assertions.assertEquals("x", model.cloudName());
+        Assertions.assertEquals("hsoymhpvtyqf", model.details().get(0));
+        Assertions.assertEquals("enygnxcgjtfrnquk", model.errorIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InconsistentVmDetails model = new InconsistentVmDetails().withVmName("laimouxwk")
-            .withCloudName("mud")
-            .withDetails(Arrays.asList("oibi", "ziuswsw", "rk", "qsj"))
-            .withErrorIds(Arrays.asList("qqvyfscyrfw", "iv"));
+        InconsistentVmDetails model = new InconsistentVmDetails().withVmName("ppuacvfyeowp")
+            .withCloudName("x")
+            .withDetails(Arrays.asList("hsoymhpvtyqf", "tehdpboujs", "kfvvdshxcde"))
+            .withErrorIds(Arrays.asList("enygnxcgjtfrnquk", "rf", "s"));
         model = BinaryData.fromObject(model).toObject(InconsistentVmDetails.class);
-        Assertions.assertEquals("laimouxwk", model.vmName());
-        Assertions.assertEquals("mud", model.cloudName());
-        Assertions.assertEquals("oibi", model.details().get(0));
-        Assertions.assertEquals("qqvyfscyrfw", model.errorIds().get(0));
+        Assertions.assertEquals("ppuacvfyeowp", model.vmName());
+        Assertions.assertEquals("x", model.cloudName());
+        Assertions.assertEquals("hsoymhpvtyqf", model.details().get(0));
+        Assertions.assertEquals("enygnxcgjtfrnquk", model.errorIds().get(0));
     }
 }

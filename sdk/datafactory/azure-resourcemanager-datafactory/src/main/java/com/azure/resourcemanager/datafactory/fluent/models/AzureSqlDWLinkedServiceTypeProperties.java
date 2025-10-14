@@ -562,36 +562,86 @@ public final class AzureSqlDWLinkedServiceTypeProperties extends SqlServerBaseLi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("server", server());
-        jsonWriter.writeUntypedField("database", database());
-        jsonWriter.writeUntypedField("encrypt", encrypt());
-        jsonWriter.writeUntypedField("trustServerCertificate", trustServerCertificate());
-        jsonWriter.writeUntypedField("hostNameInCertificate", hostnameInCertificate());
-        jsonWriter.writeUntypedField("applicationIntent", applicationIntent());
-        jsonWriter.writeUntypedField("connectTimeout", connectTimeout());
-        jsonWriter.writeUntypedField("connectRetryCount", connectRetryCount());
-        jsonWriter.writeUntypedField("connectRetryInterval", connectRetryInterval());
-        jsonWriter.writeUntypedField("loadBalanceTimeout", loadBalanceTimeout());
-        jsonWriter.writeUntypedField("commandTimeout", commandTimeout());
-        jsonWriter.writeUntypedField("integratedSecurity", integratedSecurity());
-        jsonWriter.writeUntypedField("failoverPartner", failoverPartner());
-        jsonWriter.writeUntypedField("maxPoolSize", maxPoolSize());
-        jsonWriter.writeUntypedField("minPoolSize", minPoolSize());
-        jsonWriter.writeUntypedField("multipleActiveResultSets", multipleActiveResultSets());
-        jsonWriter.writeUntypedField("multiSubnetFailover", multiSubnetFailover());
-        jsonWriter.writeUntypedField("packetSize", packetSize());
-        jsonWriter.writeUntypedField("pooling", pooling());
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (server() != null) {
+            jsonWriter.writeUntypedField("server", server());
+        }
+        if (database() != null) {
+            jsonWriter.writeUntypedField("database", database());
+        }
+        if (encrypt() != null) {
+            jsonWriter.writeUntypedField("encrypt", encrypt());
+        }
+        if (trustServerCertificate() != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", trustServerCertificate());
+        }
+        if (hostnameInCertificate() != null) {
+            jsonWriter.writeUntypedField("hostNameInCertificate", hostnameInCertificate());
+        }
+        if (applicationIntent() != null) {
+            jsonWriter.writeUntypedField("applicationIntent", applicationIntent());
+        }
+        if (connectTimeout() != null) {
+            jsonWriter.writeUntypedField("connectTimeout", connectTimeout());
+        }
+        if (connectRetryCount() != null) {
+            jsonWriter.writeUntypedField("connectRetryCount", connectRetryCount());
+        }
+        if (connectRetryInterval() != null) {
+            jsonWriter.writeUntypedField("connectRetryInterval", connectRetryInterval());
+        }
+        if (loadBalanceTimeout() != null) {
+            jsonWriter.writeUntypedField("loadBalanceTimeout", loadBalanceTimeout());
+        }
+        if (commandTimeout() != null) {
+            jsonWriter.writeUntypedField("commandTimeout", commandTimeout());
+        }
+        if (integratedSecurity() != null) {
+            jsonWriter.writeUntypedField("integratedSecurity", integratedSecurity());
+        }
+        if (failoverPartner() != null) {
+            jsonWriter.writeUntypedField("failoverPartner", failoverPartner());
+        }
+        if (maxPoolSize() != null) {
+            jsonWriter.writeUntypedField("maxPoolSize", maxPoolSize());
+        }
+        if (minPoolSize() != null) {
+            jsonWriter.writeUntypedField("minPoolSize", minPoolSize());
+        }
+        if (multipleActiveResultSets() != null) {
+            jsonWriter.writeUntypedField("multipleActiveResultSets", multipleActiveResultSets());
+        }
+        if (multiSubnetFailover() != null) {
+            jsonWriter.writeUntypedField("multiSubnetFailover", multiSubnetFailover());
+        }
+        if (packetSize() != null) {
+            jsonWriter.writeUntypedField("packetSize", packetSize());
+        }
+        if (pooling() != null) {
+            jsonWriter.writeUntypedField("pooling", pooling());
+        }
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();

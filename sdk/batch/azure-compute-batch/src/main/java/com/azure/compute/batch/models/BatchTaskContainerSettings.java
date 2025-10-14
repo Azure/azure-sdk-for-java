@@ -46,6 +46,14 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
     @Generated
     private ContainerWorkingDirectory workingDirectory;
 
+    /*
+     * The paths you want to mounted to container task. If this array is null or be not present, container task will
+     * mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths
+     * into container if this array is set as empty.
+     */
+    @Generated
+    private List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts;
+
     /**
      * Creates an instance of BatchTaskContainerSettings class.
      *
@@ -106,6 +114,19 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
     }
 
     /**
+     * Set the registry property: The private registry which contains the container Image. This setting can be omitted
+     * if was already provided at Pool creation.
+     *
+     * @param registry the registry value to set.
+     * @return the BatchTaskContainerSettings object itself.
+     */
+    @Generated
+    public BatchTaskContainerSettings setRegistry(ContainerRegistryReference registry) {
+        this.registry = registry;
+        return this;
+    }
+
+    /**
      * Get the workingDirectory property: The location of the container Task working directory. The default is
      * 'taskWorkingDirectory'.
      *
@@ -126,6 +147,33 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
     @Generated
     public BatchTaskContainerSettings setWorkingDirectory(ContainerWorkingDirectory workingDirectory) {
         this.workingDirectory = workingDirectory;
+        return this;
+    }
+
+    /**
+     * Get the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
+     * null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @return the containerHostBatchBindMounts value.
+     */
+    @Generated
+    public List<ContainerHostBatchBindMountEntry> getContainerHostBatchBindMounts() {
+        return this.containerHostBatchBindMounts;
+    }
+
+    /**
+     * Set the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
+     * null or be not present, container task will mount entire temporary disk drive in windows (or
+     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @param containerHostBatchBindMounts the containerHostBatchBindMounts value to set.
+     * @return the BatchTaskContainerSettings object itself.
+     */
+    @Generated
+    public BatchTaskContainerSettings
+        setContainerHostBatchBindMounts(List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts) {
+        this.containerHostBatchBindMounts = containerHostBatchBindMounts;
         return this;
     }
 
@@ -189,53 +237,5 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
             deserializedBatchTaskContainerSettings.containerHostBatchBindMounts = containerHostBatchBindMounts;
             return deserializedBatchTaskContainerSettings;
         });
-    }
-
-    /**
-     * Set the registry property: The private registry which contains the container Image. This setting can be omitted
-     * if was already provided at Pool creation.
-     *
-     * @param registry the registry value to set.
-     * @return the BatchTaskContainerSettings object itself.
-     */
-    @Generated
-    public BatchTaskContainerSettings setRegistry(ContainerRegistryReference registry) {
-        this.registry = registry;
-        return this;
-    }
-
-    /*
-     * The paths you want to mounted to container task. If this array is null or be not present, container task will
-     * mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths
-     * into container if this array is set as empty.
-     */
-    @Generated
-    private List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts;
-
-    /**
-     * Get the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
-     * null or be not present, container task will mount entire temporary disk drive in windows (or
-     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
-     *
-     * @return the containerHostBatchBindMounts value.
-     */
-    @Generated
-    public List<ContainerHostBatchBindMountEntry> getContainerHostBatchBindMounts() {
-        return this.containerHostBatchBindMounts;
-    }
-
-    /**
-     * Set the containerHostBatchBindMounts property: The paths you want to mounted to container task. If this array is
-     * null or be not present, container task will mount entire temporary disk drive in windows (or
-     * AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
-     *
-     * @param containerHostBatchBindMounts the containerHostBatchBindMounts value to set.
-     * @return the BatchTaskContainerSettings object itself.
-     */
-    @Generated
-    public BatchTaskContainerSettings
-        setContainerHostBatchBindMounts(List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts) {
-        this.containerHostBatchBindMounts = containerHostBatchBindMounts;
-        return this;
     }
 }

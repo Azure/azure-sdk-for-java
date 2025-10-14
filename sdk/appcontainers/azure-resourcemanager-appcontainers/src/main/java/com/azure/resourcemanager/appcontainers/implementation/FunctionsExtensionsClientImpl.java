@@ -20,6 +20,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.FunctionsExtensionsClient;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
@@ -54,13 +55,24 @@ public final class FunctionsExtensionsClientImpl implements FunctionsExtensionsC
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientFunctionsExtensions")
     public interface FunctionsExtensionsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/providers/Microsoft.App/functions/{functionAppName}/invoke")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<String>> invokeFunctionsHost(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("revisionName") String revisionName,
+            @PathParam("functionAppName") String functionAppName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/providers/Microsoft.App/functions/{functionAppName}/invoke")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<String> invokeFunctionsHostSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("revisionName") String revisionName,
@@ -121,52 +133,6 @@ public final class FunctionsExtensionsClientImpl implements FunctionsExtensionsC
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision, the parent resource.
      * @param functionAppName Name of the Function App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> invokeFunctionsHostWithResponseAsync(String resourceGroupName,
-        String containerAppName, String revisionName, String functionAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (revisionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
-        }
-        if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.invokeFunctionsHost(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, revisionName, functionAppName, this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Proxies a Functions host call to the function app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision, the parent resource.
-     * @param functionAppName Name of the Function App, the extension resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -195,8 +161,36 @@ public final class FunctionsExtensionsClientImpl implements FunctionsExtensionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> invokeFunctionsHostWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, String functionAppName, Context context) {
-        return invokeFunctionsHostWithResponseAsync(resourceGroupName, containerAppName, revisionName, functionAppName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (revisionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.invokeFunctionsHostSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, containerAppName, revisionName, functionAppName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -217,4 +211,6 @@ public final class FunctionsExtensionsClientImpl implements FunctionsExtensionsC
         return invokeFunctionsHostWithResponse(resourceGroupName, containerAppName, revisionName, functionAppName,
             Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FunctionsExtensionsClientImpl.class);
 }

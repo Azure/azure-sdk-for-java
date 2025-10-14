@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpGetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpGet model = BinaryData
-            .fromString("{\"url\":\"wzizxbmpgcjefuzm\",\"fileName\":\"pbttdum\",\"headers\":[\"pxebmnzbt\"]}")
+        HttpGet model = BinaryData.fromString(
+            "{\"url\":\"bcgjbirxbp\",\"fileName\":\"srfbjfdtwss\",\"headers\":[\"tpvjzbexilzznfqq\",\"vwpm\",\"taruoujmkcj\"]}")
             .toObject(HttpGet.class);
-        Assertions.assertEquals("wzizxbmpgcjefuzm", model.url());
-        Assertions.assertEquals("pbttdum", model.fileName());
-        Assertions.assertEquals("pxebmnzbt", model.headers().get(0));
+        Assertions.assertEquals("bcgjbirxbp", model.url());
+        Assertions.assertEquals("srfbjfdtwss", model.fileName());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.headers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpGet model
-            = new HttpGet().withUrl("wzizxbmpgcjefuzm").withFileName("pbttdum").withHeaders(Arrays.asList("pxebmnzbt"));
+        HttpGet model = new HttpGet().withUrl("bcgjbirxbp")
+            .withFileName("srfbjfdtwss")
+            .withHeaders(Arrays.asList("tpvjzbexilzznfqq", "vwpm", "taruoujmkcj"));
         model = BinaryData.fromObject(model).toObject(HttpGet.class);
-        Assertions.assertEquals("wzizxbmpgcjefuzm", model.url());
-        Assertions.assertEquals("pbttdum", model.fileName());
-        Assertions.assertEquals("pxebmnzbt", model.headers().get(0));
+        Assertions.assertEquals("bcgjbirxbp", model.url());
+        Assertions.assertEquals("srfbjfdtwss", model.fileName());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.headers().get(0));
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     /*
      * The authorization type for integration runtime sharing.
      */
+    @Generated
     private String authorizationType = "RBAC";
 
     /*
      * The resource identifier of the integration runtime to be shared.
      */
+    @Generated
     private String resourceId;
 
     /**
      * Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class.
      */
+    @Generated
     public LinkedIntegrationRuntimeRbacAuthorization() {
     }
 
@@ -36,6 +40,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
      * 
      * @return the authorizationType value.
      */
+    @Generated
     @Override
     public String getAuthorizationType() {
         return this.authorizationType;
@@ -46,6 +51,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -56,6 +62,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
      * @param resourceId the resourceId value to set.
      * @return the LinkedIntegrationRuntimeRbacAuthorization object itself.
      */
+    @Generated
     public LinkedIntegrationRuntimeRbacAuthorization setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -64,6 +71,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +89,7 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedIntegrationRuntimeRbacAuthorization.
      */
+    @Generated
     public static LinkedIntegrationRuntimeRbacAuthorization fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedIntegrationRuntimeRbacAuthorization deserializedLinkedIntegrationRuntimeRbacAuthorization

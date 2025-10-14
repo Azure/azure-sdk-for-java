@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
     /*
      * Compute core count used by the link connection
      */
+    @Generated
     private Integer coreCount;
 
     /*
      * Link connection's compute type
      */
+    @Generated
     private String computeType;
 
     /*
      * Link connection's data process interval in minutes
      */
+    @Generated
     private Integer dataProcessIntervalMinutes;
 
     /**
      * Creates an instance of LinkConnectionCompute class.
      */
+    @Generated
     public LinkConnectionCompute() {
     }
 
@@ -42,6 +47,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * 
      * @return the coreCount value.
      */
+    @Generated
     public Integer getCoreCount() {
         return this.coreCount;
     }
@@ -52,6 +58,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * @param coreCount the coreCount value to set.
      * @return the LinkConnectionCompute object itself.
      */
+    @Generated
     public LinkConnectionCompute setCoreCount(Integer coreCount) {
         this.coreCount = coreCount;
         return this;
@@ -62,6 +69,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * 
      * @return the computeType value.
      */
+    @Generated
     public String getComputeType() {
         return this.computeType;
     }
@@ -72,6 +80,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * @param computeType the computeType value to set.
      * @return the LinkConnectionCompute object itself.
      */
+    @Generated
     public LinkConnectionCompute setComputeType(String computeType) {
         this.computeType = computeType;
         return this;
@@ -82,6 +91,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * 
      * @return the dataProcessIntervalMinutes value.
      */
+    @Generated
     public Integer getDataProcessIntervalMinutes() {
         return this.dataProcessIntervalMinutes;
     }
@@ -92,6 +102,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * @param dataProcessIntervalMinutes the dataProcessIntervalMinutes value to set.
      * @return the LinkConnectionCompute object itself.
      */
+    @Generated
     public LinkConnectionCompute setDataProcessIntervalMinutes(Integer dataProcessIntervalMinutes) {
         this.dataProcessIntervalMinutes = dataProcessIntervalMinutes;
         return this;
@@ -100,6 +111,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class LinkConnectionCompute implements JsonSerializable<LinkConnect
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnectionCompute.
      */
+    @Generated
     public static LinkConnectionCompute fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionCompute deserializedLinkConnectionCompute = new LinkConnectionCompute();

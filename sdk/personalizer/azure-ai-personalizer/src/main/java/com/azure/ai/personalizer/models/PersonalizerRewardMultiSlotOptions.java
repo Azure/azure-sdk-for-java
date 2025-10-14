@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class PersonalizerRewardMultiSlotOptions implements JsonSerializabl
     /*
      * List of SlotRewards
      */
+    @Generated
     private List<PersonalizerSlotReward> reward;
 
     /**
      * Creates an instance of PersonalizerRewardMultiSlotOptions class.
      */
+    @Generated
     public PersonalizerRewardMultiSlotOptions() {
     }
 
@@ -33,6 +36,7 @@ public final class PersonalizerRewardMultiSlotOptions implements JsonSerializabl
      * 
      * @return the reward value.
      */
+    @Generated
     public List<PersonalizerSlotReward> getReward() {
         return this.reward;
     }
@@ -43,6 +47,7 @@ public final class PersonalizerRewardMultiSlotOptions implements JsonSerializabl
      * @param reward the reward value to set.
      * @return the PersonalizerRewardMultiSlotOptions object itself.
      */
+    @Generated
     public PersonalizerRewardMultiSlotOptions setReward(List<PersonalizerSlotReward> reward) {
         this.reward = reward;
         return this;
@@ -51,6 +56,7 @@ public final class PersonalizerRewardMultiSlotOptions implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class PersonalizerRewardMultiSlotOptions implements JsonSerializabl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerRewardMultiSlotOptions.
      */
+    @Generated
     public static PersonalizerRewardMultiSlotOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRewardMultiSlotOptions deserializedPersonalizerRewardMultiSlotOptions

@@ -22,7 +22,7 @@ public final class SandboxCustomImagesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"tqpbrlcy\",\"requirementsFileContent\":\"uczkgofxyfsruc\",\"provisioningState\":\"Succeeded\"},\"id\":\"rpcjttbstvjeaqnr\",\"name\":\"vvf\",\"type\":\"oxmlghktuidv\"}";
+            = "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"ezq\",\"baseImageName\":\"ydrtc\",\"requirementsFileContent\":\"kdqkkyihzt\",\"provisioningState\":\"Succeeded\"},\"id\":\"mgqzgwldoyc\",\"name\":\"illcecfehu\",\"type\":\"aoaguhicqlli\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,17 @@ public final class SandboxCustomImagesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SandboxCustomImage response = manager.sandboxCustomImages()
-            .define("aq")
-            .withExistingCluster("gvvpasek", "gbuxantuygdh")
+            .define("prkzya")
+            .withExistingCluster("ynkbwetnju", "p")
             .withLanguage(Language.PYTHON)
-            .withLanguageVersion("rpiwrqofulo")
-            .withRequirementsFileContent("jnlex")
+            .withLanguageVersion("ccxnafbwqroohtuo")
+            .withBaseImageName("aonurjtumg")
+            .withRequirementsFileContent("hpv")
             .create();
 
         Assertions.assertEquals(Language.PYTHON, response.language());
-        Assertions.assertEquals("tqpbrlcy", response.languageVersion());
-        Assertions.assertEquals("uczkgofxyfsruc", response.requirementsFileContent());
+        Assertions.assertEquals("ezq", response.languageVersion());
+        Assertions.assertEquals("ydrtc", response.baseImageName());
+        Assertions.assertEquals("kdqkkyihzt", response.requirementsFileContent());
     }
 }

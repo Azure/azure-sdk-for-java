@@ -31,7 +31,6 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstorejedis
     TimeoutInMinutes: 120
-    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_LOG_LEVEL: 1
     AdditionalMatrixConfigs:

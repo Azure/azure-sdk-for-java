@@ -14,18 +14,17 @@ public final class ContainerAppsBuildCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerAppsBuildCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"xcv\",\"image\":\"rhnj\"},\"configuration\":{\"baseOs\":\"lvtno\",\"platform\":\"fzg\",\"platformVersion\":\"jdftuljltd\",\"environmentVariables\":[{\"name\":\"amtmcz\",\"value\":\"o\"},{\"name\":\"ejwcwwqiok\",\"value\":\"ssxmojms\"}],\"preBuildSteps\":[{},{}]},\"logStreamEndpoint\":\"prvkwcfzqljyxgtc\"},\"id\":\"eydbsd\",\"name\":\"hmkxmaehvbb\",\"type\":\"uripltfnhtba\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"buildStatus\":\"Canceled\",\"destinationContainerRegistry\":{\"server\":\"ckpyklyhplu\",\"image\":\"pvruudlg\"},\"configuration\":{\"baseOs\":\"thost\",\"platform\":\"tstvdxeclzedq\",\"platformVersion\":\"vh\",\"environmentVariables\":[{\"name\":\"plodqkdlwwqfbu\",\"value\":\"lkxt\"}],\"preBuildSteps\":[{},{},{},{}]},\"logStreamEndpoint\":\"smlmbtxhwgfwsrta\"},\"id\":\"oezbrhubsk\",\"name\":\"udygooo\",\"type\":\"kqfqjbvl\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"iqtqzfavyvnq\",\"image\":\"bar\"},\"configuration\":{\"baseOs\":\"ayjkqa\",\"platform\":\"gzslesjcbhernnti\",\"platformVersion\":\"djc\",\"environmentVariables\":[{\"name\":\"uwrbehwagoh\",\"value\":\"uffkmrqemvvh\"},{\"name\":\"xtdr\",\"value\":\"futacoebjvewzc\"},{\"name\":\"znmwcp\",\"value\":\"guaadraufactkahz\"}],\"preBuildSteps\":[{},{},{},{}]},\"logStreamEndpoint\":\"j\"},\"id\":\"uxxpshne\",\"name\":\"kulfg\",\"type\":\"lqubkwdlen\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"bazpjuohmi\",\"image\":\"flnorwmduvwp\"},\"configuration\":{\"baseOs\":\"xwmygdxpgpqc\",\"platform\":\"sze\",\"platformVersion\":\"nb\",\"environmentVariables\":[{\"name\":\"xgibbda\",\"value\":\"confozauors\"},{\"name\":\"kokwbqplhlvnu\",\"value\":\"epzl\"}],\"preBuildSteps\":[{}]},\"logStreamEndpoint\":\"zsoldwey\"},\"id\":\"dunvmnnrwrbiorkt\",\"name\":\"lywjhh\",\"type\":\"dnhxmsi\"}],\"nextLink\":\"omi\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"buildStatus\":\"InProgress\",\"destinationContainerRegistry\":{\"server\":\"tvdxeclzedqb\",\"image\":\"hzlhplodqkdlww\"},\"configuration\":{\"baseOs\":\"u\",\"platform\":\"kxtrq\",\"platformVersion\":\"smlmbtxhwgfwsrta\",\"environmentVariables\":[{\"name\":\"ezbrhubskh\",\"value\":\"dyg\"},{\"name\":\"ookk\",\"value\":\"fqjbvleo\"},{\"name\":\"fmluiqtqzfavyvn\",\"value\":\"qybaryeua\"}],\"preBuildSteps\":[{}]},\"logStreamEndpoint\":\"abqgzslesjcbh\"},\"id\":\"n\",\"name\":\"tiewdj\",\"type\":\"vbquwr\"},{\"properties\":{\"provisioningState\":\"Creating\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"hbuffkmrq\",\"image\":\"vvhmxtdrj\"},\"configuration\":{\"baseOs\":\"acoebj\",\"platform\":\"wzcjznmwcpmgua\",\"platformVersion\":\"raufactkahzova\",\"environmentVariables\":[{\"name\":\"iuxxpshneekulfg\",\"value\":\"lqubkwdlen\"},{\"name\":\"d\",\"value\":\"utujba\"},{\"name\":\"pjuohminyfl\",\"value\":\"orwmduvwpklv\"}],\"preBuildSteps\":[{},{},{}]},\"logStreamEndpoint\":\"gdxpg\"},\"id\":\"chisze\",\"name\":\"nnbj\",\"type\":\"rxgibbd\"}],\"nextLink\":\"confozauors\"}")
             .toObject(ContainerAppsBuildCollection.class);
-        Assertions.assertEquals("omi", model.nextLink());
+        Assertions.assertEquals("confozauors", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerAppsBuildCollection model = new ContainerAppsBuildCollection()
-            .withValue(Arrays.asList(new ContainerAppsBuildResourceInner(), new ContainerAppsBuildResourceInner(),
-                new ContainerAppsBuildResourceInner(), new ContainerAppsBuildResourceInner()))
-            .withNextLink("omi");
+            .withValue(Arrays.asList(new ContainerAppsBuildResourceInner(), new ContainerAppsBuildResourceInner()))
+            .withNextLink("confozauors");
         model = BinaryData.fromObject(model).toObject(ContainerAppsBuildCollection.class);
-        Assertions.assertEquals("omi", model.nextLink());
+        Assertions.assertEquals("confozauors", model.nextLink());
     }
 }

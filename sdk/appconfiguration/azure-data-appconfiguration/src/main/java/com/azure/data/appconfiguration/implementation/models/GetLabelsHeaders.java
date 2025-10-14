@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class GetLabelsHeaders {
     /*
      * The Sync-Token property.
      */
+    @Generated
     private String syncToken;
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
@@ -35,6 +37,7 @@ public final class GetLabelsHeaders {
      * 
      * @return the syncToken value.
      */
+    @Generated
     public String getSyncToken() {
         return this.syncToken;
     }
@@ -45,6 +48,7 @@ public final class GetLabelsHeaders {
      * @param syncToken the syncToken value to set.
      * @return the GetLabelsHeaders object itself.
      */
+    @Generated
     public GetLabelsHeaders setSyncToken(String syncToken) {
         this.syncToken = syncToken;
         return this;

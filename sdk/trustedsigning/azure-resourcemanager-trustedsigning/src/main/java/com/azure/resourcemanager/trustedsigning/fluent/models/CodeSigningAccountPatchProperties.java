@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.trustedsigning.models.AccountSku;
+import com.azure.resourcemanager.trustedsigning.models.AccountSkuPatch;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
     /*
      * SKU of the trusted signing account.
      */
-    private AccountSku sku;
+    private AccountSkuPatch sku;
 
     /**
      * Creates an instance of CodeSigningAccountPatchProperties class.
@@ -33,7 +33,7 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
      * 
      * @return the sku value.
      */
-    public AccountSku sku() {
+    public AccountSkuPatch sku() {
         return this.sku;
     }
 
@@ -43,20 +43,9 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
      * @param sku the sku value to set.
      * @return the CodeSigningAccountPatchProperties object itself.
      */
-    public CodeSigningAccountPatchProperties withSku(AccountSku sku) {
+    public CodeSigningAccountPatchProperties withSku(AccountSkuPatch sku) {
         this.sku = sku;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
     }
 
     /**
@@ -86,7 +75,7 @@ public final class CodeSigningAccountPatchProperties implements JsonSerializable
                 reader.nextToken();
 
                 if ("sku".equals(fieldName)) {
-                    deserializedCodeSigningAccountPatchProperties.sku = AccountSku.fromJson(reader);
+                    deserializedCodeSigningAccountPatchProperties.sku = AccountSkuPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

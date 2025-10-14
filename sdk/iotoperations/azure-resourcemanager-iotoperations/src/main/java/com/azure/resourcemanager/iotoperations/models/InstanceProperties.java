@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * The properties of the Instance resource.
@@ -36,6 +36,21 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      * The reference to the Schema Registry for this AIO Instance.
      */
     private SchemaRegistryRef schemaRegistryRef;
+
+    /*
+     * The reference to the AIO Secret provider class.
+     */
+    private SecretProviderClassRef defaultSecretProviderClassRef;
+
+    /*
+     * The features of the AIO Instance.
+     */
+    private Map<String, InstanceFeature> features;
+
+    /*
+     * The Azure Device Registry Namespace used by Assets, Discovered Assets and devices
+     */
+    private AzureDeviceRegistryNamespaceRef adrNamespaceRef;
 
     /**
      * Creates an instance of InstanceProperties class.
@@ -102,21 +117,66 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     }
 
     /**
-     * Validates the instance.
+     * Get the defaultSecretProviderClassRef property: The reference to the AIO Secret provider class.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the defaultSecretProviderClassRef value.
      */
-    public void validate() {
-        if (schemaRegistryRef() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property schemaRegistryRef in model InstanceProperties"));
-        } else {
-            schemaRegistryRef().validate();
-        }
+    public SecretProviderClassRef defaultSecretProviderClassRef() {
+        return this.defaultSecretProviderClassRef;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(InstanceProperties.class);
+    /**
+     * Set the defaultSecretProviderClassRef property: The reference to the AIO Secret provider class.
+     * 
+     * @param defaultSecretProviderClassRef the defaultSecretProviderClassRef value to set.
+     * @return the InstanceProperties object itself.
+     */
+    public InstanceProperties withDefaultSecretProviderClassRef(SecretProviderClassRef defaultSecretProviderClassRef) {
+        this.defaultSecretProviderClassRef = defaultSecretProviderClassRef;
+        return this;
+    }
+
+    /**
+     * Get the features property: The features of the AIO Instance.
+     * 
+     * @return the features value.
+     */
+    public Map<String, InstanceFeature> features() {
+        return this.features;
+    }
+
+    /**
+     * Set the features property: The features of the AIO Instance.
+     * 
+     * @param features the features value to set.
+     * @return the InstanceProperties object itself.
+     */
+    public InstanceProperties withFeatures(Map<String, InstanceFeature> features) {
+        this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the adrNamespaceRef property: The Azure Device Registry Namespace used by Assets, Discovered Assets and
+     * devices.
+     * 
+     * @return the adrNamespaceRef value.
+     */
+    public AzureDeviceRegistryNamespaceRef adrNamespaceRef() {
+        return this.adrNamespaceRef;
+    }
+
+    /**
+     * Set the adrNamespaceRef property: The Azure Device Registry Namespace used by Assets, Discovered Assets and
+     * devices.
+     * 
+     * @param adrNamespaceRef the adrNamespaceRef value to set.
+     * @return the InstanceProperties object itself.
+     */
+    public InstanceProperties withAdrNamespaceRef(AzureDeviceRegistryNamespaceRef adrNamespaceRef) {
+        this.adrNamespaceRef = adrNamespaceRef;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -126,6 +186,9 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("schemaRegistryRef", this.schemaRegistryRef);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("defaultSecretProviderClassRef", this.defaultSecretProviderClassRef);
+        jsonWriter.writeMapField("features", this.features, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("adrNamespaceRef", this.adrNamespaceRef);
         return jsonWriter.writeEndObject();
     }
 
@@ -153,6 +216,15 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
                     deserializedInstanceProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     deserializedInstanceProperties.version = reader.getString();
+                } else if ("defaultSecretProviderClassRef".equals(fieldName)) {
+                    deserializedInstanceProperties.defaultSecretProviderClassRef
+                        = SecretProviderClassRef.fromJson(reader);
+                } else if ("features".equals(fieldName)) {
+                    Map<String, InstanceFeature> features
+                        = reader.readMap(reader1 -> InstanceFeature.fromJson(reader1));
+                    deserializedInstanceProperties.features = features;
+                } else if ("adrNamespaceRef".equals(fieldName)) {
+                    deserializedInstanceProperties.adrNamespaceRef = AzureDeviceRegistryNamespaceRef.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

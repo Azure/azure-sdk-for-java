@@ -233,10 +233,16 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("pfx", this.pfx);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("resource", this.resource);
-        jsonWriter.writeUntypedField("userTenant", this.userTenant);
+        if (this.resource != null) {
+            jsonWriter.writeUntypedField("resource", this.resource);
+        }
+        if (this.userTenant != null) {
+            jsonWriter.writeUntypedField("userTenant", this.userTenant);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }

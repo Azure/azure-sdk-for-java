@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -24,7 +25,8 @@ import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
@@ -50,12 +52,14 @@ import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class IndexManagementTests extends SearchTestBase {
     private static SearchIndexClient sharedIndexClient;
     private static SynonymMap sharedSynonymMap;
@@ -73,7 +77,7 @@ public class IndexManagementTests extends SearchTestBase {
             return;
         }
 
-        sharedIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        sharedIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
@@ -826,6 +830,72 @@ public class IndexManagementTests extends SearchTestBase {
             .assertNext(indexStatisticsResponse -> {
                 assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
                 assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void canCreateAndGetIndexStatsSummarySync() {
+        List<String> indexNames = new ArrayList<>();
+
+        assertFalse(client.getIndexStatsSummary().stream().findAny().isPresent(), "Unexpected index stats summary.");
+
+        SearchIndex index = createTestIndex(null);
+        indexNames.add(index.getName());
+        client.createOrUpdateIndex(index);
+        indexesToDelete.add(index.getName());
+
+        assertEquals(1, client.getIndexStatsSummary().stream().count());
+
+        for (int i = 0; i < 4; i++) {
+            index = createTestIndex(null);
+            indexNames.add(index.getName());
+            client.createOrUpdateIndex(index);
+            indexesToDelete.add(index.getName());
+        }
+
+        List<String> returnedNames
+            = client.getIndexStatsSummary().stream().map(IndexStatisticsSummary::getName).collect(Collectors.toList());
+        assertEquals(5, returnedNames.size());
+
+        for (String name : indexNames) {
+            assertTrue(returnedNames.contains(name),
+                () -> String.format("Stats summary didn't contain expected index '%s'. Found: '%s'", name,
+                    String.join(", ", returnedNames)));
+        }
+    }
+
+    // I want an async version of the test above. Don't block, use StepVerifier instead.
+    @Test
+    public void canCreateAndGetIndexStatsSummaryAsync() {
+
+        List<String> indexNames = new ArrayList<>();
+
+        StepVerifier.create(asyncClient.getIndexStatsSummary()).expectNextCount(0).verifyComplete();
+
+        SearchIndex index = createTestIndex(null);
+        indexNames.add(index.getName());
+        asyncClient.createOrUpdateIndex(index).block();
+        indexesToDelete.add(index.getName());
+
+        StepVerifier.create(asyncClient.getIndexStatsSummary()).expectNextCount(1).verifyComplete();
+
+        for (int i = 0; i < 4; i++) {
+            index = createTestIndex(null);
+            indexNames.add(index.getName());
+            asyncClient.createOrUpdateIndex(index).block();
+            indexesToDelete.add(index.getName());
+        }
+
+        StepVerifier.create(asyncClient.getIndexStatsSummary().map(IndexStatisticsSummary::getName).collectList())
+            .assertNext(returnedNames -> {
+                assertEquals(5, returnedNames.size());
+
+                for (String name : indexNames) {
+                    assertTrue(returnedNames.contains(name),
+                        () -> String.format("Stats summary didn't contain expected index '%s'. Found: '%s'", name,
+                            String.join(", ", returnedNames)));
+                }
             })
             .verifyComplete();
     }

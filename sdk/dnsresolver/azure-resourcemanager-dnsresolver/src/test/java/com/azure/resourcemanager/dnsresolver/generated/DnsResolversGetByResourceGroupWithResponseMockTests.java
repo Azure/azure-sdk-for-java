@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolver;
@@ -21,21 +21,21 @@ public final class DnsResolversGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"scrpabgyepsbjt\",\"properties\":{\"virtualNetwork\":{\"id\":\"qugxywpmueefjzwf\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Deleting\",\"resourceGuid\":\"dsuyonobgla\"},\"location\":\"qxtccmgyudx\",\"tags\":{\"txhdzh\":\"moyrxvwfudwpz\",\"rxsbkyvp\":\"rqjbhckfrl\"},\"id\":\"ca\",\"name\":\"uzbpzkafku\",\"type\":\"b\"}";
+            = "{\"etag\":\"hyxxrwlycoduhpk\",\"properties\":{\"virtualNetwork\":{\"id\":\"gymare\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Canceled\",\"resourceGuid\":\"ugjhky\"},\"location\":\"beddgssofw\",\"tags\":{\"rmnjijpx\":\"qal\",\"byxbaaabjy\":\"cqqudf\",\"zrtuzq\":\"ayffim\",\"fdnw\":\"gsexne\"},\"id\":\"wmewzsyy\",\"name\":\"euzsoi\",\"type\":\"judpfrxt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DnsResolver response = manager.dnsResolvers()
-            .getByResourceGroupWithResponse("nermcl", "plpho", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("cyjmoadsuvarmy", "dmjsjqb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qxtccmgyudx", response.location());
-        Assertions.assertEquals("moyrxvwfudwpz", response.tags().get("txhdzh"));
-        Assertions.assertEquals("qugxywpmueefjzwf", response.virtualNetwork().id());
+        Assertions.assertEquals("beddgssofw", response.location());
+        Assertions.assertEquals("qal", response.tags().get("rmnjijpx"));
+        Assertions.assertEquals("gymare", response.virtualNetwork().id());
     }
 }

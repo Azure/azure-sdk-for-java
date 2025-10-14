@@ -17,30 +17,30 @@ public final class SapSupportedSkusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapSupportedSkusRequest model = BinaryData.fromString(
-            "{\"appLocation\":\"rsc\",\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"deploymentType\":\"SingleServer\",\"databaseType\":\"DB2\",\"highAvailabilityType\":\"AvailabilityZone\"}")
+            "{\"appLocation\":\"hsfxoblytkb\",\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"deploymentType\":\"ThreeTier\",\"databaseType\":\"HANA\",\"highAvailabilityType\":\"AvailabilityZone\"}")
             .toObject(SapSupportedSkusRequest.class);
-        Assertions.assertEquals("rsc", model.appLocation());
+        Assertions.assertEquals("hsfxoblytkb", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());
         Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
-        Assertions.assertEquals(SapDeploymentType.SINGLE_SERVER, model.deploymentType());
-        Assertions.assertEquals(SapDatabaseType.DB2, model.databaseType());
+        Assertions.assertEquals(SapDeploymentType.THREE_TIER, model.deploymentType());
+        Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
         Assertions.assertEquals(SapHighAvailabilityType.AVAILABILITY_ZONE, model.highAvailabilityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSupportedSkusRequest model = new SapSupportedSkusRequest().withAppLocation("rsc")
+        SapSupportedSkusRequest model = new SapSupportedSkusRequest().withAppLocation("hsfxoblytkb")
             .withEnvironment(SapEnvironmentType.NON_PROD)
             .withSapProduct(SapProductType.ECC)
-            .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-            .withDatabaseType(SapDatabaseType.DB2)
+            .withDeploymentType(SapDeploymentType.THREE_TIER)
+            .withDatabaseType(SapDatabaseType.HANA)
             .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE);
         model = BinaryData.fromObject(model).toObject(SapSupportedSkusRequest.class);
-        Assertions.assertEquals("rsc", model.appLocation());
+        Assertions.assertEquals("hsfxoblytkb", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());
         Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
-        Assertions.assertEquals(SapDeploymentType.SINGLE_SERVER, model.deploymentType());
-        Assertions.assertEquals(SapDatabaseType.DB2, model.databaseType());
+        Assertions.assertEquals(SapDeploymentType.THREE_TIER, model.deploymentType());
+        Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
         Assertions.assertEquals(SapHighAvailabilityType.AVAILABILITY_ZONE, model.highAvailabilityType());
     }
 }

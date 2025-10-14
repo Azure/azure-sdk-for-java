@@ -293,15 +293,27 @@ public final class Db2LinkedServiceTypeProperties implements JsonSerializable<Db
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("server", this.server);
-        jsonWriter.writeUntypedField("database", this.database);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("packageCollection", this.packageCollection);
-        jsonWriter.writeUntypedField("certificateCommonName", this.certificateCommonName);
+        if (this.packageCollection != null) {
+            jsonWriter.writeUntypedField("packageCollection", this.packageCollection);
+        }
+        if (this.certificateCommonName != null) {
+            jsonWriter.writeUntypedField("certificateCommonName", this.certificateCommonName);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

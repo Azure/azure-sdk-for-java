@@ -15,37 +15,25 @@ public final class BillingMeterCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BillingMeterCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"i\",\"name\":\"rvkdvjsllrm\",\"type\":\"d\",\"location\":\"t\",\"properties\":{\"category\":\"pulexxbczw\",\"meterType\":\"uwiqzb\",\"displayName\":\"vsovmyokac\"}},{\"id\":\"kwlhzdo\",\"name\":\"xjmflbvv\",\"type\":\"hrk\",\"location\":\"wwzjuqkhrsajiwku\",\"properties\":{\"category\":\"skghsauuimj\",\"meterType\":\"xieduugidyjrr\",\"displayName\":\"y\"}},{\"id\":\"svexcsonpclhoco\",\"name\":\"lkevle\",\"type\":\"zfbuhf\",\"location\":\"axkffei\",\"properties\":{\"category\":\"lvmezyvshxmzsbbz\",\"meterType\":\"gigr\",\"displayName\":\"burvjxxjnspy\"}},{\"id\":\"tko\",\"name\":\"kouknvudwtiu\",\"type\":\"ldngkpoci\",\"location\":\"yxoegukgjnp\",\"properties\":{\"category\":\"gygev\",\"meterType\":\"ntypmrbpizcdrqj\",\"displayName\":\"pyd\"}}]}")
+            "{\"value\":[{\"id\":\"vmdajvnysou\",\"name\":\"e\",\"type\":\"noae\",\"location\":\"hy\",\"properties\":{\"category\":\"rpmopjmc\",\"meterType\":\"tuo\",\"displayName\":\"hfuiuaodsfc\"}}]}")
             .toObject(BillingMeterCollectionInner.class);
-        Assertions.assertEquals("t", model.value().get(0).location());
-        Assertions.assertEquals("pulexxbczw", model.value().get(0).properties().category());
-        Assertions.assertEquals("uwiqzb", model.value().get(0).properties().meterType());
-        Assertions.assertEquals("vsovmyokac", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("hy", model.value().get(0).location());
+        Assertions.assertEquals("rpmopjmc", model.value().get(0).properties().category());
+        Assertions.assertEquals("tuo", model.value().get(0).properties().meterType());
+        Assertions.assertEquals("hfuiuaodsfc", model.value().get(0).properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingMeterCollectionInner model = new BillingMeterCollectionInner().withValue(Arrays.asList(
-            new BillingMeter().withLocation("t")
-                .withProperties(new BillingMeterProperties().withCategory("pulexxbczw")
-                    .withMeterType("uwiqzb")
-                    .withDisplayName("vsovmyokac")),
-            new BillingMeter().withLocation("wwzjuqkhrsajiwku")
-                .withProperties(new BillingMeterProperties().withCategory("skghsauuimj")
-                    .withMeterType("xieduugidyjrr")
-                    .withDisplayName("y")),
-            new BillingMeter().withLocation("axkffei")
-                .withProperties(new BillingMeterProperties().withCategory("lvmezyvshxmzsbbz")
-                    .withMeterType("gigr")
-                    .withDisplayName("burvjxxjnspy")),
-            new BillingMeter().withLocation("yxoegukgjnp")
-                .withProperties(new BillingMeterProperties().withCategory("gygev")
-                    .withMeterType("ntypmrbpizcdrqj")
-                    .withDisplayName("pyd"))));
+        BillingMeterCollectionInner model
+            = new BillingMeterCollectionInner().withValue(Arrays.asList(new BillingMeter().withLocation("hy")
+                .withProperties(new BillingMeterProperties().withCategory("rpmopjmc")
+                    .withMeterType("tuo")
+                    .withDisplayName("hfuiuaodsfc"))));
         model = BinaryData.fromObject(model).toObject(BillingMeterCollectionInner.class);
-        Assertions.assertEquals("t", model.value().get(0).location());
-        Assertions.assertEquals("pulexxbczw", model.value().get(0).properties().category());
-        Assertions.assertEquals("uwiqzb", model.value().get(0).properties().meterType());
-        Assertions.assertEquals("vsovmyokac", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("hy", model.value().get(0).location());
+        Assertions.assertEquals("rpmopjmc", model.value().get(0).properties().category());
+        Assertions.assertEquals("tuo", model.value().get(0).properties().meterType());
+        Assertions.assertEquals("hfuiuaodsfc", model.value().get(0).properties().displayName());
     }
 }

@@ -17,7 +17,22 @@ public enum ChatServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2021-09-27}.
      */
-    V2021_09_27("2021-09-27");
+    V2021_09_27("2021-09-27"),
+
+    /**
+     * Service version {@code 2023-11-07}.
+     */
+    V2023_11_07("2023-11-07"),
+
+    /**
+     * Service version {@code 2024-03-07}.
+     */
+    V2024_03_07("2024-03-07"),
+
+    /**
+     * Service version {@code 2025-03-15}.
+     */
+    V2025_03_15("2025-03-15");
 
     private final String version;
 
@@ -42,6 +57,6 @@ public enum ChatServiceVersion implements ServiceVersion {
      */
     public static ChatServiceVersion getLatest() {
 
-        return V2021_09_27;
+        return V2025_03_15;
     }
 }

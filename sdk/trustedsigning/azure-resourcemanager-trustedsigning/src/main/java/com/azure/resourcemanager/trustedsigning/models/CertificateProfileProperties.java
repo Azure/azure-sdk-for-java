@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.trustedsigning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,34 +23,9 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     private ProfileType profileType;
 
     /*
-     * Used as CN in the certificate subject name.
-     */
-    private String commonName;
-
-    /*
-     * Used as O in the certificate subject name.
-     */
-    private String organization;
-
-    /*
-     * Used as OU in the private trust certificate subject name.
-     */
-    private String organizationUnit;
-
-    /*
-     * Used as STREET in the certificate subject name.
-     */
-    private String streetAddress;
-
-    /*
      * Whether to include STREET in the certificate subject name.
      */
     private Boolean includeStreetAddress;
-
-    /*
-     * Used as L in the certificate subject name.
-     */
-    private String city;
 
     /*
      * Whether to include L in the certificate subject name. Applicable only for private trust, private trust ci profile
@@ -60,20 +34,10 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     private Boolean includeCity;
 
     /*
-     * Used as S in the certificate subject name.
-     */
-    private String state;
-
-    /*
      * Whether to include S in the certificate subject name. Applicable only for private trust, private trust ci profile
      * types
      */
     private Boolean includeState;
-
-    /*
-     * Used as C in the certificate subject name.
-     */
-    private String country;
 
     /*
      * Whether to include C in the certificate subject name. Applicable only for private trust, private trust ci profile
@@ -82,19 +46,9 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     private Boolean includeCountry;
 
     /*
-     * Used as PC in the certificate subject name.
-     */
-    private String postalCode;
-
-    /*
      * Whether to include PC in the certificate subject name.
      */
     private Boolean includePostalCode;
-
-    /*
-     * Enhanced key usage of the certificate.
-     */
-    private String enhancedKeyUsage;
 
     /*
      * Identity validation id used for the certificate subject name.
@@ -143,42 +97,6 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     }
 
     /**
-     * Get the commonName property: Used as CN in the certificate subject name.
-     * 
-     * @return the commonName value.
-     */
-    public String commonName() {
-        return this.commonName;
-    }
-
-    /**
-     * Get the organization property: Used as O in the certificate subject name.
-     * 
-     * @return the organization value.
-     */
-    public String organization() {
-        return this.organization;
-    }
-
-    /**
-     * Get the organizationUnit property: Used as OU in the private trust certificate subject name.
-     * 
-     * @return the organizationUnit value.
-     */
-    public String organizationUnit() {
-        return this.organizationUnit;
-    }
-
-    /**
-     * Get the streetAddress property: Used as STREET in the certificate subject name.
-     * 
-     * @return the streetAddress value.
-     */
-    public String streetAddress() {
-        return this.streetAddress;
-    }
-
-    /**
      * Get the includeStreetAddress property: Whether to include STREET in the certificate subject name.
      * 
      * @return the includeStreetAddress value.
@@ -196,15 +114,6 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     public CertificateProfileProperties withIncludeStreetAddress(Boolean includeStreetAddress) {
         this.includeStreetAddress = includeStreetAddress;
         return this;
-    }
-
-    /**
-     * Get the city property: Used as L in the certificate subject name.
-     * 
-     * @return the city value.
-     */
-    public String city() {
-        return this.city;
     }
 
     /**
@@ -230,15 +139,6 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     }
 
     /**
-     * Get the state property: Used as S in the certificate subject name.
-     * 
-     * @return the state value.
-     */
-    public String state() {
-        return this.state;
-    }
-
-    /**
      * Get the includeState property: Whether to include S in the certificate subject name. Applicable only for private
      * trust, private trust ci profile types.
      * 
@@ -258,15 +158,6 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     public CertificateProfileProperties withIncludeState(Boolean includeState) {
         this.includeState = includeState;
         return this;
-    }
-
-    /**
-     * Get the country property: Used as C in the certificate subject name.
-     * 
-     * @return the country value.
-     */
-    public String country() {
-        return this.country;
     }
 
     /**
@@ -292,15 +183,6 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     }
 
     /**
-     * Get the postalCode property: Used as PC in the certificate subject name.
-     * 
-     * @return the postalCode value.
-     */
-    public String postalCode() {
-        return this.postalCode;
-    }
-
-    /**
      * Get the includePostalCode property: Whether to include PC in the certificate subject name.
      * 
      * @return the includePostalCode value.
@@ -318,15 +200,6 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     public CertificateProfileProperties withIncludePostalCode(Boolean includePostalCode) {
         this.includePostalCode = includePostalCode;
         return this;
-    }
-
-    /**
-     * Get the enhancedKeyUsage property: Enhanced key usage of the certificate.
-     * 
-     * @return the enhancedKeyUsage value.
-     */
-    public String enhancedKeyUsage() {
-        return this.enhancedKeyUsage;
     }
 
     /**
@@ -377,36 +250,18 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (profileType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property profileType in model CertificateProfileProperties"));
-        }
-        if (certificates() != null) {
-            certificates().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CertificateProfileProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("profileType", this.profileType == null ? null : this.profileType.toString());
+        jsonWriter.writeStringField("identityValidationId", this.identityValidationId);
         jsonWriter.writeBooleanField("includeStreetAddress", this.includeStreetAddress);
         jsonWriter.writeBooleanField("includeCity", this.includeCity);
         jsonWriter.writeBooleanField("includeState", this.includeState);
         jsonWriter.writeBooleanField("includeCountry", this.includeCountry);
         jsonWriter.writeBooleanField("includePostalCode", this.includePostalCode);
-        jsonWriter.writeStringField("identityValidationId", this.identityValidationId);
         return jsonWriter.writeEndObject();
     }
 
@@ -428,39 +283,21 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
 
                 if ("profileType".equals(fieldName)) {
                     deserializedCertificateProfileProperties.profileType = ProfileType.fromString(reader.getString());
-                } else if ("commonName".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.commonName = reader.getString();
-                } else if ("organization".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.organization = reader.getString();
-                } else if ("organizationUnit".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.organizationUnit = reader.getString();
-                } else if ("streetAddress".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.streetAddress = reader.getString();
+                } else if ("identityValidationId".equals(fieldName)) {
+                    deserializedCertificateProfileProperties.identityValidationId = reader.getString();
                 } else if ("includeStreetAddress".equals(fieldName)) {
                     deserializedCertificateProfileProperties.includeStreetAddress
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("city".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.city = reader.getString();
                 } else if ("includeCity".equals(fieldName)) {
                     deserializedCertificateProfileProperties.includeCity = reader.getNullable(JsonReader::getBoolean);
-                } else if ("state".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.state = reader.getString();
                 } else if ("includeState".equals(fieldName)) {
                     deserializedCertificateProfileProperties.includeState = reader.getNullable(JsonReader::getBoolean);
-                } else if ("country".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.country = reader.getString();
                 } else if ("includeCountry".equals(fieldName)) {
                     deserializedCertificateProfileProperties.includeCountry
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("postalCode".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.postalCode = reader.getString();
                 } else if ("includePostalCode".equals(fieldName)) {
                     deserializedCertificateProfileProperties.includePostalCode
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("enhancedKeyUsage".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.enhancedKeyUsage = reader.getString();
-                } else if ("identityValidationId".equals(fieldName)) {
-                    deserializedCertificateProfileProperties.identityValidationId = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedCertificateProfileProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

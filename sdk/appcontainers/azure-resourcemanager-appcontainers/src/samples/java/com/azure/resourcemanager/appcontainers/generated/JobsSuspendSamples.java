@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsSuspendSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Jobs_Suspend.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Jobs_Suspend.
+     * json
      */
     /**
      * Sample code: Suspend Job.

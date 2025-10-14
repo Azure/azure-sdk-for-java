@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentia
 public final class WebAppsUpdateFtpAllowedSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/UpdatePublishingCredentialsPolicySlot
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/UpdatePublishingCredentialsPolicySlot
      * .json
      */
     /**

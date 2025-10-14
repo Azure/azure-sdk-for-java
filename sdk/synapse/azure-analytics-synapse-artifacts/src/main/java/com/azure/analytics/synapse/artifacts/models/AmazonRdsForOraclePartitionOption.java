@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,17 +15,20 @@ public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnu
     /**
      * Static value None for AmazonRdsForOraclePartitionOption.
      */
+    @Generated
     public static final AmazonRdsForOraclePartitionOption NONE = fromString("None");
 
     /**
      * Static value PhysicalPartitionsOfTable for AmazonRdsForOraclePartitionOption.
      */
+    @Generated
     public static final AmazonRdsForOraclePartitionOption PHYSICAL_PARTITIONS_OF_TABLE
         = fromString("PhysicalPartitionsOfTable");
 
     /**
      * Static value DynamicRange for AmazonRdsForOraclePartitionOption.
      */
+    @Generated
     public static final AmazonRdsForOraclePartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
@@ -32,6 +36,7 @@ public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AmazonRdsForOraclePartitionOption() {
     }
@@ -42,6 +47,7 @@ public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding AmazonRdsForOraclePartitionOption.
      */
+    @Generated
     public static AmazonRdsForOraclePartitionOption fromString(String name) {
         return fromString(name, AmazonRdsForOraclePartitionOption.class);
     }
@@ -51,6 +57,7 @@ public final class AmazonRdsForOraclePartitionOption extends ExpandableStringEnu
      * 
      * @return known AmazonRdsForOraclePartitionOption values.
      */
+    @Generated
     public static Collection<AmazonRdsForOraclePartitionOption> values() {
         return values(AmazonRdsForOraclePartitionOption.class);
     }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationProtectedItemsRepairReplicationSampl {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectedItems_RepairReplication.json
      */
     /**
@@ -21,7 +21,7 @@ public final class ReplicationProtectedItemsRepairReplicationSampl {
     public static void resynchronizeOrRepairReplication(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectedItems()
-            .repairReplication("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+            .repairReplication("resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b", com.azure.core.util.Context.NONE);
     }
 }

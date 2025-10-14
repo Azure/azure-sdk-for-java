@@ -23,10 +23,6 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaP
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
 
-    KafkaBinderConfigurationPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
-
     @Override
     protected Map<String, Object> getMergedProducerProperties(KafkaBinderConfigurationProperties properties) {
         return mergeNonAdminProperties(properties.mergedProducerConfiguration(), properties.getConfiguration());

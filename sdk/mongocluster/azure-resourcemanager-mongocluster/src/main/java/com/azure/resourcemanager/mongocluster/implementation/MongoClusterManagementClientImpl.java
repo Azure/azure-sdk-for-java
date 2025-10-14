@@ -15,12 +15,15 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mongocluster.fluent.FirewallRulesClient;
@@ -30,6 +33,7 @@ import com.azure.resourcemanager.mongocluster.fluent.OperationsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateLinksClient;
 import com.azure.resourcemanager.mongocluster.fluent.ReplicasClient;
+import com.azure.resourcemanager.mongocluster.fluent.UsersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -213,6 +217,20 @@ public final class MongoClusterManagementClientImpl implements MongoClusterManag
     }
 
     /**
+     * The UsersClient object to access its operations.
+     */
+    private final UsersClient users;
+
+    /**
+     * Gets the UsersClient object to access its operations.
+     * 
+     * @return the UsersClient object.
+     */
+    public UsersClient getUsers() {
+        return this.users;
+    }
+
+    /**
      * Initializes an instance of MongoClusterManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -229,13 +247,14 @@ public final class MongoClusterManagementClientImpl implements MongoClusterManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-07-01";
+        this.apiVersion = "2025-08-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.mongoClusters = new MongoClustersClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinks = new PrivateLinksClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
+        this.users = new UsersClientImpl(this);
     }
 
     /**
@@ -273,6 +292,23 @@ public final class MongoClusterManagementClientImpl implements MongoClusterManag
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

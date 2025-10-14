@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,33 +23,39 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /*
      * Unique document model name.
      */
+    @Generated
     private final String modelId;
 
     /*
      * Document model description.
      */
+    @Generated
     private String description;
 
     /*
      * Custom document model build mode.
      */
+    @Generated
     private final DocumentBuildMode buildMode;
 
     /*
      * Azure Blob Storage location containing the training data. Either azureBlobSource or azureBlobFileListSource must
      * be specified.
      */
+    @Generated
     private AzureBlobContentSource azureBlobSource;
 
     /*
      * Azure Blob Storage file list specifying the training data. Either azureBlobSource or azureBlobFileListSource must
      * be specified.
      */
+    @Generated
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
@@ -57,6 +64,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * @param modelId the modelId value to set.
      * @param buildMode the buildMode value to set.
      */
+    @Generated
     public BuildDocumentModelRequest(String modelId, DocumentBuildMode buildMode) {
         this.modelId = modelId;
         this.buildMode = buildMode;
@@ -67,6 +75,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * 
      * @return the modelId value.
      */
+    @Generated
     public String getModelId() {
         return this.modelId;
     }
@@ -76,6 +85,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -86,6 +96,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * @param description the description value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
+    @Generated
     public BuildDocumentModelRequest setDescription(String description) {
         this.description = description;
         return this;
@@ -96,6 +107,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * 
      * @return the buildMode value.
      */
+    @Generated
     public DocumentBuildMode getBuildMode() {
         return this.buildMode;
     }
@@ -106,6 +118,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * 
      * @return the azureBlobSource value.
      */
+    @Generated
     public AzureBlobContentSource getAzureBlobSource() {
         return this.azureBlobSource;
     }
@@ -117,6 +130,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * @param azureBlobSource the azureBlobSource value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
+    @Generated
     public BuildDocumentModelRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
         return this;
@@ -128,6 +142,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * 
      * @return the azureBlobFileListSource value.
      */
+    @Generated
     public AzureBlobFileListContentSource getAzureBlobFileListSource() {
         return this.azureBlobFileListSource;
     }
@@ -139,6 +154,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
+    @Generated
     public BuildDocumentModelRequest
         setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
@@ -150,6 +166,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -160,6 +177,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * @param tags the tags value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
+    @Generated
     public BuildDocumentModelRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -168,6 +186,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,6 +208,7 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BuildDocumentModelRequest.
      */
+    @Generated
     public static BuildDocumentModelRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean modelIdFound = false;

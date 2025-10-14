@@ -17,9 +17,9 @@ public class DataSourcesDelete {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildDataSourcesClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcesdelete.datasourcesdelete
+        // BEGIN:com.azure.analytics.purview.scanning.generated.data-sources-delete.data-sources-delete
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = dataSourcesClient.deleteWithResponse("myDataSource", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.datasourcesdelete.datasourcesdelete
+        // END:com.azure.analytics.purview.scanning.generated.data-sources-delete.data-sources-delete
     }
 }

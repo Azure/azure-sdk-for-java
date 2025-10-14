@@ -1845,8 +1845,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(UUID configurationId,
         AlertingResultQuery body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(() -> getAlertsByAnomalyAlertingConfigurationSinglePage(configurationId, body, skip,
-            maxpagesize, Context.NONE),
+        return new PagedIterable<>(
+            () -> getAlertsByAnomalyAlertingConfigurationSinglePage(configurationId, body, skip, maxpagesize),
             nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextLink, body));
     }
 
@@ -2021,9 +2021,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfiguration(UUID configurationId,
         String alertId, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-            () -> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(configurationId, alertId, skip,
-                maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(configurationId,
+            alertId, skip, maxpagesize),
             nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink));
     }
 
@@ -2199,9 +2198,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfiguration(UUID configurationId,
         String alertId, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-            () -> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(configurationId, alertId, skip,
-                maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(configurationId,
+            alertId, skip, maxpagesize),
             nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink));
     }
 
@@ -2813,7 +2811,7 @@ public final class MetricsAdvisorImpl {
         UUID configurationId, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
             () -> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(configurationId, skip,
-                maxpagesize, Context.NONE),
+                maxpagesize),
             nextLink -> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(nextLink));
     }
 
@@ -3093,8 +3091,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyResult> getAnomaliesByAnomalyDetectionConfiguration(UUID configurationId,
         DetectionAnomalyResultQuery body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(() -> getAnomaliesByAnomalyDetectionConfigurationSinglePage(configurationId, body,
-            skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(
+            () -> getAnomaliesByAnomalyDetectionConfigurationSinglePage(configurationId, body, skip, maxpagesize),
             nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body));
     }
 
@@ -3273,7 +3271,7 @@ public final class MetricsAdvisorImpl {
         AnomalyDimensionQuery body, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
             () -> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(configurationId, body, skip,
-                maxpagesize, Context.NONE),
+                maxpagesize),
             nextLink -> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body));
     }
 
@@ -3441,8 +3439,8 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfiguration(UUID configurationId,
         DetectionIncidentResultQuery body, Integer maxpagesize) {
-        return new PagedIterable<>(() -> getIncidentsByAnomalyDetectionConfigurationSinglePage(configurationId, body,
-            maxpagesize, Context.NONE),
+        return new PagedIterable<>(
+            () -> getIncidentsByAnomalyDetectionConfigurationSinglePage(configurationId, body, maxpagesize),
             nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextLink));
     }
 
@@ -3610,8 +3608,7 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(UUID configurationId,
         Integer maxpagesize, String token) {
         return new PagedIterable<>(
-            () -> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(configurationId, maxpagesize, token,
-                Context.NONE),
+            () -> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(configurationId, maxpagesize, token),
             nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(nextLink));
     }
 
@@ -4005,7 +4002,7 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceCredential> listCredentials(Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(() -> listCredentialsSinglePage(skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> listCredentialsSinglePage(skip, maxpagesize),
             nextLink -> listCredentialsNextSinglePage(nextLink));
     }
 
@@ -4475,7 +4472,7 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<DataFeedDetail> listDataFeeds(String dataFeedName, DataSourceType dataSourceType,
         Granularity granularityName, EntityStatus status, String creator, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(() -> listDataFeedsSinglePage(dataFeedName, dataSourceType, granularityName, status,
-            creator, skip, maxpagesize, Context.NONE), nextLink -> listDataFeedsNextSinglePage(nextLink));
+            creator, skip, maxpagesize), nextLink -> listDataFeedsNextSinglePage(nextLink));
     }
 
     /**
@@ -5138,7 +5135,7 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricFeedback> listMetricFeedbacks(MetricFeedbackFilter body, Integer skip,
         Integer maxpagesize) {
-        return new PagedIterable<>(() -> listMetricFeedbacksSinglePage(body, skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> listMetricFeedbacksSinglePage(body, skip, maxpagesize),
             nextLink -> listMetricFeedbacksNextSinglePage(nextLink, body));
     }
 
@@ -5430,7 +5427,7 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HookInfo> listHooks(String hookName, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(() -> listHooksSinglePage(hookName, skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> listHooksSinglePage(hookName, skip, maxpagesize),
             nextLink -> listHooksNextSinglePage(nextLink));
     }
 
@@ -6006,8 +6003,7 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> getDataFeedIngestionStatus(UUID dataFeedId,
         IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-            () -> getDataFeedIngestionStatusSinglePage(dataFeedId, body, skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> getDataFeedIngestionStatusSinglePage(dataFeedId, body, skip, maxpagesize),
             nextLink -> getDataFeedIngestionStatusNextSinglePage(nextLink, body));
     }
 
@@ -6465,7 +6461,7 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesItem> getMetricSeries(UUID metricId, MetricSeriesQueryOptions body, Integer skip,
         Integer maxpagesize) {
-        return new PagedIterable<>(() -> getMetricSeriesSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> getMetricSeriesSinglePage(metricId, body, skip, maxpagesize),
             nextLink -> getMetricSeriesNextSinglePage(nextLink, body));
     }
 
@@ -6633,7 +6629,7 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getMetricDimension(UUID metricId, MetricDimensionQueryOptions body, Integer skip,
         Integer maxpagesize) {
-        return new PagedIterable<>(() -> getMetricDimensionSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> getMetricDimensionSinglePage(metricId, body, skip, maxpagesize),
             nextLink -> getMetricDimensionNextSinglePage(nextLink, body));
     }
 
@@ -6798,7 +6794,7 @@ public final class MetricsAdvisorImpl {
     public PagedIterable<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetric(UUID metricId,
         Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-            () -> getAnomalyDetectionConfigurationsByMetricSinglePage(metricId, skip, maxpagesize, Context.NONE),
+            () -> getAnomalyDetectionConfigurationsByMetricSinglePage(metricId, skip, maxpagesize),
             nextLink -> getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextLink));
     }
 
@@ -6968,8 +6964,7 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrichmentStatus> getEnrichmentStatusByMetric(UUID metricId, EnrichmentStatusQueryOption body,
         Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-            () -> getEnrichmentStatusByMetricSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
+        return new PagedIterable<>(() -> getEnrichmentStatusByMetricSinglePage(metricId, body, skip, maxpagesize),
             nextLink -> getEnrichmentStatusByMetricNextSinglePage(nextLink, body));
     }
 

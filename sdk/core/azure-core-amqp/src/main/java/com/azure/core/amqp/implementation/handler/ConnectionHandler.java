@@ -131,6 +131,10 @@ public class ConnectionHandler extends Handler {
         this.enableSsl = enableSsl;
     }
 
+    public void transferState(ConnectionHandler fromHandler) {
+        // No state to transfer in ConnectionHandler
+    }
+
     /**
      * Gets properties to add when creating AMQP connection.
      *

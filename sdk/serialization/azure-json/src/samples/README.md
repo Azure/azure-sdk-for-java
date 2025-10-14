@@ -52,4 +52,4 @@ See the [Contributing][sdk_readme_contributing] section of the library's root RE
 [sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/4b6100b019036da82904911f05bb8f45f62505d7/sdk/serialization/azure-json/README.md#next-steps
 [sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/4b6100b019036da82904911f05bb8f45f62505d7/sdk/serialization/azure-json/README.md#contributing
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fserialization%2Fazure-json%2Fsrc%2Fsamples%2README.png)
+

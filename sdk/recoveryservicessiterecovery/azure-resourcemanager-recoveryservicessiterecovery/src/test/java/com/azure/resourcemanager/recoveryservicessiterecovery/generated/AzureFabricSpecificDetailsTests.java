@@ -18,163 +18,120 @@ public final class AzureFabricSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFabricSpecificDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"Azure\",\"location\":\"rrlkmdskjhhx\",\"containerIds\":[\"jfoxcxscvslxl\",\"uavkrmukm\"],\"zones\":[{\"source\":\"xett\",\"target\":\"lojfkqidnqto\"},{\"source\":\"jhqxc\",\"target\":\"htkbtnq\"},{\"source\":\"ngldmbiipsn\",\"target\":\"wl\"}],\"extendedLocations\":[{\"primaryExtendedLocation\":{\"name\":\"xhhllxricct\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"uqqoaj\",\"type\":\"EdgeZone\"}},{\"primaryExtendedLocation\":{\"name\":\"y\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"srwvaexhdctrce\",\"type\":\"EdgeZone\"}},{\"primaryExtendedLocation\":{\"name\":\"brupobehdmljza\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"me\",\"type\":\"EdgeZone\"}}],\"locationDetails\":[{\"initialPrimaryZone\":\"bn\",\"initialRecoveryZone\":\"phepifexleqirc\",\"initialPrimaryExtendedLocation\":{\"name\":\"cly\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"x\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"jlvczu\",\"initialRecoveryFabricLocation\":\"ac\",\"primaryZone\":\"nettepdjxqeskoy\",\"recoveryZone\":\"iylpck\",\"primaryExtendedLocation\":{\"name\":\"wsedvesk\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"gqphrgfnzhctmjts\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"bcbcpz\",\"recoveryFabricLocation\":\"pzeqacdldtz\"},{\"initialPrimaryZone\":\"ypefcpczshnuqnda\",\"initialRecoveryZone\":\"upfkhuytuszxhmtv\",\"initialPrimaryExtendedLocation\":{\"name\":\"egw\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"kvzwydw\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"aokgkskjivbsshaj\",\"initialRecoveryFabricLocation\":\"u\",\"primaryZone\":\"eexpgeumi\",\"recoveryZone\":\"wuit\",\"primaryExtendedLocation\":{\"name\":\"exyionofninbd\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"xcwqqrsmpc\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"rtugavbzbcyks\",\"recoveryFabricLocation\":\"mf\"},{\"initialPrimaryZone\":\"dr\",\"initialRecoveryZone\":\"fcmkr\",\"initialPrimaryExtendedLocation\":{\"name\":\"sjcwjjxsgmbawvif\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"eci\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"cjxwkloozrvtxvcm\",\"initialRecoveryFabricLocation\":\"unlcpxxv\",\"primaryZone\":\"yeyng\",\"recoveryZone\":\"vrquv\",\"primaryExtendedLocation\":{\"name\":\"gglpmcrdcuelj\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"hxmfqryarvsxzqb\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"jkayspthzo\",\"recoveryFabricLocation\":\"btl\"},{\"initialPrimaryZone\":\"tgblioskkfmk\",\"initialRecoveryZone\":\"djxyxgbkkqvjcteo\",\"initialPrimaryExtendedLocation\":{\"name\":\"l\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"skkzpxvjnzdpvo\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"hpcnabxzfsn\",\"initialRecoveryFabricLocation\":\"ytexvzilmhivzk\",\"primaryZone\":\"wncknr\",\"recoveryZone\":\"ajlskzptj\",\"primaryExtendedLocation\":{\"name\":\"lwe\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"rthxqlehmcg\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"inue\",\"recoveryFabricLocation\":\"kamvfe\"}]}")
+            "{\"instanceType\":\"Azure\",\"location\":\"lyymffhmjpddny\",\"containerIds\":[\"uvrzmzqmzjqrb\",\"pv\",\"mdyfoebojtj\"],\"zones\":[{\"source\":\"aohoqkpjtnq\",\"target\":\"l\"}],\"extendedLocations\":[{\"primaryExtendedLocation\":{\"name\":\"dcwmqsyrilmhxdqa\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"ylnkkbjpjvlywltm\",\"type\":\"EdgeZone\"}},{\"primaryExtendedLocation\":{\"name\":\"bbjwhlw\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"nqzocrdzg\",\"type\":\"EdgeZone\"}}],\"locationDetails\":[{\"initialPrimaryZone\":\"tgxdncaqt\",\"initialRecoveryZone\":\"ekoifuvnyttzgi\",\"initialPrimaryExtendedLocation\":{\"name\":\"yri\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"mgb\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"qtxnrflkndrndpg\",\"initialRecoveryFabricLocation\":\"odhda\",\"primaryZone\":\"twfhi\",\"recoveryZone\":\"wgsabvcipo\",\"primaryExtendedLocation\":{\"name\":\"afcz\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"ljcirvpefycdvei\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"jnsxzajlnsjhwjuy\",\"recoveryFabricLocation\":\"bxqvmvuayt\"},{\"initialPrimaryZone\":\"dxk\",\"initialRecoveryZone\":\"qbwpntghyk\",\"initialPrimaryExtendedLocation\":{\"name\":\"rcdrnxsluvlzlad\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"kpbqhvfdqqjw\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"wzdanojisgglmvo\",\"initialRecoveryFabricLocation\":\"tuz\",\"primaryZone\":\"ctibpvbka\",\"recoveryZone\":\"xsmzygdf\",\"primaryExtendedLocation\":{\"name\":\"kwseivmakxhyso\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"ux\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"ect\",\"recoveryFabricLocation\":\"fjmskdchmaiu\"}]}")
             .toObject(AzureFabricSpecificDetails.class);
-        Assertions.assertEquals("rrlkmdskjhhx", model.location());
-        Assertions.assertEquals("jfoxcxscvslxl", model.containerIds().get(0));
-        Assertions.assertEquals("xett", model.zones().get(0).source());
-        Assertions.assertEquals("lojfkqidnqto", model.zones().get(0).target());
-        Assertions.assertEquals("xhhllxricct", model.extendedLocations().get(0).primaryExtendedLocation().name());
+        Assertions.assertEquals("lyymffhmjpddny", model.location());
+        Assertions.assertEquals("uvrzmzqmzjqrb", model.containerIds().get(0));
+        Assertions.assertEquals("aohoqkpjtnq", model.zones().get(0).source());
+        Assertions.assertEquals("l", model.zones().get(0).target());
+        Assertions.assertEquals("dcwmqsyrilmhxdqa", model.extendedLocations().get(0).primaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.extendedLocations().get(0).primaryExtendedLocation().type());
-        Assertions.assertEquals("uqqoaj", model.extendedLocations().get(0).recoveryExtendedLocation().name());
+        Assertions.assertEquals("ylnkkbjpjvlywltm", model.extendedLocations().get(0).recoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.extendedLocations().get(0).recoveryExtendedLocation().type());
-        Assertions.assertEquals("bn", model.locationDetails().get(0).initialPrimaryZone());
-        Assertions.assertEquals("phepifexleqirc", model.locationDetails().get(0).initialRecoveryZone());
-        Assertions.assertEquals("cly", model.locationDetails().get(0).initialPrimaryExtendedLocation().name());
+        Assertions.assertEquals("tgxdncaqt", model.locationDetails().get(0).initialPrimaryZone());
+        Assertions.assertEquals("ekoifuvnyttzgi", model.locationDetails().get(0).initialRecoveryZone());
+        Assertions.assertEquals("yri", model.locationDetails().get(0).initialPrimaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).initialPrimaryExtendedLocation().type());
-        Assertions.assertEquals("x", model.locationDetails().get(0).initialRecoveryExtendedLocation().name());
+        Assertions.assertEquals("mgb", model.locationDetails().get(0).initialRecoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).initialRecoveryExtendedLocation().type());
-        Assertions.assertEquals("jlvczu", model.locationDetails().get(0).initialPrimaryFabricLocation());
-        Assertions.assertEquals("ac", model.locationDetails().get(0).initialRecoveryFabricLocation());
-        Assertions.assertEquals("nettepdjxqeskoy", model.locationDetails().get(0).primaryZone());
-        Assertions.assertEquals("iylpck", model.locationDetails().get(0).recoveryZone());
-        Assertions.assertEquals("wsedvesk", model.locationDetails().get(0).primaryExtendedLocation().name());
+        Assertions.assertEquals("qtxnrflkndrndpg", model.locationDetails().get(0).initialPrimaryFabricLocation());
+        Assertions.assertEquals("odhda", model.locationDetails().get(0).initialRecoveryFabricLocation());
+        Assertions.assertEquals("twfhi", model.locationDetails().get(0).primaryZone());
+        Assertions.assertEquals("wgsabvcipo", model.locationDetails().get(0).recoveryZone());
+        Assertions.assertEquals("afcz", model.locationDetails().get(0).primaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).primaryExtendedLocation().type());
-        Assertions.assertEquals("gqphrgfnzhctmjts", model.locationDetails().get(0).recoveryExtendedLocation().name());
+        Assertions.assertEquals("ljcirvpefycdvei", model.locationDetails().get(0).recoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).recoveryExtendedLocation().type());
-        Assertions.assertEquals("bcbcpz", model.locationDetails().get(0).primaryFabricLocation());
-        Assertions.assertEquals("pzeqacdldtz", model.locationDetails().get(0).recoveryFabricLocation());
+        Assertions.assertEquals("jnsxzajlnsjhwjuy", model.locationDetails().get(0).primaryFabricLocation());
+        Assertions.assertEquals("bxqvmvuayt", model.locationDetails().get(0).recoveryFabricLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFabricSpecificDetails model
-            = new AzureFabricSpecificDetails().withLocation("rrlkmdskjhhx")
-                .withContainerIds(Arrays.asList("jfoxcxscvslxl", "uavkrmukm"))
-                .withZones(Arrays.asList(new A2AZoneDetails().withSource("xett").withTarget("lojfkqidnqto"),
-                    new A2AZoneDetails().withSource("jhqxc").withTarget("htkbtnq"),
-                    new A2AZoneDetails().withSource("ngldmbiipsn").withTarget("wl")))
-                .withExtendedLocations(
-                    Arrays
-                        .asList(
-                            new A2AExtendedLocationDetails()
-                                .withPrimaryExtendedLocation(new ExtendedLocation().withName("xhhllxricct")
-                                    .withType(ExtendedLocationType.EDGE_ZONE))
-                                .withRecoveryExtendedLocation(
-                                    new ExtendedLocation().withName("uqqoaj").withType(ExtendedLocationType.EDGE_ZONE)),
-                            new A2AExtendedLocationDetails()
-                                .withPrimaryExtendedLocation(
-                                    new ExtendedLocation().withName("y").withType(ExtendedLocationType.EDGE_ZONE))
-                                .withRecoveryExtendedLocation(new ExtendedLocation()
-                                    .withName("srwvaexhdctrce")
-                                    .withType(ExtendedLocationType.EDGE_ZONE)),
-                            new A2AExtendedLocationDetails()
-                                .withPrimaryExtendedLocation(new ExtendedLocation().withName("brupobehdmljza")
-                                    .withType(ExtendedLocationType.EDGE_ZONE))
-                                .withRecoveryExtendedLocation(new ExtendedLocation()
-                                    .withName("me")
-                                    .withType(ExtendedLocationType.EDGE_ZONE))))
+            = new AzureFabricSpecificDetails().withLocation("lyymffhmjpddny")
+                .withContainerIds(Arrays.asList("uvrzmzqmzjqrb", "pv", "mdyfoebojtj"))
+                .withZones(Arrays.asList(new A2AZoneDetails().withSource("aohoqkpjtnq").withTarget("l")))
+                .withExtendedLocations(Arrays.asList(
+                    new A2AExtendedLocationDetails()
+                        .withPrimaryExtendedLocation(new ExtendedLocation().withName("dcwmqsyrilmhxdqa")
+                            .withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(new ExtendedLocation().withName("ylnkkbjpjvlywltm")
+                            .withType(ExtendedLocationType.EDGE_ZONE)),
+                    new A2AExtendedLocationDetails()
+                        .withPrimaryExtendedLocation(
+                            new ExtendedLocation().withName("bbjwhlw").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("nqzocrdzg").withType(ExtendedLocationType.EDGE_ZONE))))
                 .withLocationDetails(Arrays.asList(
-                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("bn")
-                        .withInitialRecoveryZone("phepifexleqirc")
+                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("tgxdncaqt")
+                        .withInitialRecoveryZone("ekoifuvnyttzgi")
                         .withInitialPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("cly").withType(ExtendedLocationType.EDGE_ZONE))
+                            new ExtendedLocation().withName("yri").withType(ExtendedLocationType.EDGE_ZONE))
                         .withInitialRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("x").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withInitialPrimaryFabricLocation("jlvczu")
-                        .withInitialRecoveryFabricLocation("ac")
-                        .withPrimaryZone("nettepdjxqeskoy")
-                        .withRecoveryZone("iylpck")
+                            new ExtendedLocation().withName("mgb").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialPrimaryFabricLocation("qtxnrflkndrndpg")
+                        .withInitialRecoveryFabricLocation("odhda")
+                        .withPrimaryZone("twfhi")
+                        .withRecoveryZone("wgsabvcipo")
                         .withPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("wsedvesk").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withRecoveryExtendedLocation(new ExtendedLocation().withName("gqphrgfnzhctmjts")
-                            .withType(ExtendedLocationType.EDGE_ZONE))
-                        .withPrimaryFabricLocation("bcbcpz")
-                        .withRecoveryFabricLocation("pzeqacdldtz"),
-                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("ypefcpczshnuqnda")
-                        .withInitialRecoveryZone("upfkhuytuszxhmtv")
+                            new ExtendedLocation().withName("afcz").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withRecoveryExtendedLocation(
+                            new ExtendedLocation().withName("ljcirvpefycdvei").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withPrimaryFabricLocation("jnsxzajlnsjhwjuy")
+                        .withRecoveryFabricLocation("bxqvmvuayt"),
+                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("dxk")
+                        .withInitialRecoveryZone("qbwpntghyk")
                         .withInitialPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("egw").withType(ExtendedLocationType.EDGE_ZONE))
+                            new ExtendedLocation().withName("rcdrnxsluvlzlad").withType(ExtendedLocationType.EDGE_ZONE))
                         .withInitialRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("kvzwydw").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withInitialPrimaryFabricLocation("aokgkskjivbsshaj")
-                        .withInitialRecoveryFabricLocation("u")
-                        .withPrimaryZone("eexpgeumi")
-                        .withRecoveryZone("wuit")
+                            new ExtendedLocation().withName("kpbqhvfdqqjw").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withInitialPrimaryFabricLocation("wzdanojisgglmvo")
+                        .withInitialRecoveryFabricLocation("tuz")
+                        .withPrimaryZone("ctibpvbka")
+                        .withRecoveryZone("xsmzygdf")
                         .withPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("exyionofninbd").withType(ExtendedLocationType.EDGE_ZONE))
+                            new ExtendedLocation().withName("kwseivmakxhyso").withType(ExtendedLocationType.EDGE_ZONE))
                         .withRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("xcwqqrsmpc").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withPrimaryFabricLocation("rtugavbzbcyks")
-                        .withRecoveryFabricLocation("mf"),
-                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("dr")
-                        .withInitialRecoveryZone("fcmkr")
-                        .withInitialPrimaryExtendedLocation(new ExtendedLocation().withName("sjcwjjxsgmbawvif")
-                            .withType(ExtendedLocationType.EDGE_ZONE))
-                        .withInitialRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("eci").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withInitialPrimaryFabricLocation("cjxwkloozrvtxvcm")
-                        .withInitialRecoveryFabricLocation("unlcpxxv")
-                        .withPrimaryZone("yeyng")
-                        .withRecoveryZone("vrquv")
-                        .withPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("gglpmcrdcuelj").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("hxmfqryarvsxzqb").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withPrimaryFabricLocation("jkayspthzo")
-                        .withRecoveryFabricLocation("btl"),
-                    new A2AFabricSpecificLocationDetails().withInitialPrimaryZone("tgblioskkfmk")
-                        .withInitialRecoveryZone("djxyxgbkkqvjcteo")
-                        .withInitialPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("l").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withInitialRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("skkzpxvjnzdpvo").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withInitialPrimaryFabricLocation("hpcnabxzfsn")
-                        .withInitialRecoveryFabricLocation("ytexvzilmhivzk")
-                        .withPrimaryZone("wncknr")
-                        .withRecoveryZone("ajlskzptj")
-                        .withPrimaryExtendedLocation(
-                            new ExtendedLocation().withName("lwe").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withRecoveryExtendedLocation(
-                            new ExtendedLocation().withName("rthxqlehmcg").withType(ExtendedLocationType.EDGE_ZONE))
-                        .withPrimaryFabricLocation("inue")
-                        .withRecoveryFabricLocation("kamvfe")));
+                            new ExtendedLocation().withName("ux").withType(ExtendedLocationType.EDGE_ZONE))
+                        .withPrimaryFabricLocation("ect")
+                        .withRecoveryFabricLocation("fjmskdchmaiu")));
         model = BinaryData.fromObject(model).toObject(AzureFabricSpecificDetails.class);
-        Assertions.assertEquals("rrlkmdskjhhx", model.location());
-        Assertions.assertEquals("jfoxcxscvslxl", model.containerIds().get(0));
-        Assertions.assertEquals("xett", model.zones().get(0).source());
-        Assertions.assertEquals("lojfkqidnqto", model.zones().get(0).target());
-        Assertions.assertEquals("xhhllxricct", model.extendedLocations().get(0).primaryExtendedLocation().name());
+        Assertions.assertEquals("lyymffhmjpddny", model.location());
+        Assertions.assertEquals("uvrzmzqmzjqrb", model.containerIds().get(0));
+        Assertions.assertEquals("aohoqkpjtnq", model.zones().get(0).source());
+        Assertions.assertEquals("l", model.zones().get(0).target());
+        Assertions.assertEquals("dcwmqsyrilmhxdqa", model.extendedLocations().get(0).primaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.extendedLocations().get(0).primaryExtendedLocation().type());
-        Assertions.assertEquals("uqqoaj", model.extendedLocations().get(0).recoveryExtendedLocation().name());
+        Assertions.assertEquals("ylnkkbjpjvlywltm", model.extendedLocations().get(0).recoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.extendedLocations().get(0).recoveryExtendedLocation().type());
-        Assertions.assertEquals("bn", model.locationDetails().get(0).initialPrimaryZone());
-        Assertions.assertEquals("phepifexleqirc", model.locationDetails().get(0).initialRecoveryZone());
-        Assertions.assertEquals("cly", model.locationDetails().get(0).initialPrimaryExtendedLocation().name());
+        Assertions.assertEquals("tgxdncaqt", model.locationDetails().get(0).initialPrimaryZone());
+        Assertions.assertEquals("ekoifuvnyttzgi", model.locationDetails().get(0).initialRecoveryZone());
+        Assertions.assertEquals("yri", model.locationDetails().get(0).initialPrimaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).initialPrimaryExtendedLocation().type());
-        Assertions.assertEquals("x", model.locationDetails().get(0).initialRecoveryExtendedLocation().name());
+        Assertions.assertEquals("mgb", model.locationDetails().get(0).initialRecoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).initialRecoveryExtendedLocation().type());
-        Assertions.assertEquals("jlvczu", model.locationDetails().get(0).initialPrimaryFabricLocation());
-        Assertions.assertEquals("ac", model.locationDetails().get(0).initialRecoveryFabricLocation());
-        Assertions.assertEquals("nettepdjxqeskoy", model.locationDetails().get(0).primaryZone());
-        Assertions.assertEquals("iylpck", model.locationDetails().get(0).recoveryZone());
-        Assertions.assertEquals("wsedvesk", model.locationDetails().get(0).primaryExtendedLocation().name());
+        Assertions.assertEquals("qtxnrflkndrndpg", model.locationDetails().get(0).initialPrimaryFabricLocation());
+        Assertions.assertEquals("odhda", model.locationDetails().get(0).initialRecoveryFabricLocation());
+        Assertions.assertEquals("twfhi", model.locationDetails().get(0).primaryZone());
+        Assertions.assertEquals("wgsabvcipo", model.locationDetails().get(0).recoveryZone());
+        Assertions.assertEquals("afcz", model.locationDetails().get(0).primaryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).primaryExtendedLocation().type());
-        Assertions.assertEquals("gqphrgfnzhctmjts", model.locationDetails().get(0).recoveryExtendedLocation().name());
+        Assertions.assertEquals("ljcirvpefycdvei", model.locationDetails().get(0).recoveryExtendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE,
             model.locationDetails().get(0).recoveryExtendedLocation().type());
-        Assertions.assertEquals("bcbcpz", model.locationDetails().get(0).primaryFabricLocation());
-        Assertions.assertEquals("pzeqacdldtz", model.locationDetails().get(0).recoveryFabricLocation());
+        Assertions.assertEquals("jnsxzajlnsjhwjuy", model.locationDetails().get(0).primaryFabricLocation());
+        Assertions.assertEquals("bxqvmvuayt", model.locationDetails().get(0).recoveryFabricLocation());
     }
 }

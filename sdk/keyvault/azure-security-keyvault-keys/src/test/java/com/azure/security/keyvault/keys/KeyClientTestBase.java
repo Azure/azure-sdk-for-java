@@ -85,17 +85,15 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
-    protected boolean runReleaseKeyTest = false;
-    // TODO (vcolin7): Un-comment after the service rolls out a fix for the version issue (late Nov 2023).
-    //protected boolean runReleaseKeyTest = getTestMode() == TestMode.PLAYBACK
-    //    || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
+    protected boolean runReleaseKeyTest = getTestMode() == TestMode.PLAYBACK
+        || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
 
     private static TestMode initializeTestMode() {
         final String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
 
         if (azureTestMode != null) {
             try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
                 return TestMode.PLAYBACK;
@@ -478,13 +476,15 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
         String keyName = testResourceNamer.randomName("rotateKey", 20);
 
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
-        KeyRotationLifetimeAction rotateLifetimeAction
-            = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P7D");
-        KeyRotationLifetimeAction notifyLifetimeAction
-            = new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY).setTimeBeforeExpiry("P7D");
 
-        keyRotationLifetimeActionList.add(rotateLifetimeAction);
-        keyRotationLifetimeActionList.add(notifyLifetimeAction);
+        keyRotationLifetimeActionList
+            .add(new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P2M"));
+
+        // Notify is not supported on MHSM.
+        if (!isHsmEnabled) {
+            keyRotationLifetimeActionList
+                .add(new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY).setTimeBeforeExpiry("P7D"));
+        }
 
         KeyRotationPolicy keyRotationPolicy
             = new KeyRotationPolicy().setLifetimeActions(keyRotationLifetimeActionList).setExpiresIn("P6M");
@@ -494,6 +494,30 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
+
+    void rotateKeyRunner(BiConsumer<String, KeyRotationPolicy> testRunner) {
+        String keyName = testResourceNamer.randomName("rotateKey", 20);
+
+        List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
+        KeyRotationLifetimeAction rotateLifetimeAction
+            = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE).setTimeAfterCreate("P2M");
+
+        keyRotationLifetimeActionList.add(rotateLifetimeAction);
+
+        KeyRotationPolicy keyRotationPolicy
+            = new KeyRotationPolicy().setLifetimeActions(keyRotationLifetimeActionList).setExpiresIn("P6M");
+
+        testRunner.accept(keyName, keyRotationPolicy);
+    }
+
+    void getKeyAttestationRunner(Consumer<CreateKeyOptions> testRunner) {
+        final KeyType keyType = runManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions createKeyOptions
+            = new CreateKeyOptions(testResourceNamer.randomName("testKey4", 20), keyType)
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+
+        testRunner.accept(createKeyOptions);
+    }
 
     /**
      * Helper method to verify that the returned ConfigurationSetting matches what was expected.

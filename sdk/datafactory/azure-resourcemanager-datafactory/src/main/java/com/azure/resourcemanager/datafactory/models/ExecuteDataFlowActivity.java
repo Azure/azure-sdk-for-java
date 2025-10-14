@@ -51,7 +51,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ExecuteDataFlowActivityTypeProperties innerTypeProperties() {
+    ExecuteDataFlowActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

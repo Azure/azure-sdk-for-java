@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,26 +21,31 @@ public final class AzureDataExplorerSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "AzureDataExplorerSink";
 
     /*
      * A name of a pre-created csv mapping that was defined on the target Kusto table. Type: string.
      */
+    @Generated
     private Object ingestionMappingName;
 
     /*
      * An explicit column mapping description provided in a json format. Type: string.
      */
+    @Generated
     private Object ingestionMappingAsJson;
 
     /*
      * If set to true, any aggregation will be skipped. Default is false. Type: boolean.
      */
+    @Generated
     private Object flushImmediately;
 
     /**
      * Creates an instance of AzureDataExplorerSink class.
      */
+    @Generated
     public AzureDataExplorerSink() {
     }
 
@@ -48,6 +54,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +66,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * 
      * @return the ingestionMappingName value.
      */
+    @Generated
     public Object getIngestionMappingName() {
         return this.ingestionMappingName;
     }
@@ -70,6 +78,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * @param ingestionMappingName the ingestionMappingName value to set.
      * @return the AzureDataExplorerSink object itself.
      */
+    @Generated
     public AzureDataExplorerSink setIngestionMappingName(Object ingestionMappingName) {
         this.ingestionMappingName = ingestionMappingName;
         return this;
@@ -81,6 +90,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * 
      * @return the ingestionMappingAsJson value.
      */
+    @Generated
     public Object getIngestionMappingAsJson() {
         return this.ingestionMappingAsJson;
     }
@@ -92,6 +102,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * @param ingestionMappingAsJson the ingestionMappingAsJson value to set.
      * @return the AzureDataExplorerSink object itself.
      */
+    @Generated
     public AzureDataExplorerSink setIngestionMappingAsJson(Object ingestionMappingAsJson) {
         this.ingestionMappingAsJson = ingestionMappingAsJson;
         return this;
@@ -103,6 +114,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * 
      * @return the flushImmediately value.
      */
+    @Generated
     public Object getFlushImmediately() {
         return this.flushImmediately;
     }
@@ -114,6 +126,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * @param flushImmediately the flushImmediately value to set.
      * @return the AzureDataExplorerSink object itself.
      */
+    @Generated
     public AzureDataExplorerSink setFlushImmediately(Object flushImmediately) {
         this.flushImmediately = flushImmediately;
         return this;
@@ -122,6 +135,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -131,6 +145,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -140,6 +155,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -149,6 +165,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -158,6 +175,7 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -167,18 +185,35 @@ public final class AzureDataExplorerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("ingestionMappingName", this.ingestionMappingName);
-        jsonWriter.writeUntypedField("ingestionMappingAsJson", this.ingestionMappingAsJson);
-        jsonWriter.writeUntypedField("flushImmediately", this.flushImmediately);
+        if (this.ingestionMappingName != null) {
+            jsonWriter.writeUntypedField("ingestionMappingName", this.ingestionMappingName);
+        }
+        if (this.ingestionMappingAsJson != null) {
+            jsonWriter.writeUntypedField("ingestionMappingAsJson", this.ingestionMappingAsJson);
+        }
+        if (this.flushImmediately != null) {
+            jsonWriter.writeUntypedField("flushImmediately", this.flushImmediately);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -195,6 +230,7 @@ public final class AzureDataExplorerSink extends CopySink {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureDataExplorerSink.
      */
+    @Generated
     public static AzureDataExplorerSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataExplorerSink deserializedAzureDataExplorerSink = new AzureDataExplorerSink();

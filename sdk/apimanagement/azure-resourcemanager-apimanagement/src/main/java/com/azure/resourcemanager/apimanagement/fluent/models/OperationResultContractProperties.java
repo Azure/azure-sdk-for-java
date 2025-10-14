@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AsyncOperationStatus;
+import com.azure.resourcemanager.apimanagement.models.ErrorResponseBody;
 import com.azure.resourcemanager.apimanagement.models.OperationResultLogItemContract;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -53,7 +53,7 @@ public final class OperationResultContractProperties implements JsonSerializable
     /*
      * Error Body Contract
      */
-    private ManagementError error;
+    private ErrorResponseBody error;
 
     /*
      * This property if only provided as part of the TenantConfiguration_Validate operation. It contains the log the
@@ -176,7 +176,7 @@ public final class OperationResultContractProperties implements JsonSerializable
      * 
      * @return the error value.
      */
-    public ManagementError error() {
+    public ErrorResponseBody error() {
         return this.error;
     }
 
@@ -186,7 +186,7 @@ public final class OperationResultContractProperties implements JsonSerializable
      * @param error the error value to set.
      * @return the OperationResultContractProperties object itself.
      */
-    public OperationResultContractProperties withError(ManagementError error) {
+    public OperationResultContractProperties withError(ErrorResponseBody error) {
         this.error = error;
         return this;
     }
@@ -208,6 +208,9 @@ public final class OperationResultContractProperties implements JsonSerializable
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
         if (actionLog() != null) {
             actionLog().forEach(e -> e.validate());
         }
@@ -260,7 +263,7 @@ public final class OperationResultContractProperties implements JsonSerializable
                 } else if ("resultInfo".equals(fieldName)) {
                     deserializedOperationResultContractProperties.resultInfo = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedOperationResultContractProperties.error = ManagementError.fromJson(reader);
+                    deserializedOperationResultContractProperties.error = ErrorResponseBody.fromJson(reader);
                 } else if ("actionLog".equals(fieldName)) {
                     List<OperationResultLogItemContract> actionLog
                         = reader.readArray(reader1 -> OperationResultLogItemContract.fromJson(reader1));

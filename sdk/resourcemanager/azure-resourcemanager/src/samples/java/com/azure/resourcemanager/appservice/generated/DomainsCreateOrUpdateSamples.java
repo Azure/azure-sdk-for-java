@@ -20,7 +20,7 @@ import java.util.Map;
 public final class DomainsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-04-01/examples/CreateAppServiceDomain
+     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/CreateAppServiceDomain
      * .json
      */
     /**

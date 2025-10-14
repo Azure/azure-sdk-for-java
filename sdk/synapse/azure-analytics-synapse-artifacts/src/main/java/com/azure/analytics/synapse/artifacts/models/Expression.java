@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class Expression implements JsonSerializable<Expression> {
     /*
      * Expression type.
      */
+    @Generated
     private ExpressionType type;
 
     /*
      * Expression value.
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of Expression class.
      */
+    @Generated
     public Expression() {
     }
 
@@ -37,6 +41,7 @@ public final class Expression implements JsonSerializable<Expression> {
      * 
      * @return the type value.
      */
+    @Generated
     public ExpressionType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class Expression implements JsonSerializable<Expression> {
      * @param type the type value to set.
      * @return the Expression object itself.
      */
+    @Generated
     public Expression setType(ExpressionType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class Expression implements JsonSerializable<Expression> {
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -67,6 +74,7 @@ public final class Expression implements JsonSerializable<Expression> {
      * @param value the value value to set.
      * @return the Expression object itself.
      */
+    @Generated
     public Expression setValue(String value) {
         this.value = value;
         return this;
@@ -75,6 +83,7 @@ public final class Expression implements JsonSerializable<Expression> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class Expression implements JsonSerializable<Expression> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Expression.
      */
+    @Generated
     public static Expression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Expression deserializedExpression = new Expression();

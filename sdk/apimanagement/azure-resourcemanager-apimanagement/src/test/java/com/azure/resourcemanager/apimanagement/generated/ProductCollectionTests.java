@@ -15,48 +15,61 @@ public final class ProductCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProductCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"pyqy\",\"description\":\"xubmdnafcbqw\",\"terms\":\"mjel\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":538354089,\"state\":\"published\"},\"id\":\"ohdbvqvwzkj\",\"name\":\"pwbeonr\",\"type\":\"kwzdqybxcea\"},{\"properties\":{\"displayName\":\"cptsoqfyiase\",\"description\":\"hkrttzrazis\",\"terms\":\"kiuemv\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":974039641,\"state\":\"published\"},\"id\":\"rx\",\"name\":\"bsojk\",\"type\":\"inhmdptys\"}],\"count\":3080565060879434644,\"nextLink\":\"nzxojpslsvjgpli\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"rweft\",\"description\":\"qejpmvssehaepwa\",\"terms\":\"xtczhupeuknijd\",\"subscriptionRequired\":true,\"approvalRequired\":false,\"subscriptionsLimit\":1205477602,\"state\":\"notPublished\"},\"id\":\"fbocyvhh\",\"name\":\"lrtywikdmhlakuf\",\"type\":\"gbhgau\"},{\"properties\":{\"displayName\":\"dixmxufrsryjq\",\"description\":\"kfnozoeoqbvj\",\"terms\":\"efgwbmqjc\",\"subscriptionRequired\":true,\"approvalRequired\":false,\"subscriptionsLimit\":357144955,\"state\":\"notPublished\"},\"id\":\"xbulpzealbmqkyo\",\"name\":\"wyvf\",\"type\":\"mbtsuahxsg\"},{\"properties\":{\"displayName\":\"cmmzrrs\",\"description\":\"biwsd\",\"terms\":\"pxqwo\",\"subscriptionRequired\":true,\"approvalRequired\":true,\"subscriptionsLimit\":1735165738,\"state\":\"published\"},\"id\":\"mmuabwi\",\"name\":\"vjogjonmcyefo\",\"type\":\"zbamwine\"},{\"properties\":{\"displayName\":\"vfkakpold\",\"description\":\"evboclzhzjknyuxg\",\"terms\":\"txpnrupza\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":462853790,\"state\":\"published\"},\"id\":\"kidswys\",\"name\":\"br\",\"type\":\"ffg\"}],\"count\":7085310044054385264,\"nextLink\":\"utvlxhr\"}")
             .toObject(ProductCollection.class);
-        Assertions.assertEquals("pyqy", model.value().get(0).displayName());
-        Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).description());
-        Assertions.assertEquals("mjel", model.value().get(0).terms());
-        Assertions.assertEquals(false, model.value().get(0).subscriptionRequired());
-        Assertions.assertEquals(false, model.value().get(0).approvalRequired());
-        Assertions.assertEquals(538354089, model.value().get(0).subscriptionsLimit());
-        Assertions.assertEquals(ProductState.PUBLISHED, model.value().get(0).state());
-        Assertions.assertEquals(3080565060879434644L, model.count());
-        Assertions.assertEquals("nzxojpslsvjgpli", model.nextLink());
+        Assertions.assertEquals("rweft", model.value().get(0).displayName());
+        Assertions.assertEquals("qejpmvssehaepwa", model.value().get(0).description());
+        Assertions.assertEquals("xtczhupeuknijd", model.value().get(0).terms());
+        Assertions.assertTrue(model.value().get(0).subscriptionRequired());
+        Assertions.assertFalse(model.value().get(0).approvalRequired());
+        Assertions.assertEquals(1205477602, model.value().get(0).subscriptionsLimit());
+        Assertions.assertEquals(ProductState.NOT_PUBLISHED, model.value().get(0).state());
+        Assertions.assertEquals(7085310044054385264L, model.count());
+        Assertions.assertEquals("utvlxhr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductCollection model = new ProductCollection()
-            .withValue(Arrays.asList(
-                new ProductContractInner().withDisplayName("pyqy")
-                    .withDescription("xubmdnafcbqw")
-                    .withTerms("mjel")
-                    .withSubscriptionRequired(false)
-                    .withApprovalRequired(false)
-                    .withSubscriptionsLimit(538354089)
-                    .withState(ProductState.PUBLISHED),
-                new ProductContractInner().withDisplayName("cptsoqfyiase")
-                    .withDescription("hkrttzrazis")
-                    .withTerms("kiuemv")
-                    .withSubscriptionRequired(true)
-                    .withApprovalRequired(true)
-                    .withSubscriptionsLimit(974039641)
-                    .withState(ProductState.PUBLISHED)))
-            .withCount(3080565060879434644L)
-            .withNextLink("nzxojpslsvjgpli");
+        ProductCollection model = new ProductCollection().withValue(Arrays.asList(
+            new ProductContractInner().withDisplayName("rweft")
+                .withDescription("qejpmvssehaepwa")
+                .withTerms("xtczhupeuknijd")
+                .withSubscriptionRequired(true)
+                .withApprovalRequired(false)
+                .withSubscriptionsLimit(1205477602)
+                .withState(ProductState.NOT_PUBLISHED),
+            new ProductContractInner().withDisplayName("dixmxufrsryjq")
+                .withDescription("kfnozoeoqbvj")
+                .withTerms("efgwbmqjc")
+                .withSubscriptionRequired(true)
+                .withApprovalRequired(false)
+                .withSubscriptionsLimit(357144955)
+                .withState(ProductState.NOT_PUBLISHED),
+            new ProductContractInner().withDisplayName("cmmzrrs")
+                .withDescription("biwsd")
+                .withTerms("pxqwo")
+                .withSubscriptionRequired(true)
+                .withApprovalRequired(true)
+                .withSubscriptionsLimit(1735165738)
+                .withState(ProductState.PUBLISHED),
+            new ProductContractInner().withDisplayName("vfkakpold")
+                .withDescription("evboclzhzjknyuxg")
+                .withTerms("txpnrupza")
+                .withSubscriptionRequired(false)
+                .withApprovalRequired(false)
+                .withSubscriptionsLimit(462853790)
+                .withState(ProductState.PUBLISHED)))
+            .withCount(7085310044054385264L)
+            .withNextLink("utvlxhr");
         model = BinaryData.fromObject(model).toObject(ProductCollection.class);
-        Assertions.assertEquals("pyqy", model.value().get(0).displayName());
-        Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).description());
-        Assertions.assertEquals("mjel", model.value().get(0).terms());
-        Assertions.assertEquals(false, model.value().get(0).subscriptionRequired());
-        Assertions.assertEquals(false, model.value().get(0).approvalRequired());
-        Assertions.assertEquals(538354089, model.value().get(0).subscriptionsLimit());
-        Assertions.assertEquals(ProductState.PUBLISHED, model.value().get(0).state());
-        Assertions.assertEquals(3080565060879434644L, model.count());
-        Assertions.assertEquals("nzxojpslsvjgpli", model.nextLink());
+        Assertions.assertEquals("rweft", model.value().get(0).displayName());
+        Assertions.assertEquals("qejpmvssehaepwa", model.value().get(0).description());
+        Assertions.assertEquals("xtczhupeuknijd", model.value().get(0).terms());
+        Assertions.assertTrue(model.value().get(0).subscriptionRequired());
+        Assertions.assertFalse(model.value().get(0).approvalRequired());
+        Assertions.assertEquals(1205477602, model.value().get(0).subscriptionsLimit());
+        Assertions.assertEquals(ProductState.NOT_PUBLISHED, model.value().get(0).state());
+        Assertions.assertEquals(7085310044054385264L, model.count());
+        Assertions.assertEquals("utvlxhr", model.nextLink());
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
@@ -25,40 +25,41 @@ public final class PartnerTopicsActivateWithResponseMockTests {
     @Test
     public void testActivateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"4dbeb995-792e-4cd0-85d9-727e42a1c19c\",\"source\":\"joxtdahne\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"e\":{\"description\":\"ztivfwjl\",\"displayName\":\"zekfsrmauklajv\",\"documentationUrl\":\"oczhapejovtk\",\"dataSchemaUrl\":\"nhwhhnoyrzaao\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-09T20:50:13Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"eat\",\"messageForActivation\":\"xxcrxoxdjxld\"},\"identity\":{\"type\":\"None\",\"principalId\":\"nzkdolrndwdbvxvz\",\"tenantId\":\"edoyqxlunkft\",\"userAssignedIdentities\":{\"divznl\":{\"principalId\":\"qqxmyzklaoanpoh\",\"clientId\":\"mzrqraz\"},\"roigbsfsgsaenwld\":{\"principalId\":\"slkskhjqjpvbai\",\"clientId\":\"jtgzgtaiywbq\"},\"ryldsxeb\":{\"principalId\":\"hljqlxsp\",\"clientId\":\"jc\"},\"yckhefrbhseue\":{\"principalId\":\"sxrznmg\",\"clientId\":\"al\"}}},\"location\":\"bgpxebjlu\",\"tags\":{\"d\":\"ytujra\",\"gtnse\":\"pryj\",\"s\":\"ouxly\",\"lmpctwj\":\"vyljurkeposehqq\"},\"id\":\"dsdlzmk\",\"name\":\"erxxxoteehkhowgo\",\"type\":\"vvh\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"47babc85-534e-4f52-9b96-b841109b1da4\",\"source\":\"xeezwyhjmbjiqe\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"vnensmuffiw\":{\"description\":\"hc\",\"displayName\":\"pyvdkgdets\",\"documentationUrl\":\"canzb\",\"dataSchemaUrl\":\"kwuyck\"},\"dxjxdu\":{\"description\":\"ctvbpzujqjtotdx\",\"displayName\":\"scsl\",\"documentationUrl\":\"uusiecktybh\",\"dataSchemaUrl\":\"xidhhxomil\"},\"qqy\":{\"description\":\"wjwi\",\"displayName\":\"qrslaate\",\"documentationUrl\":\"wuj\",\"dataSchemaUrl\":\"gxqgqwlxrhgtvhv\"},\"tyalh\":{\"description\":\"kkt\",\"displayName\":\"zejogmkorvvmvm\",\"documentationUrl\":\"fnqh\",\"dataSchemaUrl\":\"snosnqliwkmzojf\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-17T04:22:16Z\",\"provisioningState\":\"Creating\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"bjbhrpgiqsttc\",\"messageForActivation\":\"rcmmaixpqj\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"ksldttohqclnaih\",\"tenantId\":\"siqikvllrht\",\"userAssignedIdentities\":{\"bun\":{\"principalId\":\"xkoi\",\"clientId\":\"trawrqkza\"},\"bduxapgrcq\":{\"principalId\":\"aklwzlwee\",\"clientId\":\"nejzltkaszfjsxs\"},\"esdfedsb\":{\"principalId\":\"mvrdjomlnwsbv\",\"clientId\":\"lsflxk\"},\"i\":{\"principalId\":\"ancoinmphymcqid\",\"clientId\":\"tvdhqnufbxwe\"}}},\"location\":\"ntojovfnybydhuih\",\"tags\":{\"uaorhjk\":\"wud\",\"amqprlo\":\"hwvumosqir\",\"zcmtagelajdyolj\":\"rugejcvjkjy\"},\"id\":\"qy\",\"name\":\"qfmzsizzhravrc\",\"type\":\"kjymgqbgcxh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerTopic response = manager.partnerTopics()
-            .activateWithResponse("vxcgdhyhgoqgs", "yqyxyjrcbqpbis", com.azure.core.util.Context.NONE)
+            .activateWithResponse("wosstfjxtvlxx", "qfcwr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bgpxebjlu", response.location());
-        Assertions.assertEquals("ytujra", response.tags().get("d"));
-        Assertions.assertEquals(IdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("nzkdolrndwdbvxvz", response.identity().principalId());
-        Assertions.assertEquals("edoyqxlunkft", response.identity().tenantId());
-        Assertions.assertEquals("qqxmyzklaoanpoh",
-            response.identity().userAssignedIdentities().get("divznl").principalId());
-        Assertions.assertEquals("mzrqraz", response.identity().userAssignedIdentities().get("divznl").clientId());
-        Assertions.assertEquals(UUID.fromString("4dbeb995-792e-4cd0-85d9-727e42a1c19c"),
+        Assertions.assertEquals("ntojovfnybydhuih", response.location());
+        Assertions.assertEquals("wud", response.tags().get("uaorhjk"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ksldttohqclnaih", response.identity().principalId());
+        Assertions.assertEquals("siqikvllrht", response.identity().tenantId());
+        Assertions.assertEquals("xkoi", response.identity().userAssignedIdentities().get("bun").principalId());
+        Assertions.assertEquals("trawrqkza", response.identity().userAssignedIdentities().get("bun").clientId());
+        Assertions.assertEquals(UUID.fromString("47babc85-534e-4f52-9b96-b841109b1da4"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("joxtdahne", response.source());
+        Assertions.assertEquals("xeezwyhjmbjiqe", response.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.eventTypeInfo().kind());
-        Assertions.assertEquals("ztivfwjl", response.eventTypeInfo().inlineEventTypes().get("e").description());
-        Assertions.assertEquals("zekfsrmauklajv", response.eventTypeInfo().inlineEventTypes().get("e").displayName());
-        Assertions.assertEquals("oczhapejovtk",
-            response.eventTypeInfo().inlineEventTypes().get("e").documentationUrl());
-        Assertions.assertEquals("nhwhhnoyrzaao", response.eventTypeInfo().inlineEventTypes().get("e").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T20:50:13Z"),
+        Assertions.assertEquals("hc", response.eventTypeInfo().inlineEventTypes().get("vnensmuffiw").description());
+        Assertions.assertEquals("pyvdkgdets",
+            response.eventTypeInfo().inlineEventTypes().get("vnensmuffiw").displayName());
+        Assertions.assertEquals("canzb",
+            response.eventTypeInfo().inlineEventTypes().get("vnensmuffiw").documentationUrl());
+        Assertions.assertEquals("kwuyck",
+            response.eventTypeInfo().inlineEventTypes().get("vnensmuffiw").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T04:22:16Z"),
             response.expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.ACTIVATED, response.activationState());
-        Assertions.assertEquals("eat", response.partnerTopicFriendlyDescription());
-        Assertions.assertEquals("xxcrxoxdjxld", response.messageForActivation());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, response.activationState());
+        Assertions.assertEquals("bjbhrpgiqsttc", response.partnerTopicFriendlyDescription());
+        Assertions.assertEquals("rcmmaixpqj", response.messageForActivation());
     }
 }

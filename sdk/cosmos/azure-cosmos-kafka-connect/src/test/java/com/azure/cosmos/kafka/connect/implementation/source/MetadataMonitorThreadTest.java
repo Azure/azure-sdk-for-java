@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAccountConfig;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.FeedRange;
@@ -32,7 +32,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
-    private CosmosAsyncClient client;
+    private CosmosClientCacheItem clientItem;
 
     @DataProvider(name = "metadataStorageTypeParameterProvider")
     public Object[][] metadataStorageTypeParameterProvider() {
@@ -50,13 +50,14 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             "requestTaskReconfigurationTest",
             false,
             new ArrayList<String>());
-        this.client = CosmosClientStore.getCosmosClient(accountConfig, "testKafkaConnector");
+        this.clientItem = CosmosClientCache.getCosmosClient(accountConfig, "before_MetadataMonitorThreadTest");
     }
 
     @AfterClass(groups = { "kafka", "kafka-emulator" }, timeOut = TIMEOUT)
     public void after_MetadataMonitorThreadTest() {
-        if (this.client != null) {
-            this.client.close();
+        if (this.clientItem != null) {
+            CosmosClientCache.releaseCosmosClient(this.clientItem.getClientConfig());
+            this.clientItem.getClient().close();
         }
     }
 
@@ -70,7 +71,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     true,
                     new ArrayList<String>(),
-                    new ArrayList<String>());
+                    new HashMap<>());
 
             CosmosMetadataConfig metadataConfig =
                 new CosmosMetadataConfig(500, metadataStorageType, metadataStorageName);
@@ -84,7 +85,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     metadataConfig,
                     sourceConnectorContext,
                     metadataReader,
-                    this.client);
+                    this.clientItem.getClient());
 
             monitorThread.run();
 
@@ -93,7 +94,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             Mockito.verify(sourceConnectorContext, Mockito.never()).requestTaskReconfiguration();
 
             // now populate containers metadata offset
-            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(this.client);
+            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(this.clientItem.getClient());
             ContainersMetadataTopicPartition containersMetadataTopicPartition =
                 new ContainersMetadataTopicPartition(databaseName, connectorName);
             ContainersMetadataTopicOffset containersMetadataTopicOffset =
@@ -107,7 +108,11 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             Mockito.verify(sourceConnectorContext, Mockito.atLeastOnce()).requestTaskReconfiguration();
         } finally {
             if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                this.client.getDatabase(databaseName).getContainer(metadataStorageName).delete();
+                this.clientItem
+                    .getClient()
+                    .getDatabase(databaseName)
+                    .getContainer(metadataStorageName)
+                    .delete();
             }
         }
     }
@@ -123,7 +128,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     false,
                     Arrays.asList(multiPartitionContainerName),
-                    new ArrayList<String>());
+                    new HashMap<>());
             CosmosMetadataConfig metadataConfig =
                 new CosmosMetadataConfig(500, metadataStorageType, metadataStorageName);
             SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -131,7 +136,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             IMetadataReader metadataReader = getMetadataReader(metadataStorageType, metadataConfig);
 
             //populate containers metadata offset
-            CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(this.client);
+            CosmosContainerProperties multiPartitionContainer = getMultiPartitionContainer(this.clientItem.getClient());
             ContainersMetadataTopicPartition containersMetadataTopicPartition =
                 new ContainersMetadataTopicPartition(databaseName, connectorName);
             ContainersMetadataTopicOffset containersMetadataTopicOffset =
@@ -146,7 +151,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     metadataConfig,
                     sourceConnectorContext,
                     metadataReader,
-                    this.client);
+                    this.clientItem.getClient());
 
             monitorThread.run();
 
@@ -156,7 +161,8 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
 
             // now populate container feedRanges metadata
             List<FeedRange> feedRanges =
-                this.client
+                this.clientItem
+                    .getClient()
                     .getDatabase(databaseName)
                     .getContainer(multiPartitionContainer.getId())
                     .getFeedRanges()
@@ -177,7 +183,11 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             Mockito.verify(sourceConnectorContext, Mockito.atLeastOnce()).requestTaskReconfiguration();
         } finally {
             if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                this.client.getDatabase(databaseName).getContainer(metadataStorageName).delete();
+                this.clientItem
+                    .getClient()
+                    .getDatabase(databaseName)
+                    .getContainer(metadataStorageName)
+                    .delete();
             }
         }
     }
@@ -192,7 +202,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     databaseName,
                     false,
                     Arrays.asList(singlePartitionContainerName),
-                    new ArrayList<String>());
+                    new HashMap<>());
             CosmosMetadataConfig metadataConfig =
                 new CosmosMetadataConfig(500, metadataStorageType, metadataStorageName);
             SourceConnectorContext sourceConnectorContext = Mockito.mock(SourceConnectorContext.class);
@@ -200,7 +210,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             IMetadataReader metadataReader = this.getMetadataReader(metadataStorageType, metadataConfig);
 
             //populate containers metadata offset
-            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(this.client);
+            CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(this.clientItem.getClient());
             ContainersMetadataTopicPartition containersMetadataTopicPartition =
                 new ContainersMetadataTopicPartition(connectorName, "requestTaskReconfigurationOnMerged");
             ContainersMetadataTopicOffset containersMetadataTopicOffset =
@@ -215,7 +225,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     metadataConfig,
                     sourceConnectorContext,
                     metadataReader,
-                    this.client);
+                    this.clientItem.getClient());
 
             monitorThread.run();
 
@@ -225,7 +235,8 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
 
             // now populate container feedRanges metadata
             List<FeedRange> feedRanges =
-                this.client
+                this.clientItem
+                    .getClient()
                     .getDatabase(databaseName)
                     .getContainer(singlePartitionContainer.getId())
                     .getFeedRanges()
@@ -237,7 +248,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                     .CosmosAsyncContainerHelper
                     .getCosmosAsyncContainerAccessor()
                     .trySplitFeedRange(
-                        this.client.getDatabase(databaseName).getContainer(singlePartitionContainer.getId()),
+                        this.clientItem.getClient().getDatabase(databaseName).getContainer(singlePartitionContainer.getId()),
                         FeedRange.forFullRange(),
                         2)
                     .block();
@@ -259,7 +270,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             Mockito.verify(sourceConnectorContext, Mockito.never()).requestTaskReconfiguration();
         } finally {
             if (metadataStorageType == CosmosMetadataStorageType.COSMOS) {
-                this.client.getDatabase(databaseName).getContainer(metadataStorageName).delete();
+                this.clientItem.getClient().getDatabase(databaseName).getContainer(metadataStorageName).delete();
             }
         }
     }
@@ -273,10 +284,16 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 break;
             case COSMOS:
                 // pre-create metadata container
-                this.client.getDatabase(databaseName)
+                this.clientItem
+                    .getClient()
+                    .getDatabase(databaseName)
                     .createContainerIfNotExists(metadataConfig.getStorageName(), "/id")
                     .block();
-                CosmosAsyncContainer metadataContainer = this.client.getDatabase(databaseName).getContainer(metadataConfig.getStorageName());
+                CosmosAsyncContainer metadataContainer =
+                    this.clientItem
+                        .getClient()
+                        .getDatabase(databaseName)
+                        .getContainer(metadataConfig.getStorageName());
                 metadataReader = new MetadataCosmosStorageManager(metadataContainer);
                 break;
             default:

@@ -47,8 +47,6 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.OnBehalfOfCredential;
 import com.azure.identity.OnBehalfOfCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredential;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.identity.WorkloadIdentityCredential;
 import com.azure.identity.WorkloadIdentityCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -71,9 +69,6 @@ public final class JavaDocCodeSnippets {
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
     private String serviceConnectionId = System.getenv("SERVICE_CONNECTION_ID");
-
-    private String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
-    private String fakePasswordPlaceholder = "fakePasswordPlaceholder";
 
     /**
      * Method to insert code snippets for {@link ClientSecretCredential}
@@ -150,14 +145,11 @@ public final class JavaDocCodeSnippets {
      */
     public void chainedTokenCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.chainedtokencredential.construct
-        TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder().clientId(clientId)
-            .username(fakeUsernamePlaceholder)
-            .password(fakePasswordPlaceholder)
-            .build();
+        TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder().build();
         TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder().clientId(clientId)
-            .port(8765)
+            .redirectUrl("https://localhost:8765")
             .build();
-        TokenCredential credential = new ChainedTokenCredentialBuilder().addLast(usernamePasswordCredential)
+        TokenCredential credential = new ChainedTokenCredentialBuilder().addLast(managedIdentityCredential)
             .addLast(interactiveBrowserCredential)
             .build();
         // END: com.azure.identity.credential.chainedtokencredential.construct
@@ -236,16 +228,6 @@ public final class JavaDocCodeSnippets {
         // BEGIN: com.azure.identity.credential.devicecodecredential.construct
         TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder().build();
         // END: com.azure.identity.credential.devicecodecredential.construct
-    }
-
-    /**
-     * Method to insert code snippets for {@link UsernamePasswordCredential}
-     */
-    public void usernamePasswordCredentialsCodeSnippets() {
-        // BEGIN: com.azure.identity.credential.usernamepasswordcredential.construct
-        TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder().clientId(
-            "<your app client ID>").username("<your username>").password("<your password>").build();
-        // END: com.azure.identity.credential.usernamepasswordcredential.construct
     }
 
     /**

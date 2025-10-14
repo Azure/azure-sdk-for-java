@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.DomainTopic;
@@ -20,17 +20,17 @@ public final class DomainTopicsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"ot\",\"name\":\"riyrgkoekvz\",\"type\":\"xxyxhighctxbxm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"pnw\",\"name\":\"ytfvpctfji\",\"type\":\"ffffg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainTopic response = manager.domainTopics()
-            .getWithResponse("mhmnulwemp", "cifrhjulrsulwzpf", "usnaw", com.azure.core.util.Context.NONE)
+            .getWithResponse("matrnzpducd", "akt", "jktzboimyfpq", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

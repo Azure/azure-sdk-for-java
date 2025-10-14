@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
 public final class VaultExtendedInfoCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * UpdateVaultExtendedInfo.json
      */
     /**

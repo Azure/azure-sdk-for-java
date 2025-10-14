@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * VMwareCbt specific migrate input.
@@ -30,6 +31,11 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
      * A value indicating the inplace OS Upgrade version.
      */
     private String osUpgradeVersion;
+
+    /*
+     * The managed run command script input.
+     */
+    private List<ManagedRunCommandScriptInput> postMigrationSteps;
 
     /**
      * Creates an instance of VMwareCbtMigrateInput class.
@@ -88,6 +94,26 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
     }
 
     /**
+     * Get the postMigrationSteps property: The managed run command script input.
+     * 
+     * @return the postMigrationSteps value.
+     */
+    public List<ManagedRunCommandScriptInput> postMigrationSteps() {
+        return this.postMigrationSteps;
+    }
+
+    /**
+     * Set the postMigrationSteps property: The managed run command script input.
+     * 
+     * @param postMigrationSteps the postMigrationSteps value to set.
+     * @return the VMwareCbtMigrateInput object itself.
+     */
+    public VMwareCbtMigrateInput withPostMigrationSteps(List<ManagedRunCommandScriptInput> postMigrationSteps) {
+        this.postMigrationSteps = postMigrationSteps;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -98,6 +124,9 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property performShutdown in model VMwareCbtMigrateInput"));
+        }
+        if (postMigrationSteps() != null) {
+            postMigrationSteps().forEach(e -> e.validate());
         }
     }
 
@@ -112,6 +141,8 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
         jsonWriter.writeStringField("performShutdown", this.performShutdown);
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
+        jsonWriter.writeArrayField("postMigrationSteps", this.postMigrationSteps,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -137,6 +168,10 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
                     deserializedVMwareCbtMigrateInput.instanceType = reader.getString();
                 } else if ("osUpgradeVersion".equals(fieldName)) {
                     deserializedVMwareCbtMigrateInput.osUpgradeVersion = reader.getString();
+                } else if ("postMigrationSteps".equals(fieldName)) {
+                    List<ManagedRunCommandScriptInput> postMigrationSteps
+                        = reader.readArray(reader1 -> ManagedRunCommandScriptInput.fromJson(reader1));
+                    deserializedVMwareCbtMigrateInput.postMigrationSteps = postMigrationSteps;
                 } else {
                     reader.skipChildren();
                 }

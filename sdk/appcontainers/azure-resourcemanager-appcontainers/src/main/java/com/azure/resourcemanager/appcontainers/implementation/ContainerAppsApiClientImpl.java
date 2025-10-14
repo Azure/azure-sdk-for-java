@@ -15,12 +15,15 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appcontainers.fluent.AppResilienciesClient;
@@ -41,6 +44,7 @@ import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsBuildsByConta
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsBuildsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsDiagnosticsClient;
+import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsLabelHistoriesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsPatchesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionReplicasClient;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionsClient;
@@ -51,10 +55,12 @@ import com.azure.resourcemanager.appcontainers.fluent.DaprComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.DaprSubscriptionsClient;
 import com.azure.resourcemanager.appcontainers.fluent.DotNetComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.FunctionsExtensionsClient;
+import com.azure.resourcemanager.appcontainers.fluent.HttpRouteConfigsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JavaComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JobsClient;
 import com.azure.resourcemanager.appcontainers.fluent.JobsExecutionsClient;
 import com.azure.resourcemanager.appcontainers.fluent.LogicAppsClient;
+import com.azure.resourcemanager.appcontainers.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedCertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentDiagnosticsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentPrivateEndpointConnectionsClient;
@@ -373,6 +379,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      */
     public ContainerAppsBuildsClient getContainerAppsBuilds() {
         return this.containerAppsBuilds;
+    }
+
+    /**
+     * The ContainerAppsLabelHistoriesClient object to access its operations.
+     */
+    private final ContainerAppsLabelHistoriesClient containerAppsLabelHistories;
+
+    /**
+     * Gets the ContainerAppsLabelHistoriesClient object to access its operations.
+     * 
+     * @return the ContainerAppsLabelHistoriesClient object.
+     */
+    public ContainerAppsLabelHistoriesClient getContainerAppsLabelHistories() {
+        return this.containerAppsLabelHistories;
     }
 
     /**
@@ -698,6 +718,34 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The HttpRouteConfigsClient object to access its operations.
+     */
+    private final HttpRouteConfigsClient httpRouteConfigs;
+
+    /**
+     * Gets the HttpRouteConfigsClient object to access its operations.
+     * 
+     * @return the HttpRouteConfigsClient object.
+     */
+    public HttpRouteConfigsClient getHttpRouteConfigs() {
+        return this.httpRouteConfigs;
+    }
+
+    /**
+     * The MaintenanceConfigurationsClient object to access its operations.
+     */
+    private final MaintenanceConfigurationsClient maintenanceConfigurations;
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     * 
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
+        return this.maintenanceConfigurations;
+    }
+
+    /**
      * The ManagedEnvironmentsStoragesClient object to access its operations.
      */
     private final ManagedEnvironmentsStoragesClient managedEnvironmentsStorages;
@@ -784,7 +832,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-08-02-preview";
+        this.apiVersion = "2025-02-02-preview";
         this.appResiliencies = new AppResilienciesClientImpl(this);
         this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
         this.availableWorkloadProfiles = new AvailableWorkloadProfilesClientImpl(this);
@@ -800,6 +848,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.containerApps = new ContainerAppsClientImpl(this);
         this.containerAppsBuildsByContainerApps = new ContainerAppsBuildsByContainerAppsClientImpl(this);
         this.containerAppsBuilds = new ContainerAppsBuildsClientImpl(this);
+        this.containerAppsLabelHistories = new ContainerAppsLabelHistoriesClientImpl(this);
         this.containerAppsPatches = new ContainerAppsPatchesClientImpl(this);
         this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
         this.containerAppsRevisionReplicas = new ContainerAppsRevisionReplicasClientImpl(this);
@@ -824,6 +873,8 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.daprComponentResiliencyPolicies = new DaprComponentResiliencyPoliciesClientImpl(this);
         this.daprComponents = new DaprComponentsClientImpl(this);
         this.daprSubscriptions = new DaprSubscriptionsClientImpl(this);
+        this.httpRouteConfigs = new HttpRouteConfigsClientImpl(this);
+        this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
         this.managedEnvironmentsStorages = new ManagedEnvironmentsStoragesClientImpl(this);
         this.containerAppsSessionPools = new ContainerAppsSessionPoolsClientImpl(this);
         this.containerAppsSourceControls = new ContainerAppsSourceControlsClientImpl(this);
@@ -866,6 +917,23 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

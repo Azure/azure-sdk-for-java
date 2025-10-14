@@ -7,8 +7,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
@@ -23,25 +23,25 @@ public final class TrunkedNetworksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"qhnmhk\",\"type\":\"ezsdsuxheq\"},\"properties\":{\"associatedResourceIds\":[\"ruxspinymmqgwok\",\"ikpazf\",\"mjxuvjipfdvhaxd\"],\"clusterId\":\"zaehpphthd\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"etatlakf\",\"hybridAksClustersAssociatedIds\":[\"xwgiks\",\"bvtooxrpogwp\",\"chgjtnhtukfacih\",\"bfntumeezbxvq\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"vwcga\",\"isolationDomainIds\":[\"omtmjzwxuqgov\",\"xpwwzt\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"htgfred\",\"ls\",\"grllcc\",\"aovjow\"],\"vlans\":[2662581133111301135,6125335634113559684]},\"location\":\"comlyotgkwsx\",\"tags\":{\"genmvceb\":\"qor\",\"dcqjkedwqurc\":\"eetqujxcxxq\"},\"id\":\"ojmrvvxwjongzse\",\"name\":\"qqrsil\",\"type\":\"chskxxka\"}]}";
+            = "{\"value\":[{\"etag\":\"ilrixysf\",\"extendedLocation\":{\"name\":\"imsqywwwmhk\",\"type\":\"uwaedrympmlqoi\"},\"properties\":{\"associatedResourceIds\":[\"duewihapfj\",\"iknj\",\"iqfl\",\"ejhpclbiedfsbwc\"],\"clusterId\":\"vbvzipbwxgo\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"pradmskxknpdgzi\",\"hybridAksClustersAssociatedIds\":[\"ug\",\"whgsaodkww\",\"bafo\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"zhaquvwsxb\",\"isolationDomainIds\":[\"vkervqchoadhrsxq\",\"z\"],\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"dsrgfajg\",\"zrsubklrxhjnltce\",\"jdvqy\",\"ie\"],\"vlans\":[1754048666808617813,6278680215750716361]},\"location\":\"wdxvqzxoebwg\",\"tags\":{\"upwtz\":\"ibanb\",\"ozkxbzrpejplss\":\"pak\"},\"id\":\"nbtttkgsuxu\",\"name\":\"rswgkpjhboyikeb\",\"type\":\"uhkslg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TrunkedNetwork> response
-            = manager.trunkedNetworks().listByResourceGroup("pqht", com.azure.core.util.Context.NONE);
+            = manager.trunkedNetworks().listByResourceGroup("mvgohtwz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("comlyotgkwsx", response.iterator().next().location());
-        Assertions.assertEquals("qor", response.iterator().next().tags().get("genmvceb"));
-        Assertions.assertEquals("qhnmhk", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("ezsdsuxheq", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("vwcga", response.iterator().next().interfaceName());
-        Assertions.assertEquals("omtmjzwxuqgov", response.iterator().next().isolationDomainIds().get(0));
-        Assertions.assertEquals(2662581133111301135L, response.iterator().next().vlans().get(0));
+        Assertions.assertEquals("wdxvqzxoebwg", response.iterator().next().location());
+        Assertions.assertEquals("ibanb", response.iterator().next().tags().get("upwtz"));
+        Assertions.assertEquals("imsqywwwmhk", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("uwaedrympmlqoi", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.DPDK, response.iterator().next().hybridAksPluginType());
+        Assertions.assertEquals("zhaquvwsxb", response.iterator().next().interfaceName());
+        Assertions.assertEquals("vkervqchoadhrsxq", response.iterator().next().isolationDomainIds().get(0));
+        Assertions.assertEquals(1754048666808617813L, response.iterator().next().vlans().get(0));
     }
 }

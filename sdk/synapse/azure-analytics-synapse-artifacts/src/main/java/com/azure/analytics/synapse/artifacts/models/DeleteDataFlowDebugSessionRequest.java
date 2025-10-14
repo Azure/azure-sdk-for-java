@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * The data flow which contains the debug session.
      */
+    @Generated
     private String dataFlowName;
 
     /**
      * Creates an instance of DeleteDataFlowDebugSessionRequest class.
      */
+    @Generated
     public DeleteDataFlowDebugSessionRequest() {
     }
 
@@ -37,6 +41,7 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -47,6 +52,7 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
      * @param sessionId the sessionId value to set.
      * @return the DeleteDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public DeleteDataFlowDebugSessionRequest setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -57,6 +63,7 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
      * 
      * @return the dataFlowName value.
      */
+    @Generated
     public String getDataFlowName() {
         return this.dataFlowName;
     }
@@ -67,6 +74,7 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
      * @param dataFlowName the dataFlowName value to set.
      * @return the DeleteDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public DeleteDataFlowDebugSessionRequest setDataFlowName(String dataFlowName) {
         this.dataFlowName = dataFlowName;
         return this;
@@ -75,6 +83,7 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeleteDataFlowDebugSessionRequest.
      */
+    @Generated
     public static DeleteDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeleteDataFlowDebugSessionRequest deserializedDeleteDataFlowDebugSessionRequest

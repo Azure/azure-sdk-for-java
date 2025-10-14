@@ -31,11 +31,6 @@ public final class SpringCloudGatewayComponent extends JavaComponentProperties {
      */
     private List<ScgRoute> springCloudGatewayRoutes;
 
-    /*
-     * Provisioning state of the Java Component.
-     */
-    private JavaComponentProvisioningState provisioningState;
-
     /**
      * Creates an instance of SpringCloudGatewayComponent class.
      */
@@ -90,16 +85,6 @@ public final class SpringCloudGatewayComponent extends JavaComponentProperties {
     public SpringCloudGatewayComponent withSpringCloudGatewayRoutes(List<ScgRoute> springCloudGatewayRoutes) {
         this.springCloudGatewayRoutes = springCloudGatewayRoutes;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the Java Component.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public JavaComponentProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -185,8 +170,8 @@ public final class SpringCloudGatewayComponent extends JavaComponentProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedSpringCloudGatewayComponent.provisioningState
-                        = JavaComponentProvisioningState.fromString(reader.getString());
+                    deserializedSpringCloudGatewayComponent
+                        .withProvisioningState(JavaComponentProvisioningState.fromString(reader.getString()));
                 } else if ("configurations".equals(fieldName)) {
                     List<JavaComponentConfigurationProperty> configurations
                         = reader.readArray(reader1 -> JavaComponentConfigurationProperty.fromJson(reader1));

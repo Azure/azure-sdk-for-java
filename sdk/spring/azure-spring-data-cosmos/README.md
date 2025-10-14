@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>5.19.0</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -280,8 +280,8 @@ java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
 
 #### Using database provisioned throughput
 
-Cosmos supports both [container](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
-and [database](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
+Cosmos supports both [container](https://learn.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
+and [database](https://learn.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
 throughput.  By default, spring-data-cosmos will provision throughput for each container created.  If you prefer
 to share throughput between containers, you can enable database provisioned throughput via CosmosConfig.
 
@@ -608,7 +608,7 @@ public class MyItem {
     String _etag;
 }
 ```
-- Read more about Optimistic Locking [here](https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
+- Read more about Optimistic Locking [here](https://learn.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
 
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
@@ -1138,9 +1138,9 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [source_code]: src
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -1150,21 +1150,21 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
 [sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-multi-account
 [sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-single-account
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
-[local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[local_emulator]: https://learn.microsoft.com/azure/cosmos-db/local-emulator
+[local_emulator_export_ssl_certificates]: https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
 [spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/main/src/main/java/org/springframework/data/annotation/Id.java
-[azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
+[azure_cosmos_db_partition]: https://learn.microsoft.com/azure/cosmos-db/partition-data
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
-[azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
+[azure_spring_data_cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
-[sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
-[sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/
+[sql_queries_in_cosmos]: https://learn.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
+[sql_queries_getting_started]: https://learn.microsoft.com/azure/cosmos-db/sql-query-getting-started
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/
 [maven_link]: https://maven.apache.org/
-[autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
+[autoscale-throughput]: https://learn.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 [spring_version_mapping]: https://aka.ms/spring/versions
 [spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
 [azure_cosmos_db_java_sdk_samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)
+

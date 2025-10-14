@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
@@ -48,7 +47,7 @@ public class Trigger extends Resource {
      * @param body the body of the trigger.
      */
     public void setBody(String body) {
-        this.set(Constants.Properties.BODY, body, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.BODY, body);
     }
 
     /**
@@ -74,7 +73,7 @@ public class Trigger extends Resource {
      * @param triggerType the trigger type.
      */
     public void setTriggerType(TriggerType triggerType) {
-        this.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString());
     }
 
     /**
@@ -100,6 +99,6 @@ public class Trigger extends Resource {
      * @param triggerOperation the trigger operation.
      */
     public void setTriggerOperation(TriggerOperation triggerOperation) {
-        this.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
     }
 }

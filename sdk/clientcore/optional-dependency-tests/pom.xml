@@ -8,14 +8,14 @@
   <parent>
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
     <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
   <artifactId>optional-dependency-tests</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:optional-dependency-tests;current} -->
 
   <name>Java Core library tests for optional dependencies and features.</name>
   <description>Tests that validate optional dependencies and features of the Core library.</description>
@@ -56,14 +56,14 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -76,37 +76,43 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.openjdk.jmh</groupId>
       <artifactId>jmh-generator-annprocess</artifactId>
       <version>1.37</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.22.0</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -128,7 +134,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <!-- Add the JMH annotation processor to the classpath. -->
               <annotationProcessorPaths>

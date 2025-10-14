@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class IpamPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Delete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Delete.json
      */
     /**
      * Sample code: IpamPools_Delete.
@@ -22,6 +22,6 @@ public final class IpamPoolsDeleteSamples {
             .manager()
             .serviceClient()
             .getIpamPools()
-            .delete("rg1", "TestNetworkManager", "TestPool", com.azure.core.util.Context.NONE);
+            .delete("rg1", "TestNetworkManager", "TestPool", null, com.azure.core.util.Context.NONE);
     }
 }

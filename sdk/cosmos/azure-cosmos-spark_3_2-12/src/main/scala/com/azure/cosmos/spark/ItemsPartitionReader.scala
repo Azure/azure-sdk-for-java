@@ -92,7 +92,7 @@ private case class ItemsPartitionReader
     s"query: ${cosmosQuery.toString}, Context: ${operationContext.toString} $getThreadInfo")
 
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
+    CosmosClientConfiguration(config, readConfig.readConsistencyStrategy, sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
   )
@@ -238,6 +238,11 @@ private case class ItemsPartitionReader
 
       queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
       queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
+
+      if (readConfig.responseContinuationTokenLimitInKb.isDefined) {
+        queryOptions.setResponseContinuationTokenLimitInKb(
+          readConfig.responseContinuationTokenLimitInKb.get)
+      }
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper

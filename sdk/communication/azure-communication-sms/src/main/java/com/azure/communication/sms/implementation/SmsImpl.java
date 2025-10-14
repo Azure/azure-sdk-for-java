@@ -53,7 +53,7 @@ public final class SmsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationSM")
+    @ServiceInterface(name = "AzureCommunicationSMSServiceSms")
     public interface SmsService {
         @Post("/sms")
         @ExpectedResponses({ 202 })
@@ -76,9 +76,7 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.send(this.client.getEndpoint(), this.client.getApiVersion(),
-            sendMessageRequest, accept, context));
+        return FluxUtil.withContext(context -> sendWithResponseAsync(sendMessageRequest, context));
     }
 
     /**

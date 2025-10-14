@@ -27,7 +27,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>This credential is a legacy mechanism for authenticating clients using credentials provided to Visual Studio.</p>
  *
  * @see com.azure.identity
+ * @deprecated This credential was originally created to support authentication with Visual Studio. Since Visual Studio
+ * was the only application that wrote to this token cache, this credential has been deprecated in favor of other
+ * developer credentials like {@link AzureCliCredential}, {@link AzureDeveloperCliCredential}, 
+ * {@link AzurePowerShellCredential}, or {@link IntelliJCredential} for local development scenarios.
  */
+@Deprecated
 public class SharedTokenCacheCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(SharedTokenCacheCredential.class);
 

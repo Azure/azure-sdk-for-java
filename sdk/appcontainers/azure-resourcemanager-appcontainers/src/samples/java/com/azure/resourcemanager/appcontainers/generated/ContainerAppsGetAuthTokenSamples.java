@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsGetAuthTokenSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerApps_GetAuthToken.
-     * json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * ContainerApps_GetAuthToken.json
      */
     /**
      * Sample code: Get Container App Auth Token.

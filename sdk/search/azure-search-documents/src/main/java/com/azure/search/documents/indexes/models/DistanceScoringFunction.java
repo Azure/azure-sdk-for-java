@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,11 +24,13 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The function
      * type must be lower case.
      */
+    @Generated
     private String type = "distance";
 
     /*
      * Parameter values for the distance scoring function.
      */
+    @Generated
     private final DistanceScoringParameters parameters;
 
     /**
@@ -37,6 +40,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * @param boost the boost value to set.
      * @param parameters the parameters value to set.
      */
+    @Generated
     public DistanceScoringFunction(String fieldName, double boost, DistanceScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
@@ -48,6 +52,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -58,6 +63,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * 
      * @return the parameters value.
      */
+    @Generated
     public DistanceScoringParameters getParameters() {
         return this.parameters;
     }
@@ -65,6 +71,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DistanceScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         super.setInterpolation(interpolation);
@@ -74,6 +81,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +102,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DistanceScoringFunction.
      */
+    @Generated
     public static DistanceScoringFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean fieldNameFound = false;

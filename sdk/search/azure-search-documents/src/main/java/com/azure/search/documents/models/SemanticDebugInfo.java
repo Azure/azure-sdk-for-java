@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,26 +23,31 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
     /*
      * The title field that was sent to the semantic enrichment process, as well as how it was used
      */
+    @Generated
     private QueryResultDocumentSemanticField titleField;
 
     /*
      * The content fields that were sent to the semantic enrichment process, as well as how they were used
      */
+    @Generated
     private List<QueryResultDocumentSemanticField> contentFields;
 
     /*
      * The keyword fields that were sent to the semantic enrichment process, as well as how they were used
      */
+    @Generated
     private List<QueryResultDocumentSemanticField> keywordFields;
 
     /*
      * The raw concatenated strings that were sent to the semantic enrichment process.
      */
+    @Generated
     private QueryResultDocumentRerankerInput rerankerInput;
 
     /**
      * Creates an instance of SemanticDebugInfo class.
      */
+    @Generated
     public SemanticDebugInfo() {
     }
 
@@ -51,6 +57,7 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
      * 
      * @return the titleField value.
      */
+    @Generated
     public QueryResultDocumentSemanticField getTitleField() {
         return this.titleField;
     }
@@ -61,6 +68,7 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
      * 
      * @return the contentFields value.
      */
+    @Generated
     public List<QueryResultDocumentSemanticField> getContentFields() {
         return this.contentFields;
     }
@@ -71,6 +79,7 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
      * 
      * @return the keywordFields value.
      */
+    @Generated
     public List<QueryResultDocumentSemanticField> getKeywordFields() {
         return this.keywordFields;
     }
@@ -80,6 +89,7 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
      * 
      * @return the rerankerInput value.
      */
+    @Generated
     public QueryResultDocumentRerankerInput getRerankerInput() {
         return this.rerankerInput;
     }
@@ -87,6 +97,7 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,6 +112,7 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SemanticDebugInfo.
      */
+    @Generated
     public static SemanticDebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SemanticDebugInfo deserializedSemanticDebugInfo = new SemanticDebugInfo();

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ResolverContract;
@@ -21,21 +21,21 @@ public final class GraphQLApiResolversGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"m\",\"path\":\"nfpgh\",\"description\":\"ttpkims\"},\"id\":\"hnkkhbykrs\",\"name\":\"hrcmelycpgokuth\",\"type\":\"vybnzbnvmshfuzz\"}";
+            = "{\"properties\":{\"displayName\":\"oy\",\"path\":\"qftusdwmnrtvvbuc\",\"description\":\"rovomep\"},\"id\":\"wsicvwqzoc\",\"name\":\"f\",\"type\":\"hennmsgpywdib\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResolverContract response = manager.graphQLApiResolvers()
-            .getWithResponse("izorbloejzs", "xzgkqwvdeppjna", "hi", "kfrpmplubp", com.azure.core.util.Context.NONE)
+            .getWithResponse("olenrswknpdr", "nmzaofro", "fqckie", "yr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("m", response.displayName());
-        Assertions.assertEquals("nfpgh", response.path());
-        Assertions.assertEquals("ttpkims", response.description());
+        Assertions.assertEquals("oy", response.displayName());
+        Assertions.assertEquals("qftusdwmnrtvvbuc", response.path());
+        Assertions.assertEquals("rovomep", response.description());
     }
 }

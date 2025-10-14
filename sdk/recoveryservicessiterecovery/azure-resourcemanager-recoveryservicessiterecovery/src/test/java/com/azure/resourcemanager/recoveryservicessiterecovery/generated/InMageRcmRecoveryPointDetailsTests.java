@@ -11,7 +11,7 @@ public final class InMageRcmRecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmRecoveryPointDetails model
-            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"isMultiVmSyncPoint\":\"dtncmsps\"}")
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"isMultiVmSyncPoint\":\"bwjmtftcveln\"}")
                 .toObject(InMageRcmRecoveryPointDetails.class);
     }
 

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,30 +19,35 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
      * (the "Basic Latin" Unicode block) into their ASCII equivalents, if such equivalents exist. See
      * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/miscellaneous/ASCIIFoldingFilter.html.
      */
+    @Generated
     public static final LexicalNormalizerName ASCII_FOLDING = fromString("asciifolding");
 
     /**
      * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). See
      * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/util/ElisionFilter.html.
      */
+    @Generated
     public static final LexicalNormalizerName ELISION = fromString("elision");
 
     /**
      * Normalizes token text to lowercase. See
      * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/LowerCaseFilter.html.
      */
+    @Generated
     public static final LexicalNormalizerName LOWERCASE = fromString("lowercase");
 
     /**
      * Standard normalizer, which consists of lowercase and asciifolding. See
      * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/reverse/ReverseStringFilter.html.
      */
+    @Generated
     public static final LexicalNormalizerName STANDARD = fromString("standard");
 
     /**
      * Normalizes token text to uppercase. See
      * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/UpperCaseFilter.html.
      */
+    @Generated
     public static final LexicalNormalizerName UPPERCASE = fromString("uppercase");
 
     /**
@@ -49,6 +55,7 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LexicalNormalizerName() {
     }
@@ -59,6 +66,7 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
      * @param name a name to look for.
      * @return the corresponding LexicalNormalizerName.
      */
+    @Generated
     public static LexicalNormalizerName fromString(String name) {
         return fromString(name, LexicalNormalizerName.class);
     }
@@ -68,6 +76,7 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
      * 
      * @return known LexicalNormalizerName values.
      */
+    @Generated
     public static Collection<LexicalNormalizerName> values() {
         return values(LexicalNormalizerName.class);
     }

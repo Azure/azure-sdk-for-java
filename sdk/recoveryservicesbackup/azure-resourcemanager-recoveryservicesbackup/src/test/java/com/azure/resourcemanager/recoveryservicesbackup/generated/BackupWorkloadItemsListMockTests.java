@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
@@ -23,26 +23,26 @@ public final class BackupWorkloadItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"srwrsnrhpqati\",\"workloadType\":\"kvyanxkvvc\",\"friendlyName\":\"msvuvdjkqxetq\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"vrjjxnw\",\"location\":\"dchpojxlehzl\",\"tags\":{\"cerwkwbpjxljtxbu\":\"fquwzpwiibel\",\"bdgzpagsecnad\":\"qtbxxniuisdzh\"},\"id\":\"u\",\"name\":\"qrgxf\",\"type\":\"lmqiynezoel\"}]}";
+            = "{\"value\":[{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"vjb\",\"workloadType\":\"hdiqayfl\",\"friendlyName\":\"yu\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"u\",\"location\":\"t\",\"tags\":{\"uubpyrow\":\"hyibdrqrswh\",\"nnctagfyvrt\":\"joxztfwfqchvczev\",\"cgkrepdqhqy\":\"qpemh\"},\"id\":\"wqwemvxqabckmze\",\"name\":\"xin\",\"type\":\"greohtwhlpuzjp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadItemResource> response = manager.backupWorkloadItems()
-            .list("rulfuct", "jrthcfjzhx", "yubqjr", "stvrjeqmt", "zbeqrztrxa", "xrd",
+            .list("efgmwdhcebuv", "zldbglzoutbaaqg", "ekaj", "lyzgsnor", "jgmn", "jotvmrxkhl",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dchpojxlehzl", response.iterator().next().location());
-        Assertions.assertEquals("fquwzpwiibel", response.iterator().next().tags().get("cerwkwbpjxljtxbu"));
-        Assertions.assertEquals("srwrsnrhpqati", response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("kvyanxkvvc", response.iterator().next().properties().workloadType());
-        Assertions.assertEquals("msvuvdjkqxetq", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("t", response.iterator().next().location());
+        Assertions.assertEquals("hyibdrqrswh", response.iterator().next().tags().get("uubpyrow"));
+        Assertions.assertEquals("vjb", response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("hdiqayfl", response.iterator().next().properties().workloadType());
+        Assertions.assertEquals("yu", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED,
             response.iterator().next().properties().protectionState());
-        Assertions.assertEquals("vrjjxnw", response.iterator().next().etag());
+        Assertions.assertEquals("u", response.iterator().next().etag());
     }
 }

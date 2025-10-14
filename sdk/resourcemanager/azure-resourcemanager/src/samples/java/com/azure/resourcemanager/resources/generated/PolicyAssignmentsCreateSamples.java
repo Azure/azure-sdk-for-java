@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentWithResourceSelectors.json
      */
     /**
@@ -56,7 +56,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignment.json
      */
     /**
@@ -85,7 +85,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentWithIdentity.json
      */
     /**
@@ -115,7 +115,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentNonComplianceMessages.json
      */
     /**
@@ -144,7 +144,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
@@ -177,7 +177,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentWithOverrides.json
      */
     /**
@@ -207,7 +207,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentWithoutEnforcement.json
      */
     /**

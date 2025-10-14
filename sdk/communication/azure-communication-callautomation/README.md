@@ -10,9 +10,9 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 ### Prerequisites
 
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+- [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -22,7 +22,7 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.1.0</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
@@ -41,64 +41,9 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 
 `CallAutomationEventParser` provides the functionality to handle events from the ACS resource.
 
-## Examples
-
-### Handle Mid-Connection events with CallAutomation's EventProcessor
-
-To easily handle mid-connection events, Call Automation's SDK provides easier way to handle these events.
-Take a look at `CallAutomationEventProcessor`. This will ensure correlation between call and events more easily.
-
-```Java
-@RestController
-public class ActionController {
-    // Controller implementation...
-
-    @RequestMapping(value = "/api/events", method = POST)
-    public ResponseEntity<?> handleCallEvents(@RequestBody String requestBody) {
-        try {
-            CallAutomationAsyncClient client = getCallAutomationAsyncClient();
-            client.getEventProcessor().processEvents(requestBody);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-}
-```
-
-`processEvents` is required for EventProcessor to work.
-After event is being consumed by EventProcessor, you can start using its feature.
-
-See below for example: where you are making a call with `CreateCall`, and wait for `CallConnected` event of the call.
-
-```Java
-public class commandClass {
-    // Class implementation...
-
-    public void createCallCommand() {
-        CallAutomationAsyncClient client = getCallAutomationAsyncClient(); // Should be the same instance as the one used in the example above.
-        String callbackUrl = "<YOUR_CALL_BACK_URL>";
-        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier("<TARGET_USER_ID>"));
-        CreateCallResult result = client.createCall(callInvite, callbackUrl).block();
-
-        try {
-            // This will wait until CallConnected event is arrived or Timesout!
-            CreateCallEventResult eventResult = result.waitForEventProcessorAsync(Duration.ofSeconds(30)).block();
-            CallConnected returnedEvent = eventResult.successResult();
-        } catch (Exception e) {
-            // Timeout exception happend!
-            // Call likely was never answered.
-        }
-    }
-}
-```
-
-If timeout was not set when calling "waitForEventProcessorAsync", the default timeout is 4 minutes.
-
 ## Troubleshooting
 
-If you recieve a CommunicationErrorException with the messagae: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
+If you receive a CommunicationErrorException with the message: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
 the call, or participants did not accept the call before the call timed out.
 
 If you fail to start a call because of an HMAC validation error, be sure your access key is correct, and
@@ -129,7 +74,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
 [package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,22 +21,26 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "DelimitedTextReadSettings";
 
     /*
      * Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression
      * with resultType integer).
      */
+    @Generated
     private Object skipLineCount;
 
     /*
      * Compression settings.
      */
+    @Generated
     private CompressionReadSettings compressionProperties;
 
     /**
      * Creates an instance of DelimitedTextReadSettings class.
      */
+    @Generated
     public DelimitedTextReadSettings() {
     }
 
@@ -44,6 +49,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      * 
      * @return the skipLineCount value.
      */
+    @Generated
     public Object getSkipLineCount() {
         return this.skipLineCount;
     }
@@ -66,6 +73,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      * @param skipLineCount the skipLineCount value to set.
      * @return the DelimitedTextReadSettings object itself.
      */
+    @Generated
     public DelimitedTextReadSettings setSkipLineCount(Object skipLineCount) {
         this.skipLineCount = skipLineCount;
         return this;
@@ -76,6 +84,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      * 
      * @return the compressionProperties value.
      */
+    @Generated
     public CompressionReadSettings getCompressionProperties() {
         return this.compressionProperties;
     }
@@ -86,6 +95,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      * @param compressionProperties the compressionProperties value to set.
      * @return the DelimitedTextReadSettings object itself.
      */
+    @Generated
     public DelimitedTextReadSettings setCompressionProperties(CompressionReadSettings compressionProperties) {
         this.compressionProperties = compressionProperties;
         return this;
@@ -94,11 +104,14 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        if (this.skipLineCount != null) {
+            jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        }
         jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -116,6 +129,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DelimitedTextReadSettings.
      */
+    @Generated
     public static DelimitedTextReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DelimitedTextReadSettings deserializedDelimitedTextReadSettings = new DelimitedTextReadSettings();

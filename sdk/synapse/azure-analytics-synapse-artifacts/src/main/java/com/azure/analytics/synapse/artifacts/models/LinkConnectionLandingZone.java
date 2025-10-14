@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
     /*
      * Linked service reference
      */
+    @Generated
     private LinkedServiceReference linkedService;
 
     /*
      * Landing zone's file system name
      */
+    @Generated
     private String fileSystem;
 
     /*
      * Landing zone's folder path name
      */
+    @Generated
     private String folderPath;
 
     /*
      * Landing zone's sas token
      */
+    @Generated
     private SecureString sasToken;
 
     /**
      * Creates an instance of LinkConnectionLandingZone class.
      */
+    @Generated
     public LinkConnectionLandingZone() {
     }
 
@@ -47,6 +53,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * 
      * @return the linkedService value.
      */
+    @Generated
     public LinkedServiceReference getLinkedService() {
         return this.linkedService;
     }
@@ -57,6 +64,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * @param linkedService the linkedService value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
+    @Generated
     public LinkConnectionLandingZone setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
         return this;
@@ -67,6 +75,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * 
      * @return the fileSystem value.
      */
+    @Generated
     public String getFileSystem() {
         return this.fileSystem;
     }
@@ -77,6 +86,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * @param fileSystem the fileSystem value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
+    @Generated
     public LinkConnectionLandingZone setFileSystem(String fileSystem) {
         this.fileSystem = fileSystem;
         return this;
@@ -87,6 +97,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * 
      * @return the folderPath value.
      */
+    @Generated
     public String getFolderPath() {
         return this.folderPath;
     }
@@ -97,6 +108,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * @param folderPath the folderPath value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
+    @Generated
     public LinkConnectionLandingZone setFolderPath(String folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -107,6 +119,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * 
      * @return the sasToken value.
      */
+    @Generated
     public SecureString getSasToken() {
         return this.sasToken;
     }
@@ -117,6 +130,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * @param sasToken the sasToken value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
+    @Generated
     public LinkConnectionLandingZone setSasToken(SecureString sasToken) {
         this.sasToken = sasToken;
         return this;
@@ -125,6 +139,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class LinkConnectionLandingZone implements JsonSerializable<LinkCon
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnectionLandingZone.
      */
+    @Generated
     public static LinkConnectionLandingZone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionLandingZone deserializedLinkConnectionLandingZone = new LinkConnectionLandingZone();

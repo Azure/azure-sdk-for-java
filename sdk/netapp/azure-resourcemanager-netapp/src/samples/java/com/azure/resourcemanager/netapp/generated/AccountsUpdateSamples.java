@@ -14,7 +14,7 @@ import java.util.Map;
 public final class AccountsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.

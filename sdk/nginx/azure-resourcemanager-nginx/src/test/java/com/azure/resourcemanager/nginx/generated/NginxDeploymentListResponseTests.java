@@ -6,11 +6,13 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentInner;
+import com.azure.resourcemanager.nginx.models.ActivationState;
 import com.azure.resourcemanager.nginx.models.AutoUpgradeProfile;
 import com.azure.resourcemanager.nginx.models.IdentityProperties;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentListResponse;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentPropertiesNginxAppProtect;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
 import com.azure.resourcemanager.nginx.models.NginxFrontendIpConfiguration;
@@ -24,6 +26,7 @@ import com.azure.resourcemanager.nginx.models.ResourceSku;
 import com.azure.resourcemanager.nginx.models.ScaleProfile;
 import com.azure.resourcemanager.nginx.models.ScaleProfileCapacity;
 import com.azure.resourcemanager.nginx.models.UserIdentityProperties;
+import com.azure.resourcemanager.nginx.models.WebApplicationFirewallSettings;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,172 +36,214 @@ public final class NginxDeploymentListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"identity\":{\"principalId\":\"xoegukgjnpiucgy\",\"tenantId\":\"vqzntypmrbpizcdr\",\"type\":\"None\",\"userAssignedIdentities\":{\"ishc\":{\"principalId\":\"dnfyhxdeoejzicwi\",\"clientId\":\"jttgzf\"}}},\"properties\":{\"provisioningState\":\"Creating\",\"nginxVersion\":\"deyeamdphagalpbu\",\"managedResourceGroup\":\"gipwhonowkg\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"bin\"}},\"ipAddress\":\"pu\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"nuzo\",\"containerName\":\"tiyqzrnkcqv\"}},\"scalingProperties\":{\"capacity\":798441434,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"lsicohoqqnwv\",\"capacity\":{\"min\":1444459691,\"max\":759862878}},{\"name\":\"avwhheunm\",\"capacity\":{\"min\":1861834573,\"max\":375848936}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"yxzk\"},\"userProfile\":{\"preferredEmail\":\"cukoklyaxuconu\"}},\"sku\":{\"name\":\"zf\"},\"location\":\"eyp\",\"tags\":{\"enhwlrs\":\"mjmwvvjektcx\",\"qylihkaetckt\":\"frzpwvlqdqgb\",\"ctq\":\"fcivfsnkym\"},\"id\":\"jf\",\"name\":\"ebrjcxe\",\"type\":\"fuwutttxf\"},{\"identity\":{\"principalId\":\"birphxepcyva\",\"tenantId\":\"nljky\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"oxgvclt\":{\"principalId\":\"j\",\"clientId\":\"idokgjlj\"},\"gx\":{\"principalId\":\"sncghkjeszz\",\"clientId\":\"ijhtxf\"},\"odebfqkkrbmpu\":{\"principalId\":\"smx\",\"clientId\":\"hmpvecx\"},\"cispnqzahmgkbr\":{\"principalId\":\"riwflzlfb\",\"clientId\":\"puz\"}}},\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"ibnuqqkpik\",\"managedResourceGroup\":\"rgvtqag\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"gmebfsiarbutrcv\"}},\"ipAddress\":\"azzmhjrunmpxt\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"nlankxmyskpb\",\"containerName\":\"nbtkcxywnytnr\"}},\"scalingProperties\":{\"capacity\":1641130583,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"dybyxczfclhaa\",\"capacity\":{\"min\":1122692891,\"max\":904573366}},{\"name\":\"abphlw\",\"capacity\":{\"min\":77204722,\"max\":2142840160}},{\"name\":\"fkts\",\"capacity\":{\"min\":1572483367,\"max\":1927626418}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"cocmnyyaztt\"},\"userProfile\":{\"preferredEmail\":\"wrqpue\"}},\"sku\":{\"name\":\"kzywbiex\"},\"location\":\"eyueaxibxujwb\",\"tags\":{\"cuxrhdwbavx\":\"almuzyoxaepdkzja\"},\"id\":\"niwdjsw\",\"name\":\"tsdbpgn\",\"type\":\"ytxhp\"},{\"identity\":{\"principalId\":\"zpfzabglc\",\"tenantId\":\"xwtctyqiklbbovpl\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"mg\":{\"principalId\":\"yuguosvmkfssx\",\"clientId\":\"kkfpl\"},\"wzbaiue\":{\"principalId\":\"nkjzkdeslpvlop\",\"clientId\":\"yighxpk\"}}},\"properties\":{\"provisioningState\":\"Canceled\",\"nginxVersion\":\"nyqupedeojnabck\",\"managedResourceGroup\":\"mtxpsiebtfh\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"dqmh\"}},\"ipAddress\":\"dhtldwkyz\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"cwscwsvlx\",\"containerName\":\"ogtwrupqsxvnmi\"}},\"scalingProperties\":{\"capacity\":560100496,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"o\",\"capacity\":{\"min\":579723655,\"max\":1739821364}},{\"name\":\"lo\",\"capacity\":{\"min\":1344905503,\"max\":660644635}},{\"name\":\"tyfjfcnjbkcnxdhb\",\"capacity\":{\"min\":1418382226,\"max\":657781919}},{\"name\":\"phywpnvj\",\"capacity\":{\"min\":597860603,\"max\":1633235296}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"ermclfplphoxuscr\"},\"userProfile\":{\"preferredEmail\":\"gyepsbjt\"}},\"sku\":{\"name\":\"qugxywpmueefjzwf\"},\"location\":\"q\",\"tags\":{\"cq\":\"dsuyonobgla\"},\"id\":\"tcc\",\"name\":\"g\",\"type\":\"udxytlmoyrx\"}],\"nextLink\":\"fudwpznt\"}")
+            "{\"value\":[{\"identity\":{\"principalId\":\"zfq\",\"tenantId\":\"huaoppp\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"rmfqjhhkxbpvj\":{\"principalId\":\"lzdahzxctobgbkdm\",\"clientId\":\"zpostmgrcfbu\"},\"wbxqzvszjfau\":{\"principalId\":\"jhxxjyn\",\"clientId\":\"divkrt\"},\"bhsfxob\":{\"principalId\":\"fdxxivetvtcqaqtd\",\"clientId\":\"mcbxvwvxysl\"}}},\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"lmpewwwfbkr\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"ohxcrsbfova\"}},\"ipAddress\":\"ruvw\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"ubcgjbirxb\",\"containerName\":\"bsrfbj\"}},\"scalingProperties\":{\"capacity\":157171235,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"otftpvjzbexilz\",\"capacity\":{\"min\":1948356330,\"max\":1551412306}},{\"name\":\"qqnvwpmq\",\"capacity\":{\"min\":1787439694,\"max\":1628769376}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"oujmkcjhwqytj\"},\"userProfile\":{\"preferredEmail\":\"n\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"attackSignaturesPackage\":{\"version\":\"rjerv\",\"revisionDatetime\":\"2021-10-08T09:31:49Z\"},\"botSignaturesPackage\":{\"version\":\"nqpeh\",\"revisionDatetime\":\"2021-05-26T12:17:52Z\"},\"threatCampaignsPackage\":{\"version\":\"oygmift\",\"revisionDatetime\":\"2021-11-26T05:12:43Z\"},\"componentVersions\":{\"wafEngineVersion\":\"d\",\"wafNginxVersion\":\"dslgnayqigynduh\"}}},\"dataplaneApiEndpoint\":\"hqlkthumaqo\"},\"sku\":{\"name\":\"gycdu\"},\"location\":\"r\",\"tags\":{\"aolps\":\"cym\",\"dnbbglzps\":\"lqlfm\",\"adbzmnvdfznud\":\"iydmcwyhzdxs\",\"xzb\":\"od\"},\"id\":\"cblylpstdbhhxsr\",\"name\":\"dzu\",\"type\":\"erscdntne\"},{\"identity\":{\"principalId\":\"wjmy\",\"tenantId\":\"dsslswt\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"hhszh\":{\"principalId\":\"fzp\",\"clientId\":\"semwabnet\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"nginxVersion\":\"wiwubm\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"wwtppj\"}},\"ipAddress\":\"cxogaokonzm\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"kqze\",\"containerName\":\"kdltfzxmhhvhg\"}},\"scalingProperties\":{\"capacity\":1748485864,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"wobdagxtibqdx\",\"capacity\":{\"min\":1020209011,\"max\":709641319}},{\"name\":\"akbogqxndlkzgxh\",\"capacity\":{\"min\":975056149,\"max\":1924988063}},{\"name\":\"plbpodxun\",\"capacity\":{\"min\":1102783029,\"max\":405149242}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"xmubyyntwlrbq\"},\"userProfile\":{\"preferredEmail\":\"ievseotgqrllt\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"attackSignaturesPackage\":{\"version\":\"wzizxbmpgcjefuzm\",\"revisionDatetime\":\"2021-06-29T22:40:26Z\"},\"botSignaturesPackage\":{\"version\":\"bttdumorppxe\",\"revisionDatetime\":\"2021-08-17T23:26:57Z\"},\"threatCampaignsPackage\":{\"version\":\"zbtbhj\",\"revisionDatetime\":\"2021-08-30T17:38:27Z\"},\"componentVersions\":{\"wafEngineVersion\":\"kfgohdneue\",\"wafNginxVersion\":\"fphsdyhtozfikdow\"}}},\"dataplaneApiEndpoint\":\"uuvxz\"},\"sku\":{\"name\":\"lvithhqzonosgg\"},\"location\":\"c\",\"tags\":{\"iiswacffgdkzze\":\"wdsjnkalju\",\"pfuflrw\":\"kfvhqcrailvpn\"},\"id\":\"mh\",\"name\":\"lxyjr\",\"type\":\"sag\"},{\"identity\":{\"principalId\":\"nihgwqapnedg\",\"tenantId\":\"cvkcvqvpkeqdcv\",\"type\":\"None\",\"userAssignedIdentities\":{\"dldwmgxc\":{\"principalId\":\"dsotbobzd\",\"clientId\":\"cjwvn\"}}},\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"mutwuoe\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"yqsluic\"}},\"ipAddress\":\"ggkzzlvmbmpa\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"uefywsbpfvmwy\",\"containerName\":\"fouyf\"}},\"scalingProperties\":{\"capacity\":1378791233,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"wiyzvqtmnubexkp\",\"capacity\":{\"min\":1583015875,\"max\":1254452597}},{\"name\":\"mond\",\"capacity\":{\"min\":1929847054,\"max\":1007666972}},{\"name\":\"uxvypomgkopkwh\",\"capacity\":{\"min\":664596221,\"max\":10985850}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"ajqgxy\"},\"userProfile\":{\"preferredEmail\":\"cmbqfqvmk\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Enabled\"},\"webApplicationFirewallStatus\":{\"attackSignaturesPackage\":{\"version\":\"vhelxprglyatdd\",\"revisionDatetime\":\"2021-09-28T08:18:40Z\"},\"botSignaturesPackage\":{\"version\":\"bcuejrjxgci\",\"revisionDatetime\":\"2021-08-15T14:27:38Z\"},\"threatCampaignsPackage\":{\"version\":\"rhos\",\"revisionDatetime\":\"2021-01-18T20:01:11Z\"},\"componentVersions\":{\"wafEngineVersion\":\"qrhzoymibmrqyib\",\"wafNginxVersion\":\"hwflu\"}}},\"dataplaneApiEndpoint\":\"dtmhrkwofyyvoqa\"},\"sku\":{\"name\":\"iexpbtgiwbwo\"},\"location\":\"washr\",\"tags\":{\"ulpiuj\":\"kcnqxwbpo\",\"obyu\":\"aasipqi\"},\"id\":\"erpqlpqwcciuqg\",\"name\":\"dbutauvfbtkuwhh\",\"type\":\"hykojoxafnndlpic\"},{\"identity\":{\"principalId\":\"ymkcdyhb\",\"tenantId\":\"kpw\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"aeneqnzarrwl\":{\"principalId\":\"vvqfovljxyws\",\"clientId\":\"syrsndsytgadgvra\"},\"iipfpubj\":{\"principalId\":\"uijfqk\",\"clientId\":\"e\"},\"ynl\":{\"principalId\":\"wwiftohqkvpuv\",\"clientId\":\"gplsaknynf\"}}},\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"pxodlqiyntorzih\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{}],\"privateIPAddresses\":[{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"mslyzrpzbchckqqz\"}},\"ipAddress\":\"ox\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"zynkedya\",\"containerName\":\"wyhqmibzyhwits\"}},\"scalingProperties\":{\"capacity\":1679951474,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"pcdpumnz\",\"capacity\":{\"min\":998287381,\"max\":944462660}},{\"name\":\"z\",\"capacity\":{\"min\":1443914942,\"max\":1417683929}},{\"name\":\"biknsorgjhxbld\",\"capacity\":{\"min\":1166597262,\"max\":706339919}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"rlkdmtncvokotl\"},\"userProfile\":{\"preferredEmail\":\"yhgsy\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"attackSignaturesPackage\":{\"version\":\"tdtbnnhadooc\",\"revisionDatetime\":\"2021-05-16T20:34:23Z\"},\"botSignaturesPackage\":{\"version\":\"cikhnv\",\"revisionDatetime\":\"2021-10-11T09:13:27Z\"},\"threatCampaignsPackage\":{\"version\":\"qgxqquezikyw\",\"revisionDatetime\":\"2021-03-04T16:24:34Z\"},\"componentVersions\":{\"wafEngineVersion\":\"kallatmel\",\"wafNginxVersion\":\"uipiccjzk\"}}},\"dataplaneApiEndpoint\":\"v\"},\"sku\":{\"name\":\"vc\"},\"location\":\"y\",\"tags\":{\"drd\":\"rnxxmueed\",\"alm\":\"stkwqqtch\",\"gdv\":\"mtdaa\"},\"id\":\"vgpiohgwxrt\",\"name\":\"udxepxgyqagv\",\"type\":\"vmnpkukghimdblx\"}],\"nextLink\":\"imfnjhfjx\"}")
             .toObject(NginxDeploymentListResponse.class);
-        Assertions.assertEquals("eyp", model.value().get(0).location());
-        Assertions.assertEquals("mjmwvvjektcx", model.value().get(0).tags().get("enhwlrs"));
-        Assertions.assertEquals(IdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("gipwhonowkg", model.value().get(0).properties().managedResourceGroup());
-        Assertions.assertEquals("bin",
+        Assertions.assertEquals("r", model.value().get(0).location());
+        Assertions.assertEquals("cym", model.value().get(0).tags().get("aolps"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("ohxcrsbfova",
             model.value().get(0).properties().networkProfile().networkInterfaceConfiguration().subnetId());
-        Assertions.assertEquals(false, model.value().get(0).properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("nuzo", model.value().get(0).properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("tiyqzrnkcqv",
-            model.value().get(0).properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(798441434, model.value().get(0).properties().scalingProperties().capacity());
-        Assertions.assertEquals("lsicohoqqnwv",
+        Assertions.assertEquals(true, model.value().get(0).properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("ubcgjbirxb",
+            model.value().get(0).properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("bsrfbj", model.value().get(0).properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(157171235, model.value().get(0).properties().scalingProperties().capacity());
+        Assertions.assertEquals("otftpvjzbexilz",
             model.value().get(0).properties().scalingProperties().profiles().get(0).name());
-        Assertions.assertEquals(1444459691,
+        Assertions.assertEquals(1948356330,
             model.value().get(0).properties().scalingProperties().profiles().get(0).capacity().min());
-        Assertions.assertEquals(759862878,
+        Assertions.assertEquals(1551412306,
             model.value().get(0).properties().scalingProperties().profiles().get(0).capacity().max());
-        Assertions.assertEquals("yxzk", model.value().get(0).properties().autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals("cukoklyaxuconu", model.value().get(0).properties().userProfile().preferredEmail());
-        Assertions.assertEquals("zf", model.value().get(0).sku().name());
-        Assertions.assertEquals("fudwpznt", model.nextLink());
+        Assertions.assertEquals("oujmkcjhwqytj",
+            model.value().get(0).properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("n", model.value().get(0).properties().userProfile().preferredEmail());
+        Assertions.assertEquals(ActivationState.DISABLED,
+            model.value().get(0).properties().nginxAppProtect().webApplicationFirewallSettings().activationState());
+        Assertions.assertEquals("gycdu", model.value().get(0).sku().name());
+        Assertions.assertEquals("imfnjhfjx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NginxDeploymentListResponse model
             = new NginxDeploymentListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NginxDeploymentInner().withLocation("eyp")
-                                .withTags(mapOf("enhwlrs", "mjmwvvjektcx", "qylihkaetckt", "frzpwvlqdqgb", "ctq",
-                                    "fcivfsnkym"))
-                                .withIdentity(new IdentityProperties().withType(IdentityType.NONE)
-                                    .withUserAssignedIdentities(mapOf("ishc", new UserIdentityProperties())))
-                                .withProperties(
-                                    new NginxDeploymentProperties().withManagedResourceGroup("gipwhonowkg")
-                                        .withNetworkProfile(
-                                            new NginxNetworkProfile()
-                                                .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
-                                                    .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(),
-                                                        new NginxPublicIpAddress(), new NginxPublicIpAddress()))
-                                                    .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress(),
-                                                        new NginxPrivateIpAddress(), new NginxPrivateIpAddress(),
-                                                        new NginxPrivateIpAddress())))
-                                                .withNetworkInterfaceConfiguration(
-                                                    new NginxNetworkInterfaceConfiguration().withSubnetId("bin")))
-                                        .withEnableDiagnosticsSupport(false)
-                                        .withLogging(new NginxLogging().withStorageAccount(
-                                            new NginxStorageAccount().withAccountName("nuzo")
-                                                .withContainerName("tiyqzrnkcqv")))
-                                        .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(
-                                            798441434)
-                                            .withProfiles(Arrays.asList(
-                                                new ScaleProfile().withName("lsicohoqqnwv")
-                                                    .withCapacity(new ScaleProfileCapacity().withMin(1444459691)
-                                                        .withMax(759862878)),
-                                                new ScaleProfile().withName("avwhheunm")
-                                                    .withCapacity(new ScaleProfileCapacity().withMin(1861834573)
-                                                        .withMax(375848936)))))
-                                        .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("yxzk"))
-                                        .withUserProfile(
-                                            new NginxDeploymentUserProfile().withPreferredEmail("cukoklyaxuconu")))
-                                .withSku(new ResourceSku().withName("zf")),
-                            new NginxDeploymentInner().withLocation("eyueaxibxujwb")
-                                .withTags(mapOf("cuxrhdwbavx", "almuzyoxaepdkzja"))
-                                .withIdentity(new IdentityProperties().withType(IdentityType.SYSTEM_ASSIGNED)
-                                    .withUserAssignedIdentities(mapOf("oxgvclt", new UserIdentityProperties(), "gx",
-                                        new UserIdentityProperties(), "odebfqkkrbmpu", new UserIdentityProperties(),
-                                        "cispnqzahmgkbr", new UserIdentityProperties())))
-                                .withProperties(
-                                    new NginxDeploymentProperties().withManagedResourceGroup("rgvtqag")
-                                        .withNetworkProfile(
-                                            new NginxNetworkProfile()
-                                                .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
-                                                    .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(),
-                                                        new NginxPublicIpAddress(), new NginxPublicIpAddress()))
-                                                    .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress(),
-                                                        new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
-                                                .withNetworkInterfaceConfiguration(
-                                                    new NginxNetworkInterfaceConfiguration()
-                                                        .withSubnetId("gmebfsiarbutrcv")))
-                                        .withEnableDiagnosticsSupport(false)
-                                        .withLogging(new NginxLogging().withStorageAccount(
-                                            new NginxStorageAccount().withAccountName("nlankxmyskpb")
-                                                .withContainerName("nbtkcxywnytnr")))
-                                        .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(
-                                            1641130583)
-                                            .withProfiles(Arrays.asList(
-                                                new ScaleProfile().withName("dybyxczfclhaa")
-                                                    .withCapacity(new ScaleProfileCapacity().withMin(1122692891)
-                                                        .withMax(904573366)),
-                                                new ScaleProfile().withName("abphlw")
-                                                    .withCapacity(new ScaleProfileCapacity().withMin(77204722)
-                                                        .withMax(2142840160)),
-                                                new ScaleProfile().withName("fkts")
-                                                    .withCapacity(new ScaleProfileCapacity().withMin(1572483367)
-                                                        .withMax(1927626418)))))
-                                        .withAutoUpgradeProfile(
-                                            new AutoUpgradeProfile().withUpgradeChannel("cocmnyyaztt"))
-                                        .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("wrqpue")))
-                                .withSku(new ResourceSku().withName("kzywbiex")),
-                            new NginxDeploymentInner().withLocation("q")
-                                .withTags(mapOf("cq", "dsuyonobgla"))
-                                .withIdentity(new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
-                                    .withUserAssignedIdentities(mapOf("mg", new UserIdentityProperties(), "wzbaiue",
-                                        new UserIdentityProperties())))
-                                .withProperties(
-                                    new NginxDeploymentProperties().withManagedResourceGroup("mtxpsiebtfh")
-                                        .withNetworkProfile(new NginxNetworkProfile()
-                                            .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
-                                                .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(),
-                                                    new NginxPublicIpAddress()))
-                                                .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress(),
-                                                    new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
-                                            .withNetworkInterfaceConfiguration(
-                                                new NginxNetworkInterfaceConfiguration().withSubnetId("dqmh")))
-                                        .withEnableDiagnosticsSupport(false)
-                                        .withLogging(new NginxLogging()
-                                            .withStorageAccount(new NginxStorageAccount().withAccountName("cwscwsvlx")
-                                                .withContainerName("ogtwrupqsxvnmi")))
-                                        .withScalingProperties(
-                                            new NginxDeploymentScalingProperties().withCapacity(560100496)
-                                                .withProfiles(Arrays.asList(
-                                                    new ScaleProfile().withName("o")
-                                                        .withCapacity(new ScaleProfileCapacity().withMin(579723655)
-                                                            .withMax(1739821364)),
-                                                    new ScaleProfile().withName("lo")
-                                                        .withCapacity(new ScaleProfileCapacity().withMin(1344905503)
-                                                            .withMax(660644635)),
-                                                    new ScaleProfile().withName("tyfjfcnjbkcnxdhb")
-                                                        .withCapacity(new ScaleProfileCapacity().withMin(1418382226)
-                                                            .withMax(657781919)),
-                                                    new ScaleProfile().withName("phywpnvj")
-                                                        .withCapacity(new ScaleProfileCapacity().withMin(597860603)
-                                                            .withMax(1633235296)))))
-                                        .withAutoUpgradeProfile(
-                                            new AutoUpgradeProfile().withUpgradeChannel("ermclfplphoxuscr"))
-                                        .withUserProfile(
-                                            new NginxDeploymentUserProfile().withPreferredEmail("gyepsbjt")))
-                                .withSku(new ResourceSku().withName("qugxywpmueefjzwf"))))
-                .withNextLink("fudwpznt");
+                .withValue(Arrays.asList(
+                    new NginxDeploymentInner().withLocation("r")
+                        .withTags(
+                            mapOf("aolps", "cym", "dnbbglzps", "lqlfm", "adbzmnvdfznud", "iydmcwyhzdxs", "xzb", "od"))
+                        .withIdentity(new IdentityProperties()
+                            .withType(IdentityType.SYSTEM_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("rmfqjhhkxbpvj", new UserIdentityProperties(),
+                                "wbxqzvszjfau", new UserIdentityProperties(), "bhsfxob", new UserIdentityProperties())))
+                        .withProperties(new NginxDeploymentProperties()
+                            .withNetworkProfile(new NginxNetworkProfile()
+                                .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
+                                    .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(),
+                                        new NginxPublicIpAddress(), new NginxPublicIpAddress()))
+                                    .withPrivateIpAddresses(
+                                        Arrays.asList(new NginxPrivateIpAddress(), new NginxPrivateIpAddress(),
+                                            new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
+                                .withNetworkInterfaceConfiguration(
+                                    new NginxNetworkInterfaceConfiguration().withSubnetId("ohxcrsbfova")))
+                            .withEnableDiagnosticsSupport(true)
+                            .withLogging(new NginxLogging().withStorageAccount(
+                                new NginxStorageAccount().withAccountName("ubcgjbirxb").withContainerName("bsrfbj")))
+                            .withScalingProperties(
+                                new NginxDeploymentScalingProperties().withCapacity(157171235)
+                                    .withProfiles(
+                                        Arrays
+                                            .asList(
+                                                new ScaleProfile().withName("otftpvjzbexilz")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1948356330)
+                                                        .withMax(1551412306)),
+                                                new ScaleProfile()
+                                                    .withName("qqnvwpmq")
+                                                    .withCapacity(new ScaleProfileCapacity()
+                                                        .withMin(1787439694)
+                                                        .withMax(1628769376)))))
+                            .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("oujmkcjhwqytj"))
+                            .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("n"))
+                            .withNginxAppProtect(new NginxDeploymentPropertiesNginxAppProtect()
+                                .withWebApplicationFirewallSettings(new WebApplicationFirewallSettings()
+                                    .withActivationState(ActivationState.DISABLED))))
+                        .withSku(new ResourceSku().withName("gycdu")),
+                    new NginxDeploymentInner().withLocation("c")
+                        .withTags(mapOf("iiswacffgdkzze", "wdsjnkalju", "pfuflrw", "kfvhqcrailvpn"))
+                        .withIdentity(new IdentityProperties()
+                            .withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("hhszh", new UserIdentityProperties())))
+                        .withProperties(new NginxDeploymentProperties()
+                            .withNetworkProfile(new NginxNetworkProfile()
+                                .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
+                                    .withPublicIpAddresses(
+                                        Arrays.asList(new NginxPublicIpAddress(), new NginxPublicIpAddress(),
+                                            new NginxPublicIpAddress(), new NginxPublicIpAddress()))
+                                    .withPrivateIpAddresses(
+                                        Arrays.asList(new NginxPrivateIpAddress(), new NginxPrivateIpAddress(),
+                                            new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
+                                .withNetworkInterfaceConfiguration(
+                                    new NginxNetworkInterfaceConfiguration().withSubnetId("wwtppj")))
+                            .withEnableDiagnosticsSupport(true)
+                            .withLogging(new NginxLogging().withStorageAccount(
+                                new NginxStorageAccount().withAccountName("kqze").withContainerName("kdltfzxmhhvhg")))
+                            .withScalingProperties(
+                                new NginxDeploymentScalingProperties().withCapacity(1748485864)
+                                    .withProfiles(
+                                        Arrays
+                                            .asList(
+                                                new ScaleProfile().withName("wobdagxtibqdx")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1020209011)
+                                                        .withMax(709641319)),
+                                                new ScaleProfile().withName("akbogqxndlkzgxh")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(975056149)
+                                                        .withMax(1924988063)),
+                                                new ScaleProfile().withName("plbpodxun")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1102783029)
+                                                        .withMax(405149242)))))
+                            .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("xmubyyntwlrbq"))
+                            .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("ievseotgqrllt"))
+                            .withNginxAppProtect(new NginxDeploymentPropertiesNginxAppProtect()
+                                .withWebApplicationFirewallSettings(new WebApplicationFirewallSettings()
+                                    .withActivationState(ActivationState.DISABLED))))
+                        .withSku(new ResourceSku().withName("lvithhqzonosgg")),
+                    new NginxDeploymentInner().withLocation("washr")
+                        .withTags(mapOf("ulpiuj", "kcnqxwbpo", "obyu", "aasipqi"))
+                        .withIdentity(new IdentityProperties().withType(IdentityType.NONE)
+                            .withUserAssignedIdentities(mapOf("dldwmgxc", new UserIdentityProperties())))
+                        .withProperties(new NginxDeploymentProperties()
+                            .withNetworkProfile(new NginxNetworkProfile()
+                                .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
+                                    .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(),
+                                        new NginxPublicIpAddress(), new NginxPublicIpAddress()))
+                                    .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress(),
+                                        new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
+                                .withNetworkInterfaceConfiguration(
+                                    new NginxNetworkInterfaceConfiguration().withSubnetId("yqsluic")))
+                            .withEnableDiagnosticsSupport(true)
+                            .withLogging(new NginxLogging().withStorageAccount(
+                                new NginxStorageAccount().withAccountName("uefywsbpfvmwy").withContainerName("fouyf")))
+                            .withScalingProperties(
+                                new NginxDeploymentScalingProperties().withCapacity(1378791233)
+                                    .withProfiles(
+                                        Arrays
+                                            .asList(
+                                                new ScaleProfile().withName("wiyzvqtmnubexkp")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1583015875)
+                                                        .withMax(1254452597)),
+                                                new ScaleProfile().withName("mond")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1929847054)
+                                                        .withMax(1007666972)),
+                                                new ScaleProfile().withName("uxvypomgkopkwh")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(664596221)
+                                                        .withMax(10985850)))))
+                            .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("ajqgxy"))
+                            .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("cmbqfqvmk"))
+                            .withNginxAppProtect(
+                                new NginxDeploymentPropertiesNginxAppProtect().withWebApplicationFirewallSettings(
+                                    new WebApplicationFirewallSettings().withActivationState(ActivationState.ENABLED))))
+                        .withSku(new ResourceSku().withName("iexpbtgiwbwo")),
+                    new NginxDeploymentInner().withLocation("y")
+                        .withTags(mapOf("drd", "rnxxmueed", "alm", "stkwqqtch", "gdv", "mtdaa"))
+                        .withIdentity(new IdentityProperties().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("aeneqnzarrwl", new UserIdentityProperties(), "iipfpubj",
+                                new UserIdentityProperties(), "ynl", new UserIdentityProperties())))
+                        .withProperties(new NginxDeploymentProperties()
+                            .withNetworkProfile(new NginxNetworkProfile()
+                                .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
+                                    .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(),
+                                        new NginxPublicIpAddress(), new NginxPublicIpAddress()))
+                                    .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress())))
+                                .withNetworkInterfaceConfiguration(
+                                    new NginxNetworkInterfaceConfiguration().withSubnetId("mslyzrpzbchckqqz")))
+                            .withEnableDiagnosticsSupport(true)
+                            .withLogging(new NginxLogging()
+                                .withStorageAccount(new NginxStorageAccount().withAccountName("zynkedya")
+                                    .withContainerName("wyhqmibzyhwits")))
+                            .withScalingProperties(
+                                new NginxDeploymentScalingProperties().withCapacity(1679951474)
+                                    .withProfiles(
+                                        Arrays
+                                            .asList(
+                                                new ScaleProfile().withName("pcdpumnz")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(998287381)
+                                                        .withMax(944462660)),
+                                                new ScaleProfile().withName("z")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1443914942)
+                                                        .withMax(1417683929)),
+                                                new ScaleProfile().withName("biknsorgjhxbld")
+                                                    .withCapacity(new ScaleProfileCapacity().withMin(1166597262)
+                                                        .withMax(706339919)))))
+                            .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("rlkdmtncvokotl"))
+                            .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("yhgsy"))
+                            .withNginxAppProtect(new NginxDeploymentPropertiesNginxAppProtect()
+                                .withWebApplicationFirewallSettings(new WebApplicationFirewallSettings()
+                                    .withActivationState(ActivationState.DISABLED))))
+                        .withSku(new ResourceSku().withName("vc"))))
+                .withNextLink("imfnjhfjx");
         model = BinaryData.fromObject(model).toObject(NginxDeploymentListResponse.class);
-        Assertions.assertEquals("eyp", model.value().get(0).location());
-        Assertions.assertEquals("mjmwvvjektcx", model.value().get(0).tags().get("enhwlrs"));
-        Assertions.assertEquals(IdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("gipwhonowkg", model.value().get(0).properties().managedResourceGroup());
-        Assertions.assertEquals("bin",
+        Assertions.assertEquals("r", model.value().get(0).location());
+        Assertions.assertEquals("cym", model.value().get(0).tags().get("aolps"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("ohxcrsbfova",
             model.value().get(0).properties().networkProfile().networkInterfaceConfiguration().subnetId());
-        Assertions.assertEquals(false, model.value().get(0).properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("nuzo", model.value().get(0).properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("tiyqzrnkcqv",
-            model.value().get(0).properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(798441434, model.value().get(0).properties().scalingProperties().capacity());
-        Assertions.assertEquals("lsicohoqqnwv",
+        Assertions.assertEquals(true, model.value().get(0).properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("ubcgjbirxb",
+            model.value().get(0).properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("bsrfbj", model.value().get(0).properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(157171235, model.value().get(0).properties().scalingProperties().capacity());
+        Assertions.assertEquals("otftpvjzbexilz",
             model.value().get(0).properties().scalingProperties().profiles().get(0).name());
-        Assertions.assertEquals(1444459691,
+        Assertions.assertEquals(1948356330,
             model.value().get(0).properties().scalingProperties().profiles().get(0).capacity().min());
-        Assertions.assertEquals(759862878,
+        Assertions.assertEquals(1551412306,
             model.value().get(0).properties().scalingProperties().profiles().get(0).capacity().max());
-        Assertions.assertEquals("yxzk", model.value().get(0).properties().autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals("cukoklyaxuconu", model.value().get(0).properties().userProfile().preferredEmail());
-        Assertions.assertEquals("zf", model.value().get(0).sku().name());
-        Assertions.assertEquals("fudwpznt", model.nextLink());
+        Assertions.assertEquals("oujmkcjhwqytj",
+            model.value().get(0).properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("n", model.value().get(0).properties().userProfile().preferredEmail());
+        Assertions.assertEquals(ActivationState.DISABLED,
+            model.value().get(0).properties().nginxAppProtect().webApplicationFirewallSettings().activationState());
+        Assertions.assertEquals("gycdu", model.value().get(0).sku().name());
+        Assertions.assertEquals("imfnjhfjx", model.nextLink());
     }
 
     // Use "Map.of" if available

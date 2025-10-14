@@ -23,7 +23,7 @@ public final class DatabasePrincipalAssignmentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalId\":\"mkoisqcssf\",\"role\":\"Ingestor\",\"tenantId\":\"ifmcsypobkdqzr\",\"principalType\":\"App\",\"tenantName\":\"ylollgtrczzydmxz\",\"principalName\":\"jpvuaurkihcirld\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"dcoxnbk\"},\"id\":\"ja\",\"name\":\"urnnqbnqbpiz\",\"type\":\"qltgrd\"}";
+            = "{\"properties\":{\"principalId\":\"mjel\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"cigeleohdbvqvw\",\"principalType\":\"Group\",\"tenantName\":\"opwbeonrlkwzd\",\"principalName\":\"bxcea\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"tsoqfyiaseqchk\"},\"id\":\"ttzrazisgyki\",\"name\":\"emv\",\"type\":\"nbwzohmnrxxbso\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class DatabasePrincipalAssignmentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatabasePrincipalAssignment response = manager.databasePrincipalAssignments()
-            .define("xtwbta")
-            .withExistingDatabase("dlrgms", "lzgaufcshhvnew", "nxkympqanxrjk")
-            .withPrincipalId("pnyghs")
+            .define("k")
+            .withExistingDatabase("spnxwqagnepzw", "klsbsbqqqagw", "rxaomzisglrrcze")
+            .withPrincipalId("ltn")
             .withRole(DatabasePrincipalRole.INGESTOR)
-            .withTenantId("ylhk")
+            .withTenantId("hqo")
             .withPrincipalType(PrincipalType.GROUP)
             .create();
 
-        Assertions.assertEquals("mkoisqcssf", response.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.role());
-        Assertions.assertEquals("ifmcsypobkdqzr", response.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, response.principalType());
+        Assertions.assertEquals("mjel", response.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, response.role());
+        Assertions.assertEquals("cigeleohdbvqvw", response.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
     }
 }

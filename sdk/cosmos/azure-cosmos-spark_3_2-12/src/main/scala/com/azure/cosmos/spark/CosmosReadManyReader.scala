@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.{CosmosException, ReadConsistencyStrategy}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
@@ -28,7 +28,7 @@ private[spark] class CosmosReadManyReader(
   val clientConfig: CosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   val readConfig: CosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   val cosmosContainerConfig: CosmosContainerConfig =
-    CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, None, None)
+    CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
   //scalastyle:off multiple.string.literals
   val tableName: String = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
@@ -47,7 +47,7 @@ private[spark] class CosmosReadManyReader(
           CosmosClientCache(
             CosmosClientConfiguration(
               effectiveUserConfig,
-              useEventualConsistency = readConfig.forceEventualConsistency,
+              readConsistencyStrategy = readConfig.readConsistencyStrategy,
               sparkEnvironmentInfo),
             None,
             calledFrom)),
@@ -66,8 +66,8 @@ private[spark] class CosmosReadManyReader(
             clientCacheItems(1))
         try {
           container.readItem(
-            UUID.randomUUID().toString,
-            new PartitionKey(UUID.randomUUID().toString),
+            UUIDs.nonBlockingRandomUUID().toString,
+            new PartitionKey(UUIDs.nonBlockingRandomUUID().toString),
             classOf[ObjectNode])
             .block()
         } catch {
@@ -89,14 +89,14 @@ private[spark] class CosmosReadManyReader(
   }
 
   def readMany(inputRdd: RDD[Row], identityExtraction:  Row => CosmosItemIdentity): DataFrame = {
-    val correlationActivityId = UUID.randomUUID()
+    val correlationActivityId = UUIDs.nonBlockingRandomUUID()
     val calledFrom = s"CosmosReadManyReader.readMany($correlationActivityId)"
     val schema = Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(
           CosmosClientConfiguration(
             effectiveUserConfig,
-            useEventualConsistency = readConfig.forceEventualConsistency,
+            readConsistencyStrategy = readConfig.readConsistencyStrategy,
             sparkEnvironmentInfo),
           None,
           calledFrom

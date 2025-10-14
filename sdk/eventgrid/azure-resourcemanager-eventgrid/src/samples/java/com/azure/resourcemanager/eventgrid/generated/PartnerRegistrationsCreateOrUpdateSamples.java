@@ -13,7 +13,7 @@ import java.util.Map;
 public final class PartnerRegistrationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * PartnerRegistrations_CreateOrUpdate.json
      */
     /**

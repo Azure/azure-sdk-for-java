@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class SapSupportedSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSupportedSku model
-            = BinaryData.fromString("{\"vmSku\":\"iofz\",\"isAppServerCertified\":true,\"isDatabaseCertified\":false}")
-                .toObject(SapSupportedSku.class);
-        Assertions.assertEquals("iofz", model.vmSku());
-        Assertions.assertEquals(true, model.isAppServerCertified());
-        Assertions.assertEquals(false, model.isDatabaseCertified());
+        SapSupportedSku model = BinaryData
+            .fromString("{\"vmSku\":\"fdtwssotft\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true}")
+            .toObject(SapSupportedSku.class);
+        Assertions.assertEquals("fdtwssotft", model.vmSku());
+        Assertions.assertTrue(model.isAppServerCertified());
+        Assertions.assertTrue(model.isDatabaseCertified());
     }
 }

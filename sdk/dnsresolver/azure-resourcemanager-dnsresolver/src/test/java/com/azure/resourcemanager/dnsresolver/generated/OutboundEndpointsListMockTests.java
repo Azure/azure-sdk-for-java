@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.OutboundEndpoint;
@@ -22,20 +22,20 @@ public final class OutboundEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"ojvpa\",\"properties\":{\"subnet\":{\"id\":\"gxysmocmbqfqvm\"},\"provisioningState\":\"Creating\",\"resourceGuid\":\"zapvhelx\"},\"location\":\"glyatddckcbcuej\",\"tags\":{\"sxsdqrhzoymibm\":\"gciqibrh\"},\"id\":\"qyib\",\"name\":\"hwflu\",\"type\":\"zdtmhrkwofy\"}]}";
+            = "{\"value\":[{\"etag\":\"xedk\",\"properties\":{\"subnet\":{\"id\":\"epbqpcrfkbw\"},\"provisioningState\":\"Deleting\",\"resourceGuid\":\"jvcdwxlpqekf\"},\"location\":\"khtj\",\"tags\":{\"dhtmdvypgikd\":\"ngwfqatm\"},\"id\":\"szywkbirryu\",\"name\":\"hlhkjoqrvqqaatj\",\"type\":\"nrvgoupmfiibfgg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<OutboundEndpoint> response = manager.outboundEndpoints()
-            .list("zksmondj", "quxvypomgkop", 1364703724, com.azure.core.util.Context.NONE);
+        PagedIterable<OutboundEndpoint> response
+            = manager.outboundEndpoints().list("kerqwkyh", "ob", 503673017, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("glyatddckcbcuej", response.iterator().next().location());
-        Assertions.assertEquals("gciqibrh", response.iterator().next().tags().get("sxsdqrhzoymibm"));
-        Assertions.assertEquals("gxysmocmbqfqvm", response.iterator().next().subnet().id());
+        Assertions.assertEquals("khtj", response.iterator().next().location());
+        Assertions.assertEquals("ngwfqatm", response.iterator().next().tags().get("dhtmdvypgikd"));
+        Assertions.assertEquals("epbqpcrfkbw", response.iterator().next().subnet().id());
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ReplicaCollection;
@@ -20,17 +20,17 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
     @Test
     public void testListReplicasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-12-02T01:42:45Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"viqlluk\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"gcbv\",\"name\":\"a\",\"type\":\"mqcbpokstsinv\"},{\"properties\":{\"createdTime\":\"2021-11-27T01:48:46Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"d\",\"containers\":[{},{}],\"initContainers\":[{},{}]},\"id\":\"cehqw\",\"name\":\"itxnmxgnmgu\",\"type\":\"buwvorba\"},{\"properties\":{\"createdTime\":\"2021-02-26T19:00:19Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"dhlltqstqkqsyg\",\"containers\":[{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"ovagzkheuban\",\"name\":\"xunpqcckqiawzlz\",\"type\":\"laslgacizux\"},{\"properties\":{\"createdTime\":\"2021-05-21T14:34:58Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"wsaudoejtighsxj\",\"containers\":[{},{}],\"initContainers\":[{},{}]},\"id\":\"bala\",\"name\":\"ovu\",\"type\":\"wxhmehjnhjiot\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-11-06T10:49:20Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"fxcz\",\"containers\":[{},{},{}],\"initContainers\":[{}]},\"id\":\"rtwletyves\",\"name\":\"rtlhpdhwyn\",\"type\":\"tacz\"},{\"properties\":{\"createdTime\":\"2021-06-25T10:53:07Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"fnv\",\"containers\":[{},{}],\"initContainers\":[{},{},{}]},\"id\":\"vnk\",\"name\":\"tiklsm\",\"type\":\"ihqlcoqks\"},{\"properties\":{\"createdTime\":\"2021-12-10T20:03:40Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"wbgbudav\",\"containers\":[{},{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"cqcdhthojv\",\"name\":\"irknucosaw\",\"type\":\"dtnagzlgpyaix\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicaCollection response = manager.containerAppsRevisionReplicas()
-            .listReplicasWithResponse("jbrhlhpvzadbw", "nnin", "fhxrzfr", com.azure.core.util.Context.NONE)
+            .listReplicasWithResponse("ulhgltoiz", "xvsc", "sgfy", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

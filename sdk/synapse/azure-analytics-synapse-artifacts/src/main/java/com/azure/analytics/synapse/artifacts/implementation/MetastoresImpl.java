@@ -60,7 +60,7 @@ public final class MetastoresImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientMetas")
+    @ServiceInterface(name = "ArtifactsClientMetastores")
     public interface MetastoresService {
         @Put("/metastore/create-database-operations/{id}")
         @ExpectedResponses({ 201 })

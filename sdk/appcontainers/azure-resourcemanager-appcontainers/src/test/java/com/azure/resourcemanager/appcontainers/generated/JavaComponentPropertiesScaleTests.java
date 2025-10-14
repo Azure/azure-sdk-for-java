@@ -12,18 +12,18 @@ public final class JavaComponentPropertiesScaleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentPropertiesScale model
-            = BinaryData.fromString("{\"minReplicas\":26618529,\"maxReplicas\":1797841912}")
+            = BinaryData.fromString("{\"minReplicas\":1136575417,\"maxReplicas\":1644605139}")
                 .toObject(JavaComponentPropertiesScale.class);
-        Assertions.assertEquals(26618529, model.minReplicas());
-        Assertions.assertEquals(1797841912, model.maxReplicas());
+        Assertions.assertEquals(1136575417, model.minReplicas());
+        Assertions.assertEquals(1644605139, model.maxReplicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JavaComponentPropertiesScale model
-            = new JavaComponentPropertiesScale().withMinReplicas(26618529).withMaxReplicas(1797841912);
+            = new JavaComponentPropertiesScale().withMinReplicas(1136575417).withMaxReplicas(1644605139);
         model = BinaryData.fromObject(model).toObject(JavaComponentPropertiesScale.class);
-        Assertions.assertEquals(26618529, model.minReplicas());
-        Assertions.assertEquals(1797841912, model.maxReplicas());
+        Assertions.assertEquals(1136575417, model.minReplicas());
+        Assertions.assertEquals(1644605139, model.maxReplicas());
     }
 }

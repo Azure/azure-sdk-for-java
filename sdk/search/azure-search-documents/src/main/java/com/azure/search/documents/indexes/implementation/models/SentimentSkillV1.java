@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -26,11 +27,13 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Text.SentimentSkill";
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
+    @Generated
     private SentimentSkillLanguage defaultLanguageCode;
 
     /**
@@ -39,6 +42,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public SentimentSkillV1(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -48,6 +52,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -58,6 +63,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
      * 
      * @return the defaultLanguageCode value.
      */
+    @Generated
     public SentimentSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
@@ -68,6 +74,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SentimentSkillV1 object itself.
      */
+    @Generated
     public SentimentSkillV1 setDefaultLanguageCode(SentimentSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
@@ -76,6 +83,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentSkillV1 setName(String name) {
         super.setName(name);
@@ -85,6 +93,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentSkillV1 setDescription(String description) {
         super.setDescription(description);
@@ -94,6 +103,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentSkillV1 setContext(String context) {
         super.setContext(context);
@@ -103,6 +113,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,6 +137,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentimentSkillV1.
      */
+    @Generated
     public static SentimentSkillV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

@@ -1,0 +1,34 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: keyvault-v2
+    TestResourceDirectories:
+      - keyvault-v2/test-resources
+    TimeoutInMinutes: 240
+    EnvVars:
+      AZURE_LOG_LEVEL: 2
+    CloudConfig:
+      Public:
+        ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+    MatrixConfigs:
+      - Name: Key_Vault_live_test
+        Path: sdk/keyvault-v2/platform-matrix.json
+        Selection: sparse
+        GenerateVMJobs: true
+    Artifacts:
+      - name: azure-security-keyvault-administration
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultadministration
+      - name: azure-security-keyvault-certificates
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultcertificates
+      - name: azure-security-keyvault-keys
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultkeys
+      - name: azure-security-keyvault-secrets
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultsecrets

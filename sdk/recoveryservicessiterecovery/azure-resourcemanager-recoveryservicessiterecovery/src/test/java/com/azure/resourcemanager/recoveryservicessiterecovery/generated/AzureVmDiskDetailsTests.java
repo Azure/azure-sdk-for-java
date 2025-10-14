@@ -12,42 +12,42 @@ public final class AzureVmDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureVmDiskDetails model = BinaryData.fromString(
-            "{\"vhdType\":\"aqszllrzl\",\"vhdId\":\"mdqgmihzpimcqr\",\"diskId\":\"xtminklogxsvtzar\",\"vhdName\":\"vqnsqk\",\"maxSizeMB\":\"mbjwzzoslpkyb\",\"targetDiskLocation\":\"lwkzpgajsqjcem\",\"targetDiskName\":\"mfuvqarwzxuqr\",\"lunId\":\"lui\",\"diskEncryptionSetId\":\"bwxsfgtdm\",\"customTargetDiskName\":\"xekr\"}")
+            "{\"vhdType\":\"ixiezeag\",\"vhdId\":\"eituugedhfpjs\",\"diskId\":\"zmblsyjdeol\",\"vhdName\":\"aebfsyrled\",\"maxSizeMB\":\"ustbvtqigdx\",\"targetDiskLocation\":\"sgeafgfosehx\",\"targetDiskName\":\"sxezppkkwaa\",\"lunId\":\"k\",\"diskEncryptionSetId\":\"jlpzeqtoyrp\",\"customTargetDiskName\":\"xlaj\"}")
             .toObject(AzureVmDiskDetails.class);
-        Assertions.assertEquals("aqszllrzl", model.vhdType());
-        Assertions.assertEquals("mdqgmihzpimcqr", model.vhdId());
-        Assertions.assertEquals("xtminklogxsvtzar", model.diskId());
-        Assertions.assertEquals("vqnsqk", model.vhdName());
-        Assertions.assertEquals("mbjwzzoslpkyb", model.maxSizeMB());
-        Assertions.assertEquals("lwkzpgajsqjcem", model.targetDiskLocation());
-        Assertions.assertEquals("mfuvqarwzxuqr", model.targetDiskName());
-        Assertions.assertEquals("lui", model.lunId());
-        Assertions.assertEquals("bwxsfgtdm", model.diskEncryptionSetId());
-        Assertions.assertEquals("xekr", model.customTargetDiskName());
+        Assertions.assertEquals("ixiezeag", model.vhdType());
+        Assertions.assertEquals("eituugedhfpjs", model.vhdId());
+        Assertions.assertEquals("zmblsyjdeol", model.diskId());
+        Assertions.assertEquals("aebfsyrled", model.vhdName());
+        Assertions.assertEquals("ustbvtqigdx", model.maxSizeMB());
+        Assertions.assertEquals("sgeafgfosehx", model.targetDiskLocation());
+        Assertions.assertEquals("sxezppkkwaa", model.targetDiskName());
+        Assertions.assertEquals("k", model.lunId());
+        Assertions.assertEquals("jlpzeqtoyrp", model.diskEncryptionSetId());
+        Assertions.assertEquals("xlaj", model.customTargetDiskName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureVmDiskDetails model = new AzureVmDiskDetails().withVhdType("aqszllrzl")
-            .withVhdId("mdqgmihzpimcqr")
-            .withDiskId("xtminklogxsvtzar")
-            .withVhdName("vqnsqk")
-            .withMaxSizeMB("mbjwzzoslpkyb")
-            .withTargetDiskLocation("lwkzpgajsqjcem")
-            .withTargetDiskName("mfuvqarwzxuqr")
-            .withLunId("lui")
-            .withDiskEncryptionSetId("bwxsfgtdm")
-            .withCustomTargetDiskName("xekr");
+        AzureVmDiskDetails model = new AzureVmDiskDetails().withVhdType("ixiezeag")
+            .withVhdId("eituugedhfpjs")
+            .withDiskId("zmblsyjdeol")
+            .withVhdName("aebfsyrled")
+            .withMaxSizeMB("ustbvtqigdx")
+            .withTargetDiskLocation("sgeafgfosehx")
+            .withTargetDiskName("sxezppkkwaa")
+            .withLunId("k")
+            .withDiskEncryptionSetId("jlpzeqtoyrp")
+            .withCustomTargetDiskName("xlaj");
         model = BinaryData.fromObject(model).toObject(AzureVmDiskDetails.class);
-        Assertions.assertEquals("aqszllrzl", model.vhdType());
-        Assertions.assertEquals("mdqgmihzpimcqr", model.vhdId());
-        Assertions.assertEquals("xtminklogxsvtzar", model.diskId());
-        Assertions.assertEquals("vqnsqk", model.vhdName());
-        Assertions.assertEquals("mbjwzzoslpkyb", model.maxSizeMB());
-        Assertions.assertEquals("lwkzpgajsqjcem", model.targetDiskLocation());
-        Assertions.assertEquals("mfuvqarwzxuqr", model.targetDiskName());
-        Assertions.assertEquals("lui", model.lunId());
-        Assertions.assertEquals("bwxsfgtdm", model.diskEncryptionSetId());
-        Assertions.assertEquals("xekr", model.customTargetDiskName());
+        Assertions.assertEquals("ixiezeag", model.vhdType());
+        Assertions.assertEquals("eituugedhfpjs", model.vhdId());
+        Assertions.assertEquals("zmblsyjdeol", model.diskId());
+        Assertions.assertEquals("aebfsyrled", model.vhdName());
+        Assertions.assertEquals("ustbvtqigdx", model.maxSizeMB());
+        Assertions.assertEquals("sgeafgfosehx", model.targetDiskLocation());
+        Assertions.assertEquals("sxezppkkwaa", model.targetDiskName());
+        Assertions.assertEquals("k", model.lunId());
+        Assertions.assertEquals("jlpzeqtoyrp", model.diskEncryptionSetId());
+        Assertions.assertEquals("xlaj", model.customTargetDiskName());
     }
 }

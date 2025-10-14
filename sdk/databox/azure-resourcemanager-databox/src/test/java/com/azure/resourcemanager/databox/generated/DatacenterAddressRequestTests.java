@@ -6,25 +6,29 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databox.models.DatacenterAddressRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.SkuName;
 import org.junit.jupiter.api.Assertions;
 
 public final class DatacenterAddressRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatacenterAddressRequest model
-            = BinaryData.fromString("{\"storageLocation\":\"hjwniyqsluic\",\"skuName\":\"DataBoxCustomerDisk\"}")
-                .toObject(DatacenterAddressRequest.class);
-        Assertions.assertEquals("hjwniyqsluic", model.storageLocation());
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.skuName());
+        DatacenterAddressRequest model = BinaryData
+            .fromString("{\"storageLocation\":\"bdagxt\",\"skuName\":\"DataBoxDisk\",\"model\":\"DataBox\"}")
+            .toObject(DatacenterAddressRequest.class);
+        Assertions.assertEquals("bdagxt", model.storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuName());
+        Assertions.assertEquals(ModelName.DATA_BOX, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatacenterAddressRequest model = new DatacenterAddressRequest().withStorageLocation("hjwniyqsluic")
-            .withSkuName(SkuName.DATA_BOX_CUSTOMER_DISK);
+        DatacenterAddressRequest model = new DatacenterAddressRequest().withStorageLocation("bdagxt")
+            .withSkuName(SkuName.DATA_BOX_DISK)
+            .withModel(ModelName.DATA_BOX);
         model = BinaryData.fromObject(model).toObject(DatacenterAddressRequest.class);
-        Assertions.assertEquals("hjwniyqsluic", model.storageLocation());
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.skuName());
+        Assertions.assertEquals("bdagxt", model.storageLocation());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuName());
+        Assertions.assertEquals(ModelName.DATA_BOX, model.model());
     }
 }

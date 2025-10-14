@@ -77,7 +77,7 @@ public final class WeathersImpl {
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WeatherClientWeather")
+    @ServiceInterface(name = "WeatherClientWeathers")
     public interface WeathersService {
         @Get("/weather/forecast/hourly/{format}")
         @ExpectedResponses({ 200 })
@@ -291,12 +291,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HourlyForecastResult>> getHourlyForecastWithResponseAsync(JsonFormat format,
         List<Double> coordinates, WeatherDataUnit unit, Integer duration, String language) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getHourlyForecast(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, unit, duration, language, accept, context));
+        return FluxUtil.withContext(
+            context -> getHourlyForecastWithResponseAsync(format, coordinates, unit, duration, language, context));
     }
 
     /**
@@ -578,12 +574,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MinuteForecastResult>> getMinuteForecastWithResponseAsync(JsonFormat format,
         List<Double> coordinates, Integer interval, String language) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getMinuteForecast(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, interval, language, accept, context));
+        return FluxUtil.withContext(
+            context -> getMinuteForecastWithResponseAsync(format, coordinates, interval, language, context));
     }
 
     /**
@@ -822,12 +814,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QuarterDayForecastResult>> getQuarterDayForecastWithResponseAsync(JsonFormat format,
         List<Double> coordinates, WeatherDataUnit unit, Integer duration, String language) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getQuarterDayForecast(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, unit, duration, language, accept, context));
+        return FluxUtil.withContext(
+            context -> getQuarterDayForecastWithResponseAsync(format, coordinates, unit, duration, language, context));
     }
 
     /**
@@ -1083,12 +1071,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CurrentConditionsResult>> getCurrentConditionsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, WeatherDataUnit unit, String details, Integer duration, String language) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getCurrentConditions(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, coordinatesConverted, unit, details,
-            duration, language, accept, context));
+        return FluxUtil.withContext(context -> getCurrentConditionsWithResponseAsync(format, coordinates, unit, details,
+            duration, language, context));
     }
 
     /**
@@ -1376,12 +1360,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyForecastResult>> getDailyForecastWithResponseAsync(JsonFormat format,
         List<Double> coordinates, WeatherDataUnit unit, Integer duration, String language) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getDailyForecast(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, unit, duration, language, accept, context));
+        return FluxUtil.withContext(
+            context -> getDailyForecastWithResponseAsync(format, coordinates, unit, duration, language, context));
     }
 
     /**
@@ -1674,9 +1654,7 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WeatherAlongRouteResult>> getWeatherAlongRouteWithResponseAsync(JsonFormat format,
         String query, String language) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getWeatherAlongRoute(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, query, language, accept, context));
+        return FluxUtil.withContext(context -> getWeatherAlongRouteWithResponseAsync(format, query, language, context));
     }
 
     /**
@@ -2016,7 +1994,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2043,12 +2021,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SevereWeatherAlertsResult>> getSevereWeatherAlertsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, String details) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getSevereWeatherAlerts(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, language, details, accept, context));
+        return FluxUtil.withContext(
+            context -> getSevereWeatherAlertsWithResponseAsync(format, coordinates, language, details, context));
     }
 
     /**
@@ -2067,7 +2041,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2118,7 +2092,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2165,7 +2139,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2213,7 +2187,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2259,7 +2233,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2336,12 +2310,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyIndicesResult>> getDailyIndicesWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, Integer duration, Integer indexId, Integer indexGroupId) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getDailyIndices(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, coordinatesConverted, language, duration, indexId, indexGroupId,
-            accept, context));
+        return FluxUtil.withContext(context -> getDailyIndicesWithResponseAsync(format, coordinates, language, duration,
+            indexId, indexGroupId, context));
     }
 
     /**
@@ -2626,9 +2596,7 @@ public final class WeathersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActiveStormResult>> getTropicalStormActiveWithResponseAsync(JsonFormat format) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTropicalStormActive(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, accept, context));
+        return FluxUtil.withContext(context -> getTropicalStormActiveWithResponseAsync(format, context));
     }
 
     /**
@@ -2759,10 +2727,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StormSearchResult>> searchTropicalStormWithResponseAsync(JsonFormat format, int year,
         BasinId basinId, Integer governmentStormId) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.searchTropicalStorm(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, year, basinId, governmentStormId, accept, context));
+        return FluxUtil.withContext(
+            context -> searchTropicalStormWithResponseAsync(format, year, basinId, governmentStormId, context));
     }
 
     /**
@@ -2920,10 +2886,8 @@ public final class WeathersImpl {
     public Mono<Response<StormForecastResult>> getTropicalStormForecastWithResponseAsync(JsonFormat format, int year,
         BasinId basinId, int governmentStormId, WeatherDataUnit unit, Boolean includeDetails,
         Boolean includeGeometricDetails, Boolean includeWindowGeometry) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTropicalStormForecast(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, year, basinId, governmentStormId, unit,
-            includeDetails, includeGeometricDetails, includeWindowGeometry, accept, context));
+        return FluxUtil.withContext(context -> getTropicalStormForecastWithResponseAsync(format, year, basinId,
+            governmentStormId, unit, includeDetails, includeGeometricDetails, includeWindowGeometry, context));
     }
 
     /**
@@ -3115,10 +3079,8 @@ public final class WeathersImpl {
     public Mono<Response<StormLocationsResult>> getTropicalStormLocationsWithResponseAsync(JsonFormat format, int year,
         BasinId basinId, int governmentStormId, Boolean includeDetails, Boolean includeGeometricDetails,
         WeatherDataUnit unit, Boolean includeCurrentStorm) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTropicalStormLocations(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, year, basinId, governmentStormId,
-            includeDetails, includeGeometricDetails, unit, includeCurrentStorm, accept, context));
+        return FluxUtil.withContext(context -> getTropicalStormLocationsWithResponseAsync(format, year, basinId,
+            governmentStormId, includeDetails, includeGeometricDetails, unit, includeCurrentStorm, context));
     }
 
     /**
@@ -3315,12 +3277,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AirQualityResult>> getCurrentAirQualityWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, Boolean includePollutantDetails) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getCurrentAirQuality(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, language, coordinatesConverted,
-            includePollutantDetails, accept, context));
+        return FluxUtil.withContext(context -> getCurrentAirQualityWithResponseAsync(format, coordinates, language,
+            includePollutantDetails, context));
     }
 
     /**
@@ -3540,12 +3498,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyAirQualityForecastResult>> getAirQualityDailyForecastsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, DailyDuration duration) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
         return FluxUtil.withContext(
-            context -> service.getAirQualityDailyForecasts(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, language, coordinatesConverted, duration, accept, context));
+            context -> getAirQualityDailyForecastsWithResponseAsync(format, coordinates, language, duration, context));
     }
 
     /**
@@ -3779,12 +3733,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AirQualityResult>> getAirQualityHourlyForecastsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String language, HourlyDuration duration, Boolean includePollutantDetails) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getAirQualityHourlyForecasts(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, language, coordinatesConverted, duration,
-            includePollutantDetails, accept, context));
+        return FluxUtil.withContext(context -> getAirQualityHourlyForecastsWithResponseAsync(format, coordinates,
+            language, duration, includePollutantDetails, context));
     }
 
     /**
@@ -4030,12 +3980,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalActualsResult>> getDailyHistoricalActualsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, LocalDate startDate, LocalDate endDate, WeatherDataUnit unit) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getDailyHistoricalActuals(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, startDate, endDate, unit, accept, context));
+        return FluxUtil.withContext(context -> getDailyHistoricalActualsWithResponseAsync(format, coordinates,
+            startDate, endDate, unit, context));
     }
 
     /**
@@ -4261,12 +4207,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalRecordsResult>> getDailyHistoricalRecordsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, LocalDate startDate, LocalDate endDate, WeatherDataUnit unit) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getDailyHistoricalRecords(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, startDate, endDate, unit, accept, context));
+        return FluxUtil.withContext(context -> getDailyHistoricalRecordsWithResponseAsync(format, coordinates,
+            startDate, endDate, unit, context));
     }
 
     /**
@@ -4489,12 +4431,8 @@ public final class WeathersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DailyHistoricalNormalsResult>> getDailyHistoricalNormalsWithResponseAsync(JsonFormat format,
         List<Double> coordinates, LocalDate startDate, LocalDate endDate, WeatherDataUnit unit) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(context -> service.getDailyHistoricalNormals(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, coordinatesConverted, startDate, endDate, unit, accept, context));
+        return FluxUtil.withContext(context -> getDailyHistoricalNormalsWithResponseAsync(format, coordinates,
+            startDate, endDate, unit, context));
     }
 
     /**

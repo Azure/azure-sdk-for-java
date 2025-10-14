@@ -6,22 +6,28 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.models.OptInHeaderType;
+import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
 import com.azure.resourcemanager.providerhub.models.RequestHeaderOptions;
 import org.junit.jupiter.api.Assertions;
 
 public final class RequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RequestHeaderOptions model = BinaryData.fromString("{\"optInHeaders\":\"SignedAuxiliaryTokens\"}")
+        RequestHeaderOptions model = BinaryData
+            .fromString(
+                "{\"optInHeaders\":\"ClientGroupMembership\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
             .toObject(RequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RequestHeaderOptions model
-            = new RequestHeaderOptions().withOptInHeaders(OptInHeaderType.SIGNED_AUXILIARY_TOKENS);
+            = new RequestHeaderOptions().withOptInHeaders(OptInHeaderType.CLIENT_GROUP_MEMBERSHIP)
+                .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
         model = BinaryData.fromObject(model).toObject(RequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.SIGNED_AUXILIARY_TOKENS, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 }

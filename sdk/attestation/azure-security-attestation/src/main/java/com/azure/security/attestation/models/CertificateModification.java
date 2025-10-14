@@ -4,6 +4,7 @@
 
 package com.azure.security.attestation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class CertificateModification extends ExpandableStringEnum<Certific
     /**
      * After the operation was performed, the certificate is in the set of certificates.
      */
+    @Generated
     public static final CertificateModification IS_PRESENT = fromString("IsPresent");
 
     /**
      * After the operation was performed, the certificate is no longer present in the set of certificates.
      */
+    @Generated
     public static final CertificateModification IS_ABSENT = fromString("IsAbsent");
 
     /**
@@ -26,6 +29,7 @@ public final class CertificateModification extends ExpandableStringEnum<Certific
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CertificateModification() {
     }
@@ -36,6 +40,7 @@ public final class CertificateModification extends ExpandableStringEnum<Certific
      * @param name a name to look for.
      * @return the corresponding CertificateModification.
      */
+    @Generated
     public static CertificateModification fromString(String name) {
         return fromString(name, CertificateModification.class);
     }
@@ -45,6 +50,7 @@ public final class CertificateModification extends ExpandableStringEnum<Certific
      * 
      * @return known CertificateModification values.
      */
+    @Generated
     public static Collection<CertificateModification> values() {
         return values(CertificateModification.class);
     }

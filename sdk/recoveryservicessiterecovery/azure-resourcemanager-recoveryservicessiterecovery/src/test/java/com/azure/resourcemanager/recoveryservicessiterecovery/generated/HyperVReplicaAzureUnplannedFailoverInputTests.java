@@ -12,22 +12,22 @@ public final class HyperVReplicaAzureUnplannedFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureUnplannedFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"ydbjzcqymlcf\",\"secondaryKekCertificatePfx\":\"hmhsurlgwqkpm\",\"recoveryPointId\":\"pstauol\"}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"zukwdrnzkj\",\"secondaryKekCertificatePfx\":\"fceyjn\",\"recoveryPointId\":\"mlfuyfjbp\"}")
             .toObject(HyperVReplicaAzureUnplannedFailoverInput.class);
-        Assertions.assertEquals("ydbjzcqymlcf", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("hmhsurlgwqkpm", model.secondaryKekCertificatePfx());
-        Assertions.assertEquals("pstauol", model.recoveryPointId());
+        Assertions.assertEquals("zukwdrnzkj", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("fceyjn", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("mlfuyfjbp", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureUnplannedFailoverInput model
-            = new HyperVReplicaAzureUnplannedFailoverInput().withPrimaryKekCertificatePfx("ydbjzcqymlcf")
-                .withSecondaryKekCertificatePfx("hmhsurlgwqkpm")
-                .withRecoveryPointId("pstauol");
+            = new HyperVReplicaAzureUnplannedFailoverInput().withPrimaryKekCertificatePfx("zukwdrnzkj")
+                .withSecondaryKekCertificatePfx("fceyjn")
+                .withRecoveryPointId("mlfuyfjbp");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureUnplannedFailoverInput.class);
-        Assertions.assertEquals("ydbjzcqymlcf", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("hmhsurlgwqkpm", model.secondaryKekCertificatePfx());
-        Assertions.assertEquals("pstauol", model.recoveryPointId());
+        Assertions.assertEquals("zukwdrnzkj", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("fceyjn", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("mlfuyfjbp", model.recoveryPointId());
     }
 }

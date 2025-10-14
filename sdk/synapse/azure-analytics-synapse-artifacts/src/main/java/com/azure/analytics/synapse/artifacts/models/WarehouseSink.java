@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,39 +21,46 @@ public final class WarehouseSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "WarehouseSink";
 
     /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object preCopyScript;
 
     /*
      * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
      * boolean).
      */
+    @Generated
     private Object allowCopyCommand;
 
     /*
      * Specifies Copy Command related settings when allowCopyCommand is true.
      */
+    @Generated
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
      * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object tableOption;
 
     /*
      * Write behavior when copying data into azure Microsoft Fabric Data Warehouse. Type: DWWriteBehaviorEnum (or
      * Expression with resultType DWWriteBehaviorEnum)
      */
+    @Generated
     private Object writeBehavior;
 
     /**
      * Creates an instance of WarehouseSink class.
      */
+    @Generated
     public WarehouseSink() {
     }
 
@@ -61,6 +69,7 @@ public final class WarehouseSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -71,6 +80,7 @@ public final class WarehouseSink extends CopySink {
      * 
      * @return the preCopyScript value.
      */
+    @Generated
     public Object getPreCopyScript() {
         return this.preCopyScript;
     }
@@ -81,6 +91,7 @@ public final class WarehouseSink extends CopySink {
      * @param preCopyScript the preCopyScript value to set.
      * @return the WarehouseSink object itself.
      */
+    @Generated
     public WarehouseSink setPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
         return this;
@@ -92,6 +103,7 @@ public final class WarehouseSink extends CopySink {
      * 
      * @return the allowCopyCommand value.
      */
+    @Generated
     public Object getAllowCopyCommand() {
         return this.allowCopyCommand;
     }
@@ -103,6 +115,7 @@ public final class WarehouseSink extends CopySink {
      * @param allowCopyCommand the allowCopyCommand value to set.
      * @return the WarehouseSink object itself.
      */
+    @Generated
     public WarehouseSink setAllowCopyCommand(Object allowCopyCommand) {
         this.allowCopyCommand = allowCopyCommand;
         return this;
@@ -113,6 +126,7 @@ public final class WarehouseSink extends CopySink {
      * 
      * @return the copyCommandSettings value.
      */
+    @Generated
     public DWCopyCommandSettings getCopyCommandSettings() {
         return this.copyCommandSettings;
     }
@@ -123,6 +137,7 @@ public final class WarehouseSink extends CopySink {
      * @param copyCommandSettings the copyCommandSettings value to set.
      * @return the WarehouseSink object itself.
      */
+    @Generated
     public WarehouseSink setCopyCommandSettings(DWCopyCommandSettings copyCommandSettings) {
         this.copyCommandSettings = copyCommandSettings;
         return this;
@@ -134,6 +149,7 @@ public final class WarehouseSink extends CopySink {
      * 
      * @return the tableOption value.
      */
+    @Generated
     public Object getTableOption() {
         return this.tableOption;
     }
@@ -145,6 +161,7 @@ public final class WarehouseSink extends CopySink {
      * @param tableOption the tableOption value to set.
      * @return the WarehouseSink object itself.
      */
+    @Generated
     public WarehouseSink setTableOption(Object tableOption) {
         this.tableOption = tableOption;
         return this;
@@ -156,6 +173,7 @@ public final class WarehouseSink extends CopySink {
      * 
      * @return the writeBehavior value.
      */
+    @Generated
     public Object getWriteBehavior() {
         return this.writeBehavior;
     }
@@ -167,6 +185,7 @@ public final class WarehouseSink extends CopySink {
      * @param writeBehavior the writeBehavior value to set.
      * @return the WarehouseSink object itself.
      */
+    @Generated
     public WarehouseSink setWriteBehavior(Object writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
@@ -175,6 +194,7 @@ public final class WarehouseSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WarehouseSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -184,6 +204,7 @@ public final class WarehouseSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WarehouseSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -193,6 +214,7 @@ public final class WarehouseSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WarehouseSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -202,6 +224,7 @@ public final class WarehouseSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WarehouseSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -211,6 +234,7 @@ public final class WarehouseSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WarehouseSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -220,20 +244,39 @@ public final class WarehouseSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
-        jsonWriter.writeUntypedField("allowCopyCommand", this.allowCopyCommand);
+        if (this.preCopyScript != null) {
+            jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        }
+        if (this.allowCopyCommand != null) {
+            jsonWriter.writeUntypedField("allowCopyCommand", this.allowCopyCommand);
+        }
         jsonWriter.writeJsonField("copyCommandSettings", this.copyCommandSettings);
-        jsonWriter.writeUntypedField("tableOption", this.tableOption);
-        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (this.tableOption != null) {
+            jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        }
+        if (this.writeBehavior != null) {
+            jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -250,6 +293,7 @@ public final class WarehouseSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WarehouseSink.
      */
+    @Generated
     public static WarehouseSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WarehouseSink deserializedWarehouseSink = new WarehouseSink();

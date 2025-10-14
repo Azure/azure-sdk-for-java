@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
     /**
      * Static value Succeeded for TriggerRunStatus.
      */
+    @Generated
     public static final TriggerRunStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for TriggerRunStatus.
      */
+    @Generated
     public static final TriggerRunStatus FAILED = fromString("Failed");
 
     /**
      * Static value Inprogress for TriggerRunStatus.
      */
+    @Generated
     public static final TriggerRunStatus INPROGRESS = fromString("Inprogress");
 
     /**
@@ -31,6 +35,7 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TriggerRunStatus() {
     }
@@ -41,6 +46,7 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
      * @param name a name to look for.
      * @return the corresponding TriggerRunStatus.
      */
+    @Generated
     public static TriggerRunStatus fromString(String name) {
         return fromString(name, TriggerRunStatus.class);
     }
@@ -50,6 +56,7 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
      * 
      * @return known TriggerRunStatus values.
      */
+    @Generated
     public static Collection<TriggerRunStatus> values() {
         return values(TriggerRunStatus.class);
     }

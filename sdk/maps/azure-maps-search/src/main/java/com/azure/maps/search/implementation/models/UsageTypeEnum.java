@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class UsageTypeEnum extends ExpandableStringEnum<UsageTypeEnum> {
     /**
      * Static value Display for UsageTypeEnum.
      */
+    @Generated
     public static final UsageTypeEnum DISPLAY = fromString("Display");
 
     /**
      * Static value Route for UsageTypeEnum.
      */
+    @Generated
     public static final UsageTypeEnum ROUTE = fromString("Route");
 
     /**
@@ -26,6 +29,7 @@ public final class UsageTypeEnum extends ExpandableStringEnum<UsageTypeEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public UsageTypeEnum() {
     }
@@ -36,6 +40,7 @@ public final class UsageTypeEnum extends ExpandableStringEnum<UsageTypeEnum> {
      * @param name a name to look for.
      * @return the corresponding UsageTypeEnum.
      */
+    @Generated
     public static UsageTypeEnum fromString(String name) {
         return fromString(name, UsageTypeEnum.class);
     }
@@ -45,6 +50,7 @@ public final class UsageTypeEnum extends ExpandableStringEnum<UsageTypeEnum> {
      * 
      * @return known UsageTypeEnum values.
      */
+    @Generated
     public static Collection<UsageTypeEnum> values() {
         return values(UsageTypeEnum.class);
     }

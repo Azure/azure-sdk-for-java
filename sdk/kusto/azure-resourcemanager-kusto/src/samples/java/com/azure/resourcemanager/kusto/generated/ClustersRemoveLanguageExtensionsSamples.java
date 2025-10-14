@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ClustersRemoveLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
      * KustoClusterRemoveLanguageExtensions.json
      */
     /**

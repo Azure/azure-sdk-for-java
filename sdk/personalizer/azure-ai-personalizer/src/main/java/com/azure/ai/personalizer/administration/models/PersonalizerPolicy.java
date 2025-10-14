@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
     /*
      * Name of the learning settings.
      */
+    @Generated
     private String name;
 
     /*
      * Arguments of the learning settings.
      */
+    @Generated
     private String arguments;
 
     /**
      * Creates an instance of PersonalizerPolicy class.
      */
+    @Generated
     public PersonalizerPolicy() {
     }
 
@@ -37,6 +41,7 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
      * @param name the name value to set.
      * @return the PersonalizerPolicy object itself.
      */
+    @Generated
     public PersonalizerPolicy setName(String name) {
         this.name = name;
         return this;
@@ -57,6 +63,7 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
      * 
      * @return the arguments value.
      */
+    @Generated
     public String getArguments() {
         return this.arguments;
     }
@@ -67,6 +74,7 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
      * @param arguments the arguments value to set.
      * @return the PersonalizerPolicy object itself.
      */
+    @Generated
     public PersonalizerPolicy setArguments(String arguments) {
         this.arguments = arguments;
         return this;
@@ -75,6 +83,7 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerPolicy.
      */
+    @Generated
     public static PersonalizerPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerPolicy deserializedPersonalizerPolicy = new PersonalizerPolicy();

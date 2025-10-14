@@ -92,8 +92,12 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("fileMissing", this.fileMissing);
-        jsonWriter.writeUntypedField("dataInconsistency", this.dataInconsistency);
+        if (this.fileMissing != null) {
+            jsonWriter.writeUntypedField("fileMissing", this.fileMissing);
+        }
+        if (this.dataInconsistency != null) {
+            jsonWriter.writeUntypedField("dataInconsistency", this.dataInconsistency);
+        }
         return jsonWriter.writeEndObject();
     }
 

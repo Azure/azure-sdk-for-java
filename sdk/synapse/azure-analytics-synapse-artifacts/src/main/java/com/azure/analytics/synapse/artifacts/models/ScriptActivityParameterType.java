@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,61 +15,73 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
     /**
      * Static value Boolean for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType BOOLEAN = fromString("Boolean");
 
     /**
      * Static value DateTime for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType DATE_TIME = fromString("DateTime");
 
     /**
      * Static value DateTimeOffset for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType DATE_TIME_OFFSET = fromString("DateTimeOffset");
 
     /**
      * Static value Decimal for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType DECIMAL = fromString("Decimal");
 
     /**
      * Static value Double for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType DOUBLE = fromString("Double");
 
     /**
      * Static value Guid for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType GUID = fromString("Guid");
 
     /**
      * Static value Int16 for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType INT16 = fromString("Int16");
 
     /**
      * Static value Int32 for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType INT32 = fromString("Int32");
 
     /**
      * Static value Int64 for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType INT64 = fromString("Int64");
 
     /**
      * Static value Single for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType SINGLE = fromString("Single");
 
     /**
      * Static value String for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType STRING = fromString("String");
 
     /**
      * Static value Timespan for ScriptActivityParameterType.
      */
+    @Generated
     public static final ScriptActivityParameterType TIMESPAN = fromString("Timespan");
 
     /**
@@ -76,6 +89,7 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ScriptActivityParameterType() {
     }
@@ -86,6 +100,7 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
      * @param name a name to look for.
      * @return the corresponding ScriptActivityParameterType.
      */
+    @Generated
     public static ScriptActivityParameterType fromString(String name) {
         return fromString(name, ScriptActivityParameterType.class);
     }
@@ -95,6 +110,7 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
      * 
      * @return known ScriptActivityParameterType values.
      */
+    @Generated
     public static Collection<ScriptActivityParameterType> values() {
         return values(ScriptActivityParameterType.class);
     }

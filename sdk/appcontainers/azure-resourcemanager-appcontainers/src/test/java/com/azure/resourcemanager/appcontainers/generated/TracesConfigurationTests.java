@@ -13,18 +13,18 @@ public final class TracesConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TracesConfiguration model
-            = BinaryData.fromString("{\"includeDapr\":true,\"destinations\":[\"cdxfzzzwyjafitl\",\"guyn\",\"chl\"]}")
+            = BinaryData.fromString("{\"includeDapr\":true,\"destinations\":[\"jtkbusqogsfika\"]}")
                 .toObject(TracesConfiguration.class);
-        Assertions.assertEquals(true, model.includeDapr());
-        Assertions.assertEquals("cdxfzzzwyjafitl", model.destinations().get(0));
+        Assertions.assertTrue(model.includeDapr());
+        Assertions.assertEquals("jtkbusqogsfika", model.destinations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TracesConfiguration model = new TracesConfiguration().withIncludeDapr(true)
-            .withDestinations(Arrays.asList("cdxfzzzwyjafitl", "guyn", "chl"));
+        TracesConfiguration model
+            = new TracesConfiguration().withIncludeDapr(true).withDestinations(Arrays.asList("jtkbusqogsfika"));
         model = BinaryData.fromObject(model).toObject(TracesConfiguration.class);
-        Assertions.assertEquals(true, model.includeDapr());
-        Assertions.assertEquals("cdxfzzzwyjafitl", model.destinations().get(0));
+        Assertions.assertTrue(model.includeDapr());
+        Assertions.assertEquals("jtkbusqogsfika", model.destinations().get(0));
     }
 }

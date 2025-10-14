@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
     /*
      * Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47 language tag (ex. "zh-Hans").
      */
+    @Generated
     private final String locale;
 
     /*
      * Location of the text elements in the concatenated content the language applies to.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /*
      * Confidence of correctly identifying the language.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -40,6 +44,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentLanguage(String locale, List<DocumentSpan> spans, float confidence) {
         this.locale = locale;
         this.spans = spans;
@@ -52,6 +57,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
      * 
      * @return the locale value.
      */
+    @Generated
     public String getLocale() {
         return this.locale;
     }
@@ -61,6 +67,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -70,6 +77,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -77,6 +85,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class DocumentLanguage implements JsonSerializable<DocumentLanguage
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentLanguage.
      */
+    @Generated
     public static DocumentLanguage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean localeFound = false;

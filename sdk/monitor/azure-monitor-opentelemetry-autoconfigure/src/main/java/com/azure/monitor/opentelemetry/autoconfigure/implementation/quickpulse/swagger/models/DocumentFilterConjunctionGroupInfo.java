@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
     /*
      * Telemetry type.
      */
+    @Generated
     private TelemetryType telemetryType;
 
     /*
      * An array of filter groups.
      */
+    @Generated
     private FilterConjunctionGroupInfo filters;
 
     /**
      * Creates an instance of DocumentFilterConjunctionGroupInfo class.
      */
+    @Generated
     public DocumentFilterConjunctionGroupInfo() {
     }
 
@@ -37,6 +41,7 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
      * 
      * @return the telemetryType value.
      */
+    @Generated
     public TelemetryType getTelemetryType() {
         return this.telemetryType;
     }
@@ -47,6 +52,7 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
      * @param telemetryType the telemetryType value to set.
      * @return the DocumentFilterConjunctionGroupInfo object itself.
      */
+    @Generated
     public DocumentFilterConjunctionGroupInfo setTelemetryType(TelemetryType telemetryType) {
         this.telemetryType = telemetryType;
         return this;
@@ -57,6 +63,7 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
      * 
      * @return the filters value.
      */
+    @Generated
     public FilterConjunctionGroupInfo getFilters() {
         return this.filters;
     }
@@ -67,6 +74,7 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
      * @param filters the filters value to set.
      * @return the DocumentFilterConjunctionGroupInfo object itself.
      */
+    @Generated
     public DocumentFilterConjunctionGroupInfo setFilters(FilterConjunctionGroupInfo filters) {
         this.filters = filters;
         return this;
@@ -75,6 +83,7 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class DocumentFilterConjunctionGroupInfo implements JsonSerializabl
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentFilterConjunctionGroupInfo.
      */
+    @Generated
     public static DocumentFilterConjunctionGroupInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentFilterConjunctionGroupInfo deserializedDocumentFilterConjunctionGroupInfo

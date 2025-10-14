@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
  */
 public final class TopLevelDomainsListAgreementsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/
      * ListTopLevelDomainAgreements.json
      */
     /**

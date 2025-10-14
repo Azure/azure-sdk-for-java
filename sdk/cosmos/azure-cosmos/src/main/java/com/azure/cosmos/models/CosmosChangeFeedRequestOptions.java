@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosChangeFeedRequestOptionsImpl;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -83,6 +85,34 @@ public final class CosmosChangeFeedRequestOptions {
      */
     public CosmosChangeFeedRequestOptions setMaxItemCount(int maxItemCount) {
         this.actualRequestOptions.setMaxItemCount(maxItemCount);
+        return this;
+    }
+
+    /**
+     * Gets the read consistency strategy for the request.
+     *
+     * @return the read consistency strategy.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return this.actualRequestOptions.getReadConsistencyStrategy();
+    }
+
+    /**
+     * Sets the read consistency strategy required for the request. This allows specifying the effective consistency
+     * strategy for read/query and change feed operations and even request stronger consistency (`LOCAL_COMMITTED` for example) for
+     * accounts with lower default consistency level
+     * NOTE: If the read consistency strategy set on a request level here is `SESSION` and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     *
+     * @param readConsistencyStrategy the consistency level.
+     * @return the request options.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
     }
 
@@ -510,8 +540,10 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     /**
-     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
-     * These regions will be excluded from the preferred regions list
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list. If all the regions are excluded,
+     * the request will be sent to the primary region for the account. The primary region is the write region in a
+     * single master account and the hub region in a multi-master account.
      *
      * @param excludeRegions list of regions
      * @return the {@link CosmosChangeFeedRequestOptions}
@@ -624,7 +656,7 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                public Map<String, String> getHeaders(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getHeaders();
                 }
 
@@ -699,6 +731,15 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition) {
                     changeFeedRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
+                }
+
+                @Override
+                public Map<String, Object> getProperties(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    if (changeFeedRequestOptions == null) {
+                        return null;
+                    }
+
+                    return changeFeedRequestOptions.getImpl().getProperties();
                 }
             });
     }

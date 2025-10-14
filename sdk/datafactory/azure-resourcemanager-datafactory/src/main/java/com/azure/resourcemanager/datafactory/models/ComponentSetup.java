@@ -48,7 +48,7 @@ public final class ComponentSetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private LicensedComponentSetupTypeProperties innerTypeProperties() {
+    LicensedComponentSetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

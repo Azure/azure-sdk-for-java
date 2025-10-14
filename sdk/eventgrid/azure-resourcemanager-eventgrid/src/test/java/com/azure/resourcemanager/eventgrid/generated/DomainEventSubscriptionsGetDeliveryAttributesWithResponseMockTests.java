@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
@@ -21,19 +21,19 @@ public final class DomainEventSubscriptionsGetDeliveryAttributesWithResponseMock
     @Test
     public void testGetDeliveryAttributesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"kipfsdyepf\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"cmbezac\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ztgaz\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qejg\"}]}";
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"zgeuqxbpiat\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"aujegqdtadra\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeliveryAttributeListResult response = manager.domainEventSubscriptions()
-            .getDeliveryAttributesWithResponse("vkolrupjovmo", "sayebra", "wzlpzbtz", com.azure.core.util.Context.NONE)
+            .getDeliveryAttributesWithResponse("kxp", "jpewpyjlfx", "m", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kipfsdyepf", response.value().get(0).name());
+        Assertions.assertEquals("zgeuqxbpiat", response.value().get(0).name());
     }
 }

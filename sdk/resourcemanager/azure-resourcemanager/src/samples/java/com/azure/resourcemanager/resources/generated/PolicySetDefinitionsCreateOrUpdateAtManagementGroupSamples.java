@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
      */
     /**
@@ -34,7 +34,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .createOrUpdateAtManagementGroupWithResponse("CostManagement", "MyManagementGroup",
+            .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")
                     .withDescription("Policies to enforce low cost storage SKUs")
                     .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
@@ -66,7 +66,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicySetDefinitionAtManagementGroup.json
      */
     /**
@@ -80,7 +80,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .createOrUpdateAtManagementGroupWithResponse("CostManagement", "MyManagementGroup",
+            .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")
                     .withDescription("Policies to enforce low cost storage SKUs")
                     .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()

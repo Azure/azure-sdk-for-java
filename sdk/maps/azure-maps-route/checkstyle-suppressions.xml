@@ -4,12 +4,6 @@
 
 <suppressions>
   <suppress files="com.azure.maps.route.package-info.java" checks="HeaderCheck" />
-  <suppress files="com.azure.maps.route.implementation.helpers.Utility.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.maps.route.implementation.RoutesImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.maps.route.implementation.helpers.RouteDirectionsBatchResultPropertiesHelper.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.maps.route.implementation.helpers.RouteMatrixResultPropertiesHelper.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.maps.route.implementation.helpers.Utility.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.maps.route.implementation.models.ErrorDetail.java" checks="com.azure.tools.checkstyle.checks.ImmutableClassCheck" />
-  <suppress files="com.azure.maps.route.implementation.helpers.Utility.java" checks="com.azure.tools.checkstyle.checks.JavaDocFormatting" />
-  <suppress files="com.azure.maps.route.implementation.RouteClientImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.maps.route.implementation.models.ErrorDetail.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ImmutableClassCheck" />
+  <suppress files="com.azure.maps.route.implementation.RouteClientImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>

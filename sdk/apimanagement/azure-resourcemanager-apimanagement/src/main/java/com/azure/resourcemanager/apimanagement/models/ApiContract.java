@@ -79,6 +79,13 @@ public interface ApiContract {
     ApiVersionSetContractDetails apiVersionSet();
 
     /**
+     * Gets the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    String provisioningState();
+
+    /**
      * Gets the description property: Description of the API. May include HTML formatting tags.
      * 
      * @return the description value.
@@ -279,9 +286,11 @@ public interface ApiContract {
          */
         interface WithFormat {
             /**
-             * Specifies the format property: Format of the Content in which the API is getting imported..
+             * Specifies the format property: Format of the Content in which the API is getting imported. New formats
+             * can be added in the future.
              * 
-             * @param format Format of the Content in which the API is getting imported.
+             * @param format Format of the Content in which the API is getting imported. New formats can be added in the
+             * future.
              * @return the next definition stage.
              */
             WithCreate withFormat(ContentFormat format);
@@ -309,13 +318,15 @@ public interface ApiContract {
              * * `http` creates a REST API
              * * `soap` creates a SOAP pass-through API
              * * `websocket` creates websocket API
-             * * `graphql` creates GraphQL API..
+             * * `graphql` creates GraphQL API.
+             * New types can be added in the future..
              * 
              * @param soapApiType Type of API to create.
              * * `http` creates a REST API
              * * `soap` creates a SOAP pass-through API
              * * `websocket` creates websocket API
              * * `graphql` creates GraphQL API.
+             * New types can be added in the future.
              * @return the next definition stage.
              */
             WithCreate withSoapApiType(SoapApiType soapApiType);

@@ -11,7 +11,7 @@ public final class ResourceSkuZoneDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuZoneDetails model = BinaryData.fromString(
-            "{\"name\":[\"dxxiv\",\"tvtc\",\"aqtdoqmcbx\",\"wvxysl\"],\"capabilities\":[{\"name\":\"fxoblytkb\",\"value\":\"pe\"},{\"name\":\"wfbkrvrns\",\"value\":\"hqjohxcrsbfova\"},{\"name\":\"ruvw\",\"value\":\"sqfsubcgjbirxb\"}]}")
+            "{\"name\":[\"wqapnedgfbcvk\"],\"capabilities\":[{\"name\":\"pkeqdcvdrhvoo\",\"value\":\"otbobzdopcj\"}]}")
             .toObject(ResourceSkuZoneDetails.class);
     }
 

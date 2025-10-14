@@ -13,18 +13,18 @@ public final class MetricsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsConfiguration model
-            = BinaryData.fromString("{\"includeKeda\":true,\"destinations\":[\"jzfpafolpymwamx\"]}")
+            = BinaryData.fromString("{\"includeKeda\":false,\"destinations\":[\"cmfdjwnlax\",\"un\"]}")
                 .toObject(MetricsConfiguration.class);
-        Assertions.assertEquals(true, model.includeKeda());
-        Assertions.assertEquals("jzfpafolpymwamx", model.destinations().get(0));
+        Assertions.assertFalse(model.includeKeda());
+        Assertions.assertEquals("cmfdjwnlax", model.destinations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetricsConfiguration model
-            = new MetricsConfiguration().withIncludeKeda(true).withDestinations(Arrays.asList("jzfpafolpymwamx"));
+            = new MetricsConfiguration().withIncludeKeda(false).withDestinations(Arrays.asList("cmfdjwnlax", "un"));
         model = BinaryData.fromObject(model).toObject(MetricsConfiguration.class);
-        Assertions.assertEquals(true, model.includeKeda());
-        Assertions.assertEquals("jzfpafolpymwamx", model.destinations().get(0));
+        Assertions.assertFalse(model.includeKeda());
+        Assertions.assertEquals("cmfdjwnlax", model.destinations().get(0));
     }
 }

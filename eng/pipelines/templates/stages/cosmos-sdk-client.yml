@@ -17,6 +17,9 @@ parameters:
 - name: LanguageFilter
   type: object
   default: []
+- name: VnextEmulatorModes
+  type: object
+  default: ['Http', 'Https']
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -88,15 +91,10 @@ extends:
               BuildParallelization: 1
               DisableAzureResourceCreation: true
               ServiceDirectory: cosmos
-              ACCOUNT_HOST: 'https://localhost:8081/'
-              ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-              SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-              # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
+              # Increased timeout to 120 because of cosmos emulator taking 25-30 mins to download emulator
               # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
-              TimeoutInMinutes: 90
-              TestGoals: 'clean verify'
+              TimeoutInMinutes: 120
               TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
-
               PreSteps:
               - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
                 parameters:
@@ -111,6 +109,10 @@ extends:
                   $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
                 displayName: 'Export Cosmos DB Emulator Certificate'
               - powershell: |
+                  $javaTestVersion = "$(JavaTestVersion)".Substring(2)
+                  $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
+                  [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $javaHomeValue)
+                  Write-Host "JAVA_HOME is set to $env:JAVA_HOME"
                   if (Test-Path $env:JAVA_HOME\jre\lib\security) {
                     cd $env:JAVA_HOME\jre\lib\security
                   } elseif (Test-Path $env:JAVA_HOME\lib\security) {
@@ -119,78 +121,49 @@ extends:
                     Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
                     exit 1
                   }
+                  pwd
                   cp $env:temp\CosmosDbEmulatorCert.cer .
+                  keytool -keystore cacerts -delete -noprompt -alias CosmosDbEmulatorCert -storepass changeit
                   keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
                 displayName: 'Create Java TrustStore'
 
-      - stage: TestVNextEmulatorHttp
-        displayName: Test VNext Emulator with Http
-        dependsOn: [ ]
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - template: /eng/pipelines/templates/variables/image.yml
-          - name: ArtifactsJson
-            value: '${{ convertToJson(parameters.Artifacts) }}'
-          - name: AdditionalModulesJson
-            value: '${{ convertToJson(parameters.AdditionalModules) }}'
-        jobs:
-          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
-            parameters:
-              JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-              MatrixConfigs:
-                - Name: Cosmos_vnext_emulator_http_integration
-                  Path: eng/pipelines/templates/stages/cosmos-emulator-vnext-matrix.json
-                  Selection: all
-                  GenerateVMJobs: true
-              MatrixFilters:
-                - ${{ parameters.LanguageFilter }}
-                - ${{ parameters.MatrixFilters }}
-              AdditionalParameters:
-                BuildParallelization: 1
-                DisableAzureResourceCreation: true
-                ServiceDirectory: cosmos
-                ACCOUNT_HOST: 'http://localhost:8081/'
-                ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-                SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-                TimeoutInMinutes: 90
-                TestGoals: 'clean verify'
-                TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED=true'
-                PreSteps:
-                  - template: /eng/pipelines/templates/stages/cosmos-vnext-emulator-http.yml
-      - stage: TestVNextEmulatorHttps
-        displayName: Test VNext Emulator with Https
-        dependsOn: [ ]
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - template: /eng/pipelines/templates/variables/image.yml
-          - name: ArtifactsJson
-            value: '${{ convertToJson(parameters.Artifacts) }}'
-          - name: AdditionalModulesJson
-            value: '${{ convertToJson(parameters.AdditionalModules) }}'
-        jobs:
-          - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
-            parameters:
-              JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-              MatrixConfigs:
-                - Name: Cosmos_vnext_emulator_http_integration
-                  Path: eng/pipelines/templates/stages/cosmos-emulator-vnext-matrix.json
-                  Selection: all
-                  GenerateVMJobs: true
-              MatrixFilters:
-                - ${{ parameters.LanguageFilter }}
-                - ${{ parameters.MatrixFilters }}
-              AdditionalParameters:
-                BuildParallelization: 1
-                DisableAzureResourceCreation: true
-                ServiceDirectory: cosmos
-                ACCOUNT_HOST: 'https://localhost:8081/'
-                ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-                SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-                TimeoutInMinutes: 90
-                TestGoals: 'clean verify'
-                TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED=true'
-                PreSteps:
-                  - template: /eng/pipelines/templates/stages/cosmos-vnext-emulator-https.yml
+      - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+        - ${{ each mode in parameters.VnextEmulatorModes }}:
+          - stage:
+            displayName: Test VNext Emulator with ${{ mode }}
+            dependsOn: [ ]
+            variables:
+              - template: /eng/pipelines/templates/variables/globals.yml
+              - template: /eng/pipelines/templates/variables/image.yml
+              - name: ArtifactsJson
+                value: '${{ convertToJson(parameters.Artifacts) }}'
+              - name: AdditionalModulesJson
+                value: '${{ convertToJson(parameters.AdditionalModules) }}'
+            jobs:
+              - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+                parameters:
+                  JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+                  MatrixConfigs:
+                    - Name: Cosmos_vnext_emulator_http_integration
+                      Path: eng/pipelines/templates/stages/cosmos-emulator-vnext-matrix.json
+                      Selection: all
+                      GenerateVMJobs: true
+                  MatrixFilters:
+                    - ${{ parameters.LanguageFilter }}
+                    - ${{ parameters.MatrixFilters }}
+                  AdditionalParameters:
+                    BuildParallelization: 1
+                    DisableAzureResourceCreation: true
+                    ServiceDirectory: cosmos
+                    TimeoutInMinutes: 120
+                    ${{ if eq(mode, 'Https') }}:
+                      TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=https://localhost:8081/ -DCOSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED=true'
+                    ${{ else }}:
+                      TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DACCOUNT_HOST=http://localhost:8081/ -DCOSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED=true'
+                    PreSteps:
+                      - template: /eng/pipelines/templates/steps/cosmos-vnext-emulator.yml
+                        parameters:
+                          Https: ${{ eq(mode, 'Https') }}
 
       # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
       - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -211,5 +184,3 @@ extends:
                 - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                   - ${{ artifact }}
             TestPipeline: false
-            ArtifactName: packages
-

@@ -21,7 +21,7 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateLinkResourceId\":\"wvnph\",\"privateLinkResourceRegion\":\"zqtpjhmq\",\"groupId\":\"hvthlaiwdcxsm\",\"requestMessage\":\"zhzdtxetlgydlhqv\",\"provisioningState\":\"Running\"},\"id\":\"xybafiqgea\",\"name\":\"rbgjekglkl\",\"type\":\"yulidwcwvm\"}";
+            = "{\"properties\":{\"privateLinkResourceId\":\"cecybmrqbrjbbmpx\",\"privateLinkResourceRegion\":\"vykfrexcrse\",\"groupId\":\"wjksghudgzhxo\",\"requestMessage\":\"ggsvoujkxibdaf\",\"provisioningState\":\"Creating\"},\"id\":\"dyomkxfbv\",\"name\":\"bhdyir\",\"type\":\"pwpgddei\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedPrivateEndpoint response = manager.managedPrivateEndpoints()
-            .getWithResponse("vdulajv", "ejchcsrlz", "nmzlanru", com.azure.core.util.Context.NONE)
+            .getWithResponse("uvqejosovyrrle", "esi", "uqtljqobbpih", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wvnph", response.privateLinkResourceId());
-        Assertions.assertEquals("zqtpjhmq", response.privateLinkResourceRegion());
-        Assertions.assertEquals("hvthlaiwdcxsm", response.groupId());
-        Assertions.assertEquals("zhzdtxetlgydlhqv", response.requestMessage());
+        Assertions.assertEquals("cecybmrqbrjbbmpx", response.privateLinkResourceId());
+        Assertions.assertEquals("vykfrexcrse", response.privateLinkResourceRegion());
+        Assertions.assertEquals("wjksghudgzhxo", response.groupId());
+        Assertions.assertEquals("ggsvoujkxibdaf", response.requestMessage());
     }
 }

@@ -52,7 +52,7 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties() {
+    GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

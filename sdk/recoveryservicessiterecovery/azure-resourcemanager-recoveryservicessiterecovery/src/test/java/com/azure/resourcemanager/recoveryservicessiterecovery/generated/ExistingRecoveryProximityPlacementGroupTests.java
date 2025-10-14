@@ -12,16 +12,16 @@ public final class ExistingRecoveryProximityPlacementGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExistingRecoveryProximityPlacementGroup model
-            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"recoveryProximityPlacementGroupId\":\"guhfupe\"}")
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"recoveryProximityPlacementGroupId\":\"regp\"}")
                 .toObject(ExistingRecoveryProximityPlacementGroup.class);
-        Assertions.assertEquals("guhfupe", model.recoveryProximityPlacementGroupId());
+        Assertions.assertEquals("regp", model.recoveryProximityPlacementGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExistingRecoveryProximityPlacementGroup model
-            = new ExistingRecoveryProximityPlacementGroup().withRecoveryProximityPlacementGroupId("guhfupe");
+            = new ExistingRecoveryProximityPlacementGroup().withRecoveryProximityPlacementGroupId("regp");
         model = BinaryData.fromObject(model).toObject(ExistingRecoveryProximityPlacementGroup.class);
-        Assertions.assertEquals("guhfupe", model.recoveryProximityPlacementGroupId());
+        Assertions.assertEquals("regp", model.recoveryProximityPlacementGroupId());
     }
 }

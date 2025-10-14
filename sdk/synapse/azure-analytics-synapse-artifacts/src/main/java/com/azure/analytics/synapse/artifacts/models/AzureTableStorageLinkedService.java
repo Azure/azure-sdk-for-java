@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,39 +22,59 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureTableStorage";
 
     /*
      * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of accountKey in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference accountKey;
 
     /*
      * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string,
      * SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object sasUri;
 
     /*
      * The Azure key vault secret reference of sasToken in sas uri.
      */
+    @Generated
     private AzureKeyVaultSecretReference sasToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private String encryptedCredential;
+
+    /*
+     * Table service endpoint of the Azure Table Storage resource. It is mutually exclusive with connectionString,
+     * sasUri property.
+     */
+    @Generated
+    private Object serviceEndpoint;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @Generated
+    private CredentialReference credential;
 
     /**
      * Creates an instance of AzureTableStorageLinkedService class.
      */
+    @Generated
     public AzureTableStorageLinkedService() {
     }
 
@@ -62,6 +83,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -73,6 +95,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -84,6 +107,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
+    @Generated
     public AzureTableStorageLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -94,6 +118,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the accountKey value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getAccountKey() {
         return this.accountKey;
     }
@@ -104,6 +129,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * @param accountKey the accountKey value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
+    @Generated
     public AzureTableStorageLinkedService setAccountKey(AzureKeyVaultSecretReference accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -115,6 +141,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the sasUri value.
      */
+    @Generated
     public Object getSasUri() {
         return this.sasUri;
     }
@@ -126,6 +153,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * @param sasUri the sasUri value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
+    @Generated
     public AzureTableStorageLinkedService setSasUri(Object sasUri) {
         this.sasUri = sasUri;
         return this;
@@ -136,6 +164,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the sasToken value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getSasToken() {
         return this.sasToken;
     }
@@ -146,6 +175,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * @param sasToken the sasToken value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
+    @Generated
     public AzureTableStorageLinkedService setSasToken(AzureKeyVaultSecretReference sasToken) {
         this.sasToken = sasToken;
         return this;
@@ -157,6 +187,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public String getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -168,14 +199,72 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
+    @Generated
     public AzureTableStorageLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
+     * Get the serviceEndpoint property: Table service endpoint of the Azure Table Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @return the serviceEndpoint value.
+     */
+    @Generated
+    public Object getServiceEndpoint() {
+        return this.serviceEndpoint;
+    }
+
+    /**
+     * Set the serviceEndpoint property: Table service endpoint of the Azure Table Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @param serviceEndpoint the serviceEndpoint value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    @Generated
+    public AzureTableStorageLinkedService setServiceEndpoint(Object serviceEndpoint) {
+        this.serviceEndpoint = serviceEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    @Generated
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    @Generated
+    public AzureTableStorageLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureTableStorageLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureTableStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -185,6 +274,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -194,6 +284,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -203,6 +294,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -212,9 +304,11 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -224,13 +318,23 @@ public class AzureTableStorageLinkedService extends LinkedService {
             || accountKey != null
             || sasUri != null
             || sasToken != null
-            || encryptedCredential != null) {
+            || encryptedCredential != null
+            || serviceEndpoint != null
+            || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
             jsonWriter.writeJsonField("accountKey", this.accountKey);
-            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+            if (this.sasUri != null) {
+                jsonWriter.writeUntypedField("sasUri", this.sasUri);
+            }
             jsonWriter.writeJsonField("sasToken", this.sasToken);
             jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+            if (this.serviceEndpoint != null) {
+                jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+            }
+            jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -249,6 +353,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureTableStorageLinkedService.
      */
+    @Generated
     public static AzureTableStorageLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureTableStorageLinkedService deserializedAzureTableStorageLinkedService
@@ -258,7 +363,9 @@ public class AzureTableStorageLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureTableStorageLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureTableStorageLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -289,6 +396,11 @@ public class AzureTableStorageLinkedService extends LinkedService {
                                 = AzureKeyVaultSecretReference.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedAzureTableStorageLinkedService.encryptedCredential = reader.getString();
+                        } else if ("serviceEndpoint".equals(fieldName)) {
+                            deserializedAzureTableStorageLinkedService.serviceEndpoint = reader.readUntyped();
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedAzureTableStorageLinkedService.credential
+                                = CredentialReference.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Type;
@@ -23,23 +23,22 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":3989297053775783525,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"oxaxm\"},\"location\":\"qalhhjnh\",\"tags\":{\"qtanarfdlpuk\":\"dyynfsvkhgb\",\"neizjcpe\":\"py\",\"hpfpazjzoywjxhp\":\"gkhnmgbrouxddbh\"},\"id\":\"ulontacnpqwteht\",\"name\":\"evrh\",\"type\":\"ljyoogwx\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":1290302634644263235,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"dmflhuytx\"},\"location\":\"tznapxbannovv\",\"tags\":{\"lyokrrrou\":\"zytprwnwvroevy\",\"sasbcrymodizrx\":\"xv\"},\"id\":\"lobdxna\",\"name\":\"pmkmlmvevfx\",\"type\":\"op\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules()
-            .listByVolume("etndnbfqyggagf", "nlgmtrwahzjmu", "ftbyrplro", "kpigqfusu",
-                com.azure.core.util.Context.NONE);
+            .listByVolume("bdxxe", "unin", "udbchaqdtv", "ec", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qalhhjnh", response.iterator().next().location());
-        Assertions.assertEquals("dyynfsvkhgb", response.iterator().next().tags().get("qtanarfdlpuk"));
-        Assertions.assertEquals(3989297053775783525L, response.iterator().next().quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("oxaxm", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("tznapxbannovv", response.iterator().next().location());
+        Assertions.assertEquals("zytprwnwvroevy", response.iterator().next().tags().get("lyokrrrou"));
+        Assertions.assertEquals(1290302634644263235L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.iterator().next().quotaType());
+        Assertions.assertEquals("dmflhuytx", response.iterator().next().quotaTarget());
     }
 }

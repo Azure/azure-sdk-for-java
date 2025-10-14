@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
@@ -26,43 +26,44 @@ public final class PartnerTopicsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"d0257b0e-0de3-4939-a123-1d5e254e277e\",\"source\":\"vcshtkut\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"aj\":{\"description\":\"dirdammtzjgc\",\"displayName\":\"fxtbwjjirmuydg\",\"documentationUrl\":\"tmdofgeoag\",\"dataSchemaUrl\":\"oftnxodwxm\"},\"vamyyznmrgcdo\":{\"description\":\"ygmgsevm\",\"displayName\":\"zenlrstgfcz\",\"documentationUrl\":\"d\",\"dataSchemaUrl\":\"idt\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-07-31T23:14:26Z\",\"provisioningState\":\"Failed\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"oxuwhttnzqsaqm\",\"messageForActivation\":\"gszplus\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"z\",\"tenantId\":\"sgpgvokyejidbd\",\"userAssignedIdentities\":{\"wfkcauxuvavcpf\":{\"principalId\":\"unycwztlvvwsnm\",\"clientId\":\"kyjtrepw\"},\"lzwilfngojf\":{\"principalId\":\"ofuckc\",\"clientId\":\"txluevs\"},\"kktpmbmxbmbr\":{\"principalId\":\"ebuuxjx\",\"clientId\":\"xfjwp\"}}},\"location\":\"gzzxljbkhxsd\",\"tags\":{\"hweqjfyxydgtok\":\"umyd\"},\"id\":\"qbvwglgw\",\"name\":\"pvxakglhpsesrfga\",\"type\":\"qiy\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"989c271b-e9fb-4b5d-8214-8d3c323a94f5\",\"source\":\"mzrqraz\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"gbsfsgsaenwldf\":{\"description\":\"laslksk\",\"displayName\":\"qj\",\"documentationUrl\":\"baihxjtgzg\",\"dataSchemaUrl\":\"iywbqgro\"},\"yckhefrbhseue\":{\"description\":\"ljql\",\"displayName\":\"pmrjctryl\",\"documentationUrl\":\"xebuhsxrznmg\",\"dataSchemaUrl\":\"al\"},\"s\":{\"description\":\"gpxebjludcayt\",\"displayName\":\"raxdt\",\"documentationUrl\":\"yjmgtnsewo\",\"dataSchemaUrl\":\"ly\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-28T10:44:47Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"e\",\"messageForActivation\":\"sehq\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"twjwdsdlzm\",\"tenantId\":\"erxxxoteehkhowgo\",\"userAssignedIdentities\":{\"wbmpspfeylqloc\":{\"principalId\":\"xowpcbapn\",\"clientId\":\"raq\"},\"avxjfiuofpiei\":{\"principalId\":\"ujexayglxrk\",\"clientId\":\"nmzpas\"},\"yhydvikmfn\":{\"principalId\":\"lvs\",\"clientId\":\"ywjopac\"},\"ydyeuy\":{\"principalId\":\"millxgjs\",\"clientId\":\"zwgsoriobije\"}}},\"location\":\"hbo\",\"tags\":{\"wybriopdwe\":\"r\",\"norwaigsio\":\"f\"},\"id\":\"tqkmvjanxvzf\",\"name\":\"f\",\"type\":\"tj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerTopic> response = manager.partnerTopics()
-            .listByResourceGroup("toakatprytgrhz", "qfdpf", 603344976, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("mcxqqxmyzklao", "n", 1551780859, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gzzxljbkhxsd", response.iterator().next().location());
-        Assertions.assertEquals("umyd", response.iterator().next().tags().get("hweqjfyxydgtok"));
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("z", response.iterator().next().identity().principalId());
-        Assertions.assertEquals("sgpgvokyejidbd", response.iterator().next().identity().tenantId());
-        Assertions.assertEquals("unycwztlvvwsnm",
-            response.iterator().next().identity().userAssignedIdentities().get("wfkcauxuvavcpf").principalId());
-        Assertions.assertEquals("kyjtrepw",
-            response.iterator().next().identity().userAssignedIdentities().get("wfkcauxuvavcpf").clientId());
-        Assertions.assertEquals(UUID.fromString("d0257b0e-0de3-4939-a123-1d5e254e277e"),
+        Assertions.assertEquals("hbo", response.iterator().next().location());
+        Assertions.assertEquals("r", response.iterator().next().tags().get("wybriopdwe"));
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("twjwdsdlzm", response.iterator().next().identity().principalId());
+        Assertions.assertEquals("erxxxoteehkhowgo", response.iterator().next().identity().tenantId());
+        Assertions.assertEquals("xowpcbapn",
+            response.iterator().next().identity().userAssignedIdentities().get("wbmpspfeylqloc").principalId());
+        Assertions.assertEquals("raq",
+            response.iterator().next().identity().userAssignedIdentities().get("wbmpspfeylqloc").clientId());
+        Assertions.assertEquals(UUID.fromString("989c271b-e9fb-4b5d-8214-8d3c323a94f5"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("vcshtkut", response.iterator().next().source());
+        Assertions.assertEquals("mzrqraz", response.iterator().next().source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.iterator().next().eventTypeInfo().kind());
-        Assertions.assertEquals("dirdammtzjgc",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("aj").description());
-        Assertions.assertEquals("fxtbwjjirmuydg",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("aj").displayName());
-        Assertions.assertEquals("tmdofgeoag",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("aj").documentationUrl());
-        Assertions.assertEquals("oftnxodwxm",
-            response.iterator().next().eventTypeInfo().inlineEventTypes().get("aj").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T23:14:26Z"),
+        Assertions.assertEquals("laslksk",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").description());
+        Assertions.assertEquals("qj",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").displayName());
+        Assertions.assertEquals("baihxjtgzg",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").documentationUrl());
+        Assertions.assertEquals("iywbqgro",
+            response.iterator().next().eventTypeInfo().inlineEventTypes().get("gbsfsgsaenwldf").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T10:44:47Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerTopicActivationState.ACTIVATED, response.iterator().next().activationState());
-        Assertions.assertEquals("oxuwhttnzqsaqm", response.iterator().next().partnerTopicFriendlyDescription());
-        Assertions.assertEquals("gszplus", response.iterator().next().messageForActivation());
+        Assertions.assertEquals("e", response.iterator().next().partnerTopicFriendlyDescription());
+        Assertions.assertEquals("sehq", response.iterator().next().messageForActivation());
     }
 }

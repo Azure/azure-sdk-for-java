@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.CreateRunResponse;
@@ -22,23 +22,21 @@ import reactor.core.publisher.Mono;
 public final class PipelinesCreateRunWithResponseMockTests {
     @Test
     public void testCreateRunWithResponse() throws Exception {
-        String responseStr = "{\"runId\":\"ucsop\"}";
+        String responseStr = "{\"runId\":\"pxdnkgrxhpx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CreateRunResponse response = manager.pipelines()
-            .createRunWithResponse("xiiumrdbqujyij", "ciaznpsvgupqwqs", "mntlbfknxzc", "uvjbfryortbres", true,
-                "cpbtvgiokz", false,
-                mapOf("ubggjdluwbmwu", "datavswdwawomkzussgj", "ptwvamymswfwc", "databekzcmfibboz"),
-                com.azure.core.util.Context.NONE)
+            .createRunWithResponse("icznotggy", "nssghafzdzdf", "udmiutzuriqlksba", "yxtiqzjrxh", false, "qheqzdxda",
+                false, mapOf("wjzqmbe", "dataetgymd"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ucsop", response.runId());
+        Assertions.assertEquals("pxdnkgrxhpx", response.runId());
     }
 
     // Use "Map.of" if available

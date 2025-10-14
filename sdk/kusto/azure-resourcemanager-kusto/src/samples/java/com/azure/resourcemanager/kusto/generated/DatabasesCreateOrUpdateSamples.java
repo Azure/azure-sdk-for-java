@@ -15,7 +15,7 @@ import java.time.Duration;
 public final class DatabasesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseReadonlyUpdate
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseReadonlyUpdate
      * .json
      */
     /**
@@ -31,7 +31,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
      * KustoDatabasesCreateOrUpdate.json
      */
     /**

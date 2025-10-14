@@ -18,7 +18,7 @@ autorest
 ### Code generation settings
 
 ```yaml
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58767be9a357c436ee99706edda49e9c4a8a4e05/specification/cosmos-db/data-plane/Microsoft.Tables/preview/2019-02-02/table.json
 java: true
 output-folder: ..\

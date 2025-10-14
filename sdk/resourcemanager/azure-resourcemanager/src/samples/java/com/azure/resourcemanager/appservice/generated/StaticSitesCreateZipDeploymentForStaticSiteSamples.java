@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmRes
 public final class StaticSitesCreateZipDeploymentForStaticSiteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/StaticSiteZipDeploy.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/StaticSiteZipDeploy.json
      */
     /**
      * Sample code: Deploy a site from a zipped package.

@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SelfTracingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelfTracing model = BinaryData.fromString("{\"mode\":\"Disabled\",\"intervalSeconds\":621270176}")
+        SelfTracing model = BinaryData.fromString("{\"mode\":\"Disabled\",\"intervalSeconds\":1095106401}")
             .toObject(SelfTracing.class);
         Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(621270176, model.intervalSeconds());
+        Assertions.assertEquals(1095106401, model.intervalSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfTracing model = new SelfTracing().withMode(OperationalMode.DISABLED).withIntervalSeconds(621270176);
+        SelfTracing model = new SelfTracing().withMode(OperationalMode.DISABLED).withIntervalSeconds(1095106401);
         model = BinaryData.fromObject(model).toObject(SelfTracing.class);
         Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(621270176, model.intervalSeconds());
+        Assertions.assertEquals(1095106401, model.intervalSeconds());
     }
 }

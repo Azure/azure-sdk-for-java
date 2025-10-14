@@ -46,10 +46,10 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1",
      * "Password22", "iloveyou!" <br><br> For resetting the password, see [How to
      * reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * <br><br> For resetting root password, see [Manage users, SSH, and check or
      * repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
+     * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
     private String adminPassword;
 
@@ -58,7 +58,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * is decoded to a binary array that is saved as a file on the Virtual Machine.
      * The maximum length of the binary array is 65535 bytes. For using cloud-init for
      * your VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
+     * creation](https://learn.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
      */
     private String customData;
 
@@ -70,7 +70,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
     /*
      * Specifies the Linux operating system settings on the virtual machine. For a
      * list of supported Linux distributions, see [Linux on Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+     * Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
     private LinuxConfiguration linuxConfiguration;
 
@@ -78,9 +78,9 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * Specifies set of certificates that should be installed onto the virtual
      * machines in the scale set. To install certificates on a virtual machine it is
      * recommended to use the [Azure Key Vault virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * Linux](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
      * or the [Azure Key Vault virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+     * Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     private List<VaultSecretGroup> secrets;
 
@@ -174,10 +174,10 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1",
      * "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to
      * reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or
      * repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
+     * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
      * 
      * @return the adminPassword value.
      */
@@ -197,10 +197,10 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1",
      * "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to
      * reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or
      * repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
+     * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
      * 
      * @param adminPassword the adminPassword value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
@@ -215,7 +215,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * is decoded to a binary array that is saved as a file on the Virtual Machine.
      * The maximum length of the binary array is 65535 bytes. For using cloud-init for
      * your VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+     * creation](https://learn.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      * 
      * @return the customData value.
      */
@@ -228,7 +228,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * is decoded to a binary array that is saved as a file on the Virtual Machine.
      * The maximum length of the binary array is 65535 bytes. For using cloud-init for
      * your VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+     * creation](https://learn.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      * 
      * @param customData the customData value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
@@ -261,7 +261,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
     /**
      * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
      * list of supported Linux distributions, see [Linux on Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+     * Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      * 
      * @return the linuxConfiguration value.
      */
@@ -272,7 +272,7 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
     /**
      * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
      * list of supported Linux distributions, see [Linux on Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+     * Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      * 
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
@@ -286,9 +286,9 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * Get the secrets property: Specifies set of certificates that should be installed onto the virtual
      * machines in the scale set. To install certificates on a virtual machine it is
      * recommended to use the [Azure Key Vault virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * Linux](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
      * or the [Azure Key Vault virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+     * Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      * 
      * @return the secrets value.
      */
@@ -300,9 +300,9 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
      * Set the secrets property: Specifies set of certificates that should be installed onto the virtual
      * machines in the scale set. To install certificates on a virtual machine it is
      * recommended to use the [Azure Key Vault virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * Linux](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
      * or the [Azure Key Vault virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+     * Windows](https://learn.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      * 
      * @param secrets the secrets value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
@@ -356,23 +356,6 @@ public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<V
     public VirtualMachineScaleSetOSProfile withRequireGuestProvisionSignal(Boolean requireGuestProvisionSignal) {
         this.requireGuestProvisionSignal = requireGuestProvisionSignal;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (windowsConfiguration() != null) {
-            windowsConfiguration().validate();
-        }
-        if (linuxConfiguration() != null) {
-            linuxConfiguration().validate();
-        }
-        if (secrets() != null) {
-            secrets().forEach(e -> e.validate());
-        }
     }
 
     /**

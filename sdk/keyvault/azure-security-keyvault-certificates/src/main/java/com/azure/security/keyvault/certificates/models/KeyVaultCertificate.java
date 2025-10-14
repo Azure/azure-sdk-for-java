@@ -107,6 +107,16 @@ public class KeyVaultCertificate implements JsonSerializable<KeyVaultCertificate
         return CoreUtils.clone(cer);
     }
 
+    /**
+     * Get a value indicating whether the order of certificate chain is to be preserved in the vault. The default value
+     * is {@code false}, which sets the leaf certificate at index 0.
+     *
+     * @return The preserve certificate order status.
+     */
+    public Boolean isCertificateOrderPreserved() {
+        return properties.isCertificateOrderPreserved();
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject().writeBinaryField("cer", cer).writeEndObject();
@@ -128,6 +138,7 @@ public class KeyVaultCertificate implements JsonSerializable<KeyVaultCertificate
             byte[] cer = null;
             String keyId = null;
             String secretId = null;
+            boolean certificateOrderPreserved = false;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -147,13 +158,15 @@ public class KeyVaultCertificate implements JsonSerializable<KeyVaultCertificate
                     keyId = reader.getString();
                 } else if ("sid".equals(fieldName)) {
                     secretId = reader.getString();
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    certificateOrderPreserved = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
 
             return new KeyVaultCertificate(cer, keyId, secretId,
-                new CertificateProperties(id, attributes, tags, wireThumbprint, null));
+                new CertificateProperties(id, attributes, tags, wireThumbprint, null, certificateOrderPreserved));
         });
     }
 }

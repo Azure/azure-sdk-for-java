@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,18 +14,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * The location of Microsoft Fabric LakeHouse Files dataset.
+ * The location of Microsoft Fabric Lakehouse Files dataset.
  */
 @Fluent
 public final class LakeHouseLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
+    @Generated
     private String type = "LakeHouseLocation";
 
     /**
      * Creates an instance of LakeHouseLocation class.
      */
+    @Generated
     public LakeHouseLocation() {
     }
 
@@ -33,6 +36,7 @@ public final class LakeHouseLocation extends DatasetLocation {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -41,6 +45,7 @@ public final class LakeHouseLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
@@ -50,6 +55,7 @@ public final class LakeHouseLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseLocation setFileName(Object fileName) {
         super.setFileName(fileName);
@@ -59,11 +65,16 @@ public final class LakeHouseLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", getFolderPath());
-        jsonWriter.writeUntypedField("fileName", getFileName());
+        if (getFolderPath() != null) {
+            jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        }
+        if (getFileName() != null) {
+            jsonWriter.writeUntypedField("fileName", getFileName());
+        }
         jsonWriter.writeStringField("type", this.type);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -81,6 +92,7 @@ public final class LakeHouseLocation extends DatasetLocation {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LakeHouseLocation.
      */
+    @Generated
     public static LakeHouseLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LakeHouseLocation deserializedLakeHouseLocation = new LakeHouseLocation();

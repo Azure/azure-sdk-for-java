@@ -116,6 +116,31 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     }
 
     /**
+     * Get the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @return the analyticsOutputSettings value.
+     */
+    public AnalyticsOutputSettings analyticsOutputSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().analyticsOutputSettings();
+    }
+
+    /**
+     * Set the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @param analyticsOutputSettings the analyticsOutputSettings value to set.
+     * @return the ClusterPatchParameters object itself.
+     */
+    public ClusterPatchParameters withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPatchProperties();
+        }
+        this.innerProperties().withAnalyticsOutputSettings(analyticsOutputSettings);
+        return this;
+    }
+
+    /**
      * Get the clusterLocation property: The customer-provided location information to identify where the cluster
      * resides.
      * 
@@ -290,6 +315,31 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     }
 
     /**
+     * Get the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretArchiveSettings();
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the ClusterPatchParameters object itself.
+     */
+    public ClusterPatchParameters withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPatchProperties();
+        }
+        this.innerProperties().withSecretArchiveSettings(secretArchiveSettings);
+        return this;
+    }
+
+    /**
      * Get the updateStrategy property: The strategy for updating the cluster.
      * 
      * @return the updateStrategy value.
@@ -309,6 +359,32 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
             this.innerProperties = new ClusterPatchProperties();
         }
         this.innerProperties().withUpdateStrategy(updateStrategy);
+        return this;
+    }
+
+    /**
+     * Get the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @return the vulnerabilityScanningSettings value.
+     */
+    public VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().vulnerabilityScanningSettings();
+    }
+
+    /**
+     * Set the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @param vulnerabilityScanningSettings the vulnerabilityScanningSettings value to set.
+     * @return the ClusterPatchParameters object itself.
+     */
+    public ClusterPatchParameters
+        withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPatchProperties();
+        }
+        this.innerProperties().withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
         return this;
     }
 

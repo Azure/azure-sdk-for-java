@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
 import java.io.IOException;
 
 /**
@@ -225,6 +227,56 @@ public final class ScriptInner extends ProxyResource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @return the scriptLevel value.
+     */
+    public ScriptLevel scriptLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().scriptLevel();
+    }
+
+    /**
+     * Set the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @param scriptLevel the scriptLevel value to set.
+     * @return the ScriptInner object itself.
+     */
+    public ScriptInner withScriptLevel(ScriptLevel scriptLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withScriptLevel(scriptLevel);
+        return this;
+    }
+
+    /**
+     * Get the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @return the principalPermissionsAction value.
+     */
+    public PrincipalPermissionsAction principalPermissionsAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().principalPermissionsAction();
+    }
+
+    /**
+     * Set the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @param principalPermissionsAction the principalPermissionsAction value to set.
+     * @return the ScriptInner object itself.
+     */
+    public ScriptInner withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScriptProperties();
+        }
+        this.innerProperties().withPrincipalPermissionsAction(principalPermissionsAction);
+        return this;
     }
 
     /**

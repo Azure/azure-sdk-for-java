@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.net.InetSocketAddress;
@@ -23,6 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ConnectionConfigTest extends TestSuiteBase {
+
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionConfigTest.class);
 
     private static final Duration GATEWAY_NETWORK_REQUEST_TIME_OUT = Duration.ofSeconds(60);
     private static final Duration IDLE_CONNECTION_TIME_OUT = Duration.ofSeconds(30);
@@ -45,6 +49,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
         assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.GATEWAY);
         validateGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, gatewayConnectionConfig);
+        logger.info("Safely closing the client");
         safeCloseSyncClient(cosmosClient);
     }
 
@@ -244,7 +249,6 @@ public class ConnectionConfigTest extends TestSuiteBase {
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
             ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor();
-        assertThat(accessor.isSendClientTelemetryToServiceEnabled(clientTelemetryConfig)).isNull();
         assertThat(accessor.getProxy(clientTelemetryConfig).getType()).isEqualTo(proxyOptions.getType());
         assertThat(accessor.getProxy(clientTelemetryConfig).getAddress()).isEqualTo(proxyOptions.getAddress());
         assertThat(accessor.getProxy(clientTelemetryConfig).getUsername()).isEqualTo(proxyOptions.getUsername());

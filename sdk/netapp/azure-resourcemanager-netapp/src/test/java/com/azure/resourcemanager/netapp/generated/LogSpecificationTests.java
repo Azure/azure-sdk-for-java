@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class LogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogSpecification model = BinaryData.fromString("{\"name\":\"zvyifqrvkdvj\",\"displayName\":\"lrmv\"}")
-            .toObject(LogSpecification.class);
-        Assertions.assertEquals("zvyifqrvkdvj", model.name());
-        Assertions.assertEquals("lrmv", model.displayName());
+        LogSpecification model
+            = BinaryData.fromString("{\"name\":\"yegu\",\"displayName\":\"hb\"}").toObject(LogSpecification.class);
+        Assertions.assertEquals("yegu", model.name());
+        Assertions.assertEquals("hb", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogSpecification model = new LogSpecification().withName("zvyifqrvkdvj").withDisplayName("lrmv");
+        LogSpecification model = new LogSpecification().withName("yegu").withDisplayName("hb");
         model = BinaryData.fromObject(model).toObject(LogSpecification.class);
-        Assertions.assertEquals("zvyifqrvkdvj", model.name());
-        Assertions.assertEquals("lrmv", model.displayName());
+        Assertions.assertEquals("yegu", model.name());
+        Assertions.assertEquals("hb", model.displayName());
     }
 }

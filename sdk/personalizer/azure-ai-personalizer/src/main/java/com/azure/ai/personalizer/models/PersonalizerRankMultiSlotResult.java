@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,16 +21,19 @@ public final class PersonalizerRankMultiSlotResult implements JsonSerializable<P
     /*
      * Each slot has a corresponding rewardActionID which is the action ID recommended by Personalizer.
      */
+    @Generated
     private List<PersonalizerSlotResult> slots;
 
     /*
      * The eventId for the round trip from request to response.
      */
+    @Generated
     private String eventId;
 
     /**
      * Creates an instance of PersonalizerRankMultiSlotResult class.
      */
+    @Generated
     public PersonalizerRankMultiSlotResult() {
     }
 
@@ -39,6 +43,7 @@ public final class PersonalizerRankMultiSlotResult implements JsonSerializable<P
      * 
      * @return the slots value.
      */
+    @Generated
     public List<PersonalizerSlotResult> getSlots() {
         return this.slots;
     }
@@ -48,6 +53,7 @@ public final class PersonalizerRankMultiSlotResult implements JsonSerializable<P
      * 
      * @return the eventId value.
      */
+    @Generated
     public String getEventId() {
         return this.eventId;
     }
@@ -55,6 +61,7 @@ public final class PersonalizerRankMultiSlotResult implements JsonSerializable<P
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class PersonalizerRankMultiSlotResult implements JsonSerializable<P
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerRankMultiSlotResult.
      */
+    @Generated
     public static PersonalizerRankMultiSlotResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRankMultiSlotResult deserializedPersonalizerRankMultiSlotResult

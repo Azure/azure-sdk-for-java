@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
  */
 public final class BlobContainersExtendImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/
      * BlobContainersExtendImmutabilityPolicy.json
      */
     /**

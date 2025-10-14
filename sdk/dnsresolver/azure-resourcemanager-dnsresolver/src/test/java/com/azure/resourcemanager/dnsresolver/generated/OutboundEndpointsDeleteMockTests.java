@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import java.nio.charset.StandardCharsets;
@@ -25,10 +25,10 @@ public final class OutboundEndpointsDeleteMockTests {
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.outboundEndpoints()
-            .delete("ljuti", "swacffgdkzz", "wkfvhqcrailvp", "ppfufl", com.azure.core.util.Context.NONE);
+            .delete("jnalghf", "vtvsexsowueluq", "hahhxvrhmzkwpj", "wws", com.azure.core.util.Context.NONE);
 
     }
 }

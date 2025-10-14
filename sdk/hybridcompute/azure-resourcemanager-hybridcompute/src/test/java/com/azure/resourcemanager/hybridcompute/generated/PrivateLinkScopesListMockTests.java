@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
@@ -23,20 +23,20 @@ public final class PrivateLinkScopesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"t\",\"privateLinkScopeId\":\"oyin\",\"privateEndpointConnections\":[{\"id\":\"rlcyrduc\",\"name\":\"go\",\"type\":\"y\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"cvcrrp\",\"description\":\"jttbstv\"},\"provisioningState\":\"aqnrmvvfkoxmlg\",\"groupIds\":[\"uidvrmazlpdwwex\",\"mzvlazipbh\",\"wvqsgny\"]}},{\"id\":\"uzivensrpmeyyvp\",\"name\":\"atlb\",\"type\":\"pzgsk\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"fvolmknbnxwcd\",\"description\":\"mmpvf\"},\"provisioningState\":\"wzfgbrttuiaclkie\",\"groupIds\":[\"jlfnthiq\",\"yuttdiygbpvnwswm\",\"xkyctwwgzwx\"]}},{\"id\":\"mecvogygzyvneeza\",\"name\":\"gh\",\"type\":\"oqqtl\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bkrkjj\",\"description\":\"avfqnvhnqoewdogi\"},\"provisioningState\":\"tesypvidbztjh\",\"groupIds\":[\"b\"]}},{\"id\":\"nynkbwet\",\"name\":\"uhpsprkzyaupia\",\"type\":\"xnafbw\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"htuov\",\"description\":\"aonurjtumg\"},\"provisioningState\":\"hpv\",\"groupIds\":[\"slclblyjxltbsju\",\"c\",\"sfxigctmgx\"]}}]},\"location\":\"pbezqccydrtceu\",\"tags\":{\"eq\":\"kkyihzt\",\"ecfehuwa\":\"gqzgwldoychill\",\"uhicqllizstacsjv\":\"a\",\"wqejpmvsse\":\"rweft\"},\"id\":\"aepwamcxtcz\",\"name\":\"upeuknijduyye\",\"type\":\"pydjfboc\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"ytehqpuvjmvqmt\",\"privateLinkScopeId\":\"ckygroejnndljdju\",\"privateEndpointConnections\":[{\"id\":\"req\",\"name\":\"kceysfaqegplw\",\"type\":\"shwddkvbxgk\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bwptdacarvvlf\",\"description\":\"tymtpoiwenazer\"},\"provisioningState\":\"zrsq\",\"groupIds\":[\"xkdnwqapf\",\"sdpcvess\",\"zhhkuuipldqqc\",\"ekvalblhtjq\"]}}]},\"location\":\"yvwehtaemxh\",\"tags\":{\"usxivzrrryvei\":\"se\"},\"id\":\"ipsk\",\"name\":\"yzatvfuzkaft\",\"type\":\"vvruxwi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HybridComputePrivateLinkScope> response
             = manager.privateLinkScopes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pbezqccydrtceu", response.iterator().next().location());
-        Assertions.assertEquals("kkyihzt", response.iterator().next().tags().get("eq"));
+        Assertions.assertEquals("yvwehtaemxh", response.iterator().next().location());
+        Assertions.assertEquals("se", response.iterator().next().tags().get("usxivzrrryvei"));
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }

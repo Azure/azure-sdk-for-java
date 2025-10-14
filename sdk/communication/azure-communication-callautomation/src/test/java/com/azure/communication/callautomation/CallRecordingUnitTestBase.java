@@ -20,6 +20,7 @@ public class CallRecordingUnitTestBase {
         = "aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM";
 
     static final String RECORDING_ID = "recordingId";
+    static final String CALL_CONNECTION_ID = "callConnectionId";
 
     private final RecordingStateResponseInternal recordingState
         = new RecordingStateResponseInternal().setRecordingId(RECORDING_ID);

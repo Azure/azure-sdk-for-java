@@ -3,13 +3,13 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import reactor.core.Scannable
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Scheduler
@@ -37,7 +37,6 @@ import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
 
-import java.util.UUID
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
 import java.util.concurrent.{Semaphore, TimeUnit}
@@ -51,6 +50,7 @@ import scala.collection.JavaConverters._
 private class BulkWriter
 (
   container: CosmosAsyncContainer,
+  containerConfig: CosmosContainerConfig,
   partitionKeyDefinition: PartitionKeyDefinition,
   writeConfig: CosmosWriteConfig,
   diagnosticsConfig: DiagnosticsConfig,
@@ -75,7 +75,7 @@ private class BulkWriter
     case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
     // using the total number of physical partitions
     // multiplied by 2 to leave space for partition splits during ingestion
-    case None => 2 * ContainerFeedRangesCache.getFeedRanges(container).block().size
+    case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
   }
   log.logInfo(
     s"BulkWriter instantiated (Host CPU count: $cpuCount, maxPendingOperations: $maxPendingOperations, " +
@@ -193,7 +193,7 @@ private class BulkWriter
         val executor = new ScheduledThreadPoolExecutor(
           1,
           new CosmosDaemonThreadFactory(
-            "BulkWriterReadManyFlush" + UUID.randomUUID()
+            "BulkWriterReadManyFlush" + UUIDs.nonBlockingRandomUUID()
           ))
         executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false)
         executor.setRemoveOnCancelPolicy(true)
@@ -212,7 +212,7 @@ private class BulkWriter
     private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
-    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "BulkWriter")
+    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "BulkWriter")
 
     if (taskContext != null) {
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
@@ -998,13 +998,13 @@ private class BulkWriter
 
     val secondsWithoutProgress = numberOfIntervalsWithIdenticalActiveOperationSnapshots.get *
       writeConfig.flushCloseIntervalInSeconds
-    val maxAllowedIntervalWithoutAnyProgressExceeded =
-      secondsWithoutProgress >= writeConfig.maxRetryNoProgressIntervalInSeconds ||
-        (commitAttempt == 1
-          && allowRetryOnNewBulkWriterInstance
-          && this.activeReadManyOperations.isEmpty
-          && this.pendingReadManyRetries.isEmpty
-          && secondsWithoutProgress >= writeConfig.maxNoProgressIntervalInSeconds)
+    val maxNoProgressIntervalInSeconds = if (commitAttempt == 1 && allowRetryOnNewBulkWriterInstance
+      && this.activeReadManyOperations.isEmpty && this.pendingReadManyRetries.isEmpty) {
+      writeConfig.maxInitialNoProgressIntervalInSeconds
+    } else {
+      writeConfig.maxRetryNoProgressIntervalInSeconds
+    }
+    val maxAllowedIntervalWithoutAnyProgressExceeded = secondsWithoutProgress >= maxNoProgressIntervalInSeconds
 
     if (maxAllowedIntervalWithoutAnyProgressExceeded) {
 
@@ -1022,14 +1022,14 @@ private class BulkWriter
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion identified in $operationName - the following active operations have not been " +
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
-            s"${writeConfig.maxNoProgressIntervalInSeconds} seconds: $operationsLog",
+            s"$maxNoProgressIntervalInSeconds seconds: $operationsLog",
           commitAttempt,
           retriableRemainingOperations)
       } else {
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion as well as readMany operations identified in $operationName - the following active operations have not been " +
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
-            s"${writeConfig.maxRetryNoProgressIntervalInSeconds} : $operationsLog",
+            s"${maxNoProgressIntervalInSeconds} : $operationsLog",
           commitAttempt,
           None)
       }

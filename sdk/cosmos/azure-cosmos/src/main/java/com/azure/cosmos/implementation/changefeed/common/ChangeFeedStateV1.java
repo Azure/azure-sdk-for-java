@@ -2,15 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -36,6 +39,20 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         this.startFromSettings = startFromSettings;
         this.continuation = continuation;
         this.mode = mode;
+    }
+
+    public ChangeFeedStateV1(ChangeFeedStateV1 toBeCloned) {
+        this.containerRid = toBeCloned.containerRid;
+        this.feedRange = toBeCloned.feedRange;
+        this.startFromSettings = toBeCloned.startFromSettings;
+        if (toBeCloned.continuation != null) {
+            List<CompositeContinuationToken> compositeContinuationTokens = new ArrayList<>();
+           compositeContinuationTokens.addAll(toBeCloned.continuation.getCompositeContinuationTokens());
+            this.continuation = FeedRangeContinuation.create(toBeCloned.continuation.getContainerRid(), toBeCloned.continuation.getFeedRange(), compositeContinuationTokens);
+        } else {
+            this.continuation = null;
+        }
+        this.mode = toBeCloned.mode;
     }
 
     @Override
@@ -141,30 +158,30 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_VERSION,
-            ChangeFeedStateVersions.V1,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            ChangeFeedStateVersions.V1
+        );
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_RESOURCE_ID,
-            this.containerRid,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.containerRid
+        );
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_MODE,
-            this.mode,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.mode
+        );
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_START_FROM,
-            this.startFromSettings,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.startFromSettings
+        );
 
         if (this.continuation != null) {
             this.continuation.populatePropertyBag();
             this.set(
                 Constants.Properties.CHANGE_FEED_STATE_CONTINUATION,
-                this.continuation,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.continuation
+            );
             this.feedRange.removeProperties(this);
         } else {
             this.feedRange.setProperties(this, true);

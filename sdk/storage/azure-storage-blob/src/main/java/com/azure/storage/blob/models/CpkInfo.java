@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -16,22 +17,26 @@ public final class CpkInfo {
      * encryption is performed with the root account encryption key. For more information, see Encryption at Rest for
      * Azure Storage Services.
      */
+    @Generated
     private String encryptionKey;
 
     /*
      * The SHA-256 hash of the provided encryption key. Must be provided if the x-ms-encryption-key header is provided.
      */
+    @Generated
     private String encryptionKeySha256;
 
     /*
      * The algorithm used to produce the encryption key hash. Currently, the only accepted value is "AES256". Must be
      * provided if the x-ms-encryption-key header is provided.
      */
+    @Generated
     private EncryptionAlgorithmType encryptionAlgorithm;
 
     /**
      * Creates an instance of CpkInfo class.
      */
+    @Generated
     public CpkInfo() {
     }
 
@@ -42,6 +47,7 @@ public final class CpkInfo {
      * 
      * @return the encryptionKey value.
      */
+    @Generated
     public String getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -54,6 +60,7 @@ public final class CpkInfo {
      * @param encryptionKey the encryptionKey value to set.
      * @return the CpkInfo object itself.
      */
+    @Generated
     public CpkInfo setEncryptionKey(String encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -65,6 +72,7 @@ public final class CpkInfo {
      * 
      * @return the encryptionKeySha256 value.
      */
+    @Generated
     public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
@@ -76,6 +84,7 @@ public final class CpkInfo {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the CpkInfo object itself.
      */
+    @Generated
     public CpkInfo setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
@@ -87,6 +96,7 @@ public final class CpkInfo {
      * 
      * @return the encryptionAlgorithm value.
      */
+    @Generated
     public EncryptionAlgorithmType getEncryptionAlgorithm() {
         return this.encryptionAlgorithm;
     }
@@ -98,6 +108,7 @@ public final class CpkInfo {
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the CpkInfo object itself.
      */
+    @Generated
     public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
         return this;

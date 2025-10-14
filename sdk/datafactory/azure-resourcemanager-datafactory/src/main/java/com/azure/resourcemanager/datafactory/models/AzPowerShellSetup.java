@@ -48,7 +48,7 @@ public final class AzPowerShellSetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzPowerShellSetupTypeProperties innerTypeProperties() {
+    AzPowerShellSetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

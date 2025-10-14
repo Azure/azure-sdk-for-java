@@ -12,24 +12,24 @@ public final class RetentionVolumeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionVolume model = BinaryData.fromString(
-            "{\"volumeName\":\"pqsdoc\",\"capacityInBytes\":3488715345246036434,\"freeSpaceInBytes\":3180098480061688390,\"thresholdPercentage\":1205622455}")
+            "{\"volumeName\":\"azusjcd\",\"capacityInBytes\":6432526668995144308,\"freeSpaceInBytes\":3484621919626230867,\"thresholdPercentage\":2135750966}")
             .toObject(RetentionVolume.class);
-        Assertions.assertEquals("pqsdoc", model.volumeName());
-        Assertions.assertEquals(3488715345246036434L, model.capacityInBytes());
-        Assertions.assertEquals(3180098480061688390L, model.freeSpaceInBytes());
-        Assertions.assertEquals(1205622455, model.thresholdPercentage());
+        Assertions.assertEquals("azusjcd", model.volumeName());
+        Assertions.assertEquals(6432526668995144308L, model.capacityInBytes());
+        Assertions.assertEquals(3484621919626230867L, model.freeSpaceInBytes());
+        Assertions.assertEquals(2135750966, model.thresholdPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetentionVolume model = new RetentionVolume().withVolumeName("pqsdoc")
-            .withCapacityInBytes(3488715345246036434L)
-            .withFreeSpaceInBytes(3180098480061688390L)
-            .withThresholdPercentage(1205622455);
+        RetentionVolume model = new RetentionVolume().withVolumeName("azusjcd")
+            .withCapacityInBytes(6432526668995144308L)
+            .withFreeSpaceInBytes(3484621919626230867L)
+            .withThresholdPercentage(2135750966);
         model = BinaryData.fromObject(model).toObject(RetentionVolume.class);
-        Assertions.assertEquals("pqsdoc", model.volumeName());
-        Assertions.assertEquals(3488715345246036434L, model.capacityInBytes());
-        Assertions.assertEquals(3180098480061688390L, model.freeSpaceInBytes());
-        Assertions.assertEquals(1205622455, model.thresholdPercentage());
+        Assertions.assertEquals("azusjcd", model.volumeName());
+        Assertions.assertEquals(6432526668995144308L, model.capacityInBytes());
+        Assertions.assertEquals(3484621919626230867L, model.freeSpaceInBytes());
+        Assertions.assertEquals(2135750966, model.thresholdPercentage());
     }
 }

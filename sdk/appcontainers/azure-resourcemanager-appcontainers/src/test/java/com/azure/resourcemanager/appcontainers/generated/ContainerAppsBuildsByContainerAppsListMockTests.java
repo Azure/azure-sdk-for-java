@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsBuildResource;
@@ -21,17 +21,17 @@ public final class ContainerAppsBuildsByContainerAppsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"lrupjovmo\",\"image\":\"ayeb\"},\"configuration\":{\"baseOs\":\"wzlpzbtz\",\"platform\":\"kykipfsdyepfnoc\",\"platformVersion\":\"ezacfpztga\",\"environmentVariables\":[{\"name\":\"qejg\",\"value\":\"aokctgkp\"},{\"name\":\"gkqzkcyzmffngdyf\",\"value\":\"ixrhl\"}],\"preBuildSteps\":[{\"description\":\"oejgoiutgwrmkah\",\"scripts\":[\"azyntacihncogm\",\"pnmliq\",\"v\",\"bhikeaqgr\"],\"httpGet\":{\"url\":\"pomxpu\"}},{\"description\":\"tsdfjyieso\",\"scripts\":[\"qb\",\"outmp\"],\"httpGet\":{\"url\":\"gleofjsbgbw\"}}]},\"logStreamEndpoint\":\"vdajfwn\"},\"id\":\"fmaciqgjjrlhiq\",\"name\":\"wixvtbouguxtndop\",\"type\":\"jtt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"jgc\",\"image\":\"vecb\"},\"configuration\":{\"baseOs\":\"trdxri\",\"platform\":\"gbbgiarksykp\",\"platformVersion\":\"qxwabzrwiqrxh\",\"environmentVariables\":[{\"name\":\"cdosqkptj\",\"value\":\"gkifmmainwh\"},{\"name\":\"d\",\"value\":\"kp\"},{\"name\":\"qwuntob\",\"value\":\"izazz\"}],\"preBuildSteps\":[{\"description\":\"vydjufbnk\",\"scripts\":[\"axpegjw\"],\"httpGet\":{\"url\":\"bal\"}},{\"description\":\"xa\",\"scripts\":[\"f\",\"tlbtlqho\",\"xouvmrs\",\"flikyypzkgxfxfmy\"],\"httpGet\":{\"url\":\"sdbpokszanmh\"}},{\"description\":\"pter\",\"scripts\":[\"wki\",\"kskw\"],\"httpGet\":{\"url\":\"sdetjygowifcqpol\"}}]},\"logStreamEndpoint\":\"gysdgzyyb\"},\"id\":\"xlvocptvdx\",\"name\":\"heigmlilwzgh\",\"type\":\"hjvmabzzbwaybfm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ContainerAppsBuildResource> response = manager.containerAppsBuildsByContainerApps()
-            .list("ieuscplhyvdgx", "yzkxitds", com.azure.core.util.Context.NONE);
+        PagedIterable<ContainerAppsBuildResource> response
+            = manager.containerAppsBuildsByContainerApps().list("o", "gwxfkzsi", com.azure.core.util.Context.NONE);
 
     }
 }

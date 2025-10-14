@@ -5,6 +5,7 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -12,29 +13,36 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class TileIndex {
     /*
-     * Zoom level for the desired tile. 
+     * Zoom level for the desired tile.
      * 
-     * Please see [Zoom Levels and Tile Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      */
+    @Generated
     private int z;
 
     /*
      * X coordinate of the tile on zoom grid. Value must be in the range [0, 2<sup>`zoom`</sup> -1].
      * 
-     * Please see [Zoom Levels and Tile Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      */
+    @Generated
     private int x;
 
     /*
      * Y coordinate of the tile on zoom grid. Value must be in the range [0, 2<sup>`zoom`</sup> -1].
      * 
-     * Please see [Zoom Levels and Tile Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      */
+    @Generated
     private int y;
 
     /**
      * Creates an instance of TileIndex class.
      */
+    @Generated
     public TileIndex() {
     }
 
@@ -46,6 +54,7 @@ public final class TileIndex {
      * 
      * @return the z value.
      */
+    @Generated
     public int getZ() {
         return this.z;
     }
@@ -59,6 +68,7 @@ public final class TileIndex {
      * @param z the z value to set.
      * @return the TileIndex object itself.
      */
+    @Generated
     public TileIndex setZ(int z) {
         this.z = z;
         return this;
@@ -73,6 +83,7 @@ public final class TileIndex {
      * 
      * @return the x value.
      */
+    @Generated
     public int getX() {
         return this.x;
     }
@@ -87,6 +98,7 @@ public final class TileIndex {
      * @param x the x value to set.
      * @return the TileIndex object itself.
      */
+    @Generated
     public TileIndex setX(int x) {
         this.x = x;
         return this;
@@ -101,6 +113,7 @@ public final class TileIndex {
      * 
      * @return the y value.
      */
+    @Generated
     public int getY() {
         return this.y;
     }
@@ -115,6 +128,7 @@ public final class TileIndex {
      * @param y the y value to set.
      * @return the TileIndex object itself.
      */
+    @Generated
     public TileIndex setY(int y) {
         this.y = y;
         return this;

@@ -5,7 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,11 +21,13 @@ public final class QueueMessage implements XmlSerializable<QueueMessage> {
     /*
      * The content of the message
      */
+    @Generated
     private String messageText;
 
     /**
      * Creates an instance of QueueMessage class.
      */
+    @Generated
     public QueueMessage() {
     }
 
@@ -34,6 +36,7 @@ public final class QueueMessage implements XmlSerializable<QueueMessage> {
      * 
      * @return the messageText value.
      */
+    @Generated
     public String getMessageText() {
         return this.messageText;
     }
@@ -44,19 +47,22 @@ public final class QueueMessage implements XmlSerializable<QueueMessage> {
      * @param messageText the messageText value to set.
      * @return the QueueMessage object itself.
      */
+    @Generated
     public QueueMessage setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("MessageText", this.messageText);
         return xmlWriter.writeEndElement();
@@ -70,6 +76,7 @@ public final class QueueMessage implements XmlSerializable<QueueMessage> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueMessage.
      */
+    @Generated
     public static QueueMessage fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -84,8 +91,10 @@ public final class QueueMessage implements XmlSerializable<QueueMessage> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueMessage.
      */
+    @Generated
     public static QueueMessage fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "QueueMessage" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueMessage deserializedQueueMessage = new QueueMessage();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

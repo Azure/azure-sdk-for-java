@@ -14,7 +14,9 @@ import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
@@ -283,6 +285,15 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the privateLinkDefaultDomain property: Private Link Default Domain Name for the environment.
+     * 
+     * @return the privateLinkDefaultDomain value.
+     */
+    public String privateLinkDefaultDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkDefaultDomain();
+    }
+
+    /**
      * Get the staticIp property: Static IP of the Environment.
      * 
      * @return the staticIp value.
@@ -292,9 +303,8 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-     * app logs to a destination. Currently only "log-analytics" is
-     * supported.
+     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to
+     * configured destination.
      * 
      * @return the appLogsConfiguration value.
      */
@@ -303,9 +313,8 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-     * app logs to a destination. Currently only "log-analytics" is
-     * supported.
+     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to
+     * configured destination.
      * 
      * @param appLogsConfiguration the appLogsConfiguration value to set.
      * @return the ManagedEnvironmentInner object itself.
@@ -385,6 +394,29 @@ public final class ManagedEnvironmentInner extends Resource {
             this.innerProperties = new ManagedEnvironmentProperties();
         }
         this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
+     * Get the availabilityZones property: The list of availability zones to use for managed environment.
+     * 
+     * @return the availabilityZones value.
+     */
+    public List<String> availabilityZones() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityZones();
+    }
+
+    /**
+     * Set the availabilityZones property: The list of availability zones to use for managed environment.
+     * 
+     * @param availabilityZones the availabilityZones value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withAvailabilityZones(List<String> availabilityZones) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withAvailabilityZones(availabilityZones);
         return this;
     }
 
@@ -565,6 +597,29 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @return the ingressConfiguration value.
+     */
+    public IngressConfiguration ingressConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingressConfiguration();
+    }
+
+    /**
+     * Set the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @param ingressConfiguration the ingressConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withIngressConfiguration(IngressConfiguration ingressConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withIngressConfiguration(ingressConfiguration);
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: Private endpoint connections to the resource.
      * 
      * @return the privateEndpointConnections value.
@@ -595,6 +650,30 @@ public final class ManagedEnvironmentInner extends Resource {
             this.innerProperties = new ManagedEnvironmentProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionConfiguration property: Disk encryption configuration for the Managed Environment.
+     * 
+     * @return the diskEncryptionConfiguration value.
+     */
+    public DiskEncryptionConfiguration diskEncryptionConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().diskEncryptionConfiguration();
+    }
+
+    /**
+     * Set the diskEncryptionConfiguration property: Disk encryption configuration for the Managed Environment.
+     * 
+     * @param diskEncryptionConfiguration the diskEncryptionConfiguration value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner
+        withDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withDiskEncryptionConfiguration(diskEncryptionConfiguration);
         return this;
     }
 

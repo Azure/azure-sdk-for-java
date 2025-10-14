@@ -90,13 +90,13 @@ public interface Alert {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceName, resourceGroupName.
+             * Specifies resourceGroupName, resourceName.
              * 
-             * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceName The name of the recovery services vault.
              * @return the next definition stage.
              */
-            WithCreate withExistingVault(String resourceName, String resourceGroupName);
+            WithCreate withExistingVault(String resourceGroupName, String resourceName);
         }
 
         /**

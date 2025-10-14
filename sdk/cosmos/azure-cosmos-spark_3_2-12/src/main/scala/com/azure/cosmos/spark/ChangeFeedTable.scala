@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -15,7 +15,6 @@ import org.apache.spark.sql.connector.read.ScanBuilder
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 import java.util
-import java.util.UUID
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer._
@@ -38,7 +37,7 @@ private[spark] object ChangeFeedTable {
     StructField(RawJsonBodyAttributeName, StringType, nullable=true),
     StructField(IdAttributeName, StringType, nullable=false),
     StructField(TimestampAttributeName, LongType, nullable=false),
-    StructField(ETagAttributeName, StringType, nullable=false),
+    StructField(ETagAttributeName, StringType, nullable=true),
     StructField(LsnAttributeName, LongType, nullable=false),
     StructField(MetadataJsonBodyAttributeName, StringType, nullable=false),
     StructField(PreviousRawJsonBodyAttributeName, StringType, nullable=true),
@@ -77,7 +76,7 @@ private class ChangeFeedTable(val session: SparkSession,
   private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val cosmosClientConfig = CosmosClientConfiguration(
     effectiveUserConfig,
-    useEventualConsistency = readConfig.forceEventualConsistency,
+    readConsistencyStrategy = readConfig.readConsistencyStrategy,
     sparkEnvironmentInfo)
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots] =
@@ -162,7 +161,7 @@ private class ChangeFeedTable(val session: SparkSession,
 
         try {
           container.readItem(
-            UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+            UUIDs.nonBlockingRandomUUID().toString, new PartitionKey(UUIDs.nonBlockingRandomUUID().toString), classOf[ObjectNode])
             .block()
         } catch {
           case _: CosmosException =>

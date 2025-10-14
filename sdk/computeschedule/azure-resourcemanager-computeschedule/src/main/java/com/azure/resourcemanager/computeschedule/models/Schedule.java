@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +22,17 @@ public final class Schedule implements JsonSerializable<Schedule> {
     /*
      * The deadline for the operation
      */
+    private OffsetDateTime deadline;
+
+    /*
+     * The deadline for the operation
+     */
     private OffsetDateTime deadLine;
+
+    /*
+     * The timezone for the operation
+     */
+    private String timezone;
 
     /*
      * The timezone for the operation
@@ -39,6 +48,26 @@ public final class Schedule implements JsonSerializable<Schedule> {
      * Creates an instance of Schedule class.
      */
     public Schedule() {
+    }
+
+    /**
+     * Get the deadline property: The deadline for the operation.
+     * 
+     * @return the deadline value.
+     */
+    public OffsetDateTime deadline() {
+        return this.deadline;
+    }
+
+    /**
+     * Set the deadline property: The deadline for the operation.
+     * 
+     * @param deadline the deadline value to set.
+     * @return the Schedule object itself.
+     */
+    public Schedule withDeadline(OffsetDateTime deadline) {
+        this.deadline = deadline;
+        return this;
     }
 
     /**
@@ -58,6 +87,26 @@ public final class Schedule implements JsonSerializable<Schedule> {
      */
     public Schedule withDeadLine(OffsetDateTime deadLine) {
         this.deadLine = deadLine;
+        return this;
+    }
+
+    /**
+     * Get the timezone property: The timezone for the operation.
+     * 
+     * @return the timezone value.
+     */
+    public String timezone() {
+        return this.timezone;
+    }
+
+    /**
+     * Set the timezone property: The timezone for the operation.
+     * 
+     * @param timezone the timezone value to set.
+     * @return the Schedule object itself.
+     */
+    public Schedule withTimezone(String timezone) {
+        this.timezone = timezone;
         return this;
     }
 
@@ -102,37 +151,18 @@ public final class Schedule implements JsonSerializable<Schedule> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (deadLine() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property deadLine in model Schedule"));
-        }
-        if (timeZone() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property timeZone in model Schedule"));
-        }
-        if (deadlineType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property deadlineType in model Schedule"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Schedule.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deadlineType", this.deadlineType == null ? null : this.deadlineType.toString());
+        jsonWriter.writeStringField("deadline",
+            this.deadline == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deadline));
         jsonWriter.writeStringField("deadLine",
             this.deadLine == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deadLine));
+        jsonWriter.writeStringField("timezone", this.timezone);
         jsonWriter.writeStringField("timeZone", this.timeZone);
-        jsonWriter.writeStringField("deadlineType", this.deadlineType == null ? null : this.deadlineType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -152,13 +182,18 @@ public final class Schedule implements JsonSerializable<Schedule> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("deadLine".equals(fieldName)) {
+                if ("deadlineType".equals(fieldName)) {
+                    deserializedSchedule.deadlineType = DeadlineType.fromString(reader.getString());
+                } else if ("deadline".equals(fieldName)) {
+                    deserializedSchedule.deadline = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deadLine".equals(fieldName)) {
                     deserializedSchedule.deadLine = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timezone".equals(fieldName)) {
+                    deserializedSchedule.timezone = reader.getString();
                 } else if ("timeZone".equals(fieldName)) {
                     deserializedSchedule.timeZone = reader.getString();
-                } else if ("deadlineType".equals(fieldName)) {
-                    deserializedSchedule.deadlineType = DeadlineType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

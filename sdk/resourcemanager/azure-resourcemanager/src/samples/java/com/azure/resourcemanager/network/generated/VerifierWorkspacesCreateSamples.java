@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.VerifierWorkspaceProperties;
 public final class VerifierWorkspacesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspacePut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspacePut.json
      */
     /**
      * Sample code: VerifierWorkspaceCreate.
@@ -28,6 +28,6 @@ public final class VerifierWorkspacesCreateSamples {
             .createWithResponse("rg1", "testNetworkManager", "testWorkspace",
                 new VerifierWorkspaceInner().withLocation("eastus")
                     .withProperties(new VerifierWorkspaceProperties().withDescription("A sample workspace")),
-                com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetwork;
@@ -23,25 +23,25 @@ public final class CloudServicesNetworksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"lz\",\"type\":\"zjknyuxg\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"pnrupzaamrdi\",\"endpoints\":[{\"domainName\":\"rekidswysk\"},{\"domainName\":\"ruffgllukk\"},{\"domainName\":\"tvlxhrpqh\"}]}],\"associatedResourceIds\":[\"lcouqehbhbcdszir\",\"randoypmb\",\"t\",\"ormkfqlwxldyk\"],\"clusterId\":\"sy\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"njpnnbmj\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"gsjjxxahmrna\",\"endpoints\":[{\"domainName\":\"yqegx\"},{\"domainName\":\"iv\"},{\"domainName\":\"inbmh\"}]},{\"category\":\"bjijkgqxnh\",\"endpoints\":[{\"domainName\":\"keznjaujvaa\"},{\"domainName\":\"nggiycwkdtaa\"}]},{\"category\":\"xw\",\"endpoints\":[{\"domainName\":\"ka\"},{\"domainName\":\"mrrqmbzmqkratb\"}]}],\"hybridAksClustersAssociatedIds\":[\"bjsidb\",\"rkfpks\",\"kd\"],\"interfaceName\":\"gewi\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"bguzozky\",\"wnf\"]},\"location\":\"hhhqosm\",\"tags\":{\"zoghktdpyczhc\":\"kutycyarnroohgua\",\"cfyjzp\":\"eocnhzqrottj\",\"qdhmrjzralcxpjby\":\"wrlohapqinfszpyg\"},\"id\":\"psjoqcjenk\",\"name\":\"hf\",\"type\":\"zv\"}]}";
+            = "{\"value\":[{\"etag\":\"mkoisqcssf\",\"extendedLocation\":{\"name\":\"xuifmcsypobkdqz\",\"type\":\"dzsylollgtrczz\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"zjijpvuaurkihcir\",\"endpoints\":[{\"domainName\":\"efxrdcoxnbk\"},{\"domainName\":\"ja\"}]}],\"associatedResourceIds\":[\"nnqbnqbp\",\"zxqltgrdogypx\"],\"clusterId\":\"vbfihwuhvctafsr\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"lmliowxihspnxwqa\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"waklsbsbqq\",\"endpoints\":[{\"domainName\":\"gwwrxaomzis\"},{\"domainName\":\"lrrcz\"},{\"domainName\":\"zkhhltnjadhqo\"}]}],\"hybridAksClustersAssociatedIds\":[\"qoyueayfbpcmsplb\",\"rrueqthwmg\",\"mbscbbx\",\"gdhxi\"],\"interfaceName\":\"lopedbwdpyqyyb\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"nafcbq\",\"remj\",\"laqacigele\"]},\"location\":\"d\",\"tags\":{\"pwbeonr\":\"vwzkj\",\"xcptsoqfyiaseqc\":\"kwzdqybxcea\",\"razisg\":\"krtt\",\"nbwzohmnrxxbso\":\"kiuemv\"},\"id\":\"klinhmdptysprq\",\"name\":\"gnzxojpslsvj\",\"type\":\"pli\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CloudServicesNetwork> response
-            = manager.cloudServicesNetworks().listByResourceGroup("akpoldtvevbo", com.azure.core.util.Context.NONE);
+            = manager.cloudServicesNetworks().listByResourceGroup("vxnqmhrpqpd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhhqosm", response.iterator().next().location());
-        Assertions.assertEquals("kutycyarnroohgua", response.iterator().next().tags().get("zoghktdpyczhc"));
-        Assertions.assertEquals("lz", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("zjknyuxg", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("pnrupzaamrdi",
+        Assertions.assertEquals("d", response.iterator().next().location());
+        Assertions.assertEquals("vwzkj", response.iterator().next().tags().get("pwbeonr"));
+        Assertions.assertEquals("xuifmcsypobkdqz", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("dzsylollgtrczz", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("zjijpvuaurkihcir",
             response.iterator().next().additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("rekidswysk",
+        Assertions.assertEquals("efxrdcoxnbk",
             response.iterator().next().additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
         Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
             response.iterator().next().enableDefaultEgressEndpoints());

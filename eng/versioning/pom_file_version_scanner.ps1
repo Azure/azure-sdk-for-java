@@ -34,7 +34,7 @@ param()
 
 # Since we're skipping Management for the moment, only look for files with certain parents. These
 # limitations will vanish once Management track is updated.
-$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-perf-test-parent", "azure-cosmos-spark_3_2-12")
+$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-perf-test-parent", "azure-cosmos-spark_3_2-12", "io.clientcore:clientcore-parent")
 
 # SpringSampleParents is necessary for the spring samples which have to build using the spring-boot-starter-parent BOM.
 # The problem with this is, it's a BOM file and the spring dependencies are pulled in through that which means any
@@ -68,7 +68,7 @@ $StartTime = $(get-date)
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
 # form <include>groupId:artifactId:[version]</include> which locks to a specific version. The exception
 # to this is the blanket, wildcard include for com.azure and com.microsoft.azure libraries.
-$ComAzureAllowlistIncludes = ("com.azure:*", "com.azure.resourcemanager:*", "com.microsoft.azure:*", "com.azure.spring:*", "io.clientcore:*")
+$ComAzureAllowlistIncludes = ("com.azure:*", "com.azure.v2:*", "com.azure.resourcemanager:*", "com.microsoft.azure:*", "com.azure.spring:*", "io.clientcore:*")
 
 function Join-With-NewLine([string]$msg, [string]$append)
 {
@@ -527,14 +527,6 @@ Build-Dependency-Hash-From-File $libHash $verClientFile $false
 if ($script:FoundError)
 {
     Write-Error-With-Color "There were errors encountered building the dependency hash from version_client.txt. Please fix errors and run the script again."
-    Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
-    exit 1
-}
-$verDataFile = Join-Path $Path "eng/versioning/version_data.txt"
-Build-Dependency-Hash-From-File $libHash $verDataFile $false
-if ($script:FoundError)
-{
-    Write-Error-With-Color "There were errors encountered building the dependency hash from version_data.txt. Please fix errors and run the script again."
     Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
     exit 1
 }

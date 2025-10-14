@@ -44,20 +44,14 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
         String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultBackupOperation, String> preBackupPoller = client.beginPreBackup(blobStorageUrl, sasToken);
+        SyncPoller<KeyVaultBackupOperation, Void> preBackupPoller = client.beginPreBackup(blobStorageUrl, sasToken);
         PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
         PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
 
-        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.printf("Pre-backup check completed successfully.%n");
-        } else {
-            KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
-
-            System.out.printf("Pre-backup check failed with error: %s.%n", operation.getError().getMessage());
-        }
+        System.out.printf("Pre-backup check completed with status: %s.%n", finalPollResponse.getStatus());
         // END: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String
     }
 
@@ -100,21 +94,14 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
         String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
-            client.beginPreRestore(folderUrl, sasToken);
+        SyncPoller<KeyVaultRestoreOperation, Void> preRestorePoller = client.beginPreRestore(folderUrl, sasToken);
         PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
         PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
 
-        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            System.out.printf("Pre-restore check completed successfully.%n");
-        } else {
-            KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
-
-            System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
-        }
+        System.out.printf("Pre-restore check completed with status: %s.%n", finalPollResponse.getStatus());
         // END: com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String
     }
 

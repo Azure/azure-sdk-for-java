@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,37 +21,45 @@ public final class TransferToParticipantRequestInternal
     /*
      * The identity of the target where call should be transferred to.
      */
+    @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Transferee is the participant who is transferred away.
      */
+    @Generated
     private CommunicationIdentifierModel transferee;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /*
      * Used by customer to send custom calling context to targets
      */
+    @Generated
     private CustomCallingContext customCallingContext;
 
     /*
-     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to a Pstn target.
+     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to
+     * a Pstn target.
      */
+    @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /**
      * Creates an instance of TransferToParticipantRequestInternal class.
      */
+    @Generated
     public TransferToParticipantRequestInternal() {
     }
 
@@ -59,6 +68,7 @@ public final class TransferToParticipantRequestInternal
      * 
      * @return the targetParticipant value.
      */
+    @Generated
     public CommunicationIdentifierModel getTargetParticipant() {
         return this.targetParticipant;
     }
@@ -69,6 +79,7 @@ public final class TransferToParticipantRequestInternal
      * @param targetParticipant the targetParticipant value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
+    @Generated
     public TransferToParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
@@ -80,6 +91,7 @@ public final class TransferToParticipantRequestInternal
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -91,6 +103,7 @@ public final class TransferToParticipantRequestInternal
      * @param operationContext the operationContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
+    @Generated
     public TransferToParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -101,6 +114,7 @@ public final class TransferToParticipantRequestInternal
      * 
      * @return the transferee value.
      */
+    @Generated
     public CommunicationIdentifierModel getTransferee() {
         return this.transferee;
     }
@@ -111,6 +125,7 @@ public final class TransferToParticipantRequestInternal
      * @param transferee the transferee value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
+    @Generated
     public TransferToParticipantRequestInternal setTransferee(CommunicationIdentifierModel transferee) {
         this.transferee = transferee;
         return this;
@@ -123,6 +138,7 @@ public final class TransferToParticipantRequestInternal
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -135,6 +151,7 @@ public final class TransferToParticipantRequestInternal
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
+    @Generated
     public TransferToParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -145,6 +162,7 @@ public final class TransferToParticipantRequestInternal
      * 
      * @return the customCallingContext value.
      */
+    @Generated
     public CustomCallingContext getCustomCallingContext() {
         return this.customCallingContext;
     }
@@ -155,6 +173,7 @@ public final class TransferToParticipantRequestInternal
      * @param customCallingContext the customCallingContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
+    @Generated
     public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
         this.customCallingContext = customCallingContext;
         return this;
@@ -166,6 +185,7 @@ public final class TransferToParticipantRequestInternal
      * 
      * @return the sourceCallerIdNumber value.
      */
+    @Generated
     public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
         return this.sourceCallerIdNumber;
     }
@@ -177,6 +197,7 @@ public final class TransferToParticipantRequestInternal
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
+    @Generated
     public TransferToParticipantRequestInternal
         setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
         this.sourceCallerIdNumber = sourceCallerIdNumber;
@@ -186,6 +207,7 @@ public final class TransferToParticipantRequestInternal
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -207,6 +229,7 @@ public final class TransferToParticipantRequestInternal
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TransferToParticipantRequestInternal.
      */
+    @Generated
     public static TransferToParticipantRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TransferToParticipantRequestInternal deserializedTransferToParticipantRequestInternal

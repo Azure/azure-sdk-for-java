@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class BareMetalMachineKeySetsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * BareMetalMachineKeySets_Delete.json
      */
     /**
@@ -21,6 +21,7 @@ public final class BareMetalMachineKeySetsDeleteSamples {
     public static void
         deleteBareMetalMachineKeySetOfCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.bareMetalMachineKeySets()
-            .delete("resourceGroupName", "clusterName", "bareMetalMachineKeySetName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "clusterName", "bareMetalMachineKeySetName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

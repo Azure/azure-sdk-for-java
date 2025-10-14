@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfiguration;
@@ -21,17 +21,17 @@ public final class NetworkSecurityPerimeterConfigurationsListByPrivateLinkScopeM
     @Test
     public void testListByPrivateLinkScope() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"aifyzyzeyuubeids\",\"provisioningIssues\":[{\"name\":\"toi\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Warning\",\"description\":\"ltgvdihoynkrx\",\"suggestedResourceIds\":[\"wkd\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"ucpcunnuzdqumoen\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"hqhsknd\",\"suggestedResourceIds\":[\"qkaadlknw\",\"oanniyopetxi\",\"cnrly\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"ephblkwqpatvbqs\",\"perimeterGuid\":\"cjbctviv\",\"location\":\"qymtuowogtgits\"},\"resourceAssociation\":{\"name\":\"vbrzcdb\",\"accessMode\":\"enforced\"},\"profile\":{\"name\":\"ds\",\"accessRulesVersion\":1628332910,\"accessRules\":[{\"name\":\"tkdbmwnrdjyib\",\"properties\":{}},{\"name\":\"aomhjrmkuhmaxl\",\"properties\":{}},{\"name\":\"f\",\"properties\":{}}],\"diagnosticSettingsVersion\":1545427056,\"enabledLogCategories\":[\"bc\",\"nc\",\"exxqcwg\",\"xf\"]}},\"id\":\"vaknokzwjj\",\"name\":\"r\",\"type\":\"tixldzyyfytpqs\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"els\",\"provisioningIssues\":[{\"name\":\"zevxoqein\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Error\",\"description\":\"lzoblqwaafr\",\"suggestedResourceIds\":[\"hmzyqbhdvafjrqpj\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"crgaxwmzwdf\",\"perimeterGuid\":\"nrzorpd\",\"location\":\"bqc\"},\"resourceAssociation\":{\"name\":\"fg\",\"accessMode\":\"learning\"},\"profile\":{\"name\":\"tgzdgv\",\"accessRulesVersion\":330072728,\"accessRules\":[{\"name\":\"qqil\",\"properties\":{}},{\"name\":\"d\",\"properties\":{}},{\"name\":\"oedxngucaifpaurw\",\"properties\":{}}],\"diagnosticSettingsVersion\":72382976,\"enabledLogCategories\":[\"qqa\",\"dmkxwxdcvjwcy\",\"iakeciqc\"]}},\"id\":\"xrtuicds\",\"name\":\"wdfmmpzhzzwvywr\",\"type\":\"yngydgrpxncaki\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NetworkSecurityPerimeterConfiguration> response = manager.networkSecurityPerimeterConfigurations()
-            .listByPrivateLinkScope("oytzpose", "xigpxvkqmaupxvpi", com.azure.core.util.Context.NONE);
+            .listByPrivateLinkScope("ehgcvkbcknjo", "gjyy", com.azure.core.util.Context.NONE);
 
     }
 }

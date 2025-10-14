@@ -10,26 +10,35 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CosmosContainerUtils {
+    public static List<String> validateDatabaseAndContainers(
+        List<String> includedContainers,
+        CosmosAsyncClient cosmosAsyncClient,
+        String databaseName) {
 
-    public static void validateDatabaseAndContainers(List<String> containerNames, CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
 
-        queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
-        for (int i = 0; i < containerNames.size(); i++) {
-            String idValue = containerNames.get(i);
-            String idParamName = "@param" + i;
+        if (includedContainers == null || includedContainers.isEmpty()) {
+            queryStringBuilder.append("SELECT * FROM c");
+        } else {
+            queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
+            for (int i = 0; i < includedContainers.size(); i++) {
+                String idValue = includedContainers.get(i);
+                String idParamName = "@param" + i;
 
-            parameters.add(new SqlParameter(idParamName, idValue));
-            queryStringBuilder.append(idParamName);
+                parameters.add(new SqlParameter(idParamName, idValue));
+                queryStringBuilder.append(idParamName);
 
-            if (i < containerNames.size() - 1) {
-                queryStringBuilder.append(", ");
+                if (i < includedContainers.size() - 1) {
+                    queryStringBuilder.append(", ");
+                }
             }
+            queryStringBuilder.append(" )");
         }
-        queryStringBuilder.append(" )");
+
         List<CosmosContainerProperties> cosmosContainerProperties = cosmosAsyncClient.getDatabase(databaseName)
             .queryContainers(new SqlQuerySpec(queryStringBuilder.toString(), parameters))
             .byPage()
@@ -45,8 +54,17 @@ public class CosmosContainerUtils {
                 return KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "validateDatabaseAndContainers failed.");
             })
             .block();
-        if (cosmosContainerProperties.isEmpty() || cosmosContainerProperties.size() != containerNames.size()) {
+
+        List<String> containersFromDatabase = cosmosContainerProperties
+            .stream()
+            .map(CosmosContainerProperties::getId)
+            .collect(Collectors.toList());
+
+        if (containersFromDatabase.isEmpty()
+            || (includedContainers != null && !containersFromDatabase.containsAll(includedContainers))) {
             throw new IllegalStateException("Containers specified in the config do not exist in the CosmosDB account.");
         }
+
+        return containersFromDatabase;
     }
 }

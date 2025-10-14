@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class MetastoreRequestSuccessResponse implements JsonSerializable<M
     /*
      * Enumerates possible Status of the resource.
      */
+    @Generated
     private ResourceStatus status;
 
     /**
      * Creates an instance of MetastoreRequestSuccessResponse class.
      */
+    @Generated
     public MetastoreRequestSuccessResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class MetastoreRequestSuccessResponse implements JsonSerializable<M
      * 
      * @return the status value.
      */
+    @Generated
     public ResourceStatus getStatus() {
         return this.status;
     }
@@ -42,6 +46,7 @@ public final class MetastoreRequestSuccessResponse implements JsonSerializable<M
      * @param status the status value to set.
      * @return the MetastoreRequestSuccessResponse object itself.
      */
+    @Generated
     public MetastoreRequestSuccessResponse setStatus(ResourceStatus status) {
         this.status = status;
         return this;
@@ -50,6 +55,7 @@ public final class MetastoreRequestSuccessResponse implements JsonSerializable<M
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class MetastoreRequestSuccessResponse implements JsonSerializable<M
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetastoreRequestSuccessResponse.
      */
+    @Generated
     public static MetastoreRequestSuccessResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetastoreRequestSuccessResponse deserializedMetastoreRequestSuccessResponse

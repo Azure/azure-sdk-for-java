@@ -42,6 +42,16 @@ public final class TypeConversionSettings implements JsonSerializable<TypeConver
     private Object timeSpanFormat;
 
     /*
+     * The format for Time values. Type: string (or Expression with resultType string).
+     */
+    private Object timeFormat;
+
+    /*
+     * The format for Date values. Type: string (or Expression with resultType string).
+     */
+    private Object dateFormat;
+
+    /*
      * The culture used to convert data from/to string. Type: string (or Expression with resultType string).
      */
     private Object culture;
@@ -163,6 +173,46 @@ public final class TypeConversionSettings implements JsonSerializable<TypeConver
     }
 
     /**
+     * Get the timeFormat property: The format for Time values. Type: string (or Expression with resultType string).
+     * 
+     * @return the timeFormat value.
+     */
+    public Object timeFormat() {
+        return this.timeFormat;
+    }
+
+    /**
+     * Set the timeFormat property: The format for Time values. Type: string (or Expression with resultType string).
+     * 
+     * @param timeFormat the timeFormat value to set.
+     * @return the TypeConversionSettings object itself.
+     */
+    public TypeConversionSettings withTimeFormat(Object timeFormat) {
+        this.timeFormat = timeFormat;
+        return this;
+    }
+
+    /**
+     * Get the dateFormat property: The format for Date values. Type: string (or Expression with resultType string).
+     * 
+     * @return the dateFormat value.
+     */
+    public Object dateFormat() {
+        return this.dateFormat;
+    }
+
+    /**
+     * Set the dateFormat property: The format for Date values. Type: string (or Expression with resultType string).
+     * 
+     * @param dateFormat the dateFormat value to set.
+     * @return the TypeConversionSettings object itself.
+     */
+    public TypeConversionSettings withDateFormat(Object dateFormat) {
+        this.dateFormat = dateFormat;
+        return this;
+    }
+
+    /**
      * Get the culture property: The culture used to convert data from/to string. Type: string (or Expression with
      * resultType string).
      * 
@@ -198,12 +248,30 @@ public final class TypeConversionSettings implements JsonSerializable<TypeConver
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("allowDataTruncation", this.allowDataTruncation);
-        jsonWriter.writeUntypedField("treatBooleanAsNumber", this.treatBooleanAsNumber);
-        jsonWriter.writeUntypedField("dateTimeFormat", this.dateTimeFormat);
-        jsonWriter.writeUntypedField("dateTimeOffsetFormat", this.dateTimeOffsetFormat);
-        jsonWriter.writeUntypedField("timeSpanFormat", this.timeSpanFormat);
-        jsonWriter.writeUntypedField("culture", this.culture);
+        if (this.allowDataTruncation != null) {
+            jsonWriter.writeUntypedField("allowDataTruncation", this.allowDataTruncation);
+        }
+        if (this.treatBooleanAsNumber != null) {
+            jsonWriter.writeUntypedField("treatBooleanAsNumber", this.treatBooleanAsNumber);
+        }
+        if (this.dateTimeFormat != null) {
+            jsonWriter.writeUntypedField("dateTimeFormat", this.dateTimeFormat);
+        }
+        if (this.dateTimeOffsetFormat != null) {
+            jsonWriter.writeUntypedField("dateTimeOffsetFormat", this.dateTimeOffsetFormat);
+        }
+        if (this.timeSpanFormat != null) {
+            jsonWriter.writeUntypedField("timeSpanFormat", this.timeSpanFormat);
+        }
+        if (this.timeFormat != null) {
+            jsonWriter.writeUntypedField("timeFormat", this.timeFormat);
+        }
+        if (this.dateFormat != null) {
+            jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
+        }
+        if (this.culture != null) {
+            jsonWriter.writeUntypedField("culture", this.culture);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -232,6 +300,10 @@ public final class TypeConversionSettings implements JsonSerializable<TypeConver
                     deserializedTypeConversionSettings.dateTimeOffsetFormat = reader.readUntyped();
                 } else if ("timeSpanFormat".equals(fieldName)) {
                     deserializedTypeConversionSettings.timeSpanFormat = reader.readUntyped();
+                } else if ("timeFormat".equals(fieldName)) {
+                    deserializedTypeConversionSettings.timeFormat = reader.readUntyped();
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedTypeConversionSettings.dateFormat = reader.readUntyped();
                 } else if ("culture".equals(fieldName)) {
                     deserializedTypeConversionSettings.culture = reader.readUntyped();
                 } else {

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
+import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 
@@ -13,7 +14,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 public final class TopicEventSubscriptionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * TopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
@@ -24,12 +25,13 @@ public final class TopicEventSubscriptionsCreateOrUpdateSamples {
     public static void
         topicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager.topicEventSubscriptions()
-            .define("exampleEventSubscriptionName1")
-            .withExistingTopic("examplerg", "exampleTopic1")
-            .withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
-            .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
-                .withSubjectEndsWith("ExampleSuffix")
-                .withIsSubjectCaseSensitive(false))
-            .create();
+            .createOrUpdate("examplerg", "exampleTopic1", "exampleEventSubscriptionName1",
+                new EventSubscriptionInner()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
+                        .withSubjectEndsWith("ExampleSuffix")
+                        .withIsSubjectCaseSensitive(false)),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,39 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
     /*
      * Name of the pollen or pollutant. For example, grass, mold, weed, air quality, tree and UV index.
      */
+    @Generated
     private String description;
 
     /*
-     * Value of the given type above. Values associated with mold, grass, weed and tree are in units of parts per cubic meter. Both air quality and UV are indices, so they are unitless.
+     * Value of the given type above. Values associated with mold, grass, weed and tree are in units of parts per cubic
+     * meter. Both air quality and UV are indices, so they are unitless.
      */
+    @Generated
     private Integer value;
 
     /*
      * Category of the air quality or pollution type. For example, low, high, good, moderate, unhealthy, hazardous.
      */
+    @Generated
     private String category;
 
     /*
-     * Value associated with the air quality or pollution category. These values range from 1 to 6. 1 implying good conditions, 6 implying hazardous conditions.
+     * Value associated with the air quality or pollution category. These values range from 1 to 6. 1 implying good
+     * conditions, 6 implying hazardous conditions.
      */
+    @Generated
     private Integer categoryValue;
 
     /*
      * Only exists for air quality. Examples include ozone and particle pollution.
      */
+    @Generated
     private String airQualityType;
 
     /**
      * Set default AirAndPollen constructor to private
      */
+    @Generated
     private AirAndPollen() {
     }
 
@@ -53,6 +62,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -63,6 +73,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
      *
      * @return the value value.
      */
+    @Generated
     public Integer getValue() {
         return this.value;
     }
@@ -73,6 +84,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
      *
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -83,6 +95,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
      *
      * @return the categoryValue value.
      */
+    @Generated
     public Integer getCategoryValue() {
         return this.categoryValue;
     }
@@ -92,6 +105,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
      *
      * @return the airQualityType value.
      */
+    @Generated
     public String getAirQualityType() {
         return this.airQualityType;
     }
@@ -99,6 +113,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +133,7 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AirAndPollen.
      */
+    @Generated
     public static AirAndPollen fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AirAndPollen deserializedAirAndPollen = new AirAndPollen();

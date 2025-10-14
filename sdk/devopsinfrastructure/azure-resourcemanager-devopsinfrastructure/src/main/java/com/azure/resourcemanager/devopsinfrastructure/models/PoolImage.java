@@ -37,6 +37,11 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
      */
     private String buffer;
 
+    /*
+     * The ephemeral type of the image.
+     */
+    private EphemeralType ephemeralType;
+
     /**
      * Creates an instance of PoolImage class.
      */
@@ -126,11 +131,23 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
     }
 
     /**
-     * Validates the instance.
+     * Get the ephemeralType property: The ephemeral type of the image.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the ephemeralType value.
      */
-    public void validate() {
+    public EphemeralType ephemeralType() {
+        return this.ephemeralType;
+    }
+
+    /**
+     * Set the ephemeralType property: The ephemeral type of the image.
+     * 
+     * @param ephemeralType the ephemeralType value to set.
+     * @return the PoolImage object itself.
+     */
+    public PoolImage withEphemeralType(EphemeralType ephemeralType) {
+        this.ephemeralType = ephemeralType;
+        return this;
     }
 
     /**
@@ -143,6 +160,7 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
         jsonWriter.writeStringField("wellKnownImageName", this.wellKnownImageName);
         jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("buffer", this.buffer);
+        jsonWriter.writeStringField("ephemeralType", this.ephemeralType == null ? null : this.ephemeralType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +188,8 @@ public final class PoolImage implements JsonSerializable<PoolImage> {
                     deserializedPoolImage.aliases = aliases;
                 } else if ("buffer".equals(fieldName)) {
                     deserializedPoolImage.buffer = reader.getString();
+                } else if ("ephemeralType".equals(fieldName)) {
+                    deserializedPoolImage.ephemeralType = EphemeralType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,46 +20,55 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
     /*
      * Run id.
      */
+    @Generated
     private String runId;
 
     /*
      * Status of the run notebook.
      */
+    @Generated
     private String runStatus;
 
     /*
      * Timestamp of last update.
      */
+    @Generated
     private String lastCheckedOn;
 
     /*
      * Livy session id.
      */
+    @Generated
     private String sessionId;
 
     /*
      * SparkPool name.
      */
+    @Generated
     private String sparkPool;
 
     /*
      * Run notebook session details.
      */
+    @Generated
     private Object sessionDetail;
 
     /*
      * Output of exit command.
      */
+    @Generated
     private String exitValue;
 
     /*
      * Run notebook error.
      */
+    @Generated
     private RunNotebookError error;
 
     /**
      * Creates an instance of RunNotebookResult class.
      */
+    @Generated
     public RunNotebookResult() {
     }
 
@@ -67,6 +77,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the runId value.
      */
+    @Generated
     public String getRunId() {
         return this.runId;
     }
@@ -77,6 +88,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param runId the runId value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setRunId(String runId) {
         this.runId = runId;
         return this;
@@ -87,6 +99,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the runStatus value.
      */
+    @Generated
     public String getRunStatus() {
         return this.runStatus;
     }
@@ -97,6 +110,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param runStatus the runStatus value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setRunStatus(String runStatus) {
         this.runStatus = runStatus;
         return this;
@@ -107,6 +121,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the lastCheckedOn value.
      */
+    @Generated
     public String getLastCheckedOn() {
         return this.lastCheckedOn;
     }
@@ -117,6 +132,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param lastCheckedOn the lastCheckedOn value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setLastCheckedOn(String lastCheckedOn) {
         this.lastCheckedOn = lastCheckedOn;
         return this;
@@ -127,6 +143,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -137,6 +154,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -147,6 +165,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the sparkPool value.
      */
+    @Generated
     public String getSparkPool() {
         return this.sparkPool;
     }
@@ -157,6 +176,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setSparkPool(String sparkPool) {
         this.sparkPool = sparkPool;
         return this;
@@ -167,6 +187,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the sessionDetail value.
      */
+    @Generated
     public Object getSessionDetail() {
         return this.sessionDetail;
     }
@@ -177,6 +198,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param sessionDetail the sessionDetail value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setSessionDetail(Object sessionDetail) {
         this.sessionDetail = sessionDetail;
         return this;
@@ -187,6 +209,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the exitValue value.
      */
+    @Generated
     public String getExitValue() {
         return this.exitValue;
     }
@@ -197,6 +220,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param exitValue the exitValue value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setExitValue(String exitValue) {
         this.exitValue = exitValue;
         return this;
@@ -207,6 +231,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * 
      * @return the error value.
      */
+    @Generated
     public RunNotebookError getError() {
         return this.error;
     }
@@ -217,6 +242,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * @param error the error value to set.
      * @return the RunNotebookResult object itself.
      */
+    @Generated
     public RunNotebookResult setError(RunNotebookError error) {
         this.error = error;
         return this;
@@ -225,6 +251,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -233,7 +260,9 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
         jsonWriter.writeStringField("lastCheckedOn", this.lastCheckedOn);
         jsonWriter.writeStringField("sessionId", this.sessionId);
         jsonWriter.writeStringField("sparkPool", this.sparkPool);
-        jsonWriter.writeUntypedField("sessionDetail", this.sessionDetail);
+        if (this.sessionDetail != null) {
+            jsonWriter.writeUntypedField("sessionDetail", this.sessionDetail);
+        }
         jsonWriter.writeStringField("exitValue", this.exitValue);
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
@@ -247,6 +276,7 @@ public final class RunNotebookResult implements JsonSerializable<RunNotebookResu
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RunNotebookResult.
      */
+    @Generated
     public static RunNotebookResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookResult deserializedRunNotebookResult = new RunNotebookResult();

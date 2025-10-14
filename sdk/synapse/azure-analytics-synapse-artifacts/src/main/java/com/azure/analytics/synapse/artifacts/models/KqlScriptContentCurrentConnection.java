@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The poolName property.
      */
+    @Generated
     private String poolName;
 
     /*
      * The databaseName property.
      */
+    @Generated
     private String databaseName;
 
     /*
      * The type property.
      */
+    @Generated
     private String type;
 
     /**
      * Creates an instance of KqlScriptContentCurrentConnection class.
      */
+    @Generated
     public KqlScriptContentCurrentConnection() {
     }
 
@@ -47,6 +53,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -57,6 +64,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * @param name the name value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
+    @Generated
     public KqlScriptContentCurrentConnection setName(String name) {
         this.name = name;
         return this;
@@ -67,6 +75,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * 
      * @return the poolName value.
      */
+    @Generated
     public String getPoolName() {
         return this.poolName;
     }
@@ -77,6 +86,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * @param poolName the poolName value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
+    @Generated
     public KqlScriptContentCurrentConnection setPoolName(String poolName) {
         this.poolName = poolName;
         return this;
@@ -87,6 +97,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * 
      * @return the databaseName value.
      */
+    @Generated
     public String getDatabaseName() {
         return this.databaseName;
     }
@@ -97,6 +108,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * @param databaseName the databaseName value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
+    @Generated
     public KqlScriptContentCurrentConnection setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
@@ -107,6 +119,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -117,6 +130,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * @param type the type value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
+    @Generated
     public KqlScriptContentCurrentConnection setType(String type) {
         this.type = type;
         return this;
@@ -125,6 +139,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class KqlScriptContentCurrentConnection implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KqlScriptContentCurrentConnection.
      */
+    @Generated
     public static KqlScriptContentCurrentConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KqlScriptContentCurrentConnection deserializedKqlScriptContentCurrentConnection

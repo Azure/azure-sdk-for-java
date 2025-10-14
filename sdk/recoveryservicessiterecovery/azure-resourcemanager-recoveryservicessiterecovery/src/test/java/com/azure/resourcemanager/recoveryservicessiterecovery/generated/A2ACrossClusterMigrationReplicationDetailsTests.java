@@ -12,31 +12,31 @@ public final class A2ACrossClusterMigrationReplicationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2ACrossClusterMigrationReplicationDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"A2ACrossClusterMigration\",\"fabricObjectId\":\"sknxrwzawnvsbcf\",\"primaryFabricLocation\":\"agxnvhycvdimw\",\"osType\":\"regzgyufutrwpwer\",\"vmProtectionState\":\"kzkdhmeott\",\"vmProtectionStateDescription\":\"jyosxwwh\",\"lifecycleId\":\"jtfvpndpmiljpn\"}")
+            "{\"instanceType\":\"A2ACrossClusterMigration\",\"fabricObjectId\":\"dkygywezski\",\"primaryFabricLocation\":\"afygzmxieqvds\",\"osType\":\"klixqcahyhxaly\",\"vmProtectionState\":\"awoijp\",\"vmProtectionStateDescription\":\"tblxpkkwjdjodqhy\",\"lifecycleId\":\"ncn\"}")
             .toObject(A2ACrossClusterMigrationReplicationDetails.class);
-        Assertions.assertEquals("sknxrwzawnvsbcf", model.fabricObjectId());
-        Assertions.assertEquals("agxnvhycvdimw", model.primaryFabricLocation());
-        Assertions.assertEquals("regzgyufutrwpwer", model.osType());
-        Assertions.assertEquals("kzkdhmeott", model.vmProtectionState());
-        Assertions.assertEquals("jyosxwwh", model.vmProtectionStateDescription());
-        Assertions.assertEquals("jtfvpndpmiljpn", model.lifecycleId());
+        Assertions.assertEquals("dkygywezski", model.fabricObjectId());
+        Assertions.assertEquals("afygzmxieqvds", model.primaryFabricLocation());
+        Assertions.assertEquals("klixqcahyhxaly", model.osType());
+        Assertions.assertEquals("awoijp", model.vmProtectionState());
+        Assertions.assertEquals("tblxpkkwjdjodqhy", model.vmProtectionStateDescription());
+        Assertions.assertEquals("ncn", model.lifecycleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2ACrossClusterMigrationReplicationDetails model
-            = new A2ACrossClusterMigrationReplicationDetails().withFabricObjectId("sknxrwzawnvsbcf")
-                .withPrimaryFabricLocation("agxnvhycvdimw")
-                .withOsType("regzgyufutrwpwer")
-                .withVmProtectionState("kzkdhmeott")
-                .withVmProtectionStateDescription("jyosxwwh")
-                .withLifecycleId("jtfvpndpmiljpn");
+            = new A2ACrossClusterMigrationReplicationDetails().withFabricObjectId("dkygywezski")
+                .withPrimaryFabricLocation("afygzmxieqvds")
+                .withOsType("klixqcahyhxaly")
+                .withVmProtectionState("awoijp")
+                .withVmProtectionStateDescription("tblxpkkwjdjodqhy")
+                .withLifecycleId("ncn");
         model = BinaryData.fromObject(model).toObject(A2ACrossClusterMigrationReplicationDetails.class);
-        Assertions.assertEquals("sknxrwzawnvsbcf", model.fabricObjectId());
-        Assertions.assertEquals("agxnvhycvdimw", model.primaryFabricLocation());
-        Assertions.assertEquals("regzgyufutrwpwer", model.osType());
-        Assertions.assertEquals("kzkdhmeott", model.vmProtectionState());
-        Assertions.assertEquals("jyosxwwh", model.vmProtectionStateDescription());
-        Assertions.assertEquals("jtfvpndpmiljpn", model.lifecycleId());
+        Assertions.assertEquals("dkygywezski", model.fabricObjectId());
+        Assertions.assertEquals("afygzmxieqvds", model.primaryFabricLocation());
+        Assertions.assertEquals("klixqcahyhxaly", model.osType());
+        Assertions.assertEquals("awoijp", model.vmProtectionState());
+        Assertions.assertEquals("tblxpkkwjdjodqhy", model.vmProtectionStateDescription());
+        Assertions.assertEquals("ncn", model.lifecycleId());
     }
 }

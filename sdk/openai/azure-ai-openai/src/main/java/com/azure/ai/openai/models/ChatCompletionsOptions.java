@@ -221,6 +221,11 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     @Generated
     private Boolean parallelToolCalls;
 
+    /*
+     * This field is not available in Azure OpenAI. Specifies the latency tier to use for processing the request.
+     */
+    private ServiceTierOptions serviceTierOptions;
+
     /**
      * Creates an instance of ChatCompletionsOptions class.
      *
@@ -904,15 +909,31 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
+     * Get the {@link ServiceTierOptions} for this request.
+     *
+     * @return the {@link ServiceTierOptions} value.
+     */
+    public ServiceTierOptions getServiceTierOptions() {
+        return this.serviceTierOptions;
+    }
+
+    /**
+     * Set the {@link ServiceTierOptions} for this request.
+     *
+     * @param serviceTierOptions the {@link ServiceTierOptions} value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    public ChatCompletionsOptions setServiceTierOptions(ServiceTierOptions serviceTierOptions) {
+        this.serviceTierOptions = serviceTierOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        if (this.toolChoice != null) {
-            jsonWriter.writeRawField("tool_choice", this.toolChoice.toString());
-        }
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         if (this.functionCall != null) {
@@ -938,7 +959,24 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         jsonWriter.writeBooleanField("logprobs", this.logprobs);
         jsonWriter.writeNumberField("top_logprobs", this.topLogprobs);
         jsonWriter.writeJsonField("response_format", this.responseFormat);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        if (this.toolChoice != null) {
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
+        }
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
+        jsonWriter.writeBooleanField("store", this.store);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("reasoning_effort",
+            this.reasoningEffort == null ? null : this.reasoningEffort.toString());
+        jsonWriter.writeJsonField("user_security_context", this.userSecurityContext);
+        jsonWriter.writeArrayField("modalities", this.modalities,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("prediction", this.prediction);
+        jsonWriter.writeJsonField("audio", this.audio);
+        if (this.serviceTierOptions != null) {
+            jsonWriter.writeStringField("service_tier", this.serviceTierOptions.toString());
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -951,7 +989,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatCompletionsOptions.
      */
-    @Generated
     public static ChatCompletionsOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<ChatRequestMessage> messages = null;
@@ -979,6 +1016,14 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             List<ChatCompletionsToolDefinition> tools = null;
             BinaryData toolChoice = null;
             Boolean parallelToolCalls = null;
+            Boolean store = null;
+            Map<String, String> metadata = null;
+            ReasoningEffortValue reasoningEffort = null;
+            UserSecurityContext userSecurityContext = null;
+            List<ChatCompletionModality> modalities = null;
+            PredictionContent prediction = null;
+            AudioOutputParameters audio = null;
+            ServiceTierOptions serviceTierOptions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -1034,6 +1079,22 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("parallel_tool_calls".equals(fieldName)) {
                     parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
+                } else if ("store".equals(fieldName)) {
+                    store = reader.getNullable(JsonReader::getBoolean);
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("reasoning_effort".equals(fieldName)) {
+                    reasoningEffort = ReasoningEffortValue.fromString(reader.getString());
+                } else if ("user_security_context".equals(fieldName)) {
+                    userSecurityContext = UserSecurityContext.fromJson(reader);
+                } else if ("modalities".equals(fieldName)) {
+                    modalities = reader.readArray(reader1 -> ChatCompletionModality.fromString(reader1.getString()));
+                } else if ("prediction".equals(fieldName)) {
+                    prediction = PredictionContent.fromJson(reader);
+                } else if ("audio".equals(fieldName)) {
+                    audio = AudioOutputParameters.fromJson(reader);
+                } else if ("service_tier".equals(fieldName)) {
+                    serviceTierOptions = ServiceTierOptions.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -1063,6 +1124,14 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.tools = tools;
             deserializedChatCompletionsOptions.toolChoice = toolChoice;
             deserializedChatCompletionsOptions.parallelToolCalls = parallelToolCalls;
+            deserializedChatCompletionsOptions.store = store;
+            deserializedChatCompletionsOptions.metadata = metadata;
+            deserializedChatCompletionsOptions.reasoningEffort = reasoningEffort;
+            deserializedChatCompletionsOptions.userSecurityContext = userSecurityContext;
+            deserializedChatCompletionsOptions.modalities = modalities;
+            deserializedChatCompletionsOptions.prediction = prediction;
+            deserializedChatCompletionsOptions.audio = audio;
+            deserializedChatCompletionsOptions.serviceTierOptions = serviceTierOptions;
             return deserializedChatCompletionsOptions;
         });
     }
@@ -1082,5 +1151,245 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
                     options.setStreamOptions(streamOptions);
                 }
             });
+    }
+
+    /*
+     * Whether or not to store the output of this chat completion request for use in our model distillation or
+     * evaluation products.
+     */
+    @Generated
+    private Boolean store;
+
+    /*
+     * Developer-defined tags and values used for filtering completions in the stored completions dashboard.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /*
+     * This option is only valid for o1 models,
+     * 
+     * Constrains effort on reasoning for reasoning models (see https://platform.openai.com/docs/guides/reasoning).
+     * 
+     * Currently supported values are `low`, `medium`, and `high`. Reducing reasoning effort can result in faster
+     * responses and fewer tokens used on reasoning in a response.
+     */
+    @Generated
+    private ReasoningEffortValue reasoningEffort;
+
+    /*
+     * The security context identifies and authenticates users and applications in your multi-tenant AI system, helping
+     * security teams investigate and mitigate incidents.
+     */
+    @Generated
+    private UserSecurityContext userSecurityContext;
+
+    /*
+     * Output types that you would like the model to generate for this request.
+     * Most models are capable of generating text, which is the default: `["text"]`
+     * The `gpt-4o-audio-preview` model can also be used to generate audio. To
+     * request that this model generate both text and audio responses, you can
+     * use: `["text", "audio"]`
+     */
+    @Generated
+    private List<ChatCompletionModality> modalities;
+
+    /*
+     * Configuration for a Predicted Output, which can greatly improve response times
+     * when large parts of the model response are known ahead of time. This is most
+     * common when you are regenerating a file with only minor changes to most of the content.
+     */
+    @Generated
+    private PredictionContent prediction;
+
+    /*
+     * Parameters for audio output. Required when audio output is requested
+     * with `modalities: ["audio"]`
+     */
+    @Generated
+    private AudioOutputParameters audio;
+
+    /**
+     * Get the store property: Whether or not to store the output of this chat completion request for use in our model
+     * distillation or evaluation products.
+     *
+     * @return the store value.
+     */
+    @Generated
+    public Boolean isStore() {
+        return this.store;
+    }
+
+    /**
+     * Set the store property: Whether or not to store the output of this chat completion request for use in our model
+     * distillation or evaluation products.
+     *
+     * @param store the store value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setStore(Boolean store) {
+        this.store = store;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Developer-defined tags and values used for filtering completions in the stored
+     * completions dashboard.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Developer-defined tags and values used for filtering completions in the stored
+     * completions dashboard.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the reasoningEffort property: This option is only valid for o1 models,
+     *
+     * Constrains effort on reasoning for reasoning models (see https://platform.openai.com/docs/guides/reasoning).
+     *
+     * Currently supported values are `low`, `medium`, and `high`. Reducing reasoning effort can result in faster
+     * responses and fewer tokens used on reasoning in a response.
+     *
+     * @return the reasoningEffort value.
+     */
+    @Generated
+    public ReasoningEffortValue getReasoningEffort() {
+        return this.reasoningEffort;
+    }
+
+    /**
+     * Set the reasoningEffort property: This option is only valid for o1 models,
+     *
+     * Constrains effort on reasoning for reasoning models (see https://platform.openai.com/docs/guides/reasoning).
+     *
+     * Currently supported values are `low`, `medium`, and `high`. Reducing reasoning effort can result in faster
+     * responses and fewer tokens used on reasoning in a response.
+     *
+     * @param reasoningEffort the reasoningEffort value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setReasoningEffort(ReasoningEffortValue reasoningEffort) {
+        this.reasoningEffort = reasoningEffort;
+        return this;
+    }
+
+    /**
+     * Get the userSecurityContext property: The security context identifies and authenticates users and applications in
+     * your multi-tenant AI system, helping security teams investigate and mitigate incidents.
+     *
+     * @return the userSecurityContext value.
+     */
+    @Generated
+    public UserSecurityContext getUserSecurityContext() {
+        return this.userSecurityContext;
+    }
+
+    /**
+     * Set the userSecurityContext property: The security context identifies and authenticates users and applications in
+     * your multi-tenant AI system, helping security teams investigate and mitigate incidents.
+     *
+     * @param userSecurityContext the userSecurityContext value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setUserSecurityContext(UserSecurityContext userSecurityContext) {
+        this.userSecurityContext = userSecurityContext;
+        return this;
+    }
+
+    /**
+     * Get the modalities property: Output types that you would like the model to generate for this request.
+     * Most models are capable of generating text, which is the default: `["text"]`
+     * The `gpt-4o-audio-preview` model can also be used to generate audio. To
+     * request that this model generate both text and audio responses, you can
+     * use: `["text", "audio"]`.
+     *
+     * @return the modalities value.
+     */
+    @Generated
+    public List<ChatCompletionModality> getModalities() {
+        return this.modalities;
+    }
+
+    /**
+     * Set the modalities property: Output types that you would like the model to generate for this request.
+     * Most models are capable of generating text, which is the default: `["text"]`
+     * The `gpt-4o-audio-preview` model can also be used to generate audio. To
+     * request that this model generate both text and audio responses, you can
+     * use: `["text", "audio"]`.
+     *
+     * @param modalities the modalities value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setModalities(List<ChatCompletionModality> modalities) {
+        this.modalities = modalities;
+        return this;
+    }
+
+    /**
+     * Get the prediction property: Configuration for a Predicted Output, which can greatly improve response times
+     * when large parts of the model response are known ahead of time. This is most
+     * common when you are regenerating a file with only minor changes to most of the content.
+     *
+     * @return the prediction value.
+     */
+    @Generated
+    public PredictionContent getPrediction() {
+        return this.prediction;
+    }
+
+    /**
+     * Set the prediction property: Configuration for a Predicted Output, which can greatly improve response times
+     * when large parts of the model response are known ahead of time. This is most
+     * common when you are regenerating a file with only minor changes to most of the content.
+     *
+     * @param prediction the prediction value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setPrediction(PredictionContent prediction) {
+        this.prediction = prediction;
+        return this;
+    }
+
+    /**
+     * Get the audio property: Parameters for audio output. Required when audio output is requested
+     * with `modalities: ["audio"]`.
+     *
+     * @return the audio value.
+     */
+    @Generated
+    public AudioOutputParameters getAudio() {
+        return this.audio;
+    }
+
+    /**
+     * Set the audio property: Parameters for audio output. Required when audio output is requested
+     * with `modalities: ["audio"]`.
+     *
+     * @param audio the audio value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setAudio(AudioOutputParameters audio) {
+        this.audio = audio;
+        return this;
     }
 }

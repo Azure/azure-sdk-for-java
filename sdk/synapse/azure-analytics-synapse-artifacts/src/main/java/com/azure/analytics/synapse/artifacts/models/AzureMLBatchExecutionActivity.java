@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "AzureMLBatchExecution";
 
     /*
@@ -28,6 +30,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * service parameters defined in the published Azure ML web service. Values will be passed in the GlobalParameters
      * property of the Azure ML batch execution request.
      */
+    @Generated
     private Map<String, Object> globalParameters;
 
     /*
@@ -35,6 +38,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * specifying the output Blob locations. This information will be passed in the WebServiceOutputs property of the
      * Azure ML batch execution request.
      */
+    @Generated
     private Map<String, AzureMLWebServiceFile> webServiceOutputs;
 
     /*
@@ -42,11 +46,13 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * specifying the input Blob locations.. This information will be passed in the WebServiceInputs property of the
      * Azure ML batch execution request.
      */
+    @Generated
     private Map<String, AzureMLWebServiceFile> webServiceInputs;
 
     /**
      * Creates an instance of AzureMLBatchExecutionActivity class.
      */
+    @Generated
     public AzureMLBatchExecutionActivity() {
     }
 
@@ -55,6 +61,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -67,6 +74,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * 
      * @return the globalParameters value.
      */
+    @Generated
     public Map<String, Object> getGlobalParameters() {
         return this.globalParameters;
     }
@@ -79,6 +87,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * @param globalParameters the globalParameters value to set.
      * @return the AzureMLBatchExecutionActivity object itself.
      */
+    @Generated
     public AzureMLBatchExecutionActivity setGlobalParameters(Map<String, Object> globalParameters) {
         this.globalParameters = globalParameters;
         return this;
@@ -91,6 +100,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * 
      * @return the webServiceOutputs value.
      */
+    @Generated
     public Map<String, AzureMLWebServiceFile> getWebServiceOutputs() {
         return this.webServiceOutputs;
     }
@@ -103,6 +113,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * @param webServiceOutputs the webServiceOutputs value to set.
      * @return the AzureMLBatchExecutionActivity object itself.
      */
+    @Generated
     public AzureMLBatchExecutionActivity setWebServiceOutputs(Map<String, AzureMLWebServiceFile> webServiceOutputs) {
         this.webServiceOutputs = webServiceOutputs;
         return this;
@@ -115,6 +126,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * 
      * @return the webServiceInputs value.
      */
+    @Generated
     public Map<String, AzureMLWebServiceFile> getWebServiceInputs() {
         return this.webServiceInputs;
     }
@@ -127,6 +139,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * @param webServiceInputs the webServiceInputs value to set.
      * @return the AzureMLBatchExecutionActivity object itself.
      */
+    @Generated
     public AzureMLBatchExecutionActivity setWebServiceInputs(Map<String, AzureMLWebServiceFile> webServiceInputs) {
         this.webServiceInputs = webServiceInputs;
         return this;
@@ -135,6 +148,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -144,6 +158,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -153,6 +168,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setName(String name) {
         super.setName(name);
@@ -162,6 +178,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setDescription(String description) {
         super.setDescription(description);
@@ -171,6 +188,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setState(ActivityState state) {
         super.setState(state);
@@ -180,6 +198,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -189,6 +208,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -198,6 +218,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLBatchExecutionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -207,6 +228,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -248,6 +270,7 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMLBatchExecutionActivity.
      */
+    @Generated
     public static AzureMLBatchExecutionActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMLBatchExecutionActivity deserializedAzureMLBatchExecutionActivity

@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
 import com.azure.resourcemanager.networkcloud.models.ClusterConnectionStatus;
@@ -24,8 +25,10 @@ import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettings;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,7 +44,12 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private RackDefinition aggregatorOrSingleRackDefinition;
 
     /*
-     * The resource ID of the Log Analytics Workspace that will be used for storing relevant logs.
+     * The settings for the log analytics workspace used for output of logs from this cluster.
+     */
+    private AnalyticsOutputSettings analyticsOutputSettings;
+
+    /*
+     * Field Deprecated. The resource ID of the Log Analytics Workspace that will be used for storing relevant logs.
      */
     private String analyticsWorkspaceId;
 
@@ -163,6 +171,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private ClusterSecretArchive secretArchive;
 
     /*
+     * The settings for the secret archive used to hold credentials for the cluster.
+     */
+    private SecretArchiveSettings secretArchiveSettings;
+
+    /*
      * The support end date of the runtime version of the cluster.
      */
     private String supportExpiryDate;
@@ -171,6 +184,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * The strategy for updating the cluster.
      */
     private ClusterUpdateStrategy updateStrategy;
+
+    /*
+     * The settings for how security vulnerability scanning is applied to the cluster.
+     */
+    private VulnerabilityScanningSettings vulnerabilityScanningSettings;
 
     /*
      * The list of workload resource IDs that are hosted within this cluster.
@@ -206,8 +224,30 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Get the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
-     * storing relevant logs.
+     * Get the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @return the analyticsOutputSettings value.
+     */
+    public AnalyticsOutputSettings analyticsOutputSettings() {
+        return this.analyticsOutputSettings;
+    }
+
+    /**
+     * Set the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @param analyticsOutputSettings the analyticsOutputSettings value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings) {
+        this.analyticsOutputSettings = analyticsOutputSettings;
+        return this;
+    }
+
+    /**
+     * Get the analyticsWorkspaceId property: Field Deprecated. The resource ID of the Log Analytics Workspace that will
+     * be used for storing relevant logs.
      * 
      * @return the analyticsWorkspaceId value.
      */
@@ -216,8 +256,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Set the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
-     * storing relevant logs.
+     * Set the analyticsWorkspaceId property: Field Deprecated. The resource ID of the Log Analytics Workspace that will
+     * be used for storing relevant logs.
      * 
      * @param analyticsWorkspaceId the analyticsWorkspaceId value to set.
      * @return the ClusterProperties object itself.
@@ -571,6 +611,28 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.secretArchiveSettings;
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        this.secretArchiveSettings = secretArchiveSettings;
+        return this;
+    }
+
+    /**
      * Get the supportExpiryDate property: The support end date of the runtime version of the cluster.
      * 
      * @return the supportExpiryDate value.
@@ -600,6 +662,29 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @return the vulnerabilityScanningSettings value.
+     */
+    public VulnerabilityScanningSettings vulnerabilityScanningSettings() {
+        return this.vulnerabilityScanningSettings;
+    }
+
+    /**
+     * Set the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @param vulnerabilityScanningSettings the vulnerabilityScanningSettings value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties
+        withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings) {
+        this.vulnerabilityScanningSettings = vulnerabilityScanningSettings;
+        return this;
+    }
+
+    /**
      * Get the workloadResourceIds property: The list of workload resource IDs that are hosted within this cluster.
      * 
      * @return the workloadResourceIds value.
@@ -620,6 +705,9 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     "Missing required property aggregatorOrSingleRackDefinition in model ClusterProperties"));
         } else {
             aggregatorOrSingleRackDefinition().validate();
+        }
+        if (analyticsOutputSettings() != null) {
+            analyticsOutputSettings().validate();
         }
         if (availableUpgradeVersions() != null) {
             availableUpgradeVersions().forEach(e -> e.validate());
@@ -668,8 +756,14 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         if (secretArchive() != null) {
             secretArchive().validate();
         }
+        if (secretArchiveSettings() != null) {
+            secretArchiveSettings().validate();
+        }
         if (updateStrategy() != null) {
             updateStrategy().validate();
+        }
+        if (vulnerabilityScanningSettings() != null) {
+            vulnerabilityScanningSettings().validate();
         }
     }
 
@@ -685,6 +779,7 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         jsonWriter.writeStringField("clusterType", this.clusterType == null ? null : this.clusterType.toString());
         jsonWriter.writeStringField("clusterVersion", this.clusterVersion);
         jsonWriter.writeStringField("networkFabricId", this.networkFabricId);
+        jsonWriter.writeJsonField("analyticsOutputSettings", this.analyticsOutputSettings);
         jsonWriter.writeStringField("analyticsWorkspaceId", this.analyticsWorkspaceId);
         jsonWriter.writeStringField("clusterLocation", this.clusterLocation);
         jsonWriter.writeJsonField("clusterServicePrincipal", this.clusterServicePrincipal);
@@ -695,7 +790,9 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
         jsonWriter.writeJsonField("runtimeProtectionConfiguration", this.runtimeProtectionConfiguration);
         jsonWriter.writeJsonField("secretArchive", this.secretArchive);
+        jsonWriter.writeJsonField("secretArchiveSettings", this.secretArchiveSettings);
         jsonWriter.writeJsonField("updateStrategy", this.updateStrategy);
+        jsonWriter.writeJsonField("vulnerabilityScanningSettings", this.vulnerabilityScanningSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -723,6 +820,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.clusterVersion = reader.getString();
                 } else if ("networkFabricId".equals(fieldName)) {
                     deserializedClusterProperties.networkFabricId = reader.getString();
+                } else if ("analyticsOutputSettings".equals(fieldName)) {
+                    deserializedClusterProperties.analyticsOutputSettings = AnalyticsOutputSettings.fromJson(reader);
                 } else if ("analyticsWorkspaceId".equals(fieldName)) {
                     deserializedClusterProperties.analyticsWorkspaceId = reader.getString();
                 } else if ("availableUpgradeVersions".equals(fieldName)) {
@@ -773,10 +872,15 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                         = RuntimeProtectionConfiguration.fromJson(reader);
                 } else if ("secretArchive".equals(fieldName)) {
                     deserializedClusterProperties.secretArchive = ClusterSecretArchive.fromJson(reader);
+                } else if ("secretArchiveSettings".equals(fieldName)) {
+                    deserializedClusterProperties.secretArchiveSettings = SecretArchiveSettings.fromJson(reader);
                 } else if ("supportExpiryDate".equals(fieldName)) {
                     deserializedClusterProperties.supportExpiryDate = reader.getString();
                 } else if ("updateStrategy".equals(fieldName)) {
                     deserializedClusterProperties.updateStrategy = ClusterUpdateStrategy.fromJson(reader);
+                } else if ("vulnerabilityScanningSettings".equals(fieldName)) {
+                    deserializedClusterProperties.vulnerabilityScanningSettings
+                        = VulnerabilityScanningSettings.fromJson(reader);
                 } else if ("workloadResourceIds".equals(fieldName)) {
                     List<String> workloadResourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedClusterProperties.workloadResourceIds = workloadResourceIds;

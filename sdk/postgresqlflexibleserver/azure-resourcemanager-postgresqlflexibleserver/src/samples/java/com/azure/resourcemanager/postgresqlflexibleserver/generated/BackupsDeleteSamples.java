@@ -10,7 +10,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class BackupsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/BackupDelete.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * BackupDelete.json
      */
     /**
      * Sample code: Delete a specific backup.
@@ -19,6 +20,6 @@ public final class BackupsDeleteSamples {
      */
     public static void
         deleteASpecificBackup(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.backups().delete("TestGroup", "testserver", "backup_20210615T160516", com.azure.core.util.Context.NONE);
+        manager.backups().delete("TestGroup", "testserver", "backup_20250303T160516", com.azure.core.util.Context.NONE);
     }
 }

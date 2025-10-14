@@ -14,30 +14,30 @@ public final class IssueUpdateContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueUpdateContract model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"vweht\",\"description\":\"mxhzzysevus\",\"userId\":\"vzrrryveimi\",\"createdDate\":\"2021-06-20T09:39:58Z\",\"state\":\"open\",\"apiId\":\"atvfuzkaftj\"}}")
+            "{\"properties\":{\"title\":\"uo\",\"description\":\"gtgitsqhzvbrzcdb\",\"userId\":\"fzndscxmxeatkd\",\"createdDate\":\"2021-06-16T10:55:30Z\",\"state\":\"proposed\",\"apiId\":\"jyibqbna\"}}")
             .toObject(IssueUpdateContract.class);
-        Assertions.assertEquals("vweht", model.title());
-        Assertions.assertEquals("mxhzzysevus", model.description());
-        Assertions.assertEquals("vzrrryveimi", model.userId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T09:39:58Z"), model.createdDate());
-        Assertions.assertEquals(State.OPEN, model.state());
-        Assertions.assertEquals("atvfuzkaftj", model.apiId());
+        Assertions.assertEquals("uo", model.title());
+        Assertions.assertEquals("gtgitsqhzvbrzcdb", model.description());
+        Assertions.assertEquals("fzndscxmxeatkd", model.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T10:55:30Z"), model.createdDate());
+        Assertions.assertEquals(State.PROPOSED, model.state());
+        Assertions.assertEquals("jyibqbna", model.apiId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueUpdateContract model = new IssueUpdateContract().withTitle("vweht")
-            .withDescription("mxhzzysevus")
-            .withUserId("vzrrryveimi")
-            .withCreatedDate(OffsetDateTime.parse("2021-06-20T09:39:58Z"))
-            .withState(State.OPEN)
-            .withApiId("atvfuzkaftj");
+        IssueUpdateContract model = new IssueUpdateContract().withTitle("uo")
+            .withDescription("gtgitsqhzvbrzcdb")
+            .withUserId("fzndscxmxeatkd")
+            .withCreatedDate(OffsetDateTime.parse("2021-06-16T10:55:30Z"))
+            .withState(State.PROPOSED)
+            .withApiId("jyibqbna");
         model = BinaryData.fromObject(model).toObject(IssueUpdateContract.class);
-        Assertions.assertEquals("vweht", model.title());
-        Assertions.assertEquals("mxhzzysevus", model.description());
-        Assertions.assertEquals("vzrrryveimi", model.userId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T09:39:58Z"), model.createdDate());
-        Assertions.assertEquals(State.OPEN, model.state());
-        Assertions.assertEquals("atvfuzkaftj", model.apiId());
+        Assertions.assertEquals("uo", model.title());
+        Assertions.assertEquals("gtgitsqhzvbrzcdb", model.description());
+        Assertions.assertEquals("fzndscxmxeatkd", model.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T10:55:30Z"), model.createdDate());
+        Assertions.assertEquals(State.PROPOSED, model.state());
+        Assertions.assertEquals("jyibqbna", model.apiId());
     }
 }

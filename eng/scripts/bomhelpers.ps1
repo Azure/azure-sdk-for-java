@@ -7,11 +7,11 @@ class MavenArtifactInfo {
   [String] $LatestGAOrPatchVersion
   [String] $LatestReleasedVersion
 
-  MavenArtifactInfo($ArtifactId, $LatestGAOrPatchVersion, $LatestReleasedVersion) {
+  MavenArtifactInfo($ArtifactId, $LatestGAOrPatchVersion, $LatestReleasedVersion, $GroupId = "com.azure") {
     $this.ArtifactId = $ArtifactId
     $this.LatestGAOrPatchVersion = $LatestGAOrPatchVersion
     $this.LatestReleasedVersion = $LatestReleasedVersion
-    $this.GroupId = 'com.azure'
+    $this.GroupId = $GroupId
   }
 }
 
@@ -23,42 +23,44 @@ $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1
 function SetDependencyVersion($GroupId = "com.azure", $ArtifactId, $Version) {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
-  $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
-  $cmdOutput = python $setVersionFilePath --bt client --ar $ArtifactId --gi $GroupId --increment-version
+  $cmdOutput = python $setVersionFilePath --new-version $Version --artifact-id $ArtifactId --group-id $GroupId
+  $cmdOutput = python $setVersionFilePath --artifact-id $ArtifactId --group-id $GroupId --increment-version
 }
 
 # Set the current version of an artifact in the version_client.txt file
 function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
-  $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
+  $cmdOutput = python $setVersionFilePath --new-version $Version --artifact-id $ArtifactId --group-id $GroupId
 }
 
 # Update dependencies of the artifact.
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $updateVersionFilePath = Join-Path $repoRoot "eng" "versioning" "update_versions.py"
-  $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $updateVersionFilePath --skip-readme
 }
 
 # Get all azure com client artifacts from Maven.
-function GetAllAzComClientArtifactsFromMaven() {
-  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/com/azure"
+function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
+  $groupPath = $GroupId -replace '\.', '/'
+  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath" -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
   return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
 }
 
 # Get version info for an artifact.
-function GetVersionInfoForAnArtifactId([String]$ArtifactId) {
-  $mavenMetadataUrl = "https://repo1.maven.org/maven2/com/azure/$($ArtifactId)/maven-metadata.xml"
-  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl
+function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$ArtifactId) {
+  $groupPath = $GroupId -replace '\.', '/'
+  $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
+  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
   $versions = ([xml]$webResponseObj.Content).metadata.versioning.versions.version
   $semVersions = $versions | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
   $sortedVersions = [AzureEngSemanticVersion]::SortVersions($semVersions)
   $latestReleasedVersion = $sortedVersions[0].RawVersion
   $latestPatchOrGAVersion = $sortedVersions | Where-Object { !($_.IsPrerelease) } | ForEach-Object { $_.RawVersion } | Select-Object -First 1
 
-  $mavenArtifactInfo = [MavenArtifactInfo]::new($ArtifactId, $latestPatchOrGAVersion, $latestReleasedVersion)
+  $mavenArtifactInfo = [MavenArtifactInfo]::new($ArtifactId, $latestPatchOrGAVersion, $latestReleasedVersion, $GroupId)
 
   return $mavenArtifactInfo
 }
@@ -279,7 +281,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
 
   if (!$releaseVersion) {
     Write-Output "Computing the latest release version for each of the relevant artifacts from Maven Central."
-    $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -ArtifactId $artifactId)
+    $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -GroupId $GroupId -ArtifactId $artifactId)
 
     if ($null -eq $mavenArtifactInfo) {
       LogError "Could not find $artifactId on Maven Central."

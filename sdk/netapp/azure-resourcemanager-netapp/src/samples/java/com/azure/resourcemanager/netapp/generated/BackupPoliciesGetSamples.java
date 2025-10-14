@@ -10,8 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class BackupPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_Get.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupPolicies_Get.json
      */
     /**
      * Sample code: Backups_Get.

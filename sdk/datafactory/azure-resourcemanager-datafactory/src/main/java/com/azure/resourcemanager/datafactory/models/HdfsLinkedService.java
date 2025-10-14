@@ -51,7 +51,7 @@ public final class HdfsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HdfsLinkedServiceTypeProperties innerTypeProperties() {
+    HdfsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -16,58 +16,56 @@ public final class InMageEnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageEnableProtectionInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMage\",\"vmFriendlyName\":\"lng\",\"masterTargetId\":\"gnhrkombcdtajdo\",\"processServerId\":\"ggorwjoqt\",\"retentionDrive\":\"otpvclp\",\"runAsAccountId\":\"yrlmwkptsk\",\"multiVmGroupId\":\"xjgvh\",\"multiVmGroupName\":\"ccbmkakm\",\"datastoreName\":\"okbputm\",\"diskExclusionInput\":{\"volumeOptions\":[{\"volumeLabel\":\"akmlwktfowzkroyr\",\"onlyExcludeIfSingleVolume\":\"r\"},{\"volumeLabel\":\"lzqjimejtgzjxx\",\"onlyExcludeIfSingleVolume\":\"e\"}],\"diskSignatureOptions\":[{\"diskSignature\":\"qloiwyayyziv\"},{\"diskSignature\":\"itcdqlhchwhrk\"},{\"diskSignature\":\"l\"},{\"diskSignature\":\"fibfiplhx\"}]},\"disksToInclude\":[\"mycjowlyey\"]}")
+            "{\"instanceType\":\"InMage\",\"vmFriendlyName\":\"osc\",\"masterTargetId\":\"lhwuusieckt\",\"processServerId\":\"bhjuxidhh\",\"retentionDrive\":\"om\",\"runAsAccountId\":\"ddx\",\"multiVmGroupId\":\"x\",\"multiVmGroupName\":\"ugxwjwilmqrslaat\",\"datastoreName\":\"twujjzgx\",\"diskExclusionInput\":{\"volumeOptions\":[{\"volumeLabel\":\"xr\",\"onlyExcludeIfSingleVolume\":\"tvhvtqqy\"},{\"volumeLabel\":\"kkt\",\"onlyExcludeIfSingleVolume\":\"zejogmkorvvmvm\"}],\"diskSignatureOptions\":[{\"diskSignature\":\"qhlbsnosnqliwkm\"}]},\"disksToInclude\":[\"fetya\"]}")
             .toObject(InMageEnableProtectionInput.class);
-        Assertions.assertEquals("lng", model.vmFriendlyName());
-        Assertions.assertEquals("gnhrkombcdtajdo", model.masterTargetId());
-        Assertions.assertEquals("ggorwjoqt", model.processServerId());
-        Assertions.assertEquals("otpvclp", model.retentionDrive());
-        Assertions.assertEquals("yrlmwkptsk", model.runAsAccountId());
-        Assertions.assertEquals("xjgvh", model.multiVmGroupId());
-        Assertions.assertEquals("ccbmkakm", model.multiVmGroupName());
-        Assertions.assertEquals("okbputm", model.datastoreName());
-        Assertions.assertEquals("akmlwktfowzkroyr", model.diskExclusionInput().volumeOptions().get(0).volumeLabel());
-        Assertions.assertEquals("r", model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
-        Assertions.assertEquals("qloiwyayyziv",
+        Assertions.assertEquals("osc", model.vmFriendlyName());
+        Assertions.assertEquals("lhwuusieckt", model.masterTargetId());
+        Assertions.assertEquals("bhjuxidhh", model.processServerId());
+        Assertions.assertEquals("om", model.retentionDrive());
+        Assertions.assertEquals("ddx", model.runAsAccountId());
+        Assertions.assertEquals("x", model.multiVmGroupId());
+        Assertions.assertEquals("ugxwjwilmqrslaat", model.multiVmGroupName());
+        Assertions.assertEquals("twujjzgx", model.datastoreName());
+        Assertions.assertEquals("xr", model.diskExclusionInput().volumeOptions().get(0).volumeLabel());
+        Assertions.assertEquals("tvhvtqqy",
+            model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
+        Assertions.assertEquals("qhlbsnosnqliwkm",
             model.diskExclusionInput().diskSignatureOptions().get(0).diskSignature());
-        Assertions.assertEquals("mycjowlyey", model.disksToInclude().get(0));
+        Assertions.assertEquals("fetya", model.disksToInclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageEnableProtectionInput model = new InMageEnableProtectionInput().withVmFriendlyName("lng")
-            .withMasterTargetId("gnhrkombcdtajdo")
-            .withProcessServerId("ggorwjoqt")
-            .withRetentionDrive("otpvclp")
-            .withRunAsAccountId("yrlmwkptsk")
-            .withMultiVmGroupId("xjgvh")
-            .withMultiVmGroupName("ccbmkakm")
-            .withDatastoreName("okbputm")
+        InMageEnableProtectionInput model = new InMageEnableProtectionInput().withVmFriendlyName("osc")
+            .withMasterTargetId("lhwuusieckt")
+            .withProcessServerId("bhjuxidhh")
+            .withRetentionDrive("om")
+            .withRunAsAccountId("ddx")
+            .withMultiVmGroupId("x")
+            .withMultiVmGroupName("ugxwjwilmqrslaat")
+            .withDatastoreName("twujjzgx")
             .withDiskExclusionInput(new InMageDiskExclusionInput()
                 .withVolumeOptions(Arrays.asList(
-                    new InMageVolumeExclusionOptions().withVolumeLabel("akmlwktfowzkroyr")
-                        .withOnlyExcludeIfSingleVolume("r"),
-                    new InMageVolumeExclusionOptions().withVolumeLabel("lzqjimejtgzjxx")
-                        .withOnlyExcludeIfSingleVolume("e")))
+                    new InMageVolumeExclusionOptions().withVolumeLabel("xr").withOnlyExcludeIfSingleVolume("tvhvtqqy"),
+                    new InMageVolumeExclusionOptions().withVolumeLabel("kkt")
+                        .withOnlyExcludeIfSingleVolume("zejogmkorvvmvm")))
                 .withDiskSignatureOptions(
-                    Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("qloiwyayyziv"),
-                        new InMageDiskSignatureExclusionOptions().withDiskSignature("itcdqlhchwhrk"),
-                        new InMageDiskSignatureExclusionOptions().withDiskSignature("l"),
-                        new InMageDiskSignatureExclusionOptions().withDiskSignature("fibfiplhx"))))
-            .withDisksToInclude(Arrays.asList("mycjowlyey"));
+                    Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("qhlbsnosnqliwkm"))))
+            .withDisksToInclude(Arrays.asList("fetya"));
         model = BinaryData.fromObject(model).toObject(InMageEnableProtectionInput.class);
-        Assertions.assertEquals("lng", model.vmFriendlyName());
-        Assertions.assertEquals("gnhrkombcdtajdo", model.masterTargetId());
-        Assertions.assertEquals("ggorwjoqt", model.processServerId());
-        Assertions.assertEquals("otpvclp", model.retentionDrive());
-        Assertions.assertEquals("yrlmwkptsk", model.runAsAccountId());
-        Assertions.assertEquals("xjgvh", model.multiVmGroupId());
-        Assertions.assertEquals("ccbmkakm", model.multiVmGroupName());
-        Assertions.assertEquals("okbputm", model.datastoreName());
-        Assertions.assertEquals("akmlwktfowzkroyr", model.diskExclusionInput().volumeOptions().get(0).volumeLabel());
-        Assertions.assertEquals("r", model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
-        Assertions.assertEquals("qloiwyayyziv",
+        Assertions.assertEquals("osc", model.vmFriendlyName());
+        Assertions.assertEquals("lhwuusieckt", model.masterTargetId());
+        Assertions.assertEquals("bhjuxidhh", model.processServerId());
+        Assertions.assertEquals("om", model.retentionDrive());
+        Assertions.assertEquals("ddx", model.runAsAccountId());
+        Assertions.assertEquals("x", model.multiVmGroupId());
+        Assertions.assertEquals("ugxwjwilmqrslaat", model.multiVmGroupName());
+        Assertions.assertEquals("twujjzgx", model.datastoreName());
+        Assertions.assertEquals("xr", model.diskExclusionInput().volumeOptions().get(0).volumeLabel());
+        Assertions.assertEquals("tvhvtqqy",
+            model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
+        Assertions.assertEquals("qhlbsnosnqliwkm",
             model.diskExclusionInput().diskSignatureOptions().get(0).diskSignature());
-        Assertions.assertEquals("mycjowlyey", model.disksToInclude().get(0));
+        Assertions.assertEquals("fetya", model.disksToInclude().get(0));
     }
 }

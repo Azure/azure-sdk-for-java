@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HashIndex;
 import com.azure.cosmos.implementation.Index;
@@ -64,8 +63,8 @@ public final class IncludedPath {
     public IncludedPath setPath(String path) {
         this.jsonSerializable.set(
             Constants.Properties.PATH,
-            path,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            path
+        );
         return this;
     }
 
@@ -137,8 +136,8 @@ public final class IncludedPath {
 
             this.jsonSerializable.set(
                 Constants.Properties.INDEXES,
-                this.indexes,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.indexes
+            );
         }
     }
 

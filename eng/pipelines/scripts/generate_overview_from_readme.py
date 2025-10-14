@@ -15,6 +15,7 @@
 # will be written to overview file. If there is a readme, its contents will be added after that.
 
 import argparse
+import html
 from bs4 import BeautifulSoup
 import pdb
 import markdown2
@@ -43,6 +44,7 @@ def generate_overview(readme_file, version, overview_file_path):
     if (readme_exists):
         with open(readme_file, 'r', encoding='utf-8') as f:
             raw_readme_content_lines = f.readlines()
+
 
         # Before passing the README contents to markdown2 clean out the codesnippet tags on the java code fences.
         # Clean ```java com.azure.core.aCodeSnippetTag to ```java, without doing this markdown2 won't properly process
@@ -73,7 +75,7 @@ def generate_overview(readme_file, version, overview_file_path):
         for anchor in anchors_with_title:
             del anchor['title']
 
-        
+
         # Iterate each line
         for x in soup.find_all():
             # fetching text from tag and remove whitespaces
@@ -90,7 +92,7 @@ def generate_overview(readme_file, version, overview_file_path):
         f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
         f.write('<br>')
         if (readme_exists):
-            f.write(str(soup.encode(formatter="html5").decode('utf-8')))
+            f.write(str(soup))
         f.write('</body>')
 
 

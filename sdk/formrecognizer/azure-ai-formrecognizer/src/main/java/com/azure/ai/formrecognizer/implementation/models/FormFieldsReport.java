@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
     /*
      * Training field name.
      */
+    @Generated
     private String fieldName;
 
     /*
      * Estimated extraction accuracy for this field.
      */
+    @Generated
     private float accuracy;
 
     /**
      * Creates an instance of FormFieldsReport class.
      */
+    @Generated
     public FormFieldsReport() {
     }
 
@@ -37,6 +41,7 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
      * 
      * @return the fieldName value.
      */
+    @Generated
     public String getFieldName() {
         return this.fieldName;
     }
@@ -47,6 +52,7 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
      * @param fieldName the fieldName value to set.
      * @return the FormFieldsReport object itself.
      */
+    @Generated
     public FormFieldsReport setFieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;
@@ -57,6 +63,7 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
      * 
      * @return the accuracy value.
      */
+    @Generated
     public float getAccuracy() {
         return this.accuracy;
     }
@@ -67,6 +74,7 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
      * @param accuracy the accuracy value to set.
      * @return the FormFieldsReport object itself.
      */
+    @Generated
     public FormFieldsReport setAccuracy(float accuracy) {
         this.accuracy = accuracy;
         return this;
@@ -75,6 +83,7 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class FormFieldsReport implements JsonSerializable<FormFieldsReport
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FormFieldsReport.
      */
+    @Generated
     public static FormFieldsReport fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FormFieldsReport deserializedFormFieldsReport = new FormFieldsReport();

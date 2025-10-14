@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpoint;
@@ -24,29 +24,28 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsCreateOrUpdateMoc
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"bja\"],\"privateEndpoint\":{\"id\":\"oclannmxynlsuq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"trkt\",\"actionsRequired\":\"patr\"},\"provisioningState\":\"Succeeded\"},\"id\":\"tfinfhoksmmculwk\",\"name\":\"icruo\",\"type\":\"krjflsgaojb\"}";
+            = "{\"properties\":{\"groupIds\":[\"fvvraab\",\"urdeewlsuxp\",\"bwkdwjyjiznioroo\"],\"privateEndpoint\":{\"id\":\"taspmcrei\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"rnig\",\"actionsRequired\":\"inuwqxungrob\"},\"provisioningState\":\"Succeeded\"},\"id\":\"sxjwdy\",\"name\":\"wxm\",\"type\":\"zjow\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PrivateEndpointConnection response
-            = manager.managedEnvironmentPrivateEndpointConnections()
-                .define("ujjcxgdqmrlhn")
-                .withExistingManagedEnvironment("jxvtrkfkgenjqnnp", "wkosnyxigf")
-                .withPrivateEndpoint(new PrivateEndpoint())
-                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                    .withStatus(PrivateEndpointServiceConnectionStatus.DISCONNECTED)
-                    .withDescription("ekd")
-                    .withActionsRequired("vuftrsvjmnsvu"))
-                .create();
+        PrivateEndpointConnection response = manager.managedEnvironmentPrivateEndpointConnections()
+            .define("uog")
+            .withExistingManagedEnvironment("zufy", "dxmlynzlyvapbkr")
+            .withPrivateEndpoint(new PrivateEndpoint())
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("tctkhfhfs")
+                    .withActionsRequired("vcsxrmhnmiz"))
+            .create();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.DISCONNECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("trkt", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("patr", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("rnig", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("inuwqxungrob", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

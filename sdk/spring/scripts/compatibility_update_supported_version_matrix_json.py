@@ -13,7 +13,6 @@ from log import log
 import os
 import json
 import argparse
-import requests
 
 from compatibility_get_spring_cloud_version import get_spring_cloud_version
 from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME
@@ -75,8 +74,10 @@ def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_v
 
 def get_supported_spring_boot_version(target_version_prefix, non_target_version_prefix_list):
     supported_version_list = []
-    filepath = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json"
-    data = requests.get(filepath).json()
+    scripts_dir = os.path.dirname(__file__)
+    filepath = os.path.join(scripts_dir, '..', 'pipeline', 'spring-cloud-azure-supported-spring.json')
+    with open(filepath, 'r', encoding='utf-8') as file:
+        data = json.load(file)
     for entry in data:
         for key in entry:
             if entry[key] == "SUPPORTED":

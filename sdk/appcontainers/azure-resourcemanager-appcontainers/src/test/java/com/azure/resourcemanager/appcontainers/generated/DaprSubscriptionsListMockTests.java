@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscription;
@@ -22,28 +22,28 @@ public final class DaprSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"pubsubName\":\"gxzduvxdmxe\",\"topic\":\"tmdm\",\"deadLetterTopic\":\"senxoirxyd\",\"routes\":{\"rules\":[{\"match\":\"oi\",\"path\":\"kzsoxz\"},{\"match\":\"twg\",\"path\":\"yohpsapzupzwwytb\"},{\"match\":\"zghximkgfmx\",\"path\":\"kjnpyriwntot\"}],\"default\":\"mmqmtsjkyj\"},\"scopes\":[\"wdonbexftedaubh\",\"eggzgrn\",\"tlfozuumrtgjqgac\",\"ntns\"],\"metadata\":{\"te\":\"xjmkanbclazofmex\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1407174157,\"maxAwaitDurationMs\":238054598}},\"id\":\"scd\",\"name\":\"xwdpwjcbhaahntof\",\"type\":\"lf\"}]}";
+            = "{\"value\":[{\"properties\":{\"pubsubName\":\"hvo\",\"topic\":\"jzscuezalivdf\",\"deadLetterTopic\":\"qj\",\"routes\":{\"rules\":[{\"match\":\"frxgg\",\"path\":\"khzpr\"},{\"match\":\"issenerru\",\"path\":\"zaivnpsjnpc\"}],\"default\":\"lujyduonbdawsao\"},\"scopes\":[\"vmnb\"],\"metadata\":{\"qk\":\"arsbbdddwokqxail\",\"rdspzesfkqqxu\":\"yqjvzvc\",\"xa\":\"vzflbrous\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1958972880,\"maxAwaitDurationMs\":1929018904}},\"id\":\"ojjfuktubcmunhgb\",\"name\":\"zv\",\"type\":\"xvs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DaprSubscription> response
-            = manager.daprSubscriptions().list("livwehsud", "mymbhdosmbng", com.azure.core.util.Context.NONE);
+            = manager.daprSubscriptions().list("pmw", "rpub", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gxzduvxdmxe", response.iterator().next().pubsubName());
-        Assertions.assertEquals("tmdm", response.iterator().next().topic());
-        Assertions.assertEquals("senxoirxyd", response.iterator().next().deadLetterTopic());
-        Assertions.assertEquals("oi", response.iterator().next().routes().rules().get(0).match());
-        Assertions.assertEquals("kzsoxz", response.iterator().next().routes().rules().get(0).path());
-        Assertions.assertEquals("mmqmtsjkyj", response.iterator().next().routes().defaultProperty());
-        Assertions.assertEquals("wdonbexftedaubh", response.iterator().next().scopes().get(0));
-        Assertions.assertEquals("xjmkanbclazofmex", response.iterator().next().metadata().get("te"));
-        Assertions.assertEquals(false, response.iterator().next().bulkSubscribe().enabled());
-        Assertions.assertEquals(1407174157, response.iterator().next().bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(238054598, response.iterator().next().bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals("hvo", response.iterator().next().pubsubName());
+        Assertions.assertEquals("jzscuezalivdf", response.iterator().next().topic());
+        Assertions.assertEquals("qj", response.iterator().next().deadLetterTopic());
+        Assertions.assertEquals("frxgg", response.iterator().next().routes().rules().get(0).match());
+        Assertions.assertEquals("khzpr", response.iterator().next().routes().rules().get(0).path());
+        Assertions.assertEquals("lujyduonbdawsao", response.iterator().next().routes().defaultProperty());
+        Assertions.assertEquals("vmnb", response.iterator().next().scopes().get(0));
+        Assertions.assertEquals("arsbbdddwokqxail", response.iterator().next().metadata().get("qk"));
+        Assertions.assertFalse(response.iterator().next().bulkSubscribe().enabled());
+        Assertions.assertEquals(1958972880, response.iterator().next().bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(1929018904, response.iterator().next().bulkSubscribe().maxAwaitDurationMs());
     }
 }

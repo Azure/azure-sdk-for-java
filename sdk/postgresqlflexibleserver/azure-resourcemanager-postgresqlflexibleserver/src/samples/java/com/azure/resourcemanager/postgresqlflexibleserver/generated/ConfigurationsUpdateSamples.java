@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 public final class ConfigurationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * ConfigurationUpdate.json
      */
     /**
@@ -23,7 +23,7 @@ public final class ConfigurationsUpdateSamples {
     public static void
         updateAUserConfiguration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Configuration resource = manager.configurations()
-            .getWithResponse("testrg", "testserver", "event_scheduler", com.azure.core.util.Context.NONE)
+            .getWithResponse("testrg", "testserver", "constraint_exclusion", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withValue("on").withSource("user-override").apply();
     }

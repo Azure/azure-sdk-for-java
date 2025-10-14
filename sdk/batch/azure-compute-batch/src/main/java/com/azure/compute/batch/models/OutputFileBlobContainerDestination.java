@@ -45,10 +45,10 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
     /*
      * A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when
      * uploading files to Azure Storage. Official document on allowed headers when uploading blobs:
-     * https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      */
     @Generated
-    private List<HttpHeader> uploadHeaders;
+    private List<OutputFileUploadHeader> uploadHeaders;
 
     /**
      * Creates an instance of OutputFileBlobContainerDestination class.
@@ -129,25 +129,25 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
     /**
      * Get the uploadHeaders property: A list of name-value pairs for headers to be used in uploading output files.
      * These headers will be specified when uploading files to Azure Storage. Official document on allowed headers when
-     * uploading blobs: https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * uploading blobs: https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      *
      * @return the uploadHeaders value.
      */
     @Generated
-    public List<HttpHeader> getUploadHeaders() {
+    public List<OutputFileUploadHeader> getUploadHeaders() {
         return this.uploadHeaders;
     }
 
     /**
      * Set the uploadHeaders property: A list of name-value pairs for headers to be used in uploading output files.
      * These headers will be specified when uploading files to Azure Storage. Official document on allowed headers when
-     * uploading blobs: https://docs.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * uploading blobs: https://learn.microsoft.com/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      *
      * @param uploadHeaders the uploadHeaders value to set.
      * @return the OutputFileBlobContainerDestination object itself.
      */
     @Generated
-    public OutputFileBlobContainerDestination setUploadHeaders(List<HttpHeader> uploadHeaders) {
+    public OutputFileBlobContainerDestination setUploadHeaders(List<OutputFileUploadHeader> uploadHeaders) {
         this.uploadHeaders = uploadHeaders;
         return this;
     }
@@ -181,7 +181,7 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
             String containerUrl = null;
             String path = null;
             BatchNodeIdentityReference identityReference = null;
-            List<HttpHeader> uploadHeaders = null;
+            List<OutputFileUploadHeader> uploadHeaders = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -192,7 +192,7 @@ public final class OutputFileBlobContainerDestination implements JsonSerializabl
                 } else if ("identityReference".equals(fieldName)) {
                     identityReference = BatchNodeIdentityReference.fromJson(reader);
                 } else if ("uploadHeaders".equals(fieldName)) {
-                    uploadHeaders = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                    uploadHeaders = reader.readArray(reader1 -> OutputFileUploadHeader.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,54 +22,64 @@ public class JiraLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Jira";
 
     /*
      * The IP address or host name of the Jira service. (e.g. jira.example.com)
      */
+    @Generated
     private Object host;
 
     /*
      * The TCP port that the Jira server uses to listen for client connections. The default value is 443 if connecting
      * through HTTPS, or 8080 if connecting through HTTP.
      */
+    @Generated
     private Object port;
 
     /*
      * The user name that you use to access Jira Service.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name that you provided in the username field.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
+    @Generated
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
+    @Generated
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
+    @Generated
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of JiraLinkedService class.
      */
+    @Generated
     public JiraLinkedService() {
     }
 
@@ -77,6 +88,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -87,6 +99,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -97,6 +110,7 @@ public class JiraLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -108,6 +122,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -119,6 +134,7 @@ public class JiraLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -129,6 +145,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -139,6 +156,7 @@ public class JiraLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -149,6 +167,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -159,6 +178,7 @@ public class JiraLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -170,6 +190,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the useEncryptedEndpoints value.
      */
+    @Generated
     public Object getUseEncryptedEndpoints() {
         return this.useEncryptedEndpoints;
     }
@@ -181,6 +202,7 @@ public class JiraLinkedService extends LinkedService {
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setUseEncryptedEndpoints(Object useEncryptedEndpoints) {
         this.useEncryptedEndpoints = useEncryptedEndpoints;
         return this;
@@ -192,6 +214,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the useHostVerification value.
      */
+    @Generated
     public Object getUseHostVerification() {
         return this.useHostVerification;
     }
@@ -203,6 +226,7 @@ public class JiraLinkedService extends LinkedService {
      * @param useHostVerification the useHostVerification value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setUseHostVerification(Object useHostVerification) {
         this.useHostVerification = useHostVerification;
         return this;
@@ -214,6 +238,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the usePeerVerification value.
      */
+    @Generated
     public Object getUsePeerVerification() {
         return this.usePeerVerification;
     }
@@ -225,6 +250,7 @@ public class JiraLinkedService extends LinkedService {
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setUsePeerVerification(Object usePeerVerification) {
         this.usePeerVerification = usePeerVerification;
         return this;
@@ -236,6 +262,7 @@ public class JiraLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -247,6 +274,7 @@ public class JiraLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the JiraLinkedService object itself.
      */
+    @Generated
     public JiraLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -255,6 +283,17 @@ public class JiraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public JiraLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JiraLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -264,6 +303,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JiraLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -273,6 +313,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JiraLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -282,6 +323,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JiraLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -291,9 +333,11 @@ public class JiraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -309,13 +353,23 @@ public class JiraLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("port", this.port);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.useEncryptedEndpoints != null) {
+                jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            }
+            if (this.useHostVerification != null) {
+                jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            }
+            if (this.usePeerVerification != null) {
+                jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -335,6 +389,7 @@ public class JiraLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the JiraLinkedService.
      */
+    @Generated
     public static JiraLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JiraLinkedService deserializedJiraLinkedService = new JiraLinkedService();
@@ -343,7 +398,9 @@ public class JiraLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedJiraLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedJiraLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedJiraLinkedService.setDescription(reader.getString());

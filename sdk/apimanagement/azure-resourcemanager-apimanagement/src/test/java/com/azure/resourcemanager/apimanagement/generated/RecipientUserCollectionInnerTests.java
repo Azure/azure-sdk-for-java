@@ -14,25 +14,23 @@ public final class RecipientUserCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecipientUserCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"userId\":\"nwplrr\"},\"id\":\"phctsbbibticu\",\"name\":\"qvumspbfsfeqbbe\",\"type\":\"f\"},{\"properties\":{\"userId\":\"fpyyxmzrmtm\"},\"id\":\"wi\",\"name\":\"uweyyjshcyb\",\"type\":\"fuppoxprc\"},{\"properties\":{\"userId\":\"uujxdii\"},\"id\":\"moxrezsvavlrxi\",\"name\":\"jmoywlunpipcwybs\",\"type\":\"fncn\"},{\"properties\":{\"userId\":\"pftsaebwf\"},\"id\":\"hxorpwaltzwu\",\"name\":\"exojfccy\",\"type\":\"h\"}],\"count\":2329073673274706463,\"nextLink\":\"vazjpwexcd\"}")
+            "{\"value\":[{\"properties\":{\"userId\":\"tdbakrlimzf\"},\"id\":\"ppkeqsifjmclngyg\",\"name\":\"hrkombcdta\",\"type\":\"dopg\"},{\"properties\":{\"userId\":\"wj\"},\"id\":\"qtrotpvclp\",\"name\":\"fyrlmwkptskwxj\",\"type\":\"vhxccbmkakmkoo\"}],\"count\":3868420923778269214,\"nextLink\":\"mgvmuy\"}")
             .toObject(RecipientUserCollectionInner.class);
-        Assertions.assertEquals("nwplrr", model.value().get(0).userId());
-        Assertions.assertEquals(2329073673274706463L, model.count());
-        Assertions.assertEquals("vazjpwexcd", model.nextLink());
+        Assertions.assertEquals("tdbakrlimzf", model.value().get(0).userId());
+        Assertions.assertEquals(3868420923778269214L, model.count());
+        Assertions.assertEquals("mgvmuy", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecipientUserCollectionInner model = new RecipientUserCollectionInner()
-            .withValue(Arrays.asList(new RecipientUserContractInner().withUserId("nwplrr"),
-                new RecipientUserContractInner().withUserId("fpyyxmzrmtm"),
-                new RecipientUserContractInner().withUserId("uujxdii"),
-                new RecipientUserContractInner().withUserId("pftsaebwf")))
-            .withCount(2329073673274706463L)
-            .withNextLink("vazjpwexcd");
+            .withValue(Arrays.asList(new RecipientUserContractInner().withUserId("tdbakrlimzf"),
+                new RecipientUserContractInner().withUserId("wj")))
+            .withCount(3868420923778269214L)
+            .withNextLink("mgvmuy");
         model = BinaryData.fromObject(model).toObject(RecipientUserCollectionInner.class);
-        Assertions.assertEquals("nwplrr", model.value().get(0).userId());
-        Assertions.assertEquals(2329073673274706463L, model.count());
-        Assertions.assertEquals("vazjpwexcd", model.nextLink());
+        Assertions.assertEquals("tdbakrlimzf", model.value().get(0).userId());
+        Assertions.assertEquals(3868420923778269214L, model.count());
+        Assertions.assertEquals("mgvmuy", model.nextLink());
     }
 }

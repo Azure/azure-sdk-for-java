@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class SalesforceObjectDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SalesforceObject";
 
     /*
      * The Salesforce object API name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object objectApiName;
 
     /**
      * Creates an instance of SalesforceObjectDataset class.
      */
+    @Generated
     public SalesforceObjectDataset() {
     }
 
@@ -39,6 +43,7 @@ public class SalesforceObjectDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public class SalesforceObjectDataset extends Dataset {
      * 
      * @return the objectApiName value.
      */
+    @Generated
     public Object getObjectApiName() {
         return this.objectApiName;
     }
@@ -61,6 +67,7 @@ public class SalesforceObjectDataset extends Dataset {
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceObjectDataset object itself.
      */
+    @Generated
     public SalesforceObjectDataset setObjectApiName(Object objectApiName) {
         this.objectApiName = objectApiName;
         return this;
@@ -69,6 +76,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setDescription(String description) {
         super.setDescription(description);
@@ -78,6 +86,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -87,6 +96,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -96,6 +106,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -105,6 +116,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -114,6 +126,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -123,6 +136,7 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -132,20 +146,27 @@ public class SalesforceObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (objectApiName != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
+            if (this.objectApiName != null) {
+                jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -165,6 +186,7 @@ public class SalesforceObjectDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SalesforceObjectDataset.
      */
+    @Generated
     public static SalesforceObjectDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceObjectDataset deserializedSalesforceObjectDataset = new SalesforceObjectDataset();

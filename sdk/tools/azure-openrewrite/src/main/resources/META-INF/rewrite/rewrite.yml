@@ -1,0 +1,20 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Azure-SDK-For-Java Library Migration Recipes
+# --------------------------------------------------------------------
+#
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite
+displayName: Migrate Azure SDKs to Next-Generation Library Stack
+description: This recipe migrates the Azure SDKs to the next-generation library stack.
+recipeList:
+  # Code Migration Recipes
+  - com.azure.openrewrite.migration.core
+  - com.azure.openrewrite.migration.identity
+  - com.azure.openrewrite.migration.data.appconfiguration
+
+  # Code Styling recipes
+  - org.openrewrite.java.OrderImports:
+      removeUnused: false
+

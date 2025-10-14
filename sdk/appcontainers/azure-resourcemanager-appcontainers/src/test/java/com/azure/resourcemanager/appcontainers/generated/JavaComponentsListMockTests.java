@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JavaComponent;
@@ -22,24 +22,23 @@ public final class JavaComponentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Canceled\",\"configurations\":[{\"propertyName\":\"httnzqs\",\"value\":\"mebgszplu\"},{\"propertyName\":\"ekpdzzmssg\",\"value\":\"vokyejidbdqzsqun\"},{\"propertyName\":\"wztlvvwsnmrkky\",\"value\":\"repwpwfkcaux\"},{\"propertyName\":\"avcpfpdofuckclbt\",\"value\":\"ue\"}],\"scale\":{\"minReplicas\":725742425,\"maxReplicas\":580481302},\"serviceBinds\":[{\"name\":\"ngojfsqebuuxjx\",\"serviceId\":\"xfjwp\"},{\"name\":\"ktpmbmxb\",\"serviceId\":\"rwgzzxl\"},{\"name\":\"khxsdplaumy\",\"serviceId\":\"hweqjfyxydgtok\"},{\"name\":\"bvwglgwzp\",\"serviceId\":\"akglhpsesrfga\"}]},\"id\":\"iydvxc\",\"name\":\"d\",\"type\":\"yhgoq\"}]}";
+            = "{\"value\":[{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"prrv\",\"value\":\"onleqflvtl\"},{\"propertyName\":\"bs\",\"value\":\"huy\"}],\"scale\":{\"minReplicas\":147125031,\"maxReplicas\":643205319},\"serviceBinds\":[{\"name\":\"rjdsz\",\"serviceId\":\"u\"}]},\"id\":\"ciqppoqvgpn\",\"name\":\"wuhw\",\"type\":\"wjnoxuo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JavaComponent> response
-            = manager.javaComponents().list("dtjva", "yyznmrgcdogcvuc", com.azure.core.util.Context.NONE);
+            = manager.javaComponents().list("x", "lpditfnonpi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("httnzqs",
-            response.iterator().next().properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("mebgszplu", response.iterator().next().properties().configurations().get(0).value());
-        Assertions.assertEquals(725742425, response.iterator().next().properties().scale().minReplicas());
-        Assertions.assertEquals(580481302, response.iterator().next().properties().scale().maxReplicas());
-        Assertions.assertEquals("ngojfsqebuuxjx", response.iterator().next().properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("xfjwp", response.iterator().next().properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("prrv", response.iterator().next().properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("onleqflvtl", response.iterator().next().properties().configurations().get(0).value());
+        Assertions.assertEquals(147125031, response.iterator().next().properties().scale().minReplicas());
+        Assertions.assertEquals(643205319, response.iterator().next().properties().scale().maxReplicas());
+        Assertions.assertEquals("rjdsz", response.iterator().next().properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("u", response.iterator().next().properties().serviceBinds().get(0).serviceId());
     }
 }

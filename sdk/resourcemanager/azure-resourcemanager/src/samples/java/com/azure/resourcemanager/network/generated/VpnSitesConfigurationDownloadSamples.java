@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class VpnSitesConfigurationDownloadSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VpnSitesConfigurationDownload
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VpnSitesConfigurationDownload
      * .json
      */
     /**

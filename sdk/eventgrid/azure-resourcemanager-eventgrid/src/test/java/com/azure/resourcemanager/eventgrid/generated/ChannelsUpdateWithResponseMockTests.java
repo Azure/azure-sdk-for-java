@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ChannelUpdateParameters;
@@ -33,16 +33,17 @@ public final class ChannelsUpdateWithResponseMockTests {
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.channels()
-            .updateWithResponse("lwyjfnqzocrdz", "czeuntgx", "ncaqttiekoifu",
+            .updateWithResponse("sbvr", "aqgvto", "rulfuct",
                 new ChannelUpdateParameters()
-                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-03-06T19:07:52Z"))
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-07-18T13:13:11Z"))
                     .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo())
                     .withPartnerTopicInfo(new PartnerUpdateTopicInfo()
                         .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                            .withInlineEventTypes(mapOf("rihl", new InlineEventProperties())))),
+                            .withInlineEventTypes(mapOf("lyubqjrostvrjeq", new InlineEventProperties(), "tzzbeq",
+                                new InlineEventProperties(), "ztr", new InlineEventProperties())))),
                 com.azure.core.util.Context.NONE);
 
     }

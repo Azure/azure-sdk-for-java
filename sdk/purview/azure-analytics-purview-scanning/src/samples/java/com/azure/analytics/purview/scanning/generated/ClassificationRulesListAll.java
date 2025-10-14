@@ -17,9 +17,9 @@ public class ClassificationRulesListAll {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildClassificationRulesClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.classificationruleslistall.classificationruleslistall
+        // BEGIN:com.azure.analytics.purview.scanning.generated.classification-rules-list-all.classification-rules-list-all
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = classificationRulesClient.listAll(requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.classificationruleslistall.classificationruleslistall
+        // END:com.azure.analytics.purview.scanning.generated.classification-rules-list-all.classification-rules-list-all
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.SchemaVersion;
@@ -22,22 +22,22 @@ public final class SchemaVersionsCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"hfssnrb\",\"description\":\"efr\",\"schemaContent\":\"msgaoj\",\"hash\":\"wncot\",\"provisioningState\":\"Accepted\"},\"id\":\"irctymoxoftpipiw\",\"name\":\"czuhxacpqjlihh\",\"type\":\"usps\"}";
+            = "{\"properties\":{\"uuid\":\"qfutlxjo\",\"description\":\"asunwqrjzfrgq\",\"schemaContent\":\"aohcmbuocn\",\"hash\":\"ohmbpyr\",\"provisioningState\":\"Accepted\"},\"id\":\"eblydyv\",\"name\":\"fkmroc\",\"type\":\"nehvsmt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemaVersions()
-            .define("ieoxorggufhyaomt")
-            .withExistingSchema("awnopqgikyzirtxd", "uxzejntpsew", "ioilqukrydxtq")
-            .withProperties(new SchemaVersionProperties().withDescription("ovjzhpjbibgjmfx").withSchemaContent("mv"))
+            .define("qvapcohhoucq")
+            .withExistingSchema("gnzxojpslsvj", "pli", "fiqwoy")
+            .withProperties(new SchemaVersionProperties().withDescription("zdcgdzbenr").withSchemaContent("bcawetz"))
             .create();
 
-        Assertions.assertEquals("efr", response.properties().description());
-        Assertions.assertEquals("msgaoj", response.properties().schemaContent());
+        Assertions.assertEquals("asunwqrjzfrgq", response.properties().description());
+        Assertions.assertEquals("aohcmbuocn", response.properties().schemaContent());
     }
 }

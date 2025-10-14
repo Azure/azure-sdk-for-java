@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The principal type used to represent the type of Active Directory Administrator.
+ * The principal type used to represent the type of Microsoft Entra Administrator.
  */
 public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
     /**

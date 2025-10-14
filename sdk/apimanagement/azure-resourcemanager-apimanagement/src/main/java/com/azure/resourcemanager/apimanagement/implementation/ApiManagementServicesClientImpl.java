@@ -43,6 +43,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackup
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceListResult;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -144,7 +145,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         Mono<Response<Flux<ByteBuffer>>> migrateToStv2(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            @BodyParam("application/json") MigrateToStv2Contract parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service")
@@ -1537,6 +1539,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1545,7 +1548,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateToStv2WithResponseAsync(String resourceGroupName,
-        String serviceName) {
+        String serviceName, MigrateToStv2Contract parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1561,10 +1564,13 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.migrateToStv2(this.client.getEndpoint(), resourceGroupName, serviceName,
-                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1574,6 +1580,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1583,7 +1590,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateToStv2WithResponseAsync(String resourceGroupName,
-        String serviceName, Context context) {
+        String serviceName, MigrateToStv2Contract parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1599,10 +1606,35 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.migrateToStv2(this.client.getEndpoint(), resourceGroupName, serviceName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2Async(String resourceGroupName, String serviceName, MigrateToStv2Contract parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateToStv2WithResponseAsync(resourceGroupName, serviceName, parameters);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -1619,7 +1651,9 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
         beginMigrateToStv2Async(String resourceGroupName, String serviceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateToStv2WithResponseAsync(resourceGroupName, serviceName);
+        final MigrateToStv2Contract parameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateToStv2WithResponseAsync(resourceGroupName, serviceName, parameters);
         return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
             this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
             ApiManagementServiceResourceInner.class, this.client.getContext());
@@ -1631,6 +1665,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1639,9 +1674,11 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginMigrateToStv2Async(String resourceGroupName, String serviceName, Context context) {
+        beginMigrateToStv2Async(String resourceGroupName, String serviceName, MigrateToStv2Contract parameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateToStv2WithResponseAsync(resourceGroupName, serviceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateToStv2WithResponseAsync(resourceGroupName, serviceName, parameters, context);
         return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
             this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
             ApiManagementServiceResourceInner.class, context);
@@ -1661,7 +1698,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
         beginMigrateToStv2(String resourceGroupName, String serviceName) {
-        return this.beginMigrateToStv2Async(resourceGroupName, serviceName).getSyncPoller();
+        final MigrateToStv2Contract parameters = null;
+        return this.beginMigrateToStv2Async(resourceGroupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1670,6 +1708,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1678,8 +1717,29 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginMigrateToStv2(String resourceGroupName, String serviceName, Context context) {
-        return this.beginMigrateToStv2Async(resourceGroupName, serviceName, context).getSyncPoller();
+        beginMigrateToStv2(String resourceGroupName, String serviceName, MigrateToStv2Contract parameters,
+            Context context) {
+        return this.beginMigrateToStv2Async(resourceGroupName, serviceName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApiManagementServiceResourceInner> migrateToStv2Async(String resourceGroupName, String serviceName,
+        MigrateToStv2Contract parameters) {
+        return beginMigrateToStv2Async(resourceGroupName, serviceName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1696,7 +1756,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiManagementServiceResourceInner> migrateToStv2Async(String resourceGroupName, String serviceName) {
-        return beginMigrateToStv2Async(resourceGroupName, serviceName).last()
+        final MigrateToStv2Contract parameters = null;
+        return beginMigrateToStv2Async(resourceGroupName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1706,6 +1767,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1715,8 +1777,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiManagementServiceResourceInner> migrateToStv2Async(String resourceGroupName, String serviceName,
-        Context context) {
-        return beginMigrateToStv2Async(resourceGroupName, serviceName, context).last()
+        MigrateToStv2Contract parameters, Context context) {
+        return beginMigrateToStv2Async(resourceGroupName, serviceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1733,7 +1795,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiManagementServiceResourceInner migrateToStv2(String resourceGroupName, String serviceName) {
-        return migrateToStv2Async(resourceGroupName, serviceName).block();
+        final MigrateToStv2Contract parameters = null;
+        return migrateToStv2Async(resourceGroupName, serviceName, parameters).block();
     }
 
     /**
@@ -1742,6 +1805,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1750,8 +1814,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiManagementServiceResourceInner migrateToStv2(String resourceGroupName, String serviceName,
-        Context context) {
-        return migrateToStv2Async(resourceGroupName, serviceName, context).block();
+        MigrateToStv2Contract parameters, Context context) {
+        return migrateToStv2Async(resourceGroupName, serviceName, parameters, context).block();
     }
 
     /**

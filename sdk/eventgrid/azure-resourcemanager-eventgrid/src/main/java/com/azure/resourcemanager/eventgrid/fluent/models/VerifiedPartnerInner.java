@@ -26,7 +26,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
     private VerifiedPartnerProperties innerProperties;
 
     /*
-     * The system metadata relating to Verified Partner resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -61,7 +61,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Verified Partner resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

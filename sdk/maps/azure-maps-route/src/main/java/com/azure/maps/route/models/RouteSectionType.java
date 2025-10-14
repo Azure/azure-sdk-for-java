@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,87 +15,102 @@ public final class RouteSectionType extends ExpandableStringEnum<RouteSectionTyp
     /**
      * Sections of the route that are cars or trains.
      */
+    @Generated
     public static final RouteSectionType CAR_OR_TRAIN = fromString("CAR_TRAIN");
 
     /**
      * Sections indicating which countries/regions the route is in.
      */
+    @Generated
     public static final RouteSectionType COUNTRY = fromString("COUNTRY");
 
     /**
      * Sections of the route that are ferries.
      */
+    @Generated
     public static final RouteSectionType FERRY = fromString("FERRY");
 
     /**
      * Sections of the route that are motorways.
      */
+    @Generated
     public static final RouteSectionType MOTORWAY = fromString("MOTORWAY");
 
     /**
      * Sections of the route that are only suited for pedestrians.
      */
+    @Generated
     public static final RouteSectionType PEDESTRIAN = fromString("PEDESTRIAN");
 
     /**
      * Sections of the route that require a toll to be payed.
      */
+    @Generated
     public static final RouteSectionType TOLL_ROAD = fromString("TOLL_ROAD");
 
     /**
      * Sections of the route that require a toll vignette to be present.
      */
+    @Generated
     public static final RouteSectionType TOLL_VIGNETTE = fromString("TOLL_VIGNETTE");
 
     /**
      * Sections of the route that contain traffic information.
      */
+    @Generated
     public static final RouteSectionType TRAFFIC = fromString("TRAFFIC");
 
     /**
      * Sections in relation to the request parameter `travelMode`.
      */
+    @Generated
     public static final RouteSectionType TRAVEL_MODE = fromString("TRAVEL_MODE");
 
     /**
      * Sections of the route that are tunnels.
      */
+    @Generated
     public static final RouteSectionType TUNNEL = fromString("TUNNEL");
 
     /**
      * Sections of the route that require use of carpool (HOV/High Occupancy Vehicle) lanes.
      */
+    @Generated
     public static final RouteSectionType CARPOOL = fromString("CARPOOL");
 
     /**
      * Sections of the route that are located within urban areas.
      */
+    @Generated
     public static final RouteSectionType URBAN = fromString("URBAN");
 
     /**
-     * Creates a new instance of ResponseSectionType value.
+     * Creates a new instance of RouteSectionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteSectionType() {
     }
 
     /**
-     * Creates or finds a ResponseSectionType from its string representation.
+     * Creates or finds a RouteSectionType from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding ResponseSectionType.
+     * @return the corresponding RouteSectionType.
      */
+    @Generated
     public static RouteSectionType fromString(String name) {
         return fromString(name, RouteSectionType.class);
     }
 
     /**
-     * Gets known ResponseSectionType values.
+     * Gets known RouteSectionType values.
      * 
-     * @return known ResponseSectionType values.
+     * @return known RouteSectionType values.
      */
+    @Generated
     public static Collection<RouteSectionType> values() {
         return values(RouteSectionType.class);
     }

@@ -48,7 +48,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides flexible way to buildAsyncClient lease manager constructor parameters.
  * For the actual creation of lease manager instance, delegates to lease manager factory.
  */
-class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
+public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
     private final String LEASE_STORE_MANAGER_LEASE_SUFFIX = "..";
 
     private final Logger logger = LoggerFactory.getLogger(LeaseStoreManagerImpl.class);
@@ -191,9 +191,14 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
                     }
                 }
 
+                logger.error("Failed to create lease document for {}.", leaseToken, ex);
                 return Mono.error(ex);
             })
             .map(documentResourceResponse -> {
+                logger.info(
+                    "Successfully created lease document for {} with continuation token {}",
+                    leaseToken,
+                    continuationToken);
                 if (documentResourceResponse == null) {
                     return null;
                 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,7 +12,7 @@ import java.io.IOException;
 
 /**
  * Gets or sets the single server configuration. For prerequisites for creating the infrastructure, please see
- * [here](https://go.microsoft.com/fwlink/?linkid=2212611&amp;clcid=0x409).
+ * [here](https://go.microsoft.com/fwlink/?linkid=2212611&amp;amp;clcid=0x409).
  */
 @Fluent
 public final class SingleServerConfiguration extends InfrastructureConfiguration {
@@ -199,43 +198,6 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
         super.withAppResourceGroup(appResourceGroup);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (networkConfiguration() != null) {
-            networkConfiguration().validate();
-        }
-        if (subnetId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subnetId in model SingleServerConfiguration"));
-        }
-        if (virtualMachineConfiguration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
-        } else {
-            virtualMachineConfiguration().validate();
-        }
-        if (dbDiskConfiguration() != null) {
-            dbDiskConfiguration().validate();
-        }
-        if (customResourceNames() != null) {
-            customResourceNames().validate();
-        }
-        if (appResourceGroup() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property appResourceGroup in model SingleServerConfiguration"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SingleServerConfiguration.class);
 
     /**
      * {@inheritDoc}

@@ -16,17 +16,18 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"230c3431-b6d5-45e1-ad60-982d38be0cc6\",\"tenantId\":\"3608a43e-8e31-482c-be6d-7870288cda0c\",\"type\":\"None\",\"userAssignedIdentities\":{\"kphywpnvjto\":{\"principalId\":\"66b8cf76-f18a-4c22-b85f-11e970ce403d\",\"clientId\":\"de3ffd42-35fa-4062-b784-aaa4baefabd1\"}}}")
+            "{\"principalId\":\"2ffb6d89-87e7-4682-9bd7-75f278396548\",\"tenantId\":\"3356851f-b7ec-4848-88b5-2d323b604b53\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rfuwutt\":{\"principalId\":\"a3ff2a45-6acb-4601-b890-2223e4c0fddd\",\"clientId\":\"c5b815e9-914b-4afb-ae18-cf43812c39a3\"},\"vjrbirphxepcyvah\":{\"principalId\":\"509ef195-74e5-433c-8d83-f342977d7474\",\"clientId\":\"8cbca310-36a4-49b6-9088-8336a5cdf5d2\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("kphywpnvjto", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
+                mapOf("rfuwutt", new UserAssignedIdentity(), "vjrbirphxepcyvah", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

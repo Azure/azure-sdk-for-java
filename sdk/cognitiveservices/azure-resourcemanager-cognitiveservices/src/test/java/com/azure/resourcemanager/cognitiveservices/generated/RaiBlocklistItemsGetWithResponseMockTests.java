@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItem;
@@ -21,21 +21,21 @@ public final class RaiBlocklistItemsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"crdcueljti\",\"tags\":{\"q\":\"m\",\"yspthzod\":\"yarvsxzqbglcjk\",\"jtgblios\":\"btl\",\"qvjcteoe\":\"kfmkmfdjxyxgbk\"},\"properties\":{\"pattern\":\"slskkz\",\"isRegex\":true},\"id\":\"jnzdpvocojhpcna\",\"name\":\"xzfsnggytexvzilm\",\"type\":\"iv\"}";
+            = "{\"etag\":\"so\",\"tags\":{\"kb\":\"ux\",\"mskdch\":\"ctvtf\",\"kzaz\":\"aiubavlzwpvgmfa\",\"rokzrthqetwpq\":\"gokedgjqafkm\"},\"properties\":{\"pattern\":\"aoznq\",\"isRegex\":true},\"id\":\"iezeagm\",\"name\":\"eituugedhfpjs\",\"type\":\"lzmb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .getWithResponse("yeyng", "g", "rquv", "ygg", com.azure.core.util.Context.NONE)
+            .getWithResponse("ztjctibpvbkae", "xsmzygdf", "akw", "eivmak", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("m", response.tags().get("q"));
-        Assertions.assertEquals("slskkz", response.properties().pattern());
-        Assertions.assertEquals(true, response.properties().isRegex());
+        Assertions.assertEquals("ux", response.tags().get("kb"));
+        Assertions.assertEquals("aoznq", response.properties().pattern());
+        Assertions.assertTrue(response.properties().isRegex());
     }
 }

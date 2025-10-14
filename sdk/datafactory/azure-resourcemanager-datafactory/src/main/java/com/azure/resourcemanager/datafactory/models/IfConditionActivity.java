@@ -52,7 +52,7 @@ public final class IfConditionActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private IfConditionActivityTypeProperties innerTypeProperties() {
+    IfConditionActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

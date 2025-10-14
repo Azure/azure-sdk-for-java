@@ -7,9 +7,9 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import java.nio.charset.StandardCharsets;
@@ -21,18 +21,18 @@ import reactor.core.publisher.Mono;
 public final class DnsResolversListByVirtualNetworkMockTests {
     @Test
     public void testListByVirtualNetwork() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"blcg\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"bvtvudutncormr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SubResource> response = manager.dnsResolvers()
-            .listByVirtualNetwork("khfxobbcswsrt", "riplrbpbewtg", 628576431, com.azure.core.util.Context.NONE);
+            .listByVirtualNetwork("wcsdbnwdcfhucq", "pfuvglsbjjca", 615108235, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("blcg", response.iterator().next().id());
+        Assertions.assertEquals("bvtvudutncormr", response.iterator().next().id());
     }
 }

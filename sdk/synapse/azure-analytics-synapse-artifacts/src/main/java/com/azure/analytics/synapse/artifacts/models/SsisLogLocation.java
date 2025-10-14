@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,27 +20,32 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
     /*
      * The SSIS package execution log path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object logPath;
 
     /*
      * The type of SSIS log location.
      */
+    @Generated
     private SsisLogLocationType type;
 
     /*
      * The package execution log access credential.
      */
+    @Generated
     private SsisAccessCredential accessCredential;
 
     /*
      * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object logRefreshInterval;
 
     /**
      * Creates an instance of SsisLogLocation class.
      */
+    @Generated
     public SsisLogLocation() {
     }
 
@@ -49,6 +55,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * 
      * @return the logPath value.
      */
+    @Generated
     public Object getLogPath() {
         return this.logPath;
     }
@@ -60,6 +67,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * @param logPath the logPath value to set.
      * @return the SsisLogLocation object itself.
      */
+    @Generated
     public SsisLogLocation setLogPath(Object logPath) {
         this.logPath = logPath;
         return this;
@@ -70,6 +78,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * 
      * @return the type value.
      */
+    @Generated
     public SsisLogLocationType getType() {
         return this.type;
     }
@@ -80,6 +89,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * @param type the type value to set.
      * @return the SsisLogLocation object itself.
      */
+    @Generated
     public SsisLogLocation setType(SsisLogLocationType type) {
         this.type = type;
         return this;
@@ -90,6 +100,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * 
      * @return the accessCredential value.
      */
+    @Generated
     public SsisAccessCredential getAccessCredential() {
         return this.accessCredential;
     }
@@ -100,6 +111,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * @param accessCredential the accessCredential value to set.
      * @return the SsisLogLocation object itself.
      */
+    @Generated
     public SsisLogLocation setAccessCredential(SsisAccessCredential accessCredential) {
         this.accessCredential = accessCredential;
         return this;
@@ -112,6 +124,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * 
      * @return the logRefreshInterval value.
      */
+    @Generated
     public Object getLogRefreshInterval() {
         return this.logRefreshInterval;
     }
@@ -124,6 +137,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * @param logRefreshInterval the logRefreshInterval value to set.
      * @return the SsisLogLocation object itself.
      */
+    @Generated
     public SsisLogLocation setLogRefreshInterval(Object logRefreshInterval) {
         this.logRefreshInterval = logRefreshInterval;
         return this;
@@ -132,6 +146,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -140,7 +155,9 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
         if (accessCredential != null || logRefreshInterval != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("accessCredential", this.accessCredential);
-            jsonWriter.writeUntypedField("logRefreshInterval", this.logRefreshInterval);
+            if (this.logRefreshInterval != null) {
+                jsonWriter.writeUntypedField("logRefreshInterval", this.logRefreshInterval);
+            }
             jsonWriter.writeEndObject();
         }
         return jsonWriter.writeEndObject();
@@ -155,6 +172,7 @@ public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SsisLogLocation.
      */
+    @Generated
     public static SsisLogLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisLogLocation deserializedSsisLogLocation = new SsisLogLocation();

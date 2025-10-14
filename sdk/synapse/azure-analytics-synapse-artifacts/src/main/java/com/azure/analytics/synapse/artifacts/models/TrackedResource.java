@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,21 +23,25 @@ public class TrackedResource extends Resource {
     /*
      * Resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The geo-location where the resource lives
      */
+    @Generated
     private String location;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -44,11 +49,13 @@ public class TrackedResource extends Resource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of TrackedResource class.
      */
+    @Generated
     public TrackedResource() {
     }
 
@@ -57,6 +64,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -67,6 +75,7 @@ public class TrackedResource extends Resource {
      * @param tags the tags value to set.
      * @return the TrackedResource object itself.
      */
+    @Generated
     public TrackedResource setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -77,6 +86,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -87,6 +97,7 @@ public class TrackedResource extends Resource {
      * @param location the location value to set.
      * @return the TrackedResource object itself.
      */
+    @Generated
     public TrackedResource setLocation(String location) {
         this.location = location;
         return this;
@@ -98,6 +109,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -108,6 +120,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -119,6 +132,7 @@ public class TrackedResource extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -127,6 +141,7 @@ public class TrackedResource extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public class TrackedResource extends Resource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TrackedResource.
      */
+    @Generated
     public static TrackedResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrackedResource deserializedTrackedResource = new TrackedResource();

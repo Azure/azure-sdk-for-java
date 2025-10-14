@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,36 +23,43 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
     /*
      * String identifying the type of cell.
      */
+    @Generated
     private String cellType;
 
     /*
      * Cell-level metadata.
      */
+    @Generated
     private Object metadata;
 
     /*
      * Contents of the cell, represented as an array of lines.
      */
+    @Generated
     private List<String> source;
 
     /*
      * Attachments associated with the cell.
      */
+    @Generated
     private Object attachments;
 
     /*
      * Cell-level output items.
      */
+    @Generated
     private List<NotebookCellOutputItem> outputs;
 
     /*
      * Notebook cell.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of NotebookCell class.
      */
+    @Generated
     public NotebookCell() {
     }
 
@@ -60,6 +68,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * 
      * @return the cellType value.
      */
+    @Generated
     public String getCellType() {
         return this.cellType;
     }
@@ -70,6 +79,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @param cellType the cellType value to set.
      * @return the NotebookCell object itself.
      */
+    @Generated
     public NotebookCell setCellType(String cellType) {
         this.cellType = cellType;
         return this;
@@ -80,6 +90,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * 
      * @return the metadata value.
      */
+    @Generated
     public Object getMetadata() {
         return this.metadata;
     }
@@ -90,6 +101,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @param metadata the metadata value to set.
      * @return the NotebookCell object itself.
      */
+    @Generated
     public NotebookCell setMetadata(Object metadata) {
         this.metadata = metadata;
         return this;
@@ -100,6 +112,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * 
      * @return the source value.
      */
+    @Generated
     public List<String> getSource() {
         return this.source;
     }
@@ -110,6 +123,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @param source the source value to set.
      * @return the NotebookCell object itself.
      */
+    @Generated
     public NotebookCell setSource(List<String> source) {
         this.source = source;
         return this;
@@ -120,6 +134,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * 
      * @return the attachments value.
      */
+    @Generated
     public Object getAttachments() {
         return this.attachments;
     }
@@ -130,6 +145,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @param attachments the attachments value to set.
      * @return the NotebookCell object itself.
      */
+    @Generated
     public NotebookCell setAttachments(Object attachments) {
         this.attachments = attachments;
         return this;
@@ -140,6 +156,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * 
      * @return the outputs value.
      */
+    @Generated
     public List<NotebookCellOutputItem> getOutputs() {
         return this.outputs;
     }
@@ -150,6 +167,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @param outputs the outputs value to set.
      * @return the NotebookCell object itself.
      */
+    @Generated
     public NotebookCell setOutputs(List<NotebookCellOutputItem> outputs) {
         this.outputs = outputs;
         return this;
@@ -160,6 +178,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -170,6 +189,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookCell object itself.
      */
+    @Generated
     public NotebookCell setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -178,13 +198,16 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("cell_type", this.cellType);
         jsonWriter.writeUntypedField("metadata", this.metadata);
         jsonWriter.writeArrayField("source", this.source, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeUntypedField("attachments", this.attachments);
+        if (this.attachments != null) {
+            jsonWriter.writeUntypedField("attachments", this.attachments);
+        }
         jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
@@ -203,6 +226,7 @@ public final class NotebookCell implements JsonSerializable<NotebookCell> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookCell.
      */
+    @Generated
     public static NotebookCell fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookCell deserializedNotebookCell = new NotebookCell();

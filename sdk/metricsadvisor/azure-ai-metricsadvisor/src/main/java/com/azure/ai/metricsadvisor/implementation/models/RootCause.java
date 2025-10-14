@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class RootCause implements JsonSerializable<RootCause> {
     /*
      * The rootCause property.
      */
+    @Generated
     private DimensionGroupIdentity rootCause;
 
     /*
      * drilling down path from query anomaly to root cause
      */
+    @Generated
     private List<String> path;
 
     /*
      * score of the root cause
      */
+    @Generated
     private double score;
 
     /*
      * description of the root cause
      */
+    @Generated
     private String description;
 
     /**
      * Creates an instance of RootCause class.
      */
+    @Generated
     public RootCause() {
     }
 
@@ -48,6 +54,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * 
      * @return the rootCause value.
      */
+    @Generated
     public DimensionGroupIdentity getRootCause() {
         return this.rootCause;
     }
@@ -58,6 +65,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * @param rootCause the rootCause value to set.
      * @return the RootCause object itself.
      */
+    @Generated
     public RootCause setRootCause(DimensionGroupIdentity rootCause) {
         this.rootCause = rootCause;
         return this;
@@ -68,6 +76,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * 
      * @return the path value.
      */
+    @Generated
     public List<String> getPath() {
         return this.path;
     }
@@ -78,6 +87,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * @param path the path value to set.
      * @return the RootCause object itself.
      */
+    @Generated
     public RootCause setPath(List<String> path) {
         this.path = path;
         return this;
@@ -88,6 +98,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * 
      * @return the score value.
      */
+    @Generated
     public double getScore() {
         return this.score;
     }
@@ -98,6 +109,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * @param score the score value to set.
      * @return the RootCause object itself.
      */
+    @Generated
     public RootCause setScore(double score) {
         this.score = score;
         return this;
@@ -108,6 +120,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -118,6 +131,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * @param description the description value to set.
      * @return the RootCause object itself.
      */
+    @Generated
     public RootCause setDescription(String description) {
         this.description = description;
         return this;
@@ -126,6 +140,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class RootCause implements JsonSerializable<RootCause> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RootCause.
      */
+    @Generated
     public static RootCause fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RootCause deserializedRootCause = new RootCause();

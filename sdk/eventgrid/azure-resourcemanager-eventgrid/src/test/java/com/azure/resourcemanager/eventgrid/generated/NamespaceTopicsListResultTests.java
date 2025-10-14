@@ -16,12 +16,12 @@ public final class NamespaceTopicsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceTopicsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1694439284},\"id\":\"y\",\"name\":\"vpo\",\"type\":\"krsgsgb\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":308026039},\"id\":\"ynscl\",\"name\":\"qhzvhxnkomt\",\"type\":\"u\"}],\"nextLink\":\"tppn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":546640275},\"id\":\"l\",\"name\":\"w\",\"type\":\"youpfgfbkj\"},{\"properties\":{\"provisioningState\":\"UpdatedFailed\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":370188648},\"id\":\"sgow\",\"name\":\"fttsttk\",\"type\":\"lahb\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"publisherType\":\"Custom\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventRetentionInDays\":1623568145},\"id\":\"itmmqtgqqqxh\",\"name\":\"n\",\"type\":\"rxcpjuisavo\"}],\"nextLink\":\"dzf\"}")
             .toObject(NamespaceTopicsListResult.class);
         Assertions.assertEquals(PublisherType.CUSTOM, model.value().get(0).publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).inputSchema());
-        Assertions.assertEquals(1694439284, model.value().get(0).eventRetentionInDays());
-        Assertions.assertEquals("tppn", model.nextLink());
+        Assertions.assertEquals(546640275, model.value().get(0).eventRetentionInDays());
+        Assertions.assertEquals("dzf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,15 +29,18 @@ public final class NamespaceTopicsListResultTests {
         NamespaceTopicsListResult model = new NamespaceTopicsListResult().withValue(Arrays.asList(
             new NamespaceTopicInner().withPublisherType(PublisherType.CUSTOM)
                 .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
-                .withEventRetentionInDays(1694439284),
+                .withEventRetentionInDays(546640275),
             new NamespaceTopicInner().withPublisherType(PublisherType.CUSTOM)
                 .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
-                .withEventRetentionInDays(308026039)))
-            .withNextLink("tppn");
+                .withEventRetentionInDays(370188648),
+            new NamespaceTopicInner().withPublisherType(PublisherType.CUSTOM)
+                .withInputSchema(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0)
+                .withEventRetentionInDays(1623568145)))
+            .withNextLink("dzf");
         model = BinaryData.fromObject(model).toObject(NamespaceTopicsListResult.class);
         Assertions.assertEquals(PublisherType.CUSTOM, model.value().get(0).publisherType());
         Assertions.assertEquals(EventInputSchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).inputSchema());
-        Assertions.assertEquals(1694439284, model.value().get(0).eventRetentionInDays());
-        Assertions.assertEquals("tppn", model.nextLink());
+        Assertions.assertEquals(546640275, model.value().get(0).eventRetentionInDays());
+        Assertions.assertEquals("dzf", model.nextLink());
     }
 }

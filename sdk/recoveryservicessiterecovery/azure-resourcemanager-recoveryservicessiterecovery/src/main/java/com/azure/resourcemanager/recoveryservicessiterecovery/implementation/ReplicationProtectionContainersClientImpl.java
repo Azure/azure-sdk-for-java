@@ -36,6 +36,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Prot
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProtectionContainerInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverProtectableItemRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionContainerCollection;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchClusterProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInput;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -78,19 +79,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerCollection>> listByReplicationFabrics(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -99,9 +99,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @BodyParam("application/json") CreateProtectionContainerInput creationInput,
             @HeaderParam("Accept") String accept, Context context);
@@ -111,9 +111,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> discoverProtectableItem(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @BodyParam("application/json") DiscoverProtectableItemRequest discoverProtectableItemRequest,
             @HeaderParam("Accept") String accept, Context context);
@@ -123,19 +123,31 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchClusterProtection")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> switchClusterProtection(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
+            @PathParam("protectionContainerName") String protectionContainerName,
+            @BodyParam("application/json") SwitchClusterProtectionInput switchInput,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/switchprotection")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> switchProtection(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @BodyParam("application/json") SwitchProtectionInput switchInput, @HeaderParam("Accept") String accept,
             Context context);
@@ -145,9 +157,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -171,8 +183,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -181,18 +193,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerInner>> listByReplicationFabricsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName) {
+    private Mono<PagedResponse<ProtectionContainerInner>>
+        listByReplicationFabricsSinglePageAsync(String resourceGroupName, String resourceName, String fabricName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -205,7 +217,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         return FluxUtil
             .withContext(
                 context -> service.listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(),
-                    resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context))
+                    resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, accept, context))
             .<PagedResponse<ProtectionContainerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -216,8 +228,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,18 +239,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerInner>> listByReplicationFabricsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
+    private Mono<PagedResponse<ProtectionContainerInner>> listByReplicationFabricsSinglePageAsync(
+        String resourceGroupName, String resourceName, String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -250,8 +262,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context)
+            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -261,8 +273,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,10 +282,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection Container collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerInner> listByReplicationFabricsAsync(String resourceName,
-        String resourceGroupName, String fabricName) {
+    private PagedFlux<ProtectionContainerInner> listByReplicationFabricsAsync(String resourceGroupName,
+        String resourceName, String fabricName) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink));
     }
 
@@ -282,8 +294,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -292,10 +304,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection Container collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerInner> listByReplicationFabricsAsync(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
+    private PagedFlux<ProtectionContainerInner> listByReplicationFabricsAsync(String resourceGroupName,
+        String resourceName, String fabricName, Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName, context),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName, context),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink, context));
     }
 
@@ -304,8 +316,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,9 +325,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection Container collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerInner> listByReplicationFabrics(String resourceName,
-        String resourceGroupName, String fabricName) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName));
+    public PagedIterable<ProtectionContainerInner> listByReplicationFabrics(String resourceGroupName,
+        String resourceName, String fabricName) {
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName));
     }
 
     /**
@@ -323,8 +335,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in the specified fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,9 +345,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection Container collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerInner> listByReplicationFabrics(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName, context));
+    public PagedIterable<ProtectionContainerInner> listByReplicationFabrics(String resourceGroupName,
+        String resourceName, String fabricName, Context context) {
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -343,8 +355,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Gets the details of a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,18 +366,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionContainerInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<ProtectionContainerInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -380,9 +392,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, accept,
-                context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -391,8 +403,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Gets the details of a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param context The context to associate with this operation.
@@ -403,18 +415,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionContainerInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<ProtectionContainerInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -429,7 +441,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, accept, context);
     }
 
@@ -438,8 +450,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Gets the details of a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -448,9 +460,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the details of a protection container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<ProtectionContainerInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName)
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -459,8 +471,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Gets the details of a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param context The context to associate with this operation.
@@ -470,9 +482,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the details of a protection container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionContainerInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<ProtectionContainerInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context)
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, context)
             .block();
     }
 
@@ -481,8 +493,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Gets the details of a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -491,9 +503,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the details of a protection container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner get(String resourceName, String resourceGroupName, String fabricName,
+    public ProtectionContainerInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, Context.NONE)
+        return getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, Context.NONE)
             .getValue();
     }
 
@@ -502,8 +514,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -513,18 +525,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, CreateProtectionContainerInput creationInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -544,9 +556,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, creationInput,
-                accept, context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                creationInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -555,8 +567,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -567,19 +579,19 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, CreateProtectionContainerInput creationInput,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -599,7 +611,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, creationInput, accept, context);
     }
 
@@ -608,8 +620,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -620,9 +632,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreateAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         CreateProtectionContainerInput creationInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, creationInput);
         return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
             this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class,
@@ -634,8 +646,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -647,10 +659,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreateAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         CreateProtectionContainerInput creationInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, creationInput, context);
         return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
             this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class, context);
@@ -661,8 +673,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -672,11 +684,11 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link SyncPoller} for polling of protection container details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
+    public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         CreateProtectionContainerInput creationInput) {
         return this
-            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput)
+            .beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput)
             .getSyncPoller();
     }
 
@@ -685,8 +697,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -697,11 +709,11 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link SyncPoller} for polling of protection container details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
+    public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         CreateProtectionContainerInput creationInput, Context context) {
         return this
-            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput,
+            .beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput,
                 context)
             .getSyncPoller();
     }
@@ -711,8 +723,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -722,9 +734,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<ProtectionContainerInner> createAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput)
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -734,8 +746,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -746,9 +758,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<ProtectionContainerInner> createAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput,
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -757,8 +769,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -768,9 +780,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner create(String resourceName, String resourceGroupName, String fabricName,
+    public ProtectionContainerInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput) {
-        return createAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput).block();
+        return createAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput).block();
     }
 
     /**
@@ -778,8 +790,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to create a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param creationInput Creation input.
@@ -790,9 +802,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner create(String resourceName, String resourceGroupName, String fabricName,
+    public ProtectionContainerInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput, Context context) {
-        return createAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput, context)
+        return createAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput, context)
             .block();
     }
 
@@ -801,8 +813,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -812,19 +824,19 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> discoverProtectableItemWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
+    private Mono<Response<Flux<ByteBuffer>>> discoverProtectableItemWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -846,7 +858,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.discoverProtectableItem(this.client.getEndpoint(),
-                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
                 fabricName, protectionContainerName, discoverProtectableItemRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -856,8 +868,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -868,19 +880,19 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> discoverProtectableItemWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
+    private Mono<Response<Flux<ByteBuffer>>> discoverProtectableItemWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -901,8 +913,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.discoverProtectableItem(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+        return service.discoverProtectableItem(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
             discoverProtectableItemRequest, accept, context);
     }
 
@@ -911,8 +923,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -923,10 +935,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner>
-        beginDiscoverProtectableItemAsync(String resourceName, String resourceGroupName, String fabricName,
+        beginDiscoverProtectableItemAsync(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono = discoverProtectableItemWithResponseAsync(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, discoverProtectableItemRequest);
+        Mono<Response<Flux<ByteBuffer>>> mono = discoverProtectableItemWithResponseAsync(resourceGroupName,
+            resourceName, fabricName, protectionContainerName, discoverProtectableItemRequest);
         return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
             this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class,
             this.client.getContext());
@@ -937,8 +949,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -950,12 +962,12 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner>
-        beginDiscoverProtectableItemAsync(String resourceName, String resourceGroupName, String fabricName,
+        beginDiscoverProtectableItemAsync(String resourceGroupName, String resourceName, String fabricName,
             String protectionContainerName, DiscoverProtectableItemRequest discoverProtectableItemRequest,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = discoverProtectableItemWithResponseAsync(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, discoverProtectableItemRequest, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = discoverProtectableItemWithResponseAsync(resourceGroupName,
+            resourceName, fabricName, protectionContainerName, discoverProtectableItemRequest, context);
         return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
             this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class, context);
     }
@@ -965,8 +977,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -977,10 +989,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginDiscoverProtectableItem(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
         return this
-            .beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginDiscoverProtectableItemAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 discoverProtectableItemRequest)
             .getSyncPoller();
     }
@@ -990,8 +1002,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -1003,10 +1015,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginDiscoverProtectableItem(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context) {
         return this
-            .beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginDiscoverProtectableItemAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 discoverProtectableItemRequest, context)
             .getSyncPoller();
     }
@@ -1016,8 +1028,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -1027,10 +1039,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> discoverProtectableItemAsync(String resourceName, String resourceGroupName,
+    private Mono<ProtectionContainerInner> discoverProtectableItemAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        return beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginDiscoverProtectableItemAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             discoverProtectableItemRequest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1039,8 +1051,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -1051,10 +1063,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> discoverProtectableItemAsync(String resourceName, String resourceGroupName,
+    private Mono<ProtectionContainerInner> discoverProtectableItemAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context) {
-        return beginDiscoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginDiscoverProtectableItemAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             discoverProtectableItemRequest, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1063,8 +1075,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -1074,10 +1086,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner discoverProtectableItem(String resourceName, String resourceGroupName,
+    public ProtectionContainerInner discoverProtectableItem(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        return discoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return discoverProtectableItemAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             discoverProtectableItemRequest).block();
     }
 
@@ -1086,8 +1098,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * The operation to a add a protectable item to a protection container(Add physical server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric.
      * @param protectionContainerName The name of the protection container.
      * @param discoverProtectableItemRequest The request object to add a protectable item.
@@ -1098,10 +1110,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner discoverProtectableItem(String resourceName, String resourceGroupName,
+    public ProtectionContainerInner discoverProtectableItem(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context) {
-        return discoverProtectableItemAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return discoverProtectableItemAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             discoverProtectableItemRequest, context).block();
     }
 
@@ -1110,8 +1122,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1120,18 +1132,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1145,8 +1157,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
                 new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1155,8 +1168,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param context The context to associate with this operation.
@@ -1166,18 +1179,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1191,7 +1204,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
                 new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, context);
     }
 
@@ -1200,8 +1213,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1210,10 +1223,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1223,8 +1236,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param context The context to associate with this operation.
@@ -1234,11 +1247,11 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -1248,8 +1261,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1258,9 +1271,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName)
+        return this.beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName)
             .getSyncPoller();
     }
 
@@ -1269,8 +1282,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param context The context to associate with this operation.
@@ -1280,9 +1293,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context)
+        return this.beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, context)
             .getSyncPoller();
     }
 
@@ -1291,8 +1304,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1301,9 +1314,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1312,8 +1325,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param context The context to associate with this operation.
@@ -1323,9 +1336,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1334,8 +1347,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1343,9 +1356,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName).block();
+        deleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName).block();
     }
 
     /**
@@ -1353,8 +1366,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to remove a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric ARM name.
      * @param protectionContainerName Unique protection container ARM name.
      * @param context The context to associate with this operation.
@@ -1363,9 +1376,311 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         Context context) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context).block();
+        deleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, context).block();
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> switchClusterProtectionWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName,
+        SwitchClusterProtectionInput switchInput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (protectionContainerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+        }
+        if (switchInput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter switchInput is required and cannot be null."));
+        } else {
+            switchInput.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.switchClusterProtection(this.client.getEndpoint(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
+                fabricName, protectionContainerName, switchInput, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> switchClusterProtectionWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName,
+        SwitchClusterProtectionInput switchInput, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        if (protectionContainerName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+        }
+        if (switchInput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter switchInput is required and cannot be null."));
+        } else {
+            switchInput.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.switchClusterProtection(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            switchInput, accept, context);
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of protection container details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner>
+        beginSwitchClusterProtectionAsync(String resourceGroupName, String resourceName, String fabricName,
+            String protectionContainerName, SwitchClusterProtectionInput switchInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = switchClusterProtectionWithResponseAsync(resourceGroupName,
+            resourceName, fabricName, protectionContainerName, switchInput);
+        return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of protection container details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner>
+        beginSwitchClusterProtectionAsync(String resourceGroupName, String resourceName, String fabricName,
+            String protectionContainerName, SwitchClusterProtectionInput switchInput, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = switchClusterProtectionWithResponseAsync(resourceGroupName,
+            resourceName, fabricName, protectionContainerName, switchInput, context);
+        return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class, context);
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of protection container details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchClusterProtection(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        SwitchClusterProtectionInput switchInput) {
+        return this
+            .beginSwitchClusterProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
+                switchInput)
+            .getSyncPoller();
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of protection container details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchClusterProtection(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        SwitchClusterProtectionInput switchInput, Context context) {
+        return this
+            .beginSwitchClusterProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
+                switchInput, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return protection container details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ProtectionContainerInner> switchClusterProtectionAsync(String resourceGroupName, String resourceName,
+        String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput) {
+        return beginSwitchClusterProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return protection container details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ProtectionContainerInner> switchClusterProtectionAsync(String resourceGroupName, String resourceName,
+        String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput, Context context) {
+        return beginSwitchClusterProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return protection container details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionContainerInner switchClusterProtection(String resourceGroupName, String resourceName,
+        String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput) {
+        return switchClusterProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput).block();
+    }
+
+    /**
+     * Switches protection from one container to another.
+     * 
+     * Operation to switch protection from one container to another.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param switchInput Switch protection input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return protection container details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionContainerInner switchClusterProtection(String resourceGroupName, String resourceName,
+        String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput, Context context) {
+        return switchClusterProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput, context).block();
     }
 
     /**
@@ -1373,8 +1688,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1384,19 +1699,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> switchProtectionWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName,
-        SwitchProtectionInput switchInput) {
+    private Mono<Response<Flux<ByteBuffer>>> switchProtectionWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, SwitchProtectionInput switchInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1417,7 +1731,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.switchProtection(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 switchInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1427,8 +1741,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1439,19 +1753,19 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> switchProtectionWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, SwitchProtectionInput switchInput,
+    private Mono<Response<Flux<ByteBuffer>>> switchProtectionWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, SwitchProtectionInput switchInput,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1471,9 +1785,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.switchProtection(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, switchInput,
-            accept, context);
+        return service.switchProtection(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, switchInput, accept,
+            context);
     }
 
     /**
@@ -1481,8 +1795,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1493,9 +1807,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtectionAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = switchProtectionWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = switchProtectionWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, switchInput);
         return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
             this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class,
@@ -1507,8 +1821,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1520,10 +1834,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtectionAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = switchProtectionWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = switchProtectionWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, switchInput, context);
         return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(mono,
             this.client.getHttpPipeline(), ProtectionContainerInner.class, ProtectionContainerInner.class, context);
@@ -1534,8 +1848,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1546,10 +1860,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtection(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput) {
         return this
-            .beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginSwitchProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 switchInput)
             .getSyncPoller();
     }
@@ -1559,8 +1873,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1572,10 +1886,10 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtection(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput, Context context) {
         return this
-            .beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginSwitchProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 switchInput, context)
             .getSyncPoller();
     }
@@ -1585,8 +1899,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1596,9 +1910,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> switchProtectionAsync(String resourceName, String resourceGroupName,
+    private Mono<ProtectionContainerInner> switchProtectionAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, SwitchProtectionInput switchInput) {
-        return beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginSwitchProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             switchInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1607,8 +1921,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1619,9 +1933,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerInner> switchProtectionAsync(String resourceName, String resourceGroupName,
+    private Mono<ProtectionContainerInner> switchProtectionAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, SwitchProtectionInput switchInput, Context context) {
-        return beginSwitchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginSwitchProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             switchInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1630,8 +1944,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1641,9 +1955,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner switchProtection(String resourceName, String resourceGroupName, String fabricName,
+    public ProtectionContainerInner switchProtection(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, SwitchProtectionInput switchInput) {
-        return switchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput)
+        return switchProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput)
             .block();
     }
 
@@ -1652,8 +1966,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Operation to switch protection from one container to another or one replication provider to another.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Unique fabric name.
      * @param protectionContainerName Protection container name.
      * @param switchInput Switch protection input.
@@ -1664,9 +1978,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection container details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerInner switchProtection(String resourceName, String resourceGroupName, String fabricName,
+    public ProtectionContainerInner switchProtection(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, SwitchProtectionInput switchInput, Context context) {
-        return switchProtectionAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput,
+        return switchProtectionAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput,
             context).block();
     }
 
@@ -1675,8 +1989,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1684,18 +1998,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName) {
+    private Mono<PagedResponse<ProtectionContainerInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1703,8 +2017,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<ProtectionContainerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1715,8 +2029,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1725,18 +2039,18 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ProtectionContainerInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1745,7 +2059,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1756,16 +2070,16 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Container collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+    private PagedFlux<ProtectionContainerInner> listAsync(String resourceGroupName, String resourceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1774,8 +2088,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1783,9 +2097,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection Container collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerInner> listAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<ProtectionContainerInner> listAsync(String resourceGroupName, String resourceName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1794,16 +2108,16 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Container collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerInner> list(String resourceName, String resourceGroupName) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName));
+    public PagedIterable<ProtectionContainerInner> list(String resourceGroupName, String resourceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
     /**
@@ -1811,8 +2125,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * 
      * Lists the protection containers in a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1820,9 +2134,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      * @return protection Container collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerInner> list(String resourceName, String resourceGroupName,
+    public PagedIterable<ProtectionContainerInner> list(String resourceGroupName, String resourceName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
     /**

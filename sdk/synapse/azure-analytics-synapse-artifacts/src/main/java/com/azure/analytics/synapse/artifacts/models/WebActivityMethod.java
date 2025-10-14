@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
     /**
      * Static value GET for WebActivityMethod.
      */
+    @Generated
     public static final WebActivityMethod GET = fromString("GET");
 
     /**
      * Static value POST for WebActivityMethod.
      */
+    @Generated
     public static final WebActivityMethod POST = fromString("POST");
 
     /**
      * Static value PUT for WebActivityMethod.
      */
+    @Generated
     public static final WebActivityMethod PUT = fromString("PUT");
 
     /**
      * Static value DELETE for WebActivityMethod.
      */
+    @Generated
     public static final WebActivityMethod DELETE = fromString("DELETE");
 
     /**
@@ -36,6 +41,7 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WebActivityMethod() {
     }
@@ -46,6 +52,7 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
      * @param name a name to look for.
      * @return the corresponding WebActivityMethod.
      */
+    @Generated
     public static WebActivityMethod fromString(String name) {
         return fromString(name, WebActivityMethod.class);
     }
@@ -55,6 +62,7 @@ public final class WebActivityMethod extends ExpandableStringEnum<WebActivityMet
      * 
      * @return known WebActivityMethod values.
      */
+    @Generated
     public static Collection<WebActivityMethod> values() {
         return values(WebActivityMethod.class);
     }

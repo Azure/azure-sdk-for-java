@@ -12,14 +12,14 @@ public final class TagContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagContractProperties model
-            = BinaryData.fromString("{\"displayName\":\"ugmrmf\"}").toObject(TagContractProperties.class);
-        Assertions.assertEquals("ugmrmf", model.displayName());
+            = BinaryData.fromString("{\"displayName\":\"gzyvnee\"}").toObject(TagContractProperties.class);
+        Assertions.assertEquals("gzyvnee", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagContractProperties model = new TagContractProperties().withDisplayName("ugmrmf");
+        TagContractProperties model = new TagContractProperties().withDisplayName("gzyvnee");
         model = BinaryData.fromObject(model).toObject(TagContractProperties.class);
-        Assertions.assertEquals("ugmrmf", model.displayName());
+        Assertions.assertEquals("gzyvnee", model.displayName());
     }
 }

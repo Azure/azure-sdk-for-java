@@ -99,6 +99,13 @@ public interface ContainerApp {
     ContainerAppProvisioningState provisioningState();
 
     /**
+     * Gets the runningStatus property: Running status of the Container App.
+     * 
+     * @return the runningStatus value.
+     */
+    ContainerAppRunningStatus runningStatus();
+
+    /**
      * Gets the deploymentErrors property: Any errors that occurred during deployment.
      * 
      * @return the deploymentErrors value.

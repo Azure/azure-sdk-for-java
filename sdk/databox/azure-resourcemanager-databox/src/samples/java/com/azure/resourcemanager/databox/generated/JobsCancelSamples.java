@@ -12,7 +12,7 @@ import com.azure.resourcemanager.databox.models.CancellationReason;
 public final class JobsCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCancelPost.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCancelPost.json
      */
     /**
      * Sample code: JobsCancelPost.

@@ -118,6 +118,24 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
+     * Get the snapshotCreationDate property: The snapshot creation date of the backup.
+     * 
+     * @return the snapshotCreationDate value.
+     */
+    public OffsetDateTime snapshotCreationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotCreationDate();
+    }
+
+    /**
+     * Get the completionDate property: The completion date of the backup.
+     * 
+     * @return the completionDate value.
+     */
+    public OffsetDateTime completionDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().completionDate();
+    }
+
+    /**
      * Get the provisioningState property: Azure lifecycle management.
      * 
      * @return the provisioningState value.

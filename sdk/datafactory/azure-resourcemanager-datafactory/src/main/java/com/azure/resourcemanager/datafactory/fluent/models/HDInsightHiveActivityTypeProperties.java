@@ -254,7 +254,9 @@ public final class HDInsightHiveActivityTypeProperties
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
-        jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+        if (this.scriptPath != null) {
+            jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+        }
         jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
         jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("variables", this.variables, (writer, element) -> writer.writeUntyped(element));

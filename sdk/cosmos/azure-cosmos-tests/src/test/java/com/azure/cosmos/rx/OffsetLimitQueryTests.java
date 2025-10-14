@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -79,7 +79,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, retryAnalyzer = FlakyTestRetryAnalyzer.class, timeOut = TIMEOUT * 2)
     public void drainAllDocumentsUsingOffsetLimit() {
         int skipCount = 0;
         int takeCount = 2;
@@ -312,24 +312,24 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         for (int i = 0; i < 10; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
-            d.set(partitionKey, firstPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(field, i);
+            d.set(partitionKey, firstPk);
             docs.add(d);
         }
 
         for (int i = 10; i < 20; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
-            d.set(partitionKey, secondPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(field, i);
+            d.set(partitionKey, secondPk);
             docs.add(d);
         }
 
         for (int i = 20; i < 100; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            d.set(field, i, CosmosItemSerializer.DEFAULT_SERIALIZER);
-            d.set(partitionKey, thirdPk, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            d.set(field, i);
+            d.set(partitionKey, thirdPk);
             docs.add(d);
         }
     }

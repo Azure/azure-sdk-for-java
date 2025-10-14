@@ -58,7 +58,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [samples_list_containers]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ListContainersExample.java
 [samples_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
 [samples_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
-[storageblob_rest]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[storageblob_rest]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fsrc%2Fsamples%2FREADME.png)
+

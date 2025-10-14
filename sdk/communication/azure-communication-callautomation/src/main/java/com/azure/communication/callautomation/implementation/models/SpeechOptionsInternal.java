@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
     /*
      * The length of end silence when user stops speaking and cogservice send response.
      */
+    @Generated
     private Long endSilenceTimeoutInMs;
 
     /**
      * Creates an instance of SpeechOptionsInternal class.
      */
+    @Generated
     public SpeechOptionsInternal() {
     }
 
@@ -33,6 +36,7 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
      * 
      * @return the endSilenceTimeoutInMs value.
      */
+    @Generated
     public Long getEndSilenceTimeoutInMs() {
         return this.endSilenceTimeoutInMs;
     }
@@ -44,6 +48,7 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
      * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      * @return the SpeechOptionsInternal object itself.
      */
+    @Generated
     public SpeechOptionsInternal setEndSilenceTimeoutInMs(Long endSilenceTimeoutInMs) {
         this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
         return this;
@@ -52,6 +57,7 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SpeechOptionsInternal.
      */
+    @Generated
     public static SpeechOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SpeechOptionsInternal deserializedSpeechOptionsInternal = new SpeechOptionsInternal();

@@ -82,6 +82,13 @@ public interface ElasticSanManagement {
     VolumesClient getVolumes();
 
     /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     * 
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
      * @return the PrivateEndpointConnectionsClient object.

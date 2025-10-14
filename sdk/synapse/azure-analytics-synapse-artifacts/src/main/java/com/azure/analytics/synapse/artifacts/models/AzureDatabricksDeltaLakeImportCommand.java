@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,23 +21,27 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
     /*
      * The import setting type.
      */
+    @Generated
     private String type = "AzureDatabricksDeltaLakeImportCommand";
 
     /*
      * Specify the date format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object dateFormat;
 
     /*
      * Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object timestampFormat;
 
     /**
      * Creates an instance of AzureDatabricksDeltaLakeImportCommand class.
      */
+    @Generated
     public AzureDatabricksDeltaLakeImportCommand() {
     }
 
@@ -45,6 +50,7 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * 
      * @return the dateFormat value.
      */
+    @Generated
     public Object getDateFormat() {
         return this.dateFormat;
     }
@@ -67,6 +74,7 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * @param dateFormat the dateFormat value to set.
      * @return the AzureDatabricksDeltaLakeImportCommand object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeImportCommand setDateFormat(Object dateFormat) {
         this.dateFormat = dateFormat;
         return this;
@@ -78,6 +86,7 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * 
      * @return the timestampFormat value.
      */
+    @Generated
     public Object getTimestampFormat() {
         return this.timestampFormat;
     }
@@ -89,6 +98,7 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * @param timestampFormat the timestampFormat value to set.
      * @return the AzureDatabricksDeltaLakeImportCommand object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeImportCommand setTimestampFormat(Object timestampFormat) {
         this.timestampFormat = timestampFormat;
         return this;
@@ -97,12 +107,17 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
-        jsonWriter.writeUntypedField("timestampFormat", this.timestampFormat);
+        if (this.dateFormat != null) {
+            jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
+        }
+        if (this.timestampFormat != null) {
+            jsonWriter.writeUntypedField("timestampFormat", this.timestampFormat);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -119,6 +134,7 @@ public final class AzureDatabricksDeltaLakeImportCommand extends ImportSettings 
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeImportCommand.
      */
+    @Generated
     public static AzureDatabricksDeltaLakeImportCommand fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDatabricksDeltaLakeImportCommand deserializedAzureDatabricksDeltaLakeImportCommand

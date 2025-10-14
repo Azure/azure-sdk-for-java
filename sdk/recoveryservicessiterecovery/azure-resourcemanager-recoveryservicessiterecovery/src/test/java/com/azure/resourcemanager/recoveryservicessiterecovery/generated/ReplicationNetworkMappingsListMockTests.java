@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.NetworkMapping;
@@ -22,27 +22,26 @@ public final class ReplicationNetworkMappingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"zzkueruwcjomi\",\"primaryNetworkFriendlyName\":\"wkau\",\"primaryNetworkId\":\"twykoxvbw\",\"primaryFabricFriendlyName\":\"xxdplrelfkvga\",\"recoveryNetworkFriendlyName\":\"btuxlbpxrhrfje\",\"recoveryNetworkId\":\"azwef\",\"recoveryFabricArmId\":\"tlhqas\",\"recoveryFabricFriendlyName\":\"ostjixyz\",\"fabricSpecificSettings\":{\"instanceType\":\"NetworkMappingFabricSpecificSettings\"}},\"location\":\"i\",\"id\":\"zzdw\",\"name\":\"tacfvvtdpcbp\",\"type\":\"fomcsau\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"ofkegbvbbdledffl\",\"primaryNetworkFriendlyName\":\"sluazz\",\"primaryNetworkId\":\"jveugpxzeemp\",\"primaryFabricFriendlyName\":\"bscboxr\",\"recoveryNetworkFriendlyName\":\"dczmrjgobekx\",\"recoveryNetworkId\":\"eowse\",\"recoveryFabricArmId\":\"fdr\",\"recoveryFabricFriendlyName\":\"bskiwrj\",\"fabricSpecificSettings\":{\"instanceType\":\"NetworkMappingFabricSpecificSettings\"}},\"location\":\"bmseesacuicnvq\",\"id\":\"qsuivmrfaptndrmm\",\"name\":\"lh\",\"type\":\"k\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NetworkMapping> response
-            = manager.replicationNetworkMappings().list("vphirlzbip", "unnep", com.azure.core.util.Context.NONE);
+            = manager.replicationNetworkMappings().list("ysy", "vldeehcbsaip", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zzkueruwcjomi", response.iterator().next().properties().state());
-        Assertions.assertEquals("wkau", response.iterator().next().properties().primaryNetworkFriendlyName());
-        Assertions.assertEquals("twykoxvbw", response.iterator().next().properties().primaryNetworkId());
-        Assertions.assertEquals("xxdplrelfkvga", response.iterator().next().properties().primaryFabricFriendlyName());
-        Assertions.assertEquals("btuxlbpxrhrfje",
-            response.iterator().next().properties().recoveryNetworkFriendlyName());
-        Assertions.assertEquals("azwef", response.iterator().next().properties().recoveryNetworkId());
-        Assertions.assertEquals("tlhqas", response.iterator().next().properties().recoveryFabricArmId());
-        Assertions.assertEquals("ostjixyz", response.iterator().next().properties().recoveryFabricFriendlyName());
-        Assertions.assertEquals("i", response.iterator().next().location());
+        Assertions.assertEquals("ofkegbvbbdledffl", response.iterator().next().properties().state());
+        Assertions.assertEquals("sluazz", response.iterator().next().properties().primaryNetworkFriendlyName());
+        Assertions.assertEquals("jveugpxzeemp", response.iterator().next().properties().primaryNetworkId());
+        Assertions.assertEquals("bscboxr", response.iterator().next().properties().primaryFabricFriendlyName());
+        Assertions.assertEquals("dczmrjgobekx", response.iterator().next().properties().recoveryNetworkFriendlyName());
+        Assertions.assertEquals("eowse", response.iterator().next().properties().recoveryNetworkId());
+        Assertions.assertEquals("fdr", response.iterator().next().properties().recoveryFabricArmId());
+        Assertions.assertEquals("bskiwrj", response.iterator().next().properties().recoveryFabricFriendlyName());
+        Assertions.assertEquals("bmseesacuicnvq", response.iterator().next().location());
     }
 }

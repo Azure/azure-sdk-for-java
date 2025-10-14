@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.24.0</version>
+  <version>12.27.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -123,7 +123,7 @@ Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
 ### URL format
 Queues are addressable using the following URL format:
 The following URL addresses a queue in the diagram:
-https://myaccount.queue.core.windows.net/images-to-download
+`https://myaccount.queue.core.windows.net/images-to-download`
 
 #### Resource URI Syntax
 For the storage account, the base URI for queue operations includes the name of the account only:
@@ -487,16 +487,16 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src/samples/README.md
-[api_documentation]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
-[storage_docs]: https://docs.microsoft.com/azure/storage/queues/storage-queues-introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[api_documentation]: https://learn.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[storage_docs]: https://learn.microsoft.com/azure/storage/queues/storage-queues-introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[storage_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-error-codes
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_cli]: https://learn.microsoft.com/cli/azure
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_rest]: https://learn.microsoft.com/rest/api/storageservices/queue-service-error-codes
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src/samples
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2FREADME.png)
+

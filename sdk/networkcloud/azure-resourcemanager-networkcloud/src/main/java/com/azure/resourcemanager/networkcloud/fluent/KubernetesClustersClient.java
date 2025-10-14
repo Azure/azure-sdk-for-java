@@ -137,6 +137,10 @@ public interface KubernetesClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,7 +150,8 @@ public interface KubernetesClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(String resourceGroupName,
-        String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters, Context context);
+        String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the Kubernetes cluster.
@@ -173,6 +178,10 @@ public interface KubernetesClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,7 +190,7 @@ public interface KubernetesClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     KubernetesClusterInner createOrUpdate(String resourceGroupName, String kubernetesClusterName,
-        KubernetesClusterInner kubernetesClusterParameters, Context context);
+        KubernetesClusterInner kubernetesClusterParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the Kubernetes cluster.
@@ -206,6 +215,10 @@ public interface KubernetesClustersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,7 +227,7 @@ public interface KubernetesClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String kubernetesClusterName, Context context);
+        String kubernetesClusterName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the Kubernetes cluster.
@@ -238,6 +251,10 @@ public interface KubernetesClustersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -245,7 +262,8 @@ public interface KubernetesClustersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the Kubernetes cluster.
@@ -273,6 +291,10 @@ public interface KubernetesClustersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param kubernetesClusterUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,8 +305,8 @@ public interface KubernetesClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
-        String kubernetesClusterName, KubernetesClusterPatchParameters kubernetesClusterUpdateParameters,
-        Context context);
+        String kubernetesClusterName, String ifMatch, String ifNoneMatch,
+        KubernetesClusterPatchParameters kubernetesClusterUpdateParameters, Context context);
 
     /**
      * Patch the Kubernetes cluster.
@@ -310,6 +332,10 @@ public interface KubernetesClustersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param kubernetesClusterUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,8 +344,8 @@ public interface KubernetesClustersClient {
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KubernetesClusterInner update(String resourceGroupName, String kubernetesClusterName,
-        KubernetesClusterPatchParameters kubernetesClusterUpdateParameters, Context context);
+    KubernetesClusterInner update(String resourceGroupName, String kubernetesClusterName, String ifMatch,
+        String ifNoneMatch, KubernetesClusterPatchParameters kubernetesClusterUpdateParameters, Context context);
 
     /**
      * Restart a targeted node.

@@ -50,7 +50,7 @@ public final class ManagedIdentityCredential extends Credential {
      * 
      * @return the innerTypeProperties value.
      */
-    private ManagedIdentityTypeProperties innerTypeProperties() {
+    ManagedIdentityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

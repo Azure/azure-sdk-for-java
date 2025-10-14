@@ -51,7 +51,7 @@ public final class MongoDbV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MongoDbV2LinkedServiceTypeProperties innerTypeProperties() {
+    MongoDbV2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

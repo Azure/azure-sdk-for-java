@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,11 +22,13 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
     /*
      * A URI fragment specifying the type of tokenizer.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.StandardTokenizer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split.
      */
+    @Generated
     private Integer maxTokenLength;
 
     /**
@@ -33,6 +36,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public LuceneStandardTokenizerV1(String name) {
         super(name);
     }
@@ -42,6 +46,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -53,6 +58,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
      * 
      * @return the maxTokenLength value.
      */
+    @Generated
     public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
@@ -64,6 +70,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the LuceneStandardTokenizerV1 object itself.
      */
+    @Generated
     public LuceneStandardTokenizerV1 setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
@@ -72,6 +79,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +98,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LuceneStandardTokenizerV1.
      */
+    @Generated
     public static LuceneStandardTokenizerV1 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -16,6 +16,8 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -44,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class DataSourceTests extends SearchTestBase {
     private static final String FAKE_DESCRIPTION = "Some data source";
     private static final String FAKE_STORAGE_CONNECTION_STRING
@@ -616,14 +619,14 @@ public class DataSourceTests extends SearchTestBase {
 
         // Create an initial dataSource
         SearchIndexerDataSourceConnection initial = createTestBlobDataSource(null);
-        assertEquals(initial.getConnectionString(), FAKE_STORAGE_CONNECTION_STRING);
+        assertEquals(FAKE_STORAGE_CONNECTION_STRING, initial.getConnectionString());
 
         // tweak the connection string and verify it was changed
         String newConnString
             = "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
         initial.setConnectionString(newConnString);
 
-        assertEquals(initial.getConnectionString(), newConnString);
+        assertEquals(newConnString, initial.getConnectionString());
     }
 
     SearchIndexerDataSourceConnection createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {

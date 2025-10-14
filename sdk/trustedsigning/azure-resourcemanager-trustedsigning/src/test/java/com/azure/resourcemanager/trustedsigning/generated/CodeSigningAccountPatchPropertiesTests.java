@@ -6,7 +6,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.trustedsigning.fluent.models.CodeSigningAccountPatchProperties;
-import com.azure.resourcemanager.trustedsigning.models.AccountSku;
+import com.azure.resourcemanager.trustedsigning.models.AccountSkuPatch;
 import com.azure.resourcemanager.trustedsigning.models.SkuName;
 import org.junit.jupiter.api.Assertions;
 
@@ -21,7 +21,7 @@ public final class CodeSigningAccountPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CodeSigningAccountPatchProperties model
-            = new CodeSigningAccountPatchProperties().withSku(new AccountSku().withName(SkuName.PREMIUM));
+            = new CodeSigningAccountPatchProperties().withSku(new AccountSkuPatch().withName(SkuName.PREMIUM));
         model = BinaryData.fromObject(model).toObject(CodeSigningAccountPatchProperties.class);
         Assertions.assertEquals(SkuName.PREMIUM, model.sku().name());
     }

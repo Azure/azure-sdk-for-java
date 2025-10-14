@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,42 +22,50 @@ public class TeamDeskLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "TeamDesk";
 
     /*
      * The authentication type to use.
      */
+    @Generated
     private TeamDeskAuthenticationType authenticationType;
 
     /*
      * The url to connect TeamDesk source. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
      * The username of the TeamDesk source. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * The password of the TeamDesk source.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The api token for the TeamDesk source.
      */
+    @Generated
     private SecretBase apiToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of TeamDeskLinkedService class.
      */
+    @Generated
     public TeamDeskLinkedService() {
     }
 
@@ -65,6 +74,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +85,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public TeamDeskAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -85,6 +96,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the TeamDeskLinkedService object itself.
      */
+    @Generated
     public TeamDeskLinkedService setAuthenticationType(TeamDeskAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -95,6 +107,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -105,6 +118,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the TeamDeskLinkedService object itself.
      */
+    @Generated
     public TeamDeskLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -116,6 +130,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -127,6 +142,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the TeamDeskLinkedService object itself.
      */
+    @Generated
     public TeamDeskLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -137,6 +153,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -147,6 +164,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the TeamDeskLinkedService object itself.
      */
+    @Generated
     public TeamDeskLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -157,6 +175,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the apiToken value.
      */
+    @Generated
     public SecretBase getApiToken() {
         return this.apiToken;
     }
@@ -167,6 +186,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @param apiToken the apiToken value to set.
      * @return the TeamDeskLinkedService object itself.
      */
+    @Generated
     public TeamDeskLinkedService setApiToken(SecretBase apiToken) {
         this.apiToken = apiToken;
         return this;
@@ -178,6 +198,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -189,6 +210,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the TeamDeskLinkedService object itself.
      */
+    @Generated
     public TeamDeskLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -197,6 +219,17 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public TeamDeskLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public TeamDeskLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -206,6 +239,7 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeamDeskLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -215,6 +249,7 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeamDeskLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -224,6 +259,7 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeamDeskLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -233,9 +269,11 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -251,10 +289,14 @@ public class TeamDeskLinkedService extends LinkedService {
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
             jsonWriter.writeUntypedField("url", this.url);
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeJsonField("apiToken", this.apiToken);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -274,6 +316,7 @@ public class TeamDeskLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TeamDeskLinkedService.
      */
+    @Generated
     public static TeamDeskLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TeamDeskLinkedService deserializedTeamDeskLinkedService = new TeamDeskLinkedService();
@@ -282,7 +325,9 @@ public class TeamDeskLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedTeamDeskLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedTeamDeskLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedTeamDeskLinkedService.setDescription(reader.getString());

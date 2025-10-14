@@ -24,7 +24,7 @@ public final class ConnectedClusterList implements JsonSerializable<ConnectedClu
     private List<ConnectedClusterInner> value;
 
     /*
-     * The link to fetch the next page of connected cluster
+     * The link to fetch the next page of connected clusters
      */
     private String nextLink;
 
@@ -55,7 +55,7 @@ public final class ConnectedClusterList implements JsonSerializable<ConnectedClu
     }
 
     /**
-     * Get the nextLink property: The link to fetch the next page of connected cluster.
+     * Get the nextLink property: The link to fetch the next page of connected clusters.
      * 
      * @return the nextLink value.
      */
@@ -64,7 +64,7 @@ public final class ConnectedClusterList implements JsonSerializable<ConnectedClu
     }
 
     /**
-     * Set the nextLink property: The link to fetch the next page of connected cluster.
+     * Set the nextLink property: The link to fetch the next page of connected clusters.
      * 
      * @param nextLink the nextLink value to set.
      * @return the ConnectedClusterList object itself.

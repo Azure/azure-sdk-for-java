@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -12,7 +13,6 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.secrets.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -103,7 +103,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
         StepVerifier.create(secretAsyncClient.setSecret("", "A value"))
             .verifyErrorSatisfies(
-                e -> assertRestException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertRestException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     /**

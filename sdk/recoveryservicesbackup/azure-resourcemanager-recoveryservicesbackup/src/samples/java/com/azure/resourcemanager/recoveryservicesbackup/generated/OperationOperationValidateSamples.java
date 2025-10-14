@@ -18,7 +18,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperation
 public final class OperationOperationValidateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ValidateOperation_RestoreDisk.json
      */
     /**
@@ -50,7 +50,7 @@ public final class OperationOperationValidateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
      */
     /**

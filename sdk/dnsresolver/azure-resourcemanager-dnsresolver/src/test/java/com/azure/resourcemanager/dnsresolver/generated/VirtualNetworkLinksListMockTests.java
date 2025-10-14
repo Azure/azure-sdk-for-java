@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLink;
@@ -22,19 +22,19 @@ public final class VirtualNetworkLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"vtldgmfpgvmpip\",\"properties\":{\"virtualNetwork\":{\"id\":\"ltha\"},\"metadata\":{\"wutwbdsre\":\"ss\"},\"provisioningState\":\"Succeeded\"},\"id\":\"hneuyowqkd\",\"name\":\"ytisibir\",\"type\":\"gpikpzimejza\"}]}";
+            = "{\"value\":[{\"etag\":\"il\",\"properties\":{\"virtualNetwork\":{\"id\":\"wwtkg\"},\"metadata\":{\"ewbcihxuuw\":\"yedabgyvudtj\"},\"provisioningState\":\"Deleting\"},\"id\":\"xccybvpa\",\"name\":\"akkud\",\"type\":\"px\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<VirtualNetworkLink> response
-            = manager.virtualNetworkLinks().list("bizikayuhq", "bjbsybb", 549914749, com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualNetworkLink> response = manager.virtualNetworkLinks()
+            .list("goorbteo", "bfhjxakvvjgsl", 36886384, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ltha", response.iterator().next().virtualNetwork().id());
-        Assertions.assertEquals("ss", response.iterator().next().metadata().get("wutwbdsre"));
+        Assertions.assertEquals("wwtkg", response.iterator().next().virtualNetwork().id());
+        Assertions.assertEquals("yedabgyvudtj", response.iterator().next().metadata().get("ewbcihxuuw"));
     }
 }

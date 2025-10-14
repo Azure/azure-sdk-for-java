@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,20 @@ public final class RouteRepresentationForBestOrder extends ExpandableStringEnum<
     /**
      * Includes route geometry in the response.
      */
+    @Generated
     public static final RouteRepresentationForBestOrder POLYLINE = fromString("polyline");
 
     /**
      * Summary as per polyline but excluding the point geometry elements for the routes in the response.
      */
+    @Generated
     public static final RouteRepresentationForBestOrder SUMMARY_ONLY = fromString("summaryOnly");
 
     /**
-     * Includes only the optimized waypoint indices but does not include the route geometry in the response.
+     * Includes only the optimized waypoint indices but does not include the route geometry in the response. This
+     * parameter value can only be used in conjunction with computeBestOrder=true.
      */
+    @Generated
     public static final RouteRepresentationForBestOrder NONE = fromString("none");
 
     /**
@@ -31,6 +36,7 @@ public final class RouteRepresentationForBestOrder extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteRepresentationForBestOrder() {
     }
@@ -41,6 +47,7 @@ public final class RouteRepresentationForBestOrder extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding RouteRepresentationForBestOrder.
      */
+    @Generated
     public static RouteRepresentationForBestOrder fromString(String name) {
         return fromString(name, RouteRepresentationForBestOrder.class);
     }
@@ -50,6 +57,7 @@ public final class RouteRepresentationForBestOrder extends ExpandableStringEnum<
      * 
      * @return known RouteRepresentationForBestOrder values.
      */
+    @Generated
     public static Collection<RouteRepresentationForBestOrder> values() {
         return values(RouteRepresentationForBestOrder.class);
     }

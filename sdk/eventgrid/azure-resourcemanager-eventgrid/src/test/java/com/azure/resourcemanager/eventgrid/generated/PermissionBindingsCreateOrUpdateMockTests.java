@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PermissionBinding;
@@ -22,27 +22,27 @@ public final class PermissionBindingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"dizhrjqfyaytvsly\",\"topicSpaceName\":\"cgniuarlc\",\"permission\":\"Publisher\",\"clientGroupName\":\"sxfai\",\"provisioningState\":\"Succeeded\"},\"id\":\"gujjgn\",\"name\":\"grzxbarcbpaefzqs\",\"type\":\"mjw\"}";
+            = "{\"properties\":{\"description\":\"kui\",\"topicSpaceName\":\"uftekioo\",\"permission\":\"Subscriber\",\"clientGroupName\":\"ewfhvpxjh\",\"provisioningState\":\"Succeeded\"},\"id\":\"fjz\",\"name\":\"bbwzgvzuaixcd\",\"type\":\"kixsps\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PermissionBinding response = manager.permissionBindings()
-            .define("tfnressfepgck")
-            .withExistingNamespace("ppoqvgpnewuhwfwj", "oxuo")
-            .withDescription("mgvsnvbtqdxfmj")
-            .withTopicSpaceName("jnhj")
+            .define("wotfcuu")
+            .withExistingNamespace("ifopf", "xdwdrpazqjkrfm")
+            .withDescription("jigpgayiawohfmh")
+            .withTopicSpaceName("zmecjjkmqenhai")
             .withPermission(PermissionType.SUBSCRIBER)
-            .withClientGroupName("lbsu")
+            .withClientGroupName("vs")
             .create();
 
-        Assertions.assertEquals("dizhrjqfyaytvsly", response.description());
-        Assertions.assertEquals("cgniuarlc", response.topicSpaceName());
-        Assertions.assertEquals(PermissionType.PUBLISHER, response.permission());
-        Assertions.assertEquals("sxfai", response.clientGroupName());
+        Assertions.assertEquals("kui", response.description());
+        Assertions.assertEquals("uftekioo", response.topicSpaceName());
+        Assertions.assertEquals(PermissionType.SUBSCRIBER, response.permission());
+        Assertions.assertEquals("ewfhvpxjh", response.clientGroupName());
     }
 }

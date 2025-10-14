@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,41 +24,49 @@ public final class IntegrationRuntimeComputeProperties
      * The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
      */
+    @Generated
     private String location;
 
     /*
      * The node size requirement to managed integration runtime.
      */
+    @Generated
     private String nodeSize;
 
     /*
      * The required number of nodes for managed integration runtime.
      */
+    @Generated
     private Integer numberOfNodes;
 
     /*
      * Maximum parallel executions count per node for managed integration runtime.
      */
+    @Generated
     private Integer maxParallelExecutionsPerNode;
 
     /*
      * Data flow properties for managed integration runtime.
      */
+    @Generated
     private IntegrationRuntimeDataFlowProperties dataFlowProperties;
 
     /*
      * VNet properties for managed integration runtime.
      */
+    @Generated
     private IntegrationRuntimeVNetProperties vNetProperties;
 
     /*
      * The compute resource properties for managed integration runtime.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IntegrationRuntimeComputeProperties class.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties() {
     }
 
@@ -67,6 +76,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -78,6 +88,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param location the location value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties setLocation(String location) {
         this.location = location;
         return this;
@@ -88,6 +99,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the nodeSize value.
      */
+    @Generated
     public String getNodeSize() {
         return this.nodeSize;
     }
@@ -98,6 +110,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param nodeSize the nodeSize value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties setNodeSize(String nodeSize) {
         this.nodeSize = nodeSize;
         return this;
@@ -108,6 +121,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the numberOfNodes value.
      */
+    @Generated
     public Integer getNumberOfNodes() {
         return this.numberOfNodes;
     }
@@ -118,6 +132,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param numberOfNodes the numberOfNodes value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties setNumberOfNodes(Integer numberOfNodes) {
         this.numberOfNodes = numberOfNodes;
         return this;
@@ -129,6 +144,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the maxParallelExecutionsPerNode value.
      */
+    @Generated
     public Integer getMaxParallelExecutionsPerNode() {
         return this.maxParallelExecutionsPerNode;
     }
@@ -140,6 +156,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param maxParallelExecutionsPerNode the maxParallelExecutionsPerNode value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties setMaxParallelExecutionsPerNode(Integer maxParallelExecutionsPerNode) {
         this.maxParallelExecutionsPerNode = maxParallelExecutionsPerNode;
         return this;
@@ -150,6 +167,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the dataFlowProperties value.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties getDataFlowProperties() {
         return this.dataFlowProperties;
     }
@@ -160,6 +178,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param dataFlowProperties the dataFlowProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties
         setDataFlowProperties(IntegrationRuntimeDataFlowProperties dataFlowProperties) {
         this.dataFlowProperties = dataFlowProperties;
@@ -171,6 +190,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the vNetProperties value.
      */
+    @Generated
     public IntegrationRuntimeVNetProperties getVNetProperties() {
         return this.vNetProperties;
     }
@@ -181,6 +201,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param vNetProperties the vNetProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties setVNetProperties(IntegrationRuntimeVNetProperties vNetProperties) {
         this.vNetProperties = vNetProperties;
         return this;
@@ -191,6 +212,7 @@ public final class IntegrationRuntimeComputeProperties
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -201,6 +223,7 @@ public final class IntegrationRuntimeComputeProperties
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -209,6 +232,7 @@ public final class IntegrationRuntimeComputeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -234,6 +258,7 @@ public final class IntegrationRuntimeComputeProperties
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeComputeProperties.
      */
+    @Generated
     public static IntegrationRuntimeComputeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeComputeProperties deserializedIntegrationRuntimeComputeProperties

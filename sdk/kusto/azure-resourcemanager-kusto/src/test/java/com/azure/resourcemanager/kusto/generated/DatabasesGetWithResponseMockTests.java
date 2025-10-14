@@ -21,7 +21,7 @@ public final class DatabasesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"Database\",\"location\":\"aas\",\"id\":\"ixtmkzjvkviirhgf\",\"name\":\"rwsdp\",\"type\":\"ra\"}";
+            = "{\"kind\":\"Database\",\"location\":\"mwohqfzizvuxmmkj\",\"id\":\"vthn\",\"name\":\"pz\",\"type\":\"ekov\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class DatabasesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Database response = manager.databases()
-            .getWithResponse("hlisngw", "lqqmpiz", "uwnpqxpxiwfcng", com.azure.core.util.Context.NONE)
+            .getWithResponse("qcbfrmbodths", "qgvriibakcla", "jfrnxousxauzlwv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("aas", response.location());
+        Assertions.assertEquals("mwohqfzizvuxmmkj", response.location());
     }
 }

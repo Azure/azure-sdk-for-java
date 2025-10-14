@@ -51,6 +51,10 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -131,6 +135,14 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
 
     private String bmcKeySetName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private BmcKeySetPatchParameters updateBmcKeySetUpdateParameters;
 
     public BmcKeySetImpl withExistingCluster(String resourceGroupName, String clusterName) {
@@ -142,14 +154,16 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     public BmcKeySet create() {
         this.innerObject = serviceManager.serviceClient()
             .getBmcKeySets()
-            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public BmcKeySet create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBmcKeySets()
-            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -157,9 +171,13 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
         this.innerObject = new BmcKeySetInner();
         this.serviceManager = serviceManager;
         this.bmcKeySetName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public BmcKeySetImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateBmcKeySetUpdateParameters = new BmcKeySetPatchParameters();
         return this;
     }
@@ -167,14 +185,16 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     public BmcKeySet apply() {
         this.innerObject = serviceManager.serviceClient()
             .getBmcKeySets()
-            .update(resourceGroupName, clusterName, bmcKeySetName, updateBmcKeySetUpdateParameters, Context.NONE);
+            .update(resourceGroupName, clusterName, bmcKeySetName, updateIfMatch, updateIfNoneMatch,
+                updateBmcKeySetUpdateParameters, Context.NONE);
         return this;
     }
 
     public BmcKeySet apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBmcKeySets()
-            .update(resourceGroupName, clusterName, bmcKeySetName, updateBmcKeySetUpdateParameters, context);
+            .update(resourceGroupName, clusterName, bmcKeySetName, updateIfMatch, updateIfNoneMatch,
+                updateBmcKeySetUpdateParameters, context);
         return this;
     }
 
@@ -258,7 +278,27 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
         }
     }
 
+    public BmcKeySetImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public BmcKeySetImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

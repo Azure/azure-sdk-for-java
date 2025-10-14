@@ -344,16 +344,34 @@ public final class SapOpenHubLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("server", this.server);
-        jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
-        jsonWriter.writeUntypedField("language", this.language);
-        jsonWriter.writeUntypedField("systemId", this.systemId);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        if (this.systemNumber != null) {
+            jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
+        }
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
+        if (this.language != null) {
+            jsonWriter.writeUntypedField("language", this.language);
+        }
+        if (this.systemId != null) {
+            jsonWriter.writeUntypedField("systemId", this.systemId);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("messageServer", this.messageServer);
-        jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
-        jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+        if (this.messageServer != null) {
+            jsonWriter.writeUntypedField("messageServer", this.messageServer);
+        }
+        if (this.messageServerService != null) {
+            jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
+        }
+        if (this.logonGroup != null) {
+            jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

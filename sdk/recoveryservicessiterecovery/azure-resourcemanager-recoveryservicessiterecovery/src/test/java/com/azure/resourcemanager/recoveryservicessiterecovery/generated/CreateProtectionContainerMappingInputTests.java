@@ -14,20 +14,20 @@ public final class CreateProtectionContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateProtectionContainerMappingInput model = BinaryData.fromString(
-            "{\"properties\":{\"targetProtectionContainerId\":\"smystuluqypfc\",\"policyId\":\"er\",\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}}}")
+            "{\"properties\":{\"targetProtectionContainerId\":\"aimlnwiaaom\",\"policyId\":\"weazul\",\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}}}")
             .toObject(CreateProtectionContainerMappingInput.class);
-        Assertions.assertEquals("smystuluqypfc", model.properties().targetProtectionContainerId());
-        Assertions.assertEquals("er", model.properties().policyId());
+        Assertions.assertEquals("aimlnwiaaom", model.properties().targetProtectionContainerId());
+        Assertions.assertEquals("weazul", model.properties().policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateProtectionContainerMappingInput model = new CreateProtectionContainerMappingInput().withProperties(
-            new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("smystuluqypfc")
-                .withPolicyId("er")
+            new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("aimlnwiaaom")
+                .withPolicyId("weazul")
                 .withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput()));
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerMappingInput.class);
-        Assertions.assertEquals("smystuluqypfc", model.properties().targetProtectionContainerId());
-        Assertions.assertEquals("er", model.properties().policyId());
+        Assertions.assertEquals("aimlnwiaaom", model.properties().targetProtectionContainerId());
+        Assertions.assertEquals("weazul", model.properties().policyId());
     }
 }

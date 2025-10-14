@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum
     /**
      * Static value ServiceAuthentication for GoogleBigQueryAuthenticationType.
      */
+    @Generated
     public static final GoogleBigQueryAuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");
 
     /**
      * Static value UserAuthentication for GoogleBigQueryAuthenticationType.
      */
+    @Generated
     public static final GoogleBigQueryAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
@@ -27,6 +30,7 @@ public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public GoogleBigQueryAuthenticationType() {
     }
@@ -37,6 +41,7 @@ public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding GoogleBigQueryAuthenticationType.
      */
+    @Generated
     public static GoogleBigQueryAuthenticationType fromString(String name) {
         return fromString(name, GoogleBigQueryAuthenticationType.class);
     }
@@ -46,6 +51,7 @@ public final class GoogleBigQueryAuthenticationType extends ExpandableStringEnum
      * 
      * @return known GoogleBigQueryAuthenticationType values.
      */
+    @Generated
     public static Collection<GoogleBigQueryAuthenticationType> values() {
         return values(GoogleBigQueryAuthenticationType.class);
     }

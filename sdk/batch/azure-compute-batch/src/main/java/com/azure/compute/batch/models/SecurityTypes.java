@@ -19,6 +19,15 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     public static final SecurityTypes TRUSTED_LAUNCH = fromString("trustedLaunch");
 
     /**
+     * Azure confidential computing offers confidential VMs are for tenants with high security and confidentiality
+     * requirements. These VMs provide a strong, hardware-enforced boundary to help meet your security needs. You can
+     * use confidential VMs for migrations without making changes to your code, with the platform protecting your VM's
+     * state from being read or modified.
+     */
+    @Generated
+    public static final SecurityTypes CONFIDENTIAL_VM = fromString("confidentialVM");
+
+    /**
      * Creates a new instance of SecurityTypes value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -48,13 +57,4 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     public static Collection<SecurityTypes> values() {
         return values(SecurityTypes.class);
     }
-
-    /**
-     * Azure confidential computing offers confidential VMs are for tenants with high security and confidentiality
-     * requirements. These VMs provide a strong, hardware-enforced boundary to help meet your security needs. You can
-     * use confidential VMs for migrations without making changes to your code, with the platform protecting your VM's
-     * state from being read or modified.
-     */
-    @Generated
-    public static final SecurityTypes CONFIDENTIAL_VM = fromString("confidentialVM");
 }

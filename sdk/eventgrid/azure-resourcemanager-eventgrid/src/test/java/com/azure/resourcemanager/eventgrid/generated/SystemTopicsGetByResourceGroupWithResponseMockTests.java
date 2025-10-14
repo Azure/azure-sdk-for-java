@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.IdentityType;
@@ -22,27 +22,27 @@ public final class SystemTopicsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"source\":\"eswyhh\",\"topicType\":\"fjuajxwwvcmmpe\",\"metricResourceId\":\"y\"},\"identity\":{\"type\":\"None\",\"principalId\":\"aexbzbqufpnez\",\"tenantId\":\"zaymld\",\"userAssignedIdentities\":{\"gi\":{\"principalId\":\"yogzmsimehtcu\",\"clientId\":\"dhtqqhyhnimxtns\"}}},\"location\":\"nomwnwnghojovke\",\"tags\":{\"ixxfsfpcr\":\"ic\",\"jt\":\"nuguefxx\",\"lmcnwepfgsv\":\"bdveywetkrhl\"},\"id\":\"bv\",\"name\":\"qdljnpe\",\"type\":\"l\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"source\":\"zwwy\",\"topicType\":\"djzghximkg\",\"metricResourceId\":\"xpqkjnpy\"},\"identity\":{\"type\":\"None\",\"principalId\":\"tcxmmqm\",\"tenantId\":\"jkyjrexw\",\"userAssignedIdentities\":{\"qtlfoz\":{\"principalId\":\"exf\",\"clientId\":\"daubheeggzgr\"},\"syxzxjmkanbc\":{\"principalId\":\"mrtgjq\",\"clientId\":\"cant\"}}},\"location\":\"azofm\",\"tags\":{\"as\":\"te\",\"cbhaah\":\"manydscdkxwdpw\",\"kkzdfivsu\":\"tofelfhpfixo\",\"fppinmgik\":\"ybsrwzzmrgtxdh\"},\"id\":\"smkw\",\"name\":\"zgfragjh\",\"type\":\"erxlobk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SystemTopic response = manager.systemTopics()
-            .getByResourceGroupWithResponse("bpemnrrabovr", "wxywpjhspboxhif", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("gkvyoh", "s", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nomwnwnghojovke", response.location());
-        Assertions.assertEquals("ic", response.tags().get("ixxfsfpcr"));
+        Assertions.assertEquals("azofm", response.location());
+        Assertions.assertEquals("te", response.tags().get("as"));
         Assertions.assertEquals(IdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("aexbzbqufpnez", response.identity().principalId());
-        Assertions.assertEquals("zaymld", response.identity().tenantId());
-        Assertions.assertEquals("yogzmsimehtcu", response.identity().userAssignedIdentities().get("gi").principalId());
-        Assertions.assertEquals("dhtqqhyhnimxtns", response.identity().userAssignedIdentities().get("gi").clientId());
-        Assertions.assertEquals("eswyhh", response.source());
-        Assertions.assertEquals("fjuajxwwvcmmpe", response.topicType());
+        Assertions.assertEquals("tcxmmqm", response.identity().principalId());
+        Assertions.assertEquals("jkyjrexw", response.identity().tenantId());
+        Assertions.assertEquals("exf", response.identity().userAssignedIdentities().get("qtlfoz").principalId());
+        Assertions.assertEquals("daubheeggzgr", response.identity().userAssignedIdentities().get("qtlfoz").clientId());
+        Assertions.assertEquals("zwwy", response.source());
+        Assertions.assertEquals("djzghximkg", response.topicType());
     }
 }

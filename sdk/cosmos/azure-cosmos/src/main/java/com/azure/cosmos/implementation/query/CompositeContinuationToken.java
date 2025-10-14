@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
@@ -93,7 +92,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
             // but converting it to the cleaner format
             if (rangeNode.isTextual()) {
                 Range<String> parsedRange = new Range<>(rangeNode.textValue());
-                this.set(RangePropertyName, parsedRange, CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.set(RangePropertyName, parsedRange);
                 return parsedRange;
             }
 
@@ -108,7 +107,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
      *            the token to set
      */
     public void setToken(String token) {
-        this.set(TokenPropertyName, token, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(TokenPropertyName, token);
     }
 
     /**
@@ -116,7 +115,7 @@ public final class CompositeContinuationToken extends JsonSerializable implement
      *            the range to set
      */
     public void setRange(Range<String> range) {
-        this.set(RangePropertyName, range, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(RangePropertyName, range);
     }
 
     @Override

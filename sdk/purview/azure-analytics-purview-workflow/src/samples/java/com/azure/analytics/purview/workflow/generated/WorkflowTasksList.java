@@ -18,12 +18,12 @@ public class WorkflowTasksList {
             = new WorkflowTasksClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowtaskslist.workflowtaskslist
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflow-tasks-list.workflow-tasks-list
         RequestOptions requestOptions = new RequestOptions().addQueryParam("maxpagesize", "1000")
             .addQueryParam("orderby", "createdTime desc")
             .addQueryParam("timeWindow", "30d")
             .addQueryParam("viewMode", "sent");
         PagedIterable<BinaryData> response = workflowTasksClient.list(requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowtaskslist.workflowtaskslist
+        // END:com.azure.analytics.purview.workflow.generated.workflow-tasks-list.workflow-tasks-list
     }
 }

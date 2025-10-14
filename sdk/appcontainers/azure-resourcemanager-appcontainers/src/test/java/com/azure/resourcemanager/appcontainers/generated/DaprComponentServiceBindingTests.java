@@ -13,23 +13,23 @@ public final class DaprComponentServiceBindingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprComponentServiceBinding model = BinaryData.fromString(
-            "{\"name\":\"epxgyqagvr\",\"serviceId\":\"npkukghimdblx\",\"metadata\":{\"name\":\"mfnjh\",\"value\":\"xw\"}}")
+            "{\"name\":\"yhgsy\",\"serviceId\":\"ogjltdtbnnhad\",\"metadata\":{\"name\":\"rkvcikhnvpa\",\"value\":\"gxqquezik\"}}")
             .toObject(DaprComponentServiceBinding.class);
-        Assertions.assertEquals("epxgyqagvr", model.name());
-        Assertions.assertEquals("npkukghimdblx", model.serviceId());
-        Assertions.assertEquals("mfnjh", model.metadata().name());
-        Assertions.assertEquals("xw", model.metadata().value());
+        Assertions.assertEquals("yhgsy", model.name());
+        Assertions.assertEquals("ogjltdtbnnhad", model.serviceId());
+        Assertions.assertEquals("rkvcikhnvpa", model.metadata().name());
+        Assertions.assertEquals("gxqquezik", model.metadata().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprComponentServiceBinding model = new DaprComponentServiceBinding().withName("epxgyqagvr")
-            .withServiceId("npkukghimdblx")
-            .withMetadata(new DaprServiceBindMetadata().withName("mfnjh").withValue("xw"));
+        DaprComponentServiceBinding model = new DaprComponentServiceBinding().withName("yhgsy")
+            .withServiceId("ogjltdtbnnhad")
+            .withMetadata(new DaprServiceBindMetadata().withName("rkvcikhnvpa").withValue("gxqquezik"));
         model = BinaryData.fromObject(model).toObject(DaprComponentServiceBinding.class);
-        Assertions.assertEquals("epxgyqagvr", model.name());
-        Assertions.assertEquals("npkukghimdblx", model.serviceId());
-        Assertions.assertEquals("mfnjh", model.metadata().name());
-        Assertions.assertEquals("xw", model.metadata().value());
+        Assertions.assertEquals("yhgsy", model.name());
+        Assertions.assertEquals("ogjltdtbnnhad", model.serviceId());
+        Assertions.assertEquals("rkvcikhnvpa", model.metadata().name());
+        Assertions.assertEquals("gxqquezik", model.metadata().value());
     }
 }

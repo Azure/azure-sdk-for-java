@@ -12,20 +12,20 @@ public final class SchemaContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"contentType\":\"uuuercta\",\"document\":{\"value\":\"yintqpbrlcy\",\"definitions\":\"datauczkgofxyfsruc\",\"components\":\"datarrp\"}},\"id\":\"jttbstv\",\"name\":\"eaqnrmvvfkoxm\",\"type\":\"ghktuidvrm\"}")
+            "{\"properties\":{\"contentType\":\"yfw\",\"document\":{\"value\":\"utgqztwh\",\"definitions\":\"datamupgxy\",\"components\":\"datacdxa\"},\"provisioningState\":\"u\"},\"id\":\"ftabenbbklqp\",\"name\":\"zucafeddww\",\"type\":\"lzafwxu\"}")
             .toObject(SchemaContractInner.class);
-        Assertions.assertEquals("uuuercta", model.contentType());
-        Assertions.assertEquals("yintqpbrlcy", model.value());
+        Assertions.assertEquals("yfw", model.contentType());
+        Assertions.assertEquals("utgqztwh", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaContractInner model = new SchemaContractInner().withContentType("uuuercta")
-            .withValue("yintqpbrlcy")
-            .withDefinitions("datauczkgofxyfsruc")
-            .withComponents("datarrp");
+        SchemaContractInner model = new SchemaContractInner().withContentType("yfw")
+            .withValue("utgqztwh")
+            .withDefinitions("datamupgxy")
+            .withComponents("datacdxa");
         model = BinaryData.fromObject(model).toObject(SchemaContractInner.class);
-        Assertions.assertEquals("uuuercta", model.contentType());
-        Assertions.assertEquals("yintqpbrlcy", model.value());
+        Assertions.assertEquals("yfw", model.contentType());
+        Assertions.assertEquals("utgqztwh", model.value());
     }
 }

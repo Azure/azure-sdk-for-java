@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SystemAssignedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SystemAssignedServiceIdentity model = BinaryData
-            .fromString("{\"principalId\":\"avxbniwdjswztsdb\",\"tenantId\":\"nxytxh\",\"type\":\"SystemAssigned\"}")
-            .toObject(SystemAssignedServiceIdentity.class);
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        SystemAssignedServiceIdentity model
+            = BinaryData.fromString("{\"principalId\":\"tuo\",\"tenantId\":\"hfuiuaodsfc\",\"type\":\"None\"}")
+                .toObject(SystemAssignedServiceIdentity.class);
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SystemAssignedServiceIdentity model
-            = new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED);
+            = new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(SystemAssignedServiceIdentity.class);
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.type());
     }
 }

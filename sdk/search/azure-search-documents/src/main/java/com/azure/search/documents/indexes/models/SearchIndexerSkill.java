@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -27,34 +28,40 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "SearchIndexerSkill";
 
     /*
      * The name of the skill which uniquely identifies it within the skillset. A skill with no name defined will be
      * given a default name of its 1-based index in the skills array, prefixed with the character '#'.
      */
+    @Generated
     private String name;
 
     /*
      * The description of the skill which describes the inputs, outputs, and usage of the skill.
      */
+    @Generated
     private String description;
 
     /*
      * Represents the level at which operations take place, such as the document root or document content (for example,
      * /document or /document/content). The default is /document.
      */
+    @Generated
     private String context;
 
     /*
      * Inputs of the skills could be a column in the source data set, or the output of an upstream skill.
      */
+    @Generated
     private final List<InputFieldMappingEntry> inputs;
 
     /*
      * The output of a skill is either a field in a search index, or a value that can be consumed as an input by another
      * skill.
      */
+    @Generated
     private final List<OutputFieldMappingEntry> outputs;
 
     /**
@@ -63,6 +70,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public SearchIndexerSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
@@ -73,6 +81,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -84,6 +93,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -96,6 +106,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * @param name the name value to set.
      * @return the SearchIndexerSkill object itself.
      */
+    @Generated
     public SearchIndexerSkill setName(String name) {
         this.name = name;
         return this;
@@ -107,6 +118,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -118,6 +130,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * @param description the description value to set.
      * @return the SearchIndexerSkill object itself.
      */
+    @Generated
     public SearchIndexerSkill setDescription(String description) {
         this.description = description;
         return this;
@@ -129,6 +142,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * 
      * @return the context value.
      */
+    @Generated
     public String getContext() {
         return this.context;
     }
@@ -140,6 +154,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * @param context the context value to set.
      * @return the SearchIndexerSkill object itself.
      */
+    @Generated
     public SearchIndexerSkill setContext(String context) {
         this.context = context;
         return this;
@@ -151,6 +166,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * 
      * @return the inputs value.
      */
+    @Generated
     public List<InputFieldMappingEntry> getInputs() {
         return this.inputs;
     }
@@ -161,6 +177,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * 
      * @return the outputs value.
      */
+    @Generated
     public List<OutputFieldMappingEntry> getOutputs() {
         return this.outputs;
     }
@@ -168,6 +185,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,6 +207,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerSkill.
      */
+    @Generated
     public static SearchIndexerSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -236,7 +255,9 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                 } else if ("#Microsoft.Skills.Util.DocumentIntelligenceLayoutSkill".equals(discriminatorValue)) {
                     return DocumentIntelligenceLayoutSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Custom.WebApiSkill".equals(discriminatorValue)) {
-                    return WebApiSkill.fromJson(readerToUse.reset());
+                    return WebApiSkill.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Skills.Custom.ChatCompletionSkill".equals(discriminatorValue)) {
+                    return ChatCompletionSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Custom.AmlSkill".equals(discriminatorValue)) {
                     return AzureMachineLearningSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(discriminatorValue)) {
@@ -256,6 +277,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
         });
     }
 
+    @Generated
     static SearchIndexerSkill fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

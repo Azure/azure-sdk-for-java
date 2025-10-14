@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsRevisionsListRevisionsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Revisions_List.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Revisions_List
+     * .json
      */
     /**
      * Sample code: List Container App's revisions.

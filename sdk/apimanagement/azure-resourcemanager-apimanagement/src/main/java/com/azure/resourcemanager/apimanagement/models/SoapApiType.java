@@ -13,6 +13,7 @@ import java.util.Collection;
  * * `soap` creates a SOAP pass-through API
  * * `websocket` creates websocket API
  * * `graphql` creates GraphQL API.
+ * New types can be added in the future.
  */
 public final class SoapApiType extends ExpandableStringEnum<SoapApiType> {
     /**
@@ -34,6 +35,16 @@ public final class SoapApiType extends ExpandableStringEnum<SoapApiType> {
      * Static value graphql for SoapApiType.
      */
     public static final SoapApiType GRAPHQL = fromString("graphql");
+
+    /**
+     * Static value odata for SoapApiType.
+     */
+    public static final SoapApiType ODATA = fromString("odata");
+
+    /**
+     * Static value grpc for SoapApiType.
+     */
+    public static final SoapApiType GRPC = fromString("grpc");
 
     /**
      * Creates a new instance of SoapApiType value.

@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
@@ -16,26 +17,31 @@ public final class ModifiedAccessConditions {
     /*
      * Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      */
+    @Generated
     private DateTimeRfc1123 ifModifiedSince;
 
     /*
      * Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      */
+    @Generated
     private DateTimeRfc1123 ifUnmodifiedSince;
 
     /*
      * Specify an ETag value to operate only on blobs with a matching value.
      */
+    @Generated
     private String ifMatch;
 
     /*
      * Specify an ETag value to operate only on blobs without a matching value.
      */
+    @Generated
     private String ifNoneMatch;
 
     /**
      * Creates an instance of ModifiedAccessConditions class.
      */
+    @Generated
     public ModifiedAccessConditions() {
     }
 
@@ -45,6 +51,7 @@ public final class ModifiedAccessConditions {
      * 
      * @return the ifModifiedSince value.
      */
+    @Generated
     public OffsetDateTime getIfModifiedSince() {
         if (this.ifModifiedSince == null) {
             return null;
@@ -59,6 +66,7 @@ public final class ModifiedAccessConditions {
      * @param ifModifiedSince the ifModifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
+    @Generated
     public ModifiedAccessConditions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         if (ifModifiedSince == null) {
             this.ifModifiedSince = null;
@@ -74,6 +82,7 @@ public final class ModifiedAccessConditions {
      * 
      * @return the ifUnmodifiedSince value.
      */
+    @Generated
     public OffsetDateTime getIfUnmodifiedSince() {
         if (this.ifUnmodifiedSince == null) {
             return null;
@@ -88,6 +97,7 @@ public final class ModifiedAccessConditions {
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
+    @Generated
     public ModifiedAccessConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         if (ifUnmodifiedSince == null) {
             this.ifUnmodifiedSince = null;
@@ -102,6 +112,7 @@ public final class ModifiedAccessConditions {
      * 
      * @return the ifMatch value.
      */
+    @Generated
     public String getIfMatch() {
         return this.ifMatch;
     }
@@ -112,6 +123,7 @@ public final class ModifiedAccessConditions {
      * @param ifMatch the ifMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
+    @Generated
     public ModifiedAccessConditions setIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
@@ -122,6 +134,7 @@ public final class ModifiedAccessConditions {
      * 
      * @return the ifNoneMatch value.
      */
+    @Generated
     public String getIfNoneMatch() {
         return this.ifNoneMatch;
     }
@@ -132,6 +145,7 @@ public final class ModifiedAccessConditions {
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
+    @Generated
     public ModifiedAccessConditions setIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;

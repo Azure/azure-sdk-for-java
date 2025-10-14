@@ -4,6 +4,8 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +23,31 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
     /*
      * Date and time of the current observation displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * Temperature values.
      */
+    @Generated
     private WeatherValueMaxMinAvg temperature;
 
     /*
      * Summary of heating or cooling degree day information
      */
+    @Generated
     private DegreeDaySummary degreeDaySummary;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen.
      */
+    @Generated
     private WeatherUnitDetails precipitation;
 
     /**
      * Set default DailyHistoricalNormals constructor to private
      */
+    @Generated
     private DailyHistoricalNormals() {
     }
 
@@ -50,6 +57,7 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
      *
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -59,6 +67,7 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
      *
      * @return the temperature value.
      */
+    @Generated
     public WeatherValueMaxMinAvg getTemperature() {
         return this.temperature;
     }
@@ -68,6 +77,7 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
      *
      * @return the degreeDaySummary value.
      */
+    @Generated
     public DegreeDaySummary getDegreeDaySummary() {
         return this.degreeDaySummary;
     }
@@ -77,6 +87,7 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
      *
      * @return the precipitation value.
      */
+    @Generated
     public WeatherUnitDetails getPrecipitation() {
         return this.precipitation;
     }
@@ -84,6 +95,7 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,6 +115,7 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyHistoricalNormals.
      */
+    @Generated
     public static DailyHistoricalNormals fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyHistoricalNormals deserializedDailyHistoricalNormals = new DailyHistoricalNormals();
@@ -110,8 +123,8 @@ public final class DailyHistoricalNormals implements JsonSerializable<DailyHisto
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedDailyHistoricalNormals.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyHistoricalNormals.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("temperature".equals(fieldName)) {
                     deserializedDailyHistoricalNormals.temperature = WeatherValueMaxMinAvg.fromJson(reader);
                 } else if ("degreeDaySummary".equals(fieldName)) {

@@ -85,7 +85,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.14.2</version>
+  <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -97,7 +97,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.10.2</version>
+  <version>1.15.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -106,7 +106,7 @@ Alternatively, [Azure Core OkHttp HTTP client][azure_core_http_okhttp] is anothe
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+By default, Azure Active Directory token authentication depends on configuration of the following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
@@ -324,7 +324,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
@@ -338,6 +338,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
 [rbac]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/RBAC.md
-[api_profile]: https://docs.microsoft.com/azure-stack/user/azure-stack-version-profiles
-[vm_considerations]: https://docs.microsoft.com/azure-stack/user/azure-stack-vm-considerations
+[api_profile]: https://learn.microsoft.com/azure-stack/user/azure-stack-version-profiles
+[vm_considerations]: https://learn.microsoft.com/azure-stack/user/azure-stack-vm-considerations
 [resourcemanager_azure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/README.md

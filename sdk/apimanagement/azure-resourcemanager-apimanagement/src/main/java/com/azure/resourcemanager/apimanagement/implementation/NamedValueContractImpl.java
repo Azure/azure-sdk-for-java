@@ -46,6 +46,10 @@ public final class NamedValueContractImpl
         return this.innerModel().keyVault();
     }
 
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public List<String> tags() {
         List<String> inner = this.innerModel().tags();
         if (inner != null) {

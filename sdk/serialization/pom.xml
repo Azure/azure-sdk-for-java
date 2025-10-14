@@ -11,8 +11,6 @@
 
   <modules>
     <module>azure-json</module>
-    <module>azure-json-gson</module>
-    <module>azure-json-reflect</module>
     <module>azure-xml</module>
   </modules>
 </project>

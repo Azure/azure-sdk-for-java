@@ -11,6 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateE
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUpdate;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
@@ -165,6 +166,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public Cluster cluster() {
+        return this.innerModel().cluster();
     }
 
     public Region region() {
@@ -443,6 +448,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     public ServerImpl withCreateMode(CreateMode createMode) {
         this.innerModel().withCreateMode(createMode);
         return this;
+    }
+
+    public ServerImpl withCluster(Cluster cluster) {
+        if (isInCreateMode()) {
+            this.innerModel().withCluster(cluster);
+            return this;
+        } else {
+            this.updateParameters.withCluster(cluster);
+            return this;
+        }
     }
 
     public ServerImpl withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {

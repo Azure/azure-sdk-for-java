@@ -15,22 +15,29 @@ public final class StorageClassificationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageClassificationCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"friendlyName\":\"zjcjbtr\"},\"location\":\"ehvvib\",\"id\":\"xjjs\",\"name\":\"oqbeitpkxzt\",\"type\":\"oobklftidgfcwq\"}],\"nextLink\":\"imaq\"}")
+            "{\"value\":[{\"properties\":{\"friendlyName\":\"qtgdqohmcwsl\"},\"location\":\"izetpw\",\"id\":\"ralllibphb\",\"name\":\"zmizakakan\",\"type\":\"jpdn\"},{\"properties\":{\"friendlyName\":\"ajoylhjl\"},\"location\":\"oyxprimr\",\"id\":\"opteecj\",\"name\":\"eislstvasylwx\",\"type\":\"zaum\"},{\"properties\":{\"friendlyName\":\"ohguuf\"},\"location\":\"boyjathwt\",\"id\":\"olbaemwmdx\",\"name\":\"ebwjscjpahlxvea\",\"type\":\"f\"}],\"nextLink\":\"nmwmqtibx\"}")
             .toObject(StorageClassificationCollection.class);
-        Assertions.assertEquals("zjcjbtr", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("ehvvib", model.value().get(0).location());
-        Assertions.assertEquals("imaq", model.nextLink());
+        Assertions.assertEquals("qtgdqohmcwsl", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("izetpw", model.value().get(0).location());
+        Assertions.assertEquals("nmwmqtibx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageClassificationCollection model
-            = new StorageClassificationCollection().withValue(Arrays.asList(new StorageClassificationInner()
-                .withProperties(new StorageClassificationProperties().withFriendlyName("zjcjbtr"))
-                .withLocation("ehvvib"))).withNextLink("imaq");
+        StorageClassificationCollection model = new StorageClassificationCollection().withValue(Arrays.asList(
+            new StorageClassificationInner()
+                .withProperties(new StorageClassificationProperties().withFriendlyName("qtgdqohmcwsl"))
+                .withLocation("izetpw"),
+            new StorageClassificationInner()
+                .withProperties(new StorageClassificationProperties().withFriendlyName("ajoylhjl"))
+                .withLocation("oyxprimr"),
+            new StorageClassificationInner()
+                .withProperties(new StorageClassificationProperties().withFriendlyName("ohguuf"))
+                .withLocation("boyjathwt")))
+            .withNextLink("nmwmqtibx");
         model = BinaryData.fromObject(model).toObject(StorageClassificationCollection.class);
-        Assertions.assertEquals("zjcjbtr", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("ehvvib", model.value().get(0).location());
-        Assertions.assertEquals("imaq", model.nextLink());
+        Assertions.assertEquals("qtgdqohmcwsl", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("izetpw", model.value().get(0).location());
+        Assertions.assertEquals("nmwmqtibx", model.nextLink());
     }
 }

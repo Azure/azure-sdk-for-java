@@ -9,15 +9,15 @@ package com.azure.resourcemanager.neonpostgres.generated;
  */
 public final class OrganizationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-06-23-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Organizations_ListByResourceGroup.
+     * Sample code: Organizations_ListByResourceGroup_MaximumSet.
      * 
      * @param manager Entry point to NeonPostgresManager.
      */
     public static void
-        organizationsListByResourceGroup(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+        organizationsListByResourceGroupMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         manager.organizations().listByResourceGroup("rgneon", com.azure.core.util.Context.NONE);
     }
 }

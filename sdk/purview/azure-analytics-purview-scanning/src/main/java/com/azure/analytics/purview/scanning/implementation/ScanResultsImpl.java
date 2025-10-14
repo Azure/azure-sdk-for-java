@@ -76,7 +76,7 @@ public final class ScanResultsImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientScanResults")
     public interface ScanResultsService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
         @ExpectedResponses({ 202 })

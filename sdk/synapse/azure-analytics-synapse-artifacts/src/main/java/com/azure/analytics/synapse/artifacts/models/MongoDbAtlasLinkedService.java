@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,29 +22,34 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "MongoDbAtlas";
 
     /*
      * The MongoDB Atlas connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
      * SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The name of the MongoDB Atlas database that you want to access. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object database;
 
     /*
      * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object driverVersion;
 
     /**
      * Creates an instance of MongoDbAtlasLinkedService class.
      */
+    @Generated
     public MongoDbAtlasLinkedService() {
     }
 
@@ -52,6 +58,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -63,6 +70,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -74,6 +82,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the MongoDbAtlasLinkedService object itself.
      */
+    @Generated
     public MongoDbAtlasLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -85,6 +94,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -96,6 +106,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the MongoDbAtlasLinkedService object itself.
      */
+    @Generated
     public MongoDbAtlasLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -107,6 +118,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * 
      * @return the driverVersion value.
      */
+    @Generated
     public Object getDriverVersion() {
         return this.driverVersion;
     }
@@ -118,6 +130,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * @param driverVersion the driverVersion value to set.
      * @return the MongoDbAtlasLinkedService object itself.
      */
+    @Generated
     public MongoDbAtlasLinkedService setDriverVersion(Object driverVersion) {
         this.driverVersion = driverVersion;
         return this;
@@ -126,6 +139,17 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public MongoDbAtlasLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public MongoDbAtlasLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -135,6 +159,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -144,6 +169,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -153,6 +179,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -162,9 +189,11 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -174,7 +203,9 @@ public class MongoDbAtlasLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("connectionString", this.connectionString);
             jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+            if (this.driverVersion != null) {
+                jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -194,6 +225,7 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MongoDbAtlasLinkedService.
      */
+    @Generated
     public static MongoDbAtlasLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDbAtlasLinkedService deserializedMongoDbAtlasLinkedService = new MongoDbAtlasLinkedService();
@@ -202,7 +234,9 @@ public class MongoDbAtlasLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedMongoDbAtlasLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedMongoDbAtlasLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedMongoDbAtlasLinkedService.setDescription(reader.getString());

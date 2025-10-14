@@ -48,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.15.7</version>
+    <version>1.16.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -79,6 +79,63 @@ Create a Netty HttpClient that is using a proxy.
 ```java readme-sample-createProxyClient
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .build();
+```
+
+### Create a Client with Authenticated Proxy
+
+```java readme-sample-createAuthenticatedProxyClient
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setCredentials("<username>", "<password>"))
+    .build();
+```
+
+Authenticated proxies have a few unique behaviors not seen with unauthenticated proxies.
+
+1. Authenticated proxies use a custom Netty `ChannelHandler` to apply `Proxy-Authorization` to the proxy `CONNECT`.
+2. Authenticated proxies defer applying `Proxy-Authorization` when `CONNECT` is called, waiting for the proxy to respond
+   with `Proxy-Authenticate`. This better supports `Digest` authorization that may require information from the proxy 
+   and prevents sending credential information when it isn't needed.
+3. Authenticated proxies will use either Netty's `NoopAddressResolverGroup.INSTANCE` or a customer `AddressResolverGroup`
+   when there wasn't one configured by a provided Reactor Netty `HttpClient` to `NettyAsyncHttpClientBuilder` and when 
+   no Reactor Netty `HttpClient` was provided. See the following sample on non-proxy hosts for more details.
+
+### Create a Client with non-proxy hosts proxy
+
+```java readme-sample-createProxyWithNonProxyHostsClient
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setCredentials("<username>", "<password>")
+        .setNonProxyHosts("<nonProxyHostRegex>"))
+    .build();
+```
+
+A proxy with non-proxy hosts will use a special `AddressResolverGroup` if one isn't configured by a passed Reactor Netty
+`HttpClient` or if a Reactor Netty `HttpClient` wasn't passed. This `AddressResolverGroup` will use 
+`NoopAddressResolverGroup.INSTANCE` to no-op address resolution when the proxy will be used, deferring address 
+resolution to the proxy itself, and will use `DefaultAddressResolverGroup.INSTANCE` to resolve the address when the 
+proxy won't be used.
+
+If this handling causes issue, you can pass a Reactor Netty `HttpClient` with an `AddressResolverGroup` configured.
+`NettyAsyncHttpClientBuilder` respects the pre-configured `AddressResolverGroup` and won't override it when adding
+proxy configurations to the Reactor Netty `HttpClient`.
+
+```java readme-sample-createProxyWithNonProxyHostsClientCustomResolver
+// Create a Reactor Netty HttpClient with a configured AddressResolverGroup to override the default behavior
+// of NettyAsyncHttpClientBuilder.
+//
+// Passing DefaultAddressResolverGroup here will prevent issues with NoopAddressResolverGroup where it won't
+// resolve the address of a non-proxy host.
+//
+// This may run into other issues when calling proxied hosts that the client machine cannot resolve.
+reactor.netty.http.client.HttpClient reactorNettyHttpClient = reactor.netty.http.client.HttpClient.create()
+    .resolver(DefaultAddressResolverGroup.INSTANCE);
+
+HttpClient client = new NettyAsyncHttpClientBuilder(reactorNettyHttpClient)
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setCredentials("<username>", "<password>")
+        .setNonProxyHosts("<nonProxyHostRegex>"))
     .build();
 ```
 
@@ -118,6 +175,22 @@ HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.clien
     .build();
 ```
 
+### Create an HttpClient with custom maxHeaderSize
+
+Create a Netty HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
+
+```
+io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
+```
+
+```java readme-sample-customMaxHeaderSize
+// Constructs an HttpClient with a modified max header size.
+// This creates a Netty HttpClient with a max headers size of 256 KB.
+HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+    .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
+    .build();
+```
+
 ## Next steps
 
 Get started with Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).
@@ -145,7 +218,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- Links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-netty%2FREADME.png)
+

@@ -3,8 +3,8 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.binarydata.InputStreamBinaryData;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import okhttp3.MediaType;
 import okio.BufferedSink;
 import okio.Okio;
@@ -35,7 +35,8 @@ public class OkHttpInputStreamRequestBody extends OkHttpStreamableRequestBody<In
             bufferedSink.writeAll(source);
         } else {
             // Prevent OkHttp from potentially re-sending non-repeatable body outside of retry policies.
-            throw LOGGER.logThrowableAsError(new IOException("Re-attempt to send InputStream body is not supported."));
+            throw LOGGER.throwableAtError()
+                .log("Re-attempt to send InputStream body is not supported.", IOException::new);
         }
     }
 }

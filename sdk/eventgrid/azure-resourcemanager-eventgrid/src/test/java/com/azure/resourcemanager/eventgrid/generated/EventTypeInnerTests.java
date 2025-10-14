@@ -12,24 +12,24 @@ public final class EventTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventTypeInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"vqdbpbhfck\",\"description\":\"ezcrcssbzhddubb\",\"schemaUrl\":\"fblhkalehp\",\"isInDefaultSet\":true},\"id\":\"wugiqjti\",\"name\":\"gqgdminictteajoh\",\"type\":\"ygspnbonhpczykm\"}")
+            "{\"properties\":{\"displayName\":\"fg\",\"description\":\"saetgzdgvpyig\",\"schemaUrl\":\"qqil\",\"isInDefaultSet\":true},\"id\":\"d\",\"name\":\"wjoe\",\"type\":\"xngucaifpaurwwgi\"}")
             .toObject(EventTypeInner.class);
-        Assertions.assertEquals("vqdbpbhfck", model.displayName());
-        Assertions.assertEquals("ezcrcssbzhddubb", model.description());
-        Assertions.assertEquals("fblhkalehp", model.schemaUrl());
-        Assertions.assertEquals(true, model.isInDefaultSet());
+        Assertions.assertEquals("fg", model.displayName());
+        Assertions.assertEquals("saetgzdgvpyig", model.description());
+        Assertions.assertEquals("qqil", model.schemaUrl());
+        Assertions.assertTrue(model.isInDefaultSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventTypeInner model = new EventTypeInner().withDisplayName("vqdbpbhfck")
-            .withDescription("ezcrcssbzhddubb")
-            .withSchemaUrl("fblhkalehp")
+        EventTypeInner model = new EventTypeInner().withDisplayName("fg")
+            .withDescription("saetgzdgvpyig")
+            .withSchemaUrl("qqil")
             .withIsInDefaultSet(true);
         model = BinaryData.fromObject(model).toObject(EventTypeInner.class);
-        Assertions.assertEquals("vqdbpbhfck", model.displayName());
-        Assertions.assertEquals("ezcrcssbzhddubb", model.description());
-        Assertions.assertEquals("fblhkalehp", model.schemaUrl());
-        Assertions.assertEquals(true, model.isInDefaultSet());
+        Assertions.assertEquals("fg", model.displayName());
+        Assertions.assertEquals("saetgzdgvpyig", model.description());
+        Assertions.assertEquals("qqil", model.schemaUrl());
+        Assertions.assertTrue(model.isInDefaultSet());
     }
 }

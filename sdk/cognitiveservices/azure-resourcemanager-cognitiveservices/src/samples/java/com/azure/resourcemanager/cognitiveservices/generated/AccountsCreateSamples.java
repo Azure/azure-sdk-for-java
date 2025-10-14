@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class AccountsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/
      * CreateAccountMin.json
      */
     /**
@@ -42,7 +42,7 @@ public final class AccountsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/
      * CreateAccount.json
      */
     /**
@@ -64,7 +64,7 @@ public final class AccountsCreateSamples {
                         .withKeyVersion("fakeTokenPlaceholder")
                         .withKeyVaultUri("fakeTokenPlaceholder")).withKeySource(KeySource.MICROSOFT_KEY_VAULT))
                 .withUserOwnedStorage(Arrays.asList(new UserOwnedStorage().withResourceId(
-                    "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"))))
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"))))
             .create();
     }
 }

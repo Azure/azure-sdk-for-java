@@ -7,6 +7,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -24,9 +25,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -108,9 +107,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
             StepVerifier
                 .create(conversationAsyncClient.getCallRecordingAsync().downloadStreamWithResponse(VIDEO_URL, null))
                 .consumeNextWith(response -> StepVerifier.create(response.getValue())
-                    .consumeNextWith(
-                        byteBuffer -> assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
-                            is(equalTo(byteBuffer.array().length))))
+                    .consumeNextWith(byteBuffer -> assertEquals(byteBuffer.array().length,
+                        Integer.parseInt(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH))))
                     .verifyComplete())
                 .verifyComplete();
         } catch (Exception e) {
@@ -194,7 +192,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         StepVerifier
             .create(conversationAsyncClient.getCallRecordingAsync().downloadStreamWithResponse(CONTENT_URL_404, null))
             .consumeNextWith(response -> {
-                assertThat(response.getStatusCode(), is(equalTo(404)));
+                assertEquals(404, response.getStatusCode());
                 StepVerifier.create(response.getValue()).verifyError(CallingServerErrorException.class);
             })
             .verifyComplete();
@@ -211,7 +209,8 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
     private void validateMetadata(Flux<ByteBuffer> metadataByteBuffer) {
         StepVerifier.create(metadataByteBuffer).consumeNextWith(byteBuffer -> {
             String metadata = new String(byteBuffer.array(), StandardCharsets.UTF_8);
-            assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
+            assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"),
+                "Expected " + metadata + " to contain '0-eus-d2-3cca2175891f21c6c9a5975a12c0141c'.");
         }).verifyComplete();
     }
 }

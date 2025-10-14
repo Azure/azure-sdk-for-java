@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
+import com.azure.cosmos.changeFeedMetrics.{ChangeFeedMetricsListener, ChangeFeedMetricsTracker}
+import com.azure.cosmos.implementation.guava25.collect.{HashBiMap, Maps}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, UUIDs}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -12,7 +14,12 @@ import org.apache.spark.sql.connector.read.{InputPartition, PartitionReaderFacto
 import org.apache.spark.sql.types.StructType
 
 import java.time.Duration
-import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 // scala style rule flaky - even complaining on partial log messages
 // scalastyle:off multiple.string.literals
@@ -29,7 +36,7 @@ private class ChangeFeedMicroBatchStream
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val correlationActivityId = UUID.randomUUID()
+  private val correlationActivityId = UUIDs.nonBlockingRandomUUID()
   private val streamId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}.$streamId")
 
@@ -37,7 +44,7 @@ private class ChangeFeedMicroBatchStream
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val clientConfiguration = CosmosClientConfiguration.apply(
-    config, readConfig.forceEventualConsistency, sparkEnvironmentInfo)
+    config, readConfig.readConsistencyStrategy, sparkEnvironmentInfo)
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
@@ -56,6 +63,18 @@ private class ChangeFeedMicroBatchStream
       throughputControlClientCacheItemOpt)
 
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
+
+  private val partitionIndex = new AtomicLong(0)
+  private val partitionIndexMap = Maps.synchronizedBiMap(HashBiMap.create[NormalizedRange, Long]())
+  private val partitionMetricsMap = new ConcurrentHashMap[NormalizedRange, ChangeFeedMetricsTracker]()
+
+  // Register metrics listener
+  if (changeFeedConfig.performanceMonitoringEnabled) {
+    log.logInfo("ChangeFeed performance monitoring is enabled, registering ChangeFeedMetricsListener")
+    session.sparkContext.addSparkListener(new ChangeFeedMetricsListener(partitionIndexMap, partitionMetricsMap))
+  } else {
+    log.logInfo("ChangeFeed performance monitoring is disabled")
+  }
 
   override def latestOffset(): Offset = {
     // For Spark data streams implementing SupportsAdmissionControl trait
@@ -96,14 +115,19 @@ private class ChangeFeedMicroBatchStream
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
+    val parsedStartChangeFeedState = SparkBridgeImplementationInternal.parseChangeFeedState(start.changeFeedState)
     end
       .inputPartitions
       .get
-      .map(partition => partition
-        .withContinuationState(
-          SparkBridgeImplementationInternal
-            .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
-          clearEndLsn = false))
+      .map(partition => {
+          val index = partitionIndexMap.asScala.getOrElseUpdate(partition.feedRange, partitionIndex.incrementAndGet())
+          partition
+           .withContinuationState(
+             SparkBridgeImplementationInternal
+              .extractChangeFeedStateForRange(parsedStartChangeFeedState, partition.feedRange),
+             clearEndLsn = false)
+           .withIndex(index)
+      })
   }
 
   /**
@@ -150,7 +174,8 @@ private class ChangeFeedMicroBatchStream
       this.containerConfig,
       this.partitioningConfig,
       this.defaultParallelism,
-      this.container
+      this.container,
+      Some(this.partitionMetricsMap)
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
@@ -185,7 +210,7 @@ private class ChangeFeedMicroBatchStream
         assertNotNullOrEmpty(checkpointLocation, "checkpointLocation"))
     val offsetJson = metadataLog.get(0).getOrElse {
       val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-        container, changeFeedConfig, partitioningConfig, Some(streamId))
+        container, containerConfig, changeFeedConfig, partitioningConfig, Some(streamId))
       metadataLog.add(0, newOffsetJson)
       newOffsetJson
     }

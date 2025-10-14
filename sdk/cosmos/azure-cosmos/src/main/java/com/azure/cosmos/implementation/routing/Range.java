@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -84,7 +83,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMin(T min) {
         this.minValue = min;
-        this.set(Range.MIN_PROPERTY, min, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Range.MIN_PROPERTY, min);
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +97,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMax(T max) {
         this.maxValue = max;
-        this.set(Range.MAX_PROPERTY, max, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Range.MAX_PROPERTY, max);
     }
 
     @JsonProperty("isMinInclusive")
@@ -111,7 +110,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         if (isMinInclusive) {
             this.remove(Range.IS_MIN_INCLUSIVE_PROPERTY);
         } else {
-            this.set(Range.IS_MIN_INCLUSIVE_PROPERTY, false, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.set(Range.IS_MIN_INCLUSIVE_PROPERTY, false);
         }
     }
 
@@ -122,7 +121,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMaxInclusive(boolean isMaxInclusive) {
         if (isMaxInclusive) {
-            this.set(Range.IS_MAX_INCLUSIVE_PROPERTY, true, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.set(Range.IS_MAX_INCLUSIVE_PROPERTY, true);
         } else {
             this.remove(Range.IS_MAX_INCLUSIVE_PROPERTY);
         }

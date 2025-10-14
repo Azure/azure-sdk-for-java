@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
     /*
      * Linked service reference type.
      */
+    @Generated
     private Type type;
 
     /*
      * Reference LinkedService name.
      */
+    @Generated
     private String referenceName;
 
     /*
      * Arguments for LinkedService.
      */
+    @Generated
     private Map<String, Object> parameters;
 
     /**
      * Creates an instance of LinkedServiceReference class.
      */
+    @Generated
     public LinkedServiceReference() {
     }
 
@@ -43,6 +48,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * 
      * @return the type value.
      */
+    @Generated
     public Type getType() {
         return this.type;
     }
@@ -53,6 +59,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * @param type the type value to set.
      * @return the LinkedServiceReference object itself.
      */
+    @Generated
     public LinkedServiceReference setType(Type type) {
         this.type = type;
         return this;
@@ -63,6 +70,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -73,6 +81,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * @param referenceName the referenceName value to set.
      * @return the LinkedServiceReference object itself.
      */
+    @Generated
     public LinkedServiceReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -83,6 +92,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -93,6 +103,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * @param parameters the parameters value to set.
      * @return the LinkedServiceReference object itself.
      */
+    @Generated
     public LinkedServiceReference setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -101,6 +112,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class LinkedServiceReference implements JsonSerializable<LinkedServ
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedServiceReference.
      */
+    @Generated
     public static LinkedServiceReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedServiceReference deserializedLinkedServiceReference = new LinkedServiceReference();

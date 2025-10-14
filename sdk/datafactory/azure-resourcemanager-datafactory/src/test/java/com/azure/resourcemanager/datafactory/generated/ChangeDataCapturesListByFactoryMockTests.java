@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ChangeDataCaptureResource;
@@ -24,41 +24,40 @@ public final class ChangeDataCapturesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"folder\":{\"name\":\"ghnnxkouvsmmi\"},\"description\":\"iigslbriawkn\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"eyulmxonobozge\"},\"linkedServiceType\":\"tcxknipzqwcr\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}},{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"maws\"},\"linkedServiceType\":\"dfwex\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]}},{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"oarmlbqekvjwaq\"},\"linkedServiceType\":\"sjrpkgvstwdcz\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]}},{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"fmytkluewthydgz\"},\"linkedServiceType\":\"bbfun\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"ioxarwxhpufvuc\"},\"linkedServiceType\":\"ymjbzekrwpwyi\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"datazimevudmpsu\",\"datapra\",\"datajscni\"]},{\"targetEntities\":[{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"kpewtbyciedxs\"},\"linkedServiceType\":\"jj\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]},\"dataMapperMappings\":[{},{},{},{}],\"relationships\":[\"dataaxieuntceekh\",\"dataxgu\",\"datazzcpwbfbfrzr\"]}],\"policy\":{\"mode\":\"ipqbyvesxuzda\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":891591548}},\"allowVNetOverride\":false,\"status\":\"wzjkbaudtpp\"},\"name\":\"qkntnvgwgtgxggm\",\"type\":\"wulqpzqxcyg\",\"etag\":\"gjzrsb\",\"\":{\"cleniozqruqh\":\"datavvbsbkyfbmwzbf\",\"rhgohdv\":\"datapwzhpyymlwalldey\",\"kmqvivps\":\"datahsvrpnoxb\",\"fkjdw\":\"databzrfmfad\"},\"id\":\"yooewyvwwvki\"}]}";
+            = "{\"value\":[{\"properties\":{\"folder\":{\"name\":\"rrm\"},\"description\":\"xjwlhulvyz\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"vzq\"},\"linkedServiceType\":\"dkvldrcx\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{},{}]}},{\"sourceEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"qkdtvtpwrmmyao\"},\"linkedServiceType\":\"h\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"evpmtpqdfpgso\"},\"linkedServiceType\":\"xd\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"dataqusg\"]},{\"targetEntities\":[{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"qjh\"},\"linkedServiceType\":\"xnocixvr\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]},\"dataMapperMappings\":[{}],\"relationships\":[\"datawixtefduqprhz\",\"dataaquhahqt\",\"databbwicteqwjlyn\",\"datarjoydzmbvsl\"]},{\"targetEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"otozxadk\"},\"linkedServiceType\":\"aptv\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]},\"dataMapperMappings\":[{},{}],\"relationships\":[\"datapypkfvwlzv\"]}],\"policy\":{\"mode\":\"xvspubfkelqzcpts\",\"recurrence\":{\"frequency\":\"Hour\",\"interval\":1026057080}},\"allowVNetOverride\":true,\"status\":\"fvanpzabbf\"},\"name\":\"issdelyecjmfaf\",\"type\":\"ffyyfthsafvamos\",\"etag\":\"nmcimdtuydynugkj\",\"ajjyournxq\":\"datafprfhpcy\",\"mbsghzund\":\"datauzls\",\"id\":\"bmuvgfkdea\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ChangeDataCaptureResource> response
-            = manager.changeDataCaptures().listByFactory("bkm", "wmmwjugaqyrtbniy", com.azure.core.util.Context.NONE);
+            = manager.changeDataCaptures().listByFactory("l", "tdije", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yooewyvwwvki", response.iterator().next().id());
-        Assertions.assertEquals("ghnnxkouvsmmi", response.iterator().next().folder().name());
-        Assertions.assertEquals("iigslbriawkn", response.iterator().next().description());
-        Assertions.assertEquals("eyulmxonobozge",
+        Assertions.assertEquals("bmuvgfkdea", response.iterator().next().id());
+        Assertions.assertEquals("rrm", response.iterator().next().folder().name());
+        Assertions.assertEquals("xjwlhulvyz", response.iterator().next().description());
+        Assertions.assertEquals("vzq",
             response.iterator().next().sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("tcxknipzqwcr",
+        Assertions.assertEquals("dkvldrcx",
             response.iterator().next().sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.iterator().next().sourceConnectionsInfo().get(0).connection().type());
-        Assertions.assertEquals(true,
-            response.iterator().next().sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("ioxarwxhpufvuc",
+        Assertions
+            .assertFalse(response.iterator().next().sourceConnectionsInfo().get(0).connection().isInlineDataset());
+        Assertions.assertEquals("evpmtpqdfpgso",
             response.iterator().next().targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("ymjbzekrwpwyi",
+        Assertions.assertEquals("xd",
             response.iterator().next().targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.iterator().next().targetConnectionsInfo().get(0).connection().type());
-        Assertions.assertEquals(true,
-            response.iterator().next().targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("ipqbyvesxuzda", response.iterator().next().policy().mode());
-        Assertions.assertEquals(FrequencyType.SECOND, response.iterator().next().policy().recurrence().frequency());
-        Assertions.assertEquals(891591548, response.iterator().next().policy().recurrence().interval());
-        Assertions.assertEquals(false, response.iterator().next().allowVNetOverride());
-        Assertions.assertEquals("wzjkbaudtpp", response.iterator().next().status());
+        Assertions.assertTrue(response.iterator().next().targetConnectionsInfo().get(0).connection().isInlineDataset());
+        Assertions.assertEquals("xvspubfkelqzcpts", response.iterator().next().policy().mode());
+        Assertions.assertEquals(FrequencyType.HOUR, response.iterator().next().policy().recurrence().frequency());
+        Assertions.assertEquals(1026057080, response.iterator().next().policy().recurrence().interval());
+        Assertions.assertTrue(response.iterator().next().allowVNetOverride());
+        Assertions.assertEquals("fvanpzabbf", response.iterator().next().status());
     }
 }

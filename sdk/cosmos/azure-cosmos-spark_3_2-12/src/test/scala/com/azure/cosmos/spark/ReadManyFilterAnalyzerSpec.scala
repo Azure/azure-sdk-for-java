@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.models.{DedicatedGatewayRequestOptions, PartitionKey, SparkModelBridgeInternal}
 import org.apache.spark.sql.sources.{EqualTo, Filter, In}
 import reactor.util.concurrent.Queues
@@ -12,7 +13,7 @@ class ReadManyFilterAnalyzerSpec extends UnitSpec {
   //scalastyle:off magic.number
   private[this] val readConfigWithoutCustomQuery =
   new CosmosReadConfig(
-    true,
+    ReadConsistencyStrategy.EVENTUAL,
     SchemaConversionModes.Relaxed,
     100,
     Queues.XS_BUFFER_SIZE,

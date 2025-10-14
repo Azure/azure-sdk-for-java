@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VerifierWorkspacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspacePatch.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspacePatch.json
      */
     /**
      * Sample code: VerifierWorkspacePatch.
@@ -22,6 +22,7 @@ public final class VerifierWorkspacesUpdateSamples {
             .manager()
             .serviceClient()
             .getVerifierWorkspaces()
-            .updateWithResponse("rg1", "testNetworkManager", "testWorkspace", null, com.azure.core.util.Context.NONE);
+            .updateWithResponse("rg1", "testNetworkManager", "testWorkspace", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

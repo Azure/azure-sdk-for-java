@@ -67,7 +67,7 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
         assertThat(batchResponse2.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void batchInvalidSessionToken() throws Exception {
         CosmosAsyncContainer container = batchAsyncContainer;
         this.createJsonTestDocs(container);

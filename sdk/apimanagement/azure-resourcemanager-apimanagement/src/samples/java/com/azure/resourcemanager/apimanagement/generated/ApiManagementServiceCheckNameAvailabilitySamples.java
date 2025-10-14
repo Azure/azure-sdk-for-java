@@ -12,7 +12,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceCheckN
 public final class ApiManagementServiceCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceCheckNameAvailability.json
      */
     /**

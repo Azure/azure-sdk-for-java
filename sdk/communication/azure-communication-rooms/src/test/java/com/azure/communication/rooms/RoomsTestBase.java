@@ -24,6 +24,7 @@ import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ public class RoomsTestBase extends TestProxyTestBase {
         .get("COMMUNICATION_CONNECTION_STRING_ROOMS",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
-    protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
+    protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now(ZoneId.of("Z")); // UTC
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
     protected RoomsClientBuilder getRoomsClient(HttpClient httpClient) {

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Job stages.
@@ -42,6 +43,11 @@ public final class JobStages implements JsonSerializable<JobStages> {
      * Job Stage Details
      */
     private Object jobStageDetails;
+
+    /*
+     * Delay information for the job stages.
+     */
+    private List<JobDelayDetails> delayInformation;
 
     /**
      * Creates an instance of JobStages class.
@@ -95,11 +101,23 @@ public final class JobStages implements JsonSerializable<JobStages> {
     }
 
     /**
+     * Get the delayInformation property: Delay information for the job stages.
+     * 
+     * @return the delayInformation value.
+     */
+    public List<JobDelayDetails> delayInformation() {
+        return this.delayInformation;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (delayInformation() != null) {
+            delayInformation().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -137,6 +155,10 @@ public final class JobStages implements JsonSerializable<JobStages> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("jobStageDetails".equals(fieldName)) {
                     deserializedJobStages.jobStageDetails = reader.readUntyped();
+                } else if ("delayInformation".equals(fieldName)) {
+                    List<JobDelayDetails> delayInformation
+                        = reader.readArray(reader1 -> JobDelayDetails.fromJson(reader1));
+                    deserializedJobStages.delayInformation = delayInformation;
                 } else {
                     reader.skipChildren();
                 }

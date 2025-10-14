@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
     /**
      * The fastest route.
      */
+    @Generated
     public static final RouteType FASTEST = fromString("fastest");
 
     /**
      * The shortest route by distance.
      */
+    @Generated
     public static final RouteType SHORTEST = fromString("shortest");
 
     /**
      * A route balanced by economy and speed.
      */
+    @Generated
     public static final RouteType ECONOMY = fromString("eco");
 
     /**
@@ -31,6 +35,7 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
      * turns included and also the degree of hilliness. See the hilliness and windingness parameters for how to set
      * this. There is a limit of 900 km on routes planned with `routeType`=thrilling.
      */
+    @Generated
     public static final RouteType THRILLING = fromString("thrilling");
 
     /**
@@ -38,6 +43,7 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteType() {
     }
@@ -48,6 +54,7 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
      * @param name a name to look for.
      * @return the corresponding RouteType.
      */
+    @Generated
     public static RouteType fromString(String name) {
         return fromString(name, RouteType.class);
     }
@@ -57,6 +64,7 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
      * 
      * @return known RouteType values.
      */
+    @Generated
     public static Collection<RouteType> values() {
         return values(RouteType.class);
     }

@@ -51,7 +51,7 @@ public final class ShopifyLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ShopifyLinkedServiceTypeProperties innerTypeProperties() {
+    ShopifyLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
@@ -22,21 +22,20 @@ public final class RecoveryPointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"ttmbqdabzfiv\",\"location\":\"okpysthhzagj\",\"tags\":{\"g\":\"yrl\",\"qszllrz\":\"nuzejgvkveb\",\"gmihzpimcqr\":\"smmd\"},\"id\":\"nxtminklog\",\"name\":\"svtzarhzv\",\"type\":\"nsqktc\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"xtlt\",\"location\":\"lkrdpqgfhy\",\"tags\":{\"jajqmatxjt\":\"akkldgrcwfcmfcn\",\"pqagynoiprn\":\"elnzqgxxgfbbmt\"},\"id\":\"calincryqxz\",\"name\":\"aqzi\",\"type\":\"mqimiymqru\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RecoveryPointResource> response = manager.recoveryPoints()
-            .list("vzilmhiv", "kwwwnckn", "zdajlskzptjxu", "weucyrth", "qlehmcgcjeinu", "hokamvfej",
-                com.azure.core.util.Context.NONE);
+            .list("n", "oywsxvjabjqqaxu", "vym", "nudn", "oabhjxwxqweuip", "pvksmit", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("okpysthhzagj", response.iterator().next().location());
-        Assertions.assertEquals("yrl", response.iterator().next().tags().get("g"));
-        Assertions.assertEquals("ttmbqdabzfiv", response.iterator().next().etag());
+        Assertions.assertEquals("lkrdpqgfhy", response.iterator().next().location());
+        Assertions.assertEquals("akkldgrcwfcmfcn", response.iterator().next().tags().get("jajqmatxjt"));
+        Assertions.assertEquals("xtlt", response.iterator().next().etag());
     }
 }

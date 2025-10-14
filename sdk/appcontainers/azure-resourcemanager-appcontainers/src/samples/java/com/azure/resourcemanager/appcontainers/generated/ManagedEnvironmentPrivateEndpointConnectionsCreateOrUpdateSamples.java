@@ -13,7 +13,8 @@ import com.azure.resourcemanager.appcontainers.models.PrivateLinkServiceConnecti
  */
 public final class ManagedEnvironmentPrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * ManagedEnvironmentPrivateEndpointConnections_CreateOrUpdate.json
      */
     /**

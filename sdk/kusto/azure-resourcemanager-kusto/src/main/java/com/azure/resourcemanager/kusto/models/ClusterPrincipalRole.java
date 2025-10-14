@@ -22,6 +22,11 @@ public final class ClusterPrincipalRole extends ExpandableStringEnum<ClusterPrin
     public static final ClusterPrincipalRole ALL_DATABASES_VIEWER = fromString("AllDatabasesViewer");
 
     /**
+     * Static value AllDatabasesMonitor for ClusterPrincipalRole.
+     */
+    public static final ClusterPrincipalRole ALL_DATABASES_MONITOR = fromString("AllDatabasesMonitor");
+
+    /**
      * Creates a new instance of ClusterPrincipalRole value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

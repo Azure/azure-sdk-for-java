@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class Model implements JsonSerializable<Model> {
     /*
      * Basic custom model information.
      */
+    @Generated
     private ModelInfo modelInfo;
 
     /*
      * Keys extracted by the custom model.
      */
+    @Generated
     private KeysResult keys;
 
     /*
      * Training result for custom model.
      */
+    @Generated
     private TrainResult trainResult;
 
     /*
      * Training result for composed model.
      */
+    @Generated
     private List<TrainResult> composedTrainResults;
 
     /**
      * Creates an instance of Model class.
      */
+    @Generated
     public Model() {
     }
 
@@ -48,6 +54,7 @@ public final class Model implements JsonSerializable<Model> {
      * 
      * @return the modelInfo value.
      */
+    @Generated
     public ModelInfo getModelInfo() {
         return this.modelInfo;
     }
@@ -58,6 +65,7 @@ public final class Model implements JsonSerializable<Model> {
      * @param modelInfo the modelInfo value to set.
      * @return the Model object itself.
      */
+    @Generated
     public Model setModelInfo(ModelInfo modelInfo) {
         this.modelInfo = modelInfo;
         return this;
@@ -68,6 +76,7 @@ public final class Model implements JsonSerializable<Model> {
      * 
      * @return the keys value.
      */
+    @Generated
     public KeysResult getKeys() {
         return this.keys;
     }
@@ -78,6 +87,7 @@ public final class Model implements JsonSerializable<Model> {
      * @param keys the keys value to set.
      * @return the Model object itself.
      */
+    @Generated
     public Model setKeys(KeysResult keys) {
         this.keys = keys;
         return this;
@@ -88,6 +98,7 @@ public final class Model implements JsonSerializable<Model> {
      * 
      * @return the trainResult value.
      */
+    @Generated
     public TrainResult getTrainResult() {
         return this.trainResult;
     }
@@ -98,6 +109,7 @@ public final class Model implements JsonSerializable<Model> {
      * @param trainResult the trainResult value to set.
      * @return the Model object itself.
      */
+    @Generated
     public Model setTrainResult(TrainResult trainResult) {
         this.trainResult = trainResult;
         return this;
@@ -108,6 +120,7 @@ public final class Model implements JsonSerializable<Model> {
      * 
      * @return the composedTrainResults value.
      */
+    @Generated
     public List<TrainResult> getComposedTrainResults() {
         return this.composedTrainResults;
     }
@@ -118,6 +131,7 @@ public final class Model implements JsonSerializable<Model> {
      * @param composedTrainResults the composedTrainResults value to set.
      * @return the Model object itself.
      */
+    @Generated
     public Model setComposedTrainResults(List<TrainResult> composedTrainResults) {
         this.composedTrainResults = composedTrainResults;
         return this;
@@ -126,6 +140,7 @@ public final class Model implements JsonSerializable<Model> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +161,7 @@ public final class Model implements JsonSerializable<Model> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Model.
      */
+    @Generated
     public static Model fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Model deserializedModel = new Model();

@@ -65,7 +65,7 @@ public final class PipelinesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientPipel")
+    @ServiceInterface(name = "ArtifactsClientPipelines")
     public interface PipelinesService {
         @Get("/pipelines")
         @ExpectedResponses({ 200 })

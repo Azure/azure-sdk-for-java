@@ -140,6 +140,18 @@ public class TracerUnderTest implements Tracer {
     }
 
     @Override
+    public synchronized void setAttribute(String key, long value, Context context) {
+        assertThat(this.currentSpan).isNotNull();
+        this.currentSpan.attributes.put(key, value);
+    }
+
+    @Override
+    public synchronized void setAttribute(String key, Object value, Context context) {
+        assertThat(this.currentSpan).isNotNull();
+        this.currentSpan.attributes.put(key, value);
+    }
+
+    @Override
     public synchronized void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
         assertThat(this.currentSpan).isNotNull();
         this.currentSpan.events.add(new EventRecord(name, timestamp, attributes));
@@ -154,6 +166,10 @@ public class TracerUnderTest implements Tracer {
 
     public SpanRecord getCurrentSpan() {
         return this.currentSpan;
+    }
+
+    public SpanRecord[] getAllCollectedSiblingSpans() {
+        return this.collectedSiblingSpans.toArray(new SpanRecord[0]);
     }
 
     public Collection<EventRecord> getEventsOfAllCollectedSiblingSpans() {

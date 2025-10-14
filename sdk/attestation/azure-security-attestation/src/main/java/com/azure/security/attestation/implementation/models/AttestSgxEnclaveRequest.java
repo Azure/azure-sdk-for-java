@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,33 +23,39 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     /*
      * Quote of the enclave to be attested
      */
+    @Generated
     private Base64Url quote;
 
     /*
      * Runtime data provided by the enclave at the time of quote generation. The MAA will verify that the first 32 bytes
      * of the report_data field of the quote contains the SHA256 hash of the decoded "data" field of the runtime data.
      */
+    @Generated
     private RuntimeData runtimeData;
 
     /*
      * Initialization data provided when the enclave is created. MAA will verify that the init data was known to the
      * enclave. Note that InitTimeData is invalid for CoffeeLake processors.
      */
+    @Generated
     private InitTimeData initTimeData;
 
     /*
      * Attest against the provided draft policy. Note that the resulting token cannot be validated.
      */
+    @Generated
     private String draftPolicyForAttestation;
 
     /*
      * Nonce for incoming request - emitted in the generated attestation token
      */
+    @Generated
     private String nonce;
 
     /**
      * Creates an instance of AttestSgxEnclaveRequest class.
      */
+    @Generated
     public AttestSgxEnclaveRequest() {
     }
 
@@ -57,6 +64,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * 
      * @return the quote value.
      */
+    @Generated
     public byte[] getQuote() {
         if (this.quote == null) {
             return null;
@@ -70,6 +78,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * @param quote the quote value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
+    @Generated
     public AttestSgxEnclaveRequest setQuote(byte[] quote) {
         if (quote == null) {
             this.quote = null;
@@ -86,6 +95,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * 
      * @return the runtimeData value.
      */
+    @Generated
     public RuntimeData getRuntimeData() {
         return this.runtimeData;
     }
@@ -98,6 +108,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * @param runtimeData the runtimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
+    @Generated
     public AttestSgxEnclaveRequest setRuntimeData(RuntimeData runtimeData) {
         this.runtimeData = runtimeData;
         return this;
@@ -109,6 +120,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * 
      * @return the initTimeData value.
      */
+    @Generated
     public InitTimeData getInitTimeData() {
         return this.initTimeData;
     }
@@ -120,6 +132,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * @param initTimeData the initTimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
+    @Generated
     public AttestSgxEnclaveRequest setInitTimeData(InitTimeData initTimeData) {
         this.initTimeData = initTimeData;
         return this;
@@ -131,6 +144,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * 
      * @return the draftPolicyForAttestation value.
      */
+    @Generated
     public String getDraftPolicyForAttestation() {
         return this.draftPolicyForAttestation;
     }
@@ -142,6 +156,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
+    @Generated
     public AttestSgxEnclaveRequest setDraftPolicyForAttestation(String draftPolicyForAttestation) {
         this.draftPolicyForAttestation = draftPolicyForAttestation;
         return this;
@@ -152,6 +167,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * 
      * @return the nonce value.
      */
+    @Generated
     public String getNonce() {
         return this.nonce;
     }
@@ -162,6 +178,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * @param nonce the nonce value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
+    @Generated
     public AttestSgxEnclaveRequest setNonce(String nonce) {
         this.nonce = nonce;
         return this;
@@ -184,6 +201,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -203,6 +221,7 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AttestSgxEnclaveRequest.
      */
+    @Generated
     public static AttestSgxEnclaveRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AttestSgxEnclaveRequest deserializedAttestSgxEnclaveRequest = new AttestSgxEnclaveRequest();

@@ -5,6 +5,7 @@
 package com.azure.maps.render.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class RendersGetMapStateTileHeaders {
     /*
      * The Content-Type property.
      */
+    @Generated
     private String contentType;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class RendersGetMapStateTileHeaders {
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -43,6 +46,7 @@ public final class RendersGetMapStateTileHeaders {
      * @param contentType the contentType value to set.
      * @return the RendersGetMapStateTileHeaders object itself.
      */
+    @Generated
     public RendersGetMapStateTileHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,17 +22,20 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "GoogleCloudStorage";
 
     /*
      * The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object accessKeyId;
 
     /*
      * The secret access key of the Google Cloud Storage Identity and Access Management (IAM) user.
      */
+    @Generated
     private SecretBase secretAccessKey;
 
     /*
@@ -39,17 +43,20 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * property; change it only if you want to try a different service endpoint or want to switch between https and
      * http. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object serviceUrl;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of GoogleCloudStorageLinkedService class.
      */
+    @Generated
     public GoogleCloudStorageLinkedService() {
     }
 
@@ -58,6 +65,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -69,6 +77,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * 
      * @return the accessKeyId value.
      */
+    @Generated
     public Object getAccessKeyId() {
         return this.accessKeyId;
     }
@@ -80,6 +89,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * @param accessKeyId the accessKeyId value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
+    @Generated
     public GoogleCloudStorageLinkedService setAccessKeyId(Object accessKeyId) {
         this.accessKeyId = accessKeyId;
         return this;
@@ -91,6 +101,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * 
      * @return the secretAccessKey value.
      */
+    @Generated
     public SecretBase getSecretAccessKey() {
         return this.secretAccessKey;
     }
@@ -102,6 +113,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
+    @Generated
     public GoogleCloudStorageLinkedService setSecretAccessKey(SecretBase secretAccessKey) {
         this.secretAccessKey = secretAccessKey;
         return this;
@@ -114,6 +126,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * 
      * @return the serviceUrl value.
      */
+    @Generated
     public Object getServiceUrl() {
         return this.serviceUrl;
     }
@@ -126,6 +139,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * @param serviceUrl the serviceUrl value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
+    @Generated
     public GoogleCloudStorageLinkedService setServiceUrl(Object serviceUrl) {
         this.serviceUrl = serviceUrl;
         return this;
@@ -137,6 +151,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -148,6 +163,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleCloudStorageLinkedService object itself.
      */
+    @Generated
     public GoogleCloudStorageLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -156,6 +172,17 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public GoogleCloudStorageLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public GoogleCloudStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -165,6 +192,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleCloudStorageLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -174,6 +202,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleCloudStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -183,6 +212,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleCloudStorageLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -192,9 +222,11 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -202,10 +234,16 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
         jsonWriter.writeStringField("type", this.type);
         if (accessKeyId != null || secretAccessKey != null || serviceUrl != null || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+            if (this.accessKeyId != null) {
+                jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+            }
             jsonWriter.writeJsonField("secretAccessKey", this.secretAccessKey);
-            jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.serviceUrl != null) {
+                jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -224,6 +262,7 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the GoogleCloudStorageLinkedService.
      */
+    @Generated
     public static GoogleCloudStorageLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GoogleCloudStorageLinkedService deserializedGoogleCloudStorageLinkedService
@@ -233,7 +272,9 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedGoogleCloudStorageLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

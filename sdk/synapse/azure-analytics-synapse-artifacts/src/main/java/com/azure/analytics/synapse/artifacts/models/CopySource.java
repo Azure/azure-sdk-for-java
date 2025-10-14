@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,33 +22,39 @@ public class CopySource implements JsonSerializable<CopySource> {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "CopySource";
 
     /*
      * Source retry count. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object sourceRetryCount;
 
     /*
      * Source retry wait. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object sourceRetryWait;
 
     /*
      * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
      * integer).
      */
+    @Generated
     private Object maxConcurrentConnections;
 
     /*
      * A copy activity source.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of CopySource class.
      */
+    @Generated
     public CopySource() {
     }
 
@@ -56,6 +63,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -65,6 +73,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * 
      * @return the sourceRetryCount value.
      */
+    @Generated
     public Object getSourceRetryCount() {
         return this.sourceRetryCount;
     }
@@ -75,6 +84,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * @param sourceRetryCount the sourceRetryCount value to set.
      * @return the CopySource object itself.
      */
+    @Generated
     public CopySource setSourceRetryCount(Object sourceRetryCount) {
         this.sourceRetryCount = sourceRetryCount;
         return this;
@@ -86,6 +96,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * 
      * @return the sourceRetryWait value.
      */
+    @Generated
     public Object getSourceRetryWait() {
         return this.sourceRetryWait;
     }
@@ -97,6 +108,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * @param sourceRetryWait the sourceRetryWait value to set.
      * @return the CopySource object itself.
      */
+    @Generated
     public CopySource setSourceRetryWait(Object sourceRetryWait) {
         this.sourceRetryWait = sourceRetryWait;
         return this;
@@ -108,6 +120,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * 
      * @return the maxConcurrentConnections value.
      */
+    @Generated
     public Object getMaxConcurrentConnections() {
         return this.maxConcurrentConnections;
     }
@@ -119,6 +132,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySource object itself.
      */
+    @Generated
     public CopySource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
@@ -129,6 +143,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -139,6 +154,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopySource object itself.
      */
+    @Generated
     public CopySource setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -147,13 +163,20 @@ public class CopySource implements JsonSerializable<CopySource> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("sourceRetryCount", this.sourceRetryCount);
-        jsonWriter.writeUntypedField("sourceRetryWait", this.sourceRetryWait);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        if (this.sourceRetryCount != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", this.sourceRetryCount);
+        }
+        if (this.sourceRetryWait != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", this.sourceRetryWait);
+        }
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -170,6 +193,7 @@ public class CopySource implements JsonSerializable<CopySource> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the CopySource.
      */
+    @Generated
     public static CopySource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -401,6 +425,7 @@ public class CopySource implements JsonSerializable<CopySource> {
         });
     }
 
+    @Generated
     static CopySource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopySource deserializedCopySource = new CopySource();

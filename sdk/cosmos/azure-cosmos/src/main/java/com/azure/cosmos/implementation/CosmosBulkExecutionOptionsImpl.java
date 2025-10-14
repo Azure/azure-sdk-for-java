@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
@@ -298,6 +299,11 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
     @Override
     public ConsistencyLevel getConsistencyLevel() {
+        return null;
+    }
+
+    @Override
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return null;
     }
 

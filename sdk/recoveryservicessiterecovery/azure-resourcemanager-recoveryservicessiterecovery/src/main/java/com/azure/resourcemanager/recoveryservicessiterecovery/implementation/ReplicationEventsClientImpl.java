@@ -67,20 +67,18 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationEvents/{eventName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("eventName") String eventName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("eventName") String eventName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -95,8 +93,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -105,18 +103,18 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<EventInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -124,8 +122,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), filter, accept, context))
             .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -136,8 +134,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,18 +145,18 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<EventInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -167,7 +165,7 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -178,8 +176,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,8 +185,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return the list of Azure Site Recovery events for the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventInner> listAsync(String resourceName, String resourceGroupName, String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, filter),
+    private PagedFlux<EventInner> listAsync(String resourceGroupName, String resourceName, String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -197,17 +195,17 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Azure Site Recovery events for the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventInner> listAsync(String resourceName, String resourceGroupName) {
+    private PagedFlux<EventInner> listAsync(String resourceGroupName, String resourceName) {
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -216,8 +214,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,9 +224,9 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return the list of Azure Site Recovery events for the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventInner> listAsync(String resourceName, String resourceGroupName, String filter,
+    private PagedFlux<EventInner> listAsync(String resourceGroupName, String resourceName, String filter,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, filter, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -237,17 +235,17 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Azure Site Recovery events for the vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventInner> list(String resourceName, String resourceGroupName) {
+    public PagedIterable<EventInner> list(String resourceGroupName, String resourceName) {
         final String filter = null;
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, filter));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, filter));
     }
 
     /**
@@ -255,8 +253,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * Gets the list of Azure Site Recovery events for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,9 +263,9 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return the list of Azure Site Recovery events for the vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventInner> list(String resourceName, String resourceGroupName, String filter,
+    public PagedIterable<EventInner> list(String resourceGroupName, String resourceName, String filter,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, filter, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, filter, context));
     }
 
     /**
@@ -275,8 +273,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * The operation to get the details of an Azure Site recovery event.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param eventName The name of the Azure Site Recovery event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -284,18 +282,18 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return implements the Event class along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<EventInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String eventName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -306,8 +304,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), eventName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), eventName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -316,8 +314,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * The operation to get the details of an Azure Site recovery event.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param eventName The name of the Azure Site Recovery event.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,18 +324,18 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return implements the Event class along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<EventInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String eventName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -348,7 +346,7 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), eventName, accept, context);
     }
 
@@ -357,8 +355,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * The operation to get the details of an Azure Site recovery event.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param eventName The name of the Azure Site Recovery event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -366,8 +364,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return implements the Event class on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventInner> getAsync(String resourceName, String resourceGroupName, String eventName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, eventName)
+    private Mono<EventInner> getAsync(String resourceGroupName, String resourceName, String eventName) {
+        return getWithResponseAsync(resourceGroupName, resourceName, eventName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -376,8 +374,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * The operation to get the details of an Azure Site recovery event.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param eventName The name of the Azure Site Recovery event.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,9 +384,9 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return implements the Event class along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventInner> getWithResponse(String resourceName, String resourceGroupName, String eventName,
+    public Response<EventInner> getWithResponse(String resourceGroupName, String resourceName, String eventName,
         Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, eventName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, eventName, context).block();
     }
 
     /**
@@ -396,8 +394,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * 
      * The operation to get the details of an Azure Site recovery event.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param eventName The name of the Azure Site Recovery event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -405,8 +403,8 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      * @return implements the Event class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventInner get(String resourceName, String resourceGroupName, String eventName) {
-        return getWithResponse(resourceName, resourceGroupName, eventName, Context.NONE).getValue();
+    public EventInner get(String resourceGroupName, String resourceName, String eventName) {
+        return getWithResponse(resourceGroupName, resourceName, eventName, Context.NONE).getValue();
     }
 
     /**

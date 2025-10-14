@@ -1,0 +1,25 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-22.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+    },
+    "TestConfig": {
+      "version_override": {
+        "TestVersionSupport": true,
+        "VERSION_OVERRIDE_TESTS": true,
+        "TestGoals": "surefire:test",
+        // This has to be stringified json
+        "ArtifactsJson": "{
+          \"name\": \"azure-core-http-vertx\",
+          \"groupId\": \"com.azure\",
+          \"safeName\": \"azurecorehttpvertx\"
+        }",
+        // blank this out so we don't pick up the defaults from ci.yml
+        "AdditionalModulesJson": ""
+      }
+    },
+    "VersionOverride": [
+      "vertx_5.0"
+    ]
+  }
+}

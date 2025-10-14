@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateAppli
 public final class ReplicationProtectedItemsUpdateApplianceSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectedItems_UpdateAppliance.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationProtectedItemsUpdateApplianceSamples {
     public static void updatesApplianceForReplicationProtectedItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectedItems()
-            .updateAppliance("Ayan-0106-SA-Vault", "Ayan-0106-SA-RG", "Ayan-0106-SA-Vaultreplicationfabric",
+            .updateAppliance("Ayan-0106-SA-RG", "Ayan-0106-SA-Vault", "Ayan-0106-SA-Vaultreplicationfabric",
                 "Ayan-0106-SA-Vaultreplicationcontainer", "idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f",
                 new UpdateApplianceForReplicationProtectedItemInput().withProperties(
                     new UpdateApplianceForReplicationProtectedItemInputProperties().withTargetApplianceId("")

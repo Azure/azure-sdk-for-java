@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnectionListResult;
@@ -22,26 +22,26 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"mjpb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"mgtvlj\",\"actionsRequired\":\"cmyfqipgxhnpo\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"abvn\",\"ilee\"]},\"location\":\"wlpaugmrmfjlrxwt\",\"etag\":\"ukhfkvc\",\"id\":\"sizmoae\",\"name\":\"sx\",\"type\":\"wuived\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"eewxeiqbpsmg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"amljdlrgmsplzgau\",\"actionsRequired\":\"shhvnewgnxky\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"xrjkixtwb\",\"aoypny\",\"hshxcylhkgmnsghp\",\"ycphdrwjjkhvyo\"]},\"location\":\"luzvxnq\",\"etag\":\"rpqpd\",\"id\":\"wmkoisq\",\"name\":\"ssffxuifmc\",\"type\":\"ypobkdqzr\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"lo\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"rc\",\"actionsRequired\":\"ydmxzj\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"aurkihcirlde\",\"xrdcoxnbkkja\",\"urnnqbnqbpiz\"]},\"location\":\"tgrdogypx\",\"etag\":\"vbfihwuhvctafsr\",\"id\":\"xrblmliowxihs\",\"name\":\"nxw\",\"type\":\"agnepzwaklsb\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"qagwwrxaomz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"rrczezkhhltnj\",\"actionsRequired\":\"hqo\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"yueayfbpcmsp\",\"byrrueqth\",\"mg\",\"mbscbbx\"]},\"location\":\"hxiidlopedb\",\"etag\":\"pyqy\",\"id\":\"bxubmdna\",\"name\":\"cbq\",\"type\":\"remj\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"c\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"igctmgxuupbezq\",\"actionsRequired\":\"ydrtc\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"kkyihzt\",\"eq\",\"gqzgwldoychill\",\"ecfehuwa\"]},\"location\":\"uhicqllizstacsjv\",\"etag\":\"weftkwq\",\"id\":\"jp\",\"name\":\"vssehaepw\",\"type\":\"mcxtczhu\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"nijduyyespydjf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"v\",\"actionsRequired\":\"ulrtywikdmh\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"lgbhgauacdi\",\"mxu\"]},\"location\":\"ryjqgdkf\",\"etag\":\"zoeo\",\"id\":\"bvjhvefgwbmqj\",\"name\":\"hntasfaymx\",\"type\":\"ulpzealb\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"ojwyvf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"suah\",\"actionsRequired\":\"gxjc\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"scubiwsdrnpxqwod\"]},\"location\":\"jxcjrmmuabwib\",\"etag\":\"ogjo\",\"id\":\"mcyefoyzbam\",\"name\":\"in\",\"type\":\"ofvfkakpoldtve\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"lz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"n\",\"actionsRequired\":\"xgvttxp\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"a\",\"mrdixtreki\",\"swyskbruffg\",\"lukkutvlxhrpqhvm\"]},\"location\":\"ouq\",\"etag\":\"bhbcdszir\",\"id\":\"randoypmb\",\"name\":\"t\",\"type\":\"ormkfqlwxldyk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionListResult response = manager.privateEndpointConnections()
-            .listWithResponse("biqmrjgei", "fqlggw", com.azure.core.util.Context.NONE)
+            .listWithResponse("lbl", "jxl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("mgtvlj",
+        Assertions.assertEquals("igctmgxuupbezq",
             response.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("cmyfqipgxhnpo",
+        Assertions.assertEquals("ydrtc",
             response.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("abvn", response.value().get(0).properties().groupIds().get(0));
-        Assertions.assertEquals("wlpaugmrmfjlrxwt", response.value().get(0).location());
+        Assertions.assertEquals("kkyihzt", response.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("uhicqllizstacsjv", response.value().get(0).location());
     }
 }

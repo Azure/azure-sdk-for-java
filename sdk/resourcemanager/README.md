@@ -30,7 +30,37 @@ If you are an existing user of the older version of Azure management library for
 - [Azure Subscription][azure_subscription]
 
 ### Include the package
+#### Include the BOM file
+From 1.2.36 and above, azure-sdk-bom includes `azure-resourcemanager`.
 
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure.resourcemanager</groupId>
+    <artifactId>azure-resourcemanager</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
 For your convenience, we have provided a multi-service package that includes some of the most highly used Azure services. We recommend using this package when you are dealing with multiple services.
 
 [//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
@@ -38,7 +68,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.46.0</version>
+  <version>2.55.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,12 +105,12 @@ The services available via `azure-resourcemanager` are listed as below:
 
 In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-mediaservices;dependency})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-mediaservices</artifactId>
-  <version>2.3.0</version>
+  <artifactId>azure-resourcemanager-resourcegraph</artifactId>
+  <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +130,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.14.2</version>
+  <version>1.18.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +142,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.15.7</version>
+  <version>1.16.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -300,10 +330,18 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.46.0</version>
+  <version>2.54.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+Or if you are using BOM:
+```xml
+<dependency>
+  <groupId>com.azure.resourcemanager</groupId>
+  <artifactId>azure-resourcemanager-compute</artifactId>
+</dependency>
+```
 
 Sample code to create the authenticated client.
 
@@ -350,6 +388,8 @@ As Azure Management Libraries for Java uses Fluent interface extensively, it tak
 Samples can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MockSdkSamples.java).
 
 ### Dependency management
+
+We now recommend using azure-sdk-bom for easier dependency management. See [Include the BOM file](#include-the-bom-file).
 
 [Azure Core][azure_core] (`azure-core`) is the shared library for  all packages under `com.azure`.
 It guarantees backward compatibility.
@@ -430,6 +470,28 @@ For example, `azure-resourcemanager` 2.6.0 would require `azure-core-management`
 
 Azure Resource Manager applies throttling on the number of requests sent from client within certain span of time.
 For details, please refer to [Guidance on ARM throttling][throttling].
+
+### HTTP header is larger than 8192 bytes
+
+If you are seeing this error message, please upgrade `azure-core-http-netty` to 1.15.12 or above. If you are using BOM, take 1.2.36 or above.
+
+[reactor-netty-http](https://projectreactor.io/docs/netty/release/reference/http-client.html) has a default max response header limit of 8192 bytes, configured by `io.netty.handler.codec.http.HttpResponseDecoder`.
+
+Azure Resource Manager will now append cryptographic token to the LRO (long-running-operation) URL returned in response header.
+This will make [LRO URLs](https://learn.microsoft.com/azure/azure-resource-manager/management/async-operations#url-to-monitor-status) significantly larger, which sometimes contributes to an HTTP response header over 8192 bytes size in total.
+
+In this case, Netty's HttpClient will throw:
+```
+io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
+```
+
+From `azure-core-http-netty` 1.15.12 and above, we increased the limit to 256 KB to allow for these large LRO headers.
+[Increase HTTP header size limit in Netty-based HttpClients](https://github.com/Azure/azure-sdk-for-java/pull/45291)
+
+### Duplicate request sent out seconds apart
+
+It is likely caused by [HTTP response header larger than 8192 bytes](#http-header-is-larger-than-8192-bytes).
+Our `RetryPolicy` would retry and send out new request upon above failure. One way to diagnose this would be to remove the `RetryPolicy`.
 
 ## Next steps
 

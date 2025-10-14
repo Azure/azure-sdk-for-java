@@ -22,7 +22,8 @@ public final class JsonOptions {
     }
 
     /**
-     * Whether non-numeric numbers such as {@code NaN} and {@code INF} and {@code -INF} are supported.
+     * Whether non-numeric numbers such as {@code NaN}, {@code Infinity}, {@code +Infinity} and {@code -Infinity} are
+     * supported.
      * <p>
      * By default, this is configured to true.
      *
@@ -33,7 +34,8 @@ public final class JsonOptions {
     }
 
     /**
-     * Sets whether non-numeric numbers such as {@code NaN} and {@code INF} and {@code -INF} are supported.
+     * Whether non-numeric numbers such as {@code NaN}, {@code Infinity}, {@code +Infinity} and {@code -Infinity} are
+     * supported.
      * <p>
      * By default, this is configured to true.
      *

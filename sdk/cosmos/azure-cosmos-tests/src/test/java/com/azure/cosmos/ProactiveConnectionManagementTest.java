@@ -29,6 +29,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
@@ -134,7 +135,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "proactiveContainerInitConfigs", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void openConnectionsAndInitCachesWithContainer(ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
         CosmosAsyncClient asyncClient = null;
 
@@ -180,11 +181,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             cosmosAsyncContainer.openConnectionsAndInitCaches(proactiveConnectionRegionCount).block();
 
-            UnmodifiableList<URI> readEndpoints =
+            UnmodifiableList<RegionalRoutingContext> readEndpoints =
                 globalEndpointManager.getReadEndpoints();
+
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
-                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream().map(RegionalRoutingContext::getGatewayRegionalEndpoint).collect(Collectors.toList());
 
             Mono<CosmosAsyncContainer> asyncContainerMono = Mono.just(cosmosAsyncContainer);
 
@@ -342,10 +345,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
+
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
-                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream()
+                .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+                .collect(Collectors.toList());
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
@@ -488,10 +495,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
-                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream()
+                .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+                .collect(Collectors.toList());;
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
@@ -555,7 +565,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"flaky-multi-master"}, dataProvider = "proactiveContainerInitConfigs")
+    @Test(groups = {"flaky-multi-master"}, dataProvider = "proactiveContainerInitConfigs", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void openConnectionsAndInitCachesWithCosmosClient_And_PerContainerConnectionPoolSize_ThroughProactiveContainerInitConfig_WithTimeout(
         ProactiveConnectionManagementTestConfig proactiveConnectionManagementTestConfig) {
 
@@ -656,10 +666,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
-                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream()
+                .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
+                .collect(Collectors.toList());;
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =

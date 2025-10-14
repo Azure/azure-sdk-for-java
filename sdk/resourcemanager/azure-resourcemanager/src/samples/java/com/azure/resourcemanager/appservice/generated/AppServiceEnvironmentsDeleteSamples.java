@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceEnvironmentsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_Delete.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/AppServiceEnvironments_Delete.json
      */
     /**
      * Sample code: Delete an App Service Environment.

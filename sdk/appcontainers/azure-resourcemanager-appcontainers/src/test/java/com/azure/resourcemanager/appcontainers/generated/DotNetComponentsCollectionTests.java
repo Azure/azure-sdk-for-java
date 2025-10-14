@@ -17,67 +17,41 @@ public final class DotNetComponentsCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DotNetComponentsCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"qedikdfrd\",\"value\":\"qmrjg\"},{\"propertyName\":\"hfqlgg\",\"value\":\"iwzcxmjpbyeph\"},{\"propertyName\":\"t\",\"value\":\"j\"}],\"serviceBinds\":[{\"name\":\"yfqi\",\"serviceId\":\"xhnpo\"},{\"name\":\"qwcabvnui\",\"serviceId\":\"ey\"},{\"name\":\"wlpaugmrmfjlrxwt\",\"serviceId\":\"ukhfkvc\"},{\"name\":\"izmoaeds\",\"serviceId\":\"wuived\"}]},\"id\":\"gyeewxeiq\",\"name\":\"psmgo\",\"type\":\"guamlj\"},{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"gaufcs\",\"value\":\"vnewgnxkympqanx\"},{\"propertyName\":\"kixtwbtaoy\",\"value\":\"yghs\"},{\"propertyName\":\"cyl\",\"value\":\"gmnsghpxy\"},{\"propertyName\":\"hdrwjjkh\",\"value\":\"omacluzvxnqmhr\"}],\"serviceBinds\":[{\"name\":\"fwmkoisqcssffxui\",\"serviceId\":\"csypobkdqzrdzsyl\"}]},\"id\":\"lgtrczzy\",\"name\":\"mxzjijpvua\",\"type\":\"rkihcirld\"},{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Canceled\",\"configurations\":[{\"propertyName\":\"b\",\"value\":\"ja\"},{\"propertyName\":\"rnnqb\",\"value\":\"bpizxqltgr\"}],\"serviceBinds\":[{\"name\":\"pxrxvbfihwu\",\"serviceId\":\"ctafsrbxrblm\"},{\"name\":\"owxih\",\"serviceId\":\"nxw\"},{\"name\":\"gnepz\",\"serviceId\":\"klsbsbqqqagw\"},{\"name\":\"xaomzisglrrc\",\"serviceId\":\"zkhhltnjadhqo\"}]},\"id\":\"jqoyueayfbpcm\",\"name\":\"plby\",\"type\":\"rueqthwm\"},{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Canceled\",\"configurations\":[{\"propertyName\":\"igdhxiidlo\",\"value\":\"dbwdpyqyybxubmdn\"},{\"propertyName\":\"cbq\",\"value\":\"e\"},{\"propertyName\":\"ela\",\"value\":\"cigeleohdbvqvw\"}],\"serviceBinds\":[{\"name\":\"pwbeonr\",\"serviceId\":\"wzdqybxceakxcpts\"},{\"name\":\"fyiaseqch\",\"serviceId\":\"ttzrazisgyki\"},{\"name\":\"mvanbwzo\",\"serviceId\":\"nrxxbsojklin\"},{\"name\":\"dptysprqs\",\"serviceId\":\"zxojpslsv\"}]},\"id\":\"pli\",\"name\":\"fiqwoy\",\"type\":\"qvapcohhoucq\"}],\"nextLink\":\"oj\"}")
+            "{\"value\":[{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"iqakydiwfbr\",\"value\":\"pzdqtvhcspod\"},{\"propertyName\":\"axsipietgb\",\"value\":\"jfulbmoic\"},{\"propertyName\":\"lpnfpubntnb\",\"value\":\"zviqsowsaae\"}],\"serviceBinds\":[{\"name\":\"tc\",\"serviceId\":\"hplrvkmjcwmjvlg\"},{\"name\":\"gcvkyyli\",\"serviceId\":\"zbj\"}]},\"id\":\"fxsfuztlvtmv\",\"name\":\"gbwidqlvh\",\"type\":\"koveof\"},{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"mvl\",\"value\":\"z\"}],\"serviceBinds\":[{\"name\":\"kujrllfojui\",\"serviceId\":\"puuyjucejik\"},{\"name\":\"eovvtzej\",\"serviceId\":\"jklntikyj\"},{\"name\":\"k\",\"serviceId\":\"qzolxrzvhqjw\"},{\"name\":\"htgv\",\"serviceId\":\"pcrrk\"}]},\"id\":\"awjmjsmw\",\"name\":\"okcdxfzzzwyjaf\",\"type\":\"tlhguynuchl\"}],\"nextLink\":\"ltxdwhmozu\"}")
             .toObject(DotNetComponentsCollection.class);
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, model.value().get(0).componentType());
-        Assertions.assertEquals("qedikdfrd", model.value().get(0).configurations().get(0).propertyName());
-        Assertions.assertEquals("qmrjg", model.value().get(0).configurations().get(0).value());
-        Assertions.assertEquals("yfqi", model.value().get(0).serviceBinds().get(0).name());
-        Assertions.assertEquals("xhnpo", model.value().get(0).serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("iqakydiwfbr", model.value().get(0).configurations().get(0).propertyName());
+        Assertions.assertEquals("pzdqtvhcspod", model.value().get(0).configurations().get(0).value());
+        Assertions.assertEquals("tc", model.value().get(0).serviceBinds().get(0).name());
+        Assertions.assertEquals("hplrvkmjcwmjvlg", model.value().get(0).serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DotNetComponentsCollection model
-            = new DotNetComponentsCollection().withValue(Arrays.asList(
-                new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
-                    .withConfigurations(Arrays.asList(
-                        new DotNetComponentConfigurationProperty().withPropertyName("qedikdfrd").withValue("qmrjg"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("hfqlgg")
-                            .withValue("iwzcxmjpbyeph"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("t").withValue("j")))
-                    .withServiceBinds(Arrays.asList(
-                        new DotNetComponentServiceBind().withName("yfqi").withServiceId("xhnpo"),
-                        new DotNetComponentServiceBind().withName("qwcabvnui").withServiceId("ey"),
-                        new DotNetComponentServiceBind().withName("wlpaugmrmfjlrxwt").withServiceId("ukhfkvc"),
-                        new DotNetComponentServiceBind().withName("izmoaeds").withServiceId("wuived"))),
-                new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
-                    .withConfigurations(Arrays.asList(
-                        new DotNetComponentConfigurationProperty().withPropertyName("gaufcs")
-                            .withValue("vnewgnxkympqanx"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("kixtwbtaoy").withValue("yghs"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("cyl").withValue("gmnsghpxy"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("hdrwjjkh")
-                            .withValue("omacluzvxnqmhr")))
-                    .withServiceBinds(Arrays
-                        .asList(new DotNetComponentServiceBind().withName("fwmkoisqcssffxui")
-                            .withServiceId("csypobkdqzrdzsyl"))),
-                new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
-                    .withConfigurations(
-                        Arrays.asList(new DotNetComponentConfigurationProperty().withPropertyName("b").withValue("ja"),
-                            new DotNetComponentConfigurationProperty().withPropertyName("rnnqb")
-                                .withValue("bpizxqltgr")))
-                    .withServiceBinds(Arrays.asList(
-                        new DotNetComponentServiceBind().withName("pxrxvbfihwu").withServiceId("ctafsrbxrblm"),
-                        new DotNetComponentServiceBind().withName("owxih").withServiceId("nxw"),
-                        new DotNetComponentServiceBind().withName("gnepz").withServiceId("klsbsbqqqagw"),
-                        new DotNetComponentServiceBind().withName("xaomzisglrrc").withServiceId("zkhhltnjadhqo"))),
-                new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
-                    .withConfigurations(Arrays.asList(
-                        new DotNetComponentConfigurationProperty().withPropertyName("igdhxiidlo")
-                            .withValue("dbwdpyqyybxubmdn"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("cbq").withValue("e"),
-                        new DotNetComponentConfigurationProperty().withPropertyName("ela").withValue("cigeleohdbvqvw")))
-                    .withServiceBinds(Arrays.asList(
-                        new DotNetComponentServiceBind().withName("pwbeonr").withServiceId("wzdqybxceakxcpts"),
-                        new DotNetComponentServiceBind().withName("fyiaseqch").withServiceId("ttzrazisgyki"),
-                        new DotNetComponentServiceBind().withName("mvanbwzo").withServiceId("nrxxbsojklin"),
-                        new DotNetComponentServiceBind().withName("dptysprqs").withServiceId("zxojpslsv")))));
+        DotNetComponentsCollection model = new DotNetComponentsCollection().withValue(Arrays.asList(
+            new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
+                .withConfigurations(Arrays.asList(
+                    new DotNetComponentConfigurationProperty().withPropertyName("iqakydiwfbr")
+                        .withValue("pzdqtvhcspod"),
+                    new DotNetComponentConfigurationProperty().withPropertyName("axsipietgb").withValue("jfulbmoic"),
+                    new DotNetComponentConfigurationProperty().withPropertyName("lpnfpubntnb")
+                        .withValue("zviqsowsaae")))
+                .withServiceBinds(
+                    Arrays.asList(new DotNetComponentServiceBind().withName("tc").withServiceId("hplrvkmjcwmjvlg"),
+                        new DotNetComponentServiceBind().withName("gcvkyyli").withServiceId("zbj"))),
+            new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
+                .withConfigurations(
+                    Arrays.asList(new DotNetComponentConfigurationProperty().withPropertyName("mvl").withValue("z")))
+                .withServiceBinds(
+                    Arrays.asList(new DotNetComponentServiceBind().withName("kujrllfojui").withServiceId("puuyjucejik"),
+                        new DotNetComponentServiceBind().withName("eovvtzej").withServiceId("jklntikyj"),
+                        new DotNetComponentServiceBind().withName("k").withServiceId("qzolxrzvhqjw"),
+                        new DotNetComponentServiceBind().withName("htgv").withServiceId("pcrrk")))));
         model = BinaryData.fromObject(model).toObject(DotNetComponentsCollection.class);
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, model.value().get(0).componentType());
-        Assertions.assertEquals("qedikdfrd", model.value().get(0).configurations().get(0).propertyName());
-        Assertions.assertEquals("qmrjg", model.value().get(0).configurations().get(0).value());
-        Assertions.assertEquals("yfqi", model.value().get(0).serviceBinds().get(0).name());
-        Assertions.assertEquals("xhnpo", model.value().get(0).serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("iqakydiwfbr", model.value().get(0).configurations().get(0).propertyName());
+        Assertions.assertEquals("pzdqtvhcspod", model.value().get(0).configurations().get(0).value());
+        Assertions.assertEquals("tc", model.value().get(0).serviceBinds().get(0).name());
+        Assertions.assertEquals("hplrvkmjcwmjvlg", model.value().get(0).serviceBinds().get(0).serviceId());
     }
 }

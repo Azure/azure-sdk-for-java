@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,31 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
     /*
      * Role ID of the Synapse Built-In Role
      */
+    @Generated
     private UUID roleId;
 
     /*
      * Object ID of the AAD principal or security-group
      */
+    @Generated
     private UUID principalId;
 
     /*
      * Scope at which the role assignment is created
      */
+    @Generated
     private String scope;
 
     /*
      * Type of the principal Id: User, Group or ServicePrincipal
      */
+    @Generated
     private String principalType;
 
     /**
      * Creates an instance of RoleAssignmentRequest class.
      */
+    @Generated
     public RoleAssignmentRequest() {
     }
 
@@ -49,6 +55,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * 
      * @return the roleId value.
      */
+    @Generated
     public UUID getRoleId() {
         return this.roleId;
     }
@@ -59,6 +66,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * @param roleId the roleId value to set.
      * @return the RoleAssignmentRequest object itself.
      */
+    @Generated
     public RoleAssignmentRequest setRoleId(UUID roleId) {
         this.roleId = roleId;
         return this;
@@ -69,6 +77,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * 
      * @return the principalId value.
      */
+    @Generated
     public UUID getPrincipalId() {
         return this.principalId;
     }
@@ -79,6 +88,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentRequest object itself.
      */
+    @Generated
     public RoleAssignmentRequest setPrincipalId(UUID principalId) {
         this.principalId = principalId;
         return this;
@@ -89,6 +99,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -99,6 +110,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * @param scope the scope value to set.
      * @return the RoleAssignmentRequest object itself.
      */
+    @Generated
     public RoleAssignmentRequest setScope(String scope) {
         this.scope = scope;
         return this;
@@ -109,6 +121,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * 
      * @return the principalType value.
      */
+    @Generated
     public String getPrincipalType() {
         return this.principalType;
     }
@@ -119,6 +132,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * @param principalType the principalType value to set.
      * @return the RoleAssignmentRequest object itself.
      */
+    @Generated
     public RoleAssignmentRequest setPrincipalType(String principalType) {
         this.principalType = principalType;
         return this;
@@ -127,6 +141,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +161,7 @@ public final class RoleAssignmentRequest implements JsonSerializable<RoleAssignm
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RoleAssignmentRequest.
      */
+    @Generated
     public static RoleAssignmentRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RoleAssignmentRequest deserializedRoleAssignmentRequest = new RoleAssignmentRequest();

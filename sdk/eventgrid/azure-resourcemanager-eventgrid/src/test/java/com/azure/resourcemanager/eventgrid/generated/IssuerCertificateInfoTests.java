@@ -14,22 +14,22 @@ public final class IssuerCertificateInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssuerCertificateInfo model = BinaryData.fromString(
-            "{\"certificateUrl\":\"a\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"lihhyuspskasdvlm\"}}")
+            "{\"certificateUrl\":\"stotxh\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"bypel\"}}")
             .toObject(IssuerCertificateInfo.class);
-        Assertions.assertEquals("a", model.certificateUrl());
+        Assertions.assertEquals("stotxh", model.certificateUrl());
         Assertions.assertEquals(CustomJwtAuthenticationManagedIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("lihhyuspskasdvlm", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("bypel", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssuerCertificateInfo model = new IssuerCertificateInfo().withCertificateUrl("a")
+        IssuerCertificateInfo model = new IssuerCertificateInfo().withCertificateUrl("stotxh")
             .withIdentity(new CustomJwtAuthenticationManagedIdentity()
                 .withType(CustomJwtAuthenticationManagedIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("lihhyuspskasdvlm"));
+                .withUserAssignedIdentity("bypel"));
         model = BinaryData.fromObject(model).toObject(IssuerCertificateInfo.class);
-        Assertions.assertEquals("a", model.certificateUrl());
+        Assertions.assertEquals("stotxh", model.certificateUrl());
         Assertions.assertEquals(CustomJwtAuthenticationManagedIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("lihhyuspskasdvlm", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("bypel", model.identity().userAssignedIdentity());
     }
 }

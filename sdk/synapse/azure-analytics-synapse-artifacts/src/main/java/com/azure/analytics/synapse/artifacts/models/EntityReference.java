@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
     /*
      * The type of this referenced entity.
      */
+    @Generated
     private IntegrationRuntimeEntityReferenceType type;
 
     /*
      * The name of this referenced entity.
      */
+    @Generated
     private String referenceName;
 
     /**
      * Creates an instance of EntityReference class.
      */
+    @Generated
     public EntityReference() {
     }
 
@@ -37,6 +41,7 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
      * 
      * @return the type value.
      */
+    @Generated
     public IntegrationRuntimeEntityReferenceType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
      * @param type the type value to set.
      * @return the EntityReference object itself.
      */
+    @Generated
     public EntityReference setType(IntegrationRuntimeEntityReferenceType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -67,6 +74,7 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
      * @param referenceName the referenceName value to set.
      * @return the EntityReference object itself.
      */
+    @Generated
     public EntityReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -75,6 +83,7 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class EntityReference implements JsonSerializable<EntityReference> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the EntityReference.
      */
+    @Generated
     public static EntityReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityReference deserializedEntityReference = new EntityReference();

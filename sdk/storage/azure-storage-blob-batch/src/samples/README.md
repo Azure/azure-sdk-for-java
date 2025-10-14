@@ -48,7 +48,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [BATCH_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/README.md
 [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/README.md#contributing
 [samples_basic]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java
-[storageblob_rest]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[storageblob_rest]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-batch%2Fsrc%2Fsamples%2FREADME.png)
+

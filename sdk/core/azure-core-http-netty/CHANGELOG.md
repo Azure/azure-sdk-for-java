@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,104 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.16.2 (2025-10-06)
+
+### Bugs Fixed
+
+- Fixed a bug where `reactor.netty.http.client.HttpClient.resolver` would always be set to `DefaultAddressResolverGroup.INSTANCE`
+  when no `ProxyOptions` were provided, even when a custom `HttpClient` was used to initialize `NettyAsyncHttpClientBuilder`.
+  Now the resolver is only set to `DefaultAddressResolverGroup.INSTANCE` when a resolver wasn't set.
+- Changed how HTTP responses are closed to limit the chances of leaking `ByteBuf`s when the `Connection`'s `Channel` was
+  deregistered from an `EventLoop`, resulting in the network connection from being cleaned up properly.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to `1.57.0`.
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+- Upgraded Reactor Netty from `1.2.9` to `1.2.10`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+- Upgraded Netty dependencies from `4.1.126.Final` to `4.1.127.Final`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+
+## 1.16.1 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to `1.56.1`.
+- Upgraded Reactor from `3.7.8` to `3.7.9`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
+- Upgraded Reactor Netty from `1.2.8` to `1.2.9`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
+- Upgraded Netty dependencies from `4.1.123.Final` to `4.1.126.Final`. ([#46586](https://github.com/Azure/azure-sdk-for-java/pull/46586))
+
+## 1.16.0 (2025-08-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to `1.56.0`.
+- Upgraded Reactor from `3.4.41` to `3.7.8`. ([#46207](https://github.com/Azure/azure-sdk-for-java/pull/46207))
+- Upgraded Reactor Netty from `1.0.48` to `1.2.8`.
+- Upgraded Netty dependencies from `4.1.118.Final` to `4.1.123.Final`.
+
+## 1.15.13 (2025-06-26)
+
+### Bugs Fixed
+
+- Fixed a bug where the `NoopAddressResolverGroup` would attempt to resolve an address when a non-proxied host was used.
+  This could lead to `UnknownHostException` being thrown. ([#45774](https://github.com/Azure/azure-sdk-for-java/pull/45774))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 1.15.12 (2025-06-05)
+
+### Bugs Fixed
+
+- Fixed a bug where `TooLongHttpHeaderException` would be thrown if an Azure service returned HTTP headers that exceeded
+  the default 8 KB limit. The new limit is now 256 KB when the default of 8 KB is seen. ([#45291](https://github.com/Azure/azure-sdk-for-java/pull/45291))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
+
+## 1.15.11 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.15.10 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.15.9` release as Netty dependencies weren't updated.
+
+## 1.15.9 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.115.Final` to `4.1.118.Final` to resolve a CVE.
+- Upgraded Netty TcNative dependencies from `2.0.69.Final` to `2.0.70.Final` to resolve a CVE.
+
+## 1.15.8 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
 
 ## 1.15.7 (2024-11-14)
 

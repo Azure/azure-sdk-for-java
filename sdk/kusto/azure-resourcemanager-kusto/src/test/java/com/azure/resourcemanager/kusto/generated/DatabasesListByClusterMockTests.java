@@ -22,7 +22,7 @@ public final class DatabasesListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"Database\",\"location\":\"jqhden\",\"id\":\"aulk\",\"name\":\"akdkifmjnnawtqab\",\"type\":\"xuckpggqoweyir\"}]}";
+            = "{\"value\":[{\"kind\":\"Database\",\"location\":\"kzsz\",\"id\":\"wiwtglxxhl\",\"name\":\"fpgpicrmnzhrgm\",\"type\":\"gjsxv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DatabasesListByClusterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Database> response = manager.databases()
-            .listByCluster("tu", "lbfjkwr", 1064304425, "nkqbhsyrq", com.azure.core.util.Context.NONE);
+            .listByCluster("vxcnqmxqps", "okmvkhlggd", 969740243, "em", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jqhden", response.iterator().next().location());
+        Assertions.assertEquals("kzsz", response.iterator().next().location());
     }
 }

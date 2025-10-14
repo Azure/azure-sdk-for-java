@@ -88,7 +88,9 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("count", this.count);
+        if (this.count != null) {
+            jsonWriter.writeUntypedField("count", this.count);
+        }
         jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
         return jsonWriter.writeEndObject();
     }

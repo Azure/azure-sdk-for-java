@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.models.ArtifactArchitecture;
 import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -26,67 +27,80 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
     /*
      * Manifest
      */
+    @Generated
     private String digest;
 
     /*
      * Image size
      */
+    @Generated
     private Long sizeInBytes;
 
     /*
      * Created time
      */
+    @Generated
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
+    @Generated
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * CPU architecture
      */
+    @Generated
     private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
+    @Generated
     private ArtifactOperatingSystem operatingSystem;
 
     /*
      * List of artifacts that are referenced by this manifest list, with information about the platform each supports.
      * This list will be empty if this is a leaf manifest and not a manifest list.
      */
+    @Generated
     private List<ArtifactManifestPlatform> relatedArtifacts;
 
     /*
      * List of tags
      */
+    @Generated
     private List<String> tags;
 
     /*
      * Delete enabled
      */
+    @Generated
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
+    @Generated
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
+    @Generated
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
+    @Generated
     private Boolean readEnabled;
 
     /**
      * Creates an instance of ManifestAttributesBase class.
      */
+    @Generated
     public ManifestAttributesBase() {
     }
 
@@ -95,6 +109,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the digest value.
      */
+    @Generated
     public String getDigest() {
         return this.digest;
     }
@@ -105,6 +120,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param digest the digest value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setDigest(String digest) {
         this.digest = digest;
         return this;
@@ -115,6 +131,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the sizeInBytes value.
      */
+    @Generated
     public Long getSizeInBytes() {
         return this.sizeInBytes;
     }
@@ -125,6 +142,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setSizeInBytes(Long sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
@@ -135,6 +153,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the createdOn value.
      */
+    @Generated
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
@@ -145,6 +164,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param createdOn the createdOn value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
@@ -155,6 +175,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the lastUpdatedOn value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
     }
@@ -165,6 +186,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
         return this;
@@ -175,6 +197,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the architecture value.
      */
+    @Generated
     public ArtifactArchitecture getArchitecture() {
         return this.architecture;
     }
@@ -185,6 +208,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param architecture the architecture value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setArchitecture(ArtifactArchitecture architecture) {
         this.architecture = architecture;
         return this;
@@ -195,6 +219,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the operatingSystem value.
      */
+    @Generated
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
@@ -205,6 +230,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param operatingSystem the operatingSystem value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setOperatingSystem(ArtifactOperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
         return this;
@@ -216,6 +242,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the relatedArtifacts value.
      */
+    @Generated
     public List<ArtifactManifestPlatform> getRelatedArtifacts() {
         return this.relatedArtifacts;
     }
@@ -227,6 +254,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param relatedArtifacts the relatedArtifacts value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setRelatedArtifacts(List<ArtifactManifestPlatform> relatedArtifacts) {
         this.relatedArtifacts = relatedArtifacts;
         return this;
@@ -237,6 +265,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the tags value.
      */
+    @Generated
     public List<String> getTags() {
         return this.tags;
     }
@@ -247,6 +276,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param tags the tags value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setTags(List<String> tags) {
         this.tags = tags;
         return this;
@@ -257,6 +287,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the deleteEnabled value.
      */
+    @Generated
     public Boolean isDeleteEnabled() {
         return this.deleteEnabled;
     }
@@ -267,6 +298,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
@@ -277,6 +309,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the writeEnabled value.
      */
+    @Generated
     public Boolean isWriteEnabled() {
         return this.writeEnabled;
     }
@@ -287,6 +320,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param writeEnabled the writeEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
@@ -297,6 +331,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the listEnabled value.
      */
+    @Generated
     public Boolean isListEnabled() {
         return this.listEnabled;
     }
@@ -307,6 +342,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param listEnabled the listEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
@@ -317,6 +353,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * 
      * @return the readEnabled value.
      */
+    @Generated
     public Boolean isReadEnabled() {
         return this.readEnabled;
     }
@@ -327,6 +364,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @param readEnabled the readEnabled value to set.
      * @return the ManifestAttributesBase object itself.
      */
+    @Generated
     public ManifestAttributesBase setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
@@ -335,6 +373,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -368,6 +407,7 @@ public class ManifestAttributesBase implements JsonSerializable<ManifestAttribut
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ManifestAttributesBase.
      */
+    @Generated
     public static ManifestAttributesBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManifestAttributesBase deserializedManifestAttributesBase = new ManifestAttributesBase();

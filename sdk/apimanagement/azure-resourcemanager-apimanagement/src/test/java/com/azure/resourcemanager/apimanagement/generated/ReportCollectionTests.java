@@ -15,34 +15,34 @@ public final class ReportCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReportCollection model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"chnzrsbkkzo\",\"timestamp\":\"2021-03-10T22:52:59Z\",\"interval\":\"mnfmfwsxafofuw\",\"country\":\"immovzwd\",\"region\":\"kkmvhzfovanyrva\",\"zip\":\"tgelgwewikfy\",\"userId\":\"a\",\"productId\":\"mymnqoqjumovsf\",\"apiId\":\"bvzo\",\"operationId\":\"x\",\"apiRegion\":\"m\",\"subscriptionId\":\"mcwoxfaxd\",\"callCountSuccess\":508434914,\"callCountBlocked\":2045146808,\"callCountFailed\":1857407814,\"callCountOther\":829785504,\"callCountTotal\":1464125582,\"bandwidth\":7033583756566739721,\"cacheHitCount\":574618809,\"cacheMissCount\":1992627485,\"apiTimeAvg\":33.04326656386544,\"apiTimeMin\":31.063954715335072,\"apiTimeMax\":18.903407749538705,\"serviceTimeAvg\":82.71435178729172,\"serviceTimeMin\":56.20450946235111,\"serviceTimeMax\":77.25084213043519},{\"name\":\"dsiuorin\",\"timestamp\":\"2021-07-21T03:16:08Z\",\"interval\":\"dpk\",\"country\":\"iwm\",\"region\":\"mqr\",\"zip\":\"zqv\",\"userId\":\"czyayubtgmbxi\",\"productId\":\"hragpxmib\",\"apiId\":\"nupoyryefqmwovyz\",\"operationId\":\"lnomfpb\",\"apiRegion\":\"eegvyieztkutnj\",\"subscriptionId\":\"l\",\"callCountSuccess\":45461465,\"callCountBlocked\":828288950,\"callCountFailed\":403280686,\"callCountOther\":274091210,\"callCountTotal\":1937548392,\"bandwidth\":3191288232183322798,\"cacheHitCount\":407747956,\"cacheMissCount\":578702715,\"apiTimeAvg\":49.53894841603898,\"apiTimeMin\":52.33968153218105,\"apiTimeMax\":38.05811012077521,\"serviceTimeAvg\":71.35574876192564,\"serviceTimeMin\":12.543409131805427,\"serviceTimeMax\":34.341555527456414},{\"name\":\"hoyiyaxqvjweiw\",\"timestamp\":\"2021-11-12T20:24:02Z\",\"interval\":\"ddnvovbooqbmdq\",\"country\":\"yglae\",\"region\":\"cflwtjdtlr\",\"zip\":\"fooy\",\"userId\":\"uxdtzcq\",\"productId\":\"sdudgcoz\",\"apiId\":\"meh\",\"operationId\":\"antolamlbijuxkq\",\"apiRegion\":\"czipvwdtgck\",\"subscriptionId\":\"qiqdlratrkwxoau\",\"callCountSuccess\":843567475,\"callCountBlocked\":1509320297,\"callCountFailed\":1251314501,\"callCountOther\":1618531774,\"callCountTotal\":1217001354,\"bandwidth\":5588879302005587936,\"cacheHitCount\":1329306721,\"cacheMissCount\":2060252494,\"apiTimeAvg\":28.37559843565004,\"apiTimeMin\":52.00451239815527,\"apiTimeMax\":61.174312411916745,\"serviceTimeAvg\":18.29859178176295,\"serviceTimeMin\":39.33181562875401,\"serviceTimeMax\":82.62945609704938}],\"count\":4251967743512546220,\"nextLink\":\"kbdgddkrh\"}")
+            "{\"value\":[{\"name\":\"htdereun\",\"timestamp\":\"2020-12-29T08:15:06Z\",\"interval\":\"zwhpjlwyxedz\",\"country\":\"xrfomcke\",\"region\":\"my\",\"zip\":\"opxfjjtpdyzo\",\"userId\":\"xfptofh\",\"productId\":\"uywezygvadg\",\"apiId\":\"qwvkgjpytpmpv\",\"operationId\":\"ogehluf\",\"apiRegion\":\"rtbnu\",\"subscriptionId\":\"faxzsvbxxyjissk\",\"callCountSuccess\":1058882971,\"callCountBlocked\":1655715597,\"callCountFailed\":374629007,\"callCountOther\":227881834,\"callCountTotal\":70235365,\"bandwidth\":6068344326863653777,\"cacheHitCount\":1316757202,\"cacheMissCount\":288451396,\"apiTimeAvg\":51.9617596021726,\"apiTimeMin\":34.387175786373334,\"apiTimeMax\":17.223599977364934,\"serviceTimeAvg\":30.491917217237784,\"serviceTimeMin\":6.446563907716252,\"serviceTimeMax\":13.333642292569492},{\"name\":\"br\",\"timestamp\":\"2021-02-19T17:18:05Z\",\"interval\":\"pppktl\",\"country\":\"ib\",\"region\":\"th\",\"zip\":\"at\",\"userId\":\"jrnm\",\"productId\":\"zqpl\",\"apiId\":\"kihonik\",\"operationId\":\"r\",\"apiRegion\":\"ffjilzfbpnt\",\"subscriptionId\":\"kensckh\",\"callCountSuccess\":1961341328,\"callCountBlocked\":1130868885,\"callCountFailed\":1779626629,\"callCountOther\":1606316581,\"callCountTotal\":1145677775,\"bandwidth\":8812096334097459272,\"cacheHitCount\":177190880,\"cacheMissCount\":1057508380,\"apiTimeAvg\":90.61048935424951,\"apiTimeMin\":30.44294433226512,\"apiTimeMax\":86.80141593591568,\"serviceTimeAvg\":24.297188440518593,\"serviceTimeMin\":57.685487195223864,\"serviceTimeMax\":74.49137035108137},{\"name\":\"erscdx\",\"timestamp\":\"2020-12-31T21:44:23Z\",\"interval\":\"jrcufmbgacnrgfdt\",\"country\":\"msps\",\"region\":\"mameub\",\"zip\":\"iqmlfvhlqcskkqj\",\"userId\":\"pt\",\"productId\":\"ipuugkwdrqmr\",\"apiId\":\"huuonjkkxukg\",\"operationId\":\"hvvpx\",\"apiRegion\":\"egcjojlleuid\",\"subscriptionId\":\"tonvhgnhtmeplhb\",\"callCountSuccess\":564003407,\"callCountBlocked\":99445401,\"callCountFailed\":1308169461,\"callCountOther\":1483176057,\"callCountTotal\":1930840208,\"bandwidth\":198072889595745932,\"cacheHitCount\":160363776,\"cacheMissCount\":1289020449,\"apiTimeAvg\":8.438702159756417,\"apiTimeMin\":27.11506213905527,\"apiTimeMax\":1.4720208225651121,\"serviceTimeAvg\":33.33324204631717,\"serviceTimeMin\":59.67280042208093,\"serviceTimeMax\":26.587735611321595}],\"count\":4064161575681501942,\"nextLink\":\"hvwlv\"}")
             .toObject(ReportCollection.class);
-        Assertions.assertEquals("chnzrsbkkzo", model.value().get(0).name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-10T22:52:59Z"), model.value().get(0).timestamp());
-        Assertions.assertEquals("mnfmfwsxafofuw", model.value().get(0).interval());
-        Assertions.assertEquals("immovzwd", model.value().get(0).country());
-        Assertions.assertEquals("kkmvhzfovanyrva", model.value().get(0).region());
-        Assertions.assertEquals("tgelgwewikfy", model.value().get(0).zip());
-        Assertions.assertEquals("bvzo", model.value().get(0).apiId());
-        Assertions.assertEquals("x", model.value().get(0).operationId());
-        Assertions.assertEquals("m", model.value().get(0).apiRegion());
-        Assertions.assertEquals("mcwoxfaxd", model.value().get(0).subscriptionId());
-        Assertions.assertEquals(508434914, model.value().get(0).callCountSuccess());
-        Assertions.assertEquals(2045146808, model.value().get(0).callCountBlocked());
-        Assertions.assertEquals(1857407814, model.value().get(0).callCountFailed());
-        Assertions.assertEquals(829785504, model.value().get(0).callCountOther());
-        Assertions.assertEquals(1464125582, model.value().get(0).callCountTotal());
-        Assertions.assertEquals(7033583756566739721L, model.value().get(0).bandwidth());
-        Assertions.assertEquals(574618809, model.value().get(0).cacheHitCount());
-        Assertions.assertEquals(1992627485, model.value().get(0).cacheMissCount());
-        Assertions.assertEquals(33.04326656386544D, model.value().get(0).apiTimeAvg());
-        Assertions.assertEquals(31.063954715335072D, model.value().get(0).apiTimeMin());
-        Assertions.assertEquals(18.903407749538705D, model.value().get(0).apiTimeMax());
-        Assertions.assertEquals(82.71435178729172D, model.value().get(0).serviceTimeAvg());
-        Assertions.assertEquals(56.20450946235111D, model.value().get(0).serviceTimeMin());
-        Assertions.assertEquals(77.25084213043519D, model.value().get(0).serviceTimeMax());
-        Assertions.assertEquals(4251967743512546220L, model.count());
-        Assertions.assertEquals("kbdgddkrh", model.nextLink());
+        Assertions.assertEquals("htdereun", model.value().get(0).name());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T08:15:06Z"), model.value().get(0).timestamp());
+        Assertions.assertEquals("zwhpjlwyxedz", model.value().get(0).interval());
+        Assertions.assertEquals("xrfomcke", model.value().get(0).country());
+        Assertions.assertEquals("my", model.value().get(0).region());
+        Assertions.assertEquals("opxfjjtpdyzo", model.value().get(0).zip());
+        Assertions.assertEquals("qwvkgjpytpmpv", model.value().get(0).apiId());
+        Assertions.assertEquals("ogehluf", model.value().get(0).operationId());
+        Assertions.assertEquals("rtbnu", model.value().get(0).apiRegion());
+        Assertions.assertEquals("faxzsvbxxyjissk", model.value().get(0).subscriptionId());
+        Assertions.assertEquals(1058882971, model.value().get(0).callCountSuccess());
+        Assertions.assertEquals(1655715597, model.value().get(0).callCountBlocked());
+        Assertions.assertEquals(374629007, model.value().get(0).callCountFailed());
+        Assertions.assertEquals(227881834, model.value().get(0).callCountOther());
+        Assertions.assertEquals(70235365, model.value().get(0).callCountTotal());
+        Assertions.assertEquals(6068344326863653777L, model.value().get(0).bandwidth());
+        Assertions.assertEquals(1316757202, model.value().get(0).cacheHitCount());
+        Assertions.assertEquals(288451396, model.value().get(0).cacheMissCount());
+        Assertions.assertEquals(51.9617596021726D, model.value().get(0).apiTimeAvg());
+        Assertions.assertEquals(34.387175786373334D, model.value().get(0).apiTimeMin());
+        Assertions.assertEquals(17.223599977364934D, model.value().get(0).apiTimeMax());
+        Assertions.assertEquals(30.491917217237784D, model.value().get(0).serviceTimeAvg());
+        Assertions.assertEquals(6.446563907716252D, model.value().get(0).serviceTimeMin());
+        Assertions.assertEquals(13.333642292569492D, model.value().get(0).serviceTimeMax());
+        Assertions.assertEquals(4064161575681501942L, model.count());
+        Assertions.assertEquals("hvwlv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -50,106 +50,106 @@ public final class ReportCollectionTests {
         ReportCollection model
             = new ReportCollection()
                 .withValue(Arrays.asList(
-                    new ReportRecordContractInner().withName("chnzrsbkkzo")
-                        .withTimestamp(OffsetDateTime.parse("2021-03-10T22:52:59Z"))
-                        .withInterval("mnfmfwsxafofuw")
-                        .withCountry("immovzwd")
-                        .withRegion("kkmvhzfovanyrva")
-                        .withZip("tgelgwewikfy")
-                        .withApiId("bvzo")
-                        .withOperationId("x")
-                        .withApiRegion("m")
-                        .withSubscriptionId("mcwoxfaxd")
-                        .withCallCountSuccess(508434914)
-                        .withCallCountBlocked(2045146808)
-                        .withCallCountFailed(1857407814)
-                        .withCallCountOther(829785504)
-                        .withCallCountTotal(1464125582)
-                        .withBandwidth(7033583756566739721L)
-                        .withCacheHitCount(574618809)
-                        .withCacheMissCount(1992627485)
-                        .withApiTimeAvg(33.04326656386544D)
-                        .withApiTimeMin(31.063954715335072D)
-                        .withApiTimeMax(18.903407749538705D)
-                        .withServiceTimeAvg(82.71435178729172D)
-                        .withServiceTimeMin(56.20450946235111D)
-                        .withServiceTimeMax(77.25084213043519D),
-                    new ReportRecordContractInner().withName("dsiuorin")
-                        .withTimestamp(OffsetDateTime.parse("2021-07-21T03:16:08Z"))
-                        .withInterval("dpk")
-                        .withCountry("iwm")
-                        .withRegion("mqr")
-                        .withZip("zqv")
-                        .withApiId("nupoyryefqmwovyz")
-                        .withOperationId("lnomfpb")
-                        .withApiRegion("eegvyieztkutnj")
-                        .withSubscriptionId("l")
-                        .withCallCountSuccess(45461465)
-                        .withCallCountBlocked(828288950)
-                        .withCallCountFailed(403280686)
-                        .withCallCountOther(274091210)
-                        .withCallCountTotal(1937548392)
-                        .withBandwidth(3191288232183322798L)
-                        .withCacheHitCount(407747956)
-                        .withCacheMissCount(578702715)
-                        .withApiTimeAvg(49.53894841603898D)
-                        .withApiTimeMin(52.33968153218105D)
-                        .withApiTimeMax(38.05811012077521D)
-                        .withServiceTimeAvg(71.35574876192564D)
-                        .withServiceTimeMin(12.543409131805427D)
-                        .withServiceTimeMax(34.341555527456414D),
-                    new ReportRecordContractInner().withName("hoyiyaxqvjweiw")
-                        .withTimestamp(OffsetDateTime.parse("2021-11-12T20:24:02Z"))
-                        .withInterval("ddnvovbooqbmdq")
-                        .withCountry("yglae")
-                        .withRegion("cflwtjdtlr")
-                        .withZip("fooy")
-                        .withApiId("meh")
-                        .withOperationId("antolamlbijuxkq")
-                        .withApiRegion("czipvwdtgck")
-                        .withSubscriptionId("qiqdlratrkwxoau")
-                        .withCallCountSuccess(843567475)
-                        .withCallCountBlocked(1509320297)
-                        .withCallCountFailed(1251314501)
-                        .withCallCountOther(1618531774)
-                        .withCallCountTotal(1217001354)
-                        .withBandwidth(5588879302005587936L)
-                        .withCacheHitCount(1329306721)
-                        .withCacheMissCount(2060252494)
-                        .withApiTimeAvg(28.37559843565004D)
-                        .withApiTimeMin(52.00451239815527D)
-                        .withApiTimeMax(61.174312411916745D)
-                        .withServiceTimeAvg(18.29859178176295D)
-                        .withServiceTimeMin(39.33181562875401D)
-                        .withServiceTimeMax(82.62945609704938D)))
-                .withCount(4251967743512546220L)
-                .withNextLink("kbdgddkrh");
+                    new ReportRecordContractInner().withName("htdereun")
+                        .withTimestamp(OffsetDateTime.parse("2020-12-29T08:15:06Z"))
+                        .withInterval("zwhpjlwyxedz")
+                        .withCountry("xrfomcke")
+                        .withRegion("my")
+                        .withZip("opxfjjtpdyzo")
+                        .withApiId("qwvkgjpytpmpv")
+                        .withOperationId("ogehluf")
+                        .withApiRegion("rtbnu")
+                        .withSubscriptionId("faxzsvbxxyjissk")
+                        .withCallCountSuccess(1058882971)
+                        .withCallCountBlocked(1655715597)
+                        .withCallCountFailed(374629007)
+                        .withCallCountOther(227881834)
+                        .withCallCountTotal(70235365)
+                        .withBandwidth(6068344326863653777L)
+                        .withCacheHitCount(1316757202)
+                        .withCacheMissCount(288451396)
+                        .withApiTimeAvg(51.9617596021726D)
+                        .withApiTimeMin(34.387175786373334D)
+                        .withApiTimeMax(17.223599977364934D)
+                        .withServiceTimeAvg(30.491917217237784D)
+                        .withServiceTimeMin(6.446563907716252D)
+                        .withServiceTimeMax(13.333642292569492D),
+                    new ReportRecordContractInner().withName("br")
+                        .withTimestamp(OffsetDateTime.parse("2021-02-19T17:18:05Z"))
+                        .withInterval("pppktl")
+                        .withCountry("ib")
+                        .withRegion("th")
+                        .withZip("at")
+                        .withApiId("kihonik")
+                        .withOperationId("r")
+                        .withApiRegion("ffjilzfbpnt")
+                        .withSubscriptionId("kensckh")
+                        .withCallCountSuccess(1961341328)
+                        .withCallCountBlocked(1130868885)
+                        .withCallCountFailed(1779626629)
+                        .withCallCountOther(1606316581)
+                        .withCallCountTotal(1145677775)
+                        .withBandwidth(8812096334097459272L)
+                        .withCacheHitCount(177190880)
+                        .withCacheMissCount(1057508380)
+                        .withApiTimeAvg(90.61048935424951D)
+                        .withApiTimeMin(30.44294433226512D)
+                        .withApiTimeMax(86.80141593591568D)
+                        .withServiceTimeAvg(24.297188440518593D)
+                        .withServiceTimeMin(57.685487195223864D)
+                        .withServiceTimeMax(74.49137035108137D),
+                    new ReportRecordContractInner().withName("erscdx")
+                        .withTimestamp(OffsetDateTime.parse("2020-12-31T21:44:23Z"))
+                        .withInterval("jrcufmbgacnrgfdt")
+                        .withCountry("msps")
+                        .withRegion("mameub")
+                        .withZip("iqmlfvhlqcskkqj")
+                        .withApiId("huuonjkkxukg")
+                        .withOperationId("hvvpx")
+                        .withApiRegion("egcjojlleuid")
+                        .withSubscriptionId("tonvhgnhtmeplhb")
+                        .withCallCountSuccess(564003407)
+                        .withCallCountBlocked(99445401)
+                        .withCallCountFailed(1308169461)
+                        .withCallCountOther(1483176057)
+                        .withCallCountTotal(1930840208)
+                        .withBandwidth(198072889595745932L)
+                        .withCacheHitCount(160363776)
+                        .withCacheMissCount(1289020449)
+                        .withApiTimeAvg(8.438702159756417D)
+                        .withApiTimeMin(27.11506213905527D)
+                        .withApiTimeMax(1.4720208225651121D)
+                        .withServiceTimeAvg(33.33324204631717D)
+                        .withServiceTimeMin(59.67280042208093D)
+                        .withServiceTimeMax(26.587735611321595D)))
+                .withCount(4064161575681501942L)
+                .withNextLink("hvwlv");
         model = BinaryData.fromObject(model).toObject(ReportCollection.class);
-        Assertions.assertEquals("chnzrsbkkzo", model.value().get(0).name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-10T22:52:59Z"), model.value().get(0).timestamp());
-        Assertions.assertEquals("mnfmfwsxafofuw", model.value().get(0).interval());
-        Assertions.assertEquals("immovzwd", model.value().get(0).country());
-        Assertions.assertEquals("kkmvhzfovanyrva", model.value().get(0).region());
-        Assertions.assertEquals("tgelgwewikfy", model.value().get(0).zip());
-        Assertions.assertEquals("bvzo", model.value().get(0).apiId());
-        Assertions.assertEquals("x", model.value().get(0).operationId());
-        Assertions.assertEquals("m", model.value().get(0).apiRegion());
-        Assertions.assertEquals("mcwoxfaxd", model.value().get(0).subscriptionId());
-        Assertions.assertEquals(508434914, model.value().get(0).callCountSuccess());
-        Assertions.assertEquals(2045146808, model.value().get(0).callCountBlocked());
-        Assertions.assertEquals(1857407814, model.value().get(0).callCountFailed());
-        Assertions.assertEquals(829785504, model.value().get(0).callCountOther());
-        Assertions.assertEquals(1464125582, model.value().get(0).callCountTotal());
-        Assertions.assertEquals(7033583756566739721L, model.value().get(0).bandwidth());
-        Assertions.assertEquals(574618809, model.value().get(0).cacheHitCount());
-        Assertions.assertEquals(1992627485, model.value().get(0).cacheMissCount());
-        Assertions.assertEquals(33.04326656386544D, model.value().get(0).apiTimeAvg());
-        Assertions.assertEquals(31.063954715335072D, model.value().get(0).apiTimeMin());
-        Assertions.assertEquals(18.903407749538705D, model.value().get(0).apiTimeMax());
-        Assertions.assertEquals(82.71435178729172D, model.value().get(0).serviceTimeAvg());
-        Assertions.assertEquals(56.20450946235111D, model.value().get(0).serviceTimeMin());
-        Assertions.assertEquals(77.25084213043519D, model.value().get(0).serviceTimeMax());
-        Assertions.assertEquals(4251967743512546220L, model.count());
-        Assertions.assertEquals("kbdgddkrh", model.nextLink());
+        Assertions.assertEquals("htdereun", model.value().get(0).name());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T08:15:06Z"), model.value().get(0).timestamp());
+        Assertions.assertEquals("zwhpjlwyxedz", model.value().get(0).interval());
+        Assertions.assertEquals("xrfomcke", model.value().get(0).country());
+        Assertions.assertEquals("my", model.value().get(0).region());
+        Assertions.assertEquals("opxfjjtpdyzo", model.value().get(0).zip());
+        Assertions.assertEquals("qwvkgjpytpmpv", model.value().get(0).apiId());
+        Assertions.assertEquals("ogehluf", model.value().get(0).operationId());
+        Assertions.assertEquals("rtbnu", model.value().get(0).apiRegion());
+        Assertions.assertEquals("faxzsvbxxyjissk", model.value().get(0).subscriptionId());
+        Assertions.assertEquals(1058882971, model.value().get(0).callCountSuccess());
+        Assertions.assertEquals(1655715597, model.value().get(0).callCountBlocked());
+        Assertions.assertEquals(374629007, model.value().get(0).callCountFailed());
+        Assertions.assertEquals(227881834, model.value().get(0).callCountOther());
+        Assertions.assertEquals(70235365, model.value().get(0).callCountTotal());
+        Assertions.assertEquals(6068344326863653777L, model.value().get(0).bandwidth());
+        Assertions.assertEquals(1316757202, model.value().get(0).cacheHitCount());
+        Assertions.assertEquals(288451396, model.value().get(0).cacheMissCount());
+        Assertions.assertEquals(51.9617596021726D, model.value().get(0).apiTimeAvg());
+        Assertions.assertEquals(34.387175786373334D, model.value().get(0).apiTimeMin());
+        Assertions.assertEquals(17.223599977364934D, model.value().get(0).apiTimeMax());
+        Assertions.assertEquals(30.491917217237784D, model.value().get(0).serviceTimeAvg());
+        Assertions.assertEquals(6.446563907716252D, model.value().get(0).serviceTimeMin());
+        Assertions.assertEquals(13.333642292569492D, model.value().get(0).serviceTimeMax());
+        Assertions.assertEquals(4064161575681501942L, model.count());
+        Assertions.assertEquals("hvwlv", model.nextLink());
     }
 }

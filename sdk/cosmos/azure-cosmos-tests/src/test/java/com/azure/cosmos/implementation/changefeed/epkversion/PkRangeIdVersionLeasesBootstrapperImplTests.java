@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -72,6 +73,11 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Mockito.when(partitionSynchronizerMock.createMissingLeases(Mockito.any())).thenReturn(Mono.empty());
 
         LeaseStore leaseStoreMock = Mockito.mock(LeaseStore.class);
+
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+
+        changeFeedProcessorOptions.setLeasePrefix("testLease");
+
         Mockito
             .when(leaseStoreMock.isInitialized())
             .thenReturn(Mono.just(false))
@@ -94,6 +100,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             expireTIme,
             pkRangeIdVersionLeaseStoreManagerMock,
             epkRangeVersionLeaseStoreManagerMock,
+            changeFeedProcessorOptions,
             ChangeFeedMode.INCREMENTAL);
 
         bootstrapper.initialize().block();
@@ -114,6 +121,8 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Duration expireTIme = Duration.ofSeconds(5);
 
         PartitionSynchronizer partitionSynchronizerMock = Mockito.mock(PartitionSynchronizer.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptionsMock = Mockito.mock(ChangeFeedProcessorOptions.class);
+
         Mockito.when(partitionSynchronizerMock.createMissingLeases()).thenReturn(Mono.empty());
 
         LeaseStore leaseStoreMock = Mockito.mock(LeaseStore.class);
@@ -139,6 +148,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             expireTIme,
             pkRangeIdVersionLeaseStoreManagerMock,
             epkRangeVersionLeaseStoreManagerMock,
+            changeFeedProcessorOptionsMock,
             ChangeFeedMode.INCREMENTAL);
 
         bootstrapper.initialize().block();
@@ -156,6 +166,8 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
         Duration expireTIme = Duration.ofSeconds(5);
 
         PartitionSynchronizer partitionSynchronizerMock = Mockito.mock(PartitionSynchronizer.class);
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+
         Mockito.when(partitionSynchronizerMock.createMissingLeases(Mockito.any())).thenReturn(Mono.empty());
 
         LeaseStore leaseStoreMock = Mockito.mock(LeaseStore.class);
@@ -181,6 +193,7 @@ public class PkRangeIdVersionLeasesBootstrapperImplTests {
             expireTIme,
             pkRangeIdVersionLeaseStoreManagerMock,
             epkRangeVersionLeaseStoreManagerMock,
+            changeFeedProcessorOptions,
             ChangeFeedMode.INCREMENTAL);
 
         if (expectIllegalStateException) {

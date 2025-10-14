@@ -10,7 +10,7 @@ package com.azure.resourcemanager.keyvault.generated;
 public final class VaultsListBySubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/listVaultBySubscription.
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/listVaultBySubscription.
      * json
      */
     /**

@@ -45,6 +45,12 @@ public final class ConfigurationStorePropertiesUpdateParameters
      */
     private DataPlaneProxyProperties dataPlaneProxy;
 
+    /*
+     * The duration in seconds to retain new key value revisions. Defaults to 604800 (7 days) for Free SKU stores and
+     * 2592000 (30 days) for Standard SKU stores and Premium SKU stores.
+     */
+    private Long defaultKeyValueRevisionRetentionPeriodInSeconds;
+
     /**
      * Creates an instance of ConfigurationStorePropertiesUpdateParameters class.
      */
@@ -159,6 +165,32 @@ public final class ConfigurationStorePropertiesUpdateParameters
     }
 
     /**
+     * Get the defaultKeyValueRevisionRetentionPeriodInSeconds property: The duration in seconds to retain new key value
+     * revisions. Defaults to 604800 (7 days) for Free SKU stores and 2592000 (30 days) for Standard SKU stores and
+     * Premium SKU stores.
+     * 
+     * @return the defaultKeyValueRevisionRetentionPeriodInSeconds value.
+     */
+    public Long defaultKeyValueRevisionRetentionPeriodInSeconds() {
+        return this.defaultKeyValueRevisionRetentionPeriodInSeconds;
+    }
+
+    /**
+     * Set the defaultKeyValueRevisionRetentionPeriodInSeconds property: The duration in seconds to retain new key value
+     * revisions. Defaults to 604800 (7 days) for Free SKU stores and 2592000 (30 days) for Standard SKU stores and
+     * Premium SKU stores.
+     * 
+     * @param defaultKeyValueRevisionRetentionPeriodInSeconds the defaultKeyValueRevisionRetentionPeriodInSeconds value
+     * to set.
+     * @return the ConfigurationStorePropertiesUpdateParameters object itself.
+     */
+    public ConfigurationStorePropertiesUpdateParameters
+        withDefaultKeyValueRevisionRetentionPeriodInSeconds(Long defaultKeyValueRevisionRetentionPeriodInSeconds) {
+        this.defaultKeyValueRevisionRetentionPeriodInSeconds = defaultKeyValueRevisionRetentionPeriodInSeconds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -184,6 +216,8 @@ public final class ConfigurationStorePropertiesUpdateParameters
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeBooleanField("enablePurgeProtection", this.enablePurgeProtection);
         jsonWriter.writeJsonField("dataPlaneProxy", this.dataPlaneProxy);
+        jsonWriter.writeNumberField("defaultKeyValueRevisionRetentionPeriodInSeconds",
+            this.defaultKeyValueRevisionRetentionPeriodInSeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -218,6 +252,9 @@ public final class ConfigurationStorePropertiesUpdateParameters
                 } else if ("dataPlaneProxy".equals(fieldName)) {
                     deserializedConfigurationStorePropertiesUpdateParameters.dataPlaneProxy
                         = DataPlaneProxyProperties.fromJson(reader);
+                } else if ("defaultKeyValueRevisionRetentionPeriodInSeconds".equals(fieldName)) {
+                    deserializedConfigurationStorePropertiesUpdateParameters.defaultKeyValueRevisionRetentionPeriodInSeconds
+                        = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

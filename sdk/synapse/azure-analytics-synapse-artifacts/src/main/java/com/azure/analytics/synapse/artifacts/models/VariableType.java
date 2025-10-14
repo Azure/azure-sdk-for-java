@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
     /**
      * Static value String for VariableType.
      */
+    @Generated
     public static final VariableType STRING = fromString("String");
 
     /**
      * Static value Bool for VariableType.
      */
+    @Generated
     public static final VariableType BOOL = fromString("Bool");
 
     /**
      * Static value Boolean for VariableType.
      */
+    @Generated
     public static final VariableType BOOLEAN = fromString("Boolean");
 
     /**
      * Static value Array for VariableType.
      */
+    @Generated
     public static final VariableType ARRAY = fromString("Array");
 
     /**
@@ -36,6 +41,7 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VariableType() {
     }
@@ -46,6 +52,7 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
      * @param name a name to look for.
      * @return the corresponding VariableType.
      */
+    @Generated
     public static VariableType fromString(String name) {
         return fromString(name, VariableType.class);
     }
@@ -55,6 +62,7 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
      * 
      * @return known VariableType values.
      */
+    @Generated
     public static Collection<VariableType> values() {
         return values(VariableType.class);
     }

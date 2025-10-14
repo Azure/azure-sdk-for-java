@@ -12,21 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiBlocklistItemBulkRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiBlocklistItemBulkRequest model
-            = BinaryData.fromString("{\"name\":\"dcgzul\",\"properties\":{\"pattern\":\"rqzz\",\"isRegex\":true}}")
-                .toObject(RaiBlocklistItemBulkRequest.class);
-        Assertions.assertEquals("dcgzul", model.name());
-        Assertions.assertEquals("rqzz", model.properties().pattern());
-        Assertions.assertEquals(true, model.properties().isRegex());
+        RaiBlocklistItemBulkRequest model = BinaryData
+            .fromString("{\"name\":\"i\",\"properties\":{\"pattern\":\"oqytibyowbblgy\",\"isRegex\":false}}")
+            .toObject(RaiBlocklistItemBulkRequest.class);
+        Assertions.assertEquals("i", model.name());
+        Assertions.assertEquals("oqytibyowbblgy", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistItemBulkRequest model = new RaiBlocklistItemBulkRequest().withName("dcgzul")
-            .withProperties(new RaiBlocklistItemProperties().withPattern("rqzz").withIsRegex(true));
+        RaiBlocklistItemBulkRequest model = new RaiBlocklistItemBulkRequest().withName("i")
+            .withProperties(new RaiBlocklistItemProperties().withPattern("oqytibyowbblgy").withIsRegex(false));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemBulkRequest.class);
-        Assertions.assertEquals("dcgzul", model.name());
-        Assertions.assertEquals("rqzz", model.properties().pattern());
-        Assertions.assertEquals(true, model.properties().isRegex());
+        Assertions.assertEquals("i", model.name());
+        Assertions.assertEquals("oqytibyowbblgy", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
     }
 }

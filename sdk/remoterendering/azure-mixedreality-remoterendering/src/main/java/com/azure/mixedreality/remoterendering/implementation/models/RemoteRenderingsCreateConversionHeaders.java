@@ -5,6 +5,7 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class RemoteRenderingsCreateConversionHeaders {
     /*
      * The MS-CV property.
      */
+    @Generated
     private String msCV;
 
     private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
@@ -35,6 +37,7 @@ public final class RemoteRenderingsCreateConversionHeaders {
      * 
      * @return the msCV value.
      */
+    @Generated
     public String getMsCV() {
         return this.msCV;
     }
@@ -45,6 +48,7 @@ public final class RemoteRenderingsCreateConversionHeaders {
      * @param msCV the msCV value to set.
      * @return the RemoteRenderingsCreateConversionHeaders object itself.
      */
+    @Generated
     public RemoteRenderingsCreateConversionHeaders setMsCV(String msCV) {
         this.msCV = msCV;
         return this;

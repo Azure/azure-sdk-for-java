@@ -12,15 +12,15 @@ public final class IssueCommentCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueCommentCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"text\":\"aedorvvmqf\",\"createdDate\":\"2021-07-17T03:29:04Z\",\"userId\":\"gbdg\"},\"id\":\"umgxdgdhpab\",\"name\":\"dexjddvjs\",\"type\":\"qwotmmwllcol\"},{\"properties\":{\"text\":\"sxap\",\"createdDate\":\"2021-05-30T01:29:06Z\",\"userId\":\"hexcgjokj\"},\"id\":\"jnhvlqjbekpeeks\",\"name\":\"bksdqhjvyklxesl\",\"type\":\"hhus\"},{\"properties\":{\"text\":\"poq\",\"createdDate\":\"2021-07-15T20:43:24Z\",\"userId\":\"nwqjwgokn\"},\"id\":\"ejjjkxybwfdb\",\"name\":\"jbzten\",\"type\":\"vkzykjtjknsxf\"}],\"count\":5476162260043387200,\"nextLink\":\"dpkupnqrmgjf\"}")
+            "{\"value\":[{\"properties\":{\"text\":\"knokzw\",\"createdDate\":\"2021-06-18T08:31:21Z\",\"userId\":\"r\"},\"id\":\"tixldzyyfytpqs\",\"name\":\"x\",\"type\":\"mmpuj\"},{\"properties\":{\"text\":\"yqlkju\",\"createdDate\":\"2021-04-18T22:54:52Z\",\"userId\":\"bmslzoyov\"},\"id\":\"zdbpqv\",\"name\":\"befgvmxn\",\"type\":\"kcvtl\"},{\"properties\":{\"text\":\"seskvcuar\",\"createdDate\":\"2020-12-23T14:59:07Z\",\"userId\":\"unlpirykycndz\"},\"id\":\"qi\",\"name\":\"jreuykbbmn\",\"type\":\"aglt\"}],\"count\":3450372691533336756,\"nextLink\":\"onql\"}")
             .toObject(IssueCommentCollection.class);
-        Assertions.assertEquals(5476162260043387200L, model.count());
+        Assertions.assertEquals(3450372691533336756L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueCommentCollection model = new IssueCommentCollection().withCount(5476162260043387200L);
+        IssueCommentCollection model = new IssueCommentCollection().withCount(3450372691533336756L);
         model = BinaryData.fromObject(model).toObject(IssueCommentCollection.class);
-        Assertions.assertEquals(5476162260043387200L, model.count());
+        Assertions.assertEquals(3450372691533336756L, model.count());
     }
 }

@@ -6,11 +6,13 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PublishHeaders;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -53,6 +56,8 @@ class QuickPulseDataSender implements Runnable {
         this.qpStatus = QuickPulseStatus.QP_IS_OFF;
         this.instrumentationKey = instrumentationKey;
         this.configuration = configuration;
+        logger.verbose("QuickPulseDataSender initialized with endpointUrl: {}, instrumentationKey: {}",
+            Objects.toString(endpointUrl.get()), Objects.toString(IKeyMasker.mask(instrumentationKey.get())));
     }
 
     @Override
@@ -72,6 +77,7 @@ class QuickPulseDataSender implements Runnable {
             }
 
             long sendTime = System.nanoTime();
+            // should not include "QuickPulseService.svc/"
             String endpointPrefix
                 = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
             // TODO (harskaur): for a future PR revisit caching & retry mechanism for failed post requests (shouldn't retry), send "cached" data points in the next post
@@ -79,13 +85,19 @@ class QuickPulseDataSender implements Runnable {
             dataPointList.add(point);
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
+            String etag = configuration.get().getETag();
+
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.verbose("Attempting to send data points to quickpulse with etag {}: {}", etag,
+                    printListOfMonitoringPoints(dataPointList));
+            }
+
             try {
-                // TODO (harskaur): remove logging when manual testing done
-                logger.verbose("Monitoring point: {}", point.toJsonString());
-                logger.verbose("etag: {}", configuration.get().getETag());
+                // the swagger will add on the QuickPulseService.svc/ when creating the request.
+                logger.verbose("About to publish to quickpulse with the endpoint prefix: {}", endpointPrefix);
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
-                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(),
-                        configuration.get().getETag(), transmissionTimeInTicks, dataPointList)
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), etag,
+                        transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
@@ -105,20 +117,19 @@ class QuickPulseDataSender implements Runnable {
 
                 lastValidRequestTimeNs = sendTime;
                 CollectionConfigurationInfo body = responseMono.getValue();
-                if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                if (body != null && !etag.equals(body.getETag())) {
                     configuration.set(new FilteringConfiguration(body));
-                    // TODO (harskaur): remove logging when manual testing done
                     try {
-                        logger.verbose("passed in config {}", body.toJsonString());
+                        logger.verbose("Received a new live metrics filtering configuration from post response: {}",
+                            body.toJsonString());
                     } catch (IOException e) {
-                        logger.error(e.getMessage());
+                        logger.verbose(e.getMessage());
                     }
                 }
 
-            } catch (RuntimeException | IOException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
+            } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);
-                logger.error(
-                    "QuickPulseDataSender received a service error while attempting to send data to quickpulse {}",
+                logger.error("QuickPulseDataSender received an error while attempting to send data to quickpulse {}",
                     e.getMessage());
             }
 
@@ -134,6 +145,20 @@ class QuickPulseDataSender implements Runnable {
         if (timeFromlastValidRequestTimeNs >= 20.0) {
             qpStatus = QuickPulseStatus.ERROR;
         }
+    }
+
+    private String printListOfMonitoringPoints(List<MonitoringDataPoint> points) {
+        StringBuilder dataPointsPrint = new StringBuilder("[");
+        for (MonitoringDataPoint p : points) {
+            try {
+                dataPointsPrint.append(p.toJsonString());
+                dataPointsPrint.append("\n");
+            } catch (IOException e) {
+                logger.verbose(e.getMessage());
+            }
+        }
+        dataPointsPrint.append("]");
+        return dataPointsPrint.toString();
     }
 
     public void setRedirectEndpointPrefix(String endpointPrefix) {

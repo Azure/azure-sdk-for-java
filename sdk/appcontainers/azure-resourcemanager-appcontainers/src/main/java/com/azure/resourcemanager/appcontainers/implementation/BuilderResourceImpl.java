@@ -212,6 +212,6 @@ public final class BuilderResourceImpl implements BuilderResource, BuilderResour
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

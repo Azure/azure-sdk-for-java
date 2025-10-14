@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
-
 import java.util.Map;
 
 public class FeedOperationContextForCircuitBreaker {

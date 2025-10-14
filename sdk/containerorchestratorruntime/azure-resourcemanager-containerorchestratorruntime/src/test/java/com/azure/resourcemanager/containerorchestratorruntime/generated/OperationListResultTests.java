@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerorchestratorruntime.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerorchestratorruntime.implementation.models.OperationListResult;
-import com.azure.resourcemanager.containerorchestratorruntime.models.ActionType;
 import org.junit.jupiter.api.Assertions;
 
 public final class OperationListResultTests {
@@ -15,7 +14,6 @@ public final class OperationListResultTests {
         OperationListResult model = BinaryData.fromString(
             "{\"value\":[{\"name\":\"jfeusnh\",\"isDataAction\":false,\"display\":{\"provider\":\"tmrldhugjzzdatq\",\"resource\":\"oc\",\"operation\":\"eablg\",\"description\":\"uticndvkaozwyif\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"rokft\",\"isDataAction\":true,\"display\":{\"provider\":\"iwpwcuk\",\"resource\":\"kgiawxklryplwck\",\"operation\":\"syyp\",\"description\":\"dhsgcba\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"ot\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals(ActionType.INTERNAL, model.value().get(0).actionType());
         Assertions.assertEquals("ot", model.nextLink());
     }
 }

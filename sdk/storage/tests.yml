@@ -1,4 +1,7 @@
 trigger: none
 
-stages:
-  - template: /sdk/storage/tests-template.yml
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - template: /sdk/storage/tests-template.yml

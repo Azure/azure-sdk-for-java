@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,166 +15,199 @@ public final class GuidanceManeuver extends ExpandableStringEnum<GuidanceManeuve
     /**
      * You have arrived.
      */
+    @Generated
     public static final GuidanceManeuver ARRIVE = fromString("ARRIVE");
 
     /**
      * You have arrived. Your destination is on the left.
      */
+    @Generated
     public static final GuidanceManeuver ARRIVE_LEFT = fromString("ARRIVE_LEFT");
 
     /**
      * You have arrived. Your destination is on the right.
      */
+    @Generated
     public static final GuidanceManeuver ARRIVE_RIGHT = fromString("ARRIVE_RIGHT");
 
     /**
      * Leave.
      */
+    @Generated
     public static final GuidanceManeuver DEPART = fromString("DEPART");
 
     /**
      * Keep straight on.
      */
+    @Generated
     public static final GuidanceManeuver STRAIGHT = fromString("STRAIGHT");
 
     /**
      * Keep right.
      */
+    @Generated
     public static final GuidanceManeuver KEEP_RIGHT = fromString("KEEP_RIGHT");
 
     /**
      * Bear right.
      */
+    @Generated
     public static final GuidanceManeuver BEAR_RIGHT = fromString("BEAR_RIGHT");
 
     /**
      * Turn right.
      */
+    @Generated
     public static final GuidanceManeuver TURN_RIGHT = fromString("TURN_RIGHT");
 
     /**
      * Turn sharp right.
      */
+    @Generated
     public static final GuidanceManeuver SHARP_RIGHT = fromString("SHARP_RIGHT");
 
     /**
      * Keep left.
      */
+    @Generated
     public static final GuidanceManeuver KEEP_LEFT = fromString("KEEP_LEFT");
 
     /**
      * Bear left.
      */
+    @Generated
     public static final GuidanceManeuver BEAR_LEFT = fromString("BEAR_LEFT");
 
     /**
      * Turn left.
      */
+    @Generated
     public static final GuidanceManeuver TURN_LEFT = fromString("TURN_LEFT");
 
     /**
      * Turn sharp left.
      */
+    @Generated
     public static final GuidanceManeuver SHARP_LEFT = fromString("SHARP_LEFT");
 
     /**
      * Make a U-turn.
      */
+    @Generated
     public static final GuidanceManeuver MAKE_UTURN = fromString("MAKE_UTURN");
 
     /**
      * Take the motorway.
      */
+    @Generated
     public static final GuidanceManeuver ENTER_MOTORWAY = fromString("ENTER_MOTORWAY");
 
     /**
      * Take the freeway.
      */
+    @Generated
     public static final GuidanceManeuver ENTER_FREEWAY = fromString("ENTER_FREEWAY");
 
     /**
      * Take the highway.
      */
+    @Generated
     public static final GuidanceManeuver ENTER_HIGHWAY = fromString("ENTER_HIGHWAY");
 
     /**
      * Take the exit.
      */
+    @Generated
     public static final GuidanceManeuver TAKE_EXIT = fromString("TAKE_EXIT");
 
     /**
      * Take the left exit.
      */
+    @Generated
     public static final GuidanceManeuver MOTORWAY_EXIT_LEFT = fromString("MOTORWAY_EXIT_LEFT");
 
     /**
      * Take the right exit.
      */
+    @Generated
     public static final GuidanceManeuver MOTORWAY_EXIT_RIGHT = fromString("MOTORWAY_EXIT_RIGHT");
 
     /**
      * Take the ferry.
      */
+    @Generated
     public static final GuidanceManeuver TAKE_FERRY = fromString("TAKE_FERRY");
 
     /**
      * Cross the roundabout.
      */
+    @Generated
     public static final GuidanceManeuver ROUNDABOUT_CROSS = fromString("ROUNDABOUT_CROSS");
 
     /**
      * At the roundabout take the exit on the right.
      */
+    @Generated
     public static final GuidanceManeuver ROUNDABOUT_RIGHT = fromString("ROUNDABOUT_RIGHT");
 
     /**
      * At the roundabout take the exit on the left.
      */
+    @Generated
     public static final GuidanceManeuver ROUNDABOUT_LEFT = fromString("ROUNDABOUT_LEFT");
 
     /**
      * Go around the roundabout.
      */
+    @Generated
     public static final GuidanceManeuver ROUNDABOUT_BACK = fromString("ROUNDABOUT_BACK");
 
     /**
      * Try to make a U-turn.
      */
+    @Generated
     public static final GuidanceManeuver TRY_MAKE_UTURN = fromString("TRY_MAKE_UTURN");
 
     /**
      * Follow.
      */
+    @Generated
     public static final GuidanceManeuver FOLLOW = fromString("FOLLOW");
 
     /**
      * Switch to the parallel road.
      */
+    @Generated
     public static final GuidanceManeuver SWITCH_PARALLEL_ROAD = fromString("SWITCH_PARALLEL_ROAD");
 
     /**
      * Switch to the main road.
      */
+    @Generated
     public static final GuidanceManeuver SWITCH_MAIN_ROAD = fromString("SWITCH_MAIN_ROAD");
 
     /**
      * Take the ramp.
      */
+    @Generated
     public static final GuidanceManeuver ENTRANCE_RAMP = fromString("ENTRANCE_RAMP");
 
     /**
      * You have reached the waypoint. It is on the left.
      */
+    @Generated
     public static final GuidanceManeuver WAYPOINT_LEFT = fromString("WAYPOINT_LEFT");
 
     /**
      * You have reached the waypoint. It is on the right.
      */
+    @Generated
     public static final GuidanceManeuver WAYPOINT_RIGHT = fromString("WAYPOINT_RIGHT");
 
     /**
      * You have reached the waypoint.
      */
+    @Generated
     public static final GuidanceManeuver WAYPOINT_REACHED = fromString("WAYPOINT_REACHED");
 
     /**
@@ -181,6 +215,7 @@ public final class GuidanceManeuver extends ExpandableStringEnum<GuidanceManeuve
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public GuidanceManeuver() {
     }
@@ -191,6 +226,7 @@ public final class GuidanceManeuver extends ExpandableStringEnum<GuidanceManeuve
      * @param name a name to look for.
      * @return the corresponding GuidanceManeuver.
      */
+    @Generated
     public static GuidanceManeuver fromString(String name) {
         return fromString(name, GuidanceManeuver.class);
     }
@@ -200,6 +236,7 @@ public final class GuidanceManeuver extends ExpandableStringEnum<GuidanceManeuve
      * 
      * @return known GuidanceManeuver values.
      */
+    @Generated
     public static Collection<GuidanceManeuver> values() {
         return values(GuidanceManeuver.class);
     }

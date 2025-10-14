@@ -20,18 +20,26 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
     implements JsonSerializable<StandbyVirtualMachinePoolRuntimeViewResourceProperties> {
     /*
      * A list containing the counts of virtual machines in each possible power state for each zone if enabled, as known
-     * by the StandbyPool resource provider.
-     * If zones are not enabled on the attached VMSS, the list will contain a single entry with null zone values.
-     * Note: any updates to pool resources outside of StandbyPoolRP (i.e deleting a VM through portal) are not reflected
-     * here.
-     * Note: any resources in the Running state may still be installing extensions / not fully provisioned.
+     * by the StandbyPool resource provider. If zones are not enabled on the attached VMSS, the list will contain a
+     * single entry without zone values. Note: any resources in the Running state may still be installing extensions /
+     * not fully provisioned.
      */
     private List<VirtualMachineInstanceCountSummary> instanceCountSummary;
+
+    /*
+     * Display status of the standby pool
+     */
+    private PoolStatus status;
 
     /*
      * Displays the provisioning state of the standby pool
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Displays prediction information of the standby pool
+     */
+    private StandbyVirtualMachinePoolPrediction prediction;
 
     /**
      * Creates an instance of StandbyVirtualMachinePoolRuntimeViewResourceProperties class.
@@ -41,16 +49,23 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
 
     /**
      * Get the instanceCountSummary property: A list containing the counts of virtual machines in each possible power
-     * state for each zone if enabled, as known by the StandbyPool resource provider.
-     * If zones are not enabled on the attached VMSS, the list will contain a single entry with null zone values.
-     * Note: any updates to pool resources outside of StandbyPoolRP (i.e deleting a VM through portal) are not reflected
-     * here.
-     * Note: any resources in the Running state may still be installing extensions / not fully provisioned.
+     * state for each zone if enabled, as known by the StandbyPool resource provider. If zones are not enabled on the
+     * attached VMSS, the list will contain a single entry without zone values. Note: any resources in the Running state
+     * may still be installing extensions / not fully provisioned.
      * 
      * @return the instanceCountSummary value.
      */
     public List<VirtualMachineInstanceCountSummary> instanceCountSummary() {
         return this.instanceCountSummary;
+    }
+
+    /**
+     * Get the status property: Display status of the standby pool.
+     * 
+     * @return the status value.
+     */
+    public PoolStatus status() {
+        return this.status;
     }
 
     /**
@@ -63,14 +78,12 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the prediction property: Displays prediction information of the standby pool.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the prediction value.
      */
-    public void validate() {
-        if (instanceCountSummary() != null) {
-            instanceCountSummary().forEach(e -> e.validate());
-        }
+    public StandbyVirtualMachinePoolPrediction prediction() {
+        return this.prediction;
     }
 
     /**
@@ -105,9 +118,15 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
                         = reader.readArray(reader1 -> VirtualMachineInstanceCountSummary.fromJson(reader1));
                     deserializedStandbyVirtualMachinePoolRuntimeViewResourceProperties.instanceCountSummary
                         = instanceCountSummary;
+                } else if ("status".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolRuntimeViewResourceProperties.status
+                        = PoolStatus.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStandbyVirtualMachinePoolRuntimeViewResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("prediction".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolRuntimeViewResourceProperties.prediction
+                        = StandbyVirtualMachinePoolPrediction.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

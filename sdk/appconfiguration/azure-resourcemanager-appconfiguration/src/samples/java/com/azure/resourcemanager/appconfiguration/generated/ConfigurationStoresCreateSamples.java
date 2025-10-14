@@ -20,7 +20,7 @@ import java.util.Map;
 public final class ConfigurationStoresCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-06-01/examples/
      * ConfigurationStoresCreate.json
      */
     /**
@@ -41,7 +41,7 @@ public final class ConfigurationStoresCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-06-01/examples/
      * ConfigurationStoresCreateWithIdentity.json
      */
     /**
@@ -66,7 +66,7 @@ public final class ConfigurationStoresCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-06-01/examples/
      * ConfigurationStoresCreateWithDataPlaneProxy.json
      */
     /**
@@ -88,7 +88,7 @@ public final class ConfigurationStoresCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-06-01/examples/
      * ConfigurationStoresCreateWithLocalAuthDisabled.json
      */
     /**
@@ -104,6 +104,8 @@ public final class ConfigurationStoresCreateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName("Standard"))
             .withDisableLocalAuth(true)
+            .withDataPlaneProxy(new DataPlaneProxyProperties().withAuthenticationMode(AuthenticationMode.PASS_THROUGH)
+                .withPrivateLinkDelegation(PrivateLinkDelegation.DISABLED))
             .create();
     }
 

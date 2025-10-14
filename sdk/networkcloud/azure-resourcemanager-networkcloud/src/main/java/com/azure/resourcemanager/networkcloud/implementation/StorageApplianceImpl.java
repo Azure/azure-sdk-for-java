@@ -54,6 +54,10 @@ public final class StorageApplianceImpl
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -163,6 +167,14 @@ public final class StorageApplianceImpl
 
     private String storageApplianceName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private StorageAppliancePatchParameters updateStorageApplianceUpdateParameters;
 
     public StorageApplianceImpl withExistingResourceGroup(String resourceGroupName) {
@@ -173,14 +185,16 @@ public final class StorageApplianceImpl
     public StorageAppliance create() {
         this.innerObject = serviceManager.serviceClient()
             .getStorageAppliances()
-            .createOrUpdate(resourceGroupName, storageApplianceName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, storageApplianceName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public StorageAppliance create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getStorageAppliances()
-            .createOrUpdate(resourceGroupName, storageApplianceName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, storageApplianceName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -188,9 +202,13 @@ public final class StorageApplianceImpl
         this.innerObject = new StorageApplianceInner();
         this.serviceManager = serviceManager;
         this.storageApplianceName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public StorageApplianceImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateStorageApplianceUpdateParameters = new StorageAppliancePatchParameters();
         return this;
     }
@@ -198,14 +216,16 @@ public final class StorageApplianceImpl
     public StorageAppliance apply() {
         this.innerObject = serviceManager.serviceClient()
             .getStorageAppliances()
-            .update(resourceGroupName, storageApplianceName, updateStorageApplianceUpdateParameters, Context.NONE);
+            .update(resourceGroupName, storageApplianceName, updateIfMatch, updateIfNoneMatch,
+                updateStorageApplianceUpdateParameters, Context.NONE);
         return this;
     }
 
     public StorageAppliance apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getStorageAppliances()
-            .update(resourceGroupName, storageApplianceName, updateStorageApplianceUpdateParameters, context);
+            .update(resourceGroupName, storageApplianceName, updateIfMatch, updateIfNoneMatch,
+                updateStorageApplianceUpdateParameters, context);
         return this;
     }
 
@@ -310,7 +330,27 @@ public final class StorageApplianceImpl
         }
     }
 
+    public StorageApplianceImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public StorageApplianceImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

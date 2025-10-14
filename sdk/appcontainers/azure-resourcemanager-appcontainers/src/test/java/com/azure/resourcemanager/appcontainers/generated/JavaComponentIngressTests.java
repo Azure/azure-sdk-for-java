@@ -11,7 +11,7 @@ public final class JavaComponentIngressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentIngress model
-            = BinaryData.fromString("{\"fqdn\":\"gevgwmse\"}").toObject(JavaComponentIngress.class);
+            = BinaryData.fromString("{\"fqdn\":\"ititjnsxza\"}").toObject(JavaComponentIngress.class);
     }
 
     @org.junit.jupiter.api.Test

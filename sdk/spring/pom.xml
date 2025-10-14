@@ -40,6 +40,7 @@
         <module>spring-cloud-azure-starter-eventgrid</module>
         <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
+        <module>spring-cloud-azure-starter-keyvault-jca</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
@@ -77,7 +78,6 @@
     <profile>
       <id>dev</id>
       <modules>
-        <module>../../eng/code-quality-reports</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
@@ -104,6 +104,7 @@
         <module>spring-cloud-azure-starter-eventgrid</module>
         <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
+        <module>spring-cloud-azure-starter-keyvault-jca</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
@@ -137,7 +138,6 @@
     <profile>
       <id>monitor</id>
       <modules>
-        <module>../../eng/code-quality-reports</module>
         <module>spring-cloud-azure-starter-monitor</module>
         <module>spring-cloud-azure-starter-monitor-test</module>
       </modules>

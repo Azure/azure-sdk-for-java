@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VerifierWorkspacesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VerifierWorkspaceDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VerifierWorkspaceDelete.json
      */
     /**
      * Sample code: VerifierWorkspaceDelete.
@@ -22,6 +22,6 @@ public final class VerifierWorkspacesDeleteSamples {
             .manager()
             .serviceClient()
             .getVerifierWorkspaces()
-            .delete("rg1", "testNetworkManager", "testWorkspace", com.azure.core.util.Context.NONE);
+            .delete("rg1", "testNetworkManager", "testWorkspace", null, com.azure.core.util.Context.NONE);
     }
 }

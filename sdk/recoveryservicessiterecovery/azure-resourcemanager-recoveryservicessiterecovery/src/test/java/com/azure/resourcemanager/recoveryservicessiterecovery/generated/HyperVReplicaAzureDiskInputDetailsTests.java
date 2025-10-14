@@ -13,24 +13,27 @@ public final class HyperVReplicaAzureDiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureDiskInputDetails model = BinaryData.fromString(
-            "{\"diskId\":\"jlnsj\",\"logStorageAccountId\":\"ju\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"xqvmvuay\"}")
+            "{\"diskId\":\"jxljtxbusq\",\"logStorageAccountId\":\"xxniuisdzhgbd\",\"diskType\":\"Premium_ZRS\",\"diskEncryptionSetId\":\"gsecnadbuwqrgx\",\"sectorSizeInBytes\":630471294}")
             .toObject(HyperVReplicaAzureDiskInputDetails.class);
-        Assertions.assertEquals("jlnsj", model.diskId());
-        Assertions.assertEquals("ju", model.logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
-        Assertions.assertEquals("xqvmvuay", model.diskEncryptionSetId());
+        Assertions.assertEquals("jxljtxbusq", model.diskId());
+        Assertions.assertEquals("xxniuisdzhgbd", model.logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.PREMIUM_ZRS, model.diskType());
+        Assertions.assertEquals("gsecnadbuwqrgx", model.diskEncryptionSetId());
+        Assertions.assertEquals(630471294, model.sectorSizeInBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureDiskInputDetails model = new HyperVReplicaAzureDiskInputDetails().withDiskId("jlnsj")
-            .withLogStorageAccountId("ju")
-            .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-            .withDiskEncryptionSetId("xqvmvuay");
+        HyperVReplicaAzureDiskInputDetails model = new HyperVReplicaAzureDiskInputDetails().withDiskId("jxljtxbusq")
+            .withLogStorageAccountId("xxniuisdzhgbd")
+            .withDiskType(DiskAccountType.PREMIUM_ZRS)
+            .withDiskEncryptionSetId("gsecnadbuwqrgx")
+            .withSectorSizeInBytes(630471294);
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureDiskInputDetails.class);
-        Assertions.assertEquals("jlnsj", model.diskId());
-        Assertions.assertEquals("ju", model.logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
-        Assertions.assertEquals("xqvmvuay", model.diskEncryptionSetId());
+        Assertions.assertEquals("jxljtxbusq", model.diskId());
+        Assertions.assertEquals("xxniuisdzhgbd", model.logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.PREMIUM_ZRS, model.diskType());
+        Assertions.assertEquals("gsecnadbuwqrgx", model.diskEncryptionSetId());
+        Assertions.assertEquals(630471294, model.sectorSizeInBytes());
     }
 }

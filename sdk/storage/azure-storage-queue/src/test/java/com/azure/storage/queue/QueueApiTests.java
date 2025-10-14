@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -10,6 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -43,6 +46,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -918,4 +922,58 @@ public class QueueApiTests extends QueueTestBase {
 
         assertNotNull(aadQueue.getProperties());
     }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        QueueServiceClient service = getOAuthQueueServiceClient();
+        queueClient.createIfNotExists();
+        queueClient = service.getQueueClient(queueName);
+
+        PagedIterable<QueueSignedIdentifier> response = queueClient.getAccessPolicy();
+        queueClient.setAccessPolicy(response.stream().collect(Collectors.toList()));
+    }
+
+    @SuppressWarnings("deprecation")
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 5, 12 })
+    public void getPropertiesApproximateMessagesCountLong(int messageCount) {
+        queueClient.createIfNotExists();
+
+        for (int i = 0; i < messageCount; i++) {
+            queueClient.sendMessage("Message " + (i + 1));
+        }
+
+        Response<QueueProperties> queueProperties = queueClient.getPropertiesWithResponse(null, null);
+
+        assertNotNull(queueProperties);
+        assertEquals(messageCount, queueProperties.getValue().getApproximateMessagesCount());
+        assertEquals(messageCount, queueProperties.getValue().getApproximateMessagesCountLong());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void getPropertiesApproximateMessagesCountOverflow() {
+        QueueProperties properties = new QueueProperties(null, Long.MAX_VALUE);
+        assertEquals(Long.MAX_VALUE, properties.getApproximateMessagesCountLong());
+        int expectedOverflowValue = (int) Long.MAX_VALUE;
+        assertEquals(expectedOverflowValue, properties.getApproximateMessagesCount());
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        QueueServiceClient serviceClient
+            = instrument(new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
+
+        QueueClient queueClient = serviceClient.getQueueClient(getRandomName(60));
+
+        QueueStorageException exception = assertThrows(QueueStorageException.class, queueClient::createIfNotExists);
+
+        assertEquals(400, exception.getStatusCode());
+        assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+    }
+
 }

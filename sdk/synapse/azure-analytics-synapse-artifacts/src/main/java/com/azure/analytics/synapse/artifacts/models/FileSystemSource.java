@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,23 +21,27 @@ public final class FileSystemSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "FileSystemSource";
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object recursive;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of FileSystemSource class.
      */
+    @Generated
     public FileSystemSource() {
     }
 
@@ -45,6 +50,7 @@ public final class FileSystemSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public final class FileSystemSource extends CopySource {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Object getRecursive() {
         return this.recursive;
     }
@@ -67,6 +74,7 @@ public final class FileSystemSource extends CopySource {
      * @param recursive the recursive value to set.
      * @return the FileSystemSource object itself.
      */
+    @Generated
     public FileSystemSource setRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
@@ -78,6 +86,7 @@ public final class FileSystemSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -89,6 +98,7 @@ public final class FileSystemSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the FileSystemSource object itself.
      */
+    @Generated
     public FileSystemSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -97,6 +107,7 @@ public final class FileSystemSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileSystemSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -106,6 +117,7 @@ public final class FileSystemSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileSystemSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -115,6 +127,7 @@ public final class FileSystemSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FileSystemSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -124,15 +137,26 @@ public final class FileSystemSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -149,6 +173,7 @@ public final class FileSystemSource extends CopySource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the FileSystemSource.
      */
+    @Generated
     public static FileSystemSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FileSystemSource deserializedFileSystemSource = new FileSystemSource();

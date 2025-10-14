@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientUserContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientUserContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"userId\":\"robzzxezmnrkjgpj\"},\"id\":\"uxsphlokfpm\",\"name\":\"jpdvzvfbhwbdquf\",\"type\":\"cgnrglaqrwy\"}")
+        RecipientUserContractInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"userId\":\"lwk\"},\"id\":\"fowzkroyr\",\"name\":\"urxf\",\"type\":\"zqjim\"}")
             .toObject(RecipientUserContractInner.class);
-        Assertions.assertEquals("robzzxezmnrkjgpj", model.userId());
+        Assertions.assertEquals("lwk", model.userId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecipientUserContractInner model = new RecipientUserContractInner().withUserId("robzzxezmnrkjgpj");
+        RecipientUserContractInner model = new RecipientUserContractInner().withUserId("lwk");
         model = BinaryData.fromObject(model).toObject(RecipientUserContractInner.class);
-        Assertions.assertEquals("robzzxezmnrkjgpj", model.userId());
+        Assertions.assertEquals("lwk", model.userId());
     }
 }

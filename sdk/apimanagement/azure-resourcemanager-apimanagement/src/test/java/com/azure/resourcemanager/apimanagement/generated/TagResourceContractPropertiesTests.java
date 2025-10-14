@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TagResourceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagResourceContractProperties model = BinaryData.fromString("{\"id\":\"dqllzsauzpjlxeeh\",\"name\":\"iqhzlr\"}")
+        TagResourceContractProperties model = BinaryData.fromString("{\"id\":\"bxdukecpxdazvd\",\"name\":\"tmmkosz\"}")
             .toObject(TagResourceContractProperties.class);
-        Assertions.assertEquals("dqllzsauzpjlxeeh", model.id());
-        Assertions.assertEquals("iqhzlr", model.name());
+        Assertions.assertEquals("bxdukecpxdazvd", model.id());
+        Assertions.assertEquals("tmmkosz", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TagResourceContractProperties model
-            = new TagResourceContractProperties().withId("dqllzsauzpjlxeeh").withName("iqhzlr");
+            = new TagResourceContractProperties().withId("bxdukecpxdazvd").withName("tmmkosz");
         model = BinaryData.fromObject(model).toObject(TagResourceContractProperties.class);
-        Assertions.assertEquals("dqllzsauzpjlxeeh", model.id());
-        Assertions.assertEquals("iqhzlr", model.name());
+        Assertions.assertEquals("bxdukecpxdazvd", model.id());
+        Assertions.assertEquals("tmmkosz", model.name());
     }
 }

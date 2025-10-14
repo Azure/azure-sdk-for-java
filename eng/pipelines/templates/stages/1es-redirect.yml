@@ -11,7 +11,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20241126.1
+      ref: refs/tags/azure-sdk-build-tools_20250808.1
 
 parameters:
 - name: stages
@@ -45,9 +45,16 @@ extends:
         autobaseline:
           isMainPipeline: true
           enableForGitHub: true
+      codeql:
+        compiled:
+          enabled: false
+          justificationForDisabling: "To reduce redundant CG runs across all our pipeline jobs we are disabling and only running in our main build job."
+      componentgovernance:
+        enabled: false
+        justificationForDisabling: "To reduce redundant CG runs across all our pipeline jobs we are disabling and only running in our main build job."
       sourceAnalysisPool:
-        name: azsdk-pool-mms-win-2022-general
-        image: azsdk-pool-mms-win-2022-1espt
+        name: azsdk-pool
+        image: windows-2022
         os: windows
       sourceRepositoriesToScan:
         exclude:
@@ -64,10 +71,6 @@ extends:
       eslint:
         enabled: false
         justificationForDisabling: 'ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3499746'
-      codeql:
-        compiled:
-          enabled: false
-          justificationForDisabling: CodeQL times our pipelines out by running for 2+ hours before being force canceled.
       psscriptanalyzer:
         compiled: true
         break: true
@@ -75,7 +78,5 @@ extends:
       credscan:
         suppressionsFile: $(Build.SourcesDirectory)/eng/CredScanSuppression.json
         scanFolder: $(Build.SourcesDirectory)/credscan.tsv
-        toolVersion: 2.3.12.23
-        baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
 
     stages: ${{ parameters.stages }}

@@ -244,7 +244,7 @@ public interface CodeSigningAccount {
              * @param sku SKU of the trusted signing account.
              * @return the next definition stage.
              */
-            Update withSku(AccountSku sku);
+            Update withSku(AccountSkuPatch sku);
         }
     }
 

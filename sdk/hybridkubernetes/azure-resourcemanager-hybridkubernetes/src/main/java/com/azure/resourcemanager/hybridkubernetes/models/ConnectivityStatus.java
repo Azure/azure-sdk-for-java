@@ -32,6 +32,11 @@ public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityS
     public static final ConnectivityStatus EXPIRED = fromString("Expired");
 
     /**
+     * Static value AgentNotInstalled for ConnectivityStatus.
+     */
+    public static final ConnectivityStatus AGENT_NOT_INSTALLED = fromString("AgentNotInstalled");
+
+    /**
      * Creates a new instance of ConnectivityStatus value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

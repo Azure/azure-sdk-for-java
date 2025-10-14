@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
     /*
      * Pipeline reference.
      */
+    @Generated
     private PipelineReference pipelineReference;
 
     /*
      * Pipeline parameters.
      */
+    @Generated
     private Map<String, Object> parameters;
 
     /**
      * Creates an instance of TriggerPipelineReference class.
      */
+    @Generated
     public TriggerPipelineReference() {
     }
 
@@ -38,6 +42,7 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
      * 
      * @return the pipelineReference value.
      */
+    @Generated
     public PipelineReference getPipelineReference() {
         return this.pipelineReference;
     }
@@ -48,6 +53,7 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
      * @param pipelineReference the pipelineReference value to set.
      * @return the TriggerPipelineReference object itself.
      */
+    @Generated
     public TriggerPipelineReference setPipelineReference(PipelineReference pipelineReference) {
         this.pipelineReference = pipelineReference;
         return this;
@@ -58,6 +64,7 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -68,6 +75,7 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
      * @param parameters the parameters value to set.
      * @return the TriggerPipelineReference object itself.
      */
+    @Generated
     public TriggerPipelineReference setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -76,6 +84,7 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class TriggerPipelineReference implements JsonSerializable<TriggerP
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TriggerPipelineReference.
      */
+    @Generated
     public static TriggerPipelineReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TriggerPipelineReference deserializedTriggerPipelineReference = new TriggerPipelineReference();

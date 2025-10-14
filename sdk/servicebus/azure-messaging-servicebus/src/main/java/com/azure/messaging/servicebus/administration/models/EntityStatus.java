@@ -4,6 +4,7 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,46 +15,55 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
     /**
      * Static value Active for EntityStatus.
      */
+    @Generated
     public static final EntityStatus ACTIVE = fromString("Active");
 
     /**
      * Static value Creating for EntityStatus.
      */
+    @Generated
     public static final EntityStatus CREATING = fromString("Creating");
 
     /**
      * Static value Deleting for EntityStatus.
      */
+    @Generated
     public static final EntityStatus DELETING = fromString("Deleting");
 
     /**
      * Static value Disabled for EntityStatus.
      */
+    @Generated
     public static final EntityStatus DISABLED = fromString("Disabled");
 
     /**
      * Static value ReceiveDisabled for EntityStatus.
      */
+    @Generated
     public static final EntityStatus RECEIVE_DISABLED = fromString("ReceiveDisabled");
 
     /**
      * Static value Renaming for EntityStatus.
      */
+    @Generated
     public static final EntityStatus RENAMING = fromString("Renaming");
 
     /**
      * Static value Restoring for EntityStatus.
      */
+    @Generated
     public static final EntityStatus RESTORING = fromString("Restoring");
 
     /**
      * Static value SendDisabled for EntityStatus.
      */
+    @Generated
     public static final EntityStatus SEND_DISABLED = fromString("SendDisabled");
 
     /**
      * Static value Unknown for EntityStatus.
      */
+    @Generated
     public static final EntityStatus UNKNOWN = fromString("Unknown");
 
     /**
@@ -61,6 +71,7 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EntityStatus() {
     }
@@ -71,6 +82,7 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
      * @param name a name to look for.
      * @return the corresponding EntityStatus.
      */
+    @Generated
     public static EntityStatus fromString(String name) {
         return fromString(name, EntityStatus.class);
     }
@@ -80,6 +92,7 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
      * 
      * @return known EntityStatus values.
      */
+    @Generated
     public static Collection<EntityStatus> values() {
         return values(EntityStatus.class);
     }

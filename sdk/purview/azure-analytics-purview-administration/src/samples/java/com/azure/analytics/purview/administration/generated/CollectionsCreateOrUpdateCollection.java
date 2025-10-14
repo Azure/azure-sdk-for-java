@@ -17,12 +17,12 @@ public class CollectionsCreateOrUpdateCollection {
             = new CollectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.collectionscreateorupdatecollection.collectionscreateorupdatecollection
+        // BEGIN:com.azure.analytics.purview.administration.generated.collections-create-or-update-collection.collections-create-or-update-collection
         BinaryData collection
             = BinaryData.fromString("{\"parentCollection\":{\"referenceName\":\"myParentCollection1\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = collectionsClient.createOrUpdateCollectionWithResponse("myCollection1", collection, requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.collectionscreateorupdatecollection.collectionscreateorupdatecollection
+        // END:com.azure.analytics.purview.administration.generated.collections-create-or-update-collection.collections-create-or-update-collection
     }
 }

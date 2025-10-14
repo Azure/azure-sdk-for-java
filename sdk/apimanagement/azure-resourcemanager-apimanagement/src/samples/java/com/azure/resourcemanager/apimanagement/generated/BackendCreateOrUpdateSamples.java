@@ -22,7 +22,7 @@ import java.util.Map;
 public final class BackendCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateBackendServiceFabric.json
      */
     /**
@@ -40,7 +40,7 @@ public final class BackendCreateOrUpdateSamples {
             .withDescription("Service Fabric Test App 1")
             .withProperties(new BackendProperties().withServiceFabricCluster(new BackendServiceFabricClusterProperties()
                 .withClientCertificateId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
                 .withMaxPartitionResolutionRetries(5)
                 .withManagementEndpoints(Arrays.asList("https://somecluster.com"))
                 .withServerX509Names(Arrays.asList(new X509CertificateName().withName("ServerCommonName1")
@@ -50,7 +50,7 @@ public final class BackendCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateBackendProxyBackend.json
      */
     /**

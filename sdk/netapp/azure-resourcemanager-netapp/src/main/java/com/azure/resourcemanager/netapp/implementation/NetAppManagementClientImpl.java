@@ -15,12 +15,15 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
@@ -33,6 +36,7 @@ import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceRegionInfosClient;
+import com.azure.resourcemanager.netapp.fluent.NetAppResourceUsagesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
@@ -166,6 +170,20 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      */
     public NetAppResourcesClient getNetAppResources() {
         return this.netAppResources;
+    }
+
+    /**
+     * The NetAppResourceUsagesClient object to access its operations.
+     */
+    private final NetAppResourceUsagesClient netAppResourceUsages;
+
+    /**
+     * Gets the NetAppResourceUsagesClient object to access its operations.
+     * 
+     * @return the NetAppResourceUsagesClient object.
+     */
+    public NetAppResourceUsagesClient getNetAppResourceUsages() {
+        return this.netAppResourceUsages;
     }
 
     /**
@@ -409,9 +427,10 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-07-01-preview";
+        this.apiVersion = "2025-06-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
+        this.netAppResourceUsages = new NetAppResourceUsagesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
@@ -465,6 +484,23 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

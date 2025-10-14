@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,27 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
     /*
      * Numeric identifier, unique to the local data provider.
      */
+    @Generated
     private Integer id;
 
     /*
-     * Name of the local data provider. Name is displayed in the language specified by language code in URL, if available. Otherwise, Name is displayed in English or the language in which the name was provided.
+     * Name of the local data provider. Name is displayed in the language specified by language code in URL, if
+     * available. Otherwise, Name is displayed in English or the language in which the name was provided.
      */
+    @Generated
     private String name;
 
     /*
-     * Weather code provided by the local data provider. This weather code allows the forecast to be matched to icons provided by the local data provider instead of Azure Maps icons.
+     * Weather code provided by the local data provider. This weather code allows the forecast to be matched to icons
+     * provided by the local data provider instead of Azure Maps icons.
      */
+    @Generated
     private String weatherCode;
 
     /**
      * Set default LocalSource constructor to private
      */
+    @Generated
     private LocalSource() {
     }
 
@@ -42,6 +49,7 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
      *
      * @return the id value.
      */
+    @Generated
     public Integer getId() {
         return this.id;
     }
@@ -53,6 +61,7 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -63,6 +72,7 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
      *
      * @return the weatherCode value.
      */
+    @Generated
     public String getWeatherCode() {
         return this.weatherCode;
     }
@@ -70,6 +80,7 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,6 +98,7 @@ public final class LocalSource implements JsonSerializable<LocalSource> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LocalSource.
      */
+    @Generated
     public static LocalSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LocalSource deserializedLocalSource = new LocalSource();

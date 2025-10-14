@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
@@ -22,22 +22,22 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"57ad2d28-c5a8-46cb-b868-7c977d9959ea\"},\"location\":\"uq\",\"tags\":{\"rkgzkyhudbkuw\":\"adhfztlray\",\"kfecjvxf\":\"zqxlcwe\"},\"id\":\"qufqizj\",\"name\":\"ppwooaj\",\"type\":\"yyjmjjxiz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"b0df1bff-fd49-4454-8c10-96b8e84f438d\"},\"location\":\"ifleimixlmd\",\"tags\":{\"rjuqbpxtokl\":\"cehfgsm\",\"rcltungbsoljckm\":\"mtznpaxwfqtyyqi\",\"zbkuckgkdsksw\":\"i\",\"woykdnonaaxwm\":\"iiqqcqikclsmalns\"},\"id\":\"zrujlqcwnyn\",\"name\":\"lei\",\"type\":\"bcbgv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerRegistration response = manager.partnerRegistrations()
-            .getByResourceGroupWithResponse("dulpodkaxpfobk", "hmhjd", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dtullygtavczcxdf", "eapyfmlxrlj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uq", response.location());
-        Assertions.assertEquals("adhfztlray", response.tags().get("rkgzkyhudbkuw"));
-        Assertions.assertEquals(UUID.fromString("57ad2d28-c5a8-46cb-b868-7c977d9959ea"),
+        Assertions.assertEquals("ifleimixlmd", response.location());
+        Assertions.assertEquals("cehfgsm", response.tags().get("rjuqbpxtokl"));
+        Assertions.assertEquals(UUID.fromString("b0df1bff-fd49-4454-8c10-96b8e84f438d"),
             response.partnerRegistrationImmutableId());
     }
 }

@@ -10,8 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class L3NetworksGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * L3Networks_Get.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/L3Networks_Get.json
      */
     /**
      * Sample code: Get L3network.

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.Format;
@@ -26,30 +26,31 @@ public final class SchemasCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"zejjoqk\",\"displayName\":\"fhsxttaugz\",\"description\":\"faazpxdtnkdmkqjj\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"j\":\"kpyouaibrebqaay\",\"ttezlw\":\"ixqtn\",\"pqqmted\":\"ffiakp\",\"wau\":\"tmmjihyeozph\"}},\"id\":\"ncyg\",\"name\":\"p\",\"type\":\"vipmdscwxqupevzh\"}";
+            = "{\"properties\":{\"uuid\":\"dqzrdzsyloll\",\"displayName\":\"rc\",\"description\":\"ydmxzj\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Deleting\",\"tags\":{\"fx\":\"rkihcirld\",\"ja\":\"dcoxnbk\"}},\"id\":\"rnnqb\",\"name\":\"q\",\"type\":\"pizxqltgrdogyp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .define("on")
-            .withExistingSchemaRegistry("ycxzbfvoo", "vrvmtgjqppyost")
-            .withProperties(new SchemaProperties().withDisplayName("krrjrea")
-                .withDescription("tsgumhj")
-                .withFormat(Format.JSON_SCHEMA_DRAFT7)
+            .define("oaedsxjwuivedwcg")
+            .withExistingSchemaRegistry("wtoaukhfk", "cisiz")
+            .withProperties(new SchemaProperties().withDisplayName("mljdlrgmsplzga")
+                .withDescription("cshhv")
+                .withFormat(Format.DELTA_1_0)
                 .withSchemaType(SchemaType.MESSAGE_SCHEMA)
-                .withTags(mapOf("qpvuzlmvfelf", "slol", "crpw", "tgp")))
+                .withTags(mapOf("aoypny", "ympqanxrjkixtwb", "ycphdrwjjkhvyo", "hshxcylhkgmnsghp", "u", "ac", "wmkoisq",
+                    "vxnqmhrpqpd")))
             .create();
 
-        Assertions.assertEquals("fhsxttaugz", response.properties().displayName());
-        Assertions.assertEquals("faazpxdtnkdmkqjj", response.properties().description());
-        Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, response.properties().format());
+        Assertions.assertEquals("rc", response.properties().displayName());
+        Assertions.assertEquals("ydmxzj", response.properties().description());
+        Assertions.assertEquals(Format.DELTA_1_0, response.properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.properties().schemaType());
-        Assertions.assertEquals("kpyouaibrebqaay", response.properties().tags().get("j"));
+        Assertions.assertEquals("rkihcirld", response.properties().tags().get("fx"));
     }
 
     // Use "Map.of" if available

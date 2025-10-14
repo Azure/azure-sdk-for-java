@@ -80,6 +80,8 @@ public class AddDisksProviderSpecificInput implements JsonSerializable<AddDisksP
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("A2A".equals(discriminatorValue)) {
                     return A2AAddDisksInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmAddDisksInput.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

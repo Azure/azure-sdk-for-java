@@ -5,22 +5,56 @@
 package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.resourcemanager.mongocluster.models.AdministratorProperties;
+import com.azure.resourcemanager.mongocluster.models.AuthConfigProperties;
+import com.azure.resourcemanager.mongocluster.models.AuthenticationMode;
 import com.azure.resourcemanager.mongocluster.models.ComputeProperties;
+import com.azure.resourcemanager.mongocluster.models.CustomerManagedKeyEncryptionProperties;
+import com.azure.resourcemanager.mongocluster.models.DataApiMode;
+import com.azure.resourcemanager.mongocluster.models.DataApiProperties;
+import com.azure.resourcemanager.mongocluster.models.EncryptionProperties;
 import com.azure.resourcemanager.mongocluster.models.HighAvailabilityMode;
 import com.azure.resourcemanager.mongocluster.models.HighAvailabilityProperties;
+import com.azure.resourcemanager.mongocluster.models.KeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.mongocluster.models.KeyEncryptionKeyIdentityType;
+import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdateProperties;
 import com.azure.resourcemanager.mongocluster.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mongocluster.models.ShardingProperties;
 import com.azure.resourcemanager.mongocluster.models.StorageProperties;
+import com.azure.resourcemanager.mongocluster.models.StorageType;
+import com.azure.resourcemanager.mongocluster.models.UserAssignedIdentity;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for MongoClusters Update.
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
+     */
+    /**
+     * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIDAuthentication(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(
+                new MongoClusterUpdateProperties().withAuthConfig(new AuthConfigProperties().withAllowedModes(
+                    Arrays.asList(AuthenticationMode.NATIVE_AUTH, AuthenticationMode.MICROSOFT_ENTRA_ID))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -39,7 +73,54 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchCMK.json
+     */
+    /**
+     * Sample code: Updates the customer managed encryption key on a mongo cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2",
+                    new UserAssignedIdentity())))
+            .withProperties(new MongoClusterUpdateProperties().withEncryption(
+                new EncryptionProperties().withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryptionProperties()
+                    .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                        .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                        .withUserAssignedIdentityResourceId(
+                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2"))
+                    .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDisableNativeAuth.json
+     */
+    /**
+     * Sample code: Updates the allowed authentication modes to remove Native authentication.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withAuthConfig(
+                new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -57,7 +138,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
      * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
@@ -75,7 +156,45 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_Update.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchSSDv2.json
+     */
+    /**
+     * Sample code: Updates the Premium SSDv2 size on a Mongo Cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesThePremiumSSDv2SizeOnAMongoClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties()
+                .withStorage(new StorageProperties().withSizeGb(128L).withType(StorageType.PREMIUM_SSDV2)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDataApi.json
+     */
+    /**
+     * Sample code: Enables data API on a mongo cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        enablesDataAPIOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(
+                new MongoClusterUpdateProperties().withDataApi(new DataApiProperties().withMode(DataApiMode.ENABLED)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Update.json
      */
     /**
      * Sample code: Updates a Mongo Cluster resource.
@@ -93,10 +212,25 @@ public final class MongoClustersUpdateSamples {
                 .withServerVersion("5.0")
                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.SAME_ZONE))
-                .withStorage(new StorageProperties().withSizeGb(256L))
+                .withStorage(new StorageProperties().withSizeGb(256L).withType(StorageType.PREMIUM_SSD))
                 .withSharding(new ShardingProperties().withShardCount(4))
                 .withCompute(new ComputeProperties().withTier("M50"))
-                .withPreviewFeatures(Arrays.asList()))
+                .withDataApi(new DataApiProperties().withMode(DataApiMode.DISABLED))
+                .withPreviewFeatures(Arrays.asList())
+                .withAuthConfig(
+                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
             .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

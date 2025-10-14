@@ -22,17 +22,25 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleClient;
-import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleClientBuilder;
+import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleMgmtClient;
+import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleMgmtClientBuilder;
+import com.azure.resourcemanager.computeschedule.implementation.OccurrenceExtensionsImpl;
+import com.azure.resourcemanager.computeschedule.implementation.OccurrencesImpl;
 import com.azure.resourcemanager.computeschedule.implementation.OperationsImpl;
+import com.azure.resourcemanager.computeschedule.implementation.ScheduledActionExtensionsImpl;
 import com.azure.resourcemanager.computeschedule.implementation.ScheduledActionsImpl;
+import com.azure.resourcemanager.computeschedule.models.OccurrenceExtensions;
+import com.azure.resourcemanager.computeschedule.models.Occurrences;
 import com.azure.resourcemanager.computeschedule.models.Operations;
+import com.azure.resourcemanager.computeschedule.models.ScheduledActionExtensions;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActions;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -45,12 +53,18 @@ public final class ComputeScheduleManager {
 
     private ScheduledActions scheduledActions;
 
-    private final ComputeScheduleClient clientObject;
+    private ScheduledActionExtensions scheduledActionExtensions;
+
+    private Occurrences occurrences;
+
+    private OccurrenceExtensions occurrenceExtensions;
+
+    private final ComputeScheduleMgmtClient clientObject;
 
     private ComputeScheduleManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new ComputeScheduleClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new ComputeScheduleMgmtClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -97,6 +111,9 @@ public final class ComputeScheduleManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-computeschedule.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -204,12 +221,14 @@ public final class ComputeScheduleManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.computeschedule")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -268,7 +287,7 @@ public final class ComputeScheduleManager {
     }
 
     /**
-     * Gets the resource collection API of ScheduledActions.
+     * Gets the resource collection API of ScheduledActions. It manages ScheduledAction.
      * 
      * @return Resource collection API of ScheduledActions.
      */
@@ -280,12 +299,49 @@ public final class ComputeScheduleManager {
     }
 
     /**
-     * Gets wrapped service client ComputeScheduleClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets the resource collection API of ScheduledActionExtensions.
      * 
-     * @return Wrapped service client ComputeScheduleClient.
+     * @return Resource collection API of ScheduledActionExtensions.
      */
-    public ComputeScheduleClient serviceClient() {
+    public ScheduledActionExtensions scheduledActionExtensions() {
+        if (this.scheduledActionExtensions == null) {
+            this.scheduledActionExtensions
+                = new ScheduledActionExtensionsImpl(clientObject.getScheduledActionExtensions(), this);
+        }
+        return scheduledActionExtensions;
+    }
+
+    /**
+     * Gets the resource collection API of Occurrences.
+     * 
+     * @return Resource collection API of Occurrences.
+     */
+    public Occurrences occurrences() {
+        if (this.occurrences == null) {
+            this.occurrences = new OccurrencesImpl(clientObject.getOccurrences(), this);
+        }
+        return occurrences;
+    }
+
+    /**
+     * Gets the resource collection API of OccurrenceExtensions.
+     * 
+     * @return Resource collection API of OccurrenceExtensions.
+     */
+    public OccurrenceExtensions occurrenceExtensions() {
+        if (this.occurrenceExtensions == null) {
+            this.occurrenceExtensions = new OccurrenceExtensionsImpl(clientObject.getOccurrenceExtensions(), this);
+        }
+        return occurrenceExtensions;
+    }
+
+    /**
+     * Gets wrapped service client ComputeScheduleMgmtClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client ComputeScheduleMgmtClient.
+     */
+    public ComputeScheduleMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

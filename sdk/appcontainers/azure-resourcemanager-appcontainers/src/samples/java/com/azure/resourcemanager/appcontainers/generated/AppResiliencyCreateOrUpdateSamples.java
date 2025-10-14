@@ -19,8 +19,8 @@ import java.util.Arrays;
 public final class AppResiliencyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/AppResiliency_CreateOrUpdate
-     * .json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * AppResiliency_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update App Resiliency.

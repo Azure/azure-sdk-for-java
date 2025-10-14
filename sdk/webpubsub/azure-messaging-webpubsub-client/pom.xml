@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-webpubsub-client</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub-client;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub-client;current} -->
 
   <name>Microsoft Azure client library for Azure Web PubSub Client</name>
   <description>This package contains the Microsoft Azure Web PubSub Client library.</description>
@@ -33,46 +33,60 @@
   </scm>
 
   <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
     <!-- sdk uses live tests -->
     <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <!-- netty-codec-http is included in dependency for internal WebSocket implementation -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.115.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.127.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-json-jackson</artifactId>
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -82,12 +96,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
-                <include>io.netty:netty-codec-http:[4.1.115.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.127.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

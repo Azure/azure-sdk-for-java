@@ -49,6 +49,7 @@
                 "zoneRedundant": false,
                 "isAutoInflateEnabled": false,
                 "maximumThroughputUnits": 0,
+                "disableLocalAuth": true,
                 "kafkaEnabled": true
             }
         },
@@ -68,10 +69,6 @@
         }
     ],
     "outputs": {
-        "AZURE_EVENTHUBS_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString)]"
-        },
         "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
             "type": "string",
             "value": "[parameters('eventHubName')]"

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,31 +22,37 @@ public class GetMetadataActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "GetMetadata";
 
     /*
      * GetMetadata activity dataset reference.
      */
+    @Generated
     private DatasetReference dataset;
 
     /*
      * Fields of metadata to get from dataset.
      */
+    @Generated
     private List<Object> fieldList;
 
     /*
      * GetMetadata activity store settings.
      */
+    @Generated
     private StoreReadSettings storeSettings;
 
     /*
      * GetMetadata activity format settings.
      */
+    @Generated
     private FormatReadSettings formatSettings;
 
     /**
      * Creates an instance of GetMetadataActivity class.
      */
+    @Generated
     public GetMetadataActivity() {
     }
 
@@ -54,6 +61,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +72,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * 
      * @return the dataset value.
      */
+    @Generated
     public DatasetReference getDataset() {
         return this.dataset;
     }
@@ -74,6 +83,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * @param dataset the dataset value to set.
      * @return the GetMetadataActivity object itself.
      */
+    @Generated
     public GetMetadataActivity setDataset(DatasetReference dataset) {
         this.dataset = dataset;
         return this;
@@ -84,6 +94,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * 
      * @return the fieldList value.
      */
+    @Generated
     public List<Object> getFieldList() {
         return this.fieldList;
     }
@@ -94,6 +105,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * @param fieldList the fieldList value to set.
      * @return the GetMetadataActivity object itself.
      */
+    @Generated
     public GetMetadataActivity setFieldList(List<Object> fieldList) {
         this.fieldList = fieldList;
         return this;
@@ -104,6 +116,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreReadSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -114,6 +127,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * @param storeSettings the storeSettings value to set.
      * @return the GetMetadataActivity object itself.
      */
+    @Generated
     public GetMetadataActivity setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -124,6 +138,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * 
      * @return the formatSettings value.
      */
+    @Generated
     public FormatReadSettings getFormatSettings() {
         return this.formatSettings;
     }
@@ -134,6 +149,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * @param formatSettings the formatSettings value to set.
      * @return the GetMetadataActivity object itself.
      */
+    @Generated
     public GetMetadataActivity setFormatSettings(FormatReadSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
@@ -142,6 +158,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -151,6 +168,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -160,6 +178,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setName(String name) {
         super.setName(name);
@@ -169,6 +188,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setDescription(String description) {
         super.setDescription(description);
@@ -178,6 +198,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setState(ActivityState state) {
         super.setState(state);
@@ -187,6 +208,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -196,6 +218,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -205,6 +228,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GetMetadataActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -214,6 +238,7 @@ public class GetMetadataActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -253,6 +278,7 @@ public class GetMetadataActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GetMetadataActivity.
      */
+    @Generated
     public static GetMetadataActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GetMetadataActivity deserializedGetMetadataActivity = new GetMetadataActivity();

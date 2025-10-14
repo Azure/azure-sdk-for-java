@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
     /*
      * Prevent Data Exfiltration
      */
+    @Generated
     private Boolean preventDataExfiltration;
 
     /*
      * Linked Access Check On Target Resource
      */
+    @Generated
     private Boolean linkedAccessCheckOnTargetResource;
 
     /*
      * Allowed Aad Tenant Ids For Linking
      */
+    @Generated
     private List<String> allowedAadTenantIdsForLinking;
 
     /**
      * Creates an instance of ManagedVirtualNetworkSettings class.
      */
+    @Generated
     public ManagedVirtualNetworkSettings() {
     }
 
@@ -43,6 +48,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * 
      * @return the preventDataExfiltration value.
      */
+    @Generated
     public Boolean isPreventDataExfiltration() {
         return this.preventDataExfiltration;
     }
@@ -53,6 +59,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * @param preventDataExfiltration the preventDataExfiltration value to set.
      * @return the ManagedVirtualNetworkSettings object itself.
      */
+    @Generated
     public ManagedVirtualNetworkSettings setPreventDataExfiltration(Boolean preventDataExfiltration) {
         this.preventDataExfiltration = preventDataExfiltration;
         return this;
@@ -63,6 +70,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * 
      * @return the linkedAccessCheckOnTargetResource value.
      */
+    @Generated
     public Boolean isLinkedAccessCheckOnTargetResource() {
         return this.linkedAccessCheckOnTargetResource;
     }
@@ -73,6 +81,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * @param linkedAccessCheckOnTargetResource the linkedAccessCheckOnTargetResource value to set.
      * @return the ManagedVirtualNetworkSettings object itself.
      */
+    @Generated
     public ManagedVirtualNetworkSettings
         setLinkedAccessCheckOnTargetResource(Boolean linkedAccessCheckOnTargetResource) {
         this.linkedAccessCheckOnTargetResource = linkedAccessCheckOnTargetResource;
@@ -84,6 +93,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * 
      * @return the allowedAadTenantIdsForLinking value.
      */
+    @Generated
     public List<String> getAllowedAadTenantIdsForLinking() {
         return this.allowedAadTenantIdsForLinking;
     }
@@ -94,6 +104,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * @param allowedAadTenantIdsForLinking the allowedAadTenantIdsForLinking value to set.
      * @return the ManagedVirtualNetworkSettings object itself.
      */
+    @Generated
     public ManagedVirtualNetworkSettings setAllowedAadTenantIdsForLinking(List<String> allowedAadTenantIdsForLinking) {
         this.allowedAadTenantIdsForLinking = allowedAadTenantIdsForLinking;
         return this;
@@ -102,6 +113,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class ManagedVirtualNetworkSettings implements JsonSerializable<Man
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedVirtualNetworkSettings.
      */
+    @Generated
     public static ManagedVirtualNetworkSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedVirtualNetworkSettings deserializedManagedVirtualNetworkSettings

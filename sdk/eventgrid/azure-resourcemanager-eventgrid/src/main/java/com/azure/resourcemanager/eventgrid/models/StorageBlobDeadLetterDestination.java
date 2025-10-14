@@ -47,7 +47,7 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
      * 
      * @return the innerProperties value.
      */
-    private StorageBlobDeadLetterDestinationProperties innerProperties() {
+    StorageBlobDeadLetterDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,61 +23,73 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
     /*
      * The notStartedAt property.
      */
+    @Generated
     private OffsetDateTime notStartedAt;
 
     /*
      * The startingAt property.
      */
+    @Generated
     private OffsetDateTime startingAt;
 
     /*
      * The idleAt property.
      */
+    @Generated
     private OffsetDateTime idleAt;
 
     /*
      * The deadAt property.
      */
+    @Generated
     private OffsetDateTime deadAt;
 
     /*
      * The shuttingDownAt property.
      */
+    @Generated
     private OffsetDateTime shuttingDownAt;
 
     /*
      * The killedAt property.
      */
+    @Generated
     private OffsetDateTime terminatedAt;
 
     /*
      * The recoveringAt property.
      */
+    @Generated
     private OffsetDateTime recoveringAt;
 
     /*
      * The busyAt property.
      */
+    @Generated
     private OffsetDateTime busyAt;
 
     /*
      * The errorAt property.
      */
+    @Generated
     private OffsetDateTime errorAt;
 
     /*
      * The currentState property.
      */
+    @Generated
     private String currentState;
 
     /*
      * The jobCreationRequest property.
      */
+    @Generated
     private SparkRequest jobCreationRequest;
 
     /**
      * Creates an instance of SparkSessionState class.
      */
+    @Generated
     public SparkSessionState() {
     }
 
@@ -85,6 +98,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the notStartedAt value.
      */
+    @Generated
     public OffsetDateTime getNotStartedAt() {
         return this.notStartedAt;
     }
@@ -95,6 +109,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param notStartedAt the notStartedAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setNotStartedAt(OffsetDateTime notStartedAt) {
         this.notStartedAt = notStartedAt;
         return this;
@@ -105,6 +120,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the startingAt value.
      */
+    @Generated
     public OffsetDateTime getStartingAt() {
         return this.startingAt;
     }
@@ -115,6 +131,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param startingAt the startingAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setStartingAt(OffsetDateTime startingAt) {
         this.startingAt = startingAt;
         return this;
@@ -125,6 +142,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the idleAt value.
      */
+    @Generated
     public OffsetDateTime getIdleAt() {
         return this.idleAt;
     }
@@ -135,6 +153,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param idleAt the idleAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setIdleAt(OffsetDateTime idleAt) {
         this.idleAt = idleAt;
         return this;
@@ -145,6 +164,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the deadAt value.
      */
+    @Generated
     public OffsetDateTime getDeadAt() {
         return this.deadAt;
     }
@@ -155,6 +175,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param deadAt the deadAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setDeadAt(OffsetDateTime deadAt) {
         this.deadAt = deadAt;
         return this;
@@ -165,6 +186,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the shuttingDownAt value.
      */
+    @Generated
     public OffsetDateTime getShuttingDownAt() {
         return this.shuttingDownAt;
     }
@@ -175,6 +197,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param shuttingDownAt the shuttingDownAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setShuttingDownAt(OffsetDateTime shuttingDownAt) {
         this.shuttingDownAt = shuttingDownAt;
         return this;
@@ -185,6 +208,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the terminatedAt value.
      */
+    @Generated
     public OffsetDateTime getTerminatedAt() {
         return this.terminatedAt;
     }
@@ -195,6 +219,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param terminatedAt the terminatedAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setTerminatedAt(OffsetDateTime terminatedAt) {
         this.terminatedAt = terminatedAt;
         return this;
@@ -205,6 +230,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the recoveringAt value.
      */
+    @Generated
     public OffsetDateTime getRecoveringAt() {
         return this.recoveringAt;
     }
@@ -215,6 +241,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param recoveringAt the recoveringAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setRecoveringAt(OffsetDateTime recoveringAt) {
         this.recoveringAt = recoveringAt;
         return this;
@@ -225,6 +252,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the busyAt value.
      */
+    @Generated
     public OffsetDateTime getBusyAt() {
         return this.busyAt;
     }
@@ -235,6 +263,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param busyAt the busyAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setBusyAt(OffsetDateTime busyAt) {
         this.busyAt = busyAt;
         return this;
@@ -245,6 +274,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the errorAt value.
      */
+    @Generated
     public OffsetDateTime getErrorAt() {
         return this.errorAt;
     }
@@ -255,6 +285,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param errorAt the errorAt value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setErrorAt(OffsetDateTime errorAt) {
         this.errorAt = errorAt;
         return this;
@@ -265,6 +296,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the currentState value.
      */
+    @Generated
     public String getCurrentState() {
         return this.currentState;
     }
@@ -275,6 +307,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param currentState the currentState value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setCurrentState(String currentState) {
         this.currentState = currentState;
         return this;
@@ -285,6 +318,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * 
      * @return the jobCreationRequest value.
      */
+    @Generated
     public SparkRequest getJobCreationRequest() {
         return this.jobCreationRequest;
     }
@@ -295,6 +329,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * @param jobCreationRequest the jobCreationRequest value to set.
      * @return the SparkSessionState object itself.
      */
+    @Generated
     public SparkSessionState setJobCreationRequest(SparkRequest jobCreationRequest) {
         this.jobCreationRequest = jobCreationRequest;
         return this;
@@ -303,6 +338,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -337,6 +373,7 @@ public final class SparkSessionState implements JsonSerializable<SparkSessionSta
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkSessionState.
      */
+    @Generated
     public static SparkSessionState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkSessionState deserializedSparkSessionState = new SparkSessionState();

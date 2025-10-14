@@ -15,45 +15,41 @@ public final class EmailTemplateCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EmailTemplateCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subject\":\"fqvz\",\"body\":\"jmspugzfeuzjlj\",\"title\":\"hfkyez\",\"description\":\"gj\",\"isDefault\":true,\"parameters\":[{\"name\":\"doccnxshanzb\",\"title\":\"adh\",\"description\":\"tecaa\"},{\"name\":\"dohzniucbdaombwi\",\"title\":\"jdllwktle\",\"description\":\"wavvqxuajgcqwuly\"}]},\"id\":\"kgfcfdruws\",\"name\":\"kxx\",\"type\":\"clhuulriqbyokv\"}],\"count\":4867561707466627827,\"nextLink\":\"x\"}")
+            "{\"value\":[{\"properties\":{\"subject\":\"akgddhjkrukizy\",\"body\":\"gsq\",\"title\":\"qsktxqf\",\"description\":\"bqggw\",\"isDefault\":true,\"parameters\":[{\"name\":\"dmncgbf\",\"title\":\"scstunmlhxd\",\"description\":\"klciichgjsysm\"}]},\"id\":\"xodgw\",\"name\":\"f\",\"type\":\"zsifcuvbdujgcwx\"}],\"count\":3985935086976308825,\"nextLink\":\"wjtrdxriza\"}")
             .toObject(EmailTemplateCollection.class);
-        Assertions.assertEquals("fqvz", model.value().get(0).subject());
-        Assertions.assertEquals("jmspugzfeuzjlj", model.value().get(0).body());
-        Assertions.assertEquals("hfkyez", model.value().get(0).title());
-        Assertions.assertEquals("gj", model.value().get(0).description());
-        Assertions.assertEquals("doccnxshanzb", model.value().get(0).parameters().get(0).name());
-        Assertions.assertEquals("adh", model.value().get(0).parameters().get(0).title());
-        Assertions.assertEquals("tecaa", model.value().get(0).parameters().get(0).description());
-        Assertions.assertEquals(4867561707466627827L, model.count());
-        Assertions.assertEquals("x", model.nextLink());
+        Assertions.assertEquals("akgddhjkrukizy", model.value().get(0).subject());
+        Assertions.assertEquals("gsq", model.value().get(0).body());
+        Assertions.assertEquals("qsktxqf", model.value().get(0).title());
+        Assertions.assertEquals("bqggw", model.value().get(0).description());
+        Assertions.assertEquals("dmncgbf", model.value().get(0).parameters().get(0).name());
+        Assertions.assertEquals("scstunmlhxd", model.value().get(0).parameters().get(0).title());
+        Assertions.assertEquals("klciichgjsysm", model.value().get(0).parameters().get(0).description());
+        Assertions.assertEquals(3985935086976308825L, model.count());
+        Assertions.assertEquals("wjtrdxriza", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EmailTemplateCollection model
             = new EmailTemplateCollection()
-                .withValue(Arrays.asList(new EmailTemplateContractInner().withSubject("fqvz")
-                    .withBody("jmspugzfeuzjlj")
-                    .withTitle("hfkyez")
-                    .withDescription("gj")
-                    .withParameters(Arrays.asList(
-                        new EmailTemplateParametersContractProperties().withName("doccnxshanzb")
-                            .withTitle("adh")
-                            .withDescription("tecaa"),
-                        new EmailTemplateParametersContractProperties().withName("dohzniucbdaombwi")
-                            .withTitle("jdllwktle")
-                            .withDescription("wavvqxuajgcqwuly")))))
-                .withCount(4867561707466627827L)
-                .withNextLink("x");
+                .withValue(Arrays.asList(new EmailTemplateContractInner().withSubject("akgddhjkrukizy")
+                    .withBody("gsq")
+                    .withTitle("qsktxqf")
+                    .withDescription("bqggw")
+                    .withParameters(Arrays.asList(new EmailTemplateParametersContractProperties().withName("dmncgbf")
+                        .withTitle("scstunmlhxd")
+                        .withDescription("klciichgjsysm")))))
+                .withCount(3985935086976308825L)
+                .withNextLink("wjtrdxriza");
         model = BinaryData.fromObject(model).toObject(EmailTemplateCollection.class);
-        Assertions.assertEquals("fqvz", model.value().get(0).subject());
-        Assertions.assertEquals("jmspugzfeuzjlj", model.value().get(0).body());
-        Assertions.assertEquals("hfkyez", model.value().get(0).title());
-        Assertions.assertEquals("gj", model.value().get(0).description());
-        Assertions.assertEquals("doccnxshanzb", model.value().get(0).parameters().get(0).name());
-        Assertions.assertEquals("adh", model.value().get(0).parameters().get(0).title());
-        Assertions.assertEquals("tecaa", model.value().get(0).parameters().get(0).description());
-        Assertions.assertEquals(4867561707466627827L, model.count());
-        Assertions.assertEquals("x", model.nextLink());
+        Assertions.assertEquals("akgddhjkrukizy", model.value().get(0).subject());
+        Assertions.assertEquals("gsq", model.value().get(0).body());
+        Assertions.assertEquals("qsktxqf", model.value().get(0).title());
+        Assertions.assertEquals("bqggw", model.value().get(0).description());
+        Assertions.assertEquals("dmncgbf", model.value().get(0).parameters().get(0).name());
+        Assertions.assertEquals("scstunmlhxd", model.value().get(0).parameters().get(0).title());
+        Assertions.assertEquals("klciichgjsysm", model.value().get(0).parameters().get(0).description());
+        Assertions.assertEquals(3985935086976308825L, model.count());
+        Assertions.assertEquals("wjtrdxriza", model.nextLink());
     }
 }

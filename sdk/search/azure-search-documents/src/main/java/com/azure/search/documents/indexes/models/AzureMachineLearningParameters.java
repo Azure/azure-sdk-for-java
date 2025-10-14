@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,11 +25,13 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON
      * payload will be sent. Only the https URI scheme is allowed.
      */
+    @Generated
     private final String scoringUri;
 
     /*
      * (Required for key authentication) The key for the AML service.
      */
+    @Generated
     private String authenticationKey;
 
     /*
@@ -37,28 +40,33 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.MachineLearningServices/workspaces/{workspace
      * -name}/services/{service_name}.
      */
+    @Generated
     private String resourceId;
 
     /*
      * (Optional) When specified, indicates the timeout for the http client making the API call.
      */
+    @Generated
     private Duration timeout;
 
     /*
      * (Optional for token authentication). The region the AML service is deployed in.
      */
+    @Generated
     private String region;
 
     /*
-     * The name of the embedding model from the Azure AI Studio Catalog that is deployed at the provided endpoint.
+     * The name of the embedding model from the Azure AI Foundry Catalog that is deployed at the provided endpoint.
      */
-    private AIStudioModelCatalogName modelName;
+    @Generated
+    private AIFoundryModelCatalogName modelName;
 
     /**
      * Creates an instance of AzureMachineLearningParameters class.
      * 
      * @param scoringUri the scoringUri value to set.
      */
+    @Generated
     public AzureMachineLearningParameters(String scoringUri) {
         this.scoringUri = scoringUri;
     }
@@ -69,6 +77,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * 
      * @return the scoringUri value.
      */
+    @Generated
     public String getScoringUri() {
         return this.scoringUri;
     }
@@ -78,6 +87,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * 
      * @return the authenticationKey value.
      */
+    @Generated
     public String getAuthenticationKey() {
         return this.authenticationKey;
     }
@@ -88,6 +98,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * @param authenticationKey the authenticationKey value to set.
      * @return the AzureMachineLearningParameters object itself.
      */
+    @Generated
     public AzureMachineLearningParameters setAuthenticationKey(String authenticationKey) {
         this.authenticationKey = authenticationKey;
         return this;
@@ -100,6 +111,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -112,6 +124,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * @param resourceId the resourceId value to set.
      * @return the AzureMachineLearningParameters object itself.
      */
+    @Generated
     public AzureMachineLearningParameters setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -123,6 +136,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * 
      * @return the timeout value.
      */
+    @Generated
     public Duration getTimeout() {
         return this.timeout;
     }
@@ -134,6 +148,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * @param timeout the timeout value to set.
      * @return the AzureMachineLearningParameters object itself.
      */
+    @Generated
     public AzureMachineLearningParameters setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
@@ -144,6 +159,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * 
      * @return the region value.
      */
+    @Generated
     public String getRegion() {
         return this.region;
     }
@@ -154,29 +170,32 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * @param region the region value to set.
      * @return the AzureMachineLearningParameters object itself.
      */
+    @Generated
     public AzureMachineLearningParameters setRegion(String region) {
         this.region = region;
         return this;
     }
 
     /**
-     * Get the modelName property: The name of the embedding model from the Azure AI Studio Catalog that is deployed at
+     * Get the modelName property: The name of the embedding model from the Azure AI Foundry Catalog that is deployed at
      * the provided endpoint.
      * 
      * @return the modelName value.
      */
-    public AIStudioModelCatalogName getModelName() {
+    @Generated
+    public AIFoundryModelCatalogName getModelName() {
         return this.modelName;
     }
 
     /**
-     * Set the modelName property: The name of the embedding model from the Azure AI Studio Catalog that is deployed at
+     * Set the modelName property: The name of the embedding model from the Azure AI Foundry Catalog that is deployed at
      * the provided endpoint.
      * 
      * @param modelName the modelName value to set.
      * @return the AzureMachineLearningParameters object itself.
      */
-    public AzureMachineLearningParameters setModelName(AIStudioModelCatalogName modelName) {
+    @Generated
+    public AzureMachineLearningParameters setModelName(AIFoundryModelCatalogName modelName) {
         this.modelName = modelName;
         return this;
     }
@@ -184,6 +203,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,6 +225,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMachineLearningParameters.
      */
+    @Generated
     public static AzureMachineLearningParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean scoringUriFound = false;
@@ -213,7 +234,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
             String resourceId = null;
             Duration timeout = null;
             String region = null;
-            AIStudioModelCatalogName modelName = null;
+            AIFoundryModelCatalogName modelName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -230,7 +251,7 @@ public final class AzureMachineLearningParameters implements JsonSerializable<Az
                 } else if ("region".equals(fieldName)) {
                     region = reader.getString();
                 } else if ("modelName".equals(fieldName)) {
-                    modelName = AIStudioModelCatalogName.fromString(reader.getString());
+                    modelName = AIFoundryModelCatalogName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -54,6 +53,11 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * Current state of the operation
      */
     private OperationState state;
+
+    /*
+     * Timezone for the operation
+     */
+    private String timezone;
 
     /*
      * Timezone for the operation
@@ -145,6 +149,15 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
+     * Get the timezone property: Timezone for the operation.
+     * 
+     * @return the timezone value.
+     */
+    public String timezone() {
+        return this.timezone;
+    }
+
+    /**
      * Get the timeZone property: Timezone for the operation.
      * 
      * @return the timeZone value.
@@ -181,56 +194,6 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operationId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property operationId in model ResourceOperationDetails"));
-        }
-        if (resourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceId in model ResourceOperationDetails"));
-        }
-        if (opType() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property opType in model ResourceOperationDetails"));
-        }
-        if (subscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subscriptionId in model ResourceOperationDetails"));
-        }
-        if (deadline() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property deadline in model ResourceOperationDetails"));
-        }
-        if (deadlineType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property deadlineType in model ResourceOperationDetails"));
-        }
-        if (state() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property state in model ResourceOperationDetails"));
-        }
-        if (resourceOperationError() != null) {
-            resourceOperationError().validate();
-        }
-        if (retryPolicy() != null) {
-            retryPolicy().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceOperationDetails.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -244,6 +207,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
             this.deadline == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deadline));
         jsonWriter.writeStringField("deadlineType", this.deadlineType == null ? null : this.deadlineType.toString());
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("timezone", this.timezone);
         jsonWriter.writeStringField("timeZone", this.timeZone);
         jsonWriter.writeJsonField("resourceOperationError", this.resourceOperationError);
         jsonWriter.writeStringField("completedAt",
@@ -283,6 +247,8 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
                     deserializedResourceOperationDetails.deadlineType = DeadlineType.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
                     deserializedResourceOperationDetails.state = OperationState.fromString(reader.getString());
+                } else if ("timezone".equals(fieldName)) {
+                    deserializedResourceOperationDetails.timezone = reader.getString();
                 } else if ("timeZone".equals(fieldName)) {
                     deserializedResourceOperationDetails.timeZone = reader.getString();
                 } else if ("resourceOperationError".equals(fieldName)) {

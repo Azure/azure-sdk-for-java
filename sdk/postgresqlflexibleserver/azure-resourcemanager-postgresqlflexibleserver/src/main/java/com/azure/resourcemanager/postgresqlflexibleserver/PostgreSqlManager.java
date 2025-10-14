@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.AdministratorsImpl;
@@ -42,11 +43,15 @@ import com.azure.resourcemanager.postgresqlflexibleserver.implementation.Postgre
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionOperationsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.QuotaUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerCapabilitiesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServerThreatProtectionSettingsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.ServersImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningConfigurationsImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningIndexesImpl;
+import com.azure.resourcemanager.postgresqlflexibleserver.implementation.TuningOptionsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualEndpointsImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.implementation.VirtualNetworkSubnetUsagesImpl;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Administrators;
@@ -66,17 +71,22 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Operations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnectionOperations;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResources;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsages;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ResourceProviders;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerCapabilities;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettings;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Servers;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningConfigurations;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningIndexes;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptions;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoints;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsages;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -125,11 +135,19 @@ public final class PostgreSqlManager {
 
     private PrivateLinkResources privateLinkResources;
 
+    private QuotaUsages quotaUsages;
+
     private Replicas replicas;
 
     private LogFiles logFiles;
 
     private ServerThreatProtectionSettings serverThreatProtectionSettings;
+
+    private TuningOptions tuningOptions;
+
+    private TuningIndexes tuningIndexes;
+
+    private TuningConfigurations tuningConfigurations;
 
     private VirtualEndpoints virtualEndpoints;
 
@@ -187,6 +205,9 @@ public final class PostgreSqlManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-postgresqlflexibleserver.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -294,12 +315,14 @@ public final class PostgreSqlManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.postgresqlflexibleserver")
                 .append("/")
-                .append("1.1.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -580,6 +603,18 @@ public final class PostgreSqlManager {
     }
 
     /**
+     * Gets the resource collection API of QuotaUsages.
+     * 
+     * @return Resource collection API of QuotaUsages.
+     */
+    public QuotaUsages quotaUsages() {
+        if (this.quotaUsages == null) {
+            this.quotaUsages = new QuotaUsagesImpl(clientObject.getQuotaUsages(), this);
+        }
+        return quotaUsages;
+    }
+
+    /**
      * Gets the resource collection API of Replicas.
      * 
      * @return Resource collection API of Replicas.
@@ -615,6 +650,42 @@ public final class PostgreSqlManager {
                 = new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
         }
         return serverThreatProtectionSettings;
+    }
+
+    /**
+     * Gets the resource collection API of TuningOptions.
+     * 
+     * @return Resource collection API of TuningOptions.
+     */
+    public TuningOptions tuningOptions() {
+        if (this.tuningOptions == null) {
+            this.tuningOptions = new TuningOptionsImpl(clientObject.getTuningOptions(), this);
+        }
+        return tuningOptions;
+    }
+
+    /**
+     * Gets the resource collection API of TuningIndexes.
+     * 
+     * @return Resource collection API of TuningIndexes.
+     */
+    public TuningIndexes tuningIndexes() {
+        if (this.tuningIndexes == null) {
+            this.tuningIndexes = new TuningIndexesImpl(clientObject.getTuningIndexes(), this);
+        }
+        return tuningIndexes;
+    }
+
+    /**
+     * Gets the resource collection API of TuningConfigurations.
+     * 
+     * @return Resource collection API of TuningConfigurations.
+     */
+    public TuningConfigurations tuningConfigurations() {
+        if (this.tuningConfigurations == null) {
+            this.tuningConfigurations = new TuningConfigurationsImpl(clientObject.getTuningConfigurations(), this);
+        }
+        return tuningConfigurations;
     }
 
     /**

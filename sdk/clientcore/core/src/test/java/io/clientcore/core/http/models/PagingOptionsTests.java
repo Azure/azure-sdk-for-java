@@ -3,6 +3,7 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.http.paging.PagingOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

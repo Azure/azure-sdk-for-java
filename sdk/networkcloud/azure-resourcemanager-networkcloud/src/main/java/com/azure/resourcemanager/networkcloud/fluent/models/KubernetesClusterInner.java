@@ -33,6 +33,11 @@ import java.util.Map;
 @Fluent
 public final class KubernetesClusterInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -66,6 +71,15 @@ public final class KubernetesClusterInner extends Resource {
      * Creates an instance of KubernetesClusterInner class.
      */
     public KubernetesClusterInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -493,6 +507,8 @@ public final class KubernetesClusterInner extends Resource {
                     deserializedKubernetesClusterInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedKubernetesClusterInner.innerProperties = KubernetesClusterProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedKubernetesClusterInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedKubernetesClusterInner.systemData = SystemData.fromJson(reader);
                 } else {

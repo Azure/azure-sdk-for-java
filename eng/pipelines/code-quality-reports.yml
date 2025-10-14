@@ -5,6 +5,9 @@ parameters:
       - name: azure-core
         groupId: com.azure
         safeName: azurecore
+      - name: core
+        groupId: io.clientcore
+        safeName: core
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -37,6 +40,7 @@ extends:
                         - '**/*.xml'
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
+                        - 'sdk/tools/linting-extensions'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'
@@ -47,13 +51,13 @@ extends:
                 displayName: 'Set versions for source build'
                 inputs:
                   scriptPath: 'eng/versioning/set_versions.py'
-                  arguments: '--build-type client --pst'
+                  arguments: '--prep-source-testing'
 
               - task: PythonScript@0
                 displayName: 'Update versions for source build'
                 inputs:
                   scriptPath: 'eng/versioning/update_versions.py'
-                  arguments: '--update-type library --build-type client --sr'
+                  arguments: '--skip-readme'
 
               - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
                 parameters:
@@ -85,14 +89,12 @@ extends:
                   pwsh: true
                 displayName: 'Generate Linting Commands'
 
-              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
               - task: Maven@4
                 displayName: 'Build and Run Linting'
                 inputs:
                   mavenPomFile: ClientFromSourcePom.xml
                   goals: 'install'
-                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
+                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
                   mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: $(JavaBuildVersion)

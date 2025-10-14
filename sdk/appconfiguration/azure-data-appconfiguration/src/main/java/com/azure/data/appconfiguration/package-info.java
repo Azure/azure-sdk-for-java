@@ -17,7 +17,7 @@
  *
  * <p>In order to interact with the App Configuration service you'll need to create an instance of the Configuration
  * Client class. To make this possible you'll need the connection string of the configuration store. Alternatively,
- * you can use AAD authentication via
+ * you can use Entra authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>
  * to connect to the service.</p>
  * <ol>

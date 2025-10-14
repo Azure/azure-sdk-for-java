@@ -15,14 +15,14 @@ import java.util.Map;
  */
 public final class SchemasCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2024-09-01-preview/Create_Schema.json
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Schema.json
      */
     /**
-     * Sample code: Create_Schema.
+     * Sample code: CreateOrReplace_Schema.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void createSchema(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void createOrReplaceSchema(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.schemas()
             .define("my-schema")
             .withExistingSchemaRegistry("myResourceGroup", "my-schema-registry")

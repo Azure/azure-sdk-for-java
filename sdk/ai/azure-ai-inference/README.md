@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-inference</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -67,7 +67,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -270,7 +270,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [product_documentation]: https://azure.microsoft.com/services/
 [docs]: https://aka.ms/azsdk/azure-ai-inference/java/reference
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
-[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[aad_authorization]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/BasicChatSample.java
@@ -288,4 +288,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fai%2Fazure-ai-inference%2FREADME.png)
+

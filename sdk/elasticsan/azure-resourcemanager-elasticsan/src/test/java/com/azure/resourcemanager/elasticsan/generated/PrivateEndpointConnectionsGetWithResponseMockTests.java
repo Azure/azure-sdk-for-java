@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
@@ -22,23 +22,23 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"yodnwzxltj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Failed\",\"description\":\"ltiugcxnavv\",\"actionsRequired\":\"qiby\"},\"groupIds\":[\"y\",\"wxwlmdjrkvfgb\",\"fvpdbo\",\"acizsjqlhkrr\"]},\"id\":\"deibqip\",\"name\":\"kghv\",\"type\":\"ndzwmkrefa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"ldvriiiojnalghfk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Failed\",\"description\":\"ex\",\"actionsRequired\":\"wueluqhhahhxv\"},\"groupIds\":[\"zkw\",\"jgwwspughftq\"]},\"id\":\"hqxujxukndxdi\",\"name\":\"rjguufzdmsyqtf\",\"type\":\"hwhbotzingamv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("htwdwrftswibyrcd", "bhshfwpracstwity", "hevxcced", com.azure.core.util.Context.NONE)
+            .getWithResponse("sj", "dhszfjv", "bgofeljag", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.FAILED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ltiugcxnavv", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("qiby", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("y", response.groupIds().get(0));
+        Assertions.assertEquals("ex", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wueluqhhahhxv", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("zkw", response.groupIds().get(0));
     }
 }

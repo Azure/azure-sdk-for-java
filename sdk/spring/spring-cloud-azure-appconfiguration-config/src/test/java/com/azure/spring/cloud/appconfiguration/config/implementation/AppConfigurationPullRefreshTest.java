@@ -63,7 +63,7 @@ public class AppConfigurationPullRefreshTest {
         when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
 
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-            (long) 0, replicaLookUpMock, refreshUtilMock);
+            replicaLookUpMock, refreshUtilMock);
         assertFalse(refresh.refreshConfigurations().block());
        
     }
@@ -75,7 +75,7 @@ public class AppConfigurationPullRefreshTest {
         when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
 
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-            (long) 0, replicaLookUpMock, refreshUtilMock);
+            replicaLookUpMock, refreshUtilMock);
         refresh.setApplicationEventPublisher(publisher);
         assertTrue(refresh.refreshConfigurations().block());
         

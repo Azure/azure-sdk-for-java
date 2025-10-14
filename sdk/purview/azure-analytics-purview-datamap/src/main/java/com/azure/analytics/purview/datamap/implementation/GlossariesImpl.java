@@ -71,7 +71,7 @@ public final class GlossariesImpl {
      * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientGlossar")
+    @ServiceInterface(name = "DataMapClientGlossaries")
     public interface GlossariesService {
         @Get("/atlas/v2/glossary")
         @ExpectedResponses({ 200 })
@@ -202,8 +202,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteCategory(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryId}")
         @ExpectedResponses({ 204 })
@@ -212,8 +211,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteCategorySync(@HostParam("endpoint") String endpoint,
-            @PathParam("categoryId") String categoryId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("categoryId") String categoryId, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryId}/partial")
         @ExpectedResponses({ 200 })
@@ -346,7 +344,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTerm(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/term/{termId}")
         @ExpectedResponses({ 204 })
@@ -355,7 +353,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermSync(@HostParam("endpoint") String endpoint, @PathParam("termId") String termId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/glossary/term/{termId}/partial")
         @ExpectedResponses({ 200 })
@@ -429,8 +427,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> assignTermToEntities(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -440,8 +437,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> assignTermToEntitiesSync(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -451,8 +447,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTermAssignmentFromEntities(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termId}/assignedEntities")
         @ExpectedResponses({ 204 })
@@ -462,8 +457,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTermAssignmentFromEntitiesSync(@HostParam("endpoint") String endpoint,
             @PathParam("termId") String termId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/terms/{termId}/related")
         @ExpectedResponses({ 200 })
@@ -533,7 +527,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryId}")
         @ExpectedResponses({ 204 })
@@ -542,7 +536,7 @@ public final class GlossariesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("glossaryId") String glossaryId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/glossary/{glossaryId}/categories")
         @ExpectedResponses({ 200 })
@@ -2188,9 +2182,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCategoryWithResponseAsync(String categoryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteCategory(this.client.getEndpoint(), categoryId, accept, requestOptions, context));
+            context -> service.deleteCategory(this.client.getEndpoint(), categoryId, requestOptions, context));
     }
 
     /**
@@ -2206,8 +2199,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteCategoryWithResponse(String categoryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteCategorySync(this.client.getEndpoint(), categoryId, accept, requestOptions, Context.NONE);
+        return service.deleteCategorySync(this.client.getEndpoint(), categoryId, requestOptions, Context.NONE);
     }
 
     /**
@@ -4385,9 +4377,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermWithResponseAsync(String termId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteTerm(this.client.getEndpoint(), termId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.deleteTerm(this.client.getEndpoint(), termId, requestOptions, context));
     }
 
     /**
@@ -4403,8 +4394,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermWithResponse(String termId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTermSync(this.client.getEndpoint(), termId, accept, requestOptions, Context.NONE);
+        return service.deleteTermSync(this.client.getEndpoint(), termId, requestOptions, Context.NONE);
     }
 
     /**
@@ -5692,9 +5682,8 @@ public final class GlossariesImpl {
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.assignTermToEntities(this.client.getEndpoint(), termId,
-            contentType, accept, body, requestOptions, context));
+            contentType, body, requestOptions, context));
     }
 
     /**
@@ -5745,9 +5734,8 @@ public final class GlossariesImpl {
     public Response<Void> assignTermToEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.assignTermToEntitiesSync(this.client.getEndpoint(), termId, contentType, body, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5793,9 +5781,8 @@ public final class GlossariesImpl {
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTermAssignmentFromEntities(this.client.getEndpoint(),
-            termId, contentType, accept, body, requestOptions, context));
+            termId, contentType, body, requestOptions, context));
     }
 
     /**
@@ -5841,9 +5828,8 @@ public final class GlossariesImpl {
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(String termId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.deleteTermAssignmentFromEntitiesSync(this.client.getEndpoint(), termId, contentType, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -6402,9 +6388,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String glossaryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), glossaryId, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), glossaryId, requestOptions, context));
     }
 
     /**
@@ -6421,8 +6406,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String glossaryId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), glossaryId, accept, requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), glossaryId, requestOptions, Context.NONE);
     }
 
     /**

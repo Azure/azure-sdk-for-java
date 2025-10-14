@@ -5,6 +5,7 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
     /*
      * Array of schema version integers.
      */
+    @Generated
     private List<Integer> versions;
 
     /*
      * URl to next batch of schema versions
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of SchemaVersions class.
      */
+    @Generated
     public SchemaVersions() {
     }
 
@@ -38,6 +42,7 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
      * 
      * @return the versions value.
      */
+    @Generated
     public List<Integer> getVersions() {
         return this.versions;
     }
@@ -48,6 +53,7 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
      * @param versions the versions value to set.
      * @return the SchemaVersions object itself.
      */
+    @Generated
     public SchemaVersions setVersions(List<Integer> versions) {
         this.versions = versions;
         return this;
@@ -58,6 +64,7 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
      * @param nextLink the nextLink value to set.
      * @return the SchemaVersions object itself.
      */
+    @Generated
     public SchemaVersions setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SchemaVersions implements JsonSerializable<SchemaVersions> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SchemaVersions.
      */
+    @Generated
     public static SchemaVersions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SchemaVersions deserializedSchemaVersions = new SchemaVersions();

@@ -53,7 +53,7 @@ public final class SqlPoolsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientSqlPo")
+    @ServiceInterface(name = "ArtifactsClientSqlPools")
     public interface SqlPoolsService {
         @Get("/sqlPools")
         @ExpectedResponses({ 200 })

@@ -8,18 +8,16 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
@@ -38,10 +36,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.azure.messaging.eventhubs.TestUtils.AZURE_EVENTHUBS_EVENT_HUB_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 /**
  * Test base for running integration tests.
  */
-public abstract class IntegrationTestBase extends TestBase {
+public abstract class IntegrationTestBase extends TestProxyTestBase {
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
@@ -61,9 +64,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected String testName;
 
-    private static final ClientOptions OPTIONS_WITH_TRACING
-        = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
-
     private Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
     private List<AutoCloseable> toClose = new ArrayList<>();
@@ -81,7 +81,7 @@ public abstract class IntegrationTestBase extends TestBase {
             testContextManager.getTestPlaybackRecordingName());
 
         testName = testContextManager.getTrackerTestName();
-        skipIfNotRecordMode();
+        skipIfNotRecordOrLiveMode();
         toClose = new ArrayList<>();
 
         scheduler = Schedulers.newParallel("eh-integration");
@@ -116,62 +116,56 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate.
+     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and does not
+     * share a connection string.
      */
     protected EventHubClientBuilder createBuilder() {
         return createBuilder(false);
     }
 
     /**
-     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
-     * {@link com.azure.identity.ClientSecretCredential}.
+     * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings.  Assumes test
+     * mode is not {@link TestMode#PLAYBACK}.
      */
     protected EventHubClientBuilder createBuilder(boolean shareConnection) {
+        skipIfNotRecordOrLiveMode();
+
+        // Enables tracing.
+        final ClientOptions clientOptions
+            = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
+
         final EventHubClientBuilder builder = new EventHubClientBuilder().proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
-            .clientOptions(OPTIONS_WITH_TRACING)
+            .clientOptions(clientOptions)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler)
             .configuration(new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build());
-
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-        final String eventHubName = TestUtils.getEventHubName();
 
         if (shareConnection) {
             builder.shareConnection();
         }
 
-        switch (getTestMode()) {
-            case PLAYBACK:
-                Assumptions.assumeTrue(false, "Integration tests are not enabled in playback mode.");
-                return null;
+        final TokenCredential tokenCredential = TestUtils.getTokenCredential(getTestMode(), credentialCached);
 
-            case LIVE:
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
-                    "FullyQualifiedDomainName is not set.");
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "EventHubName is not set.");
+        assumeTrue(tokenCredential != null, "Token credential could not be created using " + getTestMode());
 
-                final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
-                return builder.credential(fullyQualifiedDomainName, eventHubName, credential);
-
-            case RECORD:
-                final String connectionString = TestUtils.getConnectionString(false);
-
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(eventHubName), "EventHubName is not set.");
-                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
-                    "FullyQualifiedDomainName is not set.");
-
-                if (CoreUtils.isNullOrEmpty(connectionString)) {
-                    final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-                    return builder.credential(fullyQualifiedDomainName, eventHubName, tokenCredential);
-                } else {
-                    return builder.connectionString(connectionString).eventHubName(eventHubName);
-                }
-            default:
-                return null;
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return builder.credential(tokenCredential);
         }
+
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final String eventHubName = TestUtils.getEventHubName();
+
+        assumeFalse(CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+            "Env variable: '" + AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME + "' must be set.");
+        assumeFalse(CoreUtils.isNullOrEmpty(eventHubName),
+            "Env variable: '" + AZURE_EVENTHUBS_EVENT_HUB_NAME + "' must be set.");
+
+        return builder.credential(fullyQualifiedDomainName, eventHubName, tokenCredential);
+    }
+
+    protected TokenCredential getOrCreateTokenCredential() {
+        return TestUtils.getTokenCredential(getTestMode(), credentialCached);
     }
 
     /**
@@ -247,8 +241,7 @@ public abstract class IntegrationTestBase extends TestBase {
         toClose.clear();
     }
 
-    private void skipIfNotRecordMode() {
-        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
+    private void skipIfNotRecordOrLiveMode() {
+        assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
     }
-
 }

@@ -31,6 +31,11 @@ public final class SecuritySettings implements JsonSerializable<SecuritySettings
      */
     private MultiUserAuthorization multiUserAuthorization;
 
+    /*
+     * Source scan configuration of vault
+     */
+    private SourceScanConfiguration sourceScanConfiguration;
+
     /**
      * Creates an instance of SecuritySettings class.
      */
@@ -87,6 +92,26 @@ public final class SecuritySettings implements JsonSerializable<SecuritySettings
     }
 
     /**
+     * Get the sourceScanConfiguration property: Source scan configuration of vault.
+     * 
+     * @return the sourceScanConfiguration value.
+     */
+    public SourceScanConfiguration sourceScanConfiguration() {
+        return this.sourceScanConfiguration;
+    }
+
+    /**
+     * Set the sourceScanConfiguration property: Source scan configuration of vault.
+     * 
+     * @param sourceScanConfiguration the sourceScanConfiguration value to set.
+     * @return the SecuritySettings object itself.
+     */
+    public SecuritySettings withSourceScanConfiguration(SourceScanConfiguration sourceScanConfiguration) {
+        this.sourceScanConfiguration = sourceScanConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -98,6 +123,9 @@ public final class SecuritySettings implements JsonSerializable<SecuritySettings
         if (softDeleteSettings() != null) {
             softDeleteSettings().validate();
         }
+        if (sourceScanConfiguration() != null) {
+            sourceScanConfiguration().validate();
+        }
     }
 
     /**
@@ -108,6 +136,7 @@ public final class SecuritySettings implements JsonSerializable<SecuritySettings
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("immutabilitySettings", this.immutabilitySettings);
         jsonWriter.writeJsonField("softDeleteSettings", this.softDeleteSettings);
+        jsonWriter.writeJsonField("sourceScanConfiguration", this.sourceScanConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -133,6 +162,8 @@ public final class SecuritySettings implements JsonSerializable<SecuritySettings
                 } else if ("multiUserAuthorization".equals(fieldName)) {
                     deserializedSecuritySettings.multiUserAuthorization
                         = MultiUserAuthorization.fromString(reader.getString());
+                } else if ("sourceScanConfiguration".equals(fieldName)) {
+                    deserializedSecuritySettings.sourceScanConfiguration = SourceScanConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

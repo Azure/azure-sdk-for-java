@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfiguration;
@@ -25,31 +25,33 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"q\",\"type\":\"btimpkjblor\"},\"properties\":{\"collectionInterval\":89470103286938544,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"uds\",\"disabledMetrics\":[\"uaawja\",\"xwjnfcz\"],\"enabledMetrics\":[\"iixyxvqbanosj\"],\"provisioningState\":\"Succeeded\"},\"location\":\"nbg\",\"tags\":{\"foeajogsy\":\"ddorgmynltwmpft\"},\"id\":\"wetamfddrvlk\",\"name\":\"zwbhnrecc\",\"type\":\"d\"}";
+            = "{\"etag\":\"jqqwmtqsmoxsazu\",\"extendedLocation\":{\"name\":\"ejgwe\",\"type\":\"ywnfyszzaczs\"},\"properties\":{\"collectionInterval\":2399079207304654323,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"ddbboz\",\"disabledMetrics\":[\"rmkjmyitrchwudlx\",\"eihtpmnoejh\",\"lfmsibzoyrfg\",\"kydpmypgfqvmtywh\"],\"enabledMetrics\":[\"xpejpewpy\"],\"provisioningState\":\"Succeeded\"},\"location\":\"ampqcrzgeuq\",\"tags\":{\"kgd\":\"iatwfaujegqdtadr\",\"tnqsktx\":\"hjkrukizyhgs\",\"iwdhdmncgbfzu\":\"fpjbqggwe\",\"mlhxdfbklcii\":\"cstu\"},\"id\":\"hgjsysmvxo\",\"name\":\"gwxfkzsi\",\"type\":\"cuvbdujgcwxvec\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .define("tvdxxhe")
-            .withRegion("mlnfyz")
-            .withExistingCluster("polzkgysdgzyy", "zoxlvoc")
-            .withExtendedLocation(new ExtendedLocation().withName("gmlilwzghjhjvmab").withType("zbwaybfmdafbgym"))
-            .withCollectionInterval(1745929206373036946L)
-            .withTags(mapOf("dbkp", "rbypi", "njhx", "jtaqhsmqazpdg"))
-            .withEnabledMetrics(Arrays.asList("sgnwdxzedpq", "rfbo"))
+            .define("tbfjtdyotnplf")
+            .withRegion("qjoghdsai")
+            .withExistingCluster("uwhldxwhieproqks", "fxmcvprstvk")
+            .withExtendedLocation(new ExtendedLocation().withName("rhutf").withType("oadtxopgehpadkmd"))
+            .withCollectionInterval(4141296414546241521L)
+            .withTags(mapOf("xxurntujmoilunwe", "normov"))
+            .withEnabledMetrics(Arrays.asList("xxc"))
+            .withIfMatch("xvgjbfi")
+            .withIfNoneMatch("bpnjodf")
             .create();
 
-        Assertions.assertEquals("nbg", response.location());
-        Assertions.assertEquals("ddorgmynltwmpft", response.tags().get("foeajogsy"));
-        Assertions.assertEquals("q", response.extendedLocation().name());
-        Assertions.assertEquals("btimpkjblor", response.extendedLocation().type());
-        Assertions.assertEquals(89470103286938544L, response.collectionInterval());
-        Assertions.assertEquals("iixyxvqbanosj", response.enabledMetrics().get(0));
+        Assertions.assertEquals("ampqcrzgeuq", response.location());
+        Assertions.assertEquals("iatwfaujegqdtadr", response.tags().get("kgd"));
+        Assertions.assertEquals("ejgwe", response.extendedLocation().name());
+        Assertions.assertEquals("ywnfyszzaczs", response.extendedLocation().type());
+        Assertions.assertEquals(2399079207304654323L, response.collectionInterval());
+        Assertions.assertEquals("xpejpewpy", response.enabledMetrics().get(0));
     }
 
     // Use "Map.of" if available

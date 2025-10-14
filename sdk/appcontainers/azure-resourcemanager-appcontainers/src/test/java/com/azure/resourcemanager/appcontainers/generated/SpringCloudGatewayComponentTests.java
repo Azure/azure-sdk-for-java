@@ -18,64 +18,61 @@ public final class SpringCloudGatewayComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpringCloudGatewayComponent model = BinaryData.fromString(
-            "{\"componentType\":\"SpringCloudGateway\",\"ingress\":{\"fqdn\":\"xifvqnrxtmbpjpt\"},\"springCloudGatewayRoutes\":[{\"id\":\"jhrsidqpxlb\",\"uri\":\"pakftngatwm\",\"predicates\":[\"u\",\"rymdwmf\"],\"filters\":[\"y\",\"vjqdvdwkq\",\"ldrlefgnaavua\",\"n\"],\"order\":1685167136810834762},{\"id\":\"outnpdctuhspfefy\",\"uri\":\"hduyeuyldph\",\"predicates\":[\"bkcgsuthhllnm\",\"y\",\"efxexlf\",\"i\"],\"filters\":[\"tjrrlkmds\",\"jhhxdlajf\"],\"order\":1421309624350000860},{\"id\":\"scv\",\"uri\":\"lxlhuavkrm\",\"predicates\":[\"yjmkxettc\",\"lojfkqidnqto\",\"xjhqxcsqhtkb\",\"nqlrng\"],\"filters\":[\"biipsnawwlqkznx\",\"hllxricctkw\",\"uqqoaj\",\"eiyglesrwvaexhdc\"],\"order\":6015888492629008209},{\"id\":\"qnkbrupobehdm\",\"uri\":\"jzacvumepjpbibn\",\"predicates\":[\"hep\",\"fexleqirccjcly\",\"cgxvrpj\",\"vczuodacpune\"],\"filters\":[\"pdjxqeskoynu\",\"ylpckaewsedv\",\"skwxe\"],\"order\":2622213002534691170}],\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"hctmjtsgh\",\"value\":\"c\"},{\"propertyName\":\"pzarpzeqacdld\",\"value\":\"mpypefcpczshnuq\"},{\"propertyName\":\"aizu\",\"value\":\"kh\"}],\"scale\":{\"minReplicas\":1288045967,\"maxReplicas\":529640941},\"serviceBinds\":[{\"name\":\"tvtv\",\"serviceId\":\"w\"}]}")
+            "{\"componentType\":\"SpringCloudGateway\",\"ingress\":{\"fqdn\":\"sjhwjuyxx\"},\"springCloudGatewayRoutes\":[{\"id\":\"vmv\",\"uri\":\"aytuadxkxeqbwp\",\"predicates\":[\"h\",\"ksarcdrnxsluvl\",\"ladltxkpbqhvfd\",\"qjwkrhwz\"],\"filters\":[\"ojisg\",\"lmvokat\",\"ztjctibpvbkae\"],\"order\":2870545473163589684},{\"id\":\"zygdfwa\",\"uri\":\"wseivmakxh\",\"predicates\":[\"wljuxlkbectvt\",\"j\",\"skdchmaiubavl\",\"wp\"],\"filters\":[\"falkzazm\",\"oke\",\"gjqafkmkrokzr\"],\"order\":5412337647505957916},{\"id\":\"twpqrtva\",\"uri\":\"znq\",\"predicates\":[\"iezeagm\",\"eituugedhfpjs\",\"lzmb\"],\"filters\":[\"jdeolctae\",\"fsyrledjc\",\"stbvtqig\",\"xzvsgeafgf\"],\"order\":4268193060309672269},{\"id\":\"xlzsxezppk\",\"uri\":\"waaeskyfjl\",\"predicates\":[\"qtoyrpl\",\"xlaj\"],\"filters\":[\"pq\",\"evhamfowg\",\"btmkekxpkzwaq\"],\"order\":4861502479814140842}],\"provisioningState\":\"Canceled\",\"configurations\":[{\"propertyName\":\"qbplvfiduszte\",\"value\":\"byjgmsfepx\"}],\"scale\":{\"minReplicas\":1943073123,\"maxReplicas\":195447129},\"serviceBinds\":[{\"name\":\"rhrdi\",\"serviceId\":\"dw\"}]}")
             .toObject(SpringCloudGatewayComponent.class);
-        Assertions.assertEquals("hctmjtsgh", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("c", model.configurations().get(0).value());
-        Assertions.assertEquals(1288045967, model.scale().minReplicas());
-        Assertions.assertEquals(529640941, model.scale().maxReplicas());
-        Assertions.assertEquals("tvtv", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("w", model.serviceBinds().get(0).serviceId());
-        Assertions.assertEquals("jhrsidqpxlb", model.springCloudGatewayRoutes().get(0).id());
-        Assertions.assertEquals("pakftngatwm", model.springCloudGatewayRoutes().get(0).uri());
-        Assertions.assertEquals("u", model.springCloudGatewayRoutes().get(0).predicates().get(0));
-        Assertions.assertEquals("y", model.springCloudGatewayRoutes().get(0).filters().get(0));
-        Assertions.assertEquals(1685167136810834762L, model.springCloudGatewayRoutes().get(0).order());
+        Assertions.assertEquals("qbplvfiduszte", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("byjgmsfepx", model.configurations().get(0).value());
+        Assertions.assertEquals(1943073123, model.scale().minReplicas());
+        Assertions.assertEquals(195447129, model.scale().maxReplicas());
+        Assertions.assertEquals("rhrdi", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("dw", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("vmv", model.springCloudGatewayRoutes().get(0).id());
+        Assertions.assertEquals("aytuadxkxeqbwp", model.springCloudGatewayRoutes().get(0).uri());
+        Assertions.assertEquals("h", model.springCloudGatewayRoutes().get(0).predicates().get(0));
+        Assertions.assertEquals("ojisg", model.springCloudGatewayRoutes().get(0).filters().get(0));
+        Assertions.assertEquals(2870545473163589684L, model.springCloudGatewayRoutes().get(0).order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpringCloudGatewayComponent model = new SpringCloudGatewayComponent()
-            .withConfigurations(
-                Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("hctmjtsgh").withValue("c"),
-                    new JavaComponentConfigurationProperty().withPropertyName("pzarpzeqacdld")
-                        .withValue("mpypefcpczshnuq"),
-                    new JavaComponentConfigurationProperty().withPropertyName("aizu").withValue("kh")))
-            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1288045967).withMaxReplicas(529640941))
-            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("tvtv").withServiceId("w")))
+            .withConfigurations(Arrays.asList(
+                new JavaComponentConfigurationProperty().withPropertyName("qbplvfiduszte").withValue("byjgmsfepx")))
+            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1943073123).withMaxReplicas(195447129))
+            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("rhrdi").withServiceId("dw")))
             .withIngress(new JavaComponentIngress())
             .withSpringCloudGatewayRoutes(Arrays.asList(
-                new ScgRoute().withId("jhrsidqpxlb")
-                    .withUri("pakftngatwm")
-                    .withPredicates(Arrays.asList("u", "rymdwmf"))
-                    .withFilters(Arrays.asList("y", "vjqdvdwkq", "ldrlefgnaavua", "n"))
-                    .withOrder(1685167136810834762L),
-                new ScgRoute().withId("outnpdctuhspfefy")
-                    .withUri("hduyeuyldph")
-                    .withPredicates(Arrays.asList("bkcgsuthhllnm", "y", "efxexlf", "i"))
-                    .withFilters(Arrays.asList("tjrrlkmds", "jhhxdlajf"))
-                    .withOrder(1421309624350000860L),
-                new ScgRoute().withId("scv")
-                    .withUri("lxlhuavkrm")
-                    .withPredicates(Arrays.asList("yjmkxettc", "lojfkqidnqto", "xjhqxcsqhtkb", "nqlrng"))
-                    .withFilters(Arrays.asList("biipsnawwlqkznx", "hllxricctkw", "uqqoaj", "eiyglesrwvaexhdc"))
-                    .withOrder(6015888492629008209L),
-                new ScgRoute().withId("qnkbrupobehdm")
-                    .withUri("jzacvumepjpbibn")
-                    .withPredicates(Arrays.asList("hep", "fexleqirccjcly", "cgxvrpj", "vczuodacpune"))
-                    .withFilters(Arrays.asList("pdjxqeskoynu", "ylpckaewsedv", "skwxe"))
-                    .withOrder(2622213002534691170L)));
+                new ScgRoute().withId("vmv")
+                    .withUri("aytuadxkxeqbwp")
+                    .withPredicates(Arrays.asList("h", "ksarcdrnxsluvl", "ladltxkpbqhvfd", "qjwkrhwz"))
+                    .withFilters(Arrays.asList("ojisg", "lmvokat", "ztjctibpvbkae"))
+                    .withOrder(2870545473163589684L),
+                new ScgRoute().withId("zygdfwa")
+                    .withUri("wseivmakxh")
+                    .withPredicates(Arrays.asList("wljuxlkbectvt", "j", "skdchmaiubavl", "wp"))
+                    .withFilters(Arrays.asList("falkzazm", "oke", "gjqafkmkrokzr"))
+                    .withOrder(5412337647505957916L),
+                new ScgRoute().withId("twpqrtva")
+                    .withUri("znq")
+                    .withPredicates(Arrays.asList("iezeagm", "eituugedhfpjs", "lzmb"))
+                    .withFilters(Arrays.asList("jdeolctae", "fsyrledjc", "stbvtqig", "xzvsgeafgf"))
+                    .withOrder(4268193060309672269L),
+                new ScgRoute().withId("xlzsxezppk")
+                    .withUri("waaeskyfjl")
+                    .withPredicates(Arrays.asList("qtoyrpl", "xlaj"))
+                    .withFilters(Arrays.asList("pq", "evhamfowg", "btmkekxpkzwaq"))
+                    .withOrder(4861502479814140842L)));
         model = BinaryData.fromObject(model).toObject(SpringCloudGatewayComponent.class);
-        Assertions.assertEquals("hctmjtsgh", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("c", model.configurations().get(0).value());
-        Assertions.assertEquals(1288045967, model.scale().minReplicas());
-        Assertions.assertEquals(529640941, model.scale().maxReplicas());
-        Assertions.assertEquals("tvtv", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("w", model.serviceBinds().get(0).serviceId());
-        Assertions.assertEquals("jhrsidqpxlb", model.springCloudGatewayRoutes().get(0).id());
-        Assertions.assertEquals("pakftngatwm", model.springCloudGatewayRoutes().get(0).uri());
-        Assertions.assertEquals("u", model.springCloudGatewayRoutes().get(0).predicates().get(0));
-        Assertions.assertEquals("y", model.springCloudGatewayRoutes().get(0).filters().get(0));
-        Assertions.assertEquals(1685167136810834762L, model.springCloudGatewayRoutes().get(0).order());
+        Assertions.assertEquals("qbplvfiduszte", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("byjgmsfepx", model.configurations().get(0).value());
+        Assertions.assertEquals(1943073123, model.scale().minReplicas());
+        Assertions.assertEquals(195447129, model.scale().maxReplicas());
+        Assertions.assertEquals("rhrdi", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("dw", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("vmv", model.springCloudGatewayRoutes().get(0).id());
+        Assertions.assertEquals("aytuadxkxeqbwp", model.springCloudGatewayRoutes().get(0).uri());
+        Assertions.assertEquals("h", model.springCloudGatewayRoutes().get(0).predicates().get(0));
+        Assertions.assertEquals("ojisg", model.springCloudGatewayRoutes().get(0).filters().get(0));
+        Assertions.assertEquals(2870545473163589684L, model.springCloudGatewayRoutes().get(0).order());
     }
 }

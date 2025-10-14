@@ -5,6 +5,8 @@ package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -12,12 +14,14 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.net.ProxyType;
 
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
 import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
@@ -30,12 +34,41 @@ import static com.azure.core.implementation.util.HttpUtils.getTimeout;
  * Builds a {@link VertxHttpClient}.
  */
 public class VertxHttpClientBuilder {
-
     private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClientBuilder.class);
     private static final Pattern NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
     private static final Pattern NON_PROXY_HOST_REMOVE_SANITIZATION
         = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
     private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
+
+    private static final BiFunction<Vertx, HttpClientOptions, io.vertx.core.http.HttpClient> VERTX_HTTP_CLIENT_FACTORY;
+    static {
+        // In order to support both Vert.x 4.5 and 5.x reflection is needed to properly create Vert.x's HttpClient from
+        // HttpClientOptions.
+        // While Vertx.createHttpClient(HttpClientOptions) is available in both versions, there are binary changes that
+        // make this incompatible without the use of reflection.
+        BiFunction<Vertx, HttpClientOptions, io.vertx.core.http.HttpClient> vertxHttpClientFactory;
+        try {
+            Method method = Vertx.class.getDeclaredMethod("createHttpClient", HttpClientOptions.class);
+            ReflectiveInvoker invoker = ReflectionUtils.getMethodInvoker(Vertx.class, method, true);
+            vertxHttpClientFactory = (vertx, options) -> {
+                try {
+                    return (io.vertx.core.http.HttpClient) invoker.invokeWithArguments(vertx, options);
+                } catch (Exception e) {
+                    if (e instanceof RuntimeException) {
+                        throw LOGGER.logExceptionAsError((RuntimeException) e);
+                    } else {
+                        throw LOGGER
+                            .logExceptionAsError(new RuntimeException("Failed to invoke Vertx.createHttpClient", e));
+                    }
+                }
+            };
+        } catch (Exception ex) {
+            // Fail here as the method isn't available and this HttpClient wouldn't be usable anyway.
+            throw LOGGER.logExceptionAsError(new IllegalStateException(ex));
+        }
+
+        VERTX_HTTP_CLIENT_FACTORY = vertxHttpClientFactory;
+    }
 
     private Duration connectTimeout;
     private Duration writeTimeout;
@@ -206,6 +239,9 @@ public class VertxHttpClientBuilder {
                 .setReadIdleTimeout((int) getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis())
                 .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis());
 
+            // For now, set the max header size to 256 KB. Follow up to see if this should be configurable.
+            buildOptions.setMaxHeaderSize(256 * 1024);
+
             Configuration buildConfiguration
                 = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
@@ -250,8 +286,8 @@ public class VertxHttpClientBuilder {
             }
         }
 
-        io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(buildOptions);
-        return new VertxHttpClient(client, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
+        io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
+        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
@@ -317,7 +353,7 @@ public class VertxHttpClientBuilder {
         return () -> {
             CountDownLatch latch = new CountDownLatch(1);
             if (vertxToClose != null) {
-                vertxToClose.close(event -> {
+                vertxToClose.close().andThen(event -> {
                     if (event.failed() && event.cause() != null) {
                         LOGGER.logThrowableAsError(event.cause());
                     }

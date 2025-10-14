@@ -12,24 +12,24 @@ public final class VolumeBackupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeBackups model = BinaryData.fromString(
-            "{\"volumeName\":\"iibfggj\",\"volumeResourceId\":\"olvrw\",\"backupsCount\":148831092,\"policyEnabled\":false}")
+            "{\"volumeName\":\"mjihyeozphv\",\"volumeResourceId\":\"uyqncygupkvipmd\",\"backupsCount\":497556076,\"policyEnabled\":false}")
             .toObject(VolumeBackups.class);
-        Assertions.assertEquals("iibfggj", model.volumeName());
-        Assertions.assertEquals("olvrw", model.volumeResourceId());
-        Assertions.assertEquals(148831092, model.backupsCount());
-        Assertions.assertEquals(false, model.policyEnabled());
+        Assertions.assertEquals("mjihyeozphv", model.volumeName());
+        Assertions.assertEquals("uyqncygupkvipmd", model.volumeResourceId());
+        Assertions.assertEquals(497556076, model.backupsCount());
+        Assertions.assertFalse(model.policyEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeBackups model = new VolumeBackups().withVolumeName("iibfggj")
-            .withVolumeResourceId("olvrw")
-            .withBackupsCount(148831092)
+        VolumeBackups model = new VolumeBackups().withVolumeName("mjihyeozphv")
+            .withVolumeResourceId("uyqncygupkvipmd")
+            .withBackupsCount(497556076)
             .withPolicyEnabled(false);
         model = BinaryData.fromObject(model).toObject(VolumeBackups.class);
-        Assertions.assertEquals("iibfggj", model.volumeName());
-        Assertions.assertEquals("olvrw", model.volumeResourceId());
-        Assertions.assertEquals(148831092, model.backupsCount());
-        Assertions.assertEquals(false, model.policyEnabled());
+        Assertions.assertEquals("mjihyeozphv", model.volumeName());
+        Assertions.assertEquals("uyqncygupkvipmd", model.volumeResourceId());
+        Assertions.assertEquals(497556076, model.backupsCount());
+        Assertions.assertFalse(model.policyEnabled());
     }
 }

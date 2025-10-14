@@ -32,16 +32,10 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * ('Microsoft.Network/virtualNetworks') are supported. If the specified VNet has any associated Network Security
      * Groups (NSG), then a few reserved system ports must be enabled for inbound communication, including ports 29876
      * and 29877. Also enable outbound connections to Azure Storage on port 443. For more details see:
-     * https://docs.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration
      */
     @Generated
     private String subnetId;
-
-    /*
-     * The scope of dynamic vnet assignment.
-     */
-    @Generated
-    private DynamicVNetAssignmentScope dynamicVNetAssignmentScope;
 
     /*
      * The configuration for endpoints on Compute Nodes in the Batch Pool.
@@ -53,7 +47,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * The Public IPAddress configuration for Compute Nodes in the Batch Pool.
      */
     @Generated
-    private PublicIpAddressConfiguration publicIpAddressConfiguration;
+    private BatchPublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
      * Whether this pool should enable accelerated networking. Accelerated networking enables single root I/O
@@ -85,7 +79,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * ('Microsoft.Network/virtualNetworks') are supported. If the specified VNet has any associated Network Security
      * Groups (NSG), then a few reserved system ports must be enabled for inbound communication, including ports 29876
      * and 29877. Also enable outbound connections to Azure Storage on port 443. For more details see:
-     * https://docs.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the subnetId value.
      */
@@ -109,7 +103,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * ('Microsoft.Network/virtualNetworks') are supported. If the specified VNet has any associated Network Security
      * Groups (NSG), then a few reserved system ports must be enabled for inbound communication, including ports 29876
      * and 29877. Also enable outbound connections to Azure Storage on port 443. For more details see:
-     * https://docs.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      *
      * @param subnetId the subnetId value to set.
      * @return the NetworkConfiguration object itself.
@@ -117,28 +111,6 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
     @Generated
     public NetworkConfiguration setSubnetId(String subnetId) {
         this.subnetId = subnetId;
-        return this;
-    }
-
-    /**
-     * Get the dynamicVNetAssignmentScope property: The scope of dynamic vnet assignment.
-     *
-     * @return the dynamicVNetAssignmentScope value.
-     */
-    @Generated
-    public DynamicVNetAssignmentScope getDynamicVNetAssignmentScope() {
-        return this.dynamicVNetAssignmentScope;
-    }
-
-    /**
-     * Set the dynamicVNetAssignmentScope property: The scope of dynamic vnet assignment.
-     *
-     * @param dynamicVNetAssignmentScope the dynamicVNetAssignmentScope value to set.
-     * @return the NetworkConfiguration object itself.
-     */
-    @Generated
-    public NetworkConfiguration setDynamicVNetAssignmentScope(DynamicVNetAssignmentScope dynamicVNetAssignmentScope) {
-        this.dynamicVNetAssignmentScope = dynamicVNetAssignmentScope;
         return this;
     }
 
@@ -171,22 +143,8 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * @return the publicIpAddressConfiguration value.
      */
     @Generated
-    public PublicIpAddressConfiguration getPublicIpAddressConfiguration() {
+    public BatchPublicIpAddressConfiguration getPublicIpAddressConfiguration() {
         return this.publicIpAddressConfiguration;
-    }
-
-    /**
-     * Set the publicIpAddressConfiguration property: The Public IPAddress configuration for Compute Nodes in the Batch
-     * Pool.
-     *
-     * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
-     * @return the NetworkConfiguration object itself.
-     */
-    @Generated
-    public NetworkConfiguration
-        setPublicIpAddressConfiguration(PublicIpAddressConfiguration publicIpAddressConfiguration) {
-        this.publicIpAddressConfiguration = publicIpAddressConfiguration;
-        return this;
     }
 
     /**
@@ -226,7 +184,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeStringField("dynamicVNetAssignmentScope",
-            this.dynamicVNetAssignmentScope == null ? null : this.dynamicVNetAssignmentScope.toString());
+            this.dynamicVnetAssignmentScope == null ? null : this.dynamicVnetAssignmentScope.toString());
         jsonWriter.writeJsonField("endpointConfiguration", this.endpointConfiguration);
         jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
         jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
@@ -251,14 +209,14 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
                 if ("subnetId".equals(fieldName)) {
                     deserializedNetworkConfiguration.subnetId = reader.getString();
                 } else if ("dynamicVNetAssignmentScope".equals(fieldName)) {
-                    deserializedNetworkConfiguration.dynamicVNetAssignmentScope
+                    deserializedNetworkConfiguration.dynamicVnetAssignmentScope
                         = DynamicVNetAssignmentScope.fromString(reader.getString());
                 } else if ("endpointConfiguration".equals(fieldName)) {
                     deserializedNetworkConfiguration.endpointConfiguration
                         = BatchPoolEndpointConfiguration.fromJson(reader);
                 } else if ("publicIPAddressConfiguration".equals(fieldName)) {
                     deserializedNetworkConfiguration.publicIpAddressConfiguration
-                        = PublicIpAddressConfiguration.fromJson(reader);
+                        = BatchPublicIpAddressConfiguration.fromJson(reader);
                 } else if ("enableAcceleratedNetworking".equals(fieldName)) {
                     deserializedNetworkConfiguration.enableAcceleratedNetworking
                         = reader.getNullable(JsonReader::getBoolean);
@@ -268,5 +226,47 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
             }
             return deserializedNetworkConfiguration;
         });
+    }
+
+    /*
+     * The scope of dynamic vnet assignment.
+     */
+    @Generated
+    private DynamicVNetAssignmentScope dynamicVnetAssignmentScope;
+
+    /**
+     * Get the dynamicVnetAssignmentScope property: The scope of dynamic vnet assignment.
+     *
+     * @return the dynamicVnetAssignmentScope value.
+     */
+    @Generated
+    public DynamicVNetAssignmentScope getDynamicVnetAssignmentScope() {
+        return this.dynamicVnetAssignmentScope;
+    }
+
+    /**
+     * Set the dynamicVnetAssignmentScope property: The scope of dynamic vnet assignment.
+     *
+     * @param dynamicVnetAssignmentScope the dynamicVnetAssignmentScope value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    @Generated
+    public NetworkConfiguration setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope) {
+        this.dynamicVnetAssignmentScope = dynamicVnetAssignmentScope;
+        return this;
+    }
+
+    /**
+     * Set the publicIpAddressConfiguration property: The Public IPAddress configuration for Compute Nodes in the Batch
+     * Pool.
+     *
+     * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    @Generated
+    public NetworkConfiguration
+        setPublicIpAddressConfiguration(BatchPublicIpAddressConfiguration publicIpAddressConfiguration) {
+        this.publicIpAddressConfiguration = publicIpAddressConfiguration;
+        return this;
     }
 }

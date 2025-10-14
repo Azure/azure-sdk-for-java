@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,27 +20,32 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     /*
      * The extracted sentence text.
      */
+    @Generated
     private String text;
 
     /*
      * A double value representing the relevance of the sentence within the summary. Higher values indicate higher
      * importance.
      */
+    @Generated
     private double rankScore;
 
     /*
      * The sentence offset from the start of the document, based on the value of the parameter StringIndexType.
      */
+    @Generated
     private int offset;
 
     /*
      * The length of the sentence.
      */
+    @Generated
     private int length;
 
     /**
      * Creates an instance of ExtractedSummarySentence class.
      */
+    @Generated
     public ExtractedSummarySentence() {
     }
 
@@ -48,6 +54,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -58,6 +65,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * @param text the text value to set.
      * @return the ExtractedSummarySentence object itself.
      */
+    @Generated
     public ExtractedSummarySentence setText(String text) {
         this.text = text;
         return this;
@@ -69,6 +77,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * 
      * @return the rankScore value.
      */
+    @Generated
     public double getRankScore() {
         return this.rankScore;
     }
@@ -80,6 +89,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * @param rankScore the rankScore value to set.
      * @return the ExtractedSummarySentence object itself.
      */
+    @Generated
     public ExtractedSummarySentence setRankScore(double rankScore) {
         this.rankScore = rankScore;
         return this;
@@ -91,6 +101,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * 
      * @return the offset value.
      */
+    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -102,6 +113,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * @param offset the offset value to set.
      * @return the ExtractedSummarySentence object itself.
      */
+    @Generated
     public ExtractedSummarySentence setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -112,6 +124,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * 
      * @return the length value.
      */
+    @Generated
     public int getLength() {
         return this.length;
     }
@@ -122,6 +135,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * @param length the length value to set.
      * @return the ExtractedSummarySentence object itself.
      */
+    @Generated
     public ExtractedSummarySentence setLength(int length) {
         this.length = length;
         return this;
@@ -130,6 +144,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -149,6 +164,7 @@ public final class ExtractedSummarySentence implements JsonSerializable<Extracte
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExtractedSummarySentence.
      */
+    @Generated
     public static ExtractedSummarySentence fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExtractedSummarySentence deserializedExtractedSummarySentence = new ExtractedSummarySentence();

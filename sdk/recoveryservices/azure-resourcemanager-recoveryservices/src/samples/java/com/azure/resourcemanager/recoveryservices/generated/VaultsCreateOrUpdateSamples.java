@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.resourcemanager.recoveryservices.models.AlertsState;
+import com.azure.resourcemanager.recoveryservices.models.AssociatedIdentity;
 import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
+import com.azure.resourcemanager.recoveryservices.models.IdentityType;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.SkuName;
+import com.azure.resourcemanager.recoveryservices.models.SourceScanConfiguration;
 import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
+import com.azure.resourcemanager.recoveryservices.models.State;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesEncryption;
@@ -32,7 +37,7 @@ import java.util.Map;
 public final class VaultsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PUTVault_WithCMK.json
      */
     /**
@@ -62,7 +67,7 @@ public final class VaultsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault.
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/PUTVault.
      * json
      */
     /**
@@ -84,7 +89,7 @@ public final class VaultsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PUTVault_ResourceGuardEnabled.json
      */
     /**
@@ -116,7 +121,7 @@ public final class VaultsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PUTVault_WithUserAssignedIdentity.json
      */
     /**
@@ -141,7 +146,7 @@ public final class VaultsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PUTVault_WithMonitoringSettings.json
      */
     /**
@@ -171,7 +176,7 @@ public final class VaultsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * PUTVault_WithRedundancySettings.json
      */
     /**
@@ -190,6 +195,32 @@ public final class VaultsCreateOrUpdateSamples {
                 .withRedundancySettings(new VaultPropertiesRedundancySettings()
                     .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
                     .withCrossRegionRestore(CrossRegionRestore.ENABLED)))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
+     * PUTVault_WithSourceScanConfiguration.json
+     */
+    /**
+     * Sample code: Create or Update Vault with Source scan configuration.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithSourceScanConfiguration(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withSecuritySettings(new SecuritySettings()
+                    .withSourceScanConfiguration(new SourceScanConfiguration().withState(State.ENABLED)
+                        .withSourceScanIdentity(
+                            new AssociatedIdentity().withOperationIdentityType(IdentityType.SYSTEM_ASSIGNED)))))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }

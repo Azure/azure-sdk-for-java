@@ -16,7 +16,7 @@ public final class WorkbookResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookResourceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"11c2862b-40d5-43d5-a494-97afaad0bb54\",\"tenantId\":\"87055720-f751-43ec-ad4a-8671b93c4840\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"nfdn\":{\"principalId\":\"74132bb2-6b04-484c-91f1-712c0d291dff\",\"clientId\":\"0b7d0cd2-155f-4193-8ee4-eddfe3665bed\"},\"chrdgoihxumwcto\":{\"principalId\":\"513106af-a598-417c-bfde-4e29e05d5220\",\"clientId\":\"da475381-4f67-4aed-a3e1-ed0973d15f35\"}}}")
+            "{\"principalId\":\"45619ec4-7293-45c1-87ff-088cb1fa4499\",\"tenantId\":\"9b125bbd-432a-428c-9b86-a11cb3ec3fb2\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"raehtwdwrft\":{\"principalId\":\"2e5ca98f-75fe-4bcc-a40b-7cf75db91542\",\"clientId\":\"6977fdcf-f34d-4aa3-a6a9-6d799d95aa1e\"},\"byrcdlbhshfwp\":{\"principalId\":\"29445cb0-9b77-4754-9bc3-d1bec0812758\",\"clientId\":\"749a11f0-74fb-4ff2-8f25-8aabda0bf062\"}}}")
             .toObject(WorkbookResourceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
@@ -26,7 +26,7 @@ public final class WorkbookResourceIdentityTests {
         WorkbookResourceIdentity model
             = new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("nfdn", new UserAssignedIdentity(), "chrdgoihxumwcto", new UserAssignedIdentity()));
+                    mapOf("raehtwdwrft", new UserAssignedIdentity(), "byrcdlbhshfwp", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(WorkbookResourceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

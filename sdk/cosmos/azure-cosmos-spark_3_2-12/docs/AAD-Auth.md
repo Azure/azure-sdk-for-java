@@ -33,6 +33,13 @@ To enable managed identity support out-of-the-box, the Spark environment needs t
 | `spark.cosmos.account.tenantId`          | None        | The `AAD TenantId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                           |
 | `spark.cosmos.account.resourceGroupName` | None        | The  simple resource group name (not the full qualified one) of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication. |
 
+#### Non-public clouds
+For non-public clouds the `spark.cosmos.account.azureEnvironment` config value need to be set to `Custom`and the config entries `spark.cosmos.account.azureEnvironment.management` and `spark.cosmos.account.azureEnvironment.aad` have to be specified to the correct values for the non-public cloud.
+
+| Config Property Name                               | Default | Description                                                                                                                                               |
+|:---------------------------------------------------|:--------|:----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `spark.cosmos.account.azureEnvironment.management` | None    | The Uri of the ARM (Resource Manager) endpoint in the custom cloud - e.g. the corresponding value to `https://management.azure.com/` in the public cloud. |
+| `spark.cosmos.account.azureEnvironment.aad`        | None    | The Uri of the AAD endpoint in the custom cloud - e.g. the corresponding value to `https://login.microsoftonline.com/` in the public cloud.               |
 
 #### Environment variables or system properties
 
@@ -81,7 +88,7 @@ Due to the fact that support for system managed identities and token/secret APIs
 | `spark.cosmos.account.subscriptionId`         | None        | The `SubscriptionId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                          |
 | `spark.cosmos.account.tenantId`               | None        | The `AAD TenantId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                            |
 | `spark.cosmos.account.resourceGroupName`      | None        | The  simple resource group name (not the full qualified one) of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID  authentication. |
-| `your.own.custom.property`                    |             | You can add add an duse custom properties for the configuration of your custom `AccountDataResolver` implementation.                                                                                                                                               |
+| `your.own.custom.property`                    |             | You can add and use custom properties for the configuration of your custom `AccountDataResolver` implementation.                                                                                                                                                   |
 
 ### Implementation of a custom `AccountDataResolver`
 
@@ -173,7 +180,7 @@ from cryptography.hazmat.primitives import serialization
 secret64 = mssparkutils.credentials.getSecret("xxx", "yyy", "zzz")
 
 # Decode to bytes.
-secret64Bytes = bytes(secret, "utf-8")
+secret64Bytes = bytes(secret64, "utf-8")
 secretBytes = base64.b64decode(secret64)
 
 # Load as a certificate: https://cryptography.io/en/latest/hazmat/primitives/asymmetric/serialization/#pkcs12.

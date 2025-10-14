@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appconfiguration.fluent.PrivateEndpointConnectionsClient;
@@ -81,10 +83,31 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionListResult> listByConfigurationStoreSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
@@ -104,6 +127,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @BodyParam("application/json") PrivateEndpointConnectionInner privateEndpointConnection,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -115,10 +150,29 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionListResult>> listByConfigurationStoreNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateEndpointConnectionListResult> listByConfigurationStoreNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -168,46 +222,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>>
-        listByConfigurationStoreSinglePageAsync(String resourceGroupName, String configStoreName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByConfigurationStore(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                configStoreName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists all private endpoint connections for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,18 +239,78 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PrivateEndpointConnectionInner> listByConfigurationStoreSinglePage(String resourceGroupName,
+        String configStoreName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateEndpointConnectionListResult> res
+            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists all private endpoint connections for a configuration store.
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections as paginated response with {@link PagedFlux}.
+     * @return a list of private endpoint connections along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionInner> listByConfigurationStoreAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PrivateEndpointConnectionInner> listByConfigurationStoreSinglePage(String resourceGroupName,
         String configStoreName, Context context) {
-        return new PagedFlux<>(
-            () -> listByConfigurationStoreSinglePageAsync(resourceGroupName, configStoreName, context),
-            nextLink -> listByConfigurationStoreNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateEndpointConnectionListResult> res
+            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -252,7 +326,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName) {
-        return new PagedIterable<>(listByConfigurationStoreAsync(resourceGroupName, configStoreName));
+        return new PagedIterable<>(() -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName),
+            nextLink -> listByConfigurationStoreNextSinglePage(nextLink));
     }
 
     /**
@@ -269,7 +344,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName, Context context) {
-        return new PagedIterable<>(listByConfigurationStoreAsync(resourceGroupName, configStoreName, context));
+        return new PagedIterable<>(
+            () -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, context),
+            nextLink -> listByConfigurationStoreNextSinglePage(nextLink, context));
     }
 
     /**
@@ -321,48 +398,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the configuration store along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
-        String configStoreName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            configStoreName, this.client.getApiVersion(), privateEndpointConnectionName, accept, context);
-    }
-
-    /**
-     * Gets the specified private endpoint connection associated with the configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -392,7 +427,32 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, configStoreName, privateEndpointConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), privateEndpointConnectionName, accept, context);
     }
 
     /**
@@ -474,45 +534,101 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
      * @param privateEndpointConnection The private endpoint connection properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
+     * @return a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String configStoreName, String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), privateEndpointConnectionName, privateEndpointConnection,
+            accept, Context.NONE);
+    }
+
+    /**
+     * Update the state of the specified private endpoint connection associated with the configuration store. This
+     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
+     * with the Network resource provider.
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param privateEndpointConnectionName Private endpoint connection name.
+     * @param privateEndpointConnection The private endpoint connection properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (privateEndpointConnection == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             configStoreName, this.client.getApiVersion(), privateEndpointConnectionName, privateEndpointConnection,
             accept, context);
     }
@@ -551,33 +667,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
      * @param privateEndpointConnection The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a private endpoint connection.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, configStoreName,
-            privateEndpointConnectionName, privateEndpointConnection, context);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
-            context);
-    }
-
-    /**
-     * Update the state of the specified private endpoint connection associated with the configuration store. This
-     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
-     * with the Network resource provider.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param privateEndpointConnection The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -587,10 +676,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, configStoreName, privateEndpointConnectionName,
-                privateEndpointConnection)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, configStoreName,
+            privateEndpointConnectionName, privateEndpointConnection);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
+            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
     }
 
     /**
@@ -612,10 +701,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, configStoreName, privateEndpointConnectionName,
-                privateEndpointConnection, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, configStoreName,
+            privateEndpointConnectionName, privateEndpointConnection, context);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
+            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, context);
     }
 
     /**
@@ -648,29 +737,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
      * @param privateEndpointConnection The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName, String configStoreName,
-        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, configStoreName, privateEndpointConnectionName,
-            privateEndpointConnection, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update the state of the specified private endpoint connection associated with the configuration store. This
-     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
-     * with the Network resource provider.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param privateEndpointConnection The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -679,8 +745,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return createOrUpdateAsync(resourceGroupName, configStoreName, privateEndpointConnectionName,
-            privateEndpointConnection).block();
+        return beginCreateOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName,
+            privateEndpointConnection).getFinalResult();
     }
 
     /**
@@ -702,8 +768,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, configStoreName, privateEndpointConnectionName,
-            privateEndpointConnection, context).block();
+        return beginCreateOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName,
+            privateEndpointConnection, context).getFinalResult();
     }
 
     /**
@@ -754,38 +820,82 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
+        String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), privateEndpointConnectionName, accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a private endpoint connection.
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param privateEndpointConnectionName Private endpoint connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             configStoreName, this.client.getApiVersion(), privateEndpointConnectionName, accept, context);
     }
 
@@ -815,28 +925,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
-        String privateEndpointConnectionName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, configStoreName, privateEndpointConnectionName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -845,7 +933,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName) {
-        return this.beginDeleteAsync(resourceGroupName, configStoreName, privateEndpointConnectionName).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -863,8 +953,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, configStoreName, privateEndpointConnectionName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -891,32 +982,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName,
-        String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, privateEndpointConnectionName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName) {
-        deleteAsync(resourceGroupName, configStoreName, privateEndpointConnectionName).block();
+        beginDelete(resourceGroupName, configStoreName, privateEndpointConnectionName).getFinalResult();
     }
 
     /**
@@ -933,7 +1005,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
         Context context) {
-        deleteAsync(resourceGroupName, configStoreName, privateEndpointConnectionName, context).block();
+        beginDelete(resourceGroupName, configStoreName, privateEndpointConnectionName, context).getFinalResult();
     }
 
     /**
@@ -969,27 +1041,57 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PrivateEndpointConnectionInner> listByConfigurationStoreNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateEndpointConnectionListResult> res
+            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of private endpoint connections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>>
-        listByConfigurationStoreNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<PrivateEndpointConnectionInner> listByConfigurationStoreNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByConfigurationStoreNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PrivateEndpointConnectionListResult> res
+            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
 }

@@ -12,14 +12,14 @@ public final class AuthorizeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthorizeRequest model
-            = BinaryData.fromString("{\"remoteVolumeResourceId\":\"nyga\"}").toObject(AuthorizeRequest.class);
-        Assertions.assertEquals("nyga", model.remoteVolumeResourceId());
+            = BinaryData.fromString("{\"remoteVolumeResourceId\":\"v\"}").toObject(AuthorizeRequest.class);
+        Assertions.assertEquals("v", model.remoteVolumeResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizeRequest model = new AuthorizeRequest().withRemoteVolumeResourceId("nyga");
+        AuthorizeRequest model = new AuthorizeRequest().withRemoteVolumeResourceId("v");
         model = BinaryData.fromObject(model).toObject(AuthorizeRequest.class);
-        Assertions.assertEquals("nyga", model.remoteVolumeResourceId());
+        Assertions.assertEquals("v", model.remoteVolumeResourceId());
     }
 }

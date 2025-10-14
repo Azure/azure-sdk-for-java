@@ -5,6 +5,7 @@
 package com.azure.maps.render.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import java.util.List;
 
 /**
@@ -13,18 +14,23 @@ import java.util.List;
 @Fluent
 public final class BoundingBox {
     /*
-     * Minimum coordinates (south-west point) of bounding box in latitude longitude coordinate system. E.g. 52.41064,4.84228
+     * Minimum coordinates (south-west point) of bounding box in latitude longitude coordinate system. E.g.
+     * 52.41064,4.84228
      */
+    @Generated
     private List<Double> southWest;
 
     /*
-     * Maximum coordinates (north-east point) of bounding box in latitude longitude coordinate system. E.g. 52.41064,4.84228
+     * Maximum coordinates (north-east point) of bounding box in latitude longitude coordinate system. E.g.
+     * 52.41064,4.84228
      */
+    @Generated
     private List<Double> northEast;
 
     /**
      * Creates an instance of BoundingBox class.
      */
+    @Generated
     public BoundingBox() {
     }
 
@@ -34,6 +40,7 @@ public final class BoundingBox {
      * 
      * @return the southWest value.
      */
+    @Generated
     public List<Double> getSouthWest() {
         return this.southWest;
     }
@@ -45,6 +52,7 @@ public final class BoundingBox {
      * @param southWest the southWest value to set.
      * @return the BoundingBox object itself.
      */
+    @Generated
     public BoundingBox setSouthWest(List<Double> southWest) {
         this.southWest = southWest;
         return this;
@@ -56,6 +64,7 @@ public final class BoundingBox {
      * 
      * @return the northEast value.
      */
+    @Generated
     public List<Double> getNorthEast() {
         return this.northEast;
     }
@@ -67,6 +76,7 @@ public final class BoundingBox {
      * @param northEast the northEast value to set.
      * @return the BoundingBox object itself.
      */
+    @Generated
     public BoundingBox setNorthEast(List<Double> northEast) {
         this.northEast = northEast;
         return this;

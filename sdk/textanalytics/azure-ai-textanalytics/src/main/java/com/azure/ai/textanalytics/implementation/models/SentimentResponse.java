@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,11 +20,13 @@ public final class SentimentResponse extends PreBuiltResult {
     /*
      * Sentiment analysis per document.
      */
+    @Generated
     private List<SentimentResponseDocumentsItem> documents;
 
     /**
      * Creates an instance of SentimentResponse class.
      */
+    @Generated
     public SentimentResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class SentimentResponse extends PreBuiltResult {
      * 
      * @return the documents value.
      */
+    @Generated
     public List<SentimentResponseDocumentsItem> getDocuments() {
         return this.documents;
     }
@@ -42,6 +46,7 @@ public final class SentimentResponse extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the SentimentResponse object itself.
      */
+    @Generated
     public SentimentResponse setDocuments(List<SentimentResponseDocumentsItem> documents) {
         this.documents = documents;
         return this;
@@ -50,6 +55,7 @@ public final class SentimentResponse extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponse setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
@@ -59,6 +65,7 @@ public final class SentimentResponse extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponse setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
@@ -68,6 +75,7 @@ public final class SentimentResponse extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponse setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -77,6 +85,7 @@ public final class SentimentResponse extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class SentimentResponse extends PreBuiltResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentimentResponse.
      */
+    @Generated
     public static SentimentResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentResponse deserializedSentimentResponse = new SentimentResponse();

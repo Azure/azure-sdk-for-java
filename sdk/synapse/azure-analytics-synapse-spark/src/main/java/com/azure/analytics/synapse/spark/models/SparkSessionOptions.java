@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,86 +22,103 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The artifactId property.
      */
+    @Generated
     private String artifactId;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The file property.
      */
+    @Generated
     private String file;
 
     /*
      * The className property.
      */
+    @Generated
     private String className;
 
     /*
      * The args property.
      */
+    @Generated
     private List<String> arguments;
 
     /*
      * The jars property.
      */
+    @Generated
     private List<String> jars;
 
     /*
      * The pyFiles property.
      */
+    @Generated
     private List<String> pythonFiles;
 
     /*
      * The files property.
      */
+    @Generated
     private List<String> files;
 
     /*
      * The archives property.
      */
+    @Generated
     private List<String> archives;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> configuration;
 
     /*
      * The driverMemory property.
      */
+    @Generated
     private String driverMemory;
 
     /*
      * The driverCores property.
      */
+    @Generated
     private Integer driverCores;
 
     /*
      * The executorMemory property.
      */
+    @Generated
     private String executorMemory;
 
     /*
      * The executorCores property.
      */
+    @Generated
     private Integer executorCores;
 
     /*
      * The numExecutors property.
      */
+    @Generated
     private Integer executorCount;
 
     /**
      * Creates an instance of SparkSessionOptions class.
      */
+    @Generated
     public SparkSessionOptions() {
     }
 
@@ -109,6 +127,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -119,6 +138,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param tags the tags value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -129,6 +149,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the artifactId value.
      */
+    @Generated
     public String getArtifactId() {
         return this.artifactId;
     }
@@ -139,6 +160,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param artifactId the artifactId value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setArtifactId(String artifactId) {
         this.artifactId = artifactId;
         return this;
@@ -149,6 +171,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -159,6 +182,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param name the name value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setName(String name) {
         this.name = name;
         return this;
@@ -169,6 +193,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the file value.
      */
+    @Generated
     public String getFile() {
         return this.file;
     }
@@ -179,6 +204,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param file the file value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setFile(String file) {
         this.file = file;
         return this;
@@ -189,6 +215,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the className value.
      */
+    @Generated
     public String getClassName() {
         return this.className;
     }
@@ -199,6 +226,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param className the className value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setClassName(String className) {
         this.className = className;
         return this;
@@ -209,6 +237,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<String> getArguments() {
         return this.arguments;
     }
@@ -219,6 +248,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param arguments the arguments value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setArguments(List<String> arguments) {
         this.arguments = arguments;
         return this;
@@ -229,6 +259,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the jars value.
      */
+    @Generated
     public List<String> getJars() {
         return this.jars;
     }
@@ -239,6 +270,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param jars the jars value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setJars(List<String> jars) {
         this.jars = jars;
         return this;
@@ -249,6 +281,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the pythonFiles value.
      */
+    @Generated
     public List<String> getPythonFiles() {
         return this.pythonFiles;
     }
@@ -259,6 +292,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param pythonFiles the pythonFiles value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setPythonFiles(List<String> pythonFiles) {
         this.pythonFiles = pythonFiles;
         return this;
@@ -269,6 +303,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the files value.
      */
+    @Generated
     public List<String> getFiles() {
         return this.files;
     }
@@ -279,6 +314,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param files the files value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setFiles(List<String> files) {
         this.files = files;
         return this;
@@ -289,6 +325,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the archives value.
      */
+    @Generated
     public List<String> getArchives() {
         return this.archives;
     }
@@ -299,6 +336,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param archives the archives value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setArchives(List<String> archives) {
         this.archives = archives;
         return this;
@@ -309,6 +347,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the configuration value.
      */
+    @Generated
     public Map<String, String> getConfiguration() {
         return this.configuration;
     }
@@ -319,6 +358,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param configuration the configuration value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setConfiguration(Map<String, String> configuration) {
         this.configuration = configuration;
         return this;
@@ -329,6 +369,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the driverMemory value.
      */
+    @Generated
     public String getDriverMemory() {
         return this.driverMemory;
     }
@@ -339,6 +380,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param driverMemory the driverMemory value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setDriverMemory(String driverMemory) {
         this.driverMemory = driverMemory;
         return this;
@@ -349,6 +391,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the driverCores value.
      */
+    @Generated
     public Integer getDriverCores() {
         return this.driverCores;
     }
@@ -359,6 +402,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param driverCores the driverCores value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setDriverCores(Integer driverCores) {
         this.driverCores = driverCores;
         return this;
@@ -369,6 +413,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the executorMemory value.
      */
+    @Generated
     public String getExecutorMemory() {
         return this.executorMemory;
     }
@@ -379,6 +424,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param executorMemory the executorMemory value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setExecutorMemory(String executorMemory) {
         this.executorMemory = executorMemory;
         return this;
@@ -389,6 +435,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the executorCores value.
      */
+    @Generated
     public Integer getExecutorCores() {
         return this.executorCores;
     }
@@ -399,6 +446,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param executorCores the executorCores value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setExecutorCores(Integer executorCores) {
         this.executorCores = executorCores;
         return this;
@@ -409,6 +457,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * 
      * @return the executorCount value.
      */
+    @Generated
     public Integer getExecutorCount() {
         return this.executorCount;
     }
@@ -419,6 +468,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @param executorCount the executorCount value to set.
      * @return the SparkSessionOptions object itself.
      */
+    @Generated
     public SparkSessionOptions setExecutorCount(Integer executorCount) {
         this.executorCount = executorCount;
         return this;
@@ -427,6 +477,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -458,6 +509,7 @@ public final class SparkSessionOptions implements JsonSerializable<SparkSessionO
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkSessionOptions.
      */
+    @Generated
     public static SparkSessionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkSessionOptions deserializedSparkSessionOptions = new SparkSessionOptions();

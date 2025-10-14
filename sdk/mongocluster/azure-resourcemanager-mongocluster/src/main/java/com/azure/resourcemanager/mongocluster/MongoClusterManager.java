@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mongocluster.fluent.MongoClusterManagementClient;
 import com.azure.resourcemanager.mongocluster.implementation.FirewallRulesImpl;
@@ -31,16 +32,19 @@ import com.azure.resourcemanager.mongocluster.implementation.OperationsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateLinksImpl;
 import com.azure.resourcemanager.mongocluster.implementation.ReplicasImpl;
+import com.azure.resourcemanager.mongocluster.implementation.UsersImpl;
 import com.azure.resourcemanager.mongocluster.models.FirewallRules;
 import com.azure.resourcemanager.mongocluster.models.MongoClusters;
 import com.azure.resourcemanager.mongocluster.models.Operations;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.mongocluster.models.PrivateLinks;
 import com.azure.resourcemanager.mongocluster.models.Replicas;
+import com.azure.resourcemanager.mongocluster.models.Users;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -61,6 +65,8 @@ public final class MongoClusterManager {
     private PrivateLinks privateLinks;
 
     private Replicas replicas;
+
+    private Users users;
 
     private final MongoClusterManagementClient clientObject;
 
@@ -114,6 +120,9 @@ public final class MongoClusterManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-mongocluster.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -221,12 +230,14 @@ public final class MongoClusterManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.mongocluster")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -343,6 +354,18 @@ public final class MongoClusterManager {
             this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
         }
         return replicas;
+    }
+
+    /**
+     * Gets the resource collection API of Users. It manages User.
+     * 
+     * @return Resource collection API of Users.
+     */
+    public Users users() {
+        if (this.users == null) {
+            this.users = new UsersImpl(clientObject.getUsers(), this);
+        }
+        return users;
     }
 
     /**

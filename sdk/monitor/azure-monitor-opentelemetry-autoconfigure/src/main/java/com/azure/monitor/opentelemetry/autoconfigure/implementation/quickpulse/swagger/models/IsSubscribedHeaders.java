@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,21 +17,25 @@ public final class IsSubscribedHeaders {
     /*
      * The x-ms-qps-subscribed property.
      */
+    @Generated
     private String xMsQpsSubscribed;
 
     /*
      * The x-ms-qps-configuration-etag property.
      */
+    @Generated
     private String xMsQpsConfigurationEtag;
 
     /*
      * The x-ms-qps-service-polling-interval-hint property.
      */
+    @Generated
     private String xMsQpsServicePollingIntervalHint;
 
     /*
      * The x-ms-qps-service-endpoint-redirect-v2 property.
      */
+    @Generated
     private String xMsQpsServiceEndpointRedirectV2;
 
     private static final HttpHeaderName X_MS_QPS_SUBSCRIBED = HttpHeaderName.fromString("x-ms-qps-subscribed");
@@ -62,6 +67,7 @@ public final class IsSubscribedHeaders {
      * 
      * @return the xMsQpsSubscribed value.
      */
+    @Generated
     public String getXMsQpsSubscribed() {
         return this.xMsQpsSubscribed;
     }
@@ -72,6 +78,7 @@ public final class IsSubscribedHeaders {
      * @param xMsQpsSubscribed the xMsQpsSubscribed value to set.
      * @return the IsSubscribedHeaders object itself.
      */
+    @Generated
     public IsSubscribedHeaders setXMsQpsSubscribed(String xMsQpsSubscribed) {
         this.xMsQpsSubscribed = xMsQpsSubscribed;
         return this;
@@ -82,6 +89,7 @@ public final class IsSubscribedHeaders {
      * 
      * @return the xMsQpsConfigurationEtag value.
      */
+    @Generated
     public String getXMsQpsConfigurationEtag() {
         return this.xMsQpsConfigurationEtag;
     }
@@ -92,6 +100,7 @@ public final class IsSubscribedHeaders {
      * @param xMsQpsConfigurationEtag the xMsQpsConfigurationEtag value to set.
      * @return the IsSubscribedHeaders object itself.
      */
+    @Generated
     public IsSubscribedHeaders setXMsQpsConfigurationEtag(String xMsQpsConfigurationEtag) {
         this.xMsQpsConfigurationEtag = xMsQpsConfigurationEtag;
         return this;
@@ -102,6 +111,7 @@ public final class IsSubscribedHeaders {
      * 
      * @return the xMsQpsServicePollingIntervalHint value.
      */
+    @Generated
     public String getXMsQpsServicePollingIntervalHint() {
         return this.xMsQpsServicePollingIntervalHint;
     }
@@ -112,6 +122,7 @@ public final class IsSubscribedHeaders {
      * @param xMsQpsServicePollingIntervalHint the xMsQpsServicePollingIntervalHint value to set.
      * @return the IsSubscribedHeaders object itself.
      */
+    @Generated
     public IsSubscribedHeaders setXMsQpsServicePollingIntervalHint(String xMsQpsServicePollingIntervalHint) {
         this.xMsQpsServicePollingIntervalHint = xMsQpsServicePollingIntervalHint;
         return this;
@@ -122,6 +133,7 @@ public final class IsSubscribedHeaders {
      * 
      * @return the xMsQpsServiceEndpointRedirectV2 value.
      */
+    @Generated
     public String getXMsQpsServiceEndpointRedirectV2() {
         return this.xMsQpsServiceEndpointRedirectV2;
     }
@@ -132,6 +144,7 @@ public final class IsSubscribedHeaders {
      * @param xMsQpsServiceEndpointRedirectV2 the xMsQpsServiceEndpointRedirectV2 value to set.
      * @return the IsSubscribedHeaders object itself.
      */
+    @Generated
     public IsSubscribedHeaders setXMsQpsServiceEndpointRedirectV2(String xMsQpsServiceEndpointRedirectV2) {
         this.xMsQpsServiceEndpointRedirectV2 = xMsQpsServiceEndpointRedirectV2;
         return this;

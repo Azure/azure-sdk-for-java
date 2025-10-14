@@ -20,7 +20,7 @@ import java.util.UUID;
 public final class ManagedHsmsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_CreateOrUpdate.
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_CreateOrUpdate.
      * json
      */
     /**

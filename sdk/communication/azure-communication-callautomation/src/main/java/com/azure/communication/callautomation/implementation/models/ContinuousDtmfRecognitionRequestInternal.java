@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,22 +21,26 @@ public final class ContinuousDtmfRecognitionRequestInternal
     /*
      * Defines options for recognition.
      */
+    @Generated
     private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of ContinuousDtmfRecognitionRequestInternal class.
      */
+    @Generated
     public ContinuousDtmfRecognitionRequestInternal() {
     }
 
@@ -44,6 +49,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * 
      * @return the targetParticipant value.
      */
+    @Generated
     public CommunicationIdentifierModel getTargetParticipant() {
         return this.targetParticipant;
     }
@@ -54,6 +60,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * @param targetParticipant the targetParticipant value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
+    @Generated
     public ContinuousDtmfRecognitionRequestInternal
         setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
@@ -65,6 +72,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -75,6 +83,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * @param operationContext the operationContext value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
+    @Generated
     public ContinuousDtmfRecognitionRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -87,6 +96,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -99,6 +109,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
+    @Generated
     public ContinuousDtmfRecognitionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -107,6 +118,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,6 +137,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContinuousDtmfRecognitionRequestInternal.
      */
+    @Generated
     public static ContinuousDtmfRecognitionRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ContinuousDtmfRecognitionRequestInternal deserializedContinuousDtmfRecognitionRequestInternal

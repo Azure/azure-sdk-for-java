@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -22,8 +21,8 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
         synchronized(this) {
             this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.NOW,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                ChangeFeedStartFromTypes.NOW
+            );
         }
     }
 

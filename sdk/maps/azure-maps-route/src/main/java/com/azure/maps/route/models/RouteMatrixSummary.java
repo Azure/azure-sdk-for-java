@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class RouteMatrixSummary implements JsonSerializable<RouteMatrixSum
     /*
      * Number of successful routes in the response.
      */
+    @Generated
     private Integer successfulRoutes;
 
     /*
      * Total number of routes requested. Number of cells in the input matrix.
      */
+    @Generated
     private Integer totalRoutes;
 
     /**
      * Creates an instance of RouteMatrixSummary class.
      */
+    @Generated
     public RouteMatrixSummary() {
     }
 
@@ -37,6 +41,7 @@ public final class RouteMatrixSummary implements JsonSerializable<RouteMatrixSum
      * 
      * @return the successfulRoutes value.
      */
+    @Generated
     public Integer getSuccessfulRoutes() {
         return this.successfulRoutes;
     }
@@ -46,6 +51,7 @@ public final class RouteMatrixSummary implements JsonSerializable<RouteMatrixSum
      * 
      * @return the totalRoutes value.
      */
+    @Generated
     public Integer getTotalRoutes() {
         return this.totalRoutes;
     }
@@ -53,6 +59,7 @@ public final class RouteMatrixSummary implements JsonSerializable<RouteMatrixSum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class RouteMatrixSummary implements JsonSerializable<RouteMatrixSum
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteMatrixSummary.
      */
+    @Generated
     public static RouteMatrixSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteMatrixSummary deserializedRouteMatrixSummary = new RouteMatrixSummary();

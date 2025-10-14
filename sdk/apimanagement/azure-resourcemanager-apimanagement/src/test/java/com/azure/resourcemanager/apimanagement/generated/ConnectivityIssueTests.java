@@ -11,7 +11,7 @@ public final class ConnectivityIssueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectivityIssue model = BinaryData.fromString(
-            "{\"origin\":\"Inbound\",\"severity\":\"Error\",\"type\":\"GuestFirewall\",\"context\":[{\"ipfdvhaxdvwzaehp\":\"zfbmjxuv\"}]}")
+            "{\"origin\":\"Outbound\",\"severity\":\"Warning\",\"type\":\"NetworkSecurityRule\",\"context\":[{\"ekdfqnhttwd\":\"yykyalu\",\"mhmnulwemp\":\"wrczfjjnnuxxrk\",\"usnaw\":\"cifrhjulrsulwzpf\"},{\"tfriyrgko\":\"hgz\",\"xmolpcqydeyk\":\"kvzwxxyxhighctx\"},{\"izikgqaboohxbm\":\"kiczdfrj\",\"ewuyqa\":\"gycqsxrmd\"}]}")
             .toObject(ConnectivityIssue.class);
     }
 

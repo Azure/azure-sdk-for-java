@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -13,7 +13,23 @@ import java.lang.reflect.Method;
  */
 public abstract class ReflectionUtils {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
-    private static final ReflectionUtilsApi INSTANCE = new ReflectionUtilsMethodHandle();
+    private static final ReflectionUtilsApi INSTANCE;
+
+    static {
+        ReflectionUtilsApi instance;
+        try {
+            LOGGER.atVerbose().log("Attempting to use java.lang.invoke package to handle reflection.");
+            instance = new ReflectionUtilsMethodHandle();
+            LOGGER.atVerbose().log("Successfully used java.lang.invoke package to handle reflection.");
+        } catch (LinkageError ignored) {
+            LOGGER.atVerbose()
+                .log("Failed to use java.lang.invoke package to handle reflection. Falling back to "
+                    + "java.lang.reflect package to handle reflection.");
+            instance = new ReflectionUtilsClassic();
+            LOGGER.atVerbose().log("Successfully used java.lang.reflect package to handle reflection.");
+        }
+        INSTANCE = instance;
+    }
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
@@ -57,7 +73,7 @@ public abstract class ReflectionUtils {
     public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToClientCore)
         throws Exception {
         if (method == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'method' cannot be null."));
+            throw LOGGER.throwableAtError().log("'method' cannot be null.", NullPointerException::new);
         }
 
         targetClass = (targetClass == null) ? method.getDeclaringClass() : targetClass;
@@ -107,11 +123,20 @@ public abstract class ReflectionUtils {
     public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
         boolean scopeToClientCore) throws Exception {
         if (constructor == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'constructor' cannot be null."));
+            throw LOGGER.throwableAtError().log("'constructor' cannot be null.", NullPointerException::new);
         }
 
         targetClass = (targetClass == null) ? constructor.getDeclaringClass() : targetClass;
         return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToClientCore);
+    }
+
+    /**
+     * Determines whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     *
+     * @return Whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     */
+    public static boolean isModuleBased() {
+        return INSTANCE.isModuleBased();
     }
 
     /**

@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class SessionSize extends ExpandableStringEnum<SessionSize> {
     /**
      * Standard rendering session size.
      */
+    @Generated
     public static final SessionSize STANDARD = fromString("Standard");
 
     /**
      * Premium rendering session size.
      */
+    @Generated
     public static final SessionSize PREMIUM = fromString("Premium");
 
     /**
@@ -27,6 +30,7 @@ public final class SessionSize extends ExpandableStringEnum<SessionSize> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SessionSize() {
     }
@@ -37,6 +41,7 @@ public final class SessionSize extends ExpandableStringEnum<SessionSize> {
      * @param name a name to look for.
      * @return the corresponding SessionSize.
      */
+    @Generated
     public static SessionSize fromString(String name) {
         return fromString(name, SessionSize.class);
     }
@@ -46,6 +51,7 @@ public final class SessionSize extends ExpandableStringEnum<SessionSize> {
      * 
      * @return known SessionSize values.
      */
+    @Generated
     public static Collection<SessionSize> values() {
         return values(SessionSize.class);
     }

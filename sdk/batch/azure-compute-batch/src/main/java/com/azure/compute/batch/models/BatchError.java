@@ -5,11 +5,15 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpResponse;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 
 /**
@@ -22,7 +26,7 @@ public final class BatchError implements JsonSerializable<BatchError> {
      * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
     @Generated
-    private final String code;
+    private String code;
 
     /*
      * A message describing the error, intended to be suitable for display in a user interface.
@@ -35,16 +39,6 @@ public final class BatchError implements JsonSerializable<BatchError> {
      */
     @Generated
     private List<BatchErrorDetail> values;
-
-    /**
-     * Creates an instance of BatchError class.
-     *
-     * @param code the code value to set.
-     */
-    @Generated
-    private BatchError(String code) {
-        this.code = code;
-    }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
@@ -97,32 +91,65 @@ public final class BatchError implements JsonSerializable<BatchError> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchError if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchError.
      */
     @Generated
     public static BatchError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String code = null;
-            BatchErrorMessage message = null;
-            List<BatchErrorDetail> values = null;
+            BatchError deserializedBatchError = new BatchError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("code".equals(fieldName)) {
-                    code = reader.getString();
+                    deserializedBatchError.code = reader.getString();
                 } else if ("message".equals(fieldName)) {
-                    message = BatchErrorMessage.fromJson(reader);
+                    deserializedBatchError.message = BatchErrorMessage.fromJson(reader);
                 } else if ("values".equals(fieldName)) {
-                    values = reader.readArray(reader1 -> BatchErrorDetail.fromJson(reader1));
+                    List<BatchErrorDetail> values = reader.readArray(reader1 -> BatchErrorDetail.fromJson(reader1));
+                    deserializedBatchError.values = values;
                 } else {
                     reader.skipChildren();
                 }
             }
-            BatchError deserializedBatchError = new BatchError(code);
-            deserializedBatchError.message = message;
-            deserializedBatchError.values = values;
             return deserializedBatchError;
         });
+    }
+
+    /**
+     * Reads an instance of BatchError from an HttpResponseException.
+     *
+     * @param err The HttpResponseException based exception returned from an api
+     * call.
+     * @return An instance of BatchError if the HttpResponseException containted an
+     * instance of it, or null if it was pointing
+     * to an HttpResponseException with no BatchError.
+     */
+    public static BatchError fromException(HttpResponseException err) {
+        if (err == null) {
+            return null;
+        }
+        HttpResponse response = err.getResponse();
+        if (response == null) {
+            return null;
+        }
+        String bodyastring = response.getBodyAsString().block();
+        if (bodyastring == null) {
+            return null;
+        }
+        JsonReader jsonReader;
+        try {
+            jsonReader = JsonProviders.createReader(new StringReader(bodyastring));
+            return BatchError.fromJson(jsonReader);
+        } catch (IOException e) {
+            // If the body of the response is not a valid json, return null
+            return null;
+        }
+    }
+
+    /**
+     * Creates an instance of BatchError class.
+     */
+    @Generated
+    private BatchError() {
     }
 }

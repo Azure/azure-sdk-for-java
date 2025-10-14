@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
     /**
      * Static value ServicePrincipal for SqlAlwaysEncryptedAkvAuthType.
      */
+    @Generated
     public static final SqlAlwaysEncryptedAkvAuthType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
      * Static value ManagedIdentity for SqlAlwaysEncryptedAkvAuthType.
      */
+    @Generated
     public static final SqlAlwaysEncryptedAkvAuthType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /**
      * Static value UserAssignedManagedIdentity for SqlAlwaysEncryptedAkvAuthType.
      */
+    @Generated
     public static final SqlAlwaysEncryptedAkvAuthType USER_ASSIGNED_MANAGED_IDENTITY
         = fromString("UserAssignedManagedIdentity");
 
@@ -32,6 +36,7 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SqlAlwaysEncryptedAkvAuthType() {
     }
@@ -42,6 +47,7 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
      * @param name a name to look for.
      * @return the corresponding SqlAlwaysEncryptedAkvAuthType.
      */
+    @Generated
     public static SqlAlwaysEncryptedAkvAuthType fromString(String name) {
         return fromString(name, SqlAlwaysEncryptedAkvAuthType.class);
     }
@@ -51,6 +57,7 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
      * 
      * @return known SqlAlwaysEncryptedAkvAuthType values.
      */
+    @Generated
     public static Collection<SqlAlwaysEncryptedAkvAuthType> values() {
         return values(SqlAlwaysEncryptedAkvAuthType.class);
     }

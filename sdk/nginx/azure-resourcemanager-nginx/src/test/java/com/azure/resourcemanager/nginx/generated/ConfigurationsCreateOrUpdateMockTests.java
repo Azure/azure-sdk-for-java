@@ -6,14 +6,15 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
-import com.azure.resourcemanager.nginx.models.NginxConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationProtectedFileRequest;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationRequestProperties;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,38 +26,44 @@ public final class ConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"hjpglkf\",\"virtualPath\":\"hdneuelfph\"},{\"content\":\"yhtozfikdowwqu\",\"virtualPath\":\"xzxcl\"},{\"content\":\"thhqzonosggbh\",\"virtualPath\":\"hfwdsjnkaljutiis\"},{\"content\":\"cffgdkzzewk\",\"virtualPath\":\"hqcrailvpnpp\"}],\"protectedFiles\":[{\"content\":\"rwdmhdlxyjrxsa\",\"virtualPath\":\"fcnihgwq\"},{\"content\":\"nedgfbc\",\"virtualPath\":\"cvqvpkeqdcv\"}],\"package\":{\"data\":\"vo\",\"protectedFiles\":[\"otbobzdopcj\",\"vnhdldwmgxcxr\"]},\"rootFile\":\"pmutwuo\"},\"location\":\"rpkhjwn\",\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"ypgik\",\"virtualPath\":\"szywkbirryu\"},{\"content\":\"lhkjoqrvqq\",\"virtualPath\":\"t\"},{\"content\":\"nrvgoupmfiibfgg\",\"virtualPath\":\"ool\"}],\"protectedFiles\":[{\"virtualPath\":\"kvtkkg\",\"contentHash\":\"qwjygvja\"},{\"virtualPath\":\"blmhvkzuhb\",\"contentHash\":\"vyhgs\"},{\"virtualPath\":\"byrqufeg\",\"contentHash\":\"vwz\"}],\"package\":{\"data\":\"hlmctlpdngitvgb\",\"protectedFiles\":[\"ixkwmyijejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\",\"htpwij\"]},\"rootFile\":\"yjsvfyc\"},\"id\":\"bfvoowvrv\",\"name\":\"t\",\"type\":\"jqppyostronzmy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NginxManager manager = NginxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        NginxConfiguration response = manager.configurations()
-            .define("tmweriofzpyq")
-            .withExistingNginxDeployment("zucerscdntnev", "iwjmygtdssls")
-            .withRegion("pgcjefuzmuvp")
-            .withProperties(new NginxConfigurationProperties()
-                .withFiles(Arrays.asList(new NginxConfigurationFile().withContent("ets").withVirtualPath("szhedplvw"),
-                    new NginxConfigurationFile().withContent("ubmwmbesld").withVirtualPath("wwtppj")))
-                .withProtectedFiles(
-                    Arrays.asList(new NginxConfigurationFile().withContent("ogaok").withVirtualPath("z"),
-                        new NginxConfigurationFile().withContent("sikvmkqzeqqkdlt").withVirtualPath("xmhhvhgureo"),
-                        new NginxConfigurationFile().withContent("wobdagxtibqdx").withVirtualPath("wakbogqxndl")))
-                .withPackageProperty(new NginxConfigurationPackage().withData("xhuri")
-                    .withProtectedFiles(Arrays.asList("podxunkb", "bxmubyynt", "lrb", "tkoievseotgq")))
-                .withRootFile("ltmuwlauwzizx"))
+        NginxConfigurationResponse response = manager.configurations()
+            .define("ughftqsx")
+            .withExistingNginxDeployment("ueluqhhahhxvrhmz", "wpjgwws")
+            .withProperties(new NginxConfigurationRequestProperties()
+                .withFiles(
+                    Arrays.asList(new NginxConfigurationFile().withContent("kndxdigrjgu").withVirtualPath("zdmsyqtfi"),
+                        new NginxConfigurationFile().withContent("hbotzingamvppho").withVirtualPath("qzudphq"),
+                        new NginxConfigurationFile().withContent("vdkfwynwcvtbvk").withVirtualPath("hmtnvy")))
+                .withProtectedFiles(Arrays.asList(
+                    new NginxConfigurationProtectedFileRequest().withContent("kzwpcnpw")
+                        .withVirtualPath("jaesgvvsccya")
+                        .withContentHash("uq"),
+                    new NginxConfigurationProtectedFileRequest().withContent("wygzlvdnkfxusem")
+                        .withVirtualPath("zrmuhapfcqdps")
+                        .withContentHash("qvpsvuoymg"),
+                    new NginxConfigurationProtectedFileRequest().withContent("elvezrypq")
+                        .withVirtualPath("feo")
+                        .withContentHash("rqwky")))
+                .withPackageProperty(new NginxConfigurationPackage().withData("bopgxedkowepbqp")
+                    .withProtectedFiles(Arrays.asList("kbwcc")))
+                .withRootFile("jvcdwxlpqekf"))
             .create();
 
-        Assertions.assertEquals("hjpglkf", response.properties().files().get(0).content());
-        Assertions.assertEquals("hdneuelfph", response.properties().files().get(0).virtualPath());
-        Assertions.assertEquals("rwdmhdlxyjrxsa", response.properties().protectedFiles().get(0).content());
-        Assertions.assertEquals("fcnihgwq", response.properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("vo", response.properties().packageProperty().data());
-        Assertions.assertEquals("otbobzdopcj", response.properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("pmutwuo", response.properties().rootFile());
-        Assertions.assertEquals("rpkhjwn", response.location());
+        Assertions.assertEquals("ypgik", response.properties().files().get(0).content());
+        Assertions.assertEquals("szywkbirryu", response.properties().files().get(0).virtualPath());
+        Assertions.assertEquals("kvtkkg", response.properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("qwjygvja", response.properties().protectedFiles().get(0).contentHash());
+        Assertions.assertEquals("hlmctlpdngitvgb", response.properties().packageProperty().data());
+        Assertions.assertEquals("ixkwmyijejveg", response.properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("yjsvfyc", response.properties().rootFile());
     }
 }

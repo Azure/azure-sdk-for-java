@@ -32,6 +32,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.query.models.MetricsAudience;
@@ -69,22 +70,6 @@ public final class AzureMonitorMetricBatchBuilder
     }
 
     /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureMonitorMetricBatchBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The HTTP client used to send the request.
      */
     @Generated
@@ -97,6 +82,25 @@ public final class AzureMonitorMetricBatchBuilder
     @Override
     public AzureMonitorMetricBatchBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public AzureMonitorMetricBatchBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -321,26 +325,27 @@ public final class AzureMonitorMetricBatchBuilder
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
             .build();
-        return httpPipeline;
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricBatchBuilder.class);
 
     /**
      * The audience indicating the authorization scope of metrics clients.
      */
-    @Generated()
+    @Generated
     private MetricsAudience audience;
 
     /**
-     * Sets The audience.
+     * Sets the audience.
      *
      * @param audience the audience indicating the authorization scope of metrics clients.
      * @return the AzureMonitorMetricBatchBuilder.
      */
-    @Generated()
+    @Generated
     public AzureMonitorMetricBatchBuilder audience(MetricsAudience audience) {
         this.audience = audience;
         return this;

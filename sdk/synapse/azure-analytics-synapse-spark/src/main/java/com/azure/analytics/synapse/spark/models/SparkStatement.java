@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
     /*
      * The id property.
      */
+    @Generated
     private int id;
 
     /*
      * The code property.
      */
+    @Generated
     private String code;
 
     /*
      * The state property.
      */
+    @Generated
     private LivyStatementStates state;
 
     /*
      * The output property.
      */
+    @Generated
     private SparkStatementOutput output;
 
     /**
      * Creates an instance of SparkStatement class.
      */
+    @Generated
     public SparkStatement() {
     }
 
@@ -47,6 +53,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * 
      * @return the id value.
      */
+    @Generated
     public int getId() {
         return this.id;
     }
@@ -57,6 +64,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * @param id the id value to set.
      * @return the SparkStatement object itself.
      */
+    @Generated
     public SparkStatement setId(int id) {
         this.id = id;
         return this;
@@ -67,6 +75,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -77,6 +86,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * @param code the code value to set.
      * @return the SparkStatement object itself.
      */
+    @Generated
     public SparkStatement setCode(String code) {
         this.code = code;
         return this;
@@ -87,6 +97,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * 
      * @return the state value.
      */
+    @Generated
     public LivyStatementStates getState() {
         return this.state;
     }
@@ -97,6 +108,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * @param state the state value to set.
      * @return the SparkStatement object itself.
      */
+    @Generated
     public SparkStatement setState(LivyStatementStates state) {
         this.state = state;
         return this;
@@ -107,6 +119,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * 
      * @return the output value.
      */
+    @Generated
     public SparkStatementOutput getOutput() {
         return this.output;
     }
@@ -117,6 +130,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * @param output the output value to set.
      * @return the SparkStatement object itself.
      */
+    @Generated
     public SparkStatement setOutput(SparkStatementOutput output) {
         this.output = output;
         return this;
@@ -125,6 +139,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class SparkStatement implements JsonSerializable<SparkStatement> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkStatement.
      */
+    @Generated
     public static SparkStatement fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkStatement deserializedSparkStatement = new SparkStatement();

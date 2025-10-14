@@ -13,14 +13,15 @@ $PackageRepositoryUri = "https://repo1.maven.org/maven2"
 # When getting all of the package properties, if Get-AllPackageInfoFromRepo exists
 # then it's called instead of Get-PkgPropsForEntireService.
 function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
-  $SdkType = $Env:SdkType
+
+  $SdkType = $Env:SDKTYPE
   if ($SdkType) {
-    Write-Host "SdkType env var was set to '$SdkType'"
+    Write-Verbose "SdkType env var was set to '$SdkType'"
   } else {
     $SdkType = "client"
-    Write-Host "SdkType env var was not set, default to 'client'"
+    Write-Verbose "SdkType env var was not set, default to 'client'"
   }
-  Write-Host "Processing SdkType=$SdkType"
+  Write-Verbose "Processing SdkType=$SdkType"
 
   $allPackageProps = @()
   $sdkRoot = Join-Path $RepoRoot "sdk"
@@ -28,7 +29,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
 
   if ($serviceDirectory) {
     $searchPath = Join-Path $sdkRoot $serviceDirectory
-    Write-Host "searchPath=$searchPath"
+    Write-Verbose "searchPath=$searchPath"
     [array]$ymlFiles = Get-ChildItem -Path $searchPath "ci*.yml" | Where-Object { $_.PSIsContainer -eq $false}
   } else {
     # The reason for the exclude folders are POM only releases (nothing is built) or
@@ -56,7 +57,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
     # 6a. If #5 has a match, create the PackageProp and add it to the list
     # 6b. If #5 doesn't have a match, then skip it. This is the case where it's either
     #     an AdditionalModule or something from another track.
-    Write-Host "Processing $ymlFile"
+    Write-Verbose "Processing $ymlFile"
     $ymlFileContent = LoadFrom-Yaml $ymlFile
     $YmlFileSdkType = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "SDKType")
     $ymlDir = Split-Path -Path $ymlFile -Parent
@@ -65,7 +66,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $YmlFileSdkType = "client"
     }
     if ($YmlFileSdkType -ne $SdkType) {
-      Write-Host "SdkType in yml file is '$YmlFileSdkType' which is not '$SdkType', skipping..."
+      Write-Verbose "SdkType in yml file is '$YmlFileSdkType' which is not '$SdkType', skipping..."
       continue
     }
     # ServiceDirectory
@@ -125,17 +126,17 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $xmlPomFile.Load($pomFile)
 
       if ($xmlPomFile.project.psobject.properties.name -notcontains "artifactId" -or !$xmlPomFile.project.artifactId) {
-        Write-Host "$pomFile doesn't have a defined artifactId so skipping this pom."
+        Write-Verbose "$pomFile doesn't have a defined artifactId so skipping this pom."
         continue
       }
 
       if ($xmlPomFile.project.psobject.properties.name -notcontains "version" -or !$xmlPomFile.project.version) {
-        Write-Host "$pomFile doesn't have a defined version so skipping this pom."
+        Write-Verbose "$pomFile doesn't have a defined version so skipping this pom."
         continue
       }
 
       if ($xmlPomFile.project.psobject.properties.name -notcontains "groupid" -or !$xmlPomFile.project.groupId) {
-        Write-Host "$pomFile doesn't have a defined groupId so skipping this pom."
+        Write-Verbose "$pomFile doesn't have a defined groupId so skipping this pom."
         continue
       }
 
@@ -145,7 +146,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $keyFromPom = "$($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId)"
       if (-not $ArtifactsHashSet.Contains($keyFromPom))
       {
-        Write-Host "$ymlFile does not contain $($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId), skipping"
+        Write-Verbose "$ymlFile does not contain $($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId), skipping"
         continue
       }
       # At this point everything is valid
@@ -158,7 +159,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $artifactId = $xmlPomFile.project.artifactId
       $version = $xmlPomFile.project.version
       $pomFileDir = Split-Path -Path $pomFile -Parent
-      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId)
+      $pkgProp = [PackageProps]::new($artifactId, $version.ToString(), $pomFileDir, $serviceDirFromYml, $groupId, $artifactId)
       if ($artifactId -match "mgmt" -or $artifactId -match "resourcemanager")
       {
         $pkgProp.SdkType = "mgmt"
@@ -193,10 +194,93 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
   return $allPackageProps
 }
 
+# Get-java-AdditionalValidationPackagesFromPackageSet is the implementation of the
+# $AdditionalValidationPackagesFromPackageSetFn which is used
+function Get-java-AdditionalValidationPackagesFromPackageSet {
+  param(
+    [Parameter(Mandatory=$true)]
+    $LocatedPackages,
+    [Parameter(Mandatory=$true)]
+    $diffObj,
+    [Parameter(Mandatory=$true)]
+    $AllPkgProps
+  )
+  $uniqueResultSet = @()
+
+  # this section will identify the list of packages that we should treat as
+  # "directly" changed for a given service level change. While that doesn't
+  # directly change a package within the service, I do believe we should directly include all
+  # packages WITHIN that service. This is because the service level file changes are likely to
+  # have an impact on the packages within that service.
+  $changedServices = @()
+  $targetedFiles = $diffObj.ChangedFiles
+  if ($diff.DeletedFiles) {
+    if (-not $targetedFiles) {
+      $targetedFiles = @()
+    }
+    $targetedFiles += $diff.DeletedFiles
+  }
+
+  # The targetedFiles needs to filter out anything in the ExcludePaths
+  # otherwise it'll end up processing things below that it shouldn't be.
+  foreach ($excludePath in $diffObj.ExcludePaths) {
+    $targetedFiles = $targetedFiles | Where-Object { -not $_.StartsWith($excludePath) }
+  }
+
+  if ($targetedFiles) {
+    foreach($file in $targetedFiles) {
+      $pathComponents = $file -split "/"
+      # Handle changes in the root of any sdk/<ServiceDirectory>. Unfortunately, changes
+      # in the root service directory require any and all libraries in that service directory,
+      # include those in a <ServiceDirectory>/<LibraryDirectory> to get added to the changed
+      # services.
+      if ($pathComponents.Length -eq 3 -and $pathComponents[0] -eq "sdk") {
+        $changedServices += $pathComponents[1]
+      }
+
+      # For anything in the root of the sdk directory, or the repository root, just run template
+      if (($pathComponents.Length -eq 2 -and $pathComponents[0] -eq "sdk") -or
+          ($pathComponents.Length -eq 1)) {
+        $changedServices += "template"
+      }
+    }
+    # dedupe the changedServices list
+    $changedServices = $changedServices | Get-Unique
+    foreach ($changedService in $changedServices) {
+      # Because Java has libraries at the sdk/<ServiceDirectory> and sdk/<ServiceDirectory>/<Library>
+      # directories, the additional package lookup needs to for ci*.yml files where the ServiceDirectory
+      # equals the $changedService as well as ServiceDirectories that starts $changedService/, note the
+      # trailing slash is necessary. For example, if PR changes the ServiceDirectory foo and there
+      # exist ci.yml files with the service directories "foo/bar" and "foobar", we only want to match
+      # foo and foo/bar, not foobar hence the -eq $changedService and StartsWith("$changedService/")
+      $additionalPackages = $AllPkgProps | Where-Object { $_.ServiceDirectory -eq $changedService -or $_.ServiceDirectory.StartsWith("$changedService/")}
+      foreach ($pkg in $additionalPackages) {
+        if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
+          # IncludedForValidation means that it's package that was indirectly included because it
+          # wasn't directly changed. For example, if someone changes a file in the root of sdk/core
+          # we add all of the core libraries that do not have direct changes as indirect packages.
+          $pkg.IncludedForValidation = $true
+          $uniqueResultSet += $pkg
+        }
+      }
+    }
+  }
+
+  Write-Host "Returning additional packages for validation: $($uniqueResultSet.Count)"
+  foreach ($pkg in $uniqueResultSet) {
+    Write-Host "  - $($pkg.Name)"
+  }
+
+  return $uniqueResultSet
+}
+
 # Returns the maven (really sonatype) publish status of a package id and version.
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
-  $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  # oss.sonatype.org seems to have started returning 403 for our agents. Based on https://central.sonatype.org/faq/403-error-central it is likely
+  # because some agent is trying to query the directory too frequently. So we will attempt to query the raw maven repo itself.
+  # $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
+  $uri = "https://repo1.maven.org/maven2/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
 
   $attempt = 1
   while ($attempt -le 3)
@@ -208,7 +292,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
       }
 
       Write-Host "Checking published package at $uri"
-      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck
+      $response = Invoke-WebRequest -Method "GET" -uri $uri -SkipHttpErrorCheck -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
 
       if ($response.BaseResponse.IsSuccessStatusCode)
       {
@@ -286,7 +370,7 @@ function Get-java-DocsMsDevLanguageSpecificPackageInfo($packageInfo, $packageSou
     if ($packageInfo.DevVersion) {
       $version = $packageInfo.DevVersion
     }
-    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.ArtifactName $packageInfo.Group $version
     # If there are namespaces found from the javadoc.jar then add them to the packageInfo which
     # will later update the metadata json file in the docs repository. If there aren't any namespaces
     # then don't add the namespaces member with an empty list. The reason being is that the
@@ -382,8 +466,8 @@ function Get-java-GithubIoDocIndex()
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
-  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' }
-  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
+  $clientPackages = $metadata | Where-Object { $_.GroupId -eq 'com.azure' -or $_.GroupId -eq 'com.azure.v2' }
+  $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and $_.GroupId -ne 'com.azure.v2' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
   # Get the artifacts name from blob storage
   $artifacts =  Get-BlobStorage-Artifacts `
@@ -460,9 +544,9 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
     $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
   }
   $fullLibraryName = $GroupId + ":" + $PackageName
-  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
+  python "$EngDir/versioning/set_versions.py" --new-version $Version --artifact-id $PackageName --group-id $GroupId
   # -ll option says "only update README and CHANGELOG entries for libraries that are on the list"
-  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --ll $fullLibraryName
+  python "$EngDir/versioning/update_versions.py" --library-list $fullLibraryName
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
 }
@@ -474,7 +558,7 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
     $response = (Invoke-RestMethod -Method GET -Uri $Uri).response
     if($response.numFound -ne 0)
     {
-      $existingVersion = $response.docs.v
+      $existingVersion = @($response.docs.v)
       if ($existingVersion.Count -gt 0)
       {
         [Array]::Reverse($existingVersion)
@@ -565,4 +649,3 @@ function Get-java-ApiviewStatusCheckRequirement($packageInfo) {
   }
   return $false
 }
-

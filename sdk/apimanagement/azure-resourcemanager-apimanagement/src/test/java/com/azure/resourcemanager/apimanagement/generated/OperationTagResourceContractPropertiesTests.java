@@ -12,15 +12,15 @@ public final class OperationTagResourceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationTagResourceContractProperties model = BinaryData.fromString(
-            "{\"id\":\"kj\",\"name\":\"eslabnsmjkwynq\",\"apiName\":\"ekqsykvwjtqpkev\",\"apiRevision\":\"ltjcrspxk\",\"apiVersion\":\"r\",\"description\":\"lfg\",\"method\":\"nnnoytz\",\"urlTemplate\":\"sewxigpxvkqm\"}")
+            "{\"id\":\"w\",\"name\":\"cpahprzrvxhm\",\"apiName\":\"hocn\",\"apiRevision\":\"cmj\",\"apiVersion\":\"gxnoqrxtdis\",\"description\":\"evhdlmydid\",\"method\":\"epfwwt\",\"urlTemplate\":\"doesxxhmwcdb\"}")
             .toObject(OperationTagResourceContractProperties.class);
-        Assertions.assertEquals("kj", model.id());
+        Assertions.assertEquals("w", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationTagResourceContractProperties model = new OperationTagResourceContractProperties().withId("kj");
+        OperationTagResourceContractProperties model = new OperationTagResourceContractProperties().withId("w");
         model = BinaryData.fromObject(model).toObject(OperationTagResourceContractProperties.class);
-        Assertions.assertEquals("kj", model.id());
+        Assertions.assertEquals("w", model.id());
     }
 }

@@ -7,6 +7,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,17 +26,20 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
      * the top and skip parameters), at the cost of higher resource utilization and higher latency. The value needs to
      * be between 1 and 10,000. Default is 1000.
      */
+    @Generated
     private Integer maxTextRecallSize;
 
     /*
      * Determines whether the count and facets should includes all documents that matched the search query, or only the
      * documents that are retrieved within the 'maxTextRecallSize' window.
      */
+    @Generated
     private HybridCountAndFacetMode countAndFacetMode;
 
     /**
      * Creates an instance of HybridSearch class.
      */
+    @Generated
     public HybridSearch() {
     }
 
@@ -48,6 +52,7 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
      * 
      * @return the maxTextRecallSize value.
      */
+    @Generated
     public Integer getMaxTextRecallSize() {
         return this.maxTextRecallSize;
     }
@@ -62,6 +67,7 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
      * @param maxTextRecallSize the maxTextRecallSize value to set.
      * @return the HybridSearch object itself.
      */
+    @Generated
     public HybridSearch setMaxTextRecallSize(Integer maxTextRecallSize) {
         this.maxTextRecallSize = maxTextRecallSize;
         return this;
@@ -73,6 +79,7 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
      * 
      * @return the countAndFacetMode value.
      */
+    @Generated
     public HybridCountAndFacetMode getCountAndFacetMode() {
         return this.countAndFacetMode;
     }
@@ -84,6 +91,7 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
      * @param countAndFacetMode the countAndFacetMode value to set.
      * @return the HybridSearch object itself.
      */
+    @Generated
     public HybridSearch setCountAndFacetMode(HybridCountAndFacetMode countAndFacetMode) {
         this.countAndFacetMode = countAndFacetMode;
         return this;
@@ -92,6 +100,7 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -109,6 +118,7 @@ public final class HybridSearch implements JsonSerializable<HybridSearch> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HybridSearch.
      */
+    @Generated
     public static HybridSearch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HybridSearch deserializedHybridSearch = new HybridSearch();

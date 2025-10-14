@@ -1,0 +1,66 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/resources/ci.yml
+      - sdk/resources/azure-resourcemanager-resources/
+      - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
+    exclude:
+      - sdk/resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/resources/ci.yml
+      - sdk/resources/azure-resourcemanager-resources/
+      - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
+    exclude:
+      - sdk/resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerresources
+    displayName: azure-resourcemanager-resources
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerresourcesdeploymentstacks
+    displayName: azure-resourcemanager-resources-deploymentstacks
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerresourcesbicep
+    displayName: azure-resourcemanager-resources-bicep
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: resources
+    Artifacts:
+      - name: azure-resourcemanager-resources
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresources
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresources }}
+      - name: azure-resourcemanager-resources-deploymentstacks
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcesdeploymentstacks
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesdeploymentstacks }}
+      - name: azure-resourcemanager-resources-bicep
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcesbicep
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesbicep }}

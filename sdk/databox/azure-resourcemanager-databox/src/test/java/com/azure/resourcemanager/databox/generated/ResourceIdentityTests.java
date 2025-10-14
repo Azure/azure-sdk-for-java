@@ -15,18 +15,18 @@ public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceIdentity model = BinaryData.fromString(
-            "{\"type\":\"mjmvxieduugidyjr\",\"principalId\":\"byao\",\"tenantId\":\"e\",\"userAssignedIdentities\":{\"zfbuhf\":{\"principalId\":\"npc\",\"clientId\":\"ocohslkevleg\"},\"ggi\":{\"principalId\":\"faxkffeii\",\"clientId\":\"lvmezyvshxmzsbbz\"},\"vudwtiukbldng\":{\"principalId\":\"xwburvjxxjns\",\"clientId\":\"dptkoenkouk\"}}}")
+            "{\"type\":\"mvxi\",\"principalId\":\"uugidyjrrfby\",\"tenantId\":\"svexcsonpclhoco\",\"userAssignedIdentities\":{\"fmvfaxkffeiit\":{\"principalId\":\"ev\",\"clientId\":\"ggzfbu\"},\"xwburvjxxjns\":{\"principalId\":\"vmezy\",\"clientId\":\"hxmzsbbzoggig\"}}}")
             .toObject(ResourceIdentity.class);
-        Assertions.assertEquals("mjmvxieduugidyjr", model.type());
+        Assertions.assertEquals("mvxi", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model = new ResourceIdentity().withType("mjmvxieduugidyjr")
-            .withUserAssignedIdentities(mapOf("zfbuhf", new UserAssignedIdentity(), "ggi", new UserAssignedIdentity(),
-                "vudwtiukbldng", new UserAssignedIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType("mvxi")
+            .withUserAssignedIdentities(
+                mapOf("fmvfaxkffeiit", new UserAssignedIdentity(), "xwburvjxxjns", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
-        Assertions.assertEquals("mjmvxieduugidyjr", model.type());
+        Assertions.assertEquals("mvxi", model.type());
     }
 
     // Use "Map.of" if available

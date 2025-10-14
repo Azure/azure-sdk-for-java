@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.22.0</version>
+    <version>12.25.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -430,21 +430,21 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/src
 [samples_readme]: src/samples/README.md
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
-[product_docs]: https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
+[product_docs]: https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/src/samples
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/data-lake-storage-gen2
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2FREADME.png)
+

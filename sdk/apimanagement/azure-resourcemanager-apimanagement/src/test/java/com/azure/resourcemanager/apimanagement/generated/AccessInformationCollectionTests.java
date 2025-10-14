@@ -12,15 +12,15 @@ public final class AccessInformationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessInformationCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"id\":\"jbuiggru\",\"principalId\":\"zfv\",\"enabled\":false},\"id\":\"jthoivsdwsngkr\",\"name\":\"ihscjvakmhzbhw\",\"type\":\"hf\"},{\"properties\":{\"id\":\"hbnnxemv\",\"principalId\":\"u\",\"enabled\":false},\"id\":\"otauratnicppfzsc\",\"name\":\"efyrletndqlmfdgg\",\"type\":\"bbuypwovvvsflee\"}],\"count\":3505461673266872304,\"nextLink\":\"yrehjuqwv\"}")
+            "{\"value\":[{\"properties\":{\"id\":\"vxrktjcjigcwtsp\",\"principalId\":\"bqxasevchefpgee\",\"enabled\":false},\"id\":\"bruho\",\"name\":\"aemwcgimm\",\"type\":\"imaabsqqlon\"},{\"properties\":{\"id\":\"ow\",\"principalId\":\"hdkmbjsmihrijezb\",\"enabled\":false},\"id\":\"wfczglkvbg\",\"name\":\"kbsvbwy\",\"type\":\"tygnbknh\"},{\"properties\":{\"id\":\"lxa\",\"principalId\":\"cf\",\"enabled\":false},\"id\":\"psdzkuc\",\"name\":\"zg\",\"type\":\"doaqipmnxclfrsb\"}],\"count\":1648843607151020066,\"nextLink\":\"vwvpuofddtbfme\"}")
             .toObject(AccessInformationCollection.class);
-        Assertions.assertEquals(3505461673266872304L, model.count());
+        Assertions.assertEquals(1648843607151020066L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessInformationCollection model = new AccessInformationCollection().withCount(3505461673266872304L);
+        AccessInformationCollection model = new AccessInformationCollection().withCount(1648843607151020066L);
         model = BinaryData.fromObject(model).toObject(AccessInformationCollection.class);
-        Assertions.assertEquals(3505461673266872304L, model.count());
+        Assertions.assertEquals(1648843607151020066L, model.count());
     }
 }

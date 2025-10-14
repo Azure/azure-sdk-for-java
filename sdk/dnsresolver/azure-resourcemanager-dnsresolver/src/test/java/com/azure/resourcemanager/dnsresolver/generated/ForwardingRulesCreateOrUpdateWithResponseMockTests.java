@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRule;
@@ -26,31 +26,31 @@ public final class ForwardingRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"yylhalnswhccsp\",\"properties\":{\"domainName\":\"kaivwit\",\"targetDnsServers\":[{\"ipAddress\":\"cywuggwol\",\"port\":1226562367},{\"ipAddress\":\"zbwemh\",\"port\":200585156},{\"ipAddress\":\"sbrgz\",\"port\":1820040321},{\"ipAddress\":\"swe\",\"port\":151812446}],\"metadata\":{\"tlstvlzywem\":\"xggicccnxqhuexmk\",\"lusiy\":\"zrncsdt\",\"cy\":\"bsfgytguslfea\",\"xgfpelolppv\":\"qukyhejhzi\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"ujzra\",\"name\":\"htwdwrftswibyrcd\",\"type\":\"bhshfwpracstwity\"}";
+            = "{\"etag\":\"ao\",\"properties\":{\"domainName\":\"jchvcyy\",\"targetDnsServers\":[{\"ipAddress\":\"fgdo\",\"port\":1738680873}],\"metadata\":{\"ipwoqonmacjek\":\"ip\",\"vcimpev\":\"izsh\",\"bywdxsmicc\":\"gmblrri\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"jfnynszqujizdvoq\",\"name\":\"tiby\",\"type\":\"wb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ForwardingRule response = manager.forwardingRules()
-            .define("r")
-            .withExistingDnsForwardingRuleset("uximerqfobw", "znkbykutwpfhpagm")
-            .withDomainName("kkze")
-            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("l").withPort(1094584073),
-                new TargetDnsServer().withIpAddress("pusdstt").withPort(1072941550)))
-            .withMetadata(mapOf("akufgmjz", "bbejdcngqqm", "grtwae", "wr", "zkopb", "u"))
+            .define("d")
+            .withExistingDnsForwardingRuleset("kulfg", "lqubkwdlen")
+            .withDomainName("hminyflnorwmduv")
+            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("klvxwmyg").withPort(1521698279),
+                new TargetDnsServer().withIpAddress("gpqch").withPort(1044665061)))
+            .withMetadata(mapOf("rxgibbd", "nnbj", "kokwbqplhlvnu", "xconfozauors"))
             .withForwardingRuleState(ForwardingRuleState.ENABLED)
-            .withIfMatch("equi")
-            .withIfNoneMatch("hxicslfaoqz")
+            .withIfMatch("wjhhgdnhxmsivf")
+            .withIfNoneMatch("miloxggdufiqndie")
             .create();
 
-        Assertions.assertEquals("kaivwit", response.domainName());
-        Assertions.assertEquals("cywuggwol", response.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(1226562367, response.targetDnsServers().get(0).port());
-        Assertions.assertEquals("xggicccnxqhuexmk", response.metadata().get("tlstvlzywem"));
+        Assertions.assertEquals("jchvcyy", response.domainName());
+        Assertions.assertEquals("fgdo", response.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1738680873, response.targetDnsServers().get(0).port());
+        Assertions.assertEquals("ip", response.metadata().get("ipwoqonmacjek"));
         Assertions.assertEquals(ForwardingRuleState.ENABLED, response.forwardingRuleState());
     }
 

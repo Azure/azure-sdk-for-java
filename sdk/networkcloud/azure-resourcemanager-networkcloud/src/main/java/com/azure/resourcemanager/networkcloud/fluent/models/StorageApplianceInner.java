@@ -28,6 +28,11 @@ import java.util.Map;
 @Fluent
 public final class StorageApplianceInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -61,6 +66,15 @@ public final class StorageApplianceInner extends Resource {
      * Creates an instance of StorageApplianceInner class.
      */
     public StorageApplianceInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -175,7 +189,7 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
-     * Get the capacity property: The total capacity of the storage appliance.
+     * Get the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
      */
@@ -193,7 +207,8 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
-     * Get the clusterId property: The resource ID of the cluster this storage appliance is associated with.
+     * Get the clusterId property: The resource ID of the cluster this storage appliance is associated with. Measured in
+     * GiB.
      * 
      * @return the clusterId value.
      */
@@ -453,6 +468,8 @@ public final class StorageApplianceInner extends Resource {
                     deserializedStorageApplianceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedStorageApplianceInner.innerProperties = StorageApplianceProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedStorageApplianceInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedStorageApplianceInner.systemData = SystemData.fromJson(reader);
                 } else {

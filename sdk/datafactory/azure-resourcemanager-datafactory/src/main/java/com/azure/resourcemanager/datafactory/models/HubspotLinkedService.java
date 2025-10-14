@@ -51,7 +51,7 @@ public final class HubspotLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HubspotLinkedServiceTypeProperties innerTypeProperties() {
+    HubspotLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.models.GatewayServe
 public final class GatewayServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayServerProperties model = BinaryData.fromString("{\"port\":2007825026564203612,\"health\":\"Healthy\"}")
+        GatewayServerProperties model = BinaryData.fromString("{\"port\":4579993960866529408,\"health\":\"Unknown\"}")
             .toObject(GatewayServerProperties.class);
     }
 

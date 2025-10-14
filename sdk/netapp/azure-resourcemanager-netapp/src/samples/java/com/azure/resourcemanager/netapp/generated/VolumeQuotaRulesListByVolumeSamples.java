@@ -10,8 +10,7 @@ package com.azure.resourcemanager.netapp.generated;
 public final class VolumeQuotaRulesListByVolumeSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/VolumeQuotaRules_List.
-     * json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/VolumeQuotaRules_List.json
      */
     /**
      * Sample code: VolumeQuotaRules_List.

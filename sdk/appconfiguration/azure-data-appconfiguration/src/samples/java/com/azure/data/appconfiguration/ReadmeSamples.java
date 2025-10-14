@@ -69,14 +69,14 @@ public class ReadmeSamples {
         // END: readme-sample-createAsyncClient
     }
 
-    public void aadAuthentication() {
-        // BEGIN: readme-sample-aadAuthentication
+    public void entraAuthentication() {
+        // BEGIN: readme-sample-entraAuthentication
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
             .buildClient();
-        // END: readme-sample-aadAuthentication
+        // END: readme-sample-entraAuthentication
     }
 
     public void sqlExample() {
@@ -364,7 +364,7 @@ public class ReadmeSamples {
                 .buildClient();
         // or
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        ConfigurationClient configurationClientAad = new ConfigurationClientBuilder()
+        ConfigurationClient configurationClientEntraId = new ConfigurationClientBuilder()
                 .credential(credential)
                 .endpoint(endpoint)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

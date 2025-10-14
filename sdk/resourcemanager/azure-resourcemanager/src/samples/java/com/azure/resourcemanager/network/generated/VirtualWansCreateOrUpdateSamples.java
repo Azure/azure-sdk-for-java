@@ -14,7 +14,7 @@ import java.util.Map;
 public final class VirtualWansCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualWANPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/VirtualWANPut.json
      */
     /**
      * Sample code: VirtualWANCreate.

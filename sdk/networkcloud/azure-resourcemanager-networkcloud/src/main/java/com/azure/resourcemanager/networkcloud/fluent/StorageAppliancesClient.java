@@ -139,6 +139,10 @@ public interface StorageAppliancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,7 +152,8 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(String resourceGroupName,
-        String storageApplianceName, StorageApplianceInner storageApplianceParameters, Context context);
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the storage appliance.
@@ -177,6 +182,10 @@ public interface StorageAppliancesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,7 +194,7 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters, Context context);
+        StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the storage appliance.
@@ -212,6 +221,10 @@ public interface StorageAppliancesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,7 +233,7 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String storageApplianceName, Context context);
+        String storageApplianceName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the storage appliance.
@@ -246,6 +259,10 @@ public interface StorageAppliancesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,7 +270,8 @@ public interface StorageAppliancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the storage appliance.
@@ -281,6 +299,10 @@ public interface StorageAppliancesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +313,8 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
-        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
+        String storageApplianceName, String ifMatch, String ifNoneMatch,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
 
     /**
      * Patch the storage appliance.
@@ -317,6 +340,10 @@ public interface StorageAppliancesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,8 +352,8 @@ public interface StorageAppliancesClient {
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageApplianceInner update(String resourceGroupName, String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
+    StorageApplianceInner update(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.

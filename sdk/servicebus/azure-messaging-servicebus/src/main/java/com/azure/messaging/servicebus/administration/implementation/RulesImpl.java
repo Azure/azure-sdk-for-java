@@ -22,7 +22,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
@@ -55,12 +55,12 @@ public final class RulesImpl {
      * perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClientRules")
     public interface RulesService {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<RuleDescriptionEntryImpl>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<RuleDescriptionEntry>> get(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @PathParam("ruleName") String ruleName, @QueryParam("enrich") Boolean enrich,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -68,7 +68,7 @@ public final class RulesImpl {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<RuleDescriptionEntryImpl> getSync(@HostParam("endpoint") String endpoint,
+        Response<RuleDescriptionEntry> getSync(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @PathParam("ruleName") String ruleName, @QueryParam("enrich") Boolean enrich,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -76,7 +76,7 @@ public final class RulesImpl {
         @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<RuleDescriptionEntryImpl>> put(@HostParam("endpoint") String endpoint,
+        Mono<Response<RuleDescriptionEntry>> put(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("If-Match") String ifMatch, @BodyParam("application/atom+xml") Object requestBody,
@@ -85,7 +85,7 @@ public final class RulesImpl {
         @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<RuleDescriptionEntryImpl> putSync(@HostParam("endpoint") String endpoint,
+        Response<RuleDescriptionEntry> putSync(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("If-Match") String ifMatch, @BodyParam("application/atom+xml") Object requestBody,
@@ -94,7 +94,7 @@ public final class RulesImpl {
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<RuleDescriptionEntryImpl>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<RuleDescriptionEntry>> delete(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -102,7 +102,7 @@ public final class RulesImpl {
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<RuleDescriptionEntryImpl> deleteSync(@HostParam("endpoint") String endpoint,
+        Response<RuleDescriptionEntry> deleteSync(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -124,7 +124,7 @@ public final class RulesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(String topicName, String subscriptionName,
+    public Mono<Response<RuleDescriptionEntry>> getWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Boolean enrich) {
         return FluxUtil
             .withContext(context -> getWithResponseAsync(topicName, subscriptionName, ruleName, enrich, context));
@@ -147,7 +147,7 @@ public final class RulesImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(String topicName, String subscriptionName,
+    public Mono<Response<RuleDescriptionEntry>> getWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.get(this.client.getEndpoint(), topicName, subscriptionName, ruleName, enrich,
@@ -169,7 +169,7 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionEntryImpl> getAsync(String topicName, String subscriptionName, String ruleName,
+    public Mono<RuleDescriptionEntry> getAsync(String topicName, String subscriptionName, String ruleName,
         Boolean enrich) {
         return getWithResponseAsync(topicName, subscriptionName, ruleName, enrich)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -191,7 +191,7 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionEntryImpl> getAsync(String topicName, String subscriptionName, String ruleName,
+    public Mono<RuleDescriptionEntry> getAsync(String topicName, String subscriptionName, String ruleName,
         Boolean enrich, Context context) {
         return getWithResponseAsync(topicName, subscriptionName, ruleName, enrich, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -213,8 +213,8 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleDescriptionEntryImpl> getWithResponse(String topicName, String subscriptionName,
-        String ruleName, Boolean enrich, Context context) {
+    public Response<RuleDescriptionEntry> getWithResponse(String topicName, String subscriptionName, String ruleName,
+        Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.getSync(this.client.getEndpoint(), topicName, subscriptionName, ruleName, enrich,
             this.client.getApiVersion(), accept, context);
@@ -235,7 +235,7 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleDescriptionEntryImpl get(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
+    public RuleDescriptionEntry get(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
         return getWithResponse(topicName, subscriptionName, ruleName, enrich, Context.NONE).getValue();
     }
 
@@ -257,7 +257,7 @@ public final class RulesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(String topicName, String subscriptionName,
+    public Mono<Response<RuleDescriptionEntry>> putWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Object requestBody, String ifMatch) {
         return FluxUtil.withContext(
             context -> putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch, context));
@@ -282,7 +282,7 @@ public final class RulesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(String topicName, String subscriptionName,
+    public Mono<Response<RuleDescriptionEntry>> putWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.put(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
@@ -306,7 +306,7 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionEntryImpl> putAsync(String topicName, String subscriptionName, String ruleName,
+    public Mono<RuleDescriptionEntry> putAsync(String topicName, String subscriptionName, String ruleName,
         Object requestBody, String ifMatch) {
         return putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -330,7 +330,7 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionEntryImpl> putAsync(String topicName, String subscriptionName, String ruleName,
+    public Mono<RuleDescriptionEntry> putAsync(String topicName, String subscriptionName, String ruleName,
         Object requestBody, String ifMatch, Context context) {
         return putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -354,8 +354,8 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleDescriptionEntryImpl> putWithResponse(String topicName, String subscriptionName,
-        String ruleName, Object requestBody, String ifMatch, Context context) {
+    public Response<RuleDescriptionEntry> putWithResponse(String topicName, String subscriptionName, String ruleName,
+        Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.putSync(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
             this.client.getApiVersion(), ifMatch, requestBody, accept, context);
@@ -378,7 +378,7 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleDescriptionEntryImpl put(String topicName, String subscriptionName, String ruleName, Object requestBody,
+    public RuleDescriptionEntry put(String topicName, String subscriptionName, String ruleName, Object requestBody,
         String ifMatch) {
         return putWithResponse(topicName, subscriptionName, ruleName, requestBody, ifMatch, Context.NONE).getValue();
     }
@@ -398,7 +398,7 @@ public final class RulesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(String topicName, String subscriptionName,
+    public Mono<Response<RuleDescriptionEntry>> deleteWithResponseAsync(String topicName, String subscriptionName,
         String ruleName) {
         return FluxUtil.withContext(context -> deleteWithResponseAsync(topicName, subscriptionName, ruleName, context));
     }
@@ -419,7 +419,7 @@ public final class RulesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(String topicName, String subscriptionName,
+    public Mono<Response<RuleDescriptionEntry>> deleteWithResponseAsync(String topicName, String subscriptionName,
         String ruleName, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.delete(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
@@ -440,7 +440,7 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName, String ruleName) {
+    public Mono<RuleDescriptionEntry> deleteAsync(String topicName, String subscriptionName, String ruleName) {
         return deleteWithResponseAsync(topicName, subscriptionName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -460,7 +460,7 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName, String ruleName,
+    public Mono<RuleDescriptionEntry> deleteAsync(String topicName, String subscriptionName, String ruleName,
         Context context) {
         return deleteWithResponseAsync(topicName, subscriptionName, ruleName, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -481,8 +481,8 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleDescriptionEntryImpl> deleteWithResponse(String topicName, String subscriptionName,
-        String ruleName, Context context) {
+    public Response<RuleDescriptionEntry> deleteWithResponse(String topicName, String subscriptionName, String ruleName,
+        Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.deleteSync(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
             this.client.getApiVersion(), accept, context);
@@ -502,7 +502,7 @@ public final class RulesImpl {
      * @return represents an entry in the feed when querying rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleDescriptionEntryImpl delete(String topicName, String subscriptionName, String ruleName) {
+    public RuleDescriptionEntry delete(String topicName, String subscriptionName, String ruleName) {
         return deleteWithResponse(topicName, subscriptionName, ruleName, Context.NONE).getValue();
     }
 }

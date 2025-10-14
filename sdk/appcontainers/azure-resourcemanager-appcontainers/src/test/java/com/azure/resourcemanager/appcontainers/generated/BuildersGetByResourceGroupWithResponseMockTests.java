@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.BuilderResource;
@@ -22,24 +22,24 @@ public final class BuildersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"environmentId\":\"fkmkrokz\",\"containerRegistries\":[{\"containerRegistryServer\":\"qetwpqrtvaozn\",\"identityResourceId\":\"ni\"}]},\"identity\":{\"principalId\":\"ba6e51e4-1ee4-4d69-a120-9a42ea39d20a\",\"tenantId\":\"8d6d8289-77c8-4de7-a16a-e474749730b2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"eituugedhfpjs\":{\"principalId\":\"4d427c5b-8daa-4f9a-8d35-9f6281dd12b9\",\"clientId\":\"180ae505-e3b6-4262-a17f-ed8d26ef472e\"},\"mbl\":{\"principalId\":\"939cb210-b1d7-4bb0-a3d2-aeff21f61c14\",\"clientId\":\"7bc239a6-8301-4ce6-83fe-6c20a25c91e5\"},\"deolctaebfs\":{\"principalId\":\"6e994a96-436b-4e8f-9b1b-6e92e3358bce\",\"clientId\":\"a6fe1d89-d8e6-4bc8-9af1-a803ee589397\"},\"edjc\":{\"principalId\":\"6a9bb5ea-c9d8-4143-92dc-6c0177bb2466\",\"clientId\":\"80878c0f-d388-4d56-a8ff-f71cb5db3025\"}}},\"location\":\"tb\",\"tags\":{\"vsgeafgf\":\"igdx\",\"kkwa\":\"sehxlzsxezp\"},\"id\":\"es\",\"name\":\"yfjlpzeqto\",\"type\":\"rpl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"environmentId\":\"erkjddv\",\"containerRegistries\":[{\"containerRegistryServer\":\"iegftc\",\"identityResourceId\":\"biiftksdwgdnk\"},{\"containerRegistryServer\":\"fgmwd\",\"identityResourceId\":\"c\"},{\"containerRegistryServer\":\"buvczldbglzoutb\",\"identityResourceId\":\"aqgzekajclyzgs\"}]},\"identity\":{\"principalId\":\"7fd2c719-9e3b-4544-bb86-f684d588d608\",\"tenantId\":\"3066b442-1559-4181-9984-0b35cbc486d8\",\"type\":\"None\",\"userAssignedIdentities\":{\"jotvmrxkhl\":{\"principalId\":\"5133ca8d-f461-4fbe-b63e-d9c79d525469\",\"clientId\":\"3d4831fc-db66-48d3-976f-0ff4bc09712c\"}}},\"location\":\"vvjbhvhdiqayf\",\"tags\":{\"snuudtelvhyibdr\":\"yu\"},\"id\":\"rswhbuubpyro\",\"name\":\"tjoxztfw\",\"type\":\"qchvczevjn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BuilderResource response = manager.builders()
-            .getByResourceGroupWithResponse("wp", "gmfalkzazmgoked", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exkydfb", "lj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tb", response.location());
-        Assertions.assertEquals("igdx", response.tags().get("vsgeafgf"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("fkmkrokz", response.environmentId());
-        Assertions.assertEquals("qetwpqrtvaozn", response.containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("ni", response.containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("vvjbhvhdiqayf", response.location());
+        Assertions.assertEquals("yu", response.tags().get("snuudtelvhyibdr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("erkjddv", response.environmentId());
+        Assertions.assertEquals("iegftc", response.containerRegistries().get(0).containerRegistryServer());
+        Assertions.assertEquals("biiftksdwgdnk", response.containerRegistries().get(0).identityResourceId());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationRecoveryPlansListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryPlans_List.json
      */
     /**
@@ -20,6 +20,6 @@ public final class ReplicationRecoveryPlansListSamples {
      */
     public static void
         getsTheListOfRecoveryPlans(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryPlans().list("resourceGroupPS1", "vault1", com.azure.core.util.Context.NONE);
     }
 }

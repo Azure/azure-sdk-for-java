@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
@@ -244,6 +245,15 @@ public final class ContainerAppInner extends Resource {
      */
     public ContainerAppProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the runningStatus property: Running status of the Container App.
+     * 
+     * @return the runningStatus value.
+     */
+    public ContainerAppRunningStatus runningStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningStatus();
     }
 
     /**

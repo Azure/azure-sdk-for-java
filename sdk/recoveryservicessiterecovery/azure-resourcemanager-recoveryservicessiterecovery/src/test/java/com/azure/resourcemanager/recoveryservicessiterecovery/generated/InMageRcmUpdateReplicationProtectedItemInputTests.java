@@ -8,6 +8,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmNicInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmUpdateReplicationProtectedItemInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.LinuxLicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SqlServerLicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.UserCreatedResourceTag;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,72 +18,105 @@ public final class InMageRcmUpdateReplicationProtectedItemInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmUpdateReplicationProtectedItemInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"targetVmName\":\"tuxy\",\"targetVmSize\":\"hfcaeo\",\"targetResourceGroupId\":\"fqd\",\"targetAvailabilitySetId\":\"jflobhahqmomf\",\"targetAvailabilityZone\":\"o\",\"targetProximityPlacementGroupId\":\"fr\",\"targetBootDiagnosticsStorageAccountId\":\"gbmxldjmz\",\"targetNetworkId\":\"bjesylslur\",\"testNetworkId\":\"fygpnyhgd\",\"vmNics\":[{\"nicId\":\"sc\",\"isPrimaryNic\":\"gqyvouprsytqzss\",\"isSelectedForFailover\":\"mgw\",\"targetSubnetName\":\"ivrxpfduiol\",\"targetStaticIPAddress\":\"yqvpbfjpo\",\"testSubnetName\":\"ucfzluczdquu\",\"testStaticIPAddress\":\"ormvh\"},{\"nicId\":\"zielbprnq\",\"isPrimaryNic\":\"jywzcqyg\",\"isSelectedForFailover\":\"nwsvhbngqiwye\",\"targetSubnetName\":\"ob\",\"targetStaticIPAddress\":\"rpnrehkunsbfjh\",\"testSubnetName\":\"w\",\"testStaticIPAddress\":\"kvegeattbzkgtzq\"}],\"licenseType\":\"NoLicenseType\"}")
+            "{\"instanceType\":\"InMageRcm\",\"targetVmName\":\"krwfmihwpadhedb\",\"targetVmSize\":\"bdczvothmkhjao\",\"targetResourceGroupId\":\"bwfcn\",\"targetAvailabilitySetId\":\"bpoelhscmyhrhjv\",\"targetAvailabilityZone\":\"fqbokndwp\",\"targetProximityPlacementGroupId\":\"qwojoev\",\"targetBootDiagnosticsStorageAccountId\":\"ufytdxmly\",\"targetNetworkId\":\"lyvapbkrbu\",\"testNetworkId\":\"gtdltlcuha\",\"vmNics\":[{\"nicId\":\"jv\",\"isPrimaryNic\":\"ylzeohlpsftq\",\"isSelectedForFailover\":\"vmhvbvvcpwtqs\",\"targetSubnetName\":\"pnhmzy\",\"targetStaticIPAddress\":\"fetev\",\"testSubnetName\":\"tf\",\"testStaticIPAddress\":\"wacycsyotctkhf\",\"targetNicName\":\"satvcs\"},{\"nicId\":\"rmhnmizhvpr\",\"isPrimaryNic\":\"qqwcublehhkp\",\"isSelectedForFailover\":\"bzgottaksadzighm\",\"targetSubnetName\":\"b\",\"targetStaticIPAddress\":\"vucfvvraab\",\"testSubnetName\":\"rdeewl\",\"testStaticIPAddress\":\"xpcbwkdwjyjizn\",\"targetNicName\":\"roo\"}],\"licenseType\":\"WindowsServer\",\"sqlServerLicenseType\":\"NotSpecified\",\"linuxLicenseType\":\"LinuxServer\",\"userSelectedOSName\":\"cr\",\"targetVmTags\":[{\"tagName\":\"ftrnighminuwqxu\",\"tagValue\":\"robgwfmsxj\"}],\"targetManagedDiskTags\":[{\"tagName\":\"wxm\",\"tagValue\":\"jowz\"}],\"targetNicTags\":[{\"tagName\":\"rclbl\",\"tagValue\":\"hpwachyeu\"},{\"tagName\":\"wmvwryvdi\",\"tagValue\":\"ii\"},{\"tagName\":\"pruccwme\",\"tagValue\":\"txsytrtexegwmrq\"}]}")
             .toObject(InMageRcmUpdateReplicationProtectedItemInput.class);
-        Assertions.assertEquals("tuxy", model.targetVmName());
-        Assertions.assertEquals("hfcaeo", model.targetVmSize());
-        Assertions.assertEquals("fqd", model.targetResourceGroupId());
-        Assertions.assertEquals("jflobhahqmomf", model.targetAvailabilitySetId());
-        Assertions.assertEquals("o", model.targetAvailabilityZone());
-        Assertions.assertEquals("fr", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("gbmxldjmz", model.targetBootDiagnosticsStorageAccountId());
-        Assertions.assertEquals("bjesylslur", model.targetNetworkId());
-        Assertions.assertEquals("fygpnyhgd", model.testNetworkId());
-        Assertions.assertEquals("sc", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("gqyvouprsytqzss", model.vmNics().get(0).isPrimaryNic());
-        Assertions.assertEquals("mgw", model.vmNics().get(0).isSelectedForFailover());
-        Assertions.assertEquals("ivrxpfduiol", model.vmNics().get(0).targetSubnetName());
-        Assertions.assertEquals("yqvpbfjpo", model.vmNics().get(0).targetStaticIpAddress());
-        Assertions.assertEquals("ucfzluczdquu", model.vmNics().get(0).testSubnetName());
-        Assertions.assertEquals("ormvh", model.vmNics().get(0).testStaticIpAddress());
-        Assertions.assertEquals(LicenseType.NO_LICENSE_TYPE, model.licenseType());
+        Assertions.assertEquals("krwfmihwpadhedb", model.targetVmName());
+        Assertions.assertEquals("bdczvothmkhjao", model.targetVmSize());
+        Assertions.assertEquals("bwfcn", model.targetResourceGroupId());
+        Assertions.assertEquals("bpoelhscmyhrhjv", model.targetAvailabilitySetId());
+        Assertions.assertEquals("fqbokndwp", model.targetAvailabilityZone());
+        Assertions.assertEquals("qwojoev", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("ufytdxmly", model.targetBootDiagnosticsStorageAccountId());
+        Assertions.assertEquals("lyvapbkrbu", model.targetNetworkId());
+        Assertions.assertEquals("gtdltlcuha", model.testNetworkId());
+        Assertions.assertEquals("jv", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("ylzeohlpsftq", model.vmNics().get(0).isPrimaryNic());
+        Assertions.assertEquals("vmhvbvvcpwtqs", model.vmNics().get(0).isSelectedForFailover());
+        Assertions.assertEquals("pnhmzy", model.vmNics().get(0).targetSubnetName());
+        Assertions.assertEquals("fetev", model.vmNics().get(0).targetStaticIpAddress());
+        Assertions.assertEquals("tf", model.vmNics().get(0).testSubnetName());
+        Assertions.assertEquals("wacycsyotctkhf", model.vmNics().get(0).testStaticIpAddress());
+        Assertions.assertEquals("satvcs", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.licenseType());
+        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.LINUX_SERVER, model.linuxLicenseType());
+        Assertions.assertEquals("cr", model.userSelectedOSName());
+        Assertions.assertEquals("ftrnighminuwqxu", model.targetVmTags().get(0).tagName());
+        Assertions.assertEquals("robgwfmsxj", model.targetVmTags().get(0).tagValue());
+        Assertions.assertEquals("wxm", model.targetManagedDiskTags().get(0).tagName());
+        Assertions.assertEquals("jowz", model.targetManagedDiskTags().get(0).tagValue());
+        Assertions.assertEquals("rclbl", model.targetNicTags().get(0).tagName());
+        Assertions.assertEquals("hpwachyeu", model.targetNicTags().get(0).tagValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmUpdateReplicationProtectedItemInput model
-            = new InMageRcmUpdateReplicationProtectedItemInput().withTargetVmName("tuxy")
-                .withTargetVmSize("hfcaeo")
-                .withTargetResourceGroupId("fqd")
-                .withTargetAvailabilitySetId("jflobhahqmomf")
-                .withTargetAvailabilityZone("o")
-                .withTargetProximityPlacementGroupId("fr")
-                .withTargetBootDiagnosticsStorageAccountId("gbmxldjmz")
-                .withTargetNetworkId("bjesylslur")
-                .withTestNetworkId("fygpnyhgd")
-                .withVmNics(Arrays.asList(
-                    new InMageRcmNicInput().withNicId("sc")
-                        .withIsPrimaryNic("gqyvouprsytqzss")
-                        .withIsSelectedForFailover("mgw")
-                        .withTargetSubnetName("ivrxpfduiol")
-                        .withTargetStaticIpAddress("yqvpbfjpo")
-                        .withTestSubnetName("ucfzluczdquu")
-                        .withTestStaticIpAddress("ormvh"),
-                    new InMageRcmNicInput().withNicId("zielbprnq")
-                        .withIsPrimaryNic("jywzcqyg")
-                        .withIsSelectedForFailover("nwsvhbngqiwye")
-                        .withTargetSubnetName("ob")
-                        .withTargetStaticIpAddress("rpnrehkunsbfjh")
-                        .withTestSubnetName("w")
-                        .withTestStaticIpAddress("kvegeattbzkgtzq")))
-                .withLicenseType(LicenseType.NO_LICENSE_TYPE);
+        InMageRcmUpdateReplicationProtectedItemInput model = new InMageRcmUpdateReplicationProtectedItemInput()
+            .withTargetVmName("krwfmihwpadhedb")
+            .withTargetVmSize("bdczvothmkhjao")
+            .withTargetResourceGroupId("bwfcn")
+            .withTargetAvailabilitySetId("bpoelhscmyhrhjv")
+            .withTargetAvailabilityZone("fqbokndwp")
+            .withTargetProximityPlacementGroupId("qwojoev")
+            .withTargetBootDiagnosticsStorageAccountId("ufytdxmly")
+            .withTargetNetworkId("lyvapbkrbu")
+            .withTestNetworkId("gtdltlcuha")
+            .withVmNics(Arrays.asList(
+                new InMageRcmNicInput().withNicId("jv")
+                    .withIsPrimaryNic("ylzeohlpsftq")
+                    .withIsSelectedForFailover("vmhvbvvcpwtqs")
+                    .withTargetSubnetName("pnhmzy")
+                    .withTargetStaticIpAddress("fetev")
+                    .withTestSubnetName("tf")
+                    .withTestStaticIpAddress("wacycsyotctkhf")
+                    .withTargetNicName("satvcs"),
+                new InMageRcmNicInput().withNicId("rmhnmizhvpr")
+                    .withIsPrimaryNic("qqwcublehhkp")
+                    .withIsSelectedForFailover("bzgottaksadzighm")
+                    .withTargetSubnetName("b")
+                    .withTargetStaticIpAddress("vucfvvraab")
+                    .withTestSubnetName("rdeewl")
+                    .withTestStaticIpAddress("xpcbwkdwjyjizn")
+                    .withTargetNicName("roo")))
+            .withLicenseType(LicenseType.WINDOWS_SERVER)
+            .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
+            .withLinuxLicenseType(LinuxLicenseType.LINUX_SERVER)
+            .withUserSelectedOSName("cr")
+            .withTargetVmTags(
+                Arrays.asList(new UserCreatedResourceTag().withTagName("ftrnighminuwqxu").withTagValue("robgwfmsxj")))
+            .withTargetManagedDiskTags(
+                Arrays.asList(new UserCreatedResourceTag().withTagName("wxm").withTagValue("jowz")))
+            .withTargetNicTags(
+                Arrays.asList(new UserCreatedResourceTag().withTagName("rclbl").withTagValue("hpwachyeu"),
+                    new UserCreatedResourceTag().withTagName("wmvwryvdi").withTagValue("ii"),
+                    new UserCreatedResourceTag().withTagName("pruccwme").withTagValue("txsytrtexegwmrq")));
         model = BinaryData.fromObject(model).toObject(InMageRcmUpdateReplicationProtectedItemInput.class);
-        Assertions.assertEquals("tuxy", model.targetVmName());
-        Assertions.assertEquals("hfcaeo", model.targetVmSize());
-        Assertions.assertEquals("fqd", model.targetResourceGroupId());
-        Assertions.assertEquals("jflobhahqmomf", model.targetAvailabilitySetId());
-        Assertions.assertEquals("o", model.targetAvailabilityZone());
-        Assertions.assertEquals("fr", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("gbmxldjmz", model.targetBootDiagnosticsStorageAccountId());
-        Assertions.assertEquals("bjesylslur", model.targetNetworkId());
-        Assertions.assertEquals("fygpnyhgd", model.testNetworkId());
-        Assertions.assertEquals("sc", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("gqyvouprsytqzss", model.vmNics().get(0).isPrimaryNic());
-        Assertions.assertEquals("mgw", model.vmNics().get(0).isSelectedForFailover());
-        Assertions.assertEquals("ivrxpfduiol", model.vmNics().get(0).targetSubnetName());
-        Assertions.assertEquals("yqvpbfjpo", model.vmNics().get(0).targetStaticIpAddress());
-        Assertions.assertEquals("ucfzluczdquu", model.vmNics().get(0).testSubnetName());
-        Assertions.assertEquals("ormvh", model.vmNics().get(0).testStaticIpAddress());
-        Assertions.assertEquals(LicenseType.NO_LICENSE_TYPE, model.licenseType());
+        Assertions.assertEquals("krwfmihwpadhedb", model.targetVmName());
+        Assertions.assertEquals("bdczvothmkhjao", model.targetVmSize());
+        Assertions.assertEquals("bwfcn", model.targetResourceGroupId());
+        Assertions.assertEquals("bpoelhscmyhrhjv", model.targetAvailabilitySetId());
+        Assertions.assertEquals("fqbokndwp", model.targetAvailabilityZone());
+        Assertions.assertEquals("qwojoev", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("ufytdxmly", model.targetBootDiagnosticsStorageAccountId());
+        Assertions.assertEquals("lyvapbkrbu", model.targetNetworkId());
+        Assertions.assertEquals("gtdltlcuha", model.testNetworkId());
+        Assertions.assertEquals("jv", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("ylzeohlpsftq", model.vmNics().get(0).isPrimaryNic());
+        Assertions.assertEquals("vmhvbvvcpwtqs", model.vmNics().get(0).isSelectedForFailover());
+        Assertions.assertEquals("pnhmzy", model.vmNics().get(0).targetSubnetName());
+        Assertions.assertEquals("fetev", model.vmNics().get(0).targetStaticIpAddress());
+        Assertions.assertEquals("tf", model.vmNics().get(0).testSubnetName());
+        Assertions.assertEquals("wacycsyotctkhf", model.vmNics().get(0).testStaticIpAddress());
+        Assertions.assertEquals("satvcs", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals(LicenseType.WINDOWS_SERVER, model.licenseType());
+        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.LINUX_SERVER, model.linuxLicenseType());
+        Assertions.assertEquals("cr", model.userSelectedOSName());
+        Assertions.assertEquals("ftrnighminuwqxu", model.targetVmTags().get(0).tagName());
+        Assertions.assertEquals("robgwfmsxj", model.targetVmTags().get(0).tagValue());
+        Assertions.assertEquals("wxm", model.targetManagedDiskTags().get(0).tagName());
+        Assertions.assertEquals("jowz", model.targetManagedDiskTags().get(0).tagValue());
+        Assertions.assertEquals("rclbl", model.targetNicTags().get(0).tagName());
+        Assertions.assertEquals("hpwachyeu", model.targetNicTags().get(0).tagValue());
     }
 }

@@ -1,17 +1,66 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for `socketIO` when generating client access URI.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+## 1.5.2 (2025-09-25)
+
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 1.5.1 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
+## 1.5.0 (2025-07-07)
+
+### Features Added
+- Add "listConnectionsInGroup" API.
+
+## 1.4.2 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.4.1 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 1.4.0 (2025-02-24)
+
+### Features Added
+
+- Added support for `socketIO` when generating client access URI. ([#42797](https://github.com/Azure/azure-sdk-for-java/pull/42797))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 
 ## 1.3.3 (2024-12-04)
 
@@ -22,7 +71,6 @@
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 
-
 ## 1.3.2 (2024-10-25)
 
 ### Other Changes
@@ -32,7 +80,6 @@
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 - Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
 
-
 ## 1.3.1 (2024-09-27)
 
 ### Other Changes
@@ -41,7 +88,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
-
 
 ## 1.3.0 (2024-08-06)
 
@@ -64,7 +110,6 @@
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 
-
 ## 1.2.17 (2024-07-26)
 
 ### Other Changes
@@ -73,7 +118,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
-
 
 ## 1.2.16 (2024-06-27)
 
@@ -84,7 +128,6 @@
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 
-
 ## 1.2.15 (2024-05-28)
 
 ### Other Changes
@@ -94,7 +137,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
-
 ## 1.2.14 (2024-04-23)
 
 ### Other Changes
@@ -103,7 +145,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
-
 
 ## 1.2.13 (2024-03-20)
 
@@ -115,7 +156,6 @@
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `nimbus-jose-jwt` from `9.31` to version `9.37.3`.
 
-
 ## 1.2.12 (2024-02-20)
 
 ### Other Changes
@@ -124,7 +164,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
-
 
 ## 1.2.11 (2023-12-04)
 
@@ -135,7 +174,6 @@
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
-
 ## 1.2.10 (2023-11-20)
 
 ### Other Changes
@@ -144,7 +182,6 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
-
 
 ## 1.2.9 (2023-10-20)
 
@@ -155,7 +192,6 @@
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 
-
 ## 1.2.8 (2023-09-22)
 
 ### Other Changes
@@ -164,7 +200,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
-
 
 ## 1.2.7 (2023-08-18)
 
@@ -175,7 +210,6 @@
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 
-
 ## 1.2.6 (2023-07-25)
 
 ### Other Changes
@@ -184,7 +218,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
-
 
 ## 1.2.5 (2023-06-20)
 
@@ -195,7 +228,6 @@
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 
-
 ## 1.2.4 (2023-05-23)
 
 ### Other Changes
@@ -204,7 +236,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
-
 
 ## 1.2.3 (2023-04-21)
 
@@ -216,7 +247,6 @@
 - Upgraded `nimbus-jose-jwt` from `9.22` to version `9.31`.
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 
-
 ## 1.2.2 (2023-03-16)
 
 ### Other Changes
@@ -225,7 +255,6 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
-
 
 ## 1.2.1 (2023-02-16)
 
@@ -236,13 +265,12 @@
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
 
-
 ## 1.2.0 (2023-01-11)
 
 ### Bugs Fixed
 
 - Fixed incorrect "audience" from `getClientAccessToken` method in `WebPubSubServiceAsyncClient`. ([#24741](https://github.com/Azure/azure-sdk-for-java/issues/24741))
-- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential. 
+- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential.
 
 ### Features Added
 
@@ -410,7 +438,7 @@
 
 ### Features Added
 - Added support for [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/authentication/) based authentication.
-- Added support for API management by configuring `reverseProxyEndpoint` on the client builder. 
+- Added support for API management by configuring `reverseProxyEndpoint` on the client builder.
   https://github.com/Azure/azure-webpubsub/issues/194 describes how to integrate with the API Management service.
 
 ## 1.0.0-beta.3 (2021-07-29)
@@ -429,9 +457,9 @@
 - Fixed issue with generating token that included only the last role in the input list.
 
 ## 1.0.0-beta.1 (2021-04-22)
-Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Web PubSub that is 
-developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as 
-possible. The principles that guide our efforts can be found in the 
+Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Web PubSub that is
+developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as
+possible. The principles that guide our efforts can be found in the
 [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
 - Initial release. Please see the README and wiki for information on using the new library.

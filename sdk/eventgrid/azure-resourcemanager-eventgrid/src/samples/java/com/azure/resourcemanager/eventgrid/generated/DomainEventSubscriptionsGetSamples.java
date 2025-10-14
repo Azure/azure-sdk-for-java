@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class DomainEventSubscriptionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * DomainEventSubscriptions_Get.json
      */
     /**

@@ -1,0 +1,558 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-openrewrite</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-openrewrite;current} -->
+
+  <name>Microsoft Azure OpenRewrite Plugin library for Java</name>
+  <description>This module contains OpenRewrite recipe for migrating to next generation Microsoft Azure client libraries.</description>
+
+  <distributionManagement>
+    <site>
+      <id>azure-openrewrite</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <url>https://github.com/azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection/>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.openrewrite.recipe</groupId>
+        <artifactId>rewrite-recipe-bom</artifactId>
+        <version>3.9.0</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <!-- rewrite-java dependencies only necessary for Java Recipe development -->
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java</artifactId>
+          <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-maven</artifactId>
+          <scope>compile</scope>
+        </dependency>
+
+        <!-- To test on different JDKs multiple within CI,
+        we need to include multiple rewrite-java test dependencies -->
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-8</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-11</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-17</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-21</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <!-- rewrite-maven dependency only necessary for Maven Recipe development -->
+
+
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-test</artifactId>
+          <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.junit.platform</groupId>
+              <artifactId>junit-platform-launcher</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-params</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-engine</artifactId>
+          <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-launcher</artifactId>
+          <version>1.13.4</version> <!-- {x-version-update;org.junit.platform:junit-platform-launcher;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-params</artifactId>
+          <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <!-- Optional dependency on assertJ to provide fluent assertions. -->
+        <dependency>
+          <groupId>org.assertj</groupId>
+          <artifactId>assertj-core</artifactId>
+          <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>2.18.4.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+        </dependency>
+        <!-- Jackson Dataformat Smile -->
+        <dependency>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-smile</artifactId>
+          <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
+        </dependency>
+        <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+        </dependency>
+
+        <!-- Library Test dependencies -->
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+          <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>io.clientcore</groupId>
+          <artifactId>core</artifactId>
+          <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-ai-translation-text</artifactId>
+          <version>1.1.6</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob</artifactId>
+          <version>12.31.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-queue</artifactId>
+          <version>12.26.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-identity</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity;dependency} -->
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>1.8.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-keys</artifactId>
+          <version>4.10.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-secrets</artifactId>
+          <version>4.10.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-certificates</artifactId>
+          <version>4.8.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-administration</artifactId>
+          <version>4.7.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-jca</artifactId>
+          <version>2.10.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-core</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-data-appconfiguration;dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>v1</id>
+      <dependencies>
+
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>1.8.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-keys</artifactId>
+          <version>4.10.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-secrets</artifactId>
+          <version>4.10.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-certificates</artifactId>
+          <version>4.8.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-administration</artifactId>
+          <version>4.7.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-security-keyvault-jca</artifactId>
+          <version>2.10.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+
+        <!-- KeyVault JCA has a sample using Apache HttpClient -->
+        <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <version>4.5.14</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+          <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-queue</artifactId>
+          <version>12.26.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob</artifactId>
+          <version>12.31.3</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+
+    <profile>
+      <id>v2</id>
+      <dependencies>
+        <dependency>
+          <groupId>io.clientcore</groupId>
+          <artifactId>core</artifactId>
+          <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-core</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-identity</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-data-appconfiguration;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+
+      <!-- generate sources jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${packageOutputDirectory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy the pom file to output -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- generate javadoc jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This plugin scans checkstyle issues in the code -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>linting-extensions</artifactId>
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:linting-extensions;current} -->
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+          </dependency>
+        </dependencies>
+        <configuration>
+          <configLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
+          <suppressionsLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/java.header</headerLocation>
+          <propertyExpansion>samedir=</propertyExpansion>
+          <consoleOutput>true</consoleOutput>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <linkXRef>true</linkXRef>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+          </dependency>
+          <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+          </dependency>
+        </dependencies>
+        <configuration>
+          <effort>max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+          <excludeFilterFile>${project.parent.relativePath}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
+          <fork>true</fork>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <readmeGlob>**/*.md</readmeGlob>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippets</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippets</id>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-openrewrite-compiler-maven-plugin</artifactId>
+          <version>1.0.0-beta.1</version>
+          <configuration>
+            <targetProfiles>v1,v2</targetProfiles>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>compile-golden-image</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicyContract;
@@ -21,20 +21,22 @@ public final class AuthorizationAccessPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"peakf\",\"objectId\":\"cedliklxkyoddoq\"},\"id\":\"a\",\"name\":\"qtrkicw\",\"type\":\"qyrgqmndk\"}";
+            = "{\"properties\":{\"appIds\":[\"fvsftsstwlpx\",\"achdtezgfctu\"],\"tenantId\":\"owqrzvuxn\",\"objectId\":\"uohshzultdbvm\"},\"id\":\"dhypngocbdxvriv\",\"name\":\"tbc\",\"type\":\"suzg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationAccessPolicyContract response = manager.authorizationAccessPolicies()
-            .getWithResponse("liyznghuqzgp", "glkfvdwrgav", "fy", "sedfmzu", "ryxpi", com.azure.core.util.Context.NONE)
+            .getWithResponse("mbhukdfpknvk", "vozjezchme", "dhzjlrkn", "kkfxm", "qeqk",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("peakf", response.tenantId());
-        Assertions.assertEquals("cedliklxkyoddoq", response.objectId());
+        Assertions.assertEquals("fvsftsstwlpx", response.appIds().get(0));
+        Assertions.assertEquals("owqrzvuxn", response.tenantId());
+        Assertions.assertEquals("uohshzultdbvm", response.objectId());
     }
 }

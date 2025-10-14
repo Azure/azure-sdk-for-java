@@ -12,16 +12,16 @@ public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointDetail model
-            = BinaryData.fromString("{\"port\":255809617,\"region\":\"hzic\"}").toObject(EndpointDetail.class);
-        Assertions.assertEquals(255809617, model.port());
-        Assertions.assertEquals("hzic", model.region());
+            = BinaryData.fromString("{\"port\":433356091,\"region\":\"tyqpdwadeghzt\"}").toObject(EndpointDetail.class);
+        Assertions.assertEquals(433356091, model.port());
+        Assertions.assertEquals("tyqpdwadeghzt", model.region());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model = new EndpointDetail().withPort(255809617).withRegion("hzic");
+        EndpointDetail model = new EndpointDetail().withPort(433356091).withRegion("tyqpdwadeghzt");
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals(255809617, model.port());
-        Assertions.assertEquals("hzic", model.region());
+        Assertions.assertEquals(433356091, model.port());
+        Assertions.assertEquals("tyqpdwadeghzt", model.region());
     }
 }

@@ -4,23 +4,22 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
+import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -49,7 +48,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         try {
             uri = new URI(options.getServiceEndpoint());
         } catch (URISyntaxException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
+            throw LOGGER.throwableAtError().log("'uri' must be a valid URI.", ex, IllegalArgumentException::new);
         }
     }
 
@@ -60,12 +59,10 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
 
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        try (Response<?> response = pipeline.send(createRequest())) {
+        try (Response<BinaryData> response = pipeline.send(createRequest())) {
             int responseCode = response.getStatusCode();
             assert responseCode == 200 : "Unexpected response code: " + responseCode;
-            response.getBody().close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            response.getValue().close();
         }
     }
 
@@ -76,9 +73,10 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
 
     private HttpRequest createRequest() {
         String body = "{\"id\": \"1\", \"name\": \"test\"}";
-        HttpRequest request = new HttpRequest(HttpMethod.PATCH, uri).setBody(BinaryData.fromString(body));
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PATCH).setUri(uri).setBody(BinaryData.fromString(body));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.length()));
-        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
+        request.getHeaders().set(HttpHeaderName.USER_AGENT, "clientcore-stress");
         request.getHeaders()
             .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
@@ -87,15 +85,14 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
-
-        HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(
+                new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
         } else {
-            builder.httpClient(new DefaultHttpClientBuilder().build());
+            builder.httpClient(new JdkHttpClientBuilder().build());
         }
         return builder;
     }

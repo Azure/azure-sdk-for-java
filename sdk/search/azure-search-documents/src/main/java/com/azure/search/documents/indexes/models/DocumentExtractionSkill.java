@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,21 +24,25 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Util.DocumentExtractionSkill";
 
     /*
      * The parsingMode for the skill. Will be set to 'default' if not defined.
      */
+    @Generated
     private String parsingMode;
 
     /*
      * The type of data to be extracted for the skill. Will be set to 'contentAndMetadata' if not defined.
      */
+    @Generated
     private String dataToExtract;
 
     /*
      * A dictionary of configurations for the skill.
      */
+    @Generated
     private Map<String, Object> configuration;
 
     /**
@@ -46,6 +51,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public DocumentExtractionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -55,6 +61,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -65,6 +72,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the parsingMode value.
      */
+    @Generated
     public String getParsingMode() {
         return this.parsingMode;
     }
@@ -75,6 +83,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * @param parsingMode the parsingMode value to set.
      * @return the DocumentExtractionSkill object itself.
      */
+    @Generated
     public DocumentExtractionSkill setParsingMode(String parsingMode) {
         this.parsingMode = parsingMode;
         return this;
@@ -86,6 +95,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the dataToExtract value.
      */
+    @Generated
     public String getDataToExtract() {
         return this.dataToExtract;
     }
@@ -97,6 +107,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * @param dataToExtract the dataToExtract value to set.
      * @return the DocumentExtractionSkill object itself.
      */
+    @Generated
     public DocumentExtractionSkill setDataToExtract(String dataToExtract) {
         this.dataToExtract = dataToExtract;
         return this;
@@ -107,6 +118,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * 
      * @return the configuration value.
      */
+    @Generated
     public Map<String, Object> getConfiguration() {
         return this.configuration;
     }
@@ -117,6 +129,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * @param configuration the configuration value to set.
      * @return the DocumentExtractionSkill object itself.
      */
+    @Generated
     public DocumentExtractionSkill setConfiguration(Map<String, Object> configuration) {
         this.configuration = configuration;
         return this;
@@ -125,6 +138,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentExtractionSkill setName(String name) {
         super.setName(name);
@@ -134,6 +148,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentExtractionSkill setDescription(String description) {
         super.setDescription(description);
@@ -143,6 +158,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentExtractionSkill setContext(String context) {
         super.setContext(context);
@@ -152,6 +168,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -177,6 +194,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentExtractionSkill.
      */
+    @Generated
     public static DocumentExtractionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

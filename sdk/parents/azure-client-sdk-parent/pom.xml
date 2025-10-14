@@ -112,7 +112,7 @@
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
 
-    <!-- This property determines the max heap size of the Surefire JVM. By default 4GB, or 4096MB, is used. -->
+    <!-- This property determines the max heap size of the Surefire JVM. By default, 4GB, or 4096MB, is used. -->
     <surefireXmx>4096m</surefireXmx>
 
     <!-- This property configures the max heap size of the Surefire JVM. -->
@@ -179,7 +179,7 @@
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
     <checkstyle.skip>false</checkstyle.skip>
 
-    <!-- These properties configures whether maven-checkstyle-plugin should fail on errors. -->
+    <!-- These properties configure whether maven-checkstyle-plugin should fail on errors. -->
     <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
     <checkstyle.failsOnError>true</checkstyle.failsOnError>
 
@@ -190,20 +190,20 @@
     <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
 
     <!-- This property configures the location of the checkstyle-suppressions.xml file. -->
-    <checkstyle.suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <checkstyle.suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
 
     <!-- The following properties configure the spotbugs-maven-plugin. -->
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
     <spotbugs.skip>true</spotbugs.skip>
 
-    <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
+    <!-- This property configures whether Spotbugs analysis is run on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
 
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
     <!-- This property configures where the Spotbugs exclusion file can be found. -->
-    <spotbugs.excludeFilterFile>spotbugs/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <spotbugs.excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
@@ -211,10 +211,10 @@
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
 
-    <!-- This property configures whether doclinting is performed when generating Javadocs. -->
+    <!-- This property configures whether doclint is performed when generating Javadocs. -->
     <doclint>all</doclint>
 
-    <!-- This property configures whether doclinting includes warning and erroring for missing tags and descriptions. -->
+    <!-- This property configures whether doclint includes warning and erroring for missing tags and descriptions. -->
     <!-- By default, missing tags and descriptions are included as issues. -->
     <!-- If needed, temporarily, override this property in a child POM with a value of '-' to exclude this validation. -->
     <!-- Even with this validation excluded other linting tooling, such as Checkstyle, may still raise errors. -->
@@ -223,7 +223,7 @@
     <!-- The following properties configure compile skipping. -->
     <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
     <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
-    <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
+    <!-- in unexpected plugin changes outside maven-compiler-plugin. -->
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
 
@@ -272,7 +272,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -318,7 +318,7 @@
               <signature>
                 <groupId>com.toasttab.android</groupId>
                 <artifactId>gummy-bears-api-26</artifactId>
-                <version>0.10.0</version> <!-- {x-version-update;com.toasttab.android:gummy-bears-api-26;external_dependency} -->
+                <version>0.12.0</version> <!-- {x-version-update;com.toasttab.android:gummy-bears-api-26;external_dependency} -->
               </signature>
               <failOnError>false</failOnError>
               <ignores>${animal.sniffer.ignores}</ignores>
@@ -331,14 +331,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -408,7 +408,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -461,7 +461,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <dataFileIncludes>
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
@@ -562,7 +562,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-artifacts</id>
@@ -592,7 +592,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -605,7 +605,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <!--
@@ -676,7 +676,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
@@ -715,12 +715,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+          <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
           <dependencies>
             <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              <groupId>io.clientcore</groupId>
+              <artifactId>linting-extensions</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:linting-extensions;dependency} -->
             </dependency>
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
@@ -730,9 +730,9 @@
           </dependencies>
           <configuration>
             <skip>${checkstyle.skip}</skip>
-            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
             <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
-            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>
             <propertyExpansion>samedir=</propertyExpansion>
             <outputEncoding>UTF-8</outputEncoding>
@@ -751,11 +751,6 @@
           <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
           <dependencies>
             <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-            </dependency>
-            <dependency>
               <groupId>com.github.spotbugs</groupId>
               <artifactId>spotbugs</artifactId>
               <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
@@ -764,7 +759,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -774,14 +769,11 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
-            <includeFilterFile>spotbugs/spotbugs-include.xml</includeFilterFile>
+            <includeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/spotbugs-include.xml</includeFilterFile>
             <fork>true</fork>
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
-            <jvmArgs>
-              ${java.security.manager.configuration}
-            </jvmArgs>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -798,7 +790,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+          <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <skip>${maven.javadoc.skip}</skip>
             <source>1.8</source>
@@ -909,7 +901,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <skip>${maven.test.skip}</skip>
             <runOrder>alphabetical</runOrder>
@@ -943,14 +935,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -959,7 +951,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <configuration>
             <skip>${maven.test.skip}</skip>
             <runOrder>alphabetical</runOrder>
@@ -993,14 +985,14 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
             <dependency>
               <!-- must be on the classpath -->
               <groupId>org.jacoco</groupId>
               <artifactId>org.jacoco.agent</artifactId>
               <classifier>runtime</classifier>
-              <version>0.8.12</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1009,13 +1001,13 @@
         <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
-          <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
-                <resource>revapi/revapi.json</resource>
+                <path>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/revapi/track2/revapi.json</path>
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
@@ -1041,24 +1033,24 @@
           </configuration>
           <dependencies>
             <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              <groupId>io.clientcore</groupId>
+              <artifactId>linting-extensions</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:linting-extensions;dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
-              <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
-              <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>com.fasterxml.jackson.core</groupId>
               <artifactId>jackson-databind</artifactId>
-              <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+              <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1112,7 +1104,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -1130,7 +1122,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -1143,7 +1135,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.7.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
+        <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <reports>
@@ -1162,7 +1154,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <checkDependencies>false</checkDependencies>
         </configuration>
@@ -1195,7 +1187,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
@@ -1214,7 +1206,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -1229,7 +1221,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -1251,7 +1243,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -1261,7 +1253,7 @@
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
-              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e. Java 17) -->
               <execution>
                 <id>default-compile</id>
                 <goals>
@@ -1343,7 +1335,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 ${defaultSurefireArgLine}
@@ -1359,7 +1351,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 ${defaultFailsafeArgLine}
@@ -1394,7 +1386,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.4.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>generate-overview-from-readme</id>
@@ -1422,7 +1414,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.build.directory}/readme_overview.html</overview>
             </configuration>
@@ -1444,7 +1436,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.4.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>verify-readme-codesnippet</id>
@@ -1481,7 +1473,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1503,7 +1495,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1524,7 +1516,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1546,7 +1538,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1674,7 +1666,7 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.19</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <version>0.10.5</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
               <skip>${graalvm.disable}</skip>
               <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
@@ -1701,7 +1693,7 @@
       <id>external-dependency-version-overrides</id>
       <activation>
         <property>
-          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
+          <name>env.VERSION_OVERRIDE_TESTS</name>
         </property>
       </activation>
       <repositories>
@@ -1732,7 +1724,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <!-- then compile with Java 11 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
@@ -1758,13 +1750,37 @@
     </profile>
 
     <profile>
-      <id>java-18-plus-allow-securitymanager</id>
+      <id>java-18-to-23-plus-allow-securitymanager</id>
       <activation>
-        <jdk>[18,)</jdk>
+        <jdk>[18,24)</jdk>
       </activation>
 
       <properties>
         <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>local-checkstyle-suppressions</id>
+      <activation>
+        <file>
+          <exists>checkstyle-suppressions.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>local-spotbugs-exclude</id>
+      <activation>
+        <file>
+          <exists>spotbugs-exclude.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
       </properties>
     </profile>
   </profiles>

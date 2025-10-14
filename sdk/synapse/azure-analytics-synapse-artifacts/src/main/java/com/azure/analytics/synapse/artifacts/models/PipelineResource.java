@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,61 +22,73 @@ public class PipelineResource extends SubResource {
     /*
      * The description of the pipeline.
      */
+    @Generated
     private String description;
 
     /*
      * List of activities in pipeline.
      */
+    @Generated
     private List<Activity> activities;
 
     /*
      * List of parameters for pipeline.
      */
+    @Generated
     private Map<String, ParameterSpecification> parameters;
 
     /*
      * List of variables for pipeline.
      */
+    @Generated
     private Map<String, VariableSpecification> variables;
 
     /*
      * The max number of concurrent runs for the pipeline.
      */
+    @Generated
     private Integer concurrency;
 
     /*
      * List of tags that can be used for describing the Pipeline.
      */
+    @Generated
     private List<Object> annotations;
 
     /*
      * Dimensions emitted by Pipeline.
      */
+    @Generated
     private Map<String, Object> runDimensions;
 
     /*
      * The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
      */
+    @Generated
     private PipelineFolder folder;
 
     /*
      * Pipeline resource type.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /*
      * Resource Etag.
      */
+    @Generated
     private String etag;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -83,11 +96,13 @@ public class PipelineResource extends SubResource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PipelineResource class.
      */
+    @Generated
     public PipelineResource() {
     }
 
@@ -96,6 +111,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -106,6 +122,7 @@ public class PipelineResource extends SubResource {
      * @param description the description value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setDescription(String description) {
         this.description = description;
         return this;
@@ -116,6 +133,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the activities value.
      */
+    @Generated
     public List<Activity> getActivities() {
         return this.activities;
     }
@@ -126,6 +144,7 @@ public class PipelineResource extends SubResource {
      * @param activities the activities value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setActivities(List<Activity> activities) {
         this.activities = activities;
         return this;
@@ -136,6 +155,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, ParameterSpecification> getParameters() {
         return this.parameters;
     }
@@ -146,6 +166,7 @@ public class PipelineResource extends SubResource {
      * @param parameters the parameters value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setParameters(Map<String, ParameterSpecification> parameters) {
         this.parameters = parameters;
         return this;
@@ -156,6 +177,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the variables value.
      */
+    @Generated
     public Map<String, VariableSpecification> getVariables() {
         return this.variables;
     }
@@ -166,6 +188,7 @@ public class PipelineResource extends SubResource {
      * @param variables the variables value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setVariables(Map<String, VariableSpecification> variables) {
         this.variables = variables;
         return this;
@@ -176,6 +199,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the concurrency value.
      */
+    @Generated
     public Integer getConcurrency() {
         return this.concurrency;
     }
@@ -186,6 +210,7 @@ public class PipelineResource extends SubResource {
      * @param concurrency the concurrency value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setConcurrency(Integer concurrency) {
         this.concurrency = concurrency;
         return this;
@@ -196,6 +221,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the annotations value.
      */
+    @Generated
     public List<Object> getAnnotations() {
         return this.annotations;
     }
@@ -206,6 +232,7 @@ public class PipelineResource extends SubResource {
      * @param annotations the annotations value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setAnnotations(List<Object> annotations) {
         this.annotations = annotations;
         return this;
@@ -216,6 +243,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the runDimensions value.
      */
+    @Generated
     public Map<String, Object> getRunDimensions() {
         return this.runDimensions;
     }
@@ -226,6 +254,7 @@ public class PipelineResource extends SubResource {
      * @param runDimensions the runDimensions value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setRunDimensions(Map<String, Object> runDimensions) {
         this.runDimensions = runDimensions;
         return this;
@@ -237,6 +266,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the folder value.
      */
+    @Generated
     public PipelineFolder getFolder() {
         return this.folder;
     }
@@ -248,6 +278,7 @@ public class PipelineResource extends SubResource {
      * @param folder the folder value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setFolder(PipelineFolder folder) {
         this.folder = folder;
         return this;
@@ -258,6 +289,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -268,6 +300,7 @@ public class PipelineResource extends SubResource {
      * @param additionalProperties the additionalProperties value to set.
      * @return the PipelineResource object itself.
      */
+    @Generated
     public PipelineResource setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -278,6 +311,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the etag value.
      */
+    @Generated
     @Override
     public String getEtag() {
         return this.etag;
@@ -289,6 +323,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -299,6 +334,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -310,6 +346,7 @@ public class PipelineResource extends SubResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -318,6 +355,7 @@ public class PipelineResource extends SubResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -358,6 +396,7 @@ public class PipelineResource extends SubResource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PipelineResource.
      */
+    @Generated
     public static PipelineResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PipelineResource deserializedPipelineResource = new PipelineResource();

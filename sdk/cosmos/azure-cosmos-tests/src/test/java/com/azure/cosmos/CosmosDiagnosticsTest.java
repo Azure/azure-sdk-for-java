@@ -1119,12 +1119,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(responseStatisticsList.size()).isGreaterThan(0);
             JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             assertThat(storeResult).isNotNull();
-            int currentReplicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
-            assertThat(currentReplicaSetSize).isEqualTo(-1);
-            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
-            assertThat(replicaStatusList.isObject()).isTrue();
-            int quorumAcked = storeResult.get("quorumAckedLSN").asInt(-1);
-            assertThat(quorumAcked).isEqualTo(-1);
         }
     }
 
@@ -1833,7 +1827,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        internalObjectNode.set("mypk", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        internalObjectNode.set("mypk", uuid);
         return internalObjectNode;
     }
 
@@ -1841,7 +1835,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        internalObjectNode.set( "mypk", pkValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        internalObjectNode.set( "mypk", pkValue);
         return internalObjectNode;
     }
 

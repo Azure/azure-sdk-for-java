@@ -61,6 +61,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -839,7 +840,9 @@ public final class RntbdTransportClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
-        request.requestContext.locationEndpointToRoute = locationToRoute;
+
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationToRoute);
+
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
@@ -1190,7 +1193,7 @@ public final class RntbdTransportClientTest {
 
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
-                this.clientTelemetry = new ClientTelemetry(mockDiagnosticsClientContext(), false, null, null, null, null, null, null, null, null, null, null);
+                this.clientTelemetry = new ClientTelemetry(mockDiagnosticsClientContext(), false, null, null, null, null, null, null, null, null, null);
                 this.timer = new RntbdRequestTimer(
                     config.tcpNetworkRequestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());

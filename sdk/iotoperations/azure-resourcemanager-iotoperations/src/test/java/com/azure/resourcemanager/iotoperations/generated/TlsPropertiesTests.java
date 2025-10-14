@@ -13,18 +13,18 @@ public final class TlsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TlsProperties model
-            = BinaryData.fromString("{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"mkycgra\"}")
+            = BinaryData.fromString("{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"gsyocogj\"}")
                 .toObject(TlsProperties.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
-        Assertions.assertEquals("mkycgra", model.trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals("gsyocogj", model.trustedCaCertificateConfigMapRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TlsProperties model
-            = new TlsProperties().withMode(OperationalMode.ENABLED).withTrustedCaCertificateConfigMapRef("mkycgra");
+            = new TlsProperties().withMode(OperationalMode.ENABLED).withTrustedCaCertificateConfigMapRef("gsyocogj");
         model = BinaryData.fromObject(model).toObject(TlsProperties.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
-        Assertions.assertEquals("mkycgra", model.trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals("gsyocogj", model.trustedCaCertificateConfigMapRef());
     }
 }

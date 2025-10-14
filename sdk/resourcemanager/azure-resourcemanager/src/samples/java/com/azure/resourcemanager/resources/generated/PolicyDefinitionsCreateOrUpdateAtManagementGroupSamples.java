@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicyDefinitionAtManagementGroup.json
      */
     /**
@@ -33,7 +33,7 @@ public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicyDefinitions()
-            .createOrUpdateAtManagementGroupWithResponse("ResourceNaming", "MyManagementGroup",
+            .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming",
                 new PolicyDefinitionInner().withMode("All")
                     .withDisplayName("Enforce resource naming convention")
                     .withDescription("Force resource names to begin with given 'prefix' and/or end with given 'suffix'")

@@ -24,6 +24,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.SettingsOperationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.SettingsInner;
 import reactor.core.publisher.Mono;
@@ -58,13 +59,25 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "HybridComputeManagem")
+    @ServiceInterface(name = "HybridComputeManagementClientSettingsOperations")
     public interface SettingsOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SettingsInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("baseProvider") String baseProvider,
+            @PathParam("baseResourceType") String baseResourceType,
+            @PathParam("baseResourceName") String baseResourceName,
+            @PathParam("settingsResourceName") String settingsResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SettingsInner> getSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("baseProvider") String baseProvider,
             @PathParam("baseResourceType") String baseResourceType,
@@ -86,10 +99,36 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SettingsInner> updateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("baseProvider") String baseProvider,
+            @PathParam("baseResourceType") String baseResourceType,
+            @PathParam("baseResourceName") String baseResourceName,
+            @PathParam("settingsResourceName") String settingsResourceName,
+            @BodyParam("application/json") SettingsInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SettingsInner>> patch(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("baseProvider") String baseProvider,
+            @PathParam("baseResourceType") String baseResourceType,
+            @PathParam("baseResourceName") String baseResourceName,
+            @PathParam("settingsResourceName") String settingsResourceName,
+            @BodyParam("application/json") SettingsInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{baseProvider}/{baseResourceType}/{baseResourceName}/providers/Microsoft.HybridCompute/settings/{settingsResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SettingsInner> patchSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("baseProvider") String baseProvider,
             @PathParam("baseResourceType") String baseResourceType,
@@ -158,56 +197,6 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
      * @param baseResourceType The name of the base Resource Type.
      * @param baseResourceName The name of the base resource.
      * @param settingsResourceName The name of the settings resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SettingsInner>> getWithResponseAsync(String resourceGroupName, String baseProvider,
-        String baseResourceType, String baseResourceName, String settingsResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (baseProvider == null) {
-            return Mono.error(new IllegalArgumentException("Parameter baseProvider is required and cannot be null."));
-        }
-        if (baseResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter baseResourceType is required and cannot be null."));
-        }
-        if (baseResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter baseResourceName is required and cannot be null."));
-        }
-        if (settingsResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter settingsResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, baseProvider, baseResourceType, baseResourceName, settingsResourceName, accept, context);
-    }
-
-    /**
-     * Returns the base Settings for the target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param baseProvider The name of the base Resource Provider.
-     * @param baseResourceType The name of the base Resource Type.
-     * @param baseResourceName The name of the base resource.
-     * @param settingsResourceName The name of the settings resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,8 +226,39 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SettingsInner> getWithResponse(String resourceGroupName, String baseProvider,
         String baseResourceType, String baseResourceName, String settingsResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, baseProvider, baseResourceType, baseResourceName,
-            settingsResourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (baseProvider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseProvider is required and cannot be null."));
+        }
+        if (baseResourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseResourceType is required and cannot be null."));
+        }
+        if (baseResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseResourceName is required and cannot be null."));
+        }
+        if (settingsResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter settingsResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, baseProvider, baseResourceType, baseResourceName, settingsResourceName, accept, context);
     }
 
     /**
@@ -327,64 +347,6 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
      * @param baseResourceName The name of the base resource.
      * @param settingsResourceName The name of the settings resource.
      * @param parameters Settings details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SettingsInner>> updateWithResponseAsync(String resourceGroupName, String baseProvider,
-        String baseResourceType, String baseResourceName, String settingsResourceName, SettingsInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (baseProvider == null) {
-            return Mono.error(new IllegalArgumentException("Parameter baseProvider is required and cannot be null."));
-        }
-        if (baseResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter baseResourceType is required and cannot be null."));
-        }
-        if (baseResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter baseResourceName is required and cannot be null."));
-        }
-        if (settingsResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter settingsResourceName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, baseProvider, baseResourceType, baseResourceName, settingsResourceName, parameters,
-            accept, context);
-    }
-
-    /**
-     * Updates the base Settings of the target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param baseProvider The name of the base Resource Provider.
-     * @param baseResourceType The name of the base Resource Type.
-     * @param baseResourceName The name of the base resource.
-     * @param settingsResourceName The name of the settings resource.
-     * @param parameters Settings details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -416,8 +378,46 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
     public Response<SettingsInner> updateWithResponse(String resourceGroupName, String baseProvider,
         String baseResourceType, String baseResourceName, String settingsResourceName, SettingsInner parameters,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, baseProvider, baseResourceType, baseResourceName,
-            settingsResourceName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (baseProvider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseProvider is required and cannot be null."));
+        }
+        if (baseResourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseResourceType is required and cannot be null."));
+        }
+        if (baseResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseResourceName is required and cannot be null."));
+        }
+        if (settingsResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter settingsResourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, baseProvider, baseResourceType, baseResourceName,
+            settingsResourceName, parameters, accept, context);
     }
 
     /**
@@ -507,64 +507,6 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
      * @param baseResourceName The name of the base resource.
      * @param settingsResourceName The name of the settings resource.
      * @param parameters Settings details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SettingsInner>> patchWithResponseAsync(String resourceGroupName, String baseProvider,
-        String baseResourceType, String baseResourceName, String settingsResourceName, SettingsInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (baseProvider == null) {
-            return Mono.error(new IllegalArgumentException("Parameter baseProvider is required and cannot be null."));
-        }
-        if (baseResourceType == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter baseResourceType is required and cannot be null."));
-        }
-        if (baseResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter baseResourceName is required and cannot be null."));
-        }
-        if (settingsResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter settingsResourceName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.patch(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, baseProvider, baseResourceType, baseResourceName, settingsResourceName, parameters,
-            accept, context);
-    }
-
-    /**
-     * Update the base Settings of the target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param baseProvider The name of the base Resource Provider.
-     * @param baseResourceType The name of the base Resource Type.
-     * @param baseResourceName The name of the base resource.
-     * @param settingsResourceName The name of the settings resource.
-     * @param parameters Settings details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -596,8 +538,46 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
     public Response<SettingsInner> patchWithResponse(String resourceGroupName, String baseProvider,
         String baseResourceType, String baseResourceName, String settingsResourceName, SettingsInner parameters,
         Context context) {
-        return patchWithResponseAsync(resourceGroupName, baseProvider, baseResourceType, baseResourceName,
-            settingsResourceName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (baseProvider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseProvider is required and cannot be null."));
+        }
+        if (baseResourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseResourceType is required and cannot be null."));
+        }
+        if (baseResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter baseResourceName is required and cannot be null."));
+        }
+        if (settingsResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter settingsResourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.patchSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, baseProvider, baseResourceType, baseResourceName,
+            settingsResourceName, parameters, accept, context);
     }
 
     /**
@@ -620,4 +600,6 @@ public final class SettingsOperationsClientImpl implements SettingsOperationsCli
         return patchWithResponse(resourceGroupName, baseProvider, baseResourceType, baseResourceName,
             settingsResourceName, parameters, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SettingsOperationsClientImpl.class);
 }

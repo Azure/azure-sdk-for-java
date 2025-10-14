@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -19,68 +20,84 @@ import java.util.Map;
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteFailure event. This is raised
  * when a resource create or update operation fails.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class ResourceWriteFailureEventData implements JsonSerializable<ResourceWriteFailureEventData> {
 
     /*
      * The tenant ID of the resource.
      */
+    @Generated
     private String tenantId;
 
     /*
      * The subscription ID of the resource.
      */
+    @Generated
     private String subscriptionId;
 
     /*
      * The resource group of the resource.
      */
+    @Generated
     private String resourceGroup;
 
     /*
      * The resource provider performing the operation.
      */
+    @Generated
     private String resourceProvider;
 
     /*
      * The URI of the resource in the operation.
      */
+    @Generated
     private String resourceUri;
 
     /*
      * The operation that was performed.
      */
+    @Generated
     private String operationName;
 
     /*
      * The status of the operation.
      */
+    @Generated
     private String status;
 
     /*
      * The requested authorization for the operation.
      */
+    @Generated
     private ResourceAuthorization authorization;
 
     /*
      * The properties of the claims.
      */
+    @Generated
     private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
      */
+    @Generated
     private String correlationId;
 
     /*
      * The details of the operation.
      */
+    @Generated
     private ResourceHttpRequest httpRequest;
 
     /**
      * Creates an instance of ResourceWriteFailureEventData class.
      */
+    @Generated
     public ResourceWriteFailureEventData() {
     }
 
@@ -89,6 +106,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -99,6 +117,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param tenantId the tenantId value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -109,6 +128,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the subscriptionId value.
      */
+    @Generated
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
@@ -119,6 +139,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param subscriptionId the subscriptionId value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
@@ -129,6 +150,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the resourceGroup value.
      */
+    @Generated
     public String getResourceGroup() {
         return this.resourceGroup;
     }
@@ -139,6 +161,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param resourceGroup the resourceGroup value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setResourceGroup(String resourceGroup) {
         this.resourceGroup = resourceGroup;
         return this;
@@ -149,6 +172,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the resourceProvider value.
      */
+    @Generated
     public String getResourceProvider() {
         return this.resourceProvider;
     }
@@ -159,6 +183,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param resourceProvider the resourceProvider value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setResourceProvider(String resourceProvider) {
         this.resourceProvider = resourceProvider;
         return this;
@@ -169,6 +194,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the resourceUri value.
      */
+    @Generated
     public String getResourceUri() {
         return this.resourceUri;
     }
@@ -179,6 +205,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param resourceUri the resourceUri value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
@@ -189,6 +216,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the operationName value.
      */
+    @Generated
     public String getOperationName() {
         return this.operationName;
     }
@@ -199,6 +227,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param operationName the operationName value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setOperationName(String operationName) {
         this.operationName = operationName;
         return this;
@@ -209,6 +238,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -219,6 +249,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param status the status value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setStatus(String status) {
         this.status = status;
         return this;
@@ -229,6 +260,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the authorization value.
      */
+    @Generated
     public ResourceAuthorization getResourceAuthorization() {
         return this.authorization;
     }
@@ -239,6 +271,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param authorization the authorization value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setResourceAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
         return this;
@@ -249,6 +282,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the claims value.
      */
+    @Generated
     public Map<String, String> getResourceClaims() {
         return this.claims;
     }
@@ -259,6 +293,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param claims the claims value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setResourceClaims(Map<String, String> claims) {
         this.claims = claims;
         return this;
@@ -269,6 +304,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the correlationId value.
      */
+    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -279,6 +315,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param correlationId the correlationId value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -289,6 +326,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      *
      * @return the httpRequest value.
      */
+    @Generated
     public ResourceHttpRequest getResourceHttpRequest() {
         return this.httpRequest;
     }
@@ -299,6 +337,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
+    @Generated
     public ResourceWriteFailureEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
         this.httpRequest = httpRequest;
         return this;
@@ -307,6 +346,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -332,6 +372,7 @@ public final class ResourceWriteFailureEventData implements JsonSerializable<Res
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResourceWriteFailureEventData.
      */
+    @Generated
     public static ResourceWriteFailureEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResourceWriteFailureEventData deserializedResourceWriteFailureEventData

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRuntimeRequest;
@@ -21,21 +21,21 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
     @Test
     public void testCreateLinkedIntegrationRuntimeWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"byrvguojky\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"lmzrfhlynkiusbyy\",\"state\":\"AccessDenied\",\"\":{\"atuiqc\":\"dataqfhnqxqtemvqxxuw\",\"xjk\":\"dataylkdbyo\"}}}";
+            = "{\"name\":\"yknsdwcxyagid\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"nsnunvgqtvgxpe\",\"state\":\"Stopped\",\"qrmibmnmxsp\":\"datadyvrdsvsjgt\",\"vzngpa\":\"datatirvzbmhmkoxs\",\"c\":\"dataymeb\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .createLinkedIntegrationRuntimeWithResponse("os", "demfatftzxtrjru", "ljfdc",
-                new CreateLinkedIntegrationRuntimeRequest().withName("p")
-                    .withSubscriptionId("zflydywbn")
-                    .withDataFactoryName("ygsifsahkc")
-                    .withDataFactoryLocation("vajnsu"),
+            .createLinkedIntegrationRuntimeWithResponse("oqjmlzlkizjss", "wo", "fngm",
+                new CreateLinkedIntegrationRuntimeRequest().withName("rjsbwdsitypa")
+                    .withSubscriptionId("vjr")
+                    .withDataFactoryName("i")
+                    .withDataFactoryLocation("gadusln"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

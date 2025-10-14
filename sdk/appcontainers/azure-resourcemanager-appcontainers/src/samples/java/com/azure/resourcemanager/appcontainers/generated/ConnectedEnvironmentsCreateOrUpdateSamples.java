@@ -11,7 +11,8 @@ import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
  */
 public final class ConnectedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * ConnectedEnvironments_CreateOrUpdate.json
      */
     /**

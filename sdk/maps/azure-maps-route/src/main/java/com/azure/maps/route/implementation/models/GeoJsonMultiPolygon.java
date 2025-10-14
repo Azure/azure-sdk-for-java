@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,18 +19,23 @@ import java.util.List;
 @Fluent
 public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_MULTI_POLYGON;
 
     /*
-     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
+    @Generated
     private List<List<List<List<Double>>>> coordinates;
 
     /**
      * Creates an instance of GeoJsonMultiPolygon class.
      */
+    @Generated
     public GeoJsonMultiPolygon() {
     }
 
@@ -40,6 +46,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -51,6 +58,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<List<List<List<Double>>>> getCoordinates() {
         return this.coordinates;
     }
@@ -62,6 +70,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonMultiPolygon object itself.
      */
+    @Generated
     public GeoJsonMultiPolygon setCoordinates(List<List<List<List<Double>>>> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -70,6 +79,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +100,7 @@ public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonMultiPolygon.
      */
+    @Generated
     public static GeoJsonMultiPolygon fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonMultiPolygon deserializedGeoJsonMultiPolygon = new GeoJsonMultiPolygon();

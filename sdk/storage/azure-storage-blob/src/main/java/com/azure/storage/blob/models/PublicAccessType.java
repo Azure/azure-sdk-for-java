@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
     /**
      * Static value container for PublicAccessType.
      */
+    @Generated
     public static final PublicAccessType CONTAINER = fromString("container");
 
     /**
      * Static value blob for PublicAccessType.
      */
+    @Generated
     public static final PublicAccessType BLOB = fromString("blob");
 
     /**
@@ -26,6 +29,7 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PublicAccessType() {
     }
@@ -36,6 +40,7 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
      * @param name a name to look for.
      * @return the corresponding PublicAccessType.
      */
+    @Generated
     public static PublicAccessType fromString(String name) {
         return fromString(name, PublicAccessType.class);
     }
@@ -45,6 +50,7 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
      * 
      * @return known PublicAccessType values.
      */
+    @Generated
     public static Collection<PublicAccessType> values() {
         return values(PublicAccessType.class);
     }

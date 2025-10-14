@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-defender-easm</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -81,7 +81,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found under the [samples][samples] directory.
 
 For more extensive documentation on Microsoft Defender External Attack Surface Management, see the [Defender EASM][product_documentation]: https://azure.microsoft.com/services/
-on docs.microsoft.com.
+on learn.microsoft.com.
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
@@ -95,7 +95,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [discovery_runs_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/easm/azure-analytics-defender-easm/src/samples/java/com/azure/analytics/defender/easm/DiscoveryRunsSample.java
@@ -107,4 +107,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery
 [discovery_groups_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/using-and-managing-discovery#discovery-groups
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feasm%2Fazure-analytics-defender-easm%2FREADME.png)
+

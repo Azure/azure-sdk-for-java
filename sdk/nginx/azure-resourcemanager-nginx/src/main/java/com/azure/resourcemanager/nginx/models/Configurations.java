@@ -22,7 +22,7 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NginxConfiguration> list(String resourceGroupName, String deploymentName);
+    PagedIterable<NginxConfigurationResponse> list(String resourceGroupName, String deploymentName);
 
     /**
      * List the NGINX configuration of given NGINX deployment.
@@ -35,7 +35,7 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NginxConfiguration> list(String resourceGroupName, String deploymentName, Context context);
+    PagedIterable<NginxConfigurationResponse> list(String resourceGroupName, String deploymentName, Context context);
 
     /**
      * Get the NGINX configuration of given NGINX deployment.
@@ -50,7 +50,7 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
-    Response<NginxConfiguration> getWithResponse(String resourceGroupName, String deploymentName,
+    Response<NginxConfigurationResponse> getWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, Context context);
 
     /**
@@ -65,7 +65,7 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NGINX configuration of given NGINX deployment.
      */
-    NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName);
+    NginxConfigurationResponse get(String resourceGroupName, String deploymentName, String configurationName);
 
     /**
      * Reset the NGINX configuration of given NGINX deployment to default.
@@ -134,7 +134,7 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
-    NginxConfiguration getById(String id);
+    NginxConfigurationResponse getById(String id);
 
     /**
      * Get the NGINX configuration of given NGINX deployment.
@@ -146,7 +146,7 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
-    Response<NginxConfiguration> getByIdWithResponse(String id, Context context);
+    Response<NginxConfigurationResponse> getByIdWithResponse(String id, Context context);
 
     /**
      * Reset the NGINX configuration of given NGINX deployment to default.
@@ -170,10 +170,10 @@ public interface Configurations {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new NginxConfiguration resource.
+     * Begins definition for a new NginxConfigurationResponse resource.
      * 
      * @param name resource name.
-     * @return the first stage of the new NginxConfiguration definition.
+     * @return the first stage of the new NginxConfigurationResponse definition.
      */
-    NginxConfiguration.DefinitionStages.Blank define(String name);
+    NginxConfigurationResponse.DefinitionStages.Blank define(String name);
 }

@@ -7,7 +7,7 @@
   },
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
       "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
@@ -31,7 +31,7 @@
   "include": [
     {
       "Agent": {
-          "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+          "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
@@ -46,7 +46,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
@@ -61,7 +61,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
@@ -76,7 +76,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
@@ -91,7 +91,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
@@ -106,7 +106,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "VertxHttpClientProvider",

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
@@ -21,23 +21,24 @@ public final class NetworkProfilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"networkInterfaces\":[{\"macAddress\":\"daqaxsi\",\"id\":\"etgbebjfulb\",\"name\":\"ichdlpn\",\"ipAddresses\":[{\"address\":\"nt\",\"ipAddressVersion\":\"atzviqsowsaael\",\"subnet\":{}},{\"address\":\"tc\",\"ipAddressVersion\":\"hplrvkmjcwmjvlg\",\"subnet\":{}},{\"address\":\"cvkyylizrzbj\",\"ipAddressVersion\":\"fxsfuztlvtmv\",\"subnet\":{}},{\"address\":\"w\",\"ipAddressVersion\":\"qlvh\",\"subnet\":{}}]},{\"macAddress\":\"veo\",\"id\":\"zrvjfnmjmvlwyzgi\",\"name\":\"kujrllfojui\",\"ipAddresses\":[{\"address\":\"uyjucejikzo\",\"ipAddressVersion\":\"vvtzejetjkl\",\"subnet\":{}},{\"address\":\"k\",\"ipAddressVersion\":\"uzk\",\"subnet\":{}},{\"address\":\"zolxrzvhqjwtr\",\"ipAddressVersion\":\"gv\",\"subnet\":{}}]}]}";
+            = "{\"networkInterfaces\":[{\"macAddress\":\"xrdcoxnbkkja\",\"id\":\"rnnqb\",\"name\":\"bpizxqltgr\",\"ipAddresses\":[{\"address\":\"pxrxvbfihwu\",\"ipAddressVersion\":\"ctafsrbxrblm\",\"subnet\":{}},{\"address\":\"wxihs\",\"ipAddressVersion\":\"xwqagnepzw\",\"subnet\":{}},{\"address\":\"sbs\",\"ipAddressVersion\":\"qqagwwr\",\"subnet\":{}},{\"address\":\"mz\",\"ipAddressVersion\":\"glrrczez\",\"subnet\":{}}]},{\"macAddress\":\"ltn\",\"id\":\"dhqoawj\",\"name\":\"yueayfbpcmsp\",\"ipAddresses\":[{\"address\":\"rueqthwm\",\"ipAddressVersion\":\"mbscbbx\",\"subnet\":{}},{\"address\":\"hxiidlopedb\",\"ipAddressVersion\":\"pyqy\",\"subnet\":{}}]},{\"macAddress\":\"ubmdnafcbqwre\",\"id\":\"ela\",\"name\":\"cigeleohdbvqvw\",\"ipAddresses\":[{\"address\":\"pwbeonr\",\"ipAddressVersion\":\"wzdqybxceakxcpts\",\"subnet\":{}},{\"address\":\"yiaseqchkrttzraz\",\"ipAddressVersion\":\"gyki\",\"subnet\":{}},{\"address\":\"vanbwzohmnrxxbs\",\"ipAddressVersion\":\"klinhmdptysprq\",\"subnet\":{}},{\"address\":\"zxojpslsv\",\"ipAddressVersion\":\"pli\",\"subnet\":{}}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        NetworkProfile response
-            = manager.networkProfiles().getWithResponse("fb", "kwpzdqtvh", com.azure.core.util.Context.NONE).getValue();
+        NetworkProfile response = manager.networkProfiles()
+            .getWithResponse("trczzydmxzjijp", "uaurkihcir", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("daqaxsi", response.networkInterfaces().get(0).macAddress());
-        Assertions.assertEquals("etgbebjfulb", response.networkInterfaces().get(0).id());
-        Assertions.assertEquals("ichdlpn", response.networkInterfaces().get(0).name());
-        Assertions.assertEquals("nt", response.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("atzviqsowsaael",
+        Assertions.assertEquals("xrdcoxnbkkja", response.networkInterfaces().get(0).macAddress());
+        Assertions.assertEquals("rnnqb", response.networkInterfaces().get(0).id());
+        Assertions.assertEquals("bpizxqltgr", response.networkInterfaces().get(0).name());
+        Assertions.assertEquals("pxrxvbfihwu", response.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("ctafsrbxrblm",
             response.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }

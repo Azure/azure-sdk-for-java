@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,28 +22,33 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureDataLakeStore";
 
     /*
      * Data Lake Store service URI. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object dataLakeStoreUri;
 
     /*
      * The ID of the application used to authenticate against the Azure Data Lake Store account. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against the Azure Data Lake Store account.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
@@ -50,39 +56,46 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object azureCloudType;
 
     /*
      * Data Lake Store account name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object accountName;
 
     /*
      * Data Lake Store account subscription ID (if different from Data Factory account). Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object subscriptionId;
 
     /*
      * Data Lake Store account resource group name (if different from Data Factory account). Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object resourceGroupName;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureDataLakeStoreLinkedService class.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService() {
     }
 
@@ -91,6 +104,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -102,6 +116,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the dataLakeStoreUri value.
      */
+    @Generated
     public Object getDataLakeStoreUri() {
         return this.dataLakeStoreUri;
     }
@@ -113,6 +128,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param dataLakeStoreUri the dataLakeStoreUri value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setDataLakeStoreUri(Object dataLakeStoreUri) {
         this.dataLakeStoreUri = dataLakeStoreUri;
         return this;
@@ -124,6 +140,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -135,6 +152,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -146,6 +164,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -157,6 +176,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -168,6 +188,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -179,6 +200,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -191,6 +213,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the azureCloudType value.
      */
+    @Generated
     public Object getAzureCloudType() {
         return this.azureCloudType;
     }
@@ -203,6 +226,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setAzureCloudType(Object azureCloudType) {
         this.azureCloudType = azureCloudType;
         return this;
@@ -213,6 +237,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the accountName value.
      */
+    @Generated
     public Object getAccountName() {
         return this.accountName;
     }
@@ -223,6 +248,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setAccountName(Object accountName) {
         this.accountName = accountName;
         return this;
@@ -234,6 +260,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public Object getSubscriptionId() {
         return this.subscriptionId;
     }
@@ -245,6 +272,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param subscriptionId the subscriptionId value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setSubscriptionId(Object subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
@@ -256,6 +284,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the resourceGroupName value.
      */
+    @Generated
     public Object getResourceGroupName() {
         return this.resourceGroupName;
     }
@@ -267,6 +296,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setResourceGroupName(Object resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -278,6 +308,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -289,6 +320,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -299,6 +331,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -309,6 +342,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureDataLakeStoreLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeStoreLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -317,6 +351,17 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureDataLakeStoreLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureDataLakeStoreLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -326,6 +371,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -335,6 +381,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -344,6 +391,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -353,9 +401,11 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -373,14 +423,28 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
             || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("dataLakeStoreUri", this.dataLakeStoreUri);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-            jsonWriter.writeUntypedField("accountName", this.accountName);
-            jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
-            jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
+            if (this.azureCloudType != null) {
+                jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            }
+            if (this.accountName != null) {
+                jsonWriter.writeUntypedField("accountName", this.accountName);
+            }
+            if (this.subscriptionId != null) {
+                jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
+            }
+            if (this.resourceGroupName != null) {
+                jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -401,6 +465,7 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataLakeStoreLinkedService.
      */
+    @Generated
     public static AzureDataLakeStoreLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataLakeStoreLinkedService deserializedAzureDataLakeStoreLinkedService
@@ -410,7 +475,9 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureDataLakeStoreLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

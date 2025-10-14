@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,38 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
     /*
      * Summary phrase for the next 60 minutes. Phrase length is approximately 60 characters.
      */
+    @Generated
     private String briefPhrase60;
 
     /*
      * Short summary phrase for the next 120 minutes. Phrase length is approximately 25 characters.
      */
+    @Generated
     private String shortDescription;
 
     /*
      * Summary phrase for the next 120 minutes. Phrase length is approximately 60 characters.
      */
+    @Generated
     private String briefDescription;
 
     /*
      * Long summary phrase for the next 120 minutes. Phrase length is 60+ characters.
      */
+    @Generated
     private String longPhrase;
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /**
      * Set default MinuteForecastSummary constructor to private
      */
+    @Generated
     private MinuteForecastSummary() {
     }
 
@@ -53,6 +61,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
      *
      * @return the briefPhrase60 value.
      */
+    @Generated
     public String getBriefPhrase60() {
         return this.briefPhrase60;
     }
@@ -63,6 +72,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -73,6 +83,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
      *
      * @return the briefDescription value.
      */
+    @Generated
     public String getBriefDescription() {
         return this.briefDescription;
     }
@@ -82,6 +93,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
      *
      * @return the longPhrase value.
      */
+    @Generated
     public String getLongPhrase() {
         return this.longPhrase;
     }
@@ -92,6 +104,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -99,6 +112,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,7 +120,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
         jsonWriter.writeStringField("shortPhrase", this.shortDescription);
         jsonWriter.writeStringField("briefPhrase", this.briefDescription);
         jsonWriter.writeStringField("longPhrase", this.longPhrase);
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         return jsonWriter.writeEndObject();
     }
 
@@ -118,6 +132,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MinuteForecastSummary.
      */
+    @Generated
     public static MinuteForecastSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MinuteForecastSummary deserializedMinuteForecastSummary = new MinuteForecastSummary();
@@ -133,7 +148,7 @@ public final class MinuteForecastSummary implements JsonSerializable<MinuteForec
                 } else if ("longPhrase".equals(fieldName)) {
                     deserializedMinuteForecastSummary.longPhrase = reader.getString();
                 } else if ("iconCode".equals(fieldName)) {
-                    deserializedMinuteForecastSummary.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedMinuteForecastSummary.iconCode = IconCode.fromValue(reader.getInt());
                 } else {
                     reader.skipChildren();
                 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class RerunTriggerListResponse implements JsonSerializable<RerunTri
     /*
      * List of rerun triggers.
      */
+    @Generated
     private List<RerunTriggerResource> value;
 
     /*
      * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of RerunTriggerListResponse class.
      */
+    @Generated
     public RerunTriggerListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class RerunTriggerListResponse implements JsonSerializable<RerunTri
      * 
      * @return the value value.
      */
+    @Generated
     public List<RerunTriggerResource> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class RerunTriggerListResponse implements JsonSerializable<RerunTri
      * @param value the value value to set.
      * @return the RerunTriggerListResponse object itself.
      */
+    @Generated
     public RerunTriggerListResponse setValue(List<RerunTriggerResource> value) {
         this.value = value;
         return this;
@@ -59,6 +65,7 @@ public final class RerunTriggerListResponse implements JsonSerializable<RerunTri
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -66,6 +73,7 @@ public final class RerunTriggerListResponse implements JsonSerializable<RerunTri
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,6 +90,7 @@ public final class RerunTriggerListResponse implements JsonSerializable<RerunTri
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RerunTriggerListResponse.
      */
+    @Generated
     public static RerunTriggerListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RerunTriggerListResponse deserializedRerunTriggerListResponse = new RerunTriggerListResponse();

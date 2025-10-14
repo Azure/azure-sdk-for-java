@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
@@ -30,8 +31,11 @@ import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettings;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +70,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -80,6 +88,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public RackDefinition aggregatorOrSingleRackDefinition() {
         return this.innerModel().aggregatorOrSingleRackDefinition();
+    }
+
+    public AnalyticsOutputSettings analyticsOutputSettings() {
+        return this.innerModel().analyticsOutputSettings();
     }
 
     public String analyticsWorkspaceId() {
@@ -184,12 +196,20 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().secretArchive();
     }
 
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.innerModel().secretArchiveSettings();
+    }
+
     public String supportExpiryDate() {
         return this.innerModel().supportExpiryDate();
     }
 
     public ClusterUpdateStrategy updateStrategy() {
         return this.innerModel().updateStrategy();
+    }
+
+    public VulnerabilityScanningSettings vulnerabilityScanningSettings() {
+        return this.innerModel().vulnerabilityScanningSettings();
     }
 
     public List<String> workloadResourceIds() {
@@ -225,6 +245,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     private String clusterName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private ClusterPatchParameters updateClusterUpdateParameters;
 
     public ClusterImpl withExistingResourceGroup(String resourceGroupName) {
@@ -235,14 +263,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     public Cluster create() {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -250,9 +280,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public ClusterImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateClusterUpdateParameters = new ClusterPatchParameters();
         return this;
     }
@@ -260,14 +294,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     public Cluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .update(resourceGroupName, clusterName, updateClusterUpdateParameters, Context.NONE);
+            .update(resourceGroupName, clusterName, updateIfMatch, updateIfNoneMatch, updateClusterUpdateParameters,
+                Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .update(resourceGroupName, clusterName, updateClusterUpdateParameters, context);
+            .update(resourceGroupName, clusterName, updateIfMatch, updateIfNoneMatch, updateClusterUpdateParameters,
+                context);
         return this;
     }
 
@@ -394,6 +430,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings) {
+        if (isInCreateMode()) {
+            this.innerModel().withAnalyticsOutputSettings(analyticsOutputSettings);
+            return this;
+        } else {
+            this.updateClusterUpdateParameters.withAnalyticsOutputSettings(analyticsOutputSettings);
+            return this;
+        }
+    }
+
     public ClusterImpl withAnalyticsWorkspaceId(String analyticsWorkspaceId) {
         this.innerModel().withAnalyticsWorkspaceId(analyticsWorkspaceId);
         return this;
@@ -476,6 +522,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        if (isInCreateMode()) {
+            this.innerModel().withSecretArchiveSettings(secretArchiveSettings);
+            return this;
+        } else {
+            this.updateClusterUpdateParameters.withSecretArchiveSettings(secretArchiveSettings);
+            return this;
+        }
+    }
+
     public ClusterImpl withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
         if (isInCreateMode()) {
             this.innerModel().withUpdateStrategy(updateStrategy);
@@ -486,7 +542,38 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings) {
+        this.innerModel().withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
+        return this;
+    }
+
+    public ClusterImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public ClusterImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
+    public ClusterImpl
+        withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings) {
+        this.updateClusterUpdateParameters.withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
+        return this;
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

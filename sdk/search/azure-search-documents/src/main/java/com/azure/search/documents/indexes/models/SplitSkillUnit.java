@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class SplitSkillUnit extends ExpandableStringEnum<SplitSkillUnit> {
     /**
      * The length will be measured by character.
      */
+    @Generated
     public static final SplitSkillUnit CHARACTERS = fromString("characters");
 
     /**
      * The length will be measured by an AzureOpenAI tokenizer from the tiktoken library.
      */
+    @Generated
     public static final SplitSkillUnit AZURE_OPEN_AITOKENS = fromString("azureOpenAITokens");
 
     /**
@@ -28,6 +31,7 @@ public final class SplitSkillUnit extends ExpandableStringEnum<SplitSkillUnit> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SplitSkillUnit() {
     }
@@ -38,6 +42,7 @@ public final class SplitSkillUnit extends ExpandableStringEnum<SplitSkillUnit> {
      * @param name a name to look for.
      * @return the corresponding SplitSkillUnit.
      */
+    @Generated
     public static SplitSkillUnit fromString(String name) {
         return fromString(name, SplitSkillUnit.class);
     }
@@ -47,6 +52,7 @@ public final class SplitSkillUnit extends ExpandableStringEnum<SplitSkillUnit> {
      * 
      * @return known SplitSkillUnit values.
      */
+    @Generated
     public static Collection<SplitSkillUnit> values() {
         return values(SplitSkillUnit.class);
     }

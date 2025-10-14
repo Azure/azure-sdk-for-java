@@ -64,7 +64,9 @@ public final class SalesforceServiceCloudObjectDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
+        if (this.objectApiName != null) {
+            jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
+        }
         return jsonWriter.writeEndObject();
     }
 

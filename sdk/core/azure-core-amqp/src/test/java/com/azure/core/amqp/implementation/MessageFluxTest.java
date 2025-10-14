@@ -220,6 +220,29 @@ public class MessageFluxTest {
 
     @ParameterizedTest
     @MethodSource("creditFlowModePrefetch")
+    public void shouldTerminateWhenRetryOnlyOnCompletionSetAndFirstReceiverEmitsRetriableError(
+        CreditFlowMode creditFlowMode, int prefetch) {
+        final AmqpException error = new AmqpException(true, "retriable", null);
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.RETRY_ONLY_COMPLETION);
+
+        final ReactorReceiver receiver = mock(ReactorReceiver.class);
+        when(receiver.receive()).thenReturn(Flux.empty());
+        when(receiver.getEndpointStates()).thenReturn(Flux.error(error));
+        when(receiver.closeAsync()).thenReturn(Mono.empty());
+
+        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).verifyErrorMatches(e -> e == error);
+
+        // Expecting closeAsync invocation from two call sites -
+        // 1. before the NOP retry (RETRY_ONLY_COMPLETION) when first receiver terminates with (retriable) error
+        // 2. when operator terminates after NOP retry
+        verify(receiver, atLeast(2)).closeAsync();
+        upstream.assertCancelled();
+    }
+
+    @ParameterizedTest
+    @MethodSource("creditFlowModePrefetch")
     public void shouldHonorBackpressureRequest(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);

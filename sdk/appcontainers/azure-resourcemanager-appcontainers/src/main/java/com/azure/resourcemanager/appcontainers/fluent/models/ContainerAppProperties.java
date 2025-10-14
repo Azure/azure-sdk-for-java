@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +26,11 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
      * Provisioning state of the Container App.
      */
     private ContainerAppProvisioningState provisioningState;
+
+    /*
+     * Running status of the Container App.
+     */
+    private ContainerAppRunningStatus runningStatus;
 
     /*
      * Any errors that occurred during deployment
@@ -104,6 +110,15 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
      */
     public ContainerAppProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the runningStatus property: Running status of the Container App.
+     * 
+     * @return the runningStatus value.
+     */
+    public ContainerAppRunningStatus runningStatus() {
+        return this.runningStatus;
     }
 
     /**
@@ -340,6 +355,9 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
                 if ("provisioningState".equals(fieldName)) {
                     deserializedContainerAppProperties.provisioningState
                         = ContainerAppProvisioningState.fromString(reader.getString());
+                } else if ("runningStatus".equals(fieldName)) {
+                    deserializedContainerAppProperties.runningStatus
+                        = ContainerAppRunningStatus.fromString(reader.getString());
                 } else if ("deploymentErrors".equals(fieldName)) {
                     deserializedContainerAppProperties.deploymentErrors = reader.getString();
                 } else if ("managedEnvironmentId".equals(fieldName)) {

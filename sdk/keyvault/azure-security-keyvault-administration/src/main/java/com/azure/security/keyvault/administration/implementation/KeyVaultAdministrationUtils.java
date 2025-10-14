@@ -3,9 +3,8 @@
 
 package com.azure.security.keyvault.administration.implementation;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.security.keyvault.administration.implementation.models.Error;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultError;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationError;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 
@@ -18,57 +17,46 @@ public final class KeyVaultAdministrationUtils {
     }
 
     /**
-     * Convert a {@link KeyVaultErrorException} to a {@link KeyVaultAdministrationException}.
+     * Convert a {@link HttpResponseException} to a {@link KeyVaultAdministrationException}.
      *
-     * @param exception The {@link KeyVaultErrorException}.
+     * @param exception The {@link HttpResponseException}.
      *
      * @return An instance of the public {@link KeyVaultAdministrationException}.
      */
-    public static KeyVaultAdministrationException toKeyVaultAdministrationException(KeyVaultErrorException exception) {
+    public static KeyVaultAdministrationException toKeyVaultAdministrationException(HttpResponseException exception) {
         if (exception == null) {
             return null;
         }
 
         return new KeyVaultAdministrationException(exception.getMessage(), exception.getResponse(),
-            toKeyVaultError(exception.getValue()));
+            toKeyVaultAdministrationError(exception.getValue()));
     }
 
     /**
-     * Convert an implementation {@link KeyVaultError} to a public {@link KeyVaultAdministrationError}.
+     * Convert an implementation {@link Error} to a public {@link KeyVaultAdministrationError}.
      *
-     * @param keyVaultError The {@link KeyVaultError} returned by the service.
-     *
-     * @return An instance of the public {@link KeyVaultAdministrationError}.
-     */
-    public static KeyVaultAdministrationError toKeyVaultError(KeyVaultError keyVaultError) {
-
-        if (keyVaultError == null) {
-            return null;
-        }
-
-        return createKeyVaultErrorFromError(keyVaultError.getError());
-    }
-
-    /**
-     * Convert an error {@link Error} internal to an implementation {@link KeyVaultError} to a public
-     * {@link KeyVaultAdministrationError}.
-     *
-     * @param error The {@link Error} internal to an implementation {@link KeyVaultError} returned by the service.
+     * @param value The {@link Error} returned by the service.
      *
      * @return An instance of the public {@link KeyVaultAdministrationError}.
      */
-    public static KeyVaultAdministrationError createKeyVaultErrorFromError(Error error) {
-        if (error == null) {
+    public static KeyVaultAdministrationError toKeyVaultAdministrationError(Object value) {
+        if (value == null) {
             return null;
-        }
+        } else {
+            if (value instanceof Error) {
+                Error error = (Error) value;
 
-        return new KeyVaultAdministrationError(error.getCode(), error.getMessage(),
-            createKeyVaultErrorFromError(error.getInnerError()));
+                return new KeyVaultAdministrationError(error.getCode(), error.getMessage(),
+                    toKeyVaultAdministrationError(error.getInnerError()));
+            } else {
+                return new KeyVaultAdministrationError("ServiceError", value.toString(), null);
+            }
+        }
     }
 
     /**
      * Maps a {@link Throwable} to {@link KeyVaultAdministrationException} if it's an instance of
-     * {@link KeyVaultErrorException}, else it returns the original throwable.
+     * {@link HttpResponseException}, else it returns the original throwable.
      *
      * @param throwable A {@link Throwable}.
      *
@@ -76,8 +64,8 @@ public final class KeyVaultAdministrationUtils {
      * original {@link Throwable}.
      */
     public static Throwable mapThrowableToKeyVaultAdministrationException(Throwable throwable) {
-        if (throwable instanceof KeyVaultErrorException) {
-            return toKeyVaultAdministrationException((KeyVaultErrorException) throwable);
+        if (throwable instanceof HttpResponseException) {
+            return toKeyVaultAdministrationException((HttpResponseException) throwable);
         } else {
             return throwable;
         }

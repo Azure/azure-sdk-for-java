@@ -17,8 +17,8 @@ public interface ReplicationProtectableItems {
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,7 +26,7 @@ public interface ReplicationProtectableItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectableItem> listByReplicationProtectionContainers(String resourceName, String resourceGroupName,
+    PagedIterable<ProtectableItem> listByReplicationProtectionContainers(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName);
 
     /**
@@ -34,8 +34,8 @@ public interface ReplicationProtectableItems {
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -47,7 +47,7 @@ public interface ReplicationProtectableItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectableItem> listByReplicationProtectionContainers(String resourceName, String resourceGroupName,
+    PagedIterable<ProtectableItem> listByReplicationProtectionContainers(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String filter, String take, String skipToken,
         Context context);
 
@@ -56,8 +56,8 @@ public interface ReplicationProtectableItems {
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -67,7 +67,7 @@ public interface ReplicationProtectableItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return replication protected item along with {@link Response}.
      */
-    Response<ProtectableItem> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    Response<ProtectableItem> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName, Context context);
 
     /**
@@ -75,8 +75,8 @@ public interface ReplicationProtectableItems {
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -85,6 +85,6 @@ public interface ReplicationProtectableItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return replication protected item.
      */
-    ProtectableItem get(String resourceName, String resourceGroupName, String fabricName,
+    ProtectableItem get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName);
 }

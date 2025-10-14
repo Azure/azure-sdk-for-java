@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -17,6 +18,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -42,8 +44,8 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicBoolean refreshInBackground;
     private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
     private volatile boolean isClosed;
-    private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
+    private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
@@ -88,42 +90,42 @@ public class GlobalEndpointManager implements AutoCloseable {
         startRefreshLocationTimerAsync(true).block(maxInitializationTime);
     }
 
-    public UnmodifiableList<URI> getReadEndpoints() {
+    public UnmodifiableList<RegionalRoutingContext> getReadEndpoints() {
         // readonly
         return this.locationCache.getReadEndpoints();
     }
 
-    public UnmodifiableList<URI> getWriteEndpoints() {
+    public UnmodifiableList<RegionalRoutingContext> getWriteEndpoints() {
         //readonly
         return this.locationCache.getWriteEndpoints();
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionalRoutingContexts(RxDocumentServiceRequest request) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(request);
+        return this.locationCache.getApplicableReadRegionRoutingContexts(request);
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionalRoutingContexts(RxDocumentServiceRequest request) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(request);
+        return this.locationCache.getApplicableWriteRegionRoutingContexts(request);
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionalRoutingContexts(List<String> excludedRegions) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
+        return this.locationCache.getApplicableReadRegionRoutingContexts(excludedRegions, Collections.emptyList());
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionalRoutingContexts(List<String> excludedRegions) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
+        return this.locationCache.getApplicableWriteRegionRoutingContexts(excludedRegions, Collections.emptyList());
     }
 
-    public List<URI> getAvailableReadEndpoints() {
-        return this.locationCache.getAvailableReadEndpoints();
+    public List<RegionalRoutingContext> getAvailableReadRoutingContexts() {
+        return this.locationCache.getAvailableReadRegionalRoutingContexts();
     }
 
-    public List<URI> getAvailableWriteEndpoints() {
-        return this.locationCache.getAvailableWriteEndpoints();
+    public List<RegionalRoutingContext> getAvailableWriteRoutingContexts() {
+        return this.locationCache.getAvailableWriteRegionalRoutingContexts();
     }
 
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
@@ -146,16 +148,17 @@ public class GlobalEndpointManager implements AutoCloseable {
                 });
     }
 
-    public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        URI serviceEndpoint = this.locationCache.resolveServiceEndpoint(request);
+    public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request) {
+        RegionalRoutingContext serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
-            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
+            // TODO: integrate thin client into fault injection
+            request.faultInjectionRequestContext.setRegionalRoutingContextToRoute(serviceEndpoints);
         }
 
-        return serviceEndpoint;
+        return serviceEndpoints;
     }
 
-    public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
+    public RegionalRoutingContext resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
         return this.locationCache.resolveFaultInjectionEndpoint(region, writeOnly);
     }
 
@@ -345,6 +348,10 @@ public class GlobalEndpointManager implements AutoCloseable {
                 }).subscribeOn(scheduler);
     }
 
+    public boolean hasThinClientReadLocations() {
+        return this.hasThinClientReadLocations.get();
+    }
+
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
@@ -354,6 +361,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     try {
                         this.latestDatabaseAccount = databaseAccount;
+                        Collection<DatabaseAccountLocation> thinClientReadLocations =
+                                databaseAccount.getThinClientReadableLocations();
+                        this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
+
                         this.setLatestDatabaseRefreshError(null);
                     } finally {
                         this.databaseAccountWriteLock.unlock();
@@ -370,6 +381,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
+    }
+
+    public String getRegionName(URI locationEndpoint, OperationType operationType, boolean isPerPartitionAutomaticFailoverEnabledAndWriteRequest) {
+        return this.locationCache.getRegionName(locationEndpoint, operationType, isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
     }
 
     public ConnectionPolicy getConnectionPolicy() {

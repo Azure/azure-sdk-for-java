@@ -1,0 +1,69 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - /sdk/tools/openrewrite-sample-compiler-ci.yml
+      - /sdk/tools/azure-openrewrite/
+      - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - /sdk/tools/openrewrite-sample-compiler-ci.yml
+      - /sdk/tools/azure-openrewrite/
+      - /sdk/tools/azure-openrewrite-compiler-maven-plugin/
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: CompileSamples
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+
+        jobs:
+          - job: OpenRewriteCompilerPlugin
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            displayName: Build and Run OpenRewrite Compiler Plugin
+            timeoutInMinutes: 60
+            steps:
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  Paths:
+                    - "/sdk/tools/"
+                    - "/sdk/core-v2/"
+                    - "/sdk/identity-v2/"
+                    - "/sdk/appconfiguration-v2/"
+                    - "/eng/"
+                    - "/common/perf-test-core/"
+                    - "**/*.xml"
+                    - "**/*.md"
+                    - "**/ci*.yml"
+
+              - task: Maven@3
+                displayName: 'Build and Install Necesssary Dependencies'
+                inputs:
+                  goals: 'install'
+                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-data-appconfiguration,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.8'
+
+              - task: Maven@3
+                displayName: 'Run Golden Image Compiler on OpenRewrite Samples'
+                inputs:
+                  mavenPomFile: 'sdk/tools/azure-openrewrite/pom.xml'
+                  goals: 'com.azure:azure-openrewrite-compiler-maven-plugin:compile-golden-image --no-transfer-progress'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.8'

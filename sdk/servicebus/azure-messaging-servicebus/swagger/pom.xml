@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-messaging-eventhubs-customization</artifactId>
+  <artifactId>azure-messaging-servicebus-customization</artifactId>
   <version>1.0.0-beta.1</version>
   <modelVersion>4.0.0</modelVersion>
 </project>

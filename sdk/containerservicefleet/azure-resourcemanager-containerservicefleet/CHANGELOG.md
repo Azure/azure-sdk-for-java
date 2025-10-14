@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,206 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.1 (2025-08-07)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2025-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Fleets` was modified
+
+* `delete(java.lang.String,java.lang.String)` was removed
+
+### Features Added
+
+* `models.GateConfiguration` was added
+
+* `models.UpdateRunGateStatus` was added
+
+* `models.GatePatch` was added
+
+* `models.Timing` was added
+
+* `models.Gates` was added
+
+* `models.GateType` was added
+
+* `models.GatePatchProperties` was added
+
+* `models.GateProvisioningState` was added
+
+* `models.UpdateRunGateTargetProperties` was added
+
+* `models.GateTarget` was added
+
+* `models.Gate` was added
+
+* `models.GateState` was added
+
+#### `models.AutoUpgradeProfile$Update` was modified
+
+* `withLongTermSupport(java.lang.Boolean)` was added
+* `withTargetKubernetesVersion(java.lang.String)` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `gates()` was added
+
+#### `models.AutoUpgradeProfile$Definition` was modified
+
+* `withTargetKubernetesVersion(java.lang.String)` was added
+* `withLongTermSupport(java.lang.Boolean)` was added
+
+#### `models.FleetMember` was modified
+
+* `labels()` was added
+
+#### `models.UpdateStageStatus` was modified
+
+* `afterGates()` was added
+* `beforeGates()` was added
+
+#### `models.Fleets` was modified
+
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was added
+
+#### `models.UpdateGroupStatus` was modified
+
+* `afterGates()` was added
+* `beforeGates()` was added
+
+#### `models.FleetMember$Definition` was modified
+
+* `withLabels(java.util.Map)` was added
+
+#### `models.FleetMemberUpdate` was modified
+
+* `withLabels(java.util.Map)` was added
+* `labels()` was added
+
+#### `models.AutoUpgradeProfile` was modified
+
+* `targetKubernetesVersion()` was added
+* `longTermSupport()` was added
+
+#### `models.UpdateGroup` was modified
+
+* `beforeGates()` was added
+* `withAfterGates(java.util.List)` was added
+* `withBeforeGates(java.util.List)` was added
+* `afterGates()` was added
+
+#### `models.UpdateStage` was modified
+
+* `afterGates()` was added
+* `beforeGates()` was added
+* `withAfterGates(java.util.List)` was added
+* `withBeforeGates(java.util.List)` was added
+
+#### `models.FleetMember$Update` was modified
+
+* `withLabels(java.util.Map)` was added
+
+## 1.2.0 (2025-04-10)
+
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.FleetMemberListResult` was removed
+
+#### `models.UpdateRunListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.FleetUpdateStrategyListResult` was removed
+
+#### `models.FleetListResult` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+### Features Added
+
+* `models.UpgradeChannel` was added
+
+* `models.AutoUpgradeProfile$Update` was added
+
+* `models.AutoUpgradeProfile$Definition` was added
+
+* `models.FleetStatus` was added
+
+* `models.AutoUpgradeProfileProvisioningState` was added
+
+* `models.FleetMemberStatus` was added
+
+* `models.AutoUpgradeNodeImageSelectionType` was added
+
+* `models.AutoUpgradeProfile$UpdateStages` was added
+
+* `models.AutoUpgradeProfiles` was added
+
+* `models.AutoUpgradeProfile` was added
+
+* `models.AutoUpgradeNodeImageSelection` was added
+
+* `models.AutoUpgradeProfile$DefinitionStages` was added
+
+* `models.AutoUpgradeProfileOperations` was added
+
+* `models.AutoUpgradeLastTriggerStatus` was added
+
+* `models.GenerateResponse` was added
+
+* `models.AutoUpgradeProfileStatus` was added
+
+#### `models.ApiServerAccessProfile` was modified
+
+* `withSubnetId(java.lang.String)` was added
+* `withEnableVnetIntegration(java.lang.Boolean)` was added
+* `enableVnetIntegration()` was added
+* `subnetId()` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `autoUpgradeProfiles()` was added
+* `autoUpgradeProfileOperations()` was added
+
+#### `models.FleetMember` was modified
+
+* `status()` was added
+
+#### `models.Fleet` was modified
+
+* `status()` was added
+
+#### `models.NodeImageSelection` was modified
+
+* `withCustomNodeImageVersions(java.util.List)` was added
+* `customNodeImageVersions()` was added
+
+#### `models.UpdateRun` was modified
+
+* `autoUpgradeProfileId()` was added
 
 ## 1.2.0-beta.1 (2024-10-17)
 

@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistItemsClient;
@@ -72,7 +74,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientRaiBlocklistItems")
     public interface RaiBlocklistItemsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems")
@@ -85,10 +87,31 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RaiBlockListItemsResult> listSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("raiBlocklistName") String raiBlocklistName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RaiBlocklistItemInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("raiBlocklistName") String raiBlocklistName,
+            @PathParam("raiBlocklistItemName") String raiBlocklistItemName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RaiBlocklistItemInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("raiBlocklistName") String raiBlocklistName,
@@ -108,10 +131,33 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RaiBlocklistItemInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("raiBlocklistName") String raiBlocklistName,
+            @PathParam("raiBlocklistItemName") String raiBlocklistItemName,
+            @BodyParam("application/json") RaiBlocklistItemInner raiBlocklistItem, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("raiBlocklistName") String raiBlocklistName,
+            @PathParam("raiBlocklistItemName") String raiBlocklistItemName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("raiBlocklistName") String raiBlocklistName,
@@ -130,6 +176,17 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/addRaiBlocklistItems")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RaiBlocklistInner> batchAddSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("raiBlocklistName") String raiBlocklistName,
+            @BodyParam("application/json") List<RaiBlocklistItemBulkRequest> raiBlocklistItems,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/deleteRaiBlocklistItems")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -141,10 +198,28 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/deleteRaiBlocklistItems")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> batchDeleteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("raiBlocklistName") String raiBlocklistName,
+            @BodyParam("application/json") Object raiBlocklistItemsNames, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RaiBlockListItemsResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RaiBlockListItemsResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -197,50 +272,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RaiBlocklistItemInner>> listSinglePageAsync(String resourceGroupName, String accountName,
-        String raiBlocklistName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (raiBlocklistName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-                this.client.getSubscriptionId(), raiBlocklistName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the blocklist items associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -259,17 +290,87 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RaiBlocklistItemInner> listSinglePage(String resourceGroupName, String accountName,
+        String raiBlocklistName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RaiBlockListItemsResult> res
+            = service.listSync(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), raiBlocklistName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the blocklist items associated with the custom blocklist.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blocklist items associated with the custom blocklist as paginated response with {@link PagedFlux}.
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RaiBlocklistItemInner> listAsync(String resourceGroupName, String accountName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RaiBlocklistItemInner> listSinglePage(String resourceGroupName, String accountName,
         String raiBlocklistName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, raiBlocklistName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RaiBlockListItemsResult> res
+            = service.listSync(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), raiBlocklistName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -287,7 +388,8 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBlocklistItemInner> list(String resourceGroupName, String accountName,
         String raiBlocklistName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, raiBlocklistName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, raiBlocklistName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -306,7 +408,8 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBlocklistItemInner> list(String resourceGroupName, String accountName,
         String raiBlocklistName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, raiBlocklistName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, raiBlocklistName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -363,52 +466,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom blocklist Item associated with the custom blocklist along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RaiBlocklistItemInner>> getWithResponseAsync(String resourceGroupName, String accountName,
-        String raiBlocklistName, String raiBlocklistItemName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (raiBlocklistName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
-        }
-        if (raiBlocklistItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName, accept, context);
-    }
-
-    /**
-     * Gets the specified custom blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -438,8 +495,35 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistItemInner> getWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        if (raiBlocklistItemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName, accept, context);
     }
 
     /**
@@ -524,61 +608,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
      * @param raiBlocklistItem Properties describing the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist Item along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RaiBlocklistItemInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String raiBlocklistName, String raiBlocklistItemName,
-        RaiBlocklistItemInner raiBlocklistItem, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (raiBlocklistName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
-        }
-        if (raiBlocklistItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
-        }
-        if (raiBlocklistItem == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistItem is required and cannot be null."));
-        } else {
-            raiBlocklistItem.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName,
-            raiBlocklistItem, accept, context);
-    }
-
-    /**
-     * Update the state of specified blocklist item associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param raiBlocklistItem Properties describing the custom blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -608,8 +637,42 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistItemInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, RaiBlocklistItemInner raiBlocklistItem, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName,
-            raiBlocklistItem, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        if (raiBlocklistItemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
+        }
+        if (raiBlocklistItem == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItem is required and cannot be null."));
+        } else {
+            raiBlocklistItem.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName,
+            raiBlocklistItem, accept, context);
     }
 
     /**
@@ -685,42 +748,92 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
+        String raiBlocklistName, String raiBlocklistItemName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        if (raiBlocklistItemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName,
+            accept, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified blocklist Item associated with the custom blocklist.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
+     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (raiBlocklistName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
         }
         if (raiBlocklistItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItemName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemName,
+            accept, context);
     }
 
     /**
@@ -751,29 +864,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String raiBlocklistName, String raiBlocklistItemName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes the specified blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -782,8 +872,9 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -802,8 +893,9 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiBlocklistName, String raiBlocklistItemName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -832,26 +924,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String raiBlocklistName,
-        String raiBlocklistItemName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified blocklist Item associated with the custom blocklist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemName The name of the RaiBlocklist Item associated with the custom blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -859,7 +931,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName) {
-        deleteAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName).block();
+        beginDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName).getFinalResult();
     }
 
     /**
@@ -877,7 +949,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName, Context context) {
-        deleteAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context).block();
+        beginDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context).getFinalResult();
     }
 
     /**
@@ -935,53 +1007,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItems Properties describing the custom blocklist items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiBlocklist along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RaiBlocklistInner>> batchAddWithResponseAsync(String resourceGroupName, String accountName,
-        String raiBlocklistName, List<RaiBlocklistItemBulkRequest> raiBlocklistItems, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (raiBlocklistName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
-        }
-        if (raiBlocklistItems == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistItems is required and cannot be null."));
-        } else {
-            raiBlocklistItems.forEach(e -> e.validate());
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.batchAdd(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItems, accept, context);
-    }
-
-    /**
-     * Batch operation to add blocklist items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItems Properties describing the custom blocklist items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1010,8 +1035,38 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiBlocklistInner> batchAddWithResponse(String resourceGroupName, String accountName,
         String raiBlocklistName, List<RaiBlocklistItemBulkRequest> raiBlocklistItems, Context context) {
-        return batchAddWithResponseAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItems, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        if (raiBlocklistItems == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItems is required and cannot be null."));
+        } else {
+            raiBlocklistItems.forEach(e -> e.validate());
+        }
+        final String accept = "application/json";
+        return service.batchAddSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItems, accept,
+            context);
     }
 
     /**
@@ -1086,52 +1141,6 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @param accountName The name of Cognitive Services account.
      * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
      * @param raiBlocklistItemsNames List of RAI Blocklist Items Names.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> batchDeleteWithResponseAsync(String resourceGroupName, String accountName,
-        String raiBlocklistName, Object raiBlocklistItemsNames, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (raiBlocklistName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
-        }
-        if (raiBlocklistItemsNames == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter raiBlocklistItemsNames is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.batchDelete(this.client.getEndpoint(), resourceGroupName, accountName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemsNames,
-            accept, context);
-    }
-
-    /**
-     * Batch operation to delete blocklist items.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBlocklistName The name of the RaiBlocklist associated with the Cognitive Services Account.
-     * @param raiBlocklistItemsNames List of RAI Blocklist Items Names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1160,8 +1169,36 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> batchDeleteWithResponse(String resourceGroupName, String accountName, String raiBlocklistName,
         Object raiBlocklistItemsNames, Context context) {
-        return batchDeleteWithResponseAsync(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemsNames,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (raiBlocklistName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistName is required and cannot be null."));
+        }
+        if (raiBlocklistItemsNames == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter raiBlocklistItemsNames is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.batchDeleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), raiBlocklistName, raiBlocklistItemsNames,
+            accept, context);
     }
 
     /**
@@ -1188,7 +1225,7 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services RAI Blocklist Items along with {@link PagedResponse} on successful
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1211,26 +1248,56 @@ public final class RaiBlocklistItemsClientImpl implements RaiBlocklistItemsClien
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RaiBlocklistItemInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RaiBlockListItemsResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services RAI Blocklist Items along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the blocklist items associated with the custom blocklist along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RaiBlocklistItemInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<RaiBlocklistItemInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RaiBlockListItemsResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RaiBlocklistItemsClientImpl.class);
 }

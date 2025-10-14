@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
      * CreateOrUpdateStaticSiteFunctionAppSettings.json
      */
     /**

@@ -51,7 +51,7 @@ public final class OdbcLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private OdbcLinkedServiceTypeProperties innerTypeProperties() {
+    OdbcLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

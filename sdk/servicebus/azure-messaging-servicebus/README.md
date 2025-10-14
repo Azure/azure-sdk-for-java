@@ -70,7 +70,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.17.8</version>
+    <version>7.17.13</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -90,7 +90,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -516,45 +516,45 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) for more information.
 
 <!-- Links -->
-[aad_authorization]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application
+[aad_authorization]: https://learn.microsoft.com/azure/service-bus-messaging/authenticate-application
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [AmqpErrorCondition]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
 [AmqpRetryOptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [api_documentation]: https://aka.ms/java-docs
-[dead-letter-queue]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
-[deadletterqueue_docs]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
-[java_development_kit]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[dead-letter-queue]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
+[deadletterqueue_docs]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
+[java_development_kit]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
+[logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [maven]: https://maven.apache.org/
 [maven_package]: https://central.sonatype.com/artifact/com.azure/azure-messaging-servicebus
-[message-sessions]: https://docs.microsoft.com/azure/service-bus-messaging/message-sessions
+[message-sessions]: https://learn.microsoft.com/azure/service-bus-messaging/message-sessions
 [oasis_amqp_v1_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
-[product_docs]: https://docs.microsoft.com/azure/service-bus-messaging
+[product_docs]: https://learn.microsoft.com/azure/service-bus-messaging
 [qpid_proton_j_apache]: https://qpid.apache.org/proton/
-[queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
+[queue_concept]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
 [ReceiveMode]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/models/ReceiveMode.java
 [RetryOptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus
-[service_bus_connection_string]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
-[servicebus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[servicebus_messaging_exceptions]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
-[servicebus_roles]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
+[service_bus_connection_string]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
+[servicebus_create]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
+[servicebus_messaging_exceptions]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
+[servicebus_roles]: https://learn.microsoft.com/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [ServiceBusClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
 [ServiceBusMessage]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusMessage.java
 [ServiceBusReceiverAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [ServiceBusReceiverClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
 [ServiceBusSenderAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
 [ServiceBusSenderClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/main/java/com/azure/messaging/servicebus/ServiceBusSenderClient.java
-[service_bus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
+[service_bus_create]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src
-[subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
-[topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
+[subscription_concept]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
+[topic_concept]: https://learn.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 [sync_receivemessages_implicit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 [peek_lock_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
 [receive_and_delete_mode_docs]: https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#receiveanddelete
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)
+

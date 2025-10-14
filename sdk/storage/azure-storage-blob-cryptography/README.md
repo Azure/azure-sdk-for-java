@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.28.0</version>
+  <version>12.31.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -245,23 +245,23 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-cryptography%2FREADME.png)
 
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-cryptography/src
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-cryptography/src/samples
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/main/java
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/samples
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

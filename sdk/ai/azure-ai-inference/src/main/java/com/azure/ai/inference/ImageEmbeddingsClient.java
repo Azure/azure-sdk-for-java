@@ -4,12 +4,9 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
-import com.azure.ai.inference.implementation.models.ImageEmbedRequest;
-import com.azure.ai.inference.models.EmbeddingEncodingFormat;
-import com.azure.ai.inference.models.EmbeddingInput;
-import com.azure.ai.inference.models.EmbeddingInputType;
+import com.azure.ai.inference.implementation.models.EmbedRequest1;
 import com.azure.ai.inference.models.EmbeddingsResult;
-import com.azure.ai.inference.models.ExtraParameters;
+import com.azure.ai.inference.models.ImageEmbeddingInput;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -19,7 +16,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -84,6 +80,7 @@ public final class ImageEmbeddingsClient {
      * <pre>
      * {@code
      * {
+     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -99,7 +96,7 @@ public final class ImageEmbeddingsClient {
      * }
      * </pre>
      *
-     * @param embedRequest1 The embedRequest1 parameter.
+     * @param body request options to pass to the endpoint using images embeddings path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -111,8 +108,34 @@ public final class ImageEmbeddingsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> embedWithResponse(BinaryData embedRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.embedWithResponse(embedRequest1, requestOptions);
+    Response<BinaryData> embedWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.embedWithResponse(body, requestOptions);
+    }
+
+    /**
+     * Return the embedding vectors for given text prompts.
+     * The method makes a REST API call to the `/embeddings` route on the given endpoint.
+     *
+     * @param inputs ImageEmbeddingInput instances to embed, encoded as a string or array of tokens.
+     * To embed multiple inputs in a single request, pass an array
+     * of strings or array of token arrays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return representation of the response data from an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EmbeddingsResult embed(List<ImageEmbeddingInput> inputs) {
+        // Generated convenience method for embedWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        EmbedRequest1 embedRequestObj = new EmbedRequest1(inputs);
+        BinaryData embedRequest = BinaryData.fromObject(embedRequestObj);
+        return embedWithResponse(embedRequest, requestOptions).getValue().toObject(EmbeddingsResult.class);
     }
 
     /**
@@ -124,7 +147,7 @@ public final class ImageEmbeddingsClient {
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }
@@ -144,32 +167,6 @@ public final class ImageEmbeddingsClient {
     }
 
     /**
-     * Return the embedding vectors for given images.
-     * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
-     *
-     * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
-     * The input must not exceed the max input tokens for the model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of the response data from an embeddings request.
-     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
-     * recommendations, and other similar scenarios.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EmbeddingsResult embed(List<EmbeddingInput> input) {
-        // Generated convenience method for embedWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        ImageEmbedRequest embedRequest1Obj = new ImageEmbedRequest(input);
-        BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
-        return embedWithResponse(embedRequest1, requestOptions).getValue().toObject(EmbeddingsResult.class);
-    }
-
-    /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      *
@@ -186,50 +183,5 @@ public final class ImageEmbeddingsClient {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).getValue().toObject(ModelInfo.class);
-    }
-
-    /**
-     * Return the embedding vectors for given images.
-     * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
-     *
-     * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
-     * The input must not exceed the max input tokens for the model.
-     * @param extraParams Controls what happens if extra parameters, undefined by the REST API,
-     * are passed in the JSON request payload.
-     * This sets the HTTP request header `extra-parameters`.
-     * @param dimensions Optional. The number of dimensions the resulting output embeddings should have.
-     * Passing null causes the model to use its default value.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param encodingFormat Optional. The number of dimensions the resulting output embeddings should have.
-     * Passing null causes the model to use its default value.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param inputType Optional. The type of the input.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param model ID of the specific AI model to use, if more than one model is available on the endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of the response data from an embeddings request.
-     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
-     * recommendations, and other similar scenarios.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    EmbeddingsResult embed(List<EmbeddingInput> input, ExtraParameters extraParams, Integer dimensions,
-        EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model) {
-        // Generated convenience method for embedWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        ImageEmbedRequest embedRequest1Obj = new ImageEmbedRequest(input).setDimensions(dimensions)
-            .setEncodingFormat(encodingFormat)
-            .setInputType(inputType)
-            .setModel(model);
-        BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
-        if (extraParams != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
-        }
-        return embedWithResponse(embedRequest1, requestOptions).getValue().toObject(EmbeddingsResult.class);
     }
 }

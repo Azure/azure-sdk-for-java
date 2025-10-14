@@ -14,17 +14,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A list of active directory administrators.
+ * A list of Microsoft Entra Administrators.
  */
 @Fluent
 public final class AdministratorListResult implements JsonSerializable<AdministratorListResult> {
     /*
-     * The list of active directory administrators
+     * The list of Microsoft Entra Administrators
      */
     private List<ActiveDirectoryAdministratorInner> value;
 
     /*
-     * The link used to get the next page of active directory.
+     * The link used to get the next page of Microsoft Entra administrators.
      */
     private String nextLink;
 
@@ -35,7 +35,7 @@ public final class AdministratorListResult implements JsonSerializable<Administr
     }
 
     /**
-     * Get the value property: The list of active directory administrators.
+     * Get the value property: The list of Microsoft Entra Administrators.
      * 
      * @return the value value.
      */
@@ -44,7 +44,7 @@ public final class AdministratorListResult implements JsonSerializable<Administr
     }
 
     /**
-     * Set the value property: The list of active directory administrators.
+     * Set the value property: The list of Microsoft Entra Administrators.
      * 
      * @param value the value value to set.
      * @return the AdministratorListResult object itself.
@@ -55,7 +55,7 @@ public final class AdministratorListResult implements JsonSerializable<Administr
     }
 
     /**
-     * Get the nextLink property: The link used to get the next page of active directory.
+     * Get the nextLink property: The link used to get the next page of Microsoft Entra administrators.
      * 
      * @return the nextLink value.
      */
@@ -64,7 +64,7 @@ public final class AdministratorListResult implements JsonSerializable<Administr
     }
 
     /**
-     * Set the nextLink property: The link used to get the next page of active directory.
+     * Set the nextLink property: The link used to get the next page of Microsoft Entra administrators.
      * 
      * @param nextLink the nextLink value to set.
      * @return the AdministratorListResult object itself.

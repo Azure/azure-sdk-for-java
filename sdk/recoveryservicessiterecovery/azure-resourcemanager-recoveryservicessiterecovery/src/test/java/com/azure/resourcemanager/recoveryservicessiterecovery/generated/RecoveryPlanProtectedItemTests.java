@@ -12,18 +12,18 @@ public final class RecoveryPlanProtectedItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanProtectedItem model
-            = BinaryData.fromString("{\"id\":\"blydyvkf\",\"virtualMachineId\":\"rocxnehvs\"}")
+            = BinaryData.fromString("{\"id\":\"kfnozoeoqbvj\",\"virtualMachineId\":\"efgwbmqjc\"}")
                 .toObject(RecoveryPlanProtectedItem.class);
-        Assertions.assertEquals("blydyvkf", model.id());
-        Assertions.assertEquals("rocxnehvs", model.virtualMachineId());
+        Assertions.assertEquals("kfnozoeoqbvj", model.id());
+        Assertions.assertEquals("efgwbmqjc", model.virtualMachineId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanProtectedItem model
-            = new RecoveryPlanProtectedItem().withId("blydyvkf").withVirtualMachineId("rocxnehvs");
+            = new RecoveryPlanProtectedItem().withId("kfnozoeoqbvj").withVirtualMachineId("efgwbmqjc");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanProtectedItem.class);
-        Assertions.assertEquals("blydyvkf", model.id());
-        Assertions.assertEquals("rocxnehvs", model.virtualMachineId());
+        Assertions.assertEquals("kfnozoeoqbvj", model.id());
+        Assertions.assertEquals("efgwbmqjc", model.virtualMachineId());
     }
 }

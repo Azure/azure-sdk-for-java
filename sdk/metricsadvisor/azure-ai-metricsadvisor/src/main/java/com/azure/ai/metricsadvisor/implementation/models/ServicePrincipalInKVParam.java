@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
     /*
      * The Key Vault endpoint that storing the service principal.
      */
+    @Generated
     private String keyVaultEndpoint;
 
     /*
      * The Client Id to access the Key Vault.
      */
+    @Generated
     private String keyVaultClientId;
 
     /*
      * The Client Secret to access the Key Vault.
      */
+    @Generated
     private String keyVaultClientSecret;
 
     /*
      * The secret name of the service principal's client Id in the Key Vault.
      */
+    @Generated
     private String servicePrincipalIdNameInKV;
 
     /*
      * The secret name of the service principal's client secret in the Key Vault.
      */
+    @Generated
     private String servicePrincipalSecretNameInKV;
 
     /*
      * The tenant id of your service principal.
      */
+    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of ServicePrincipalInKVParam class.
      */
+    @Generated
     public ServicePrincipalInKVParam() {
     }
 
@@ -57,6 +65,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * 
      * @return the keyVaultEndpoint value.
      */
+    @Generated
     public String getKeyVaultEndpoint() {
         return this.keyVaultEndpoint;
     }
@@ -67,6 +76,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @param keyVaultEndpoint the keyVaultEndpoint value to set.
      * @return the ServicePrincipalInKVParam object itself.
      */
+    @Generated
     public ServicePrincipalInKVParam setKeyVaultEndpoint(String keyVaultEndpoint) {
         this.keyVaultEndpoint = keyVaultEndpoint;
         return this;
@@ -77,6 +87,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * 
      * @return the keyVaultClientId value.
      */
+    @Generated
     public String getKeyVaultClientId() {
         return this.keyVaultClientId;
     }
@@ -87,6 +98,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @param keyVaultClientId the keyVaultClientId value to set.
      * @return the ServicePrincipalInKVParam object itself.
      */
+    @Generated
     public ServicePrincipalInKVParam setKeyVaultClientId(String keyVaultClientId) {
         this.keyVaultClientId = keyVaultClientId;
         return this;
@@ -97,6 +109,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * 
      * @return the keyVaultClientSecret value.
      */
+    @Generated
     public String getKeyVaultClientSecret() {
         return this.keyVaultClientSecret;
     }
@@ -107,6 +120,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @param keyVaultClientSecret the keyVaultClientSecret value to set.
      * @return the ServicePrincipalInKVParam object itself.
      */
+    @Generated
     public ServicePrincipalInKVParam setKeyVaultClientSecret(String keyVaultClientSecret) {
         this.keyVaultClientSecret = keyVaultClientSecret;
         return this;
@@ -118,6 +132,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * 
      * @return the servicePrincipalIdNameInKV value.
      */
+    @Generated
     public String getServicePrincipalIdNameInKV() {
         return this.servicePrincipalIdNameInKV;
     }
@@ -129,6 +144,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @param servicePrincipalIdNameInKV the servicePrincipalIdNameInKV value to set.
      * @return the ServicePrincipalInKVParam object itself.
      */
+    @Generated
     public ServicePrincipalInKVParam setServicePrincipalIdNameInKV(String servicePrincipalIdNameInKV) {
         this.servicePrincipalIdNameInKV = servicePrincipalIdNameInKV;
         return this;
@@ -140,6 +156,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * 
      * @return the servicePrincipalSecretNameInKV value.
      */
+    @Generated
     public String getServicePrincipalSecretNameInKV() {
         return this.servicePrincipalSecretNameInKV;
     }
@@ -151,6 +168,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @param servicePrincipalSecretNameInKV the servicePrincipalSecretNameInKV value to set.
      * @return the ServicePrincipalInKVParam object itself.
      */
+    @Generated
     public ServicePrincipalInKVParam setServicePrincipalSecretNameInKV(String servicePrincipalSecretNameInKV) {
         this.servicePrincipalSecretNameInKV = servicePrincipalSecretNameInKV;
         return this;
@@ -161,6 +179,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -171,6 +190,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @param tenantId the tenantId value to set.
      * @return the ServicePrincipalInKVParam object itself.
      */
+    @Generated
     public ServicePrincipalInKVParam setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -179,6 +199,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -200,6 +221,7 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServicePrincipalInKVParam.
      */
+    @Generated
     public static ServicePrincipalInKVParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalInKVParam deserializedServicePrincipalInKVParam = new ServicePrincipalInKVParam();

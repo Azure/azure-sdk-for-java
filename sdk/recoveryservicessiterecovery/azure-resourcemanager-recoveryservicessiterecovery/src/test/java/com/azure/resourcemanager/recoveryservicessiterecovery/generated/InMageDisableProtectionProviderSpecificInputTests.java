@@ -12,16 +12,16 @@ public final class InMageDisableProtectionProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageDisableProtectionProviderSpecificInput model
-            = BinaryData.fromString("{\"instanceType\":\"InMage\",\"replicaVmDeletionStatus\":\"q\"}")
+            = BinaryData.fromString("{\"instanceType\":\"InMage\",\"replicaVmDeletionStatus\":\"u\"}")
                 .toObject(InMageDisableProtectionProviderSpecificInput.class);
-        Assertions.assertEquals("q", model.replicaVmDeletionStatus());
+        Assertions.assertEquals("u", model.replicaVmDeletionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageDisableProtectionProviderSpecificInput model
-            = new InMageDisableProtectionProviderSpecificInput().withReplicaVmDeletionStatus("q");
+            = new InMageDisableProtectionProviderSpecificInput().withReplicaVmDeletionStatus("u");
         model = BinaryData.fromObject(model).toObject(InMageDisableProtectionProviderSpecificInput.class);
-        Assertions.assertEquals("q", model.replicaVmDeletionStatus());
+        Assertions.assertEquals("u", model.replicaVmDeletionStatus());
     }
 }

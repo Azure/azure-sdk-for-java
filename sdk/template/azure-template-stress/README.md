@@ -242,14 +242,14 @@ thread pool issues, or other performance issues in the code. So make sure to con
 
 <!-- links -->
 [azure_sdk_stress_test]: https://aka.ms/azsdk/stress
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [docker]: https://docs.docker.com/get-docker/
 [kubectl]: https://kubernetes.io/docs/tasks/tools/#kubectl
 [helm]: https://helm.sh/docs/intro/install/
-[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
-[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
-[enable_application_insights]: https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights
+[azure_cli]: https://learn.microsoft.com/cli/azure/install-azure-cli
+[powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
+[enable_application_insights]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java#enable-azure-monitor-application-insights
 [logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/logback.xml
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.trustedsigning.models.SkuName;
  */
 public final class CodeSigningAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_Create.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Create.json
      */
     /**
      * Sample code: Create a trusted Signing Account.

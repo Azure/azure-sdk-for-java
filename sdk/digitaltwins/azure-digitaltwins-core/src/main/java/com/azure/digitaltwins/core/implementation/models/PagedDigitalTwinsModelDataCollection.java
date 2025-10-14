@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class PagedDigitalTwinsModelDataCollection
     /*
      * The DigitalTwinsModelData objects.
      */
+    @Generated
     private final List<DigitalTwinsModelData> value;
 
     /*
      * A URI to retrieve the next page of objects.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -33,6 +36,7 @@ public final class PagedDigitalTwinsModelDataCollection
      * 
      * @param value the value value to set.
      */
+    @Generated
     public PagedDigitalTwinsModelDataCollection(List<DigitalTwinsModelData> value) {
         this.value = value;
     }
@@ -42,6 +46,7 @@ public final class PagedDigitalTwinsModelDataCollection
      * 
      * @return the value value.
      */
+    @Generated
     public List<DigitalTwinsModelData> getValue() {
         return this.value;
     }
@@ -51,6 +56,7 @@ public final class PagedDigitalTwinsModelDataCollection
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -61,6 +67,7 @@ public final class PagedDigitalTwinsModelDataCollection
      * @param nextLink the nextLink value to set.
      * @return the PagedDigitalTwinsModelDataCollection object itself.
      */
+    @Generated
     public PagedDigitalTwinsModelDataCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -69,6 +76,7 @@ public final class PagedDigitalTwinsModelDataCollection
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +94,7 @@ public final class PagedDigitalTwinsModelDataCollection
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PagedDigitalTwinsModelDataCollection.
      */
+    @Generated
     public static PagedDigitalTwinsModelDataCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

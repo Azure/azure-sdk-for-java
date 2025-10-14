@@ -11,7 +11,7 @@ public final class SnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotProperties model = BinaryData.fromString(
-            "{\"snapshotId\":\"ao\",\"created\":\"2021-02-23T21:26:17Z\",\"provisioningState\":\"pqblylsyxkqjnsj\"}")
+            "{\"snapshotId\":\"kgymareqnajxqug\",\"created\":\"2020-12-30T20:00:15Z\",\"provisioningState\":\"cubeddgssofw\"}")
             .toObject(SnapshotProperties.class);
     }
 

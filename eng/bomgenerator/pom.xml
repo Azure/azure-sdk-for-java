@@ -11,6 +11,7 @@
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <groupIds>com.azure,com.azure.resourcemanager</groupIds>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -32,12 +33,12 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.9.9</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
+      <version>3.9.11</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -72,6 +73,7 @@
             <argument>-inputdir=${project.basedir}/inputdir</argument>
             <argument>-outputdir=${project.basedir}/outputdir</argument>
             <argument>-mode=generate</argument>
+            <argument>-groupids=${groupIds}</argument>
           </arguments>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>

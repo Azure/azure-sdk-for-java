@@ -10,9 +10,9 @@ This package contains a Java SDK for Azure Communication CallingServer Service. 
 ### Prerequisites
 
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+- [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -45,7 +45,7 @@ To be determined.
 
 ## Troubleshooting
 
-If you recieve a CommunicationErrorException with the messagae: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
+If you receive a CommunicationErrorException with the message: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
 the call, or participants did not accept the call before the call timed out. 
 
 If you fail to start a call because of an HMAC validation error, be sure your access key is correct, and
@@ -70,10 +70,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
 [package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
-[call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
-[call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
-[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
+[call_automation_apis_overview]:https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
+[call_recording_overview]:https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
+[record_and_download_calls_with_event_grid]:https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/src

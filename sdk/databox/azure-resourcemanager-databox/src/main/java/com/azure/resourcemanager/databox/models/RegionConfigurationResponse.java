@@ -32,6 +32,13 @@ public interface RegionConfigurationResponse {
     DatacenterAddressResponse datacenterAddressResponse();
 
     /**
+     * Gets the deviceCapabilityResponse property: Device capabilities available for a given sku in a region.
+     * 
+     * @return the deviceCapabilityResponse value.
+     */
+    DeviceCapabilityResponse deviceCapabilityResponse();
+
+    /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.RegionConfigurationResponseInner object.
      * 
      * @return the inner object.

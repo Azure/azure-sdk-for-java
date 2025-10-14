@@ -68,8 +68,8 @@ public final class SapTableLinkedServiceTypeProperties
     private Object messageServerService;
 
     /*
-     * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
-     * Type: string (or Expression with resultType string).
+     * SNC activation flag (Boolean) to access the SAP server where the table is located. Type: boolean (or Expression
+     * with resultType boolean).
      */
     private Object sncMode;
 
@@ -311,8 +311,8 @@ public final class SapTableLinkedServiceTypeProperties
     }
 
     /**
-     * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     * Get the sncMode property: SNC activation flag (Boolean) to access the SAP server where the table is located.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @return the sncMode value.
      */
@@ -321,8 +321,8 @@ public final class SapTableLinkedServiceTypeProperties
     }
 
     /**
-     * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     * Set the sncMode property: SNC activation flag (Boolean) to access the SAP server where the table is located.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @param sncMode the sncMode value to set.
      * @return the SapTableLinkedServiceTypeProperties object itself.
@@ -481,21 +481,49 @@ public final class SapTableLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("server", this.server);
-        jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
-        jsonWriter.writeUntypedField("language", this.language);
-        jsonWriter.writeUntypedField("systemId", this.systemId);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        if (this.systemNumber != null) {
+            jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
+        }
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
+        if (this.language != null) {
+            jsonWriter.writeUntypedField("language", this.language);
+        }
+        if (this.systemId != null) {
+            jsonWriter.writeUntypedField("systemId", this.systemId);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("messageServer", this.messageServer);
-        jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
-        jsonWriter.writeUntypedField("sncMode", this.sncMode);
-        jsonWriter.writeUntypedField("sncMyName", this.sncMyName);
-        jsonWriter.writeUntypedField("sncPartnerName", this.sncPartnerName);
-        jsonWriter.writeUntypedField("sncLibraryPath", this.sncLibraryPath);
-        jsonWriter.writeUntypedField("sncQop", this.sncQop);
-        jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+        if (this.messageServer != null) {
+            jsonWriter.writeUntypedField("messageServer", this.messageServer);
+        }
+        if (this.messageServerService != null) {
+            jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
+        }
+        if (this.sncMode != null) {
+            jsonWriter.writeUntypedField("sncMode", this.sncMode);
+        }
+        if (this.sncMyName != null) {
+            jsonWriter.writeUntypedField("sncMyName", this.sncMyName);
+        }
+        if (this.sncPartnerName != null) {
+            jsonWriter.writeUntypedField("sncPartnerName", this.sncPartnerName);
+        }
+        if (this.sncLibraryPath != null) {
+            jsonWriter.writeUntypedField("sncLibraryPath", this.sncLibraryPath);
+        }
+        if (this.sncQop != null) {
+            jsonWriter.writeUntypedField("sncQop", this.sncQop);
+        }
+        if (this.logonGroup != null) {
+            jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

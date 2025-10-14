@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DiagnosticsExecuteSiteDetectorSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteDetector.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetector.json
      */
     /**
      * Sample code: Execute site detector.
@@ -28,7 +28,7 @@ public final class DiagnosticsExecuteSiteDetectorSlotSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteDetectorSlot.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetectorSlot.
      * json
      */
     /**

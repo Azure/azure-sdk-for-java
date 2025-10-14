@@ -13,6 +13,9 @@
   ],
   "ignorePaths": [
     "eng/**",
+    "**/checkstyle-suppressions.xml",
+    "**/spotbugs-exclude.xml",
+    "**/sdk/**/target/**",
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
@@ -66,11 +69,8 @@
     "**/src/**/samples/**/*.ipynb",
     "**/sdk/**/swagger/**",
     "**/src/**/resources/**",
-    "sdk/aot/azure-aot-graalvm-samples/**",
     "sdk/agrifood/azure-verticals-agrifood-farming/**",
-    "sdk/aot/azure-aot-graalvm-support-netty/**",
     "sdk/anomalydetector/azure-ai-anomalydetector/**",
-    "sdk/aot/azure-aot-graalvm-support/**",
     "sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/**",
     "sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/**",
     "sdk/appconfiguration/azure-spring-cloud-feature-management-web/**",
@@ -81,28 +81,9 @@
     "sdk/boms/azure-sdk-template-bom/**",
     "sdk/attestation/test-resources-pre.ps1",
     "sdk/attestation/azure-security-attestation/**",
-    "sdk/cognitiveservices/ms-azure-cs-autosuggest/**",
-    "sdk/cognitiveservices/ms-azure-cs-customimagesearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-computervision/**",
-    "sdk/cognitiveservices/ms-azure-cs-customsearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-customvision-prediction/**",
-    "sdk/cognitiveservices/ms-azure-cs-contentmoderator/**",
-    "sdk/cognitiveservices/ms-azure-cs-entitysearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-customvision-training/**",
-    "sdk/cognitiveservices/ms-azure-cs-luis-runtime/**",
-    "sdk/cognitiveservices/ms-azure-cs-spellcheck/**",
-    "sdk/cognitiveservices/ms-azure-cs-newssearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-imagesearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-qnamaker/**",
-    "sdk/cognitiveservices/ms-azure-cs-textanalytics/**",
-    "sdk/cognitiveservices/ms-azure-cs-faceapi/**",
-    "sdk/cognitiveservices/ms-azure-cs-videosearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-websearch/**",
-    "sdk/cognitiveservices/ms-azure-cs-visualsearch/**",
     "sdk/communication/azure-communication-common/**",
     "sdk/communication/azure-communication-email/**",
     "sdk/communication/azure-communication-networktraversal/**",
-    "sdk/cognitiveservices/ms-azure-cs-luis-authoring/**",
     "sdk/communication/azure-communication-jobrouter/**",
     "sdk/communication/azure-communication-callingserver/**",
     "sdk/communication/azure-communication-callautomation/**",
@@ -123,6 +104,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
+    "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -136,9 +118,11 @@
     "sdk/eventhubs/azure-messaging-eventhubs/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
+    "sdk/healthdataaiservices/azure-health-deidentification/**",
     "sdk/cosmos/azure-cosmos/**",
     "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
+    "sdk/identity-v2/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
     "sdk/keyvault/azure-security-keyvault-jca/**",
@@ -157,6 +141,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -202,7 +187,10 @@
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
+    "sdk/clientcore/http-netty4/**",
     "sdk/clientcore/http-okhttp3/**",
+    "sdk/clientcore/annotation-processor/**",
+    "sdk/clientcore/annotation-processor-test/**",
     "sdk/clientcore/tools/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
@@ -214,10 +202,12 @@
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java",
-    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml"
+    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml",
+    ".github/CODEOWNERS"
   ],
   "words": [
     "adal",
+    "agentic",
     "akhtabar",
     "alzimmer",
     "amqp",
@@ -292,6 +282,7 @@
     "endtoend",
     "entra",
     "Entra",
+    "ESRP",
     "Esto",
     "etag",
     "euap",
@@ -311,10 +302,13 @@
     "hdfs",
     "hdinsight",
     "healthdataaiservices",
+    "HKLM",
     "hudha",
     "hvac",
     "hybridkubernetes",
     "hyunwoongko",
+    "includable",
+    "includables",
     "idnum",
     "insights",
     "intellij",
@@ -343,6 +337,7 @@
     "kvlt",
     "linecoverage",
     "linksource",
+    "LINUXVMIMAGE",
     "listbyconfigurationprofileassignments",
     "localizable",
     "logit",
@@ -372,6 +367,7 @@
     "Onco",
     "onenote",
     "openai",
+    "ossrh",
     "passthrough",
     "Pnative",
     "premf",
@@ -427,8 +423,10 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
+    "WINDOWSVMIMAGE",
     "windowtitle",
     "wordomatic",
     "xlint",
@@ -486,7 +484,9 @@
         "TGIANT",
         "tiktoken",
         "AITOKENS",
-        "Matryoshka"
+        "Matryoshka",
+        "OMINI",
+        "resyncing"
       ]
     },
     {
@@ -587,7 +587,23 @@
       "words": [
         "pericholecystic",
         "craniocaudally",
-        "angiomyolipomas"
+        "angiomyolipomas",
+        "acrad",
+        "mednax",
+        "birads",
+        "frax",
+        "ascvd",
+        "tyrer",
+        "cusick",
+        "agatston",
+        "kellgren",
+        "tonnis",
+	"CEUS",
+	"HNPCC",
+	"hilar",
+	"Fleischner",
+	"CTCHWO",
+	"USTHY"
       ]
     },
     {
@@ -930,7 +946,8 @@
         "Dokuka",
         "Netifi",
         "Zaugg",
-        "lrgrwrks"
+        "lrgrwrks",
+        "Brotli"
       ]
     },
     {
@@ -1126,12 +1143,14 @@
         "rabbitmq",
         "reactivex",
         "remoting",
+        "rocketmq",
         "rocksdb",
         "rsocket",
         "rxtx",
         "saaj",
         "scalatra",
         "sctp",
+        "scylladb",
         "seleniumhq",
         "shiro",
         "signalfx",
@@ -1167,6 +1186,7 @@
         "yasson",
         "yugabytedb",
         "zaxxer",
+        "zjsonpatch",
         "LINUXVMIMAGE",
         "LINUXPOOL",
         "OSVmImage"
@@ -1342,7 +1362,19 @@
         "tmpdir",
         "aarch",
         "CNCF"
-        ]
+      ]
+    },
+    {
+      "filename": "sdk/core-v2/**",
+      "words": [
+        "aarch",
+        "junitextensions",
+        "tmpdir",
+        "urllistofbytes",
+        "urllistoflistofbytes",
+        "urlmapofbytes",
+        "xffffffffffff"
+      ]
     },
     {
       "filename": "sdk/translation/azure-ai-translation-document/**",
@@ -1353,6 +1385,109 @@
         "returnsthestatusofasingledocumentinabatchtranslationrequest",
         "submitadocumenttranslationrequesttothedocumenttranslationservice",
         "translateasingledocument"
+      ]
+    },
+    {
+      "filename": "sdk/eventgrid/**",
+      "words": [
+        "mqtt",
+        "rservice", // appears in the name SignalRService
+        "gcch",
+        "updation" // current typo in a swagger
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-projects/**",
+      "words": [
+        "UPIA",
+        "ANSII",
+        "ansii",
+        "AISEARCH",
+        "azureai",
+        "gleu",
+        "GLEU"
+      ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-agents-persistent/**",
+      "words": [
+        "AISEARCH"
+      ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/*",
+      "words": [
+        "azsdkengsys",
+        "baos",
+        "centralus",
+        "ekus",
+        "FIPS",
+        "IMDS",
+        "inprogress",
+        "mhsm",
+        "myaccount",
+        "myalias",
+        "mydomain",
+        "myissuer",
+        "northcentralus",
+        "OAEP",
+        "RLSIGN",
+        "RSAES",
+        "RSNULL",
+        "SECG",
+        "SECP",
+        "southcentralus",
+        "uksouth",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
+      ]
+    },
+    {
+      "filename": "sdk/storage-v2/azure-storage-blob/**",
+      "words": [
+        "clientime",
+        "ctxt",
+        "etags",
+        "HTBB",
+        "IPMISMATCH",
+        "myaccountname",
+        "myblob",
+        "myblobmetadata",
+        "myblobsforlisting",
+        "myblockblob",
+        "mycontainer",
+        "mycontainermetadata",
+        "mycontainersforlisting",
+        "myimage",
+        "myjavacontainerbasic",
+        "myjavacontainerbufferedupload",
+        "myjavacontainerbuffereduploadlength",
+        "myjavacontainerparallelupload",
+        "RAGRS",
+        "saoid",
+        "IPMISMATCH"
+      ]
+    },
+    {
+      "filename": "sdk/onlineexperimentation/**",
+      "words": [
+        "momo",
+        "RESOURCEID"
+
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
+      ]
+    },
+    {
+      "filename": "sdk/monitor/azure-monitor-query-metrics/**",
+      "words": [
+        "msdocs",
+        "Milli"
       ]
     }
   ],

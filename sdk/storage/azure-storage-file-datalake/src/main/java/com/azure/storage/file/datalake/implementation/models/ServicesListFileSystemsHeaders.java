@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,26 +19,31 @@ public final class ServicesListFileSystemsHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-continuation property.
      */
+    @Generated
     private String xMsContinuation;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-Type property.
      */
+    @Generated
     private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -57,6 +63,8 @@ public final class ServicesListFileSystemsHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
@@ -66,6 +74,7 @@ public final class ServicesListFileSystemsHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -76,6 +85,7 @@ public final class ServicesListFileSystemsHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
+    @Generated
     public ServicesListFileSystemsHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -86,6 +96,7 @@ public final class ServicesListFileSystemsHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -96,6 +107,7 @@ public final class ServicesListFileSystemsHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
+    @Generated
     public ServicesListFileSystemsHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -106,6 +118,7 @@ public final class ServicesListFileSystemsHeaders {
      * 
      * @return the xMsContinuation value.
      */
+    @Generated
     public String getXMsContinuation() {
         return this.xMsContinuation;
     }
@@ -116,6 +129,7 @@ public final class ServicesListFileSystemsHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
+    @Generated
     public ServicesListFileSystemsHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;
@@ -126,6 +140,7 @@ public final class ServicesListFileSystemsHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -139,6 +154,7 @@ public final class ServicesListFileSystemsHeaders {
      * @param date the date value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
+    @Generated
     public ServicesListFileSystemsHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -153,6 +169,7 @@ public final class ServicesListFileSystemsHeaders {
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -163,6 +180,7 @@ public final class ServicesListFileSystemsHeaders {
      * @param contentType the contentType value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
+    @Generated
     public ServicesListFileSystemsHeaders setContentType(String contentType) {
         this.contentType = contentType;
         return this;

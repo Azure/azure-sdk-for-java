@@ -17,11 +17,11 @@ public class FiltersCreateOrUpdate {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildFiltersClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.filterscreateorupdate.filterscreateorupdate
+        // BEGIN:com.azure.analytics.purview.scanning.generated.filters-create-or-update.filters-create-or-update
         RequestOptions requestOptions = new RequestOptions().setBody(BinaryData.fromString(
             "{\"properties\":{\"excludeUriPrefixes\":[\"https://foo.file.core.windows.net/share1/user/temp\"],\"includeUriPrefixes\":[\"https://foo.file.core.windows.net/share1/user\",\"https://foo.file.core.windows.net/share1/aggregated\"]}}"));
         Response<BinaryData> response
             = filtersClient.createOrUpdateWithResponse("DataSource1", "Scan1", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.filterscreateorupdate.filterscreateorupdate
+        // END:com.azure.analytics.purview.scanning.generated.filters-create-or-update.filters-create-or-update
     }
 }

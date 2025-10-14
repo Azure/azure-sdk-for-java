@@ -58,7 +58,7 @@ public final class ModelsImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3Models")
     public interface ModelsService {
         @Get("/model")
         @ExpectedResponses({ 200 })

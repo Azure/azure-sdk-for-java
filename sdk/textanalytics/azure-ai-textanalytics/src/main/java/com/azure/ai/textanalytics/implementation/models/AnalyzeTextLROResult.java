@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public class AnalyzeTextLROResult extends TaskState {
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
+    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.fromString("AnalyzeTextLROResult");
 
     /*
      * The taskName property.
      */
+    @Generated
     private String taskName;
 
     /**
      * Creates an instance of AnalyzeTextLROResult class.
      */
+    @Generated
     public AnalyzeTextLROResult() {
     }
 
@@ -39,6 +43,7 @@ public class AnalyzeTextLROResult extends TaskState {
      * 
      * @return the kind value.
      */
+    @Generated
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
     }
@@ -48,6 +53,7 @@ public class AnalyzeTextLROResult extends TaskState {
      * 
      * @return the taskName value.
      */
+    @Generated
     public String getTaskName() {
         return this.taskName;
     }
@@ -58,6 +64,7 @@ public class AnalyzeTextLROResult extends TaskState {
      * @param taskName the taskName value to set.
      * @return the AnalyzeTextLROResult object itself.
      */
+    @Generated
     public AnalyzeTextLROResult setTaskName(String taskName) {
         this.taskName = taskName;
         return this;
@@ -66,6 +73,7 @@ public class AnalyzeTextLROResult extends TaskState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -75,6 +83,7 @@ public class AnalyzeTextLROResult extends TaskState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnalyzeTextLROResult setStatus(State status) {
         super.setStatus(status);
@@ -84,6 +93,7 @@ public class AnalyzeTextLROResult extends TaskState {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +116,7 @@ public class AnalyzeTextLROResult extends TaskState {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeTextLROResult.
      */
+    @Generated
     public static AnalyzeTextLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -151,6 +162,7 @@ public class AnalyzeTextLROResult extends TaskState {
         });
     }
 
+    @Generated
     static AnalyzeTextLROResult fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextLROResult deserializedAnalyzeTextLROResult = new AnalyzeTextLROResult();

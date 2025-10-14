@@ -10,7 +10,7 @@ package com.azure.resourcemanager.msi.generated;
 public final class SystemAssignedIdentitiesGetByScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/SystemAssignedIdentityGet
+     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/SystemAssignedIdentityGet
      * .json
      */
     /**
@@ -23,6 +23,8 @@ public final class SystemAssignedIdentitiesGetByScopeSamples {
             .manager()
             .serviceClient()
             .getSystemAssignedIdentities()
-            .getByScopeWithResponse("scope", com.azure.core.util.Context.NONE);
+            .getByScopeWithResponse(
+                "subscriptions/subId/resourceGroups/resourceGroupName/providers/Resource.Provider/resourceType/resourceName/identities/default",
+                com.azure.core.util.Context.NONE);
     }
 }

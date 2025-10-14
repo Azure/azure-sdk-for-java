@@ -47,7 +47,7 @@ public final class OperationState extends ExpandableStringEnum<OperationState> {
     public static final OperationState FAILED = fromString("Failed");
 
     /**
-     * Operations that have been cancelled by the user.
+     * Operations that have been Cancelled by the user.
      */
     public static final OperationState CANCELLED = fromString("Cancelled");
 

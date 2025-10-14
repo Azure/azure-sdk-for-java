@@ -13,33 +13,33 @@ public final class InMageRcmFabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmFabricCreationInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"vmwareSiteId\":\"aj\",\"physicalSiteId\":\"iygmgs\",\"sourceAgentIdentity\":{\"tenantId\":\"vmdmzenlr\",\"applicationId\":\"tgfczljdncidtjva\",\"objectId\":\"yyznmrgcdogcvuc\",\"audience\":\"ytoxuwhttnzq\",\"aadAuthority\":\"aqm\"}}")
+            "{\"instanceType\":\"InMageRcm\",\"vmwareSiteId\":\"q\",\"physicalSiteId\":\"uauzmz\",\"sourceAgentIdentity\":{\"tenantId\":\"vrtrfz\",\"applicationId\":\"hezvhjudxdyy\",\"objectId\":\"udma\",\"audience\":\"swtvd\",\"aadAuthority\":\"xbqssgfenffdxbvw\"}}")
             .toObject(InMageRcmFabricCreationInput.class);
-        Assertions.assertEquals("aj", model.vmwareSiteId());
-        Assertions.assertEquals("iygmgs", model.physicalSiteId());
-        Assertions.assertEquals("vmdmzenlr", model.sourceAgentIdentity().tenantId());
-        Assertions.assertEquals("tgfczljdncidtjva", model.sourceAgentIdentity().applicationId());
-        Assertions.assertEquals("yyznmrgcdogcvuc", model.sourceAgentIdentity().objectId());
-        Assertions.assertEquals("ytoxuwhttnzq", model.sourceAgentIdentity().audience());
-        Assertions.assertEquals("aqm", model.sourceAgentIdentity().aadAuthority());
+        Assertions.assertEquals("q", model.vmwareSiteId());
+        Assertions.assertEquals("uauzmz", model.physicalSiteId());
+        Assertions.assertEquals("vrtrfz", model.sourceAgentIdentity().tenantId());
+        Assertions.assertEquals("hezvhjudxdyy", model.sourceAgentIdentity().applicationId());
+        Assertions.assertEquals("udma", model.sourceAgentIdentity().objectId());
+        Assertions.assertEquals("swtvd", model.sourceAgentIdentity().audience());
+        Assertions.assertEquals("xbqssgfenffdxbvw", model.sourceAgentIdentity().aadAuthority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmFabricCreationInput model = new InMageRcmFabricCreationInput().withVmwareSiteId("aj")
-            .withPhysicalSiteId("iygmgs")
-            .withSourceAgentIdentity(new IdentityProviderInput().withTenantId("vmdmzenlr")
-                .withApplicationId("tgfczljdncidtjva")
-                .withObjectId("yyznmrgcdogcvuc")
-                .withAudience("ytoxuwhttnzq")
-                .withAadAuthority("aqm"));
+        InMageRcmFabricCreationInput model = new InMageRcmFabricCreationInput().withVmwareSiteId("q")
+            .withPhysicalSiteId("uauzmz")
+            .withSourceAgentIdentity(new IdentityProviderInput().withTenantId("vrtrfz")
+                .withApplicationId("hezvhjudxdyy")
+                .withObjectId("udma")
+                .withAudience("swtvd")
+                .withAadAuthority("xbqssgfenffdxbvw"));
         model = BinaryData.fromObject(model).toObject(InMageRcmFabricCreationInput.class);
-        Assertions.assertEquals("aj", model.vmwareSiteId());
-        Assertions.assertEquals("iygmgs", model.physicalSiteId());
-        Assertions.assertEquals("vmdmzenlr", model.sourceAgentIdentity().tenantId());
-        Assertions.assertEquals("tgfczljdncidtjva", model.sourceAgentIdentity().applicationId());
-        Assertions.assertEquals("yyznmrgcdogcvuc", model.sourceAgentIdentity().objectId());
-        Assertions.assertEquals("ytoxuwhttnzq", model.sourceAgentIdentity().audience());
-        Assertions.assertEquals("aqm", model.sourceAgentIdentity().aadAuthority());
+        Assertions.assertEquals("q", model.vmwareSiteId());
+        Assertions.assertEquals("uauzmz", model.physicalSiteId());
+        Assertions.assertEquals("vrtrfz", model.sourceAgentIdentity().tenantId());
+        Assertions.assertEquals("hezvhjudxdyy", model.sourceAgentIdentity().applicationId());
+        Assertions.assertEquals("udma", model.sourceAgentIdentity().objectId());
+        Assertions.assertEquals("swtvd", model.sourceAgentIdentity().audience());
+        Assertions.assertEquals("xbqssgfenffdxbvw", model.sourceAgentIdentity().aadAuthority());
     }
 }

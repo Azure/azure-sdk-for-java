@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
@@ -47,6 +48,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
+    private final State state = new State();
 
     /**
      * Create a ReactorConnectionCache that is responsible for obtaining a connection, waiting for it to active,
@@ -86,6 +88,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         });
 
         this.createOrGetCachedConnection = newConnection.flatMap(c -> {
+            state.transfer(c);
             withConnectionId(logger, c.getId()).log("Waiting to connect and active.");
 
             return c.connectAndAwaitToActive().doOnCancel(() -> {
@@ -288,5 +291,16 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
 
     private static LoggingEventBuilder withConnectionId(ClientLogger logger, String id) {
         return logger.atInfo().addKeyValue(CONNECTION_ID_KEY, id);
+    }
+
+    private static final class State {
+        private final AtomicReference<ReactorConnection> s = new AtomicReference<>(null);
+
+        void transfer(ReactorConnection c) {
+            final ReactorConnection from = s.getAndSet(c);
+            if (from != null) {
+                c.transferState(from);
+            }
+        }
     }
 }

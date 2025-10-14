@@ -5,9 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.test.TestMode;
@@ -17,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.SharedExecutorService;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -33,12 +29,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
-import reactor.core.publisher.Mono;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -56,18 +50,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.azure.core.test.utils.TestUtils.getFaultInjectingHttpClient;
 import static com.azure.storage.blob.BlobTestBase.ENVIRONMENT;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set of tests that use <a href="">HTTP fault injecting</a> to simulate scenarios where the network has random errors.
+ * Isolated is used to ensure that timeouts caused by resource related issues are not mistaken for fault injections.
  */
 @EnabledIf("shouldRun")
+@Isolated
 public class HttpFaultInjectingTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpFaultInjectingTests.class);
-    private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
-    private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER
-        = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
 
     private BlobContainerClient containerClient;
 
@@ -112,7 +106,7 @@ public class HttpFaultInjectingTests {
             .containerName(containerClient.getBlobContainerName())
             .blobName(containerClient.getBlobContainerName())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .httpClient(new HttpFaultInjectingHttpClient(getFaultInjectingWrappedHttpClient()))
+            .httpClient(getFaultInjectingHttpClient(getFaultInjectingWrappedHttpClient(), false))
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 4, null, 10L, 10L, null))
             .buildClient();
 
@@ -155,7 +149,8 @@ public class HttpFaultInjectingTests {
 
         countDownLatch.await(10, TimeUnit.MINUTES);
 
-        assertTrue(successCount.get() >= 450);
+        assertTrue(successCount.get() >= 450,
+            () -> "Expected over 450 successes, actual success count was: " + successCount.get());
         // cleanup
         files.forEach(it -> {
             try {
@@ -214,95 +209,6 @@ public class HttpFaultInjectingTests {
         }
 
         return (Class<? extends HttpClientProvider>) clazz;
-    }
-
-    // For now a local implementation is here in azure-storage-blob until this is released in azure-core-test.
-    // Since this is a local definition with a clear set of configurations everything is simplified.
-    private static final class HttpFaultInjectingHttpClient implements HttpClient {
-        private final HttpClient wrappedHttpClient;
-
-        HttpFaultInjectingHttpClient(HttpClient wrappedHttpClient) {
-            this.wrappedHttpClient = wrappedHttpClient;
-        }
-
-        @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
-            return send(request, Context.NONE);
-        }
-
-        @Override
-        public Mono<HttpResponse> send(HttpRequest request, Context context) {
-            URL originalUrl = request.getUrl();
-            request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
-            String faultType = faultInjectorHandling();
-            request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
-
-            return wrappedHttpClient.send(request, context).map(response -> {
-                HttpRequest request1 = response.getRequest();
-                request1.getHeaders().remove(UPSTREAM_URI_HEADER);
-                request1.setUrl(originalUrl);
-
-                return response;
-            });
-        }
-
-        @Override
-        public HttpResponse sendSync(HttpRequest request, Context context) {
-            URL originalUrl = request.getUrl();
-            request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
-            String faultType = faultInjectorHandling();
-            request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
-
-            HttpResponse response = wrappedHttpClient.sendSync(request, context);
-            response.getRequest().setUrl(originalUrl);
-            response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
-
-            return response;
-        }
-
-        private static URL rewriteUrl(URL originalUrl) {
-            try {
-                return UrlBuilder.parse(originalUrl).setScheme("http").setHost("localhost").setPort(7777).toUrl();
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        private static String faultInjectorHandling() {
-            // f: Full response
-            // p: Partial Response (full headers, 50% of body), then wait indefinitely
-            // pc: Partial Response (full headers, 50% of body), then close (TCP FIN)
-            // pa: Partial Response (full headers, 50% of body), then abort (TCP RST)
-            // pn: Partial Response (full headers, 50% of body), then finish normally
-            // n: No response, then wait indefinitely
-            // nc: No response, then close (TCP FIN)
-            // na: No response, then abort (TCP RST)
-            double random = ThreadLocalRandom.current().nextDouble();
-            int choice = (int) (random * 100);
-
-            if (choice >= 25) {
-                // 75% of requests complete without error.
-                return "f";
-            } else if (choice >= 1) {
-                if (random <= 0.34D) {
-                    return "n";
-                } else if (random <= 0.67D) {
-                    return "nc";
-                } else {
-                    return "na";
-                }
-            } else {
-                if (random <= 0.25D) {
-                    return "p";
-                } else if (random <= 0.50D) {
-                    return "pc";
-                } else if (random <= 0.75D) {
-                    return "pa";
-                } else {
-                    return "pn";
-                }
-            }
-        }
     }
 
     private static boolean shouldRun() {

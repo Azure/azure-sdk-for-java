@@ -7,8 +7,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.Rack;
@@ -22,24 +22,25 @@ public final class RacksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"dveksbuhoduch\",\"type\":\"lscrdpibfdyjduss\"},\"properties\":{\"availabilityZone\":\"yszekbhwlka\",\"clusterId\":\"gkrehbf\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"bffljfiimreoag\",\"provisioningState\":\"Failed\",\"rackLocation\":\"aadusrexxfa\",\"rackSerialNumber\":\"sqwudohzilfmnli\",\"rackSkuId\":\"psimsf\"},\"location\":\"pofqpmbhy\",\"tags\":{\"erhsmvgohtw\":\"drmmttjxoph\",\"wwmhkruwae\":\"mqilrixysfnimsqy\",\"in\":\"rympmlq\",\"njdiqfliejhpcl\":\"zduewihapfjii\"},\"id\":\"iedfsbwcei\",\"name\":\"bv\",\"type\":\"ipbwxgooo\"}]}";
+            = "{\"value\":[{\"etag\":\"syaowuzowp\",\"extendedLocation\":{\"name\":\"ohdkcprgukx\",\"type\":\"ztiochluti\"},\"properties\":{\"availabilityZone\":\"mqrud\",\"clusterId\":\"zcbf\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"unfhiucnmfbcp\",\"provisioningState\":\"Failed\",\"rackLocation\":\"tk\",\"rackSerialNumber\":\"umzued\",\"rackSkuId\":\"yzbfvxovqkx\"},\"location\":\"xqggvqr\",\"tags\":{\"jhffbxrqrkij\":\"hlwcjsqg\",\"wmwwmjswen\":\"euqlsdxeqztv\",\"ecleqioulndhzyo\":\"wwa\"},\"id\":\"ojhtollhs\",\"name\":\"idmytzln\",\"type\":\"lxpnovyoanf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Rack> response = manager.racks().listByResourceGroup("cu", com.azure.core.util.Context.NONE);
+        PagedIterable<Rack> response
+            = manager.racks().listByResourceGroup("svvoqsbpkflanfk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pofqpmbhy", response.iterator().next().location());
-        Assertions.assertEquals("drmmttjxoph", response.iterator().next().tags().get("erhsmvgohtw"));
-        Assertions.assertEquals("dveksbuhoduch", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("lscrdpibfdyjduss", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("yszekbhwlka", response.iterator().next().availabilityZone());
-        Assertions.assertEquals("aadusrexxfa", response.iterator().next().rackLocation());
-        Assertions.assertEquals("sqwudohzilfmnli", response.iterator().next().rackSerialNumber());
-        Assertions.assertEquals("psimsf", response.iterator().next().rackSkuId());
+        Assertions.assertEquals("xqggvqr", response.iterator().next().location());
+        Assertions.assertEquals("hlwcjsqg", response.iterator().next().tags().get("jhffbxrqrkij"));
+        Assertions.assertEquals("ohdkcprgukx", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("ztiochluti", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("mqrud", response.iterator().next().availabilityZone());
+        Assertions.assertEquals("tk", response.iterator().next().rackLocation());
+        Assertions.assertEquals("umzued", response.iterator().next().rackSerialNumber());
+        Assertions.assertEquals("yzbfvxovqkx", response.iterator().next().rackSkuId());
     }
 }

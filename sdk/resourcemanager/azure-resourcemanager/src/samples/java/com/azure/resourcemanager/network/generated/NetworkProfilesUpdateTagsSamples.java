@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NetworkProfilesUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkProfileUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkProfileUpdateTags.json
      */
     /**
      * Sample code: Update network profile tags.

@@ -5,12 +5,10 @@ package com.azure.health.deidentification.realtime;
 
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
-import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.PhiCategory;
+import com.azure.health.deidentification.models.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,10 +25,12 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        content.setOperationType(DeidentificationOperationType.SURROGATE);
+        DeidentificationCustomizationOptions options = new DeidentificationCustomizationOptions();
+        options.setSurrogateLocale("en-US");
+        content.setCustomizations(options);
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         assertNull(result.getTaggerResult());
         assertNotNull(result.getOutputText());
@@ -43,15 +43,12 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        content.setOperationType(DeidentificationOperationType.TAG);
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         assertNotNull(result.getTaggerResult());
         assertNull(result.getOutputText());
-        assertNull(result.getTaggerResult().getEtag());
-        assertNull(result.getTaggerResult().getPath());
         assertFalse(result.getTaggerResult().getEntities().isEmpty());
         assertTrue(result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
             || result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
@@ -60,4 +57,38 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         assertEquals(10, result.getTaggerResult().getEntities().get(0).getLength().getUtf8());
     }
 
+    @Test
+    void testRedactReturnsExpected() {
+        deidentificationClient = getDeidServicesClientBuilder().buildClient();
+        String inputText = "Hello, my name is John Smith.";
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperationType(DeidentificationOperationType.REDACT);
+        DeidentificationCustomizationOptions options = new DeidentificationCustomizationOptions();
+        options.setInputLocale("en-US");
+        content.setCustomizations(options);
+
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
+
+        assertNotNull(result);
+        assertNull(result.getTaggerResult());
+        assertNotNull(result.getOutputText());
+        assertEquals("Hello, my name is [patient].", result.getOutputText());
+    }
+
+    @Test
+    void testSurrogateOnlyReturnsExpected() {
+        deidentificationClient = getDeidServicesClientBuilder().buildClient();
+        String inputText = "Hello, my name is John Smith.";
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperationType(DeidentificationOperationType.SURROGATE_ONLY);
+        content.setTaggedEntities(
+            new TaggedPhiEntities(Collections.singletonList(new SimplePhiEntity(PhiCategory.PATIENT, 18, 10))));
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
+
+        assertNotNull(result);
+        assertNull(result.getTaggerResult());
+        assertNotNull(result.getOutputText());
+        assertTrue(result.getOutputText().length() > 21);
+        assertNotEquals(inputText, result.getOutputText());
+    }
 }

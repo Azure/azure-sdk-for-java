@@ -29,9 +29,9 @@ public final class DomainUpdateParameterPropertiesTests {
         Assertions.assertEquals("ytkblmpew", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_ONE, model.minimumTlsVersionAllowed());
-        Assertions.assertEquals(false, model.disableLocalAuth());
-        Assertions.assertEquals(true, model.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.autoDeleteTopicWithLastSubscription());
+        Assertions.assertFalse(model.disableLocalAuth());
+        Assertions.assertTrue(model.autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(model.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.dataResidencyBoundary());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
         Assertions.assertEquals("uvwbhsqfs",
@@ -77,9 +77,9 @@ public final class DomainUpdateParameterPropertiesTests {
         Assertions.assertEquals("ytkblmpew", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_ONE, model.minimumTlsVersionAllowed());
-        Assertions.assertEquals(false, model.disableLocalAuth());
-        Assertions.assertEquals(true, model.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.autoDeleteTopicWithLastSubscription());
+        Assertions.assertFalse(model.disableLocalAuth());
+        Assertions.assertTrue(model.autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(model.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.dataResidencyBoundary());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
         Assertions.assertEquals("uvwbhsqfs",

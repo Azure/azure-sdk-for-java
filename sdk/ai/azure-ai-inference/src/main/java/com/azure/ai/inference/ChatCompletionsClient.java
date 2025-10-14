@@ -163,12 +163,12 @@ public final class ChatCompletionsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }

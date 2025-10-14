@@ -23,7 +23,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.5</version>
+  <version>3.0.0-beta.6</version>
 </dependency>
 ```
 
@@ -52,6 +52,10 @@ You can authenticate with Azure Active Directory using the [Azure Identity libra
 endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order
 to use this type of authentication.
 
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided
 with the Azure SDK, please include the `azure-identity` package:
 
@@ -61,15 +65,12 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 
 You will also need to [register a new AAD application][register_aad_app] and [grant access][aad_grant_access] to 
 Anomaly Detector by assigning the `"Cognitive Services User"` role to your service principal.
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
-AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Sync client
 
@@ -199,7 +200,7 @@ These code samples show common scenario operations with the Azure Anomaly Detect
 under the [samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector) directory.
 
 For more extensive documentation on Azure Anomaly Detector, see the [Anomaly Detector documentation](https://learn.microsoft.com/azure/cognitive-services/anomaly-detector/overview) on
-docs.microsoft.com.
+learn.microsoft.com.
 
 ## Contributing
 
@@ -224,21 +225,23 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
-[product_documentation]: https://docs.microsoft.com/azure/cognitive-services/anomaly-detector/
-[cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
+[product_documentation]: https://learn.microsoft.com/azure/cognitive-services/anomaly-detector/
+[cognitive_resource_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
 [multivariate_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/MultivariateClient.java
 [multivariate_async_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/MultivariateAsyncClient.java
 [univariate_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/UnivariateClient.java
 [univariate_async_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/UnivariateAsyncClient.java
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[aad_grant_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-anomalydetector
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/README.md
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fanomalydetector%2Fazure-ai-anomalydetector%2FREADME.png)
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

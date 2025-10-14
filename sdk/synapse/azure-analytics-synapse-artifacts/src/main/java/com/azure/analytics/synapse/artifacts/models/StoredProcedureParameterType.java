@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
     /**
      * Static value String for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType STRING = fromString("String");
 
     /**
      * Static value Int for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType INT = fromString("Int");
 
     /**
      * Static value Int64 for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType INT64 = fromString("Int64");
 
     /**
      * Static value Decimal for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType DECIMAL = fromString("Decimal");
 
     /**
      * Static value Guid for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType GUID = fromString("Guid");
 
     /**
      * Static value Boolean for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType BOOLEAN = fromString("Boolean");
 
     /**
      * Static value Date for StoredProcedureParameterType.
      */
+    @Generated
     public static final StoredProcedureParameterType DATE = fromString("Date");
 
     /**
@@ -51,6 +59,7 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StoredProcedureParameterType() {
     }
@@ -61,6 +70,7 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
      * @param name a name to look for.
      * @return the corresponding StoredProcedureParameterType.
      */
+    @Generated
     public static StoredProcedureParameterType fromString(String name) {
         return fromString(name, StoredProcedureParameterType.class);
     }
@@ -70,6 +80,7 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
      * 
      * @return known StoredProcedureParameterType values.
      */
+    @Generated
     public static Collection<StoredProcedureParameterType> values() {
         return values(StoredProcedureParameterType.class);
     }

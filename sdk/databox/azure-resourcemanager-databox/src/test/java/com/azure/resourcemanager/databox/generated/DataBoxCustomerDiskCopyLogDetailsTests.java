@@ -11,7 +11,7 @@ public final class DataBoxCustomerDiskCopyLogDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataBoxCustomerDiskCopyLogDetails model = BinaryData.fromString(
-            "{\"copyLogDetailsType\":\"DataBoxCustomerDisk\",\"serialNumber\":\"hp\",\"errorLogLink\":\"kgymareqnajxqug\",\"verboseLogLink\":\"ky\"}")
+            "{\"copyLogDetailsType\":\"DataBoxCustomerDisk\",\"serialNumber\":\"imfnjhfjx\",\"errorLogLink\":\"szkkfoqre\",\"verboseLogLink\":\"kzikfjawneaivxwc\"}")
             .toObject(DataBoxCustomerDiskCopyLogDetails.class);
     }
 

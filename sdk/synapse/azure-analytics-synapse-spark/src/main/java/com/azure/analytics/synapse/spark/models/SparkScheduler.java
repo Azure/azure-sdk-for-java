@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,31 +23,37 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
     /*
      * The submittedAt property.
      */
+    @Generated
     private OffsetDateTime submittedAt;
 
     /*
      * The scheduledAt property.
      */
+    @Generated
     private OffsetDateTime scheduledAt;
 
     /*
      * The endedAt property.
      */
+    @Generated
     private OffsetDateTime endedAt;
 
     /*
      * The cancellationRequestedAt property.
      */
+    @Generated
     private OffsetDateTime cancellationRequestedAt;
 
     /*
      * The currentState property.
      */
+    @Generated
     private SchedulerCurrentState currentState;
 
     /**
      * Creates an instance of SparkScheduler class.
      */
+    @Generated
     public SparkScheduler() {
     }
 
@@ -55,6 +62,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * 
      * @return the submittedAt value.
      */
+    @Generated
     public OffsetDateTime getSubmittedAt() {
         return this.submittedAt;
     }
@@ -65,6 +73,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * @param submittedAt the submittedAt value to set.
      * @return the SparkScheduler object itself.
      */
+    @Generated
     public SparkScheduler setSubmittedAt(OffsetDateTime submittedAt) {
         this.submittedAt = submittedAt;
         return this;
@@ -75,6 +84,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * 
      * @return the scheduledAt value.
      */
+    @Generated
     public OffsetDateTime getScheduledAt() {
         return this.scheduledAt;
     }
@@ -85,6 +95,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * @param scheduledAt the scheduledAt value to set.
      * @return the SparkScheduler object itself.
      */
+    @Generated
     public SparkScheduler setScheduledAt(OffsetDateTime scheduledAt) {
         this.scheduledAt = scheduledAt;
         return this;
@@ -95,6 +106,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * 
      * @return the endedAt value.
      */
+    @Generated
     public OffsetDateTime getEndedAt() {
         return this.endedAt;
     }
@@ -105,6 +117,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * @param endedAt the endedAt value to set.
      * @return the SparkScheduler object itself.
      */
+    @Generated
     public SparkScheduler setEndedAt(OffsetDateTime endedAt) {
         this.endedAt = endedAt;
         return this;
@@ -115,6 +128,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * 
      * @return the cancellationRequestedAt value.
      */
+    @Generated
     public OffsetDateTime getCancellationRequestedAt() {
         return this.cancellationRequestedAt;
     }
@@ -125,6 +139,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * @param cancellationRequestedAt the cancellationRequestedAt value to set.
      * @return the SparkScheduler object itself.
      */
+    @Generated
     public SparkScheduler setCancellationRequestedAt(OffsetDateTime cancellationRequestedAt) {
         this.cancellationRequestedAt = cancellationRequestedAt;
         return this;
@@ -135,6 +150,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * 
      * @return the currentState value.
      */
+    @Generated
     public SchedulerCurrentState getCurrentState() {
         return this.currentState;
     }
@@ -145,6 +161,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * @param currentState the currentState value to set.
      * @return the SparkScheduler object itself.
      */
+    @Generated
     public SparkScheduler setCurrentState(SchedulerCurrentState currentState) {
         this.currentState = currentState;
         return this;
@@ -153,6 +170,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,6 +196,7 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkScheduler.
      */
+    @Generated
     public static SparkScheduler fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkScheduler deserializedSparkScheduler = new SparkScheduler();

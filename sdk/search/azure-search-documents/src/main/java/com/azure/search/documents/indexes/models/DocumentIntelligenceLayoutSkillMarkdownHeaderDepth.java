@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,31 +18,37 @@ public final class DocumentIntelligenceLayoutSkillMarkdownHeaderDepth
     /**
      * Header level 1.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillMarkdownHeaderDepth H1 = fromString("h1");
 
     /**
      * Header level 2.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillMarkdownHeaderDepth H2 = fromString("h2");
 
     /**
      * Header level 3.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillMarkdownHeaderDepth H3 = fromString("h3");
 
     /**
      * Header level 4.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillMarkdownHeaderDepth H4 = fromString("h4");
 
     /**
      * Header level 5.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillMarkdownHeaderDepth H5 = fromString("h5");
 
     /**
      * Header level 6.
      */
+    @Generated
     public static final DocumentIntelligenceLayoutSkillMarkdownHeaderDepth H6 = fromString("h6");
 
     /**
@@ -49,6 +56,7 @@ public final class DocumentIntelligenceLayoutSkillMarkdownHeaderDepth
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentIntelligenceLayoutSkillMarkdownHeaderDepth() {
     }
@@ -59,6 +67,7 @@ public final class DocumentIntelligenceLayoutSkillMarkdownHeaderDepth
      * @param name a name to look for.
      * @return the corresponding DocumentIntelligenceLayoutSkillMarkdownHeaderDepth.
      */
+    @Generated
     public static DocumentIntelligenceLayoutSkillMarkdownHeaderDepth fromString(String name) {
         return fromString(name, DocumentIntelligenceLayoutSkillMarkdownHeaderDepth.class);
     }
@@ -68,6 +77,7 @@ public final class DocumentIntelligenceLayoutSkillMarkdownHeaderDepth
      * 
      * @return known DocumentIntelligenceLayoutSkillMarkdownHeaderDepth values.
      */
+    @Generated
     public static Collection<DocumentIntelligenceLayoutSkillMarkdownHeaderDepth> values() {
         return values(DocumentIntelligenceLayoutSkillMarkdownHeaderDepth.class);
     }

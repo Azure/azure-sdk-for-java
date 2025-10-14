@@ -1,16 +1,105 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.20.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added `AzureProfile(AzureCloud azureCloud)` constructor overload.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.19.2 (2025-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to `1.57.0`.
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+
+## 1.19.1 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to `1.56.1`.
+
+## 1.19.0 (2025-08-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to `1.56.0`.
+- Upgraded Reactor from `3.4.41` to `3.7.8`. ([#46207](https://github.com/Azure/azure-sdk-for-java/pull/46207))
+
+## 1.18.1 (2025-06-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 1.18.0 (2025-06-05)
+
+### Features Added
+
+- Added new Azure regions:
+  - `Region.MEXICO_CENTRAL`
+  - `Region.SPAIN_CENTRAL`
+  - `Region.POLAND_CENTRAL`
+  - `Region.INDONESIA_CENTRAL`
+  - `Region.NEW_ZEALAND_NORTH`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
+
+## 1.17.0 (2025-03-10)
+
+### Features Added
+
+- Added sync-stack support `SyncPollerFactory`, for Azure Resource Manager(ARM) long-running-operation(LRO).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.16.2 (2025-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to `1.55.2`.
+
+## 1.16.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
+
+## 1.16.0 (2025-02-06)
+
+### Features Added
+
+- Added `AzureProfile(AzureCloud azureCloud)` constructor overload.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
 
 ## 1.15.6 (2024-11-14)
 

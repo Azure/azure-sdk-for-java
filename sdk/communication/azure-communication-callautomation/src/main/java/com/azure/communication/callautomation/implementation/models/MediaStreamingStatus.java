@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
     /**
      * Static value mediaStreamingStarted for MediaStreamingStatus.
      */
+    @Generated
     public static final MediaStreamingStatus MEDIA_STREAMING_STARTED = fromString("mediaStreamingStarted");
 
     /**
      * Static value mediaStreamingFailed for MediaStreamingStatus.
      */
+    @Generated
     public static final MediaStreamingStatus MEDIA_STREAMING_FAILED = fromString("mediaStreamingFailed");
 
     /**
      * Static value mediaStreamingStopped for MediaStreamingStatus.
      */
+    @Generated
     public static final MediaStreamingStatus MEDIA_STREAMING_STOPPED = fromString("mediaStreamingStopped");
 
     /**
      * Static value unspecifiedError for MediaStreamingStatus.
      */
+    @Generated
     public static final MediaStreamingStatus UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
@@ -36,6 +41,7 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MediaStreamingStatus() {
     }
@@ -46,6 +52,7 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
      * @param name a name to look for.
      * @return the corresponding MediaStreamingStatus.
      */
+    @Generated
     public static MediaStreamingStatus fromString(String name) {
         return fromString(name, MediaStreamingStatus.class);
     }
@@ -55,6 +62,7 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
      * 
      * @return known MediaStreamingStatus values.
      */
+    @Generated
     public static Collection<MediaStreamingStatus> values() {
         return values(MediaStreamingStatus.class);
     }

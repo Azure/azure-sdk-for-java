@@ -10,21 +10,24 @@
 
   <modules>
     <module>common/perf-test-core</module>
-    <module>eng/code-quality-reports</module>
     <module>sdk/advisor</module>
     <module>sdk/agrifood</module>
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
-    <module>sdk/aot</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
+    <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/appplatform</module>
+    <module>sdk/appservice</module>
+    <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
+    <module>sdk/authorization</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
     <module>sdk/avs</module>
@@ -34,17 +37,20 @@
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
     <module>sdk/batch</module>
-    <module>sdk/batchai</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
+    <module>sdk/carbonoptimization</module>
+    <module>sdk/cdn</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
     <module>sdk/clientcore</module>
+    <module>sdk/cloudhealth</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
+    <module>sdk/compute</module>
     <module>sdk/computefleet</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
@@ -52,16 +58,21 @@
     <module>sdk/connectedcache</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
+    <module>sdk/containerinstance</module>
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
+    <module>sdk/containerservice</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
+    <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
     <module>sdk/customerinsights</module>
     <module>sdk/dashboard</module>
+    <module>sdk/databasewatcher</module>
     <module>sdk/databox</module>
     <module>sdk/databoxedge</module>
     <module>sdk/databricks</module>
@@ -73,6 +84,8 @@
     <module>sdk/dataprotection</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
+    <module>sdk/dell</module>
+    <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>
@@ -84,8 +97,11 @@
     <module>sdk/devspaces</module>
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
+    <module>sdk/disconnectedoperations</module>
+    <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
+    <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
     <module>sdk/edgeorder</module>
@@ -115,23 +131,26 @@
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
+    <module>sdk/identity-v2</module>
     <module>sdk/imagebuilder</module>
+    <module>sdk/impactreporting</module>
     <module>sdk/informaticadatamanagement</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
     <module>sdk/iothub</module>
     <module>sdk/iotoperations</module>
     <module>sdk/keyvault</module>
+    <module>sdk/keyvault-v2</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
+    <module>sdk/lambdatesthyperexecute</module>
     <module>sdk/largeinstance</module>
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
     <module>sdk/logz</module>
     <module>sdk/machinelearning</module>
-    <module>sdk/machinelearningservices</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
@@ -141,16 +160,20 @@
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
+    <module>sdk/mongodbatlas</module>
     <module>sdk/monitor</module>
+    <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
+    <module>sdk/network</module>
     <module>sdk/networkanalytics</module>
     <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
@@ -158,6 +181,7 @@
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
+    <module>sdk/onlineexperimentation</module>
     <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/oracledatabase</module>
@@ -166,12 +190,19 @@
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
+    <module>sdk/pineconevectordb</module>
+    <module>sdk/planetarycomputer</module>
+    <module>sdk/playwright</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
+    <module>sdk/portalservices</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
+    <module>sdk/privatedns</module>
+    <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
+    <module>sdk/purestorageblock</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
     <module>sdk/qumulo</module>
@@ -181,6 +212,7 @@
     <module>sdk/recoveryservicesdatareplication</module>
     <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redhatopenshift</module>
+    <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
@@ -190,9 +222,11 @@
     <module>sdk/resourcehealth</module>
     <module>sdk/resourcemanager</module>
     <module>sdk/resourcemover</module>
+    <module>sdk/resources</module>
     <module>sdk/schemaregistry</module>
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
+    <module>sdk/secretsstoreextension</module>
     <module>sdk/security</module>
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
@@ -204,16 +238,19 @@
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>
+    <module>sdk/sitemanager</module>
     <module>sdk/sphere</module>
     <module>sdk/spring</module>
     <module>sdk/spring-experimental</module>
     <module>sdk/springappdiscovery</module>
+    <module>sdk/sql</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>
+    <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
-    <module>sdk/storageimportexport</module>
+    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -222,17 +259,20 @@
     <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
+    <module>sdk/template-v2</module>
     <module>sdk/terraform</module>
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>
+    <module>sdk/trafficmanager</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/videoanalyzer</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
+    <module>sdk/weightsandbiases</module>
+    <module>sdk/workloadorchestration</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>

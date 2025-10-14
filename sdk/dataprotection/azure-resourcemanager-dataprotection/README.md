@@ -1,8 +1,8 @@
-# Azure Resource Manager DataProtection client library for Java
+# Azure Resource Manager Data Protection client library for Java
 
-Azure Resource Manager DataProtection client library for Java.
+Azure Resource Manager Data Protection client library for Java.
 
-This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Data Protection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-dataprotection</artifactId>
-    <version>1.3.0</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment 
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -60,7 +60,7 @@ DataProtectionManager manager = DataProtectionManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -71,39 +71,24 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 
 ```java
-resource = dataProtectionManager
-        .backupVaults()
-        .define(vaultName)
-        .withRegion(REGION)
-        .withExistingResourceGroup(resourceGroupName)
-        .withProperties(
-                new BackupVault()
-                        .withMonitoringSettings(
-                                new MonitoringSettings()
-                                        .withAzureMonitorAlertSettings(
-                                                new AzureMonitorAlertSettings()
-                                                        .withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                        .withSecuritySettings(
-                                new SecuritySettings()
-                                        .withSoftDeleteSettings(
-                                                new SoftDeleteSettings()
-                                                        .withState(SoftDeleteState.ALWAYS_ON)
-                                                        .withRetentionDurationInDays(14.0D))
-                                        .withImmutabilitySettings(
-                                                new ImmutabilitySettings()
-                                                        .withState(ImmutabilityState.LOCKED)))
-                        .withStorageSettings(
-                                Collections.singletonList(
-                                        new StorageSetting()
-                                                .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                                .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                        .withFeatureSettings(
-                                new FeatureSettings()
-                                        .withCrossSubscriptionRestoreSettings(
-                                                new CrossSubscriptionRestoreSettings()
-                                                        .withState(CrossSubscriptionRestoreState.ENABLED))))
-        .withIdentity(new DppIdentityDetails().withType("systemAssigned"))
-        .create();
+resource = dataProtectionManager.backupVaults()
+    .define(vaultName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withProperties(new BackupVault()
+        .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+            new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+        .withSecuritySettings(new SecuritySettings()
+            .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
+                .withRetentionDurationInDays(14.0D))
+            .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)))
+        .withStorageSettings(Collections
+            .singletonList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+        .withFeatureSettings(new FeatureSettings().withCrossSubscriptionRestoreSettings(
+            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))))
+    .withIdentity(new DppIdentityDetails().withType("systemAssigned"))
+    .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/dataprotection/azure-resourcemanager-dataprotection/SAMPLE.md)
 
@@ -135,5 +120,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdataprotection%2Fazure-resourcemanager-dataprotection%2FREADME.png)

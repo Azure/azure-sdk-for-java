@@ -60,7 +60,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.25.1</version>
+  <version>12.28.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -586,19 +586,19 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/src/
 [reference_docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_api_documentation]: https://docs.microsoft.com/rest/api/storageservices/file-service-rest-api
-[storage_docs]: https://docs.microsoft.com/azure/storage/files/storage-files-introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[rest_api_documentation]: https://learn.microsoft.com/rest/api/storageservices/file-service-rest-api
+[storage_docs]: https://learn.microsoft.com/azure/storage/files/storage-files-introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[azure_cli]: https://learn.microsoft.com/cli/azure
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [RFC_URL_1]: https://www.ietf.org/rfc/rfc2616.txt
 [RFL_URL_2]: https://www.ietf.org/rfc/rfc3987.txt
-[csharp_identifiers]: https://docs.microsoft.com/dotnet/csharp/language-reference/
-[storage_file_rest]: https://docs.microsoft.com/rest/api/storageservices/file-service-error-codes
+[csharp_identifiers]: https://learn.microsoft.com/dotnet/csharp/language-reference/
+[storage_file_rest]: https://learn.microsoft.com/rest/api/storageservices/file-service-error-codes
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/src/samples
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2FREADME.png)
+

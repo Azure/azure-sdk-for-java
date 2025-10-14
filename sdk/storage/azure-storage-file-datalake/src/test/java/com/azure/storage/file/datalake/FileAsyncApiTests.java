@@ -54,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -62,6 +63,7 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
@@ -4332,6 +4334,71 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> upnHeaderTestSupplier() {
         return Stream.of(Arguments.of(false), Arguments.of(true), Arguments.of((Boolean) null));
+    }
+
+    @Test
+    public void pathGetSystemPropertiesFile() {
+        // setup
+        FileSystemEncryptionScopeOptions encryptionScope
+            = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
+                .setEncryptionScopeOverridePrevented(true);
+
+        dataLakeFileSystemAsyncClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+        DataLakeFileSystemAsyncClient client
+            = getFileSystemClientBuilder(dataLakeFileSystemAsyncClient.getFileSystemUrl())
+                .credential(getDataLakeCredential())
+                .fileSystemEncryptionScopeOptions(encryptionScope)
+                .buildAsyncClient();
+
+        DataLakeFileAsyncClient fc = client.getFileAsyncClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions();
+        options.setPermissions("rwxr-x---");
+        String owner = testResourceNamer.randomUuid();
+        String group = testResourceNamer.randomUuid();
+        options.setOwner(owner);
+        options.setGroup(group);
+        options.setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)));
+
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl("control")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type");
+        options.setPathHttpHeaders(headers);
+        options.setProposedLeaseId(CoreUtils.randomUuid().toString());
+        options.setLeaseDuration(15);
+        options.setMetadata(Collections.singletonMap("foo", "bar"));
+
+        StepVerifier
+            .create(client.create().then(fc.createWithResponse(options)).then(fc.getSystemPropertiesWithResponse(null)))
+            .assertNext(r -> {
+                PathSystemProperties value = r.getValue();
+
+                // should be present in the response
+                assertEquals(200, r.getStatusCode());
+                assertNotNull(value.getCreationTime());
+                assertNotNull(value.getLastModified());
+                assertNotNull(value.getETag());
+                assertEquals(0, value.getFileSize());
+                assertFalse(value.isDirectory());
+                assertTrue(value.isServerEncrypted());
+                assertNotNull(value.getExpiresOn());
+                assertEquals(ENCRYPTION_SCOPE_STRING, value.getEncryptionScope());
+                assertEquals(owner, value.getOwner());
+                assertEquals(group, value.getGroup());
+                assertEquals(PathPermissions.parseSymbolic("rwxr-x---").toString(), value.getPermissions().toString());
+
+                // should not be present in the response
+                validateUserDefinedHeadersNotPresent(r);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void pathGetSystemPropertiesFileMin() {
+        StepVerifier.create(fc.getSystemProperties()).expectNextCount(1).verifyComplete();
     }
 
 }

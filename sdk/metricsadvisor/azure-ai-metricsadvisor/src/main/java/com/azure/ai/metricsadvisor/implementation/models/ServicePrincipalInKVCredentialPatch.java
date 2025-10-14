@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV;
 
     /*
      * The parameters property.
      */
+    @Generated
     private ServicePrincipalInKVParamPatch parameters;
 
     /**
      * Creates an instance of ServicePrincipalInKVCredentialPatch class.
      */
+    @Generated
     public ServicePrincipalInKVCredentialPatch() {
     }
 
@@ -36,6 +40,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     @Override
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
@@ -46,6 +51,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * 
      * @return the parameters value.
      */
+    @Generated
     public ServicePrincipalInKVParamPatch getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalInKVCredentialPatch object itself.
      */
+    @Generated
     public ServicePrincipalInKVCredentialPatch setParameters(ServicePrincipalInKVParamPatch parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalInKVCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -73,6 +81,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalInKVCredentialPatch
         setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
@@ -83,6 +92,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +112,7 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ServicePrincipalInKVCredentialPatch.
      */
+    @Generated
     public static ServicePrincipalInKVCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalInKVCredentialPatch deserializedServicePrincipalInKVCredentialPatch

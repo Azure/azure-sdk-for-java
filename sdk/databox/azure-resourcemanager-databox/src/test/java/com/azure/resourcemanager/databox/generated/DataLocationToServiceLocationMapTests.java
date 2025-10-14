@@ -11,7 +11,7 @@ public final class DataLocationToServiceLocationMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataLocationToServiceLocationMap model
-            = BinaryData.fromString("{\"dataLocation\":\"n\",\"serviceLocation\":\"nxipeil\"}")
+            = BinaryData.fromString("{\"dataLocation\":\"alaexqpvfadmwsrc\",\"serviceLocation\":\"vxpvgomz\"}")
                 .toObject(DataLocationToServiceLocationMap.class);
     }
 

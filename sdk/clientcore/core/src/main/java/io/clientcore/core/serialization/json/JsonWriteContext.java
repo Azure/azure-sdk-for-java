@@ -3,6 +3,9 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 /**
  * Context of JSON handling.
  * <p>
@@ -11,6 +14,7 @@ package io.clientcore.core.serialization.json;
  *
  * @see JsonWriter
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public final class JsonWriteContext {
     /**
      * Initial writing context.

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,86 +24,103 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
     /*
      * Type of field value.
      */
+    @Generated
     private FieldValueType type;
 
     /*
      * String value.
      */
+    @Generated
     private String valueString;
 
     /*
      * Date value.
      */
+    @Generated
     private LocalDate valueDate;
 
     /*
      * Time value.
      */
+    @Generated
     private String valueTime;
 
     /*
      * Phone number value.
      */
+    @Generated
     private String valuePhoneNumber;
 
     /*
      * Floating point value.
      */
+    @Generated
     private Float valueNumber;
 
     /*
      * Integer value.
      */
+    @Generated
     private Integer valueInteger;
 
     /*
      * Array of field values.
      */
+    @Generated
     private List<FieldValue> valueArray;
 
     /*
      * Dictionary of named field values.
      */
+    @Generated
     private Map<String, FieldValue> valueObject;
 
     /*
      * Selection mark value.
      */
+    @Generated
     private FieldValueSelectionMark valueSelectionMark;
 
     /*
      * 3-letter country code (ISO 3166-1 alpha-3).
      */
+    @Generated
     private String valueCountryRegion;
 
     /*
      * Text content of the extracted field.
      */
+    @Generated
     private String text;
 
     /*
      * Bounding box of the field value, if appropriate.
      */
+    @Generated
     private List<Float> boundingBox;
 
     /*
      * Confidence score.
      */
+    @Generated
     private Float confidence;
 
     /*
      * When includeTextDetails is set to true, a list of references to the text elements constituting this field.
      */
+    @Generated
     private List<String> elements;
 
     /*
      * The 1-based page number in the input document.
      */
+    @Generated
     private Integer page;
 
     /**
      * Creates an instance of FieldValue class.
      */
+    @Generated
     public FieldValue() {
     }
 
@@ -111,6 +129,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the type value.
      */
+    @Generated
     public FieldValueType getType() {
         return this.type;
     }
@@ -121,6 +140,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param type the type value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setType(FieldValueType type) {
         this.type = type;
         return this;
@@ -131,6 +151,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueString value.
      */
+    @Generated
     public String getValueString() {
         return this.valueString;
     }
@@ -141,6 +162,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueString the valueString value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueString(String valueString) {
         this.valueString = valueString;
         return this;
@@ -151,6 +173,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueDate value.
      */
+    @Generated
     public LocalDate getValueDate() {
         return this.valueDate;
     }
@@ -161,6 +184,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueDate the valueDate value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueDate(LocalDate valueDate) {
         this.valueDate = valueDate;
         return this;
@@ -171,6 +195,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueTime value.
      */
+    @Generated
     public String getValueTime() {
         return this.valueTime;
     }
@@ -181,6 +206,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueTime the valueTime value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueTime(String valueTime) {
         this.valueTime = valueTime;
         return this;
@@ -191,6 +217,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valuePhoneNumber value.
      */
+    @Generated
     public String getValuePhoneNumber() {
         return this.valuePhoneNumber;
     }
@@ -201,6 +228,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valuePhoneNumber the valuePhoneNumber value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValuePhoneNumber(String valuePhoneNumber) {
         this.valuePhoneNumber = valuePhoneNumber;
         return this;
@@ -211,6 +239,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueNumber value.
      */
+    @Generated
     public Float getValueNumber() {
         return this.valueNumber;
     }
@@ -221,6 +250,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueNumber the valueNumber value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueNumber(Float valueNumber) {
         this.valueNumber = valueNumber;
         return this;
@@ -231,6 +261,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueInteger value.
      */
+    @Generated
     public Integer getValueInteger() {
         return this.valueInteger;
     }
@@ -241,6 +272,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueInteger the valueInteger value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueInteger(Integer valueInteger) {
         this.valueInteger = valueInteger;
         return this;
@@ -251,6 +283,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueArray value.
      */
+    @Generated
     public List<FieldValue> getValueArray() {
         return this.valueArray;
     }
@@ -261,6 +294,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueArray the valueArray value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueArray(List<FieldValue> valueArray) {
         this.valueArray = valueArray;
         return this;
@@ -271,6 +305,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueObject value.
      */
+    @Generated
     public Map<String, FieldValue> getValueObject() {
         return this.valueObject;
     }
@@ -281,6 +316,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueObject the valueObject value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueObject(Map<String, FieldValue> valueObject) {
         this.valueObject = valueObject;
         return this;
@@ -291,6 +327,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueSelectionMark value.
      */
+    @Generated
     public FieldValueSelectionMark getValueSelectionMark() {
         return this.valueSelectionMark;
     }
@@ -301,6 +338,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueSelectionMark the valueSelectionMark value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueSelectionMark(FieldValueSelectionMark valueSelectionMark) {
         this.valueSelectionMark = valueSelectionMark;
         return this;
@@ -311,6 +349,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the valueCountryRegion value.
      */
+    @Generated
     public String getValueCountryRegion() {
         return this.valueCountryRegion;
     }
@@ -321,6 +360,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param valueCountryRegion the valueCountryRegion value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setValueCountryRegion(String valueCountryRegion) {
         this.valueCountryRegion = valueCountryRegion;
         return this;
@@ -331,6 +371,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -341,6 +382,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param text the text value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setText(String text) {
         this.text = text;
         return this;
@@ -351,6 +393,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the boundingBox value.
      */
+    @Generated
     public List<Float> getBoundingBox() {
         return this.boundingBox;
     }
@@ -361,6 +404,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param boundingBox the boundingBox value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
@@ -371,6 +415,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public Float getConfidence() {
         return this.confidence;
     }
@@ -381,6 +426,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param confidence the confidence value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setConfidence(Float confidence) {
         this.confidence = confidence;
         return this;
@@ -392,6 +438,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the elements value.
      */
+    @Generated
     public List<String> getElements() {
         return this.elements;
     }
@@ -403,6 +450,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param elements the elements value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setElements(List<String> elements) {
         this.elements = elements;
         return this;
@@ -413,6 +461,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * 
      * @return the page value.
      */
+    @Generated
     public Integer getPage() {
         return this.page;
     }
@@ -423,6 +472,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @param page the page value to set.
      * @return the FieldValue object itself.
      */
+    @Generated
     public FieldValue setPage(Integer page) {
         this.page = page;
         return this;
@@ -431,6 +481,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -463,6 +514,7 @@ public final class FieldValue implements JsonSerializable<FieldValue> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FieldValue.
      */
+    @Generated
     public static FieldValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FieldValue deserializedFieldValue = new FieldValue();

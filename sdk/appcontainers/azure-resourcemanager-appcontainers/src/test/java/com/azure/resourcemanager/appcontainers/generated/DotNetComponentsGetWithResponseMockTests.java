@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponent;
@@ -22,23 +22,23 @@ public final class DotNetComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"nqifb\",\"value\":\"troiauesugmo\"},{\"propertyName\":\"cjycb\",\"value\":\"lrgttwfldsiuor\"},{\"propertyName\":\"ikcedpk\",\"value\":\"iwm\"}],\"serviceBinds\":[{\"name\":\"rx\",\"serviceId\":\"qvvyczyay\"}]},\"id\":\"tg\",\"name\":\"bxiqahragpxmibpl\",\"type\":\"upoyryefqm\"}";
+            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"ynuqqkotauratnic\",\"value\":\"fzs\"},{\"propertyName\":\"efyrletndqlmfdgg\",\"value\":\"buypwovvv\"},{\"propertyName\":\"leev\",\"value\":\"qayrehjuqwva\"}],\"serviceBinds\":[{\"name\":\"zhpzihacenqqzlx\",\"serviceId\":\"zubfo\"}]},\"id\":\"dbgmkfwmjcwte\",\"name\":\"fhxwyr\",\"type\":\"b\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DotNetComponent response = manager.dotNetComponents()
-            .getWithResponse("qoq", "umov", "fbpbvzopaxmfmvsm", com.azure.core.util.Context.NONE)
+            .getWithResponse("hscj", "akmhz", "hwahfbw", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, response.componentType());
-        Assertions.assertEquals("nqifb", response.configurations().get(0).propertyName());
-        Assertions.assertEquals("troiauesugmo", response.configurations().get(0).value());
-        Assertions.assertEquals("rx", response.serviceBinds().get(0).name());
-        Assertions.assertEquals("qvvyczyay", response.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("ynuqqkotauratnic", response.configurations().get(0).propertyName());
+        Assertions.assertEquals("fzs", response.configurations().get(0).value());
+        Assertions.assertEquals("zhpzihacenqqzlx", response.serviceBinds().get(0).name());
+        Assertions.assertEquals("zubfo", response.serviceBinds().get(0).serviceId());
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ClientGroup;
@@ -21,20 +21,20 @@ public final class ClientGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"npd\",\"query\":\"igjsugswhgs\",\"provisioningState\":\"Deleted\"},\"id\":\"wwnbafoctohz\",\"name\":\"aquvwsxbgnvkervq\",\"type\":\"hoadhrsxqvzv\"}";
+            = "{\"properties\":{\"description\":\"qtwmlmhjnqtqeahj\",\"query\":\"vragpokddx\",\"provisioningState\":\"Succeeded\"},\"id\":\"kvgu\",\"name\":\"vtptbk\",\"type\":\"wkqyns\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClientGroup response = manager.clientGroups()
-            .getWithResponse("pbwxgoooxz", "rad", "s", com.azure.core.util.Context.NONE)
+            .getWithResponse("yejuwyqwdqigmghg", "nztxlujkh", "jcmrnkfm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("npd", response.description());
-        Assertions.assertEquals("igjsugswhgs", response.query());
+        Assertions.assertEquals("qtwmlmhjnqtqeahj", response.description());
+        Assertions.assertEquals("vragpokddx", response.query());
     }
 }

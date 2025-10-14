@@ -12,27 +12,27 @@ public final class InMageAzureV2ManagedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2ManagedDiskDetails model = BinaryData.fromString(
-            "{\"diskId\":\"oizwxvs\",\"seedManagedDiskId\":\"sgfy\",\"replicaDiskType\":\"ky\",\"diskEncryptionSetId\":\"gafxczvf\",\"targetDiskName\":\"kwrt\"}")
+            "{\"diskId\":\"nlrstgf\",\"seedManagedDiskId\":\"ljdncidtjvamy\",\"replicaDiskType\":\"n\",\"diskEncryptionSetId\":\"gcdogcvucgy\",\"targetDiskName\":\"xuwhttn\"}")
             .toObject(InMageAzureV2ManagedDiskDetails.class);
-        Assertions.assertEquals("oizwxvs", model.diskId());
-        Assertions.assertEquals("sgfy", model.seedManagedDiskId());
-        Assertions.assertEquals("ky", model.replicaDiskType());
-        Assertions.assertEquals("gafxczvf", model.diskEncryptionSetId());
-        Assertions.assertEquals("kwrt", model.targetDiskName());
+        Assertions.assertEquals("nlrstgf", model.diskId());
+        Assertions.assertEquals("ljdncidtjvamy", model.seedManagedDiskId());
+        Assertions.assertEquals("n", model.replicaDiskType());
+        Assertions.assertEquals("gcdogcvucgy", model.diskEncryptionSetId());
+        Assertions.assertEquals("xuwhttn", model.targetDiskName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2ManagedDiskDetails model = new InMageAzureV2ManagedDiskDetails().withDiskId("oizwxvs")
-            .withSeedManagedDiskId("sgfy")
-            .withReplicaDiskType("ky")
-            .withDiskEncryptionSetId("gafxczvf")
-            .withTargetDiskName("kwrt");
+        InMageAzureV2ManagedDiskDetails model = new InMageAzureV2ManagedDiskDetails().withDiskId("nlrstgf")
+            .withSeedManagedDiskId("ljdncidtjvamy")
+            .withReplicaDiskType("n")
+            .withDiskEncryptionSetId("gcdogcvucgy")
+            .withTargetDiskName("xuwhttn");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2ManagedDiskDetails.class);
-        Assertions.assertEquals("oizwxvs", model.diskId());
-        Assertions.assertEquals("sgfy", model.seedManagedDiskId());
-        Assertions.assertEquals("ky", model.replicaDiskType());
-        Assertions.assertEquals("gafxczvf", model.diskEncryptionSetId());
-        Assertions.assertEquals("kwrt", model.targetDiskName());
+        Assertions.assertEquals("nlrstgf", model.diskId());
+        Assertions.assertEquals("ljdncidtjvamy", model.seedManagedDiskId());
+        Assertions.assertEquals("n", model.replicaDiskType());
+        Assertions.assertEquals("gcdogcvucgy", model.diskEncryptionSetId());
+        Assertions.assertEquals("xuwhttn", model.targetDiskName());
     }
 }

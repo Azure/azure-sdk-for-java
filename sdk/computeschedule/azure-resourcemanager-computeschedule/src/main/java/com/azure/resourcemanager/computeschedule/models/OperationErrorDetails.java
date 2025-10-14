@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -28,7 +27,12 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
     /*
      * The error details of the operation
      */
-    private OffsetDateTime errorDetails;
+    private String errorDetails;
+
+    /*
+     * The timestamp of the error occurence
+     */
+    private OffsetDateTime timestamp;
 
     /*
      * The timestamp of the error occurence
@@ -36,7 +40,12 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
     private OffsetDateTime timeStamp;
 
     /*
-     * CRP operationid of the operation for deeper analysis
+     * The compute operationid of the Start/Deallocate/Hibernate request
+     */
+    private String azureOperationName;
+
+    /*
+     * The compute operationid of the Start/Deallocate/Hibernate request
      */
     private String crpOperationId;
 
@@ -60,8 +69,17 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
      * 
      * @return the errorDetails value.
      */
-    public OffsetDateTime errorDetails() {
+    public String errorDetails() {
         return this.errorDetails;
+    }
+
+    /**
+     * Get the timestamp property: The timestamp of the error occurence.
+     * 
+     * @return the timestamp value.
+     */
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
@@ -74,7 +92,16 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
     }
 
     /**
-     * Get the crpOperationId property: CRP operationid of the operation for deeper analysis.
+     * Get the azureOperationName property: The compute operationid of the Start/Deallocate/Hibernate request.
+     * 
+     * @return the azureOperationName value.
+     */
+    public String azureOperationName() {
+        return this.azureOperationName;
+    }
+
+    /**
+     * Get the crpOperationId property: The compute operationid of the Start/Deallocate/Hibernate request.
      * 
      * @return the crpOperationId value.
      */
@@ -83,46 +110,18 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (errorCode() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property errorCode in model OperationErrorDetails"));
-        }
-        if (errorDetails() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property errorDetails in model OperationErrorDetails"));
-        }
-        if (timeStamp() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property timeStamp in model OperationErrorDetails"));
-        }
-        if (crpOperationId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property crpOperationId in model OperationErrorDetails"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OperationErrorDetails.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("errorCode", this.errorCode);
-        jsonWriter.writeStringField("errorDetails",
-            this.errorDetails == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.errorDetails));
+        jsonWriter.writeStringField("errorDetails", this.errorDetails);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeStringField("timeStamp",
             this.timeStamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeStamp));
+        jsonWriter.writeStringField("azureOperationName", this.azureOperationName);
         jsonWriter.writeStringField("crpOperationId", this.crpOperationId);
         return jsonWriter.writeEndObject();
     }
@@ -146,11 +145,15 @@ public final class OperationErrorDetails implements JsonSerializable<OperationEr
                 if ("errorCode".equals(fieldName)) {
                     deserializedOperationErrorDetails.errorCode = reader.getString();
                 } else if ("errorDetails".equals(fieldName)) {
-                    deserializedOperationErrorDetails.errorDetails = reader
+                    deserializedOperationErrorDetails.errorDetails = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedOperationErrorDetails.timestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeStamp".equals(fieldName)) {
                     deserializedOperationErrorDetails.timeStamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("azureOperationName".equals(fieldName)) {
+                    deserializedOperationErrorDetails.azureOperationName = reader.getString();
                 } else if ("crpOperationId".equals(fieldName)) {
                     deserializedOperationErrorDetails.crpOperationId = reader.getString();
                 } else {

@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class PolicyCertificatesModificationResult
     /*
      * Hex encoded SHA1 Hash of the binary representation certificate which was added or removed
      */
+    @Generated
     private String certificateThumbprint;
 
     /*
      * The result of the operation
      */
+    @Generated
     private CertificateModification certificateResolution;
 
     /**
      * Creates an instance of PolicyCertificatesModificationResult class.
      */
+    @Generated
     public PolicyCertificatesModificationResult() {
     }
 
@@ -40,6 +44,7 @@ public final class PolicyCertificatesModificationResult
      * 
      * @return the certificateThumbprint value.
      */
+    @Generated
     public String getCertificateThumbprint() {
         return this.certificateThumbprint;
     }
@@ -51,6 +56,7 @@ public final class PolicyCertificatesModificationResult
      * @param certificateThumbprint the certificateThumbprint value to set.
      * @return the PolicyCertificatesModificationResult object itself.
      */
+    @Generated
     public PolicyCertificatesModificationResult setCertificateThumbprint(String certificateThumbprint) {
         this.certificateThumbprint = certificateThumbprint;
         return this;
@@ -61,6 +67,7 @@ public final class PolicyCertificatesModificationResult
      * 
      * @return the certificateResolution value.
      */
+    @Generated
     public CertificateModification getCertificateResolution() {
         return this.certificateResolution;
     }
@@ -71,6 +78,7 @@ public final class PolicyCertificatesModificationResult
      * @param certificateResolution the certificateResolution value to set.
      * @return the PolicyCertificatesModificationResult object itself.
      */
+    @Generated
     public PolicyCertificatesModificationResult
         setCertificateResolution(CertificateModification certificateResolution) {
         this.certificateResolution = certificateResolution;
@@ -88,6 +96,7 @@ public final class PolicyCertificatesModificationResult
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,6 +114,7 @@ public final class PolicyCertificatesModificationResult
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PolicyCertificatesModificationResult.
      */
+    @Generated
     public static PolicyCertificatesModificationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PolicyCertificatesModificationResult deserializedPolicyCertificatesModificationResult

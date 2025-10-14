@@ -15,20 +15,26 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.BillingContainersClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
-import com.azure.resourcemanager.deviceregistry.fluent.DiscoveredAssetEndpointProfilesClient;
-import com.azure.resourcemanager.deviceregistry.fluent.DiscoveredAssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceAssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDiscoveredAssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDiscoveredDevicesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.NamespacesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemaRegistriesClient;
@@ -203,31 +209,73 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
     }
 
     /**
-     * The DiscoveredAssetsClient object to access its operations.
+     * The NamespacesClient object to access its operations.
      */
-    private final DiscoveredAssetsClient discoveredAssets;
+    private final NamespacesClient namespaces;
 
     /**
-     * Gets the DiscoveredAssetsClient object to access its operations.
+     * Gets the NamespacesClient object to access its operations.
      * 
-     * @return the DiscoveredAssetsClient object.
+     * @return the NamespacesClient object.
      */
-    public DiscoveredAssetsClient getDiscoveredAssets() {
-        return this.discoveredAssets;
+    public NamespacesClient getNamespaces() {
+        return this.namespaces;
     }
 
     /**
-     * The DiscoveredAssetEndpointProfilesClient object to access its operations.
+     * The NamespaceAssetsClient object to access its operations.
      */
-    private final DiscoveredAssetEndpointProfilesClient discoveredAssetEndpointProfiles;
+    private final NamespaceAssetsClient namespaceAssets;
 
     /**
-     * Gets the DiscoveredAssetEndpointProfilesClient object to access its operations.
+     * Gets the NamespaceAssetsClient object to access its operations.
      * 
-     * @return the DiscoveredAssetEndpointProfilesClient object.
+     * @return the NamespaceAssetsClient object.
      */
-    public DiscoveredAssetEndpointProfilesClient getDiscoveredAssetEndpointProfiles() {
-        return this.discoveredAssetEndpointProfiles;
+    public NamespaceAssetsClient getNamespaceAssets() {
+        return this.namespaceAssets;
+    }
+
+    /**
+     * The NamespaceDevicesClient object to access its operations.
+     */
+    private final NamespaceDevicesClient namespaceDevices;
+
+    /**
+     * Gets the NamespaceDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDevicesClient object.
+     */
+    public NamespaceDevicesClient getNamespaceDevices() {
+        return this.namespaceDevices;
+    }
+
+    /**
+     * The NamespaceDiscoveredAssetsClient object to access its operations.
+     */
+    private final NamespaceDiscoveredAssetsClient namespaceDiscoveredAssets;
+
+    /**
+     * Gets the NamespaceDiscoveredAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredAssetsClient object.
+     */
+    public NamespaceDiscoveredAssetsClient getNamespaceDiscoveredAssets() {
+        return this.namespaceDiscoveredAssets;
+    }
+
+    /**
+     * The NamespaceDiscoveredDevicesClient object to access its operations.
+     */
+    private final NamespaceDiscoveredDevicesClient namespaceDiscoveredDevices;
+
+    /**
+     * Gets the NamespaceDiscoveredDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredDevicesClient object.
+     */
+    public NamespaceDiscoveredDevicesClient getNamespaceDiscoveredDevices() {
+        return this.namespaceDiscoveredDevices;
     }
 
     /**
@@ -289,14 +337,17 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-09-01-preview";
+        this.apiVersion = "2025-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetEndpointProfiles = new AssetEndpointProfilesClientImpl(this);
         this.billingContainers = new BillingContainersClientImpl(this);
-        this.discoveredAssets = new DiscoveredAssetsClientImpl(this);
-        this.discoveredAssetEndpointProfiles = new DiscoveredAssetEndpointProfilesClientImpl(this);
+        this.namespaces = new NamespacesClientImpl(this);
+        this.namespaceAssets = new NamespaceAssetsClientImpl(this);
+        this.namespaceDevices = new NamespaceDevicesClientImpl(this);
+        this.namespaceDiscoveredAssets = new NamespaceDiscoveredAssetsClientImpl(this);
+        this.namespaceDiscoveredDevices = new NamespaceDiscoveredDevicesClientImpl(this);
         this.schemaRegistries = new SchemaRegistriesClientImpl(this);
         this.schemas = new SchemasClientImpl(this);
         this.schemaVersions = new SchemaVersionsClientImpl(this);
@@ -337,6 +388,23 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

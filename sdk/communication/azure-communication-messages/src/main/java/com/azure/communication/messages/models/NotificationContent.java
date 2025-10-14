@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class NotificationContent implements JsonSerializable<NotificationContent> {
 
     /*
-     * The type discriminator describing a notification type.
+     * The type discriminator describing a message type.
      */
     @Generated
     private CommunicationMessageKind kind = CommunicationMessageKind.fromString("NotificationContent");
@@ -49,7 +49,7 @@ public abstract class NotificationContent implements JsonSerializable<Notificati
     }
 
     /**
-     * Get the kind property: The type discriminator describing a notification type.
+     * Get the kind property: The type discriminator describing a message type.
      *
      * @return the kind value.
      */
@@ -130,6 +130,12 @@ public abstract class NotificationContent implements JsonSerializable<Notificati
                     return VideoNotificationContent.fromJson(readerToUse.reset());
                 } else if ("audio".equals(discriminatorValue)) {
                     return AudioNotificationContent.fromJson(readerToUse.reset());
+                } else if ("reaction".equals(discriminatorValue)) {
+                    return ReactionNotificationContent.fromJson(readerToUse.reset());
+                } else if ("sticker".equals(discriminatorValue)) {
+                    return StickerNotificationContent.fromJson(readerToUse.reset());
+                } else if ("interactive".equals(discriminatorValue)) {
+                    return InteractiveNotificationContent.fromJson(readerToUse.reset());
                 } else if ("template".equals(discriminatorValue)) {
                     return TemplateNotificationContent.fromJson(readerToUse.reset());
                 } else {

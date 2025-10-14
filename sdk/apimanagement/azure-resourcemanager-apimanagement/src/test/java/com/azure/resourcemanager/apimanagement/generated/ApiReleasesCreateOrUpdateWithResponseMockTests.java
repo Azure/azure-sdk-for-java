@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiReleaseContract;
@@ -21,24 +21,24 @@ public final class ApiReleasesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"apiId\":\"weoj\",\"createdDateTime\":\"2020-12-27T19:59:50Z\",\"updatedDateTime\":\"2021-06-07T02:56:02Z\",\"notes\":\"ahiwfryawkc\"},\"id\":\"kapitskshfyftt\",\"name\":\"bjepzwhj\",\"type\":\"nfd\"}";
+            = "{\"properties\":{\"apiId\":\"dlpsx\",\"createdDateTime\":\"2021-04-01T10:08:17Z\",\"updatedDateTime\":\"2021-01-05T09:40:40Z\",\"notes\":\"imq\"},\"id\":\"ryclo\",\"name\":\"fmvswx\",\"type\":\"jeleifqhdxt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApiReleaseContract response = manager.apiReleases()
-            .define("kkjbjolpy")
-            .withExistingApi("qxynqj", "satkyvscb", "ngcrusxhircpgcvs")
-            .withApiId("kvuznadvhmlie")
-            .withNotes("xbhtpsyioqemqw")
-            .withIfMatch("pnbn")
+            .define("nnbbxngdfkke")
+            .withExistingApi("iknsgo", "unswhpcek", "gvm")
+            .withApiId("txtpwcvgifws")
+            .withNotes("aciwmmpdtqdonb")
+            .withIfMatch("eoiipjpngvyvu")
             .create();
 
-        Assertions.assertEquals("weoj", response.apiId());
-        Assertions.assertEquals("ahiwfryawkc", response.notes());
+        Assertions.assertEquals("dlpsx", response.apiId());
+        Assertions.assertEquals("imq", response.notes());
     }
 }

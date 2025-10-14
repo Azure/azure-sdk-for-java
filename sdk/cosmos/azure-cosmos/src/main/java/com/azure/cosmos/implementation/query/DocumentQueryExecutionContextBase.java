@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -191,6 +192,8 @@ implements IDocumentQueryExecutionContext<T> {
     public Map<String, String> createCommonHeadersAsync(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         Map<String, String> requestHeaders = new HashMap<>();
 
+        ReadConsistencyStrategy requestLevelConsistencyStrategy =
+            cosmosQueryRequestOptions.getReadConsistencyStrategy();
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
         ConsistencyLevel desiredConsistencyLevel = cosmosQueryRequestOptions.getConsistencyLevel() != null ?
             cosmosQueryRequestOptions.getConsistencyLevel():
@@ -201,10 +204,16 @@ implements IDocumentQueryExecutionContext<T> {
                 (defaultConsistencyLevel == ConsistencyLevel.SESSION &&
                     // skip applying the session token when Eventual Consistency is explicitly requested
                     // on request-level for data plane operations.
-                    // The session token is ignored on teh backend/gateway in this case anyway
+                    // The session token is ignored on the backend/gateway in this case anyway
                     // and the session token can be rather large (even run in the 16 KB header length problem
                     // on the gateway - so not worth sending when not needed
                     this.resourceTypeEnum == ResourceType.Document);
+
+        // Ignore and don't apply session token for effective consistency setting
+        // for which service will ignore the session token anyway
+        sessionTokenApplicable &= desiredConsistencyLevel != ConsistencyLevel.EVENTUAL
+            && desiredConsistencyLevel != ConsistencyLevel.CONSISTENT_PREFIX
+            && requestLevelConsistencyStrategy != ReadConsistencyStrategy.EVENTUAL;
 
         if (!Strings.isNullOrEmpty(cosmosQueryRequestOptions.getSessionToken())
                 && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
@@ -259,10 +268,6 @@ implements IDocumentQueryExecutionContext<T> {
                     Strings.toString(cosmosQueryRequestOptions.getResponseContinuationTokenLimitInKb()));
         }
 
-        if (desiredConsistencyLevel != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
-        }
-
         if(cosmosQueryRequestOptions.isQueryMetricsEnabled()){
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
         }
@@ -280,6 +285,33 @@ implements IDocumentQueryExecutionContext<T> {
 
         if (cosmosQueryRequestOptions.isIndexMetricsEnabled()) {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_INDEX_METRICS, String.valueOf(cosmosQueryRequestOptions.isIndexMetricsEnabled()));
+        }
+
+        boolean consistencyLevelOverrideApplicable = true;
+
+        if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != null) {
+
+            String readConsistencyStrategyName = cosmosQueryRequestOptions.getReadConsistencyStrategy().toString();
+            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            requestHeaders.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+
+            consistencyLevelOverrideApplicable =
+                cosmosQueryRequestOptions.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
+        }
+
+        if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
+            String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
+            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            requestHeaders.put(
+                HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                readConsistencyStrategyName);
+
+            consistencyLevelOverrideApplicable =
+                this.client.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
+        }
+
+        if (consistencyLevelOverrideApplicable && this.client.getConsistencyLevel() != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
 
         return requestHeaders;

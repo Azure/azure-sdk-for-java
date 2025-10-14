@@ -27,6 +27,11 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
     public static final OperationType REREGISTER = fromString("Reregister");
 
     /**
+     * Static value Rehydrate for OperationType.
+     */
+    public static final OperationType REHYDRATE = fromString("Rehydrate");
+
+    /**
      * Creates a new instance of OperationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

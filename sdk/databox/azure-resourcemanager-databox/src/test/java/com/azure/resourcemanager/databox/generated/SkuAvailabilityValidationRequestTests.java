@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.SkuAvailabilityValidationRequest;
 import com.azure.resourcemanager.databox.models.SkuName;
 import com.azure.resourcemanager.databox.models.TransferType;
@@ -14,25 +15,28 @@ public final class SkuAvailabilityValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuAvailabilityValidationRequest model = BinaryData.fromString(
-            "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBoxDisk\",\"transferType\":\"ImportToAzure\",\"country\":\"klff\",\"location\":\"mouwqlgzrfzeey\"}")
+            "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBoxCustomerDisk\",\"transferType\":\"ImportToAzure\",\"country\":\"fajpjorwk\",\"location\":\"nyhgbijtji\",\"model\":\"DataBoxDisk\"}")
             .toObject(SkuAvailabilityValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("klff", model.country());
-        Assertions.assertEquals("mouwqlgzrfzeey", model.location());
+        Assertions.assertEquals("fajpjorwk", model.country());
+        Assertions.assertEquals("nyhgbijtji", model.location());
+        Assertions.assertEquals(ModelName.DATA_BOX_DISK, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuAvailabilityValidationRequest model
-            = new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX_DISK)
+            = new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX_CUSTOMER_DISK)
                 .withTransferType(TransferType.IMPORT_TO_AZURE)
-                .withCountry("klff")
-                .withLocation("mouwqlgzrfzeey");
+                .withCountry("fajpjorwk")
+                .withLocation("nyhgbijtji")
+                .withModel(ModelName.DATA_BOX_DISK);
         model = BinaryData.fromObject(model).toObject(SkuAvailabilityValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("klff", model.country());
-        Assertions.assertEquals("mouwqlgzrfzeey", model.location());
+        Assertions.assertEquals("fajpjorwk", model.country());
+        Assertions.assertEquals("nyhgbijtji", model.location());
+        Assertions.assertEquals(ModelName.DATA_BOX_DISK, model.model());
     }
 }

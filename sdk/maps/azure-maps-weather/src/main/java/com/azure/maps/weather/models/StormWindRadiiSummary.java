@@ -4,15 +4,19 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoPolygon;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.weather.implementation.helpers.Utility;
 import com.azure.maps.weather.implementation.models.GeoJsonGeometry;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import com.azure.core.models.GeoPolygon;
-import com.azure.maps.weather.implementation.helpers.Utility;
 
 /**
  * Displayed when details=true or radiiGeometry=true in the request.
@@ -23,26 +27,32 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
     /*
      * DateTime for which the wind radii summary data is valid, displayed in ISO8601 format.
      */
-    private String timestamp;
+    @Generated
+    private OffsetDateTime timestamp;
 
     /*
      * Wind speed associated with the radiusSectorData.
      */
+    @Generated
     private WeatherUnitDetails windSpeed;
 
     /*
-     * Contains the information needed to plot wind radius quadrants. Bearing 0–90 = NE quadrant; 90–180 = SE quadrant; 180–270 = SW quadrant; 270–360 = NW quadrant.
+     * Contains the information needed to plot wind radius quadrants. Bearing 0–90 = NE quadrant; 90–180 = SE quadrant;
+     * 180–270 = SW quadrant; 270–360 = NW quadrant.
      */
+    @Generated
     private List<RadiusSector> radiusSectorData;
 
     /*
      * GeoJSON object. Displayed when radiiGeometry=true in request. Describes the outline of the wind radius quadrants.
      */
+    @Generated
     private GeoJsonGeometry radiiGeometry;
 
     /**
      * Set default StormWindRadiiSummary constructor to private
      */
+    @Generated
     private StormWindRadiiSummary() {
     }
 
@@ -51,7 +61,8 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
      *
      * @return the timestamp value.
      */
-    public String getTimestamp() {
+    @Generated
+    public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
 
@@ -60,6 +71,7 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
      *
      * @return the windSpeed value.
      */
+    @Generated
     public WeatherUnitDetails getWindSpeed() {
         return this.windSpeed;
     }
@@ -70,6 +82,7 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
      *
      * @return the radiusSectorData value.
      */
+    @Generated
     public List<RadiusSector> getRadiusSectorData() {
         return this.radiusSectorData;
     }
@@ -77,10 +90,12 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dateTime", this.timestamp);
+        jsonWriter.writeStringField("dateTime",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeJsonField("windSpeed", this.windSpeed);
         jsonWriter.writeArrayField("radiusSectorData", this.radiusSectorData,
             (writer, element) -> writer.writeJson(element));
@@ -96,6 +111,7 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StormWindRadiiSummary.
      */
+    @Generated
     public static StormWindRadiiSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StormWindRadiiSummary deserializedStormWindRadiiSummary = new StormWindRadiiSummary();
@@ -103,7 +119,8 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dateTime".equals(fieldName)) {
-                    deserializedStormWindRadiiSummary.timestamp = reader.getString();
+                    deserializedStormWindRadiiSummary.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("windSpeed".equals(fieldName)) {
                     deserializedStormWindRadiiSummary.windSpeed = WeatherUnitDetails.fromJson(reader);
                 } else if ("radiusSectorData".equals(fieldName)) {

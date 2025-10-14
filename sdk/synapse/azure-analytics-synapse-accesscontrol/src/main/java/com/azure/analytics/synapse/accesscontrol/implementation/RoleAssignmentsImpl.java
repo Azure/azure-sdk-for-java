@@ -67,7 +67,7 @@ public final class RoleAssignmentsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AccessControlClientR")
+    @ServiceInterface(name = "AccessControlClientRoleAssignments")
     public interface RoleAssignmentsService {
         @Post("/checkAccessSynapseRbac")
         @ExpectedResponses({ 200 })

@@ -52,7 +52,7 @@ public final class WorkspacesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientWorks")
+    @ServiceInterface(name = "ArtifactsClientWorkspaces")
     public interface WorkspacesService {
         @Get("/workspace")
         @ExpectedResponses({ 200 })

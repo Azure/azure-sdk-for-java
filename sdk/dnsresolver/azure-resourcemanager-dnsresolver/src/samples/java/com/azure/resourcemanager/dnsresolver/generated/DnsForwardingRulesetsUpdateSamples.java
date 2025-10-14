@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class DnsForwardingRulesetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/
      * DnsForwardingRuleset_Patch.json
      */
     /**

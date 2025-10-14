@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
     /*
      * Activity name.
      */
+    @Generated
     private String activity;
 
     /*
      * Match-Condition for the dependency.
      */
+    @Generated
     private List<DependencyCondition> dependencyConditions;
 
     /*
      * Activity dependency information.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of ActivityDependency class.
      */
+    @Generated
     public ActivityDependency() {
     }
 
@@ -45,6 +50,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * 
      * @return the activity value.
      */
+    @Generated
     public String getActivity() {
         return this.activity;
     }
@@ -55,6 +61,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * @param activity the activity value to set.
      * @return the ActivityDependency object itself.
      */
+    @Generated
     public ActivityDependency setActivity(String activity) {
         this.activity = activity;
         return this;
@@ -65,6 +72,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * 
      * @return the dependencyConditions value.
      */
+    @Generated
     public List<DependencyCondition> getDependencyConditions() {
         return this.dependencyConditions;
     }
@@ -75,6 +83,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * @param dependencyConditions the dependencyConditions value to set.
      * @return the ActivityDependency object itself.
      */
+    @Generated
     public ActivityDependency setDependencyConditions(List<DependencyCondition> dependencyConditions) {
         this.dependencyConditions = dependencyConditions;
         return this;
@@ -85,6 +94,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -95,6 +105,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityDependency object itself.
      */
+    @Generated
     public ActivityDependency setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -103,6 +114,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,6 +138,7 @@ public final class ActivityDependency implements JsonSerializable<ActivityDepend
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ActivityDependency.
      */
+    @Generated
     public static ActivityDependency fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ActivityDependency deserializedActivityDependency = new ActivityDependency();

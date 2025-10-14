@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
@@ -26,35 +26,35 @@ public final class ApiDiagnosticsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"cqdfwbifnnhlsfo\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":51.94838792875722},\"frontend\":{\"request\":{\"headers\":[\"nbrpelpfijtezg\"],\"body\":{\"bytes\":1822794875},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"rzinfuivczktll\",\"swtdapsmirmnrije\"],\"body\":{\"bytes\":1520178358},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{}]}}},\"backend\":{\"request\":{\"headers\":[\"hgffmwtblgm\",\"okqoikx\",\"efwlnm\"],\"body\":{\"bytes\":570194650},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{},{},{}]}},\"response\":{\"headers\":[\"liejdn\",\"cotelikjiyteh\",\"xtzxqdwbymuql\",\"gncrdorcty\"],\"body\":{\"bytes\":623186360},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{},{}]}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Name\",\"metrics\":true},\"id\":\"mwc\",\"name\":\"ozvlfymt\",\"type\":\"tsvxupqtzckj\"}";
+            = "{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"nbuvms\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":51.66775294769329},\"frontend\":{\"request\":{\"headers\":[\"eyrxparxtzayq\",\"ddigeblsplzdss\",\"wwveeozbjkjq\"],\"body\":{\"bytes\":1884210095},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{}]}},\"response\":{\"headers\":[\"ssjdywbnklg\",\"rxactsawvxcimp\"],\"body\":{\"bytes\":269168399},\"dataMasking\":{\"queryParams\":[{},{},{},{}],\"headers\":[{},{}]}}},\"backend\":{\"request\":{\"headers\":[\"nkn\",\"fuysjhv\",\"rllfswarm\"],\"body\":{\"bytes\":1684546781},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"qnipehfwwc\",\"fnxi\",\"juvjucfjisos\"],\"body\":{\"bytes\":161867495},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{}]}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"W3C\",\"verbosity\":\"error\",\"operationNameFormat\":\"Name\",\"metrics\":true},\"id\":\"ixgofqdqwsj\",\"name\":\"ihuvrqpbxdoicqpk\",\"type\":\"tly\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiagnosticContract response = manager.apiDiagnostics()
-            .getWithResponse("jjidodnvltcvmah", "uwkup", "bnhi", "lh", com.azure.core.util.Context.NONE)
+            .getWithResponse("hcmcgm", "m", "nvqxuyiarznhdqse", "pdlmajpuyxoafrmz", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, response.alwaysLog());
-        Assertions.assertEquals("cqdfwbifnnhlsfo", response.loggerId());
+        Assertions.assertEquals("nbuvms", response.loggerId());
         Assertions.assertEquals(SamplingType.FIXED, response.sampling().samplingType());
-        Assertions.assertEquals(51.94838792875722D, response.sampling().percentage());
-        Assertions.assertEquals("nbrpelpfijtezg", response.frontend().request().headers().get(0));
-        Assertions.assertEquals(1822794875, response.frontend().request().body().bytes());
-        Assertions.assertEquals("rzinfuivczktll", response.frontend().response().headers().get(0));
-        Assertions.assertEquals(1520178358, response.frontend().response().body().bytes());
-        Assertions.assertEquals("hgffmwtblgm", response.backend().request().headers().get(0));
-        Assertions.assertEquals(570194650, response.backend().request().body().bytes());
-        Assertions.assertEquals("liejdn", response.backend().response().headers().get(0));
-        Assertions.assertEquals(623186360, response.backend().response().body().bytes());
-        Assertions.assertEquals(true, response.logClientIp());
-        Assertions.assertEquals(HttpCorrelationProtocol.LEGACY, response.httpCorrelationProtocol());
-        Assertions.assertEquals(Verbosity.VERBOSE, response.verbosity());
+        Assertions.assertEquals(51.66775294769329D, response.sampling().percentage());
+        Assertions.assertEquals("eyrxparxtzayq", response.frontend().request().headers().get(0));
+        Assertions.assertEquals(1884210095, response.frontend().request().body().bytes());
+        Assertions.assertEquals("ssjdywbnklg", response.frontend().response().headers().get(0));
+        Assertions.assertEquals(269168399, response.frontend().response().body().bytes());
+        Assertions.assertEquals("nkn", response.backend().request().headers().get(0));
+        Assertions.assertEquals(1684546781, response.backend().request().body().bytes());
+        Assertions.assertEquals("qnipehfwwc", response.backend().response().headers().get(0));
+        Assertions.assertEquals(161867495, response.backend().response().body().bytes());
+        Assertions.assertTrue(response.logClientIp());
+        Assertions.assertEquals(HttpCorrelationProtocol.W3C, response.httpCorrelationProtocol());
+        Assertions.assertEquals(Verbosity.ERROR, response.verbosity());
         Assertions.assertEquals(OperationNameFormat.NAME, response.operationNameFormat());
-        Assertions.assertEquals(true, response.metrics());
+        Assertions.assertTrue(response.metrics());
     }
 }

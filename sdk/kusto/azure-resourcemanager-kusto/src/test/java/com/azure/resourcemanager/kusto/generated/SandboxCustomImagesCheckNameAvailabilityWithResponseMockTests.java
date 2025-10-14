@@ -23,7 +23,7 @@ public final class SandboxCustomImagesCheckNameAvailabilityWithResponseMockTests
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":true,\"name\":\"pucygvoavyunss\",\"message\":\"ghiee\",\"reason\":\"AlreadyExists\"}";
+            = "{\"nameAvailable\":true,\"name\":\"ogiyetes\",\"message\":\"vidbztjhqtfb\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class SandboxCustomImagesCheckNameAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.sandboxCustomImages()
-            .checkNameAvailabilityWithResponse("kmrocxne", "v",
-                new SandboxCustomImagesCheckNameRequest().withName("mtodl"), com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("oqqtl", "fhzbkr",
+                new SandboxCustomImagesCheckNameRequest().withName("jjjavfqnvhnq"), com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("pucygvoavyunss", response.name());
-        Assertions.assertEquals("ghiee", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("ogiyetes", response.name());
+        Assertions.assertEquals("vidbztjhqtfb", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

@@ -158,7 +158,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}/language")
-    @ServiceInterface(name = "MicrosoftCognitiveLa")
+    @ServiceInterface(name = "MicrosoftCognitiveLanguageServiceTextAnalysis")
     public interface MicrosoftCognitiveLanguageServiceTextAnalysisService {
         @Post("/:analyze-text")
         @ExpectedResponses({ 200 })

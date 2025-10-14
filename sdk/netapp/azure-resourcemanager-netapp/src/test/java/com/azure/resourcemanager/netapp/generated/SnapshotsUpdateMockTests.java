@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Snapshot;
@@ -21,19 +21,19 @@ public final class SnapshotsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"location\":\"dmspof\",\"properties\":{\"snapshotId\":\"uhrylniofr\",\"created\":\"2021-07-21T02:06:58Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"tkvnlvxbcuiiznkt\",\"name\":\"f\",\"type\":\"nsnvpd\"}";
+            = "{\"location\":\"mgbzahgxqdlyrtl\",\"properties\":{\"snapshotId\":\"prltzkatbhjmz\",\"created\":\"2020-12-30T18:21:45Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"arvlagunbt\",\"name\":\"febwlnbmhyreeudz\",\"type\":\"av\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.snapshots()
-            .update("vqihebwtswbzuwf", "duragegizvc", "felisdjub", "gbqi", "kxkbsazgakgacyr", "datam",
+            .update("jxgrytfmp", "ycilrmcaykggnox", "ztrksxwpndf", "pfnznthjtwkj", "osrxuzvoa", "dataktcqio",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dmspof", response.location());
+        Assertions.assertEquals("mgbzahgxqdlyrtl", response.location());
     }
 }

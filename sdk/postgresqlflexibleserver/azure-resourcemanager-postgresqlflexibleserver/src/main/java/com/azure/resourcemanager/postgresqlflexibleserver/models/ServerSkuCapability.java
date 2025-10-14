@@ -47,6 +47,16 @@ public final class ServerSkuCapability extends CapabilityBase {
     private List<HaMode> supportedHaMode;
 
     /*
+     * The supported features.
+     */
+    private List<SupportedFeature> supportedFeatures;
+
+    /*
+     * The value of security profile indicating if its confidential vm
+     */
+    private String securityProfile;
+
+    /*
      * The reason for the capability not being available.
      */
     private String reason;
@@ -117,6 +127,24 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
+     * Get the supportedFeatures property: The supported features.
+     * 
+     * @return the supportedFeatures value.
+     */
+    public List<SupportedFeature> supportedFeatures() {
+        return this.supportedFeatures;
+    }
+
+    /**
+     * Get the securityProfile property: The value of security profile indicating if its confidential vm.
+     * 
+     * @return the securityProfile value.
+     */
+    public String securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
      * Get the reason property: The reason for the capability not being available.
      * 
      * @return the reason value.
@@ -143,6 +171,9 @@ public final class ServerSkuCapability extends CapabilityBase {
      */
     @Override
     public void validate() {
+        if (supportedFeatures() != null) {
+            supportedFeatures().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -187,6 +218,12 @@ public final class ServerSkuCapability extends CapabilityBase {
                 } else if ("supportedHaMode".equals(fieldName)) {
                     List<HaMode> supportedHaMode = reader.readArray(reader1 -> HaMode.fromString(reader1.getString()));
                     deserializedServerSkuCapability.supportedHaMode = supportedHaMode;
+                } else if ("supportedFeatures".equals(fieldName)) {
+                    List<SupportedFeature> supportedFeatures
+                        = reader.readArray(reader1 -> SupportedFeature.fromJson(reader1));
+                    deserializedServerSkuCapability.supportedFeatures = supportedFeatures;
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedServerSkuCapability.securityProfile = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

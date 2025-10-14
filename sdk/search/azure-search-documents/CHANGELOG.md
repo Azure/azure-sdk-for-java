@@ -1,15 +1,168 @@
 # Release History
 
-## 11.8.0-beta.5 (Unreleased)
+## 11.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added back all service preview features dropped in `2025-09-01` service version release.
+
 ### Breaking Changes
+
+- Updated `RescoringOptions` to match what was changed in `11.8.0` release.
+    - `isEnableRescoring` -> `isRescoringEnabled`
+    - `setEnableRescoring` -> `setRescoringEnabled`
+- Changed `RankingOrder.RE_RANKER_SCORE` to `RankingOrder.RERANKER_SCORE`.
+- Changed `SearchOptions.getDebug` and `.setDebug` to `.getDebugMode` and `.setDebugMode`.
+- Default `SearchServiceVersion` changed from `2025_09_01` to `V2025_08_01_PREVIEW`.
 
 ### Bugs Fixed
 
+## 11.8.0 (2025-10-10)
+
+### Features Added
+
+- Added support for `2025-09-01` service version.
+    - Support for reranker boosted scores in search results and the ability to sort results on either reranker or reranker
+      boosted scores in `SemanticConfiguration.rankingOrder`.
+    - Support for `VectorSearchCompression.RescoringOptions` to configure how vector compression handles the original
+      vector when indexing and how vectors are used during rescoring.
+    - Added `SearchIndex.description` to provide a textual description of the index.
+    - Support for `LexicalNormalizer` when defining `SearchIndex`, `SimpleField`, and `SearchableField` and the ability to
+      use it when analyzing text with `SearchIndexClient.analyzeText` and `SearchIndexAsyncClient.analyzeText`.
+    - Support `DocumentIntelligenceLayoutSkill` skillset skill and `OneLake` `SearchIndexerDataSourceConnection` data source.
+    - Support for `QueryDebugMode` in searching to retrieve detailed information about search processing. Only `vector` is
+      supported for `QueryDebugMode`.
+
+### Breaking Changes
+
+- All features from `11.8.0-beta.x` versions that weren't GA'd in `2025-09-01` were removed.
+- `VectorSearchCompression.rerankWithOriginalVectors` and `VectorSearchCompression.defaultOversampling` don't work with
+  `2025-09-01` and were replaced by `VectorSearchCompression.RescoringOptions.enabledRescoring` and
+  `VectorSearchCompression.RescoringOptions.defaultOversampling`. If using `2024-07-01` continue using the old properties,
+  otherwise if using `2025-09-01` use the new properties in `RescoringOptions`.
+
 ### Other Changes
 
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.1` to version `1.6.2`.
+
+## 11.7.10 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.6.0` to version `1.6.1`.
+
+## 11.8.0-beta.8 (2025-09-05)
+
+### Features Added
+
+- Support for `2025-08-01-Preview` service version.
+  - Added support for Knowledge Agent knowledge sources.
+  - Added support for Knowledge Agent answer synthesis.
+  - Added `VectorFilterMode.STRICT_POST_FILTER`.
+
+### Breaking Changes
+
+- Dropped support for `2025-05-01-Preview` service version.
+- Knowledge Agent target indexes were removed as `2025-08-01-Preview` replaced that concept with knowledge sources,
+  a richer concept that allows for knowledge agent to consume information from more than just Search indexes.
+
+## 11.7.9 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.10` to version `1.6.0`.
+
+## 11.7.8 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.9` to version `1.5.10`.
+
+## 11.7.7 (2025-06-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.8` to version `1.5.9`.
+
+## 11.8.0-beta.7 (2025-05-16)
+
+### Features Added
+
+- Added new `KnowledgeAgent` apis to index clients and introduced new `SearchKnowledgeAgentClient` for managing and querying Knowledge Agents,
+enabling multi-index grounding for agentic retrieval.
+- Added a method overloads for search client operations to include the `querySourceAuthentication` parameter, allowing users to specify the authentication method for the query source.
+- Added a `resync` method to indexer clients to resync selective options from the data source to be re-ingested by the indexer.
+- Added `permissionFilter` to Field Builder annotations, indication whether a field should be used as a permission filter.
+- Added `rerankerBoostedScore` to `SemanticSearchResult` and updated `SemanticConfiguration` with a new `rankingOrder` property.
+- Introduced new skill `ChatCompletionSkill` that integrates with Azure AI Foundry.
+- Enhanced `DocumentIntelligenceLayoutSkill` with new properties: `ChunkingProperties`, `ExtractionOptions`, and `OutputFormat`.
+- Added `IndexerPermissionOptions` to `SearchIndexerDataSourceConnection` to support ingestion of various types of permission data.
+- Introduced sub-field vector support (multi-vectors) via `VectorQuery.Fields`, and added new query option `VectorQuery.PerDocumentVectorLimit`.
+
+## 11.8.0-beta.6 (2025-04-17)
+
+### Features Added
+
+- Introduced new api `getIndexStatsSummary` into `SearchIndexClient` and `SearchIndexAsyncClient` to enable the retrieval of index stats summary.
+- Introduced `flightingOptIn` field onto `SemanticConfiguration` to enable flighting opt-in for semantic search.
+
+### Other Changes
+
+- Binary Quantization now supports configuring `rescoringOptions` to `true` with `rescoreStorageMethod` set to `discardOriginals`.
+
+## 11.7.6 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 11.7.5 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.4` to version `1.5.7`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
+## 11.8.0-beta.5 (2025-02-18)
+
+### Bugs Fixed
+
+- Fixed bug that made 2024-11-01-preview service version inaccessible.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.4` to version `1.5.6`.
 
 ## 11.7.4 (2024-12-04)
 
@@ -20,7 +173,6 @@
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.2` to version `1.5.4`.
-
 
 ## 11.8.0-beta.4 (2024-11-22)
 
@@ -68,7 +220,6 @@
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.2`.
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 
-
 ## 11.7.2 (2024-09-27)
 
 ### Other Changes
@@ -79,7 +230,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.0` to version `1.5.1`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
-
 
 ## 11.8.0-beta.1 (2024-09-23)
 
@@ -101,7 +251,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.` to version `1.5.1`.
 - Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
-
 
 ## 11.7.1 (2024-08-24)
 
@@ -399,7 +548,6 @@
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.1` to version `1.4.2`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
-
 
 ## 11.6.0-beta.7 (2023-07-11)
 

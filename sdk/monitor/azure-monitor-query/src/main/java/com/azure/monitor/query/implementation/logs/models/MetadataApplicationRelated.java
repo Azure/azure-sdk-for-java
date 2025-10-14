@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
     /*
      * The related tables for the Application Insights app.
      */
+    @Generated
     private List<String> tables;
 
     /*
      * The related functions for the Application Insights app.
      */
+    @Generated
     private List<String> functions;
 
     /**
      * Creates an instance of MetadataApplicationRelated class.
      */
+    @Generated
     public MetadataApplicationRelated() {
     }
 
@@ -38,6 +42,7 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
      * 
      * @return the tables value.
      */
+    @Generated
     public List<String> getTables() {
         return this.tables;
     }
@@ -48,6 +53,7 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
      * @param tables the tables value to set.
      * @return the MetadataApplicationRelated object itself.
      */
+    @Generated
     public MetadataApplicationRelated setTables(List<String> tables) {
         this.tables = tables;
         return this;
@@ -58,6 +64,7 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
      * 
      * @return the functions value.
      */
+    @Generated
     public List<String> getFunctions() {
         return this.functions;
     }
@@ -68,6 +75,7 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
      * @param functions the functions value to set.
      * @return the MetadataApplicationRelated object itself.
      */
+    @Generated
     public MetadataApplicationRelated setFunctions(List<String> functions) {
         this.functions = functions;
         return this;
@@ -76,6 +84,7 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class MetadataApplicationRelated implements JsonSerializable<Metada
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataApplicationRelated.
      */
+    @Generated
     public static MetadataApplicationRelated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataApplicationRelated deserializedMetadataApplicationRelated = new MetadataApplicationRelated();

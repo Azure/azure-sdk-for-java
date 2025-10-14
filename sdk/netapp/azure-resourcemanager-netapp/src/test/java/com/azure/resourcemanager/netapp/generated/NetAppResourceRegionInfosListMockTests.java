@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.RegionInfoResource;
@@ -23,22 +23,21 @@ public final class NetAppResourceRegionInfosListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ijouwivkxoyzunb\",\"isAvailable\":true}]},\"id\":\"ti\",\"name\":\"vcpwpgclrc\",\"type\":\"vtsoxf\"}]}";
+            = "{\"value\":[{\"properties\":{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"ch\",\"isAvailable\":false},{\"availabilityZone\":\"m\",\"isAvailable\":true},{\"availabilityZone\":\"qnsdfzpbgtgky\",\"isAvailable\":false},{\"availabilityZone\":\"hrjeuutlw\",\"isAvailable\":false}]},\"id\":\"zhokvbwnhh\",\"name\":\"qlgehg\",\"type\":\"pipifh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RegionInfoResource> response
-            = manager.netAppResourceRegionInfos().list("tilaxh", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceRegionInfos().list("btmvpdvjdhttza", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2,
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2,
             response.iterator().next().storageToNetworkProximity());
-        Assertions.assertEquals("ijouwivkxoyzunb",
-            response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals("ch", response.iterator().next().availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertFalse(response.iterator().next().availabilityZoneMappings().get(0).isAvailable());
     }
 }

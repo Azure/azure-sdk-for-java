@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
@@ -23,21 +23,21 @@ public final class PartnerRegistrationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"2d61a9bb-b9aa-4154-9cf3-0959a79b27e5\"},\"location\":\"ahuq\",\"tags\":{\"wvmqxi\":\"zucwwmejjqhd\",\"bn\":\"ookyfoz\"},\"id\":\"x\",\"name\":\"ypfqpgaixw\",\"type\":\"grkkderfrswq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"d1d7ac97-0466-42e4-a656-64577a127766\"},\"location\":\"vnpvvd\",\"tags\":{\"mwbitekdtfo\":\"naqyqipslzmvcds\",\"zdqekivycpzcvd\":\"vfiybxqichgyb\"},\"id\":\"zulrqt\",\"name\":\"htre\",\"type\":\"pzl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerRegistration> response
-            = manager.partnerRegistrations().list("yqpdwadeghztld", 1838673940, com.azure.core.util.Context.NONE);
+            = manager.partnerRegistrations().list("rqstjcme", 349818575, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ahuq", response.iterator().next().location());
-        Assertions.assertEquals("zucwwmejjqhd", response.iterator().next().tags().get("wvmqxi"));
-        Assertions.assertEquals(UUID.fromString("2d61a9bb-b9aa-4154-9cf3-0959a79b27e5"),
+        Assertions.assertEquals("vnpvvd", response.iterator().next().location());
+        Assertions.assertEquals("naqyqipslzmvcds", response.iterator().next().tags().get("mwbitekdtfo"));
+        Assertions.assertEquals(UUID.fromString("d1d7ac97-0466-42e4-a656-64577a127766"),
             response.iterator().next().partnerRegistrationImmutableId());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,44 +20,52 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
     /*
      * Web activity authentication (Basic/ClientCertificate/MSI)
      */
+    @Generated
     private String type;
 
     /*
      * Base64-encoded contents of a PFX file.
      */
+    @Generated
     private SecretBase pfx;
 
     /*
      * Web activity authentication user name for basic authentication. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password for the PFX file or basic authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object resource;
 
     /*
      * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object userTenant;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of WebActivityAuthentication class.
      */
+    @Generated
     public WebActivityAuthentication() {
     }
 
@@ -65,6 +74,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -75,6 +85,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param type the type value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setType(String type) {
         this.type = type;
         return this;
@@ -85,6 +96,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the pfx value.
      */
+    @Generated
     public SecretBase getPfx() {
         return this.pfx;
     }
@@ -95,6 +107,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param pfx the pfx value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setPfx(SecretBase pfx) {
         this.pfx = pfx;
         return this;
@@ -106,6 +119,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -117,6 +131,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param username the username value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setUsername(Object username) {
         this.username = username;
         return this;
@@ -127,6 +142,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -137,6 +153,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param password the password value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -148,6 +165,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the resource value.
      */
+    @Generated
     public Object getResource() {
         return this.resource;
     }
@@ -159,6 +177,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param resource the resource value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setResource(Object resource) {
         this.resource = resource;
         return this;
@@ -170,6 +189,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the userTenant value.
      */
+    @Generated
     public Object getUserTenant() {
         return this.userTenant;
     }
@@ -181,6 +201,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param userTenant the userTenant value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setUserTenant(Object userTenant) {
         this.userTenant = userTenant;
         return this;
@@ -191,6 +212,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -201,6 +223,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @param credential the credential value to set.
      * @return the WebActivityAuthentication object itself.
      */
+    @Generated
     public WebActivityAuthentication setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -209,15 +232,22 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("pfx", this.pfx);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("resource", this.resource);
-        jsonWriter.writeUntypedField("userTenant", this.userTenant);
+        if (this.resource != null) {
+            jsonWriter.writeUntypedField("resource", this.resource);
+        }
+        if (this.userTenant != null) {
+            jsonWriter.writeUntypedField("userTenant", this.userTenant);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }
@@ -231,6 +261,7 @@ public final class WebActivityAuthentication implements JsonSerializable<WebActi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebActivityAuthentication.
      */
+    @Generated
     public static WebActivityAuthentication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebActivityAuthentication deserializedWebActivityAuthentication = new WebActivityAuthentication();

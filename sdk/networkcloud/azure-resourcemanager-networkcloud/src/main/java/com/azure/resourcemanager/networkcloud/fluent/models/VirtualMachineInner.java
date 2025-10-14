@@ -34,6 +34,11 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachineInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -67,6 +72,15 @@ public final class VirtualMachineInner extends Resource {
      * Creates an instance of VirtualMachineInner class.
      */
     public VirtualMachineInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -253,6 +267,29 @@ public final class VirtualMachineInner extends Resource {
      */
     public String clusterId() {
         return this.innerProperties() == null ? null : this.innerProperties().clusterId();
+    }
+
+    /**
+     * Get the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @return the consoleExtendedLocation value.
+     */
+    public ExtendedLocation consoleExtendedLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().consoleExtendedLocation();
+    }
+
+    /**
+     * Set the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @param consoleExtendedLocation the consoleExtendedLocation value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineProperties();
+        }
+        this.innerProperties().withConsoleExtendedLocation(consoleExtendedLocation);
+        return this;
     }
 
     /**
@@ -680,6 +717,8 @@ public final class VirtualMachineInner extends Resource {
                     deserializedVirtualMachineInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachineInner.innerProperties = VirtualMachineProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualMachineInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedVirtualMachineInner.systemData = SystemData.fromJson(reader);
                 } else {

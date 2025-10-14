@@ -17,9 +17,9 @@ public class AccountsGetAccessKeys {
             = new AccountsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.accountsgetaccesskeys.accountsgetaccesskeys
+        // BEGIN:com.azure.analytics.purview.administration.generated.accounts-get-access-keys.accounts-get-access-keys
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = accountsClient.getAccessKeysWithResponse(requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.accountsgetaccesskeys.accountsgetaccesskeys
+        // END:com.azure.analytics.purview.administration.generated.accounts-get-access-keys.accounts-get-access-keys
     }
 }

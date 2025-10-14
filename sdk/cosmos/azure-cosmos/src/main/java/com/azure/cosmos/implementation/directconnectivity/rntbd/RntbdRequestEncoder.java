@@ -47,7 +47,7 @@ public final class RntbdRequestEncoder extends MessageToByteEncoder<RntbdRequest
         final int start = out.writerIndex();
 
         try {
-            request.encode(out);
+            request.encode(out, false);
         } catch (final Throwable error) {
             out.writerIndex(start);
             throw error;

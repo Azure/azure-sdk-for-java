@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.Format;
@@ -23,23 +23,23 @@ public final class SchemasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"psvuoymgc\",\"displayName\":\"lvez\",\"description\":\"pqlmfe\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Deleting\",\"tags\":{\"opgxedkowepb\":\"yhko\",\"fkbw\":\"pc\",\"khtj\":\"csnjvcdwxlpqekft\"}},\"id\":\"i\",\"name\":\"gwfqatmt\",\"type\":\"htmdvy\"}";
+            = "{\"properties\":{\"uuid\":\"znabaobns\",\"displayName\":\"jdjltymkmvgui\",\"description\":\"wartspphkixkykxd\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"i\":\"ucfx\",\"nc\":\"kflrmymy\",\"lmiiiovg\":\"lhrisw\"}},\"id\":\"gxuugqkctotio\",\"name\":\"l\",\"type\":\"teqdptj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .getWithResponse("lvdnkfx", "semdwzrmu", "apfcqdpsq", com.azure.core.util.Context.NONE)
+            .getWithResponse("ewbidyvteowxv", "piudeugfsxzecpa", "wkufykhvuhxepm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lvez", response.properties().displayName());
-        Assertions.assertEquals("pqlmfe", response.properties().description());
+        Assertions.assertEquals("jdjltymkmvgui", response.properties().displayName());
+        Assertions.assertEquals("wartspphkixkykxd", response.properties().description());
         Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, response.properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.properties().schemaType());
-        Assertions.assertEquals("yhko", response.properties().tags().get("opgxedkowepb"));
+        Assertions.assertEquals("ucfx", response.properties().tags().get("i"));
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,42 +15,50 @@ public final class LatestStatusKeyword extends ExpandableStringEnum<LatestStatus
     /**
      * "New" - the status of an alert upon initial issuance.
      */
+    @Generated
     public static final LatestStatusKeyword NEW = fromString("New");
 
     /**
      * "Extend" - the alert has been extended in time, in area, or both since its initial issuance.
      */
+    @Generated
     public static final LatestStatusKeyword EXTEND = fromString("Extend");
 
     /**
      * "Cancel" - the alert has been canceled prior to its original expiration time.
      */
+    @Generated
     public static final LatestStatusKeyword CANCEL = fromString("Cancel");
 
     /**
      * "Correct" - the alert has been modified to correct a previous error.
      */
+    @Generated
     public static final LatestStatusKeyword CORRECT = fromString("Correct");
 
     /**
      * "Expire" - the alert has expired and is no longer active.
      */
+    @Generated
     public static final LatestStatusKeyword EXPIRE = fromString("Expire");
 
     /**
      * "Upgrade" - the alert has been upgraded to a higher class or category since its initial issuance.
      */
+    @Generated
     public static final LatestStatusKeyword UPGRADE = fromString("Upgrade");
 
     /**
      * "Continue" - the alert has been updated since its initial issuance, but no changes were made to `alertDetails`,
      * `startTime`, `endTime`, or `class`.
      */
+    @Generated
     public static final LatestStatusKeyword CONTINUE = fromString("Continue");
 
     /**
      * "Update" - the alert has been updated since its initial issuance.
      */
+    @Generated
     public static final LatestStatusKeyword UPDATE = fromString("Update");
 
     /**
@@ -57,6 +66,7 @@ public final class LatestStatusKeyword extends ExpandableStringEnum<LatestStatus
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LatestStatusKeyword() {
     }
@@ -67,6 +77,7 @@ public final class LatestStatusKeyword extends ExpandableStringEnum<LatestStatus
      * @param name a name to look for.
      * @return the corresponding LatestStatusKeyword.
      */
+    @Generated
     public static LatestStatusKeyword fromString(String name) {
         return fromString(name, LatestStatusKeyword.class);
     }
@@ -76,6 +87,7 @@ public final class LatestStatusKeyword extends ExpandableStringEnum<LatestStatus
      * 
      * @return known LatestStatusKeyword values.
      */
+    @Generated
     public static Collection<LatestStatusKeyword> values() {
         return values(LatestStatusKeyword.class);
     }

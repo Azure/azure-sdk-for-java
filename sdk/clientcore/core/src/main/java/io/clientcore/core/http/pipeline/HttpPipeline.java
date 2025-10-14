@@ -3,10 +3,13 @@
 
 package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.Objects;
  *
  * @see HttpPipelinePolicy
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class HttpPipeline {
     private final HttpClient httpClient;
     private final List<HttpPipelinePolicy> pipelinePolicies;
@@ -66,7 +70,7 @@ public final class HttpPipeline {
      *
      * @return An {@link Response}.
      */
-    public Response<?> send(HttpRequest request) {
+    public Response<BinaryData> send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();

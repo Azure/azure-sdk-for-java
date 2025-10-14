@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
     /*
      * Name of the column. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object name;
 
     /*
      * Type of the column. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object type;
 
     /**
      * Creates an instance of DatasetDataElement class.
      */
+    @Generated
     public DatasetDataElement() {
     }
 
@@ -37,6 +41,7 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
      * 
      * @return the name value.
      */
+    @Generated
     public Object getName() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
      * @param name the name value to set.
      * @return the DatasetDataElement object itself.
      */
+    @Generated
     public DatasetDataElement setName(Object name) {
         this.name = name;
         return this;
@@ -57,6 +63,7 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
      * 
      * @return the type value.
      */
+    @Generated
     public Object getType() {
         return this.type;
     }
@@ -67,6 +74,7 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
      * @param type the type value to set.
      * @return the DatasetDataElement object itself.
      */
+    @Generated
     public DatasetDataElement setType(Object type) {
         this.type = type;
         return this;
@@ -75,11 +83,16 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("name", this.name);
-        jsonWriter.writeUntypedField("type", this.type);
+        if (this.name != null) {
+            jsonWriter.writeUntypedField("name", this.name);
+        }
+        if (this.type != null) {
+            jsonWriter.writeUntypedField("type", this.type);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -91,6 +104,7 @@ public final class DatasetDataElement implements JsonSerializable<DatasetDataEle
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DatasetDataElement.
      */
+    @Generated
     public static DatasetDataElement fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatasetDataElement deserializedDatasetDataElement = new DatasetDataElement();

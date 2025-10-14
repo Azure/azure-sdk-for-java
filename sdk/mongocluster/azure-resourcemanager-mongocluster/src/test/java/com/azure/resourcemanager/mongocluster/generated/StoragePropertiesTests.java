@@ -6,20 +6,24 @@ package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mongocluster.models.StorageProperties;
+import com.azure.resourcemanager.mongocluster.models.StorageType;
 import org.junit.jupiter.api.Assertions;
 
 public final class StoragePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageProperties model
-            = BinaryData.fromString("{\"sizeGb\":2292906968066822359}").toObject(StorageProperties.class);
+        StorageProperties model = BinaryData.fromString("{\"sizeGb\":2292906968066822359,\"type\":\"PremiumSSD\"}")
+            .toObject(StorageProperties.class);
         Assertions.assertEquals(2292906968066822359L, model.sizeGb());
+        Assertions.assertEquals(StorageType.PREMIUM_SSD, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProperties model = new StorageProperties().withSizeGb(2292906968066822359L);
+        StorageProperties model
+            = new StorageProperties().withSizeGb(2292906968066822359L).withType(StorageType.PREMIUM_SSD);
         model = BinaryData.fromObject(model).toObject(StorageProperties.class);
         Assertions.assertEquals(2292906968066822359L, model.sizeGb());
+        Assertions.assertEquals(StorageType.PREMIUM_SSD, model.type());
     }
 }

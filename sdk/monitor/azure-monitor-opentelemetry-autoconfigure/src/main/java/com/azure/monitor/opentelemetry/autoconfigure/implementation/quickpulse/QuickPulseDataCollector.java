@@ -29,6 +29,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -43,6 +44,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 
 final class QuickPulseDataCollector {
@@ -55,11 +58,13 @@ final class QuickPulseDataCollector {
     private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
         = getCpuPerformanceCounterCalculator();
 
+    // used to prevent race condition between processing a telemetry item and reporting it to the Quick Pulse service
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    // TODO (harskaur): Track projection (runtime) related errors in future PR
     private final AtomicReference<FilteringConfiguration> configuration;
 
     QuickPulseDataCollector(AtomicReference<FilteringConfiguration> configuration) {
@@ -77,7 +82,8 @@ final class QuickPulseDataCollector {
 
     synchronized void enable(Supplier<String> instrumentationKeySupplier) {
         this.instrumentationKeySupplier = instrumentationKeySupplier;
-        counters.set(new Counters(configuration.get().getValidProjectionInitInfo()));
+        FilteringConfiguration config = configuration.get();
+        counters.set(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
     }
 
     synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
@@ -90,23 +96,35 @@ final class QuickPulseDataCollector {
     }
 
     @Nullable
-    synchronized FinalCounters getAndRestart() {
-        Counters currentCounters = counters.getAndSet(new Counters(configuration.get().getValidProjectionInitInfo()));
-        if (currentCounters != null) {
-            return new FinalCounters(currentCounters);
-        }
+    FinalCounters getAndRestart() {
+        lock.writeLock().lock();
+        try {
+            FilteringConfiguration config = configuration.get();
+            Counters currentCounters
+                = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
+            if (currentCounters != null) {
+                return new FinalCounters(currentCounters);
+            }
 
-        return null;
+            return null;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     // only used by tests
     @Nullable
-    synchronized FinalCounters peek() {
-        Counters currentCounters = this.counters.get(); // this should be the only differece
-        if (currentCounters != null) {
-            return new FinalCounters(currentCounters);
+    FinalCounters peek() {
+        lock.readLock().lock();
+        try {
+            Counters currentCounters = this.counters.get(); // this should be the only differece
+            if (currentCounters != null) {
+                return new FinalCounters(currentCounters);
+            }
+            return null;
+        } finally {
+            lock.readLock().unlock();
         }
-        return null;
     }
 
     void add(TelemetryItem telemetryItem) {
@@ -127,15 +145,39 @@ final class QuickPulseDataCollector {
         int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
         FilteringConfiguration currentConfig = configuration.get();
         MonitorDomain data = telemetryItem.getData().getBaseData();
-        if (data instanceof RequestData) {
-            RequestData requestTelemetry = (RequestData) data;
-            addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem), currentConfig);
-        } else if (data instanceof RemoteDependencyData) {
-            addDependency((RemoteDependencyData) data, itemCount, currentConfig);
-        } else if (data instanceof TelemetryExceptionData) {
-            addException((TelemetryExceptionData) data, itemCount, currentConfig);
-        } else if (data instanceof MessageData) {
-            addTrace((MessageData) data, currentConfig);
+
+        if (!(data instanceof RequestData)
+            && !(data instanceof RemoteDependencyData)
+            && !(data instanceof TelemetryExceptionData)
+            && !(data instanceof MessageData)) {
+            // optimization before acquiring lock
+            return;
+        }
+
+        Counters counters = this.counters.get();
+        if (counters == null) {
+            // optimization before acquiring lock
+            return;
+        }
+
+        lock.readLock().lock();
+        try {
+            counters = this.counters.get();
+            if (counters == null) {
+                return;
+            }
+            if (data instanceof RequestData) {
+                RequestData requestTelemetry = (RequestData) data;
+                addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem), currentConfig, counters);
+            } else if (data instanceof RemoteDependencyData) {
+                addDependency((RemoteDependencyData) data, itemCount, currentConfig, counters);
+            } else if (data instanceof TelemetryExceptionData) {
+                addException((TelemetryExceptionData) data, itemCount, currentConfig, counters);
+            } else if (data instanceof MessageData) {
+                addTrace((MessageData) data, currentConfig, counters);
+            }
+        } finally {
+            lock.readLock().unlock();
         }
     }
 
@@ -180,17 +222,14 @@ final class QuickPulseDataCollector {
         List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
         for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
             if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
-                // TODO (harskaur): In future PR, track any error that comes from calculateProjection
                 currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
             }
         }
     }
 
-    private void addDependency(RemoteDependencyData telemetry, int itemCount, FilteringConfiguration currentConfig) {
-        Counters counters = this.counters.get();
-        if (counters == null) {
-            return;
-        }
+    private void addDependency(RemoteDependencyData telemetry, int itemCount, FilteringConfiguration currentConfig,
+        Counters counters) {
+
         long durationMillis = parseDurationToMillis(telemetry.getDuration());
         counters.rddsAndDuations.addAndGet(Counters.encodeCountAndDuration(itemCount, durationMillis));
         Boolean success = telemetry.isSuccess();
@@ -219,12 +258,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addException(TelemetryExceptionData exceptionData, int itemCount,
-        FilteringConfiguration currentConfig) {
-        Counters counters = this.counters.get();
-        if (counters == null) {
-            return;
-        }
+    private void addException(TelemetryExceptionData exceptionData, int itemCount, FilteringConfiguration currentConfig,
+        Counters counters) {
 
         counters.exceptions.addAndGet(itemCount);
 
@@ -254,11 +289,8 @@ final class QuickPulseDataCollector {
     }
 
     private void addRequest(RequestData requestTelemetry, int itemCount, String operationName,
-        FilteringConfiguration currentConfig) {
-        Counters counters = this.counters.get();
-        if (counters == null) {
-            return;
-        }
+        FilteringConfiguration currentConfig, Counters counters) {
+
         long durationMillis = parseDurationToMillis(requestTelemetry.getDuration());
         counters.requestsAndDurations.addAndGet(Counters.encodeCountAndDuration(itemCount, durationMillis));
         if (!requestTelemetry.isSuccess()) {
@@ -287,8 +319,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig) {
-        Counters counters = this.counters.get();
+    private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig, Counters counters) {
+
         TraceDataColumns columns = new TraceDataColumns(traceTelemetry);
         applyMetricFilters(columns, TelemetryType.TRACE, currentConfig, counters);
         List<String> documentStreamIds = new ArrayList<>();
@@ -411,6 +443,8 @@ final class QuickPulseDataCollector {
 
         final Map<String, Double> projections;
 
+        final List<CollectionConfigurationError> configErrors;
+
         private FinalCounters(Counters currentCounters) {
 
             processPhysicalMemory = getPhysicalMemory(memory);
@@ -431,6 +465,7 @@ final class QuickPulseDataCollector {
                 this.documentList.addAll(currentCounters.documentList);
             }
             this.projections = currentCounters.derivedMetrics.fetchFinalDerivedMetricValues();
+            this.configErrors = currentCounters.configErrors;
 
         }
 
@@ -486,8 +521,11 @@ final class QuickPulseDataCollector {
 
         final DerivedMetricProjections derivedMetrics;
 
-        Counters(Map<String, AggregationType> projectionInfo) {
+        final List<CollectionConfigurationError> configErrors;
+
+        Counters(Map<String, AggregationType> projectionInfo, List<CollectionConfigurationError> errors) {
             derivedMetrics = new DerivedMetricProjections(projectionInfo);
+            configErrors = errors;
         }
 
         static long encodeCountAndDuration(long count, long duration) {

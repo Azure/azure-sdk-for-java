@@ -5,6 +5,12 @@ parameters:
   - name: OS
     type: string
     default: $(OSVmImage)
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
 
 steps:
   # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -14,6 +20,7 @@ steps:
       parameters:
         Paths:
           - '**/*.xml'
+          - '**/ci*.yml' # necessary for save-package-properties.yml
           - ${{ if not(parameters.CheckoutRecordings) }}:
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
@@ -31,19 +38,21 @@ steps:
     displayName: 'Set versions for source build'
     inputs:
       scriptPath: 'eng/versioning/set_versions.py'
-      arguments: '--build-type client --pst'
+      arguments: '--prep-source-testing'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type library --build-type client --sr'
+      arguments: '--skip-readme'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
       JobType: 'test'
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      ExcludePaths: ${{parameters.ExcludePaths}}
 
   # This call is used generate the sparse checkout variables for non-FromSource runs.
   - task: PowerShell@2

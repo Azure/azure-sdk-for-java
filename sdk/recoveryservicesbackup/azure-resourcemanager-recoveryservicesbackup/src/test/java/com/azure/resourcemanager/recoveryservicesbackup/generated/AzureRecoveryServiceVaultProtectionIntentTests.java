@@ -14,28 +14,28 @@ public final class AzureRecoveryServiceVaultProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureRecoveryServiceVaultProtectionIntent model = BinaryData.fromString(
-            "{\"protectionIntentItemType\":\"RecoveryServiceVaultItem\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"ttuiaclkiexhajl\",\"itemId\":\"t\",\"policyId\":\"qfyuttd\",\"protectionState\":\"NotProtected\"}")
+            "{\"protectionIntentItemType\":\"RecoveryServiceVaultItem\",\"backupManagementType\":\"Invalid\",\"sourceResourceId\":\"trekidswys\",\"itemId\":\"ruffgllukk\",\"policyId\":\"vlxhrpqhvmblc\",\"protectionState\":\"Protected\"}")
             .toObject(AzureRecoveryServiceVaultProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("ttuiaclkiexhajl", model.sourceResourceId());
-        Assertions.assertEquals("t", model.itemId());
-        Assertions.assertEquals("qfyuttd", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("trekidswys", model.sourceResourceId());
+        Assertions.assertEquals("ruffgllukk", model.itemId());
+        Assertions.assertEquals("vlxhrpqhvmblc", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureRecoveryServiceVaultProtectionIntent model
-            = new AzureRecoveryServiceVaultProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
-                .withSourceResourceId("ttuiaclkiexhajl")
-                .withItemId("t")
-                .withPolicyId("qfyuttd")
-                .withProtectionState(ProtectionStatus.NOT_PROTECTED);
+            = new AzureRecoveryServiceVaultProtectionIntent().withBackupManagementType(BackupManagementType.INVALID)
+                .withSourceResourceId("trekidswys")
+                .withItemId("ruffgllukk")
+                .withPolicyId("vlxhrpqhvmblc")
+                .withProtectionState(ProtectionStatus.PROTECTED);
         model = BinaryData.fromObject(model).toObject(AzureRecoveryServiceVaultProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("ttuiaclkiexhajl", model.sourceResourceId());
-        Assertions.assertEquals("t", model.itemId());
-        Assertions.assertEquals("qfyuttd", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("trekidswys", model.sourceResourceId());
+        Assertions.assertEquals("ruffgllukk", model.itemId());
+        Assertions.assertEquals("vlxhrpqhvmblc", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
     }
 }

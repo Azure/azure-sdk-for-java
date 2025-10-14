@@ -25,7 +25,7 @@ public final class TopicSpaceInner extends ProxyResource {
     private TopicSpaceProperties innerProperties;
 
     /*
-     * The system metadata relating to the TopicSpace resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -60,7 +60,7 @@ public final class TopicSpaceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to the TopicSpace resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

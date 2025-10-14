@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public class GeoJsonFeatureCollectionData implements JsonSerializable<GeoJsonFea
     /*
      * Contains a list of valid `GeoJSON Feature` objects.
      */
+    @Generated
     private List<GeoJsonFeature> features;
 
     /**
      * Creates an instance of GeoJsonFeatureCollectionData class.
      */
+    @Generated
     public GeoJsonFeatureCollectionData() {
     }
 
@@ -33,6 +36,7 @@ public class GeoJsonFeatureCollectionData implements JsonSerializable<GeoJsonFea
      * 
      * @return the features value.
      */
+    @Generated
     public List<GeoJsonFeature> getFeatures() {
         return this.features;
     }
@@ -43,6 +47,7 @@ public class GeoJsonFeatureCollectionData implements JsonSerializable<GeoJsonFea
      * @param features the features value to set.
      * @return the GeoJsonFeatureCollectionData object itself.
      */
+    @Generated
     public GeoJsonFeatureCollectionData setFeatures(List<GeoJsonFeature> features) {
         this.features = features;
         return this;
@@ -51,6 +56,7 @@ public class GeoJsonFeatureCollectionData implements JsonSerializable<GeoJsonFea
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public class GeoJsonFeatureCollectionData implements JsonSerializable<GeoJsonFea
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonFeatureCollectionData.
      */
+    @Generated
     public static GeoJsonFeatureCollectionData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonFeatureCollectionData deserializedGeoJsonFeatureCollectionData = new GeoJsonFeatureCollectionData();

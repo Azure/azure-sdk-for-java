@@ -13,19 +13,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -102,9 +92,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private static String vlwContainerName;
     private static final String ACCOUNT_NAME = ENVIRONMENT.getVersionedAccount().getName();
-    private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
-    private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
-    private static final String API_VERSION = "2021-04-01";
+    protected static final String MANAGEMENT_PLANE_API_VERSION = "2021-04-01";
     private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
     private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY
         = new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
@@ -119,7 +107,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             String url = String.format(
                 "https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
-                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
+                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, MANAGEMENT_PLANE_API_VERSION);
             HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(CREDENTIAL_POLICY).build();
 
             ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
@@ -158,89 +146,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0);
     }
 
-    public static final class Body implements JsonSerializable<Body> {
-        private String id;
-        private String name;
-        private String type;
-        private Properties properties;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Properties getProperties() {
-            return properties;
-        }
-
-        public void setProperties(Properties properties) {
-            this.properties = properties;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeStringField("id", this.id)
-                .writeStringField("name", this.name)
-                .writeStringField("type", this.type)
-                .writeJsonField("properties", this.properties);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
-    public static final class Properties implements JsonSerializable<Properties> {
-        private ImmutableStorageWithVersioning immutableStorageWithVersioning;
-
-        public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
-            this.immutableStorageWithVersioning = immutableStorageWithVersioning;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
-    public static final class ImmutableStorageWithVersioning
-        implements JsonSerializable<ImmutableStorageWithVersioning> {
-        private boolean enabled;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject().writeBooleanField("enabled", this.enabled);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
     @AfterAll
     public static void cleanupSpec() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
@@ -276,7 +181,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             String url = String.format(
                 "https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
-                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
+                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, MANAGEMENT_PLANE_API_VERSION);
             HttpResponse response
                 = httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
                     .block();
@@ -285,42 +190,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
-        }
-    }
-
-    public static TokenCredential getTokenCredential(TestMode testMode) {
-        if (testMode == TestMode.RECORD) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else if (testMode == TestMode.LIVE) {
-            Configuration config = Configuration.getGlobalConfiguration();
-
-            ChainedTokenCredentialBuilder builder
-                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-                    .addLast(new AzureCliCredentialBuilder().build())
-                    .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-                && !CoreUtils.isNullOrEmpty(clientId)
-                && !CoreUtils.isNullOrEmpty(tenantId)
-                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-                builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
-                    .clientId(clientId)
-                    .tenantId(tenantId)
-                    .serviceConnectionId(serviceConnectionId)
-                    .build());
-            }
-
-            builder.addLast(new AzurePowerShellCredentialBuilder().build());
-
-            return builder.build();
-        } else { //playback or not set
-            return new MockTokenCredential();
         }
     }
 

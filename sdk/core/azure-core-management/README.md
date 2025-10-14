@@ -16,7 +16,7 @@ Azure Core Management library is a collection of classes common to the [Azure Re
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-management</artifactId>
-    <version>1.15.6</version>
+    <version>1.19.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,9 +56,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- Links -->
-[arm]: https://docs.microsoft.com/azure/azure-resource-manager/management/
+[arm]: https://learn.microsoft.com/azure/azure-resource-manager/management/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-management%2FREADME.png)
+

@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class DigitalTwinsGetByIdHeaders {
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class DigitalTwinsGetByIdHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -43,6 +46,7 @@ public final class DigitalTwinsGetByIdHeaders {
      * @param eTag the eTag value to set.
      * @return the DigitalTwinsGetByIdHeaders object itself.
      */
+    @Generated
     public DigitalTwinsGetByIdHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;

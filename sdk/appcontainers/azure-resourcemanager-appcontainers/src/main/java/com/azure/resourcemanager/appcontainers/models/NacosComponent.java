@@ -26,11 +26,6 @@ public final class NacosComponent extends JavaComponentProperties {
      */
     private JavaComponentIngress ingress;
 
-    /*
-     * Provisioning state of the Java Component.
-     */
-    private JavaComponentProvisioningState provisioningState;
-
     /**
      * Creates an instance of NacosComponent class.
      */
@@ -65,16 +60,6 @@ public final class NacosComponent extends JavaComponentProperties {
     public NacosComponent withIngress(JavaComponentIngress ingress) {
         this.ingress = ingress;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the Java Component.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public JavaComponentProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -155,8 +140,8 @@ public final class NacosComponent extends JavaComponentProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedNacosComponent.provisioningState
-                        = JavaComponentProvisioningState.fromString(reader.getString());
+                    deserializedNacosComponent
+                        .withProvisioningState(JavaComponentProvisioningState.fromString(reader.getString()));
                 } else if ("configurations".equals(fieldName)) {
                     List<JavaComponentConfigurationProperty> configurations
                         = reader.readArray(reader1 -> JavaComponentConfigurationProperty.fromJson(reader1));

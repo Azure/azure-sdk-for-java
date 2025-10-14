@@ -22,6 +22,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(PhoneNumbersIntegrationTestBase.class);
@@ -44,6 +45,7 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3430");
             addTestProxySanitizer();
         }
 
@@ -63,12 +65,17 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         // sanitize phone numbers
         interceptorManager.addSanitizers(
             Arrays.asList(new TestProxySanitizer("(?<=/phoneNumbers/)([^/?]+)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})",
+                    "11111111-1111-1111-1111-111111111111", TestProxySanitizerType.BODY_REGEX),
+                new TestProxySanitizer("([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})",
+                    "11111111-1111-1111-1111-111111111111", TestProxySanitizerType.URL),
                 new TestProxySanitizer("$..phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("$..nationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("$..internationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("((?:\\\\u002B)[0-9]{11,})|((?:\\\\%2B)[0-9]{11,})|((?:[+]?)[0-9]{11,})",
-                    "REDACTED", TestProxySanitizerType.BODY_REGEX)));
+                    "111111111111", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("((?:\\\\u002B)[0-9]{11,})|((?:\\\\%2B)[0-9]{11,})|((?:[+]?)[0-9]{11,})",
+                    "111111111111", TestProxySanitizerType.BODY_REGEX)));
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
@@ -84,6 +91,7 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3430");
             addTestProxySanitizer();
         }
 
@@ -126,6 +134,13 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
             phoneNumber = "REDACTED";
         }
         return phoneNumber;
+    }
+
+    protected String getReservationId() {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return "11111111-1111-1111-1111-111111111111";
+        }
+        return UUID.randomUUID().toString();
     }
 
     private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {

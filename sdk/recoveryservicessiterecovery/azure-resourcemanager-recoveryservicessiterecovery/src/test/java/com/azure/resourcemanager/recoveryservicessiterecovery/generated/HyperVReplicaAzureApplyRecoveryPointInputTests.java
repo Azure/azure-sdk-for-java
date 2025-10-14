@@ -12,19 +12,19 @@ public final class HyperVReplicaAzureApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureApplyRecoveryPointInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"ljcirvpefycdvei\",\"secondaryKekCertificatePfx\":\"tjnsx\"}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"xlehzlxpgfquwzp\",\"secondaryKekCertificatePfx\":\"ibelwcerwkw\"}")
             .toObject(HyperVReplicaAzureApplyRecoveryPointInput.class);
-        Assertions.assertEquals("ljcirvpefycdvei", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("tjnsx", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("xlehzlxpgfquwzp", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("ibelwcerwkw", model.secondaryKekCertificatePfx());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureApplyRecoveryPointInput model
-            = new HyperVReplicaAzureApplyRecoveryPointInput().withPrimaryKekCertificatePfx("ljcirvpefycdvei")
-                .withSecondaryKekCertificatePfx("tjnsx");
+            = new HyperVReplicaAzureApplyRecoveryPointInput().withPrimaryKekCertificatePfx("xlehzlxpgfquwzp")
+                .withSecondaryKekCertificatePfx("ibelwcerwkw");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureApplyRecoveryPointInput.class);
-        Assertions.assertEquals("ljcirvpefycdvei", model.primaryKekCertificatePfx());
-        Assertions.assertEquals("tjnsx", model.secondaryKekCertificatePfx());
+        Assertions.assertEquals("xlehzlxpgfquwzp", model.primaryKekCertificatePfx());
+        Assertions.assertEquals("ibelwcerwkw", model.secondaryKekCertificatePfx());
     }
 }

@@ -13,21 +13,24 @@ public final class OrganizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Organization model = BinaryData.fromString(
-            "{\"url\":\"spemvtzfk\",\"projects\":[\"bljofxqeof\",\"aeqjhqjbasvms\",\"jqul\"],\"parallelism\":951964300}")
+            "{\"url\":\"cciqihnhungbwjz\",\"projects\":[\"ygxgispemvtz\",\"kufubljo\",\"xqeofjaeqjhqjba\",\"v\"],\"parallelism\":171596164,\"openAccess\":true}")
             .toObject(Organization.class);
-        Assertions.assertEquals("spemvtzfk", model.url());
-        Assertions.assertEquals("bljofxqeof", model.projects().get(0));
-        Assertions.assertEquals(951964300, model.parallelism());
+        Assertions.assertEquals("cciqihnhungbwjz", model.url());
+        Assertions.assertEquals("ygxgispemvtz", model.projects().get(0));
+        Assertions.assertEquals(171596164, model.parallelism());
+        Assertions.assertTrue(model.openAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Organization model = new Organization().withUrl("spemvtzfk")
-            .withProjects(Arrays.asList("bljofxqeof", "aeqjhqjbasvms", "jqul"))
-            .withParallelism(951964300);
+        Organization model = new Organization().withUrl("cciqihnhungbwjz")
+            .withProjects(Arrays.asList("ygxgispemvtz", "kufubljo", "xqeofjaeqjhqjba", "v"))
+            .withParallelism(171596164)
+            .withOpenAccess(true);
         model = BinaryData.fromObject(model).toObject(Organization.class);
-        Assertions.assertEquals("spemvtzfk", model.url());
-        Assertions.assertEquals("bljofxqeof", model.projects().get(0));
-        Assertions.assertEquals(951964300, model.parallelism());
+        Assertions.assertEquals("cciqihnhungbwjz", model.url());
+        Assertions.assertEquals("ygxgispemvtz", model.projects().get(0));
+        Assertions.assertEquals(171596164, model.parallelism());
+        Assertions.assertTrue(model.openAccess());
     }
 }

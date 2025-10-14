@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProte
 public final class ReplicationProtectionContainersSwitchProtection {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectionContainers_SwitchProtection.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationProtectionContainersSwitchProtection {
     public static void switchesProtectionFromOneContainerToAnotherOrOneReplicationProviderToAnother(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectionContainers()
-            .switchProtection("priyanponeboxvault", "priyanprg", "CentralUSCanSite", "CentralUSCancloud",
+            .switchProtection("priyanprg", "priyanponeboxvault", "CentralUSCanSite", "CentralUSCancloud",
                 new SwitchProtectionInput().withProperties(
                     new SwitchProtectionInputProperties().withReplicationProtectedItemName("a2aSwapOsVm")
                         .withProviderSpecificDetails(new A2ASwitchProtectionInput())),

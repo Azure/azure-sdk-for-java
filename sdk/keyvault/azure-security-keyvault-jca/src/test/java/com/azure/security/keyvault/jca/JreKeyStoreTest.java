@@ -4,16 +4,16 @@
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.ssl.SSLContexts;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -80,8 +80,8 @@ public class JreKeyStoreTest {
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
             HttpGet httpGet = new HttpGet("https://google.com:443");
-            ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-                int status = response.getStatusLine().getStatusCode();
+            HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
+                int status = response.getCode();
                 String result1 = null;
                 if (status == 200) {
                     result1 = "Success";

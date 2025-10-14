@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPla
 public final class ReplicationRecoveryPlansTestFailoverCleanupSamp {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryPlans_TestFailoverCleanup.json
      */
     /**
@@ -24,7 +24,7 @@ public final class ReplicationRecoveryPlansTestFailoverCleanupSamp {
     public static void executeTestFailoverCleanupOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationRecoveryPlans()
-            .testFailoverCleanup("vault1", "resourceGroupPS1", "RPtest1",
+            .testFailoverCleanup("resourceGroupPS1", "vault1", "RPtest1",
                 new RecoveryPlanTestFailoverCleanupInput().withProperties(
                     new RecoveryPlanTestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
                 com.azure.core.util.Context.NONE);

@@ -27,6 +27,11 @@ import java.util.Map;
 @Fluent
 public final class L3NetworkInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -60,6 +65,15 @@ public final class L3NetworkInner extends Resource {
      * Creates an instance of L3NetworkInner class.
      */
     public L3NetworkInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -482,6 +496,8 @@ public final class L3NetworkInner extends Resource {
                     deserializedL3NetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedL3NetworkInner.innerProperties = L3NetworkProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedL3NetworkInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedL3NetworkInner.systemData = SystemData.fromJson(reader);
                 } else {

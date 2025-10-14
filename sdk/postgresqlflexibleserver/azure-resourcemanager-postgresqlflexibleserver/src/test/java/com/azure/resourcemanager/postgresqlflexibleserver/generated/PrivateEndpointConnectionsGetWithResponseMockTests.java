@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
@@ -22,22 +22,22 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"gfuhokzrusw\",\"vhczznvfby\",\"jsxjwwix\"],\"privateEndpoint\":{\"id\":\"mwmxqhndvnoamld\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ohdjhhflzok\",\"actionsRequired\":\"ox\"},\"provisioningState\":\"Deleting\"},\"id\":\"jetagltsxoatft\",\"name\":\"zpnpbswv\",\"type\":\"floccsrmozih\"}";
+            = "{\"properties\":{\"groupIds\":[\"nu\",\"tljqobbpih\"],\"privateEndpoint\":{\"id\":\"ecybmrqbrj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xdlvykfrexc\",\"actionsRequired\":\"eqwjksgh\"},\"provisioningState\":\"Creating\"},\"id\":\"hxogjggsvoujkxi\",\"name\":\"dafhr\",\"type\":\"mdyomkxfbvfbh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("uxlxqzvners", "ycucrwnamikzeb", "qbsms", com.azure.core.util.Context.NONE)
+            .getWithResponse("mpqvwwsk", "ndcbrwi", "uvqejosovyrrle", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ohdjhhflzok", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ox", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("xdlvykfrexc", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("eqwjksgh", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

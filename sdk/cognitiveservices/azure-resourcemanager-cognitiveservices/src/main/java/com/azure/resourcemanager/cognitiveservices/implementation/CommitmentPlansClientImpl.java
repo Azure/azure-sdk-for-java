@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
@@ -72,7 +74,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientCommitmentPlans")
     public interface CommitmentPlansService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans")
@@ -84,10 +86,29 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanListResult> listSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommitmentPlanInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("commitmentPlanName") String commitmentPlanName, @HeaderParam("Accept") String accept,
@@ -105,6 +126,17 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName,
+            @BodyParam("application/json") CommitmentPlanInner commitmentPlan, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -115,10 +147,31 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdatePlan(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") CommitmentPlanInner commitmentPlan, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdatePlanSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("commitmentPlanName") String commitmentPlanName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -137,10 +190,30 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updatePlanSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PatchResourceTagsAndSku commitmentPlan, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePlan(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deletePlanSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("commitmentPlanName") String commitmentPlanName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
@@ -155,6 +228,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -164,10 +246,27 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/commitmentPlans")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommitmentPlanListResult>> listPlansBySubscription(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/commitmentPlans")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanListResult> listPlansBySubscriptionSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -182,10 +281,31 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanAccountAssociationListResult> listAssociationsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommitmentPlanAccountAssociationInner>> getAssociation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName,
+            @PathParam("commitmentPlanAssociationName") String commitmentPlanAssociationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanAccountAssociationInner> getAssociationSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("commitmentPlanName") String commitmentPlanName,
@@ -205,10 +325,33 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateAssociationSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName,
+            @PathParam("commitmentPlanAssociationName") String commitmentPlanAssociationName,
+            @BodyParam("application/json") CommitmentPlanAccountAssociationInner association,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteAssociation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("commitmentPlanName") String commitmentPlanName,
+            @PathParam("commitmentPlanAssociationName") String commitmentPlanAssociationName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/commitmentPlans/{commitmentPlanName}/accountAssociations/{commitmentPlanAssociationName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteAssociationSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("commitmentPlanName") String commitmentPlanName,
@@ -227,7 +370,22 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommitmentPlanListResult>> listPlansByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanListResult> listPlansByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -243,7 +401,23 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanListResult> listPlansBySubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommitmentPlanAccountAssociationListResult>> listAssociationsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CommitmentPlanAccountAssociationListResult> listAssociationsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -290,45 +464,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanInner>> listSinglePageAsync(String resourceGroupName, String accountName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the commitmentPlans associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -346,17 +481,75 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listSinglePage(String resourceGroupName, String accountName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res = service.listSync(this.client.getEndpoint(), resourceGroupName,
+            accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the commitmentPlans associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with
-     * {@link PagedFlux}.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommitmentPlanInner> listAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listSinglePage(String resourceGroupName, String accountName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res = service.listSync(this.client.getEndpoint(), resourceGroupName,
+            accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -372,7 +565,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -389,7 +583,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> list(String resourceGroupName, String accountName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -439,47 +634,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified commitmentPlans associated with the Cognitive Services account along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommitmentPlanInner>> getWithResponseAsync(String resourceGroupName, String accountName,
-        String commitmentPlanName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), commitmentPlanName, accept, context);
-    }
-
-    /**
-     * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -508,7 +662,31 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommitmentPlanInner> getWithResponse(String resourceGroupName, String accountName,
         String commitmentPlanName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, commitmentPlanName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), commitmentPlanName, accept, context);
     }
 
     /**
@@ -582,54 +760,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The commitmentPlan properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommitmentPlanInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
-        }
-        if (commitmentPlan == null) {
-            return Mono.error(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
-        } else {
-            commitmentPlan.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlanName, commitmentPlan, accept,
-            context);
-    }
-
-    /**
-     * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -658,8 +788,38 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommitmentPlanInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, commitmentPlanName, commitmentPlan,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (commitmentPlan == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
+        } else {
+            commitmentPlan.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlanName, commitmentPlan, accept,
+            context);
     }
 
     /**
@@ -727,38 +887,81 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
+        String commitmentPlanName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlanName, accept, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified commitmentPlan associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName,
         String commitmentPlanName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), commitmentPlanName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlanName, accept, context);
     }
 
     /**
@@ -787,28 +990,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
-        String commitmentPlanName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, accountName, commitmentPlanName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -817,7 +998,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String commitmentPlanName) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, commitmentPlanName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, commitmentPlanName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -835,7 +1017,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String commitmentPlanName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, accountName, commitmentPlanName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, commitmentPlanName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -861,32 +1044,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String commitmentPlanName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, commitmentPlanName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String commitmentPlanName) {
-        deleteAsync(resourceGroupName, accountName, commitmentPlanName).block();
+        beginDelete(resourceGroupName, accountName, commitmentPlanName).getFinalResult();
     }
 
     /**
@@ -902,7 +1066,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String commitmentPlanName, Context context) {
-        deleteAsync(resourceGroupName, accountName, commitmentPlanName, context).block();
+        beginDelete(resourceGroupName, accountName, commitmentPlanName, context).getFinalResult();
     }
 
     /**
@@ -955,40 +1119,84 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdatePlanWithResponseAsync(String resourceGroupName,
-        String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context) {
+    private Response<BinaryData> createOrUpdatePlanWithResponse(String resourceGroupName, String commitmentPlanName,
+        CommitmentPlanInner commitmentPlan) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (commitmentPlan == null) {
-            return Mono.error(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
         } else {
             commitmentPlan.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdatePlan(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+        return service.createOrUpdatePlanSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlan, accept, Context.NONE);
+    }
+
+    /**
+     * Create Cognitive Services commitment plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdatePlanWithResponse(String resourceGroupName, String commitmentPlanName,
+        CommitmentPlanInner commitmentPlan, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlan == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
+        } else {
+            commitmentPlan.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdatePlanSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlan, accept, context);
     }
 
@@ -1018,28 +1226,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cognitive Services account commitment plan.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginCreateOrUpdatePlanAsync(
-        String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdatePlanWithResponseAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context);
-        return this.client.<CommitmentPlanInner, CommitmentPlanInner>getLroResult(mono, this.client.getHttpPipeline(),
-            CommitmentPlanInner.class, CommitmentPlanInner.class, context);
-    }
-
-    /**
-     * Create Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The parameters to provide for the created commitment plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1048,7 +1234,10 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginCreateOrUpdatePlan(
         String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan) {
-        return this.beginCreateOrUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdatePlanWithResponse(resourceGroupName, commitmentPlanName, commitmentPlan);
+        return this.client.<CommitmentPlanInner, CommitmentPlanInner>getLroResult(response, CommitmentPlanInner.class,
+            CommitmentPlanInner.class, Context.NONE);
     }
 
     /**
@@ -1066,8 +1255,10 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginCreateOrUpdatePlan(
         String resourceGroupName, String commitmentPlanName, CommitmentPlanInner commitmentPlan, Context context) {
-        return this.beginCreateOrUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdatePlanWithResponse(resourceGroupName, commitmentPlanName, commitmentPlan, context);
+        return this.client.<CommitmentPlanInner, CommitmentPlanInner>getLroResult(response, CommitmentPlanInner.class,
+            CommitmentPlanInner.class, context);
     }
 
     /**
@@ -1094,25 +1285,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommitmentPlanInner> createOrUpdatePlanAsync(String resourceGroupName, String commitmentPlanName,
-        CommitmentPlanInner commitmentPlan, Context context) {
-        return beginCreateOrUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The parameters to provide for the created commitment plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1121,7 +1293,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitmentPlanInner createOrUpdatePlan(String resourceGroupName, String commitmentPlanName,
         CommitmentPlanInner commitmentPlan) {
-        return createOrUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan).block();
+        return beginCreateOrUpdatePlan(resourceGroupName, commitmentPlanName, commitmentPlan).getFinalResult();
     }
 
     /**
@@ -1139,7 +1311,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitmentPlanInner createOrUpdatePlan(String resourceGroupName, String commitmentPlanName,
         CommitmentPlanInner commitmentPlan, Context context) {
-        return createOrUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context).block();
+        return beginCreateOrUpdatePlan(resourceGroupName, commitmentPlanName, commitmentPlan, context).getFinalResult();
     }
 
     /**
@@ -1191,40 +1363,84 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updatePlanWithResponseAsync(String resourceGroupName,
-        String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan, Context context) {
+    private Response<BinaryData> updatePlanWithResponse(String resourceGroupName, String commitmentPlanName,
+        PatchResourceTagsAndSku commitmentPlan) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (commitmentPlan == null) {
-            return Mono.error(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
         } else {
             commitmentPlan.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updatePlan(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+        return service.updatePlanSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlan, accept, Context.NONE);
+    }
+
+    /**
+     * Create Cognitive Services commitment plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlan The parameters to provide for the created commitment plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account commitment plan along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updatePlanWithResponse(String resourceGroupName, String commitmentPlanName,
+        PatchResourceTagsAndSku commitmentPlan, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlan == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlan is required and cannot be null."));
+        } else {
+            commitmentPlan.validate();
+        }
+        final String accept = "application/json";
+        return service.updatePlanSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlan, accept, context);
     }
 
@@ -1254,28 +1470,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cognitive Services account commitment plan.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginUpdatePlanAsync(
-        String resourceGroupName, String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updatePlanWithResponseAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context);
-        return this.client.<CommitmentPlanInner, CommitmentPlanInner>getLroResult(mono, this.client.getHttpPipeline(),
-            CommitmentPlanInner.class, CommitmentPlanInner.class, context);
-    }
-
-    /**
-     * Create Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The parameters to provide for the created commitment plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1284,7 +1478,9 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginUpdatePlan(String resourceGroupName,
         String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan) {
-        return this.beginUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan).getSyncPoller();
+        Response<BinaryData> response = updatePlanWithResponse(resourceGroupName, commitmentPlanName, commitmentPlan);
+        return this.client.<CommitmentPlanInner, CommitmentPlanInner>getLroResult(response, CommitmentPlanInner.class,
+            CommitmentPlanInner.class, Context.NONE);
     }
 
     /**
@@ -1302,8 +1498,10 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommitmentPlanInner>, CommitmentPlanInner> beginUpdatePlan(String resourceGroupName,
         String commitmentPlanName, PatchResourceTagsAndSku commitmentPlan, Context context) {
-        return this.beginUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updatePlanWithResponse(resourceGroupName, commitmentPlanName, commitmentPlan, context);
+        return this.client.<CommitmentPlanInner, CommitmentPlanInner>getLroResult(response, CommitmentPlanInner.class,
+            CommitmentPlanInner.class, context);
     }
 
     /**
@@ -1330,25 +1528,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommitmentPlanInner> updatePlanAsync(String resourceGroupName, String commitmentPlanName,
-        PatchResourceTagsAndSku commitmentPlan, Context context) {
-        return beginUpdatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlan The parameters to provide for the created commitment plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1357,7 +1536,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitmentPlanInner updatePlan(String resourceGroupName, String commitmentPlanName,
         PatchResourceTagsAndSku commitmentPlan) {
-        return updatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan).block();
+        return beginUpdatePlan(resourceGroupName, commitmentPlanName, commitmentPlan).getFinalResult();
     }
 
     /**
@@ -1375,7 +1554,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommitmentPlanInner updatePlan(String resourceGroupName, String commitmentPlanName,
         PatchResourceTagsAndSku commitmentPlan, Context context) {
-        return updatePlanAsync(resourceGroupName, commitmentPlanName, commitmentPlan, context).block();
+        return beginUpdatePlan(resourceGroupName, commitmentPlanName, commitmentPlan, context).getFinalResult();
     }
 
     /**
@@ -1419,34 +1598,70 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deletePlanWithResponse(String resourceGroupName, String commitmentPlanName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deletePlanSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a Cognitive Services commitment plan from the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deletePlanWithResponseAsync(String resourceGroupName,
-        String commitmentPlanName, Context context) {
+    private Response<BinaryData> deletePlanWithResponse(String resourceGroupName, String commitmentPlanName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deletePlan(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+        return service.deletePlanSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
@@ -1473,27 +1688,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeletePlanAsync(String resourceGroupName, String commitmentPlanName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deletePlanWithResponseAsync(resourceGroupName, commitmentPlanName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a Cognitive Services commitment plan from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1501,7 +1695,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePlan(String resourceGroupName, String commitmentPlanName) {
-        return this.beginDeletePlanAsync(resourceGroupName, commitmentPlanName).getSyncPoller();
+        Response<BinaryData> response = deletePlanWithResponse(resourceGroupName, commitmentPlanName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1518,7 +1713,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePlan(String resourceGroupName, String commitmentPlanName,
         Context context) {
-        return this.beginDeletePlanAsync(resourceGroupName, commitmentPlanName, context).getSyncPoller();
+        Response<BinaryData> response = deletePlanWithResponse(resourceGroupName, commitmentPlanName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1542,30 +1738,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deletePlanAsync(String resourceGroupName, String commitmentPlanName, Context context) {
-        return beginDeletePlanAsync(resourceGroupName, commitmentPlanName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a Cognitive Services commitment plan from the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePlan(String resourceGroupName, String commitmentPlanName) {
-        deletePlanAsync(resourceGroupName, commitmentPlanName).block();
+        beginDeletePlan(resourceGroupName, commitmentPlanName).getFinalResult();
     }
 
     /**
@@ -1580,7 +1759,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePlan(String resourceGroupName, String commitmentPlanName, Context context) {
-        deletePlanAsync(resourceGroupName, commitmentPlanName, context).block();
+        beginDeletePlan(resourceGroupName, commitmentPlanName, context).getFinalResult();
     }
 
     /**
@@ -1625,43 +1804,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommitmentPlanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String commitmentPlanName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Returns a Cognitive Services commitment plan specified by the parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1687,7 +1829,27 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommitmentPlanInner> getByResourceGroupWithResponse(String resourceGroupName,
         String commitmentPlanName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, commitmentPlanName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), resourceGroupName, commitmentPlanName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1742,41 +1904,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * Returns all the resources of a particular type belonging to a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all the resources of a particular type belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1792,16 +1919,66 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * Returns all the resources of a particular type belonging to a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all the resources of a particular type belonging to a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommitmentPlanInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listPlansByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1816,7 +1993,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listPlansByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1832,7 +2010,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listPlansByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1865,35 +2044,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     /**
      * Returns all the resources of a particular type belonging to a subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanInner>> listPlansBySubscriptionSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listPlansBySubscription(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
@@ -1907,16 +2057,55 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     /**
      * Returns all the resources of a particular type belonging to a subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listPlansBySubscriptionSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res = service.listPlansBySubscriptionSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all the resources of a particular type belonging to a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommitmentPlanInner> listPlansBySubscriptionAsync(Context context) {
-        return new PagedFlux<>(() -> listPlansBySubscriptionSinglePageAsync(context),
-            nextLink -> listPlansBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listPlansBySubscriptionSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res = service.listPlansBySubscriptionSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1929,7 +2118,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listPlansBySubscription() {
-        return new PagedIterable<>(listPlansBySubscriptionAsync());
+        return new PagedIterable<>(() -> listPlansBySubscriptionSinglePage(),
+            nextLink -> listPlansBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1944,7 +2134,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listPlansBySubscription(Context context) {
-        return new PagedIterable<>(listPlansBySubscriptionAsync(context));
+        return new PagedIterable<>(() -> listPlansBySubscriptionSinglePage(context),
+            nextLink -> listPlansBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1991,46 +2182,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
-        listAssociationsSinglePageAsync(String resourceGroupName, String commitmentPlanName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listAssociations(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-                this.client.getSubscriptionId(), commitmentPlanName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the associations of the Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2048,17 +2199,78 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanAccountAssociationInner> listAssociationsSinglePage(String resourceGroupName,
+        String commitmentPlanName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanAccountAssociationListResult> res
+            = service.listAssociationsSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), commitmentPlanName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the associations of the Cognitive Services commitment plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the associations of the Cognitive Services commitment plan as paginated response with {@link PagedFlux}.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommitmentPlanAccountAssociationInner> listAssociationsAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanAccountAssociationInner> listAssociationsSinglePage(String resourceGroupName,
         String commitmentPlanName, Context context) {
-        return new PagedFlux<>(() -> listAssociationsSinglePageAsync(resourceGroupName, commitmentPlanName, context),
-            nextLink -> listAssociationsNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanAccountAssociationListResult> res
+            = service.listAssociationsSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), commitmentPlanName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2075,7 +2287,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanAccountAssociationInner> listAssociations(String resourceGroupName,
         String commitmentPlanName) {
-        return new PagedIterable<>(listAssociationsAsync(resourceGroupName, commitmentPlanName));
+        return new PagedIterable<>(() -> listAssociationsSinglePage(resourceGroupName, commitmentPlanName),
+            nextLink -> listAssociationsNextSinglePage(nextLink));
     }
 
     /**
@@ -2093,7 +2306,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanAccountAssociationInner> listAssociations(String resourceGroupName,
         String commitmentPlanName, Context context) {
-        return new PagedIterable<>(listAssociationsAsync(resourceGroupName, commitmentPlanName, context));
+        return new PagedIterable<>(() -> listAssociationsSinglePage(resourceGroupName, commitmentPlanName, context),
+            nextLink -> listAssociationsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2147,49 +2361,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the association of the Cognitive Services commitment plan along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommitmentPlanAccountAssociationInner>> getAssociationWithResponseAsync(
-        String resourceGroupName, String commitmentPlanName, String commitmentPlanAssociationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
-        }
-        if (commitmentPlanAssociationName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter commitmentPlanAssociationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getAssociation(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), commitmentPlanName, commitmentPlanAssociationName, accept, context);
-    }
-
-    /**
-     * Gets the association of the Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2218,8 +2389,32 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommitmentPlanAccountAssociationInner> getAssociationWithResponse(String resourceGroupName,
         String commitmentPlanName, String commitmentPlanAssociationName, Context context) {
-        return getAssociationWithResponseAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (commitmentPlanAssociationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter commitmentPlanAssociationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getAssociationSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), commitmentPlanName, commitmentPlanAssociationName, accept, context);
     }
 
     /**
@@ -2299,44 +2494,99 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
      * @param association The commitmentPlan properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitment plan association along with {@link Response} on successful completion of {@link Mono}.
+     * @return the commitment plan association along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateAssociationWithResponseAsync(String resourceGroupName,
+    private Response<BinaryData> createOrUpdateAssociationWithResponse(String resourceGroupName,
         String commitmentPlanName, String commitmentPlanAssociationName,
-        CommitmentPlanAccountAssociationInner association, Context context) {
+        CommitmentPlanAccountAssociationInner association) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
         }
         if (commitmentPlanAssociationName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter commitmentPlanAssociationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter commitmentPlanAssociationName is required and cannot be null."));
         }
         if (association == null) {
-            return Mono.error(new IllegalArgumentException("Parameter association is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter association is required and cannot be null."));
         } else {
             association.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateAssociation(this.client.getEndpoint(), resourceGroupName,
+        return service.createOrUpdateAssociationSync(this.client.getEndpoint(), resourceGroupName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlanName,
+            commitmentPlanAssociationName, association, accept, Context.NONE);
+    }
+
+    /**
+     * Create or update the association of the Cognitive Services commitment plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     * Account.
+     * @param association The commitmentPlan properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the commitment plan association along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateAssociationWithResponse(String resourceGroupName,
+        String commitmentPlanName, String commitmentPlanAssociationName,
+        CommitmentPlanAccountAssociationInner association, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (commitmentPlanAssociationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter commitmentPlanAssociationName is required and cannot be null."));
+        }
+        if (association == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter association is required and cannot be null."));
+        } else {
+            association.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateAssociationSync(this.client.getEndpoint(), resourceGroupName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), commitmentPlanName,
             commitmentPlanAssociationName, association, accept, context);
     }
@@ -2373,32 +2623,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
      * @param association The commitmentPlan properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the commitment plan association.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CommitmentPlanAccountAssociationInner>, CommitmentPlanAccountAssociationInner>
-        beginCreateOrUpdateAssociationAsync(String resourceGroupName, String commitmentPlanName,
-            String commitmentPlanAssociationName, CommitmentPlanAccountAssociationInner association, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateAssociationWithResponseAsync(resourceGroupName,
-            commitmentPlanName, commitmentPlanAssociationName, association, context);
-        return this.client.<CommitmentPlanAccountAssociationInner, CommitmentPlanAccountAssociationInner>getLroResult(
-            mono, this.client.getHttpPipeline(), CommitmentPlanAccountAssociationInner.class,
-            CommitmentPlanAccountAssociationInner.class, context);
-    }
-
-    /**
-     * Create or update the association of the Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     * Account.
-     * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2408,10 +2632,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     public SyncPoller<PollResult<CommitmentPlanAccountAssociationInner>, CommitmentPlanAccountAssociationInner>
         beginCreateOrUpdateAssociation(String resourceGroupName, String commitmentPlanName,
             String commitmentPlanAssociationName, CommitmentPlanAccountAssociationInner association) {
-        return this
-            .beginCreateOrUpdateAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-                association)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateAssociationWithResponse(resourceGroupName, commitmentPlanName,
+            commitmentPlanAssociationName, association);
+        return this.client.<CommitmentPlanAccountAssociationInner, CommitmentPlanAccountAssociationInner>getLroResult(
+            response, CommitmentPlanAccountAssociationInner.class, CommitmentPlanAccountAssociationInner.class,
+            Context.NONE);
     }
 
     /**
@@ -2432,10 +2657,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     public SyncPoller<PollResult<CommitmentPlanAccountAssociationInner>, CommitmentPlanAccountAssociationInner>
         beginCreateOrUpdateAssociation(String resourceGroupName, String commitmentPlanName,
             String commitmentPlanAssociationName, CommitmentPlanAccountAssociationInner association, Context context) {
-        return this
-            .beginCreateOrUpdateAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-                association, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateAssociationWithResponse(resourceGroupName, commitmentPlanName,
+            commitmentPlanAssociationName, association, context);
+        return this.client.<CommitmentPlanAccountAssociationInner, CommitmentPlanAccountAssociationInner>getLroResult(
+            response, CommitmentPlanAccountAssociationInner.class, CommitmentPlanAccountAssociationInner.class,
+            context);
     }
 
     /**
@@ -2467,28 +2693,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
      * @param association The commitmentPlan properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitment plan association on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommitmentPlanAccountAssociationInner> createOrUpdateAssociationAsync(String resourceGroupName,
-        String commitmentPlanName, String commitmentPlanAssociationName,
-        CommitmentPlanAccountAssociationInner association, Context context) {
-        return beginCreateOrUpdateAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-            association, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update the association of the Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     * Account.
-     * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2498,8 +2702,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     public CommitmentPlanAccountAssociationInner createOrUpdateAssociation(String resourceGroupName,
         String commitmentPlanName, String commitmentPlanAssociationName,
         CommitmentPlanAccountAssociationInner association) {
-        return createOrUpdateAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-            association).block();
+        return beginCreateOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+            association).getFinalResult();
     }
 
     /**
@@ -2520,8 +2724,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     public CommitmentPlanAccountAssociationInner createOrUpdateAssociation(String resourceGroupName,
         String commitmentPlanName, String commitmentPlanAssociationName,
         CommitmentPlanAccountAssociationInner association, Context context) {
-        return createOrUpdateAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-            association, context).block();
+        return beginCreateOrUpdateAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
+            association, context).getFinalResult();
     }
 
     /**
@@ -2574,38 +2778,83 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteAssociationWithResponse(String resourceGroupName, String commitmentPlanName,
+        String commitmentPlanAssociationName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (commitmentPlanName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+        }
+        if (commitmentPlanAssociationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter commitmentPlanAssociationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteAssociationSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), commitmentPlanName, commitmentPlanAssociationName, accept, Context.NONE);
+    }
+
+    /**
+     * Deletes the association of the Cognitive Services commitment plan.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
+     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteAssociationWithResponseAsync(String resourceGroupName,
-        String commitmentPlanName, String commitmentPlanAssociationName, Context context) {
+    private Response<BinaryData> deleteAssociationWithResponse(String resourceGroupName, String commitmentPlanName,
+        String commitmentPlanAssociationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (commitmentPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter commitmentPlanName is required and cannot be null."));
         }
         if (commitmentPlanAssociationName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter commitmentPlanAssociationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter commitmentPlanAssociationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteAssociation(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.deleteAssociationSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), commitmentPlanName, commitmentPlanAssociationName, accept, context);
     }
 
@@ -2637,29 +2886,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAssociationAsync(String resourceGroupName,
-        String commitmentPlanName, String commitmentPlanAssociationName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteAssociationWithResponseAsync(resourceGroupName,
-            commitmentPlanName, commitmentPlanAssociationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes the association of the Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2668,8 +2894,9 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAssociation(String resourceGroupName,
         String commitmentPlanName, String commitmentPlanAssociationName) {
-        return this.beginDeleteAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2688,9 +2915,9 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAssociation(String resourceGroupName,
         String commitmentPlanName, String commitmentPlanAssociationName, Context context) {
-        return this
-            .beginDeleteAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context)
-            .getSyncPoller();
+        Response<BinaryData> response = deleteAssociationWithResponse(resourceGroupName, commitmentPlanName,
+            commitmentPlanAssociationName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2719,26 +2946,6 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
      * Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAssociationAsync(String resourceGroupName, String commitmentPlanName,
-        String commitmentPlanAssociationName, Context context) {
-        return beginDeleteAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the association of the Cognitive Services commitment plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
-     * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2746,7 +2953,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAssociation(String resourceGroupName, String commitmentPlanName,
         String commitmentPlanAssociationName) {
-        deleteAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName).block();
+        beginDeleteAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName).getFinalResult();
     }
 
     /**
@@ -2764,7 +2971,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAssociation(String resourceGroupName, String commitmentPlanName,
         String commitmentPlanAssociationName, Context context) {
-        deleteAssociationAsync(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context).block();
+        beginDeleteAssociation(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context)
+            .getFinalResult();
     }
 
     /**
@@ -2774,8 +2982,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listNextSinglePageAsync(String nextLink) {
@@ -2797,27 +3005,55 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<CommitmentPlanInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<CommitmentPlanListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2852,28 +3088,56 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listPlansByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res
+            = service.listPlansByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanInner>> listPlansByResourceGroupNextSinglePageAsync(String nextLink,
+    private PagedResponse<CommitmentPlanInner> listPlansByResourceGroupNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listPlansByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<CommitmentPlanListResult> res
+            = service.listPlansByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2908,28 +3172,55 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanInner> listPlansBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanListResult> res
+            = service.listPlansBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanInner>> listPlansBySubscriptionNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<CommitmentPlanInner> listPlansBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listPlansBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<CommitmentPlanListResult> res
+            = service.listPlansBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2939,8 +3230,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
@@ -2964,27 +3255,57 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<CommitmentPlanAccountAssociationInner> listAssociationsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<CommitmentPlanAccountAssociationListResult> res
+            = service.listAssociationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
-        listAssociationsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<CommitmentPlanAccountAssociationInner> listAssociationsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listAssociationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<CommitmentPlanAccountAssociationListResult> res
+            = service.listAssociationsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommitmentPlansClientImpl.class);
 }

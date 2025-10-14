@@ -3,8 +3,8 @@
 
 ``` yaml $(tag) == 'confidential-ledger'
 input-file: 
-- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/stable/2022-05-13/common.json
-- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/stable/2022-05-13/confidentialledger.json
+- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/2024-12-09-preview/common.json
+- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/2024-12-09-preview/confidentialledger.json
 java: true
 output-folder: ../
 namespace: com.azure.security.confidentialledger
@@ -16,6 +16,9 @@ title: ConfidentialLedgerClient
 use: '@autorest/java@4.1.42'
 generate-samples: true
 generate-tests: true
+service-version:
+- 2022-05-13
+- 2024-12-09-preview
 ```
 
 
@@ -23,8 +26,8 @@ generate-tests: true
 ### To run, use `autorest --tag:confidential-ledger-certificate README.md`
 ``` yaml $(tag) == 'confidential-ledger-certificate'
 input-file: 
-- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/stable/2022-05-13/common.json
-- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/stable/2022-05-13/identityservice.json
+- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/2024-12-09-preview/common.json
+- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/preview/2024-12-09-preview/identityservice.json
 java: true
 output-folder: ../
 namespace: com.azure.security.confidentialledger.certificate
@@ -36,4 +39,7 @@ title: ConfidentialLedgerCertificateClient
 use: '@autorest/java@4.1.42'
 generate-samples: true
 generate-tests: true
+service-version:
+- 2022-05-13
+- 2024-12-09-preview
 ```

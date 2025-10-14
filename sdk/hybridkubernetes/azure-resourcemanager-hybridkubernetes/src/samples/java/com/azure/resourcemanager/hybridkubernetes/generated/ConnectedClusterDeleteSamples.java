@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hybridkubernetes.generated;
 public final class ConnectedClusterDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
      * DeleteClusterExample.json
      */
     /**

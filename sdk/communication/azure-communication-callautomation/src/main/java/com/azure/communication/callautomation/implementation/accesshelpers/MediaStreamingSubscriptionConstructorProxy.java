@@ -5,11 +5,13 @@ package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal;
 import com.azure.communication.callautomation.models.MediaStreamingSubscription;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link MediaStreamingSubscriptionInternal} across package boundaries.
  */
 public final class MediaStreamingSubscriptionConstructorProxy {
+    private static final ClientLogger LOGGER = new ClientLogger(MediaStreamingSubscriptionConstructorProxy.class);
     private static MediaStreamingSubscriptionConstructorAccessor accessor;
 
     private MediaStreamingSubscriptionConstructorProxy() {
@@ -51,7 +53,12 @@ public final class MediaStreamingSubscriptionConstructorProxy {
         // application accesses MediaStreamingSubscription which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new MediaStreamingSubscription();
+            try {
+                Class.forName(MediaStreamingSubscription.class.getName(), true,
+                    MediaStreamingSubscriptionConstructorAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;

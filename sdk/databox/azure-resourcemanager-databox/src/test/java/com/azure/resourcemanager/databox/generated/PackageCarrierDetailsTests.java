@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PackageCarrierDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PackageCarrierDetails model = BinaryData
-            .fromString(
-                "{\"carrierAccountNumber\":\"fikdowwqu\",\"carrierName\":\"xzxcl\",\"trackingId\":\"thhqzonosggbh\"}")
+        PackageCarrierDetails model = BinaryData.fromString(
+            "{\"carrierAccountNumber\":\"dnbbglzps\",\"carrierName\":\"ydmcwyhzdxssa\",\"trackingId\":\"zmnvdfznudaod\"}")
             .toObject(PackageCarrierDetails.class);
-        Assertions.assertEquals("fikdowwqu", model.carrierAccountNumber());
-        Assertions.assertEquals("xzxcl", model.carrierName());
-        Assertions.assertEquals("thhqzonosggbh", model.trackingId());
+        Assertions.assertEquals("dnbbglzps", model.carrierAccountNumber());
+        Assertions.assertEquals("ydmcwyhzdxssa", model.carrierName());
+        Assertions.assertEquals("zmnvdfznudaod", model.trackingId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PackageCarrierDetails model = new PackageCarrierDetails().withCarrierAccountNumber("fikdowwqu")
-            .withCarrierName("xzxcl")
-            .withTrackingId("thhqzonosggbh");
+        PackageCarrierDetails model = new PackageCarrierDetails().withCarrierAccountNumber("dnbbglzps")
+            .withCarrierName("ydmcwyhzdxssa")
+            .withTrackingId("zmnvdfznudaod");
         model = BinaryData.fromObject(model).toObject(PackageCarrierDetails.class);
-        Assertions.assertEquals("fikdowwqu", model.carrierAccountNumber());
-        Assertions.assertEquals("xzxcl", model.carrierName());
-        Assertions.assertEquals("thhqzonosggbh", model.trackingId());
+        Assertions.assertEquals("dnbbglzps", model.carrierAccountNumber());
+        Assertions.assertEquals("ydmcwyhzdxssa", model.carrierName());
+        Assertions.assertEquals("zmnvdfznudaod", model.trackingId());
     }
 }

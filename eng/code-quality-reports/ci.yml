@@ -9,8 +9,12 @@ trigger:
   paths:
     include:
       - .vscode/eclipse-format-azure-sdk-for-java.xml
-      - eng/code-quality-reports/
+      - eng/code-quality-reports/ci.yml
+      - eng/lintingconfigs/
       - eng/pipelines/code-quality-reports.yml
+      - eng/pipelines/scripts/Get-Linting-Commands.ps1
+      - eng/pipelines/scripts/Get-Linting-Reports.ps1
+      - sdk/tools/linting-extensions/
 
 pr:
   branches:
@@ -22,8 +26,12 @@ pr:
   paths:
     include:
       - .vscode/eclipse-format-azure-sdk-for-java.xml
-      - eng/code-quality-reports/
+      - eng/code-quality-reports/ci.yml
+      - eng/lintingconfigs/
       - eng/pipelines/code-quality-reports.yml
+      - eng/pipelines/scripts/Get-Linting-Commands.ps1
+      - eng/pipelines/scripts/Get-Linting-Reports.ps1
+      - sdk/tools/linting-extensions/
 
 extends:
   template: /eng/pipelines/code-quality-reports.yml

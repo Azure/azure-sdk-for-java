@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class WindDetails implements JsonSerializable<WindDetails> {
     /*
      * Wind direction
      */
+    @Generated
     private WindDirection direction;
 
     /*
      * Speed of the wind in specified unit.
      */
+    @Generated
     private WeatherUnitDetails speed;
 
     /**
      * Set default WindDetails constructor to private
      */
+    @Generated
     private WindDetails() {
     }
 
@@ -37,6 +41,7 @@ public final class WindDetails implements JsonSerializable<WindDetails> {
      *
      * @return the direction value.
      */
+    @Generated
     public WindDirection getDirection() {
         return this.direction;
     }
@@ -46,6 +51,7 @@ public final class WindDetails implements JsonSerializable<WindDetails> {
      *
      * @return the speed value.
      */
+    @Generated
     public WeatherUnitDetails getSpeed() {
         return this.speed;
     }
@@ -53,6 +59,7 @@ public final class WindDetails implements JsonSerializable<WindDetails> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class WindDetails implements JsonSerializable<WindDetails> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WindDetails.
      */
+    @Generated
     public static WindDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WindDetails deserializedWindDetails = new WindDetails();

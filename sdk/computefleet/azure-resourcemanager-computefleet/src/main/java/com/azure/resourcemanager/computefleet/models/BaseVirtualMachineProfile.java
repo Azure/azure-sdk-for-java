@@ -59,9 +59,9 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS
      * (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for
      * Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * Server](https://learn.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * <br><br> [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
+     * Server](https://learn.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * <br><br> Minimum api-version: 2015-06-15
      */
     private String licenseType;
@@ -259,9 +259,9 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * Server operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS
      * (for SUSE) &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for
      * Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * Server](https://learn.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
+     * Server](https://learn.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      * 
      * @return the licenseType value.
@@ -277,9 +277,9 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      * Server operating system are: &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS
      * (for SUSE) &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for
      * Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * Server](https://learn.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
+     * Server](https://learn.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      * 
      * @param licenseType the licenseType value to set.
@@ -460,50 +460,6 @@ public final class BaseVirtualMachineProfile implements JsonSerializable<BaseVir
      */
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (securityProfile() != null) {
-            securityProfile().validate();
-        }
-        if (diagnosticsProfile() != null) {
-            diagnosticsProfile().validate();
-        }
-        if (extensionProfile() != null) {
-            extensionProfile().validate();
-        }
-        if (scheduledEventsProfile() != null) {
-            scheduledEventsProfile().validate();
-        }
-        if (capacityReservation() != null) {
-            capacityReservation().validate();
-        }
-        if (applicationProfile() != null) {
-            applicationProfile().validate();
-        }
-        if (hardwareProfile() != null) {
-            hardwareProfile().validate();
-        }
-        if (serviceArtifactReference() != null) {
-            serviceArtifactReference().validate();
-        }
-        if (securityPostureReference() != null) {
-            securityPostureReference().validate();
-        }
     }
 
     /**

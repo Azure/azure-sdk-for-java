@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -11,116 +12,129 @@ import java.util.Collection;
  * Mapping Error Messages to Codes.
  */
 public final class PhoneNumberSearchResultError extends ExpandableStringEnum<PhoneNumberSearchResultError> {
-    /**
-     * Static value NoError for PhoneNumberSearchResultError.
-     */
-    public static final PhoneNumberSearchResultError NO_ERROR = fromString("NoError");
 
     /**
      * Static value UnknownErrorCode for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError UNKNOWN_ERROR_CODE = fromString("UnknownErrorCode");
 
     /**
      * Static value OutOfStock for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError OUT_OF_STOCK = fromString("OutOfStock");
 
     /**
      * Static value AuthorizationDenied for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError AUTHORIZATION_DENIED = fromString("AuthorizationDenied");
 
     /**
      * Static value MissingAddress for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError MISSING_ADDRESS = fromString("MissingAddress");
 
     /**
      * Static value InvalidAddress for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError INVALID_ADDRESS = fromString("InvalidAddress");
 
     /**
      * Static value InvalidOfferModel for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError INVALID_OFFER_MODEL = fromString("InvalidOfferModel");
 
     /**
      * Static value NotEnoughLicenses for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError NOT_ENOUGH_LICENSES = fromString("NotEnoughLicenses");
 
     /**
      * Static value NoWallet for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError NO_WALLET = fromString("NoWallet");
 
     /**
      * Static value NotEnoughCredit for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError NOT_ENOUGH_CREDIT = fromString("NotEnoughCredit");
 
     /**
      * Static value NumbersPartiallyAcquired for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError NUMBERS_PARTIALLY_ACQUIRED
         = fromString("NumbersPartiallyAcquired");
 
     /**
      * Static value AllNumbersNotAcquired for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError ALL_NUMBERS_NOT_ACQUIRED = fromString("AllNumbersNotAcquired");
 
     /**
      * Static value ReservationExpired for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError RESERVATION_EXPIRED = fromString("ReservationExpired");
 
     /**
      * Static value PurchaseFailed for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError PURCHASE_FAILED = fromString("PurchaseFailed");
 
     /**
      * Static value BillingUnavailable for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError BILLING_UNAVAILABLE = fromString("BillingUnavailable");
 
     /**
      * Static value ProvisioningFailed for PhoneNumberSearchResultError.
      */
+    @Generated
     public static final PhoneNumberSearchResultError PROVISIONING_FAILED = fromString("ProvisioningFailed");
 
     /**
-     * Static value UnknownSearchError for PhoneNumberSearchResultError.
-     */
-    public static final PhoneNumberSearchResultError UNKNOWN_SEARCH_ERROR = fromString("UnknownSearchError");
-
-    /**
      * Creates a new instance of PhoneNumberSearchResultError value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PhoneNumberSearchResultError() {
     }
 
     /**
      * Creates or finds a PhoneNumberSearchResultError from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PhoneNumberSearchResultError.
      */
+    @Generated
     public static PhoneNumberSearchResultError fromString(String name) {
+        // Custom mapping for UnknownSearchError to UNKNOWN_ERROR_CODE
+        if ("UnknownSearchError".equalsIgnoreCase(name)) {
+            return UNKNOWN_ERROR_CODE;
+        }
         return fromString(name, PhoneNumberSearchResultError.class);
     }
 
     /**
      * Gets known PhoneNumberSearchResultError values.
-     * 
+     *
      * @return known PhoneNumberSearchResultError values.
      */
+    @Generated
     public static Collection<PhoneNumberSearchResultError> values() {
         return values(PhoneNumberSearchResultError.class);
     }

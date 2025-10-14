@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.patch;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
@@ -43,29 +42,29 @@ public final class PatchUtil {
             JsonSerializable operationJsonSerializable = new JsonSerializable();
             operationJsonSerializable.set(
                 PatchConstants.PropertyNames_OperationType,
-                patchOperation.getOperationType().getOperationValue(),
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                patchOperation.getOperationType().getOperationValue()
+            );
 
             if (patchOperation instanceof PatchOperationCore) {
                 if (patchOperation.getOperationType() == PatchOperationType.MOVE) {
                     operationJsonSerializable.set(
                         PatchConstants.PropertyNames_Path,
-                        ((PatchOperationCore)patchOperation).getPath(),
-                        CosmosItemSerializer.DEFAULT_SERIALIZER);
+                        ((PatchOperationCore)patchOperation).getPath()
+                    );
                     operationJsonSerializable.set(
                         PatchConstants.PropertyNames_From,
-                        ((PatchOperationCore)patchOperation).getFrom(),
-                        CosmosItemSerializer.DEFAULT_SERIALIZER);
+                        ((PatchOperationCore)patchOperation).getFrom()
+                    );
                 }
                 else {
                     operationJsonSerializable.set(
                         PatchConstants.PropertyNames_Path,
-                        ((PatchOperationCore)patchOperation).getPath(),
-                        CosmosItemSerializer.DEFAULT_SERIALIZER);
+                        ((PatchOperationCore)patchOperation).getPath()
+                    );
                     operationJsonSerializable.set(
                         PatchConstants.PropertyNames_Value,
-                        ((PatchOperationCore)patchOperation).getResource(),
-                        CosmosItemSerializer.DEFAULT_SERIALIZER);
+                        ((PatchOperationCore)patchOperation).getResource()
+                    );
                 }
             } else {
                 throw new IllegalArgumentException("Invalid patch operation type");
@@ -76,8 +75,8 @@ public final class PatchUtil {
 
         jsonSerializable.set(
             PatchConstants.OPERATIONS,
-            operations,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            operations
+        );
 
         if(requestOptions != null) {
             String filterPredicate = requestOptions.getFilterPredicate();
@@ -85,8 +84,8 @@ public final class PatchUtil {
                 if (!filterPredicate.isEmpty()) {
                     jsonSerializable.set(
                         PatchConstants.CONDITION,
-                        filterPredicate,
-                        CosmosItemSerializer.DEFAULT_SERIALIZER);
+                        filterPredicate
+                    );
                 }
             }
         }

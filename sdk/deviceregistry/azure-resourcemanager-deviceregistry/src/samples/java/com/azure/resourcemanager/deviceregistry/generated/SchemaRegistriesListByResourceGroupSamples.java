@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class SchemaRegistriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-09-01-preview/List_SchemaRegistries_ResourceGroup.json
+     * x-ms-original-file: 2025-07-01-preview/List_SchemaRegistries_ByResourceGroup.json
      */
     /**
      * Sample code: List_SchemaRegistries_ResourceGroup.

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,11 +22,13 @@ public class XmlDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Xml";
 
     /*
      * The location of the json data storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
@@ -34,21 +37,25 @@ public class XmlDataset extends Dataset {
      * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object encodingName;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object nullValue;
 
     /*
      * The data compression method used for the json dataset.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of XmlDataset class.
      */
+    @Generated
     public XmlDataset() {
     }
 
@@ -57,6 +64,7 @@ public class XmlDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -67,6 +75,7 @@ public class XmlDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -77,6 +86,7 @@ public class XmlDataset extends Dataset {
      * @param location the location value to set.
      * @return the XmlDataset object itself.
      */
+    @Generated
     public XmlDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -90,6 +100,7 @@ public class XmlDataset extends Dataset {
      * 
      * @return the encodingName value.
      */
+    @Generated
     public Object getEncodingName() {
         return this.encodingName;
     }
@@ -103,6 +114,7 @@ public class XmlDataset extends Dataset {
      * @param encodingName the encodingName value to set.
      * @return the XmlDataset object itself.
      */
+    @Generated
     public XmlDataset setEncodingName(Object encodingName) {
         this.encodingName = encodingName;
         return this;
@@ -113,6 +125,7 @@ public class XmlDataset extends Dataset {
      * 
      * @return the nullValue value.
      */
+    @Generated
     public Object getNullValue() {
         return this.nullValue;
     }
@@ -123,6 +136,7 @@ public class XmlDataset extends Dataset {
      * @param nullValue the nullValue value to set.
      * @return the XmlDataset object itself.
      */
+    @Generated
     public XmlDataset setNullValue(Object nullValue) {
         this.nullValue = nullValue;
         return this;
@@ -133,6 +147,7 @@ public class XmlDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -143,6 +158,7 @@ public class XmlDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the XmlDataset object itself.
      */
+    @Generated
     public XmlDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -151,6 +167,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setDescription(String description) {
         super.setDescription(description);
@@ -160,6 +177,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -169,6 +187,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -178,6 +197,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -187,6 +207,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -196,6 +217,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -205,6 +227,7 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XmlDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -214,13 +237,18 @@ public class XmlDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -228,8 +256,12 @@ public class XmlDataset extends Dataset {
         if (location != null || encodingName != null || nullValue != null || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("encodingName", this.encodingName);
-            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+            if (this.encodingName != null) {
+                jsonWriter.writeUntypedField("encodingName", this.encodingName);
+            }
+            if (this.nullValue != null) {
+                jsonWriter.writeUntypedField("nullValue", this.nullValue);
+            }
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
         }
@@ -250,6 +282,7 @@ public class XmlDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the XmlDataset.
      */
+    @Generated
     public static XmlDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             XmlDataset deserializedXmlDataset = new XmlDataset();

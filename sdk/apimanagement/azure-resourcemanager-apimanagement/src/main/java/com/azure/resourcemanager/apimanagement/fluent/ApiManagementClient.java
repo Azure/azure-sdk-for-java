@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface ApiManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -45,6 +45,27 @@ public interface ApiManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the ApiGatewaysClient object to access its operations.
+     * 
+     * @return the ApiGatewaysClient object.
+     */
+    ApiGatewaysClient getApiGateways();
+
+    /**
+     * Gets the ApiManagementGatewaySkusClient object to access its operations.
+     * 
+     * @return the ApiManagementGatewaySkusClient object.
+     */
+    ApiManagementGatewaySkusClient getApiManagementGatewaySkus();
+
+    /**
+     * Gets the AllPoliciesClient object to access its operations.
+     * 
+     * @return the AllPoliciesClient object.
+     */
+    AllPoliciesClient getAllPolicies();
 
     /**
      * Gets the ApisClient object to access its operations.
@@ -194,13 +215,6 @@ public interface ApiManagementClient {
     ApiVersionSetsClient getApiVersionSets();
 
     /**
-     * Gets the AuthorizationServersClient object to access its operations.
-     * 
-     * @return the AuthorizationServersClient object.
-     */
-    AuthorizationServersClient getAuthorizationServers();
-
-    /**
      * Gets the AuthorizationProvidersClient object to access its operations.
      * 
      * @return the AuthorizationProvidersClient object.
@@ -227,6 +241,13 @@ public interface ApiManagementClient {
      * @return the AuthorizationAccessPoliciesClient object.
      */
     AuthorizationAccessPoliciesClient getAuthorizationAccessPolicies();
+
+    /**
+     * Gets the AuthorizationServersClient object to access its operations.
+     * 
+     * @return the AuthorizationServersClient object.
+     */
+    AuthorizationServersClient getAuthorizationServers();
 
     /**
      * Gets the BackendsClient object to access its operations.
@@ -306,11 +327,25 @@ public interface ApiManagementClient {
     DiagnosticsClient getDiagnostics();
 
     /**
+     * Gets the DocumentationsClient object to access its operations.
+     * 
+     * @return the DocumentationsClient object.
+     */
+    DocumentationsClient getDocumentations();
+
+    /**
      * Gets the EmailTemplatesClient object to access its operations.
      * 
      * @return the EmailTemplatesClient object.
      */
     EmailTemplatesClient getEmailTemplates();
+
+    /**
+     * Gets the ApiGatewayConfigConnectionsClient object to access its operations.
+     * 
+     * @return the ApiGatewayConfigConnectionsClient object.
+     */
+    ApiGatewayConfigConnectionsClient getApiGatewayConfigConnections();
 
     /**
      * Gets the GatewaysClient object to access its operations.
@@ -446,6 +481,20 @@ public interface ApiManagementClient {
     PolicyFragmentsClient getPolicyFragments();
 
     /**
+     * Gets the PolicyRestrictionsClient object to access its operations.
+     * 
+     * @return the PolicyRestrictionsClient object.
+     */
+    PolicyRestrictionsClient getPolicyRestrictions();
+
+    /**
+     * Gets the PolicyRestrictionValidationsClient object to access its operations.
+     * 
+     * @return the PolicyRestrictionValidationsClient object.
+     */
+    PolicyRestrictionValidationsClient getPolicyRestrictionValidations();
+
+    /**
      * Gets the PortalConfigsClient object to access its operations.
      * 
      * @return the PortalConfigsClient object.
@@ -544,6 +593,20 @@ public interface ApiManagementClient {
     ProductWikisOperationsClient getProductWikisOperations();
 
     /**
+     * Gets the ProductApiLinksClient object to access its operations.
+     * 
+     * @return the ProductApiLinksClient object.
+     */
+    ProductApiLinksClient getProductApiLinks();
+
+    /**
+     * Gets the ProductGroupLinksClient object to access its operations.
+     * 
+     * @return the ProductGroupLinksClient object.
+     */
+    ProductGroupLinksClient getProductGroupLinks();
+
+    /**
      * Gets the QuotaByCounterKeysClient object to access its operations.
      * 
      * @return the QuotaByCounterKeysClient object.
@@ -607,6 +670,27 @@ public interface ApiManagementClient {
     TagResourcesClient getTagResources();
 
     /**
+     * Gets the TagApiLinksClient object to access its operations.
+     * 
+     * @return the TagApiLinksClient object.
+     */
+    TagApiLinksClient getTagApiLinks();
+
+    /**
+     * Gets the TagOperationLinksClient object to access its operations.
+     * 
+     * @return the TagOperationLinksClient object.
+     */
+    TagOperationLinksClient getTagOperationLinks();
+
+    /**
+     * Gets the TagProductLinksClient object to access its operations.
+     * 
+     * @return the TagProductLinksClient object.
+     */
+    TagProductLinksClient getTagProductLinks();
+
+    /**
      * Gets the TenantAccessClient object to access its operations.
      * 
      * @return the TenantAccessClient object.
@@ -663,9 +747,261 @@ public interface ApiManagementClient {
     UserConfirmationPasswordsClient getUserConfirmationPasswords();
 
     /**
-     * Gets the DocumentationsClient object to access its operations.
+     * Gets the WorkspaceBackendsClient object to access its operations.
      * 
-     * @return the DocumentationsClient object.
+     * @return the WorkspaceBackendsClient object.
      */
-    DocumentationsClient getDocumentations();
+    WorkspaceBackendsClient getWorkspaceBackends();
+
+    /**
+     * Gets the WorkspaceCertificatesClient object to access its operations.
+     * 
+     * @return the WorkspaceCertificatesClient object.
+     */
+    WorkspaceCertificatesClient getWorkspaceCertificates();
+
+    /**
+     * Gets the WorkspaceDiagnosticsClient object to access its operations.
+     * 
+     * @return the WorkspaceDiagnosticsClient object.
+     */
+    WorkspaceDiagnosticsClient getWorkspaceDiagnostics();
+
+    /**
+     * Gets the WorkspaceApiDiagnosticsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiDiagnosticsClient object.
+     */
+    WorkspaceApiDiagnosticsClient getWorkspaceApiDiagnostics();
+
+    /**
+     * Gets the ApiManagementWorkspaceLinksClient object to access its operations.
+     * 
+     * @return the ApiManagementWorkspaceLinksClient object.
+     */
+    ApiManagementWorkspaceLinksClient getApiManagementWorkspaceLinks();
+
+    /**
+     * Gets the ApiManagementWorkspaceLinkOperationsClient object to access its operations.
+     * 
+     * @return the ApiManagementWorkspaceLinkOperationsClient object.
+     */
+    ApiManagementWorkspaceLinkOperationsClient getApiManagementWorkspaceLinkOperations();
+
+    /**
+     * Gets the WorkspaceLoggersClient object to access its operations.
+     * 
+     * @return the WorkspaceLoggersClient object.
+     */
+    WorkspaceLoggersClient getWorkspaceLoggers();
+
+    /**
+     * Gets the WorkspacesClient object to access its operations.
+     * 
+     * @return the WorkspacesClient object.
+     */
+    WorkspacesClient getWorkspaces();
+
+    /**
+     * Gets the WorkspacePoliciesClient object to access its operations.
+     * 
+     * @return the WorkspacePoliciesClient object.
+     */
+    WorkspacePoliciesClient getWorkspacePolicies();
+
+    /**
+     * Gets the WorkspaceNamedValuesClient object to access its operations.
+     * 
+     * @return the WorkspaceNamedValuesClient object.
+     */
+    WorkspaceNamedValuesClient getWorkspaceNamedValues();
+
+    /**
+     * Gets the WorkspaceGlobalSchemasClient object to access its operations.
+     * 
+     * @return the WorkspaceGlobalSchemasClient object.
+     */
+    WorkspaceGlobalSchemasClient getWorkspaceGlobalSchemas();
+
+    /**
+     * Gets the WorkspaceNotificationsClient object to access its operations.
+     * 
+     * @return the WorkspaceNotificationsClient object.
+     */
+    WorkspaceNotificationsClient getWorkspaceNotifications();
+
+    /**
+     * Gets the WorkspaceNotificationRecipientUsersClient object to access its operations.
+     * 
+     * @return the WorkspaceNotificationRecipientUsersClient object.
+     */
+    WorkspaceNotificationRecipientUsersClient getWorkspaceNotificationRecipientUsers();
+
+    /**
+     * Gets the WorkspaceNotificationRecipientEmailsClient object to access its operations.
+     * 
+     * @return the WorkspaceNotificationRecipientEmailsClient object.
+     */
+    WorkspaceNotificationRecipientEmailsClient getWorkspaceNotificationRecipientEmails();
+
+    /**
+     * Gets the WorkspacePolicyFragmentsClient object to access its operations.
+     * 
+     * @return the WorkspacePolicyFragmentsClient object.
+     */
+    WorkspacePolicyFragmentsClient getWorkspacePolicyFragments();
+
+    /**
+     * Gets the WorkspaceGroupsClient object to access its operations.
+     * 
+     * @return the WorkspaceGroupsClient object.
+     */
+    WorkspaceGroupsClient getWorkspaceGroups();
+
+    /**
+     * Gets the WorkspaceGroupUsersClient object to access its operations.
+     * 
+     * @return the WorkspaceGroupUsersClient object.
+     */
+    WorkspaceGroupUsersClient getWorkspaceGroupUsers();
+
+    /**
+     * Gets the WorkspaceSubscriptionsClient object to access its operations.
+     * 
+     * @return the WorkspaceSubscriptionsClient object.
+     */
+    WorkspaceSubscriptionsClient getWorkspaceSubscriptions();
+
+    /**
+     * Gets the WorkspaceApiVersionSetsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiVersionSetsClient object.
+     */
+    WorkspaceApiVersionSetsClient getWorkspaceApiVersionSets();
+
+    /**
+     * Gets the WorkspaceApisClient object to access its operations.
+     * 
+     * @return the WorkspaceApisClient object.
+     */
+    WorkspaceApisClient getWorkspaceApis();
+
+    /**
+     * Gets the WorkspaceApiRevisionsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiRevisionsClient object.
+     */
+    WorkspaceApiRevisionsClient getWorkspaceApiRevisions();
+
+    /**
+     * Gets the WorkspaceApiReleasesClient object to access its operations.
+     * 
+     * @return the WorkspaceApiReleasesClient object.
+     */
+    WorkspaceApiReleasesClient getWorkspaceApiReleases();
+
+    /**
+     * Gets the WorkspaceApiOperationsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiOperationsClient object.
+     */
+    WorkspaceApiOperationsClient getWorkspaceApiOperations();
+
+    /**
+     * Gets the WorkspaceApiOperationPoliciesClient object to access its operations.
+     * 
+     * @return the WorkspaceApiOperationPoliciesClient object.
+     */
+    WorkspaceApiOperationPoliciesClient getWorkspaceApiOperationPolicies();
+
+    /**
+     * Gets the WorkspaceApiPoliciesClient object to access its operations.
+     * 
+     * @return the WorkspaceApiPoliciesClient object.
+     */
+    WorkspaceApiPoliciesClient getWorkspaceApiPolicies();
+
+    /**
+     * Gets the WorkspaceApiSchemasClient object to access its operations.
+     * 
+     * @return the WorkspaceApiSchemasClient object.
+     */
+    WorkspaceApiSchemasClient getWorkspaceApiSchemas();
+
+    /**
+     * Gets the WorkspaceProductsClient object to access its operations.
+     * 
+     * @return the WorkspaceProductsClient object.
+     */
+    WorkspaceProductsClient getWorkspaceProducts();
+
+    /**
+     * Gets the WorkspaceProductApiLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceProductApiLinksClient object.
+     */
+    WorkspaceProductApiLinksClient getWorkspaceProductApiLinks();
+
+    /**
+     * Gets the WorkspaceProductGroupLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceProductGroupLinksClient object.
+     */
+    WorkspaceProductGroupLinksClient getWorkspaceProductGroupLinks();
+
+    /**
+     * Gets the WorkspaceProductPoliciesClient object to access its operations.
+     * 
+     * @return the WorkspaceProductPoliciesClient object.
+     */
+    WorkspaceProductPoliciesClient getWorkspaceProductPolicies();
+
+    /**
+     * Gets the WorkspaceTagsClient object to access its operations.
+     * 
+     * @return the WorkspaceTagsClient object.
+     */
+    WorkspaceTagsClient getWorkspaceTags();
+
+    /**
+     * Gets the WorkspaceTagApiLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceTagApiLinksClient object.
+     */
+    WorkspaceTagApiLinksClient getWorkspaceTagApiLinks();
+
+    /**
+     * Gets the WorkspaceTagOperationLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceTagOperationLinksClient object.
+     */
+    WorkspaceTagOperationLinksClient getWorkspaceTagOperationLinks();
+
+    /**
+     * Gets the WorkspaceTagProductLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceTagProductLinksClient object.
+     */
+    WorkspaceTagProductLinksClient getWorkspaceTagProductLinks();
+
+    /**
+     * Gets the WorkspaceApiExportsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiExportsClient object.
+     */
+    WorkspaceApiExportsClient getWorkspaceApiExports();
+
+    /**
+     * Gets the OperationStatusClient object to access its operations.
+     * 
+     * @return the OperationStatusClient object.
+     */
+    OperationStatusClient getOperationStatus();
+
+    /**
+     * Gets the OperationsResultsClient object to access its operations.
+     * 
+     * @return the OperationsResultsClient object.
+     */
+    OperationsResultsClient getOperationsResults();
 }

@@ -7,10 +7,12 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosRequestOptions;
@@ -50,12 +52,18 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private Set<String> keywordIdentifiers;
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
+    private ReadConsistencyStrategy readConsistencyStrategy;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
-        this.continuationState = toBeCloned.continuationState;
+        if (toBeCloned.continuationState != null) {
+            this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) toBeCloned.continuationState);
+        } else {
+            this.continuationState = null;
+        }
         this.feedRangeInternal = toBeCloned.feedRangeInternal;
         this.properties = toBeCloned.properties;
         this.maxItemCount = toBeCloned.maxItemCount;
+        this.readConsistencyStrategy = toBeCloned.readConsistencyStrategy;
         this.maxPrefetchPageCount = toBeCloned.maxPrefetchPageCount;
         this.mode = toBeCloned.mode;
         this.startFromInternal = toBeCloned.startFromInternal;
@@ -90,10 +98,16 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         }
 
         this.maxItemCount = DEFAULT_MAX_ITEM_COUNT;
+        this.readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
         this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
-        this.continuationState = continuationState;
+        if (continuationState != null) {
+            this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) continuationState);
+        } else {
+            this.continuationState = null;
+        }
+
 
         if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
             throw new IllegalArgumentException(
@@ -292,6 +306,18 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     }
 
     @Override
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return this.readConsistencyStrategy;
+    }
+
+    public CosmosChangeFeedRequestOptionsImpl setReadConsistencyStrategy(
+        ReadConsistencyStrategy readConsistencyStrategy) {
+
+        this.readConsistencyStrategy = readConsistencyStrategy;
+        return this;
+    }
+
+    @Override
     public Boolean isContentResponseOnWriteEnabled() {
         return null;
     }
@@ -384,6 +410,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     @Override
     public void override(CosmosRequestOptions cosmosRequestOptions) {
         this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.readConsistencyStrategy = overrideOption(cosmosRequestOptions.getReadConsistencyStrategy(), this.readConsistencyStrategy);
         this.maxPrefetchPageCount = overrideOption(cosmosRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
         this.excludeRegions = overrideOption(cosmosRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);

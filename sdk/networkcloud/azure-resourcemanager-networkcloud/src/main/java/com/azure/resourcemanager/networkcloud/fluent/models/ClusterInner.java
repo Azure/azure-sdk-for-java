@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
 import com.azure.resourcemanager.networkcloud.models.ClusterConnectionStatus;
@@ -26,8 +27,10 @@ import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfigu
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettings;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,11 @@ import java.util.Map;
  */
 @Fluent
 public final class ClusterInner extends Resource {
+    /*
+     * Resource ETag.
+     */
+    private String etag;
+
     /*
      * The extended location of the cluster manager associated with the cluster.
      */
@@ -76,6 +84,15 @@ public final class ClusterInner extends Resource {
      * Creates an instance of ClusterInner class.
      */
     public ClusterInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -210,8 +227,33 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
-     * storing relevant logs.
+     * Get the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @return the analyticsOutputSettings value.
+     */
+    public AnalyticsOutputSettings analyticsOutputSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().analyticsOutputSettings();
+    }
+
+    /**
+     * Set the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @param analyticsOutputSettings the analyticsOutputSettings value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAnalyticsOutputSettings(analyticsOutputSettings);
+        return this;
+    }
+
+    /**
+     * Get the analyticsWorkspaceId property: Field Deprecated. The resource ID of the Log Analytics Workspace that will
+     * be used for storing relevant logs.
      * 
      * @return the analyticsWorkspaceId value.
      */
@@ -220,8 +262,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Set the analyticsWorkspaceId property: The resource ID of the Log Analytics Workspace that will be used for
-     * storing relevant logs.
+     * Set the analyticsWorkspaceId property: Field Deprecated. The resource ID of the Log Analytics Workspace that will
+     * be used for storing relevant logs.
      * 
      * @param analyticsWorkspaceId the analyticsWorkspaceId value to set.
      * @return the ClusterInner object itself.
@@ -611,6 +653,31 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretArchiveSettings();
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withSecretArchiveSettings(secretArchiveSettings);
+        return this;
+    }
+
+    /**
      * Get the supportExpiryDate property: The support end date of the runtime version of the cluster.
      * 
      * @return the supportExpiryDate value.
@@ -639,6 +706,31 @@ public final class ClusterInner extends Resource {
             this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withUpdateStrategy(updateStrategy);
+        return this;
+    }
+
+    /**
+     * Get the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @return the vulnerabilityScanningSettings value.
+     */
+    public VulnerabilityScanningSettings vulnerabilityScanningSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().vulnerabilityScanningSettings();
+    }
+
+    /**
+     * Set the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @param vulnerabilityScanningSettings the vulnerabilityScanningSettings value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
         return this;
     }
 
@@ -721,6 +813,8 @@ public final class ClusterInner extends Resource {
                     deserializedClusterInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedClusterInner.etag = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

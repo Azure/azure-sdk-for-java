@@ -161,8 +161,12 @@ public final class XmlDatasetTypeProperties implements JsonSerializable<XmlDatas
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
-        jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
+        if (this.nullValue != null) {
+            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        }
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();
     }

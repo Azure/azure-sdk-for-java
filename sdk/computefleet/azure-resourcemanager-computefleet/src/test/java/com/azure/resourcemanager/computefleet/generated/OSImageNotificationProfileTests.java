@@ -14,7 +14,7 @@ public final class OSImageNotificationProfileTests {
         OSImageNotificationProfile model = BinaryData.fromString("{\"notBeforeTimeout\":\"h\",\"enable\":false}")
             .toObject(OSImageNotificationProfile.class);
         Assertions.assertEquals("h", model.notBeforeTimeout());
-        Assertions.assertEquals(false, model.enable());
+        Assertions.assertFalse(model.enable());
     }
 
     @org.junit.jupiter.api.Test
@@ -22,6 +22,6 @@ public final class OSImageNotificationProfileTests {
         OSImageNotificationProfile model = new OSImageNotificationProfile().withNotBeforeTimeout("h").withEnable(false);
         model = BinaryData.fromObject(model).toObject(OSImageNotificationProfile.class);
         Assertions.assertEquals("h", model.notBeforeTimeout());
-        Assertions.assertEquals(false, model.enable());
+        Assertions.assertFalse(model.enable());
     }
 }

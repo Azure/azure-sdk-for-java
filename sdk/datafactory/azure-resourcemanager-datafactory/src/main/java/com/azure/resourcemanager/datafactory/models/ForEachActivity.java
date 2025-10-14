@@ -51,7 +51,7 @@ public final class ForEachActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ForEachActivityTypeProperties innerTypeProperties() {
+    ForEachActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
     /**
      * Static value None for NodeSizeFamily.
      */
+    @Generated
     public static final NodeSizeFamily NONE = fromString("None");
 
     /**
      * Static value MemoryOptimized for NodeSizeFamily.
      */
+    @Generated
     public static final NodeSizeFamily MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 
     /**
@@ -26,6 +29,7 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NodeSizeFamily() {
     }
@@ -36,6 +40,7 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
      * @param name a name to look for.
      * @return the corresponding NodeSizeFamily.
      */
+    @Generated
     public static NodeSizeFamily fromString(String name) {
         return fromString(name, NodeSizeFamily.class);
     }
@@ -45,6 +50,7 @@ public final class NodeSizeFamily extends ExpandableStringEnum<NodeSizeFamily> {
      * 
      * @return known NodeSizeFamily values.
      */
+    @Generated
     public static Collection<NodeSizeFamily> values() {
         return values(NodeSizeFamily.class);
     }

@@ -15,31 +15,27 @@ public final class SandboxCustomImagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SandboxCustomImagesListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"dndrdvstkwqqtche\",\"value\":[{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"tdaaygdvwvg\",\"requirementsFileContent\":\"ohgwxrtfudxepxg\",\"provisioningState\":\"Succeeded\"},\"id\":\"gvr\",\"name\":\"mnpkukghimdblxg\",\"type\":\"imfnjhfjx\"},{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"zk\",\"requirementsFileContent\":\"oqreyfkzikfjawn\",\"provisioningState\":\"Moving\"},\"id\":\"vxwc\",\"name\":\"elpcirelsfeaenwa\",\"type\":\"fatkld\"},{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"jhwuaanozjos\",\"requirementsFileContent\":\"youlp\",\"provisioningState\":\"Moving\"},\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}]}")
+            "{\"nextLink\":\"c\",\"value\":[{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"waezkojvd\",\"baseImageName\":\"zfoqouicybxar\",\"requirementsFileContent\":\"szufoxciqopidoa\",\"provisioningState\":\"Canceled\"},\"id\":\"odhkha\",\"name\":\"xkhnzbonlwnto\",\"type\":\"gokdwbwhks\"}]}")
             .toObject(SandboxCustomImagesListResult.class);
-        Assertions.assertEquals("dndrdvstkwqqtche", model.nextLink());
+        Assertions.assertEquals("c", model.nextLink());
         Assertions.assertEquals(Language.PYTHON, model.value().get(0).language());
-        Assertions.assertEquals("tdaaygdvwvg", model.value().get(0).languageVersion());
-        Assertions.assertEquals("ohgwxrtfudxepxg", model.value().get(0).requirementsFileContent());
+        Assertions.assertEquals("waezkojvd", model.value().get(0).languageVersion());
+        Assertions.assertEquals("zfoqouicybxar", model.value().get(0).baseImageName());
+        Assertions.assertEquals("szufoxciqopidoa", model.value().get(0).requirementsFileContent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SandboxCustomImagesListResult model = new SandboxCustomImagesListResult().withNextLink("dndrdvstkwqqtche")
-            .withValue(Arrays.asList(
-                new SandboxCustomImageInner().withLanguage(Language.PYTHON)
-                    .withLanguageVersion("tdaaygdvwvg")
-                    .withRequirementsFileContent("ohgwxrtfudxepxg"),
-                new SandboxCustomImageInner().withLanguage(Language.PYTHON)
-                    .withLanguageVersion("zk")
-                    .withRequirementsFileContent("oqreyfkzikfjawn"),
-                new SandboxCustomImageInner().withLanguage(Language.PYTHON)
-                    .withLanguageVersion("jhwuaanozjos")
-                    .withRequirementsFileContent("youlp")));
+        SandboxCustomImagesListResult model = new SandboxCustomImagesListResult().withNextLink("c")
+            .withValue(Arrays.asList(new SandboxCustomImageInner().withLanguage(Language.PYTHON)
+                .withLanguageVersion("waezkojvd")
+                .withBaseImageName("zfoqouicybxar")
+                .withRequirementsFileContent("szufoxciqopidoa")));
         model = BinaryData.fromObject(model).toObject(SandboxCustomImagesListResult.class);
-        Assertions.assertEquals("dndrdvstkwqqtche", model.nextLink());
+        Assertions.assertEquals("c", model.nextLink());
         Assertions.assertEquals(Language.PYTHON, model.value().get(0).language());
-        Assertions.assertEquals("tdaaygdvwvg", model.value().get(0).languageVersion());
-        Assertions.assertEquals("ohgwxrtfudxepxg", model.value().get(0).requirementsFileContent());
+        Assertions.assertEquals("waezkojvd", model.value().get(0).languageVersion());
+        Assertions.assertEquals("zfoqouicybxar", model.value().get(0).baseImageName());
+        Assertions.assertEquals("szufoxciqopidoa", model.value().get(0).requirementsFileContent());
     }
 }

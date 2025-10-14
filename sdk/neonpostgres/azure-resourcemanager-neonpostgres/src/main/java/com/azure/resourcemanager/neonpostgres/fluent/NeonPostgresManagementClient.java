@@ -59,4 +59,46 @@ public interface NeonPostgresManagementClient {
      * @return the OrganizationsClient object.
      */
     OrganizationsClient getOrganizations();
+
+    /**
+     * Gets the ProjectsClient object to access its operations.
+     * 
+     * @return the ProjectsClient object.
+     */
+    ProjectsClient getProjects();
+
+    /**
+     * Gets the BranchesClient object to access its operations.
+     * 
+     * @return the BranchesClient object.
+     */
+    BranchesClient getBranches();
+
+    /**
+     * Gets the ComputesClient object to access its operations.
+     * 
+     * @return the ComputesClient object.
+     */
+    ComputesClient getComputes();
+
+    /**
+     * Gets the NeonDatabasesClient object to access its operations.
+     * 
+     * @return the NeonDatabasesClient object.
+     */
+    NeonDatabasesClient getNeonDatabases();
+
+    /**
+     * Gets the NeonRolesClient object to access its operations.
+     * 
+     * @return the NeonRolesClient object.
+     */
+    NeonRolesClient getNeonRoles();
+
+    /**
+     * Gets the EndpointsClient object to access its operations.
+     * 
+     * @return the EndpointsClient object.
+     */
+    EndpointsClient getEndpoints();
 }

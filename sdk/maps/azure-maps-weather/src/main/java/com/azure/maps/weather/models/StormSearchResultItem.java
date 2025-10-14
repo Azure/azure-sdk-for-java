@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,41 +20,49 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
     /*
      * Year of origination
      */
+    @Generated
     private String year;
 
     /*
      * Basin identifier (AL, EP, SI, NI, CP, NP, SP)
      */
+    @Generated
     private BasinId basinId;
 
     /*
      * The name of the depression.
      */
+    @Generated
     private String name;
 
     /*
      * True if the depression has been updated recently.
      */
+    @Generated
     private Boolean isActive;
 
     /*
      * True if the storm name has been permanently retired in the source basin.
      */
+    @Generated
     private Boolean isRetired;
 
     /*
      * True when the depression is classified as a subtropical cyclone.
      */
+    @Generated
     private Boolean isSubtropical;
 
     /*
      * Government storm ID. This will match the depression number.
      */
+    @Generated
     private Integer govId;
 
     /**
      * Set default StormSearchResultItem constructor to private
      */
+    @Generated
     private StormSearchResultItem() {
     }
 
@@ -62,6 +71,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the year value.
      */
+    @Generated
     public Integer getYear() {
         return Integer.valueOf(year);
     }
@@ -71,6 +81,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the basinId value.
      */
+    @Generated
     public BasinId getBasinId() {
         return this.basinId;
     }
@@ -80,6 +91,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -89,6 +101,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the isActive value.
      */
+    @Generated
     public Boolean isActive() {
         return this.isActive;
     }
@@ -98,6 +111,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the isRetired value.
      */
+    @Generated
     public Boolean isRetired() {
         return this.isRetired;
     }
@@ -107,6 +121,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the isSubtropical value.
      */
+    @Generated
     public Boolean isSubtropical() {
         return this.isSubtropical;
     }
@@ -116,13 +131,15 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the govId value.
      */
-    public Integer getGovId() {
+    @Generated
+    public Integer getGovernmentId() {
         return this.govId;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +161,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StormSearchResultItem.
      */
+    @Generated
     public static StormSearchResultItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StormSearchResultItem deserializedStormSearchResultItem = new StormSearchResultItem();

@@ -4,16 +4,18 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Content type to stream, eg. audio.
+ * Defines values for MediaStreamingContentTypeInternal.
  */
 public final class MediaStreamingContentTypeInternal extends ExpandableStringEnum<MediaStreamingContentTypeInternal> {
     /**
      * Static value audio for MediaStreamingContentTypeInternal.
      */
+    @Generated
     public static final MediaStreamingContentTypeInternal AUDIO = fromString("audio");
 
     /**
@@ -21,6 +23,7 @@ public final class MediaStreamingContentTypeInternal extends ExpandableStringEnu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MediaStreamingContentTypeInternal() {
     }
@@ -31,6 +34,7 @@ public final class MediaStreamingContentTypeInternal extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding MediaStreamingContentTypeInternal.
      */
+    @Generated
     public static MediaStreamingContentTypeInternal fromString(String name) {
         return fromString(name, MediaStreamingContentTypeInternal.class);
     }
@@ -40,6 +44,7 @@ public final class MediaStreamingContentTypeInternal extends ExpandableStringEnu
      * 
      * @return known MediaStreamingContentTypeInternal values.
      */
+    @Generated
     public static Collection<MediaStreamingContentTypeInternal> values() {
         return values(MediaStreamingContentTypeInternal.class);
     }

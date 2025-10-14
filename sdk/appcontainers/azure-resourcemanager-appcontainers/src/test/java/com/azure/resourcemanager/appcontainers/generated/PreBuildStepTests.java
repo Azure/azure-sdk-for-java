@@ -14,26 +14,26 @@ public final class PreBuildStepTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreBuildStep model = BinaryData.fromString(
-            "{\"description\":\"kbogqxndlkzgx\",\"scripts\":[\"iplbpodxunkbebxm\"],\"httpGet\":{\"url\":\"yyntwl\",\"fileName\":\"qtkoievs\",\"headers\":[\"gqrlltmuwla\"]}}")
+            "{\"description\":\"qbhsfxobl\",\"scripts\":[\"blmpewww\"],\"httpGet\":{\"url\":\"krvrns\",\"fileName\":\"hqjohxcrsbfova\",\"headers\":[\"uvwbhsqfs\"]}}")
             .toObject(PreBuildStep.class);
-        Assertions.assertEquals("kbogqxndlkzgx", model.description());
-        Assertions.assertEquals("iplbpodxunkbebxm", model.scripts().get(0));
-        Assertions.assertEquals("yyntwl", model.httpGet().url());
-        Assertions.assertEquals("qtkoievs", model.httpGet().fileName());
-        Assertions.assertEquals("gqrlltmuwla", model.httpGet().headers().get(0));
+        Assertions.assertEquals("qbhsfxobl", model.description());
+        Assertions.assertEquals("blmpewww", model.scripts().get(0));
+        Assertions.assertEquals("krvrns", model.httpGet().url());
+        Assertions.assertEquals("hqjohxcrsbfova", model.httpGet().fileName());
+        Assertions.assertEquals("uvwbhsqfs", model.httpGet().headers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreBuildStep model = new PreBuildStep().withDescription("kbogqxndlkzgx")
-            .withScripts(Arrays.asList("iplbpodxunkbebxm"))
+        PreBuildStep model = new PreBuildStep().withDescription("qbhsfxobl")
+            .withScripts(Arrays.asList("blmpewww"))
             .withHttpGet(
-                new HttpGet().withUrl("yyntwl").withFileName("qtkoievs").withHeaders(Arrays.asList("gqrlltmuwla")));
+                new HttpGet().withUrl("krvrns").withFileName("hqjohxcrsbfova").withHeaders(Arrays.asList("uvwbhsqfs")));
         model = BinaryData.fromObject(model).toObject(PreBuildStep.class);
-        Assertions.assertEquals("kbogqxndlkzgx", model.description());
-        Assertions.assertEquals("iplbpodxunkbebxm", model.scripts().get(0));
-        Assertions.assertEquals("yyntwl", model.httpGet().url());
-        Assertions.assertEquals("qtkoievs", model.httpGet().fileName());
-        Assertions.assertEquals("gqrlltmuwla", model.httpGet().headers().get(0));
+        Assertions.assertEquals("qbhsfxobl", model.description());
+        Assertions.assertEquals("blmpewww", model.scripts().get(0));
+        Assertions.assertEquals("krvrns", model.httpGet().url());
+        Assertions.assertEquals("hqjohxcrsbfova", model.httpGet().fileName());
+        Assertions.assertEquals("uvwbhsqfs", model.httpGet().headers().get(0));
     }
 }

@@ -103,6 +103,12 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
@@ -122,12 +128,6 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
     private TokenCredential credential;
     private boolean isChallengeResourceVerificationDisabled = false;
     private boolean isKeyCachingDisabled = false;
-
-    static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
-        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
-        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-    }
 
     /**
      * The constructor with defaults.

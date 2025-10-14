@@ -4,14 +4,13 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -26,10 +25,12 @@ import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
@@ -112,19 +113,22 @@ public class DocumentProducerTest {
     }
 
     private IRetryPolicyFactory mockDocumentClientIRetryPolicyFactory() {
-        URI url;
+        RegionalRoutingContext regionalRoutingContext;
         try {
-            url = new URI("http://localhost");
+            regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(url).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(regionalRoutingContext).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         doReturn(false).when(globalEndpointManager).isClosed();
-        return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
+        return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManagerForPerPartitionCircuitBreaker, globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
     }
 
         @Test(groups = {"unit"}, dataProvider = "splitParamProvider", timeOut = TIMEOUT)
@@ -548,7 +552,7 @@ public class DocumentProducerTest {
                     , responses));
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
-            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
@@ -569,8 +573,8 @@ public class DocumentProducerTest {
                 return Mono.just(req);
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
-            doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
-            doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+            doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
+            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -650,7 +654,7 @@ public class DocumentProducerTest {
                                                                                   behaviourAfterException);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
-            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
@@ -671,8 +675,8 @@ public class DocumentProducerTest {
                 return Mono.just(req);
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
-            doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
-            doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+            doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
+            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -756,7 +760,7 @@ public class DocumentProducerTest {
                                                                                   exceptionBehaviour);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
-            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
@@ -777,8 +781,8 @@ public class DocumentProducerTest {
                 return Mono.just(req);
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
-            doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
-            doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+            doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
+            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -840,12 +844,12 @@ public class DocumentProducerTest {
 
                 Document d = getDocumentDefinition();
                 if (isOrderby) {
-                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3), CosmosItemSerializer.DEFAULT_SERIALIZER);
-                    d.set(DocumentPartitionKeyRangeIdFieldName, feedRangeEpk.getRange().toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3));
+                    d.set(DocumentPartitionKeyRangeIdFieldName, feedRangeEpk.getRange().toString());
                     PartitionKeyRange pkr = mockPartitionKeyRange(feedRangeEpk.getRange().toString(), feedRangeEpk.getRange());
 
-                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive(), CosmosItemSerializer.DEFAULT_SERIALIZER);
-                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
+                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
                     QueryItem qi = new QueryItem("{ \"item\": " + d.getInt(OrderByIntFieldName) +
                         " }");
@@ -893,7 +897,7 @@ public class DocumentProducerTest {
     private IDocumentQueryClient mockQueryClient(List<PartitionKeyRange> replacementRanges) {
         IDocumentQueryClient client = Mockito.mock(IDocumentQueryClient.class);
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
         doAnswer(invocation -> {
             Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
@@ -919,8 +923,8 @@ public class DocumentProducerTest {
             return Mono.just(req);
         }).when(client).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
-        doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(client).getGlobalPartitionEndpointManagerForCircuitBreaker();
-        doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+        doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(client).getGlobalPartitionEndpointManagerForCircuitBreaker();
+        doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
         return client;
     }

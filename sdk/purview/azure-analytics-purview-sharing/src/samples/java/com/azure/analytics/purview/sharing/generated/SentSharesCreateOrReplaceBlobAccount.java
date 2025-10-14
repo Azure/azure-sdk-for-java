@@ -17,12 +17,12 @@ public class SentSharesCreateOrReplaceBlobAccount {
             = new SentSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.sentsharescreateorreplacesentshare.sentsharescreateorreplaceblobaccount
+        // BEGIN:com.azure.analytics.purview.sharing.generated.sent-shares-create-or-replace-sent-share.sent-shares-create-or-replace-blob-account
         BinaryData sentShare = BinaryData.fromString(
             "{\"properties\":{\"description\":\"description\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"container1\",\"receiverPath\":\"SharedFile.txt\",\"senderPath\":\"directory/file.txt\"}]},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}},\"displayName\":\"sentShare1\"},\"shareKind\":\"InPlace\"}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response = sentSharesClient
             .beginCreateOrReplaceSentShare("FF4A2AAE-8755-47BB-9C00-A774B5A7006E", sentShare, requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.sentsharescreateorreplacesentshare.sentsharescreateorreplaceblobaccount
+        // END:com.azure.analytics.purview.sharing.generated.sent-shares-create-or-replace-sent-share.sent-shares-create-or-replace-blob-account
     }
 }

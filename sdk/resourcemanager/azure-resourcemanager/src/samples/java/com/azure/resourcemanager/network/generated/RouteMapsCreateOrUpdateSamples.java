@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class RouteMapsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/RouteMapPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/RouteMapPut.json
      */
     /**
      * Sample code: RouteMapPut.

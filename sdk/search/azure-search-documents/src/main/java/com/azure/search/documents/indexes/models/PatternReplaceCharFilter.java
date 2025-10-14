@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -25,16 +26,19 @@ public final class PatternReplaceCharFilter extends CharFilter {
     /*
      * A URI fragment specifying the type of char filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
 
     /*
      * A regular expression pattern.
      */
+    @Generated
     private final String pattern;
 
     /*
      * The replacement text.
      */
+    @Generated
     private final String replacement;
 
     /**
@@ -44,6 +48,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
      * @param pattern the pattern value to set.
      * @param replacement the replacement value to set.
      */
+    @Generated
     public PatternReplaceCharFilter(String name, String pattern, String replacement) {
         super(name);
         this.pattern = pattern;
@@ -55,6 +60,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -65,6 +71,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
      * 
      * @return the pattern value.
      */
+    @Generated
     public String getPattern() {
         return this.pattern;
     }
@@ -74,6 +81,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
      * 
      * @return the replacement value.
      */
+    @Generated
     public String getReplacement() {
         return this.replacement;
     }
@@ -81,6 +89,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,6 +109,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PatternReplaceCharFilter.
      */
+    @Generated
     public static PatternReplaceCharFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

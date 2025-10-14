@@ -52,7 +52,7 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDatabricksDetltaLakeLinkedServiceTypeProperties innerTypeProperties() {
+    AzureDatabricksDetltaLakeLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

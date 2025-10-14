@@ -6,6 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -90,6 +91,38 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     }
 
     /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as a list
+     */
+    public List<ChatMessageContentItem> getListContent() {
+        return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     *
+     * @return the content value if defined as a string
+     */
+    public String getStringContent() {
+        return this.stringContent;
+    }
+
+    /**
      * Get the name property: An optional name for the participant.
      *
      * @return the name value.
@@ -135,10 +168,12 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
-        if (stringContent != null) {
-            jsonWriter.writeStringField("content", stringContent);
-        } else if (chatMessageContentItems != null) {
+        if (this.stringContent != null) {
+            jsonWriter.writeStringField("content", this.stringContent);
+        } else if (this.chatMessageContentItems != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
+        } else {
+            jsonWriter.writeNullField("content");
         }
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -156,6 +191,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     public static ChatRequestUserMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
+            String stringContent = null;
+            List<ChatMessageContentItem> chatMessageContentItems = null;
             ChatRole role = ChatRole.USER;
             String name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -163,10 +200,12 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
-                        content = BinaryData.fromString(reader.getString());
+                        stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(
-                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                        chatMessageContentItems
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
                             + " ChatRequestUserMessage JSON object: " + reader.currentToken());
@@ -179,7 +218,14 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestUserMessage deserializedChatRequestUserMessage = new ChatRequestUserMessage(content);
+            ChatRequestUserMessage deserializedChatRequestUserMessage;
+            if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
+                deserializedChatRequestUserMessage = new ChatRequestUserMessage(content);
+            } else {
+                deserializedChatRequestUserMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestUserMessage(chatMessageContentItems)
+                    : new ChatRequestUserMessage(stringContent);
+            }
             deserializedChatRequestUserMessage.role = role;
             deserializedChatRequestUserMessage.name = name;
             return deserializedChatRequestUserMessage;

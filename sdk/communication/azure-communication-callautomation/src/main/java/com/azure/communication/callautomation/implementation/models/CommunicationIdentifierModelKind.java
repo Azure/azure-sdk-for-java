@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,33 +15,45 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
     /**
      * Static value unknown for CommunicationIdentifierModelKind.
      */
+    @Generated
     public static final CommunicationIdentifierModelKind UNKNOWN = fromString("unknown");
 
     /**
      * Static value communicationUser for CommunicationIdentifierModelKind.
      */
+    @Generated
     public static final CommunicationIdentifierModelKind COMMUNICATION_USER = fromString("communicationUser");
 
     /**
      * Static value phoneNumber for CommunicationIdentifierModelKind.
      */
+    @Generated
     public static final CommunicationIdentifierModelKind PHONE_NUMBER = fromString("phoneNumber");
 
     /**
      * Static value microsoftTeamsUser for CommunicationIdentifierModelKind.
      */
+    @Generated
     public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
 
     /**
      * Static value microsoftTeamsApp for CommunicationIdentifierModelKind.
      */
+    @Generated
     public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_APP = fromString("microsoftTeamsApp");
+
+    /**
+     * Static value teamsExtensionUser for CommunicationIdentifierModelKind.
+     */
+    @Generated
+    public static final CommunicationIdentifierModelKind TEAMS_EXTENSION_USER = fromString("teamsExtensionUser");
 
     /**
      * Creates a new instance of CommunicationIdentifierModelKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CommunicationIdentifierModelKind() {
     }
@@ -51,6 +64,7 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding CommunicationIdentifierModelKind.
      */
+    @Generated
     public static CommunicationIdentifierModelKind fromString(String name) {
         return fromString(name, CommunicationIdentifierModelKind.class);
     }
@@ -60,6 +74,7 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
      * 
      * @return known CommunicationIdentifierModelKind values.
      */
+    @Generated
     public static Collection<CommunicationIdentifierModelKind> values() {
         return values(CommunicationIdentifierModelKind.class);
     }

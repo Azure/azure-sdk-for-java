@@ -15,17 +15,17 @@ public final class SnapshotListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"fgb\"},\"provisioningState\":\"Invalid\",\"sourceVolumeSizeGiB\":6671653333153914115,\"volumeName\":\"lvqhjkbegibtnmx\"},\"id\":\"bwwaloa\",\"name\":\"qcgw\",\"type\":\"tzjuzgwyzmhtxo\"},{\"properties\":{\"creationData\":{\"sourceId\":\"gmtsavjcbpwxqpsr\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":3479458892953567068,\"volumeName\":\"riuhprwm\"},\"id\":\"vxqtayriwwroyqbe\",\"name\":\"rmcqiby\",\"type\":\"nojvknmefqsg\"}],\"nextLink\":\"ah\"}")
+            "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"yaw\"},\"provisioningState\":\"Deleting\",\"sourceVolumeSizeGiB\":2698678982079233320,\"volumeName\":\"lyjpk\"},\"id\":\"dzyexznelixh\",\"name\":\"rzt\",\"type\":\"o\"},{\"properties\":{\"creationData\":{\"sourceId\":\"hb\"},\"provisioningState\":\"Restoring\",\"sourceVolumeSizeGiB\":8618140120589918297,\"volumeName\":\"ulppggdtpnapnyir\"},\"id\":\"uhpigvp\",\"name\":\"ylgqgitxmedjvcsl\",\"type\":\"n\"}],\"nextLink\":\"wncwzzhxgktrmg\"}")
             .toObject(SnapshotList.class);
-        Assertions.assertEquals("fgb", model.value().get(0).creationData().sourceId());
+        Assertions.assertEquals("yaw", model.value().get(0).creationData().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotList model = new SnapshotList().withValue(
-            Arrays.asList(new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("fgb")),
-                new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("gmtsavjcbpwxqpsr"))));
+            Arrays.asList(new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("yaw")),
+                new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("hb"))));
         model = BinaryData.fromObject(model).toObject(SnapshotList.class);
-        Assertions.assertEquals("fgb", model.value().get(0).creationData().sourceId());
+        Assertions.assertEquals("yaw", model.value().get(0).creationData().sourceId());
     }
 }

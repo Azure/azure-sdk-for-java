@@ -82,7 +82,9 @@ public final class JsonWriteSettings extends FormatWriteSettings {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("filePattern", this.filePattern);
+        if (this.filePattern != null) {
+            jsonWriter.writeUntypedField("filePattern", this.filePattern);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -25,7 +25,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     private Object host;
 
     /*
-     * The version of the Presto server. (i.e. 0.148-t)
+     * The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      */
     private Object serverVersion;
 
@@ -35,7 +35,8 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     private Object catalog;
 
     /*
-     * The TCP port that the Presto server uses to listen for client connections. The default value is 8080.
+     * The TCP port that the Presto server uses to listen for client connections. The default value is 8080 when disable
+     * SSL, default value is 443 when enable SSL.
      */
     private Object port;
 
@@ -55,37 +56,46 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     private SecretBase password;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
+     * Specifies whether the connections to the server are encrypted using SSL. The default value for legacy version is
+     * False. The default value for version 2.0 is True.
      */
     private Object enableSsl;
 
     /*
+     * Specifies whether the connections to the server will validate server certificate, the default value is True. Only
+     * used for Version 2.0
+     */
+    private Object enableServerCertificateValidation;
+
+    /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
-     * installed with the IR.
+     * installed with the IR. Only used for Version 1.0.
      */
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
-     * value is false.
+     * value is false. Only used for Version 1.0.
      */
     private Object useSystemTrustStore;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
-     * connecting over SSL. The default value is false.
+     * connecting over SSL. The default value is false. Only used for Version 1.0.
      */
     private Object allowHostnameCNMismatch;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The default value is false.
+     * Specifies whether to allow self-signed certificates from the server. The default value is false. Only used for
+     * Version 1.0.
      */
     private Object allowSelfSignedServerCert;
 
     /*
      * The local time zone used by the connection. Valid values for this option are specified in the IANA Time Zone
-     * Database. The default value is the system time zone.
+     * Database. The default value for Version 1.0 is the client system time zone. The default value for Version 2.0 is
+     * server system timeZone
      */
     private Object timeZoneId;
 
@@ -122,7 +132,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     }
 
     /**
-     * Get the serverVersion property: The version of the Presto server. (i.e. 0.148-t).
+     * Get the serverVersion property: The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      * 
      * @return the serverVersion value.
      */
@@ -131,7 +141,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     }
 
     /**
-     * Set the serverVersion property: The version of the Presto server. (i.e. 0.148-t).
+     * Set the serverVersion property: The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      * 
      * @param serverVersion the serverVersion value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -163,7 +173,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the port property: The TCP port that the Presto server uses to listen for client connections. The default
-     * value is 8080.
+     * value is 8080 when disable SSL, default value is 443 when enable SSL.
      * 
      * @return the port value.
      */
@@ -173,7 +183,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the port property: The TCP port that the Presto server uses to listen for client connections. The default
-     * value is 8080.
+     * value is 8080 when disable SSL, default value is 443 when enable SSL.
      * 
      * @param port the port value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -245,7 +255,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false.
+     * value for legacy version is False. The default value for version 2.0 is True.
      * 
      * @return the enableSsl value.
      */
@@ -255,7 +265,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false.
+     * value for legacy version is False. The default value for version 2.0 is True.
      * 
      * @param enableSsl the enableSsl value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -266,9 +276,32 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     }
 
     /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.enableServerCertificateValidation;
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the PrestoLinkedServiceTypeProperties object itself.
+     */
+    public PrestoLinkedServiceTypeProperties
+        withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        this.enableServerCertificateValidation = enableServerCertificateValidation;
+        return this;
+    }
+
+    /**
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Only used for Version 1.0.
      * 
      * @return the trustedCertPath value.
      */
@@ -279,7 +312,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     /**
      * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Only used for Version 1.0.
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -291,7 +324,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Only used for Version 1.0.
      * 
      * @return the useSystemTrustStore value.
      */
@@ -301,7 +334,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Only used for Version 1.0.
      * 
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -313,7 +346,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value is false.
+     * the host name of the server when connecting over SSL. The default value is false. Only used for Version 1.0.
      * 
      * @return the allowHostnameCNMismatch value.
      */
@@ -323,7 +356,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value is false.
+     * the host name of the server when connecting over SSL. The default value is false. Only used for Version 1.0.
      * 
      * @param allowHostnameCNMismatch the allowHostnameCNMismatch value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -335,7 +368,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false.
+     * The default value is false. Only used for Version 1.0.
      * 
      * @return the allowSelfSignedServerCert value.
      */
@@ -345,7 +378,7 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false.
+     * The default value is false. Only used for Version 1.0.
      * 
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -357,7 +390,8 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the timeZoneId property: The local time zone used by the connection. Valid values for this option are
-     * specified in the IANA Time Zone Database. The default value is the system time zone.
+     * specified in the IANA Time Zone Database. The default value for Version 1.0 is the client system time zone. The
+     * default value for Version 2.0 is server system timeZone.
      * 
      * @return the timeZoneId value.
      */
@@ -367,7 +401,8 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the timeZoneId property: The local time zone used by the connection. Valid values for this option are
-     * specified in the IANA Time Zone Database. The default value is the system time zone.
+     * specified in the IANA Time Zone Database. The default value for Version 1.0 is the client system time zone. The
+     * default value for Version 2.0 is server system timeZone.
      * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the PrestoLinkedServiceTypeProperties object itself.
@@ -410,11 +445,6 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
                 .log(new IllegalArgumentException(
                     "Missing required property host in model PrestoLinkedServiceTypeProperties"));
         }
-        if (serverVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property serverVersion in model PrestoLinkedServiceTypeProperties"));
-        }
         if (catalog() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -439,19 +469,40 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
         jsonWriter.writeUntypedField("catalog", this.catalog);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.serverVersion != null) {
+            jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-        jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
-        jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-        jsonWriter.writeUntypedField("timeZoneID", this.timeZoneId);
+        if (this.enableSsl != null) {
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        }
+        if (this.enableServerCertificateValidation != null) {
+            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        }
+        if (this.trustedCertPath != null) {
+            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        }
+        if (this.useSystemTrustStore != null) {
+            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        }
+        if (this.allowHostnameCNMismatch != null) {
+            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostnameCNMismatch);
+        }
+        if (this.allowSelfSignedServerCert != null) {
+            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        }
+        if (this.timeZoneId != null) {
+            jsonWriter.writeUntypedField("timeZoneID", this.timeZoneId);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -475,13 +526,13 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
 
                 if ("host".equals(fieldName)) {
                     deserializedPrestoLinkedServiceTypeProperties.host = reader.readUntyped();
-                } else if ("serverVersion".equals(fieldName)) {
-                    deserializedPrestoLinkedServiceTypeProperties.serverVersion = reader.readUntyped();
                 } else if ("catalog".equals(fieldName)) {
                     deserializedPrestoLinkedServiceTypeProperties.catalog = reader.readUntyped();
                 } else if ("authenticationType".equals(fieldName)) {
                     deserializedPrestoLinkedServiceTypeProperties.authenticationType
                         = PrestoAuthenticationType.fromString(reader.getString());
+                } else if ("serverVersion".equals(fieldName)) {
+                    deserializedPrestoLinkedServiceTypeProperties.serverVersion = reader.readUntyped();
                 } else if ("port".equals(fieldName)) {
                     deserializedPrestoLinkedServiceTypeProperties.port = reader.readUntyped();
                 } else if ("username".equals(fieldName)) {
@@ -490,6 +541,9 @@ public final class PrestoLinkedServiceTypeProperties implements JsonSerializable
                     deserializedPrestoLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
                 } else if ("enableSsl".equals(fieldName)) {
                     deserializedPrestoLinkedServiceTypeProperties.enableSsl = reader.readUntyped();
+                } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                    deserializedPrestoLinkedServiceTypeProperties.enableServerCertificateValidation
+                        = reader.readUntyped();
                 } else if ("trustedCertPath".equals(fieldName)) {
                     deserializedPrestoLinkedServiceTypeProperties.trustedCertPath = reader.readUntyped();
                 } else if ("useSystemTrustStore".equals(fieldName)) {

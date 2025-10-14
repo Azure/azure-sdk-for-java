@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsGetAuthSettingsV2WithoutSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetAuthSettingsV2WithoutSecrets.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetAuthSettingsV2WithoutSecrets.json
      */
     /**
      * Sample code: List Auth Settings without Secrets.

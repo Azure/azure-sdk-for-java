@@ -8,18 +8,64 @@
   <version>1.0.0</version>
 
   <modules>
-    <module>../../../eng/code-quality-reports/pom.xml</module>
-    <module>../../../common/perf-test-core/pom.xml</module>
+    <module>../../appconfiguration/azure-data-appconfiguration/pom.xml</module>
+    <module>../../appcontainers/azure-resourcemanager-appcontainers/pom.xml</module>
+    <module>../../core/azure-core-amqp/pom.xml</module>
+    <module>../../core/azure-core-experimental/pom.xml</module>
+    <module>../../core/azure-core-http-jdk-httpclient/pom.xml</module>
+    <module>../../core/azure-core-http-netty/pom.xml</module>
+    <module>../../core/azure-core-http-okhttp/pom.xml</module>
+    <module>../../core/azure-core-http-vertx/pom.xml</module>
+    <module>../../core/azure-core-management/pom.xml</module>
+    <module>../../core/azure-core-serializer-json-jackson/pom.xml</module>
+    <module>../../core/azure-core-test/pom.xml</module>
+    <module>../../core/azure-core-tracing-opentelemetry/pom.xml</module>
+    <module>../../core/azure-core/pom.xml</module>
+    <module>../../cosmos/azure-cosmos/pom.xml</module>
+    <module>../../eventgrid/azure-messaging-eventgrid/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml</module>
-    <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml</module>
-    <module>../../eventhubs/azure-messaging-eventhubs-stress/pom.xml</module>
-    <module>../../eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs/pom.xml</module>
-    <module>../../monitor/azure-monitor-opentelemetry-exporter/pom.xml</module>
-    <module>../../parents/azure-perf-test-parent/pom.xml</module>
+    <module>../../identity/azure-identity-extensions/pom.xml</module>
+    <module>../../identity/azure-identity/pom.xml</module>
+    <module>../../keyvault/azure-security-keyvault-certificates/pom.xml</module>
+    <module>../../keyvault/azure-security-keyvault-jca/pom.xml</module>
+    <module>../../keyvault/azure-security-keyvault-keys/pom.xml</module>
+    <module>../../keyvault/azure-security-keyvault-secrets/pom.xml</module>
+    <module>../../monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml</module>
+    <module>../../parents/azure-client-sdk-parent/pom.xml</module>
     <module>../../parents/azure-sdk-parent/pom.xml</module>
-    <module>../../servicebus/azure-messaging-servicebus-stress/pom.xml</module>
-    <module>../../servicebus/azure-messaging-servicebus-track2-perf/pom.xml</module>
+    <module>../../appplatform/azure-resourcemanager-appplatform/pom.xml</module>
+    <module>../../appservice/azure-resourcemanager-appservice/pom.xml</module>
+    <module>../../authorization/azure-resourcemanager-authorization/pom.xml</module>
+    <module>../../cdn/azure-resourcemanager-cdn/pom.xml</module>
+    <module>../../compute/azure-resourcemanager-compute/pom.xml</module>
+    <module>../../containerinstance/azure-resourcemanager-containerinstance/pom.xml</module>
+    <module>../../containerregistry/azure-resourcemanager-containerregistry/pom.xml</module>
+    <module>../../containerservice/azure-resourcemanager-containerservice/pom.xml</module>
+    <module>../../cosmos/azure-resourcemanager-cosmos/pom.xml</module>
+    <module>../../dns/azure-resourcemanager-dns/pom.xml</module>
+    <module>../../eventhubs/azure-resourcemanager-eventhubs/pom.xml</module>
+    <module>../../keyvault/azure-resourcemanager-keyvault/pom.xml</module>
+    <module>../../monitor/azure-resourcemanager-monitor/pom.xml</module>
+    <module>../../msi/azure-resourcemanager-msi/pom.xml</module>
+    <module>../../network/azure-resourcemanager-network/pom.xml</module>
+    <module>../../privatedns/azure-resourcemanager-privatedns/pom.xml</module>
+    <module>../../redis/azure-resourcemanager-redis/pom.xml</module>
+    <module>../../resources/azure-resourcemanager-resources/pom.xml</module>
+    <module>../../search/azure-resourcemanager-search/pom.xml</module>
+    <module>../../servicebus/azure-resourcemanager-servicebus/pom.xml</module>
+    <module>../../sql/azure-resourcemanager-sql/pom.xml</module>
+    <module>../../storage/azure-resourcemanager-storage/pom.xml</module>
+    <module>../../resourcemanager/azure-resourcemanager-test/pom.xml</module>
+    <module>../../trafficmanager/azure-resourcemanager-trafficmanager/pom.xml</module>
+    <module>../../resourcemanager/azure-resourcemanager/pom.xml</module>
+    <module>../../serialization/azure-json/pom.xml</module>
+    <module>../../serialization/azure-xml/pom.xml</module>
     <module>../../servicebus/azure-messaging-servicebus/pom.xml</module>
+    <module>../../storage/azure-storage-blob/pom.xml</module>
+    <module>../../storage/azure-storage-common/pom.xml</module>
+    <module>../../storage/azure-storage-file-share/pom.xml</module>
+    <module>../../storage/azure-storage-internal-avro/pom.xml</module>
+    <module>../../storage/azure-storage-queue/pom.xml</module>
   </modules>
 </project>

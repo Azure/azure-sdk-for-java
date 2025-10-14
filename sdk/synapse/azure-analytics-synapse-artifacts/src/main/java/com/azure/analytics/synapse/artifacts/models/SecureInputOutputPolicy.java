@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
     /*
      * When set to true, Input from activity is considered as secure and will not be logged to monitoring.
      */
+    @Generated
     private Boolean secureInput;
 
     /*
      * When set to true, Output from activity is considered as secure and will not be logged to monitoring.
      */
+    @Generated
     private Boolean secureOutput;
 
     /**
      * Creates an instance of SecureInputOutputPolicy class.
      */
+    @Generated
     public SecureInputOutputPolicy() {
     }
 
@@ -38,6 +42,7 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
      * 
      * @return the secureInput value.
      */
+    @Generated
     public Boolean isSecureInput() {
         return this.secureInput;
     }
@@ -49,6 +54,7 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
      * @param secureInput the secureInput value to set.
      * @return the SecureInputOutputPolicy object itself.
      */
+    @Generated
     public SecureInputOutputPolicy setSecureInput(Boolean secureInput) {
         this.secureInput = secureInput;
         return this;
@@ -60,6 +66,7 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
      * 
      * @return the secureOutput value.
      */
+    @Generated
     public Boolean isSecureOutput() {
         return this.secureOutput;
     }
@@ -71,6 +78,7 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
      * @param secureOutput the secureOutput value to set.
      * @return the SecureInputOutputPolicy object itself.
      */
+    @Generated
     public SecureInputOutputPolicy setSecureOutput(Boolean secureOutput) {
         this.secureOutput = secureOutput;
         return this;
@@ -79,6 +87,7 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class SecureInputOutputPolicy implements JsonSerializable<SecureInp
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SecureInputOutputPolicy.
      */
+    @Generated
     public static SecureInputOutputPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SecureInputOutputPolicy deserializedSecureInputOutputPolicy = new SecureInputOutputPolicy();

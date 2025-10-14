@@ -35,18 +35,23 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.ClustersClient;
 import com.azure.resourcemanager.kusto.fluent.models.AzureResourceSkuInner;
+import com.azure.resourcemanager.kusto.fluent.models.CalloutPolicyInner;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.DiagnoseVirtualNetworkResultInner;
+import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionGetInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
+import com.azure.resourcemanager.kusto.models.CalloutPoliciesList;
+import com.azure.resourcemanager.kusto.models.CalloutPolicyToRemove;
 import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
 import com.azure.resourcemanager.kusto.models.ClusterListResult;
 import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 import com.azure.resourcemanager.kusto.models.ClusterUpdate;
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseListResult;
+import com.azure.resourcemanager.kusto.models.FollowerDatabaseListResultGet;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.ListResourceSkusResult;
 import com.azure.resourcemanager.kusto.models.OutboundNetworkDependenciesEndpointListResult;
@@ -154,6 +159,15 @@ public final class ClustersClientImpl implements ClustersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FollowerDatabaseListResultGet>> listFollowerDatabasesGet(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -232,6 +246,37 @@ public final class ClustersClientImpl implements ClustersClient {
             @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/addCalloutPolicies")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> addCalloutPolicies(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CalloutPoliciesList calloutPolicies, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/removeCalloutPolicy")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> removeCalloutPolicy(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CalloutPolicyToRemove calloutPolicy, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listCalloutPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CalloutPoliciesList>> listCalloutPolicies(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listLanguageExtensions")
@@ -1828,6 +1873,149 @@ public final class ClustersClientImpl implements ClustersClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<FollowerDatabaseDefinitionGetInner>>
+        listFollowerDatabasesGetSinglePageAsync(String resourceGroupName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listFollowerDatabasesGet(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<FollowerDatabaseDefinitionGetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<FollowerDatabaseDefinitionGetInner>>
+        listFollowerDatabasesGetSinglePageAsync(String resourceGroupName, String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listFollowerDatabasesGet(this.client.getEndpoint(), resourceGroupName, clusterName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<FollowerDatabaseDefinitionGetInner> listFollowerDatabasesGetAsync(String resourceGroupName,
+        String clusterName) {
+        return new PagedFlux<>(() -> listFollowerDatabasesGetSinglePageAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<FollowerDatabaseDefinitionGetInner> listFollowerDatabasesGetAsync(String resourceGroupName,
+        String clusterName, Context context) {
+        return new PagedFlux<>(() -> listFollowerDatabasesGetSinglePageAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FollowerDatabaseDefinitionGetInner> listFollowerDatabasesGet(String resourceGroupName,
+        String clusterName) {
+        return new PagedIterable<>(listFollowerDatabasesGetAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<FollowerDatabaseDefinitionGetInner> listFollowerDatabasesGet(String resourceGroupName,
+        String clusterName, Context context) {
+        return new PagedIterable<>(listFollowerDatabasesGetAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FollowerDatabaseDefinitionInner>>
         listFollowerDatabasesSinglePageAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
@@ -3164,6 +3352,609 @@ public final class ClustersClientImpl implements ClustersClient {
         listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(
             listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> addCalloutPoliciesWithResponseAsync(String resourceGroupName,
+        String clusterName, CalloutPoliciesList calloutPolicies) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (calloutPolicies == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter calloutPolicies is required and cannot be null."));
+        } else {
+            calloutPolicies.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.addCalloutPolicies(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, clusterName, this.client.getApiVersion(), calloutPolicies, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> addCalloutPoliciesWithResponseAsync(String resourceGroupName,
+        String clusterName, CalloutPoliciesList calloutPolicies, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (calloutPolicies == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter calloutPolicies is required and cannot be null."));
+        } else {
+            calloutPolicies.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.addCalloutPolicies(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, this.client.getApiVersion(), calloutPolicies, accept, context);
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginAddCalloutPoliciesAsync(String resourceGroupName,
+        String clusterName, CalloutPoliciesList calloutPolicies) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = addCalloutPoliciesWithResponseAsync(resourceGroupName, clusterName, calloutPolicies);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginAddCalloutPoliciesAsync(String resourceGroupName,
+        String clusterName, CalloutPoliciesList calloutPolicies, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = addCalloutPoliciesWithResponseAsync(resourceGroupName, clusterName, calloutPolicies, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAddCalloutPolicies(String resourceGroupName, String clusterName,
+        CalloutPoliciesList calloutPolicies) {
+        return this.beginAddCalloutPoliciesAsync(resourceGroupName, clusterName, calloutPolicies).getSyncPoller();
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAddCalloutPolicies(String resourceGroupName, String clusterName,
+        CalloutPoliciesList calloutPolicies, Context context) {
+        return this.beginAddCalloutPoliciesAsync(resourceGroupName, clusterName, calloutPolicies, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> addCalloutPoliciesAsync(String resourceGroupName, String clusterName,
+        CalloutPoliciesList calloutPolicies) {
+        return beginAddCalloutPoliciesAsync(resourceGroupName, clusterName, calloutPolicies).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> addCalloutPoliciesAsync(String resourceGroupName, String clusterName,
+        CalloutPoliciesList calloutPolicies, Context context) {
+        return beginAddCalloutPoliciesAsync(resourceGroupName, clusterName, calloutPolicies, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addCalloutPolicies(String resourceGroupName, String clusterName, CalloutPoliciesList calloutPolicies) {
+        addCalloutPoliciesAsync(resourceGroupName, clusterName, calloutPolicies).block();
+    }
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addCalloutPolicies(String resourceGroupName, String clusterName, CalloutPoliciesList calloutPolicies,
+        Context context) {
+        addCalloutPoliciesAsync(resourceGroupName, clusterName, calloutPolicies, context).block();
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeCalloutPolicyWithResponseAsync(String resourceGroupName,
+        String clusterName, CalloutPolicyToRemove calloutPolicy) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (calloutPolicy == null) {
+            return Mono.error(new IllegalArgumentException("Parameter calloutPolicy is required and cannot be null."));
+        } else {
+            calloutPolicy.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.removeCalloutPolicy(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, clusterName, this.client.getApiVersion(), calloutPolicy, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeCalloutPolicyWithResponseAsync(String resourceGroupName,
+        String clusterName, CalloutPolicyToRemove calloutPolicy, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (calloutPolicy == null) {
+            return Mono.error(new IllegalArgumentException("Parameter calloutPolicy is required and cannot be null."));
+        } else {
+            calloutPolicy.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.removeCalloutPolicy(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, this.client.getApiVersion(), calloutPolicy, accept, context);
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRemoveCalloutPolicyAsync(String resourceGroupName,
+        String clusterName, CalloutPolicyToRemove calloutPolicy) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeCalloutPolicyWithResponseAsync(resourceGroupName, clusterName, calloutPolicy);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRemoveCalloutPolicyAsync(String resourceGroupName,
+        String clusterName, CalloutPolicyToRemove calloutPolicy, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeCalloutPolicyWithResponseAsync(resourceGroupName, clusterName, calloutPolicy, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRemoveCalloutPolicy(String resourceGroupName, String clusterName,
+        CalloutPolicyToRemove calloutPolicy) {
+        return this.beginRemoveCalloutPolicyAsync(resourceGroupName, clusterName, calloutPolicy).getSyncPoller();
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRemoveCalloutPolicy(String resourceGroupName, String clusterName,
+        CalloutPolicyToRemove calloutPolicy, Context context) {
+        return this.beginRemoveCalloutPolicyAsync(resourceGroupName, clusterName, calloutPolicy, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> removeCalloutPolicyAsync(String resourceGroupName, String clusterName,
+        CalloutPolicyToRemove calloutPolicy) {
+        return beginRemoveCalloutPolicyAsync(resourceGroupName, clusterName, calloutPolicy).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> removeCalloutPolicyAsync(String resourceGroupName, String clusterName,
+        CalloutPolicyToRemove calloutPolicy, Context context) {
+        return beginRemoveCalloutPolicyAsync(resourceGroupName, clusterName, calloutPolicy, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeCalloutPolicy(String resourceGroupName, String clusterName, CalloutPolicyToRemove calloutPolicy) {
+        removeCalloutPolicyAsync(resourceGroupName, clusterName, calloutPolicy).block();
+    }
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeCalloutPolicy(String resourceGroupName, String clusterName, CalloutPolicyToRemove calloutPolicy,
+        Context context) {
+        removeCalloutPolicyAsync(resourceGroupName, clusterName, calloutPolicy, context).block();
+    }
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CalloutPolicyInner>> listCalloutPoliciesSinglePageAsync(String resourceGroupName,
+        String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCalloutPolicies(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<CalloutPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CalloutPolicyInner>> listCalloutPoliciesSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCalloutPolicies(this.client.getEndpoint(), resourceGroupName, clusterName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
+    }
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<CalloutPolicyInner> listCalloutPoliciesAsync(String resourceGroupName, String clusterName) {
+        return new PagedFlux<>(() -> listCalloutPoliciesSinglePageAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<CalloutPolicyInner> listCalloutPoliciesAsync(String resourceGroupName, String clusterName,
+        Context context) {
+        return new PagedFlux<>(() -> listCalloutPoliciesSinglePageAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CalloutPolicyInner> listCalloutPolicies(String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listCalloutPoliciesAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CalloutPolicyInner> listCalloutPolicies(String resourceGroupName, String clusterName,
+        Context context) {
+        return new PagedIterable<>(listCalloutPoliciesAsync(resourceGroupName, clusterName, context));
     }
 
     /**

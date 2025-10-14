@@ -12,24 +12,24 @@ public final class InMageRcmReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmReprotectInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"reprotectAgentId\":\"cwwtzqzclo\",\"datastoreName\":\"hy\",\"logStorageAccountId\":\"pgidhzgyresgzsdt\",\"policyId\":\"byorjplb\"}")
+            "{\"instanceType\":\"InMageRcm\",\"reprotectAgentId\":\"iwtp\",\"datastoreName\":\"flcezs\",\"logStorageAccountId\":\"wvwiftdjtvbfpfh\",\"policyId\":\"ptsyqcjnqswxdo\"}")
             .toObject(InMageRcmReprotectInput.class);
-        Assertions.assertEquals("cwwtzqzclo", model.reprotectAgentId());
-        Assertions.assertEquals("hy", model.datastoreName());
-        Assertions.assertEquals("pgidhzgyresgzsdt", model.logStorageAccountId());
-        Assertions.assertEquals("byorjplb", model.policyId());
+        Assertions.assertEquals("iwtp", model.reprotectAgentId());
+        Assertions.assertEquals("flcezs", model.datastoreName());
+        Assertions.assertEquals("wvwiftdjtvbfpfh", model.logStorageAccountId());
+        Assertions.assertEquals("ptsyqcjnqswxdo", model.policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmReprotectInput model = new InMageRcmReprotectInput().withReprotectAgentId("cwwtzqzclo")
-            .withDatastoreName("hy")
-            .withLogStorageAccountId("pgidhzgyresgzsdt")
-            .withPolicyId("byorjplb");
+        InMageRcmReprotectInput model = new InMageRcmReprotectInput().withReprotectAgentId("iwtp")
+            .withDatastoreName("flcezs")
+            .withLogStorageAccountId("wvwiftdjtvbfpfh")
+            .withPolicyId("ptsyqcjnqswxdo");
         model = BinaryData.fromObject(model).toObject(InMageRcmReprotectInput.class);
-        Assertions.assertEquals("cwwtzqzclo", model.reprotectAgentId());
-        Assertions.assertEquals("hy", model.datastoreName());
-        Assertions.assertEquals("pgidhzgyresgzsdt", model.logStorageAccountId());
-        Assertions.assertEquals("byorjplb", model.policyId());
+        Assertions.assertEquals("iwtp", model.reprotectAgentId());
+        Assertions.assertEquals("flcezs", model.datastoreName());
+        Assertions.assertEquals("wvwiftdjtvbfpfh", model.logStorageAccountId());
+        Assertions.assertEquals("ptsyqcjnqswxdo", model.policyId());
     }
 }

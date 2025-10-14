@@ -17,6 +17,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
+import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -446,6 +447,29 @@ public class PathAsyncClientJavaDocCodeSamples {
                 PathAccessControlEntry.serializeList(response.getValue().getAccessControlList()),
                 response.getValue().getGroup(), response.getValue().getOwner(), response.getValue().getPermissions()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#getSystemProperties()}
+     */
+    public void getSystemProperties() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemProperties
+        client.getSystemProperties().subscribe(
+            response -> System.out.printf("Is server encrypted: %s", response.isServerEncrypted()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemProperties
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions)}
+     */
+    public void getSystemPropertiesWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions
+        PathGetSystemPropertiesOptions options = new PathGetSystemPropertiesOptions().setRequestConditions(
+            new DataLakeRequestConditions().setLeaseId(leaseId));
+
+        client.getSystemPropertiesWithResponse(options).subscribe(
+            response -> System.out.printf("Is server encrypted: %s", response.getValue().isServerEncrypted()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions
     }
 
     /**

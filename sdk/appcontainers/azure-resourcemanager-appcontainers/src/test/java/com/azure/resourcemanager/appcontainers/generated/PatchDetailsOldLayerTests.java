@@ -12,21 +12,21 @@ public final class PatchDetailsOldLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchDetailsOldLayer model = BinaryData
-            .fromString("{\"name\":\"ghrjeuutl\",\"frameworkAndVersion\":\"ez\",\"osAndVersion\":\"hokvbwnh\"}")
+            .fromString("{\"name\":\"efrp\",\"frameworkAndVersion\":\"dnqqskawaoqvmmb\",\"osAndVersion\":\"qfr\"}")
             .toObject(PatchDetailsOldLayer.class);
-        Assertions.assertEquals("ghrjeuutl", model.name());
-        Assertions.assertEquals("ez", model.frameworkAndVersion());
-        Assertions.assertEquals("hokvbwnh", model.osAndVersion());
+        Assertions.assertEquals("efrp", model.name());
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.frameworkAndVersion());
+        Assertions.assertEquals("qfr", model.osAndVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchDetailsOldLayer model = new PatchDetailsOldLayer().withName("ghrjeuutl")
-            .withFrameworkAndVersion("ez")
-            .withOsAndVersion("hokvbwnh");
+        PatchDetailsOldLayer model = new PatchDetailsOldLayer().withName("efrp")
+            .withFrameworkAndVersion("dnqqskawaoqvmmb")
+            .withOsAndVersion("qfr");
         model = BinaryData.fromObject(model).toObject(PatchDetailsOldLayer.class);
-        Assertions.assertEquals("ghrjeuutl", model.name());
-        Assertions.assertEquals("ez", model.frameworkAndVersion());
-        Assertions.assertEquals("hokvbwnh", model.osAndVersion());
+        Assertions.assertEquals("efrp", model.name());
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.frameworkAndVersion());
+        Assertions.assertEquals("qfr", model.osAndVersion());
     }
 }

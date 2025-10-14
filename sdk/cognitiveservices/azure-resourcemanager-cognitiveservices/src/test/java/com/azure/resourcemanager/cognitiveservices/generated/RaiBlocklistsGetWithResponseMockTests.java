@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklist;
@@ -21,20 +21,20 @@ public final class RaiBlocklistsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"krmukmyjmkxett\",\"tags\":{\"dnqtoqxjhqx\":\"ojfkq\",\"htkbtnq\":\"s\",\"mbiipsnawwlqk\":\"rngl\"},\"properties\":{\"description\":\"hhl\"},\"id\":\"xricctkwmuqq\",\"name\":\"ajxeiygle\",\"type\":\"rwvaexhdc\"}";
+            = "{\"etag\":\"lrmpwctofldse\",\"tags\":{\"wjiyewhfjsrwq\":\"hztxkbrfgd\",\"gcwvrrmdqntycna\":\"xet\"},\"properties\":{\"description\":\"vmaxgnuyea\"},\"id\":\"cmh\",\"name\":\"dfjeceho\",\"type\":\"wcpqtwl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklists()
-            .getWithResponse("txtjrrlkmds", "jhhxdlajf", "xcxscvslxlh", com.azure.core.util.Context.NONE)
+            .getWithResponse("gqbedygi", "rzwnyk", "id", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ojfkq", response.tags().get("dnqtoqxjhqx"));
-        Assertions.assertEquals("hhl", response.properties().description());
+        Assertions.assertEquals("hztxkbrfgd", response.tags().get("wjiyewhfjsrwq"));
+        Assertions.assertEquals("vmaxgnuyea", response.properties().description());
     }
 }

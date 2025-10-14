@@ -14,8 +14,7 @@ import java.util.Map;
 public final class RacksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * Racks_Create.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Racks_Create.json
      */
     /**
      * Sample code: Create or update rack.

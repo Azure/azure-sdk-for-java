@@ -241,12 +241,18 @@ public final class CustomActivityTypeProperties implements JsonSerializable<Cust
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("command", this.command);
         jsonWriter.writeJsonField("resourceLinkedService", this.resourceLinkedService);
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
         jsonWriter.writeJsonField("referenceObjects", this.referenceObjects);
         jsonWriter.writeMapField("extendedProperties", this.extendedProperties,
             (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("retentionTimeInDays", this.retentionTimeInDays);
-        jsonWriter.writeUntypedField("autoUserSpecification", this.autoUserSpecification);
+        if (this.retentionTimeInDays != null) {
+            jsonWriter.writeUntypedField("retentionTimeInDays", this.retentionTimeInDays);
+        }
+        if (this.autoUserSpecification != null) {
+            jsonWriter.writeUntypedField("autoUserSpecification", this.autoUserSpecification);
+        }
         return jsonWriter.writeEndObject();
     }
 

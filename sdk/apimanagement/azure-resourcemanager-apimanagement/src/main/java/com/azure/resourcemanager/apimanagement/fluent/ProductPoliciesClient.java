@@ -6,9 +6,9 @@ package com.azure.resourcemanager.apimanagement.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
@@ -26,15 +26,13 @@ public interface ProductPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level along with {@link Response}.
+     * @return the policy configuration at the Product level as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyCollectionInner> listByProductWithResponse(String resourceGroupName, String serviceName,
-        String productId, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyContractInner> listByProduct(String resourceGroupName, String serviceName, String productId);
 
     /**
      * Get the policy configuration at the Product level.
@@ -42,13 +40,15 @@ public interface ProductPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level.
+     * @return the policy configuration at the Product level as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyCollectionInner listByProduct(String resourceGroupName, String serviceName, String productId);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PolicyContractInner> listByProduct(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Get the ETag of the policy configuration at the Product level.

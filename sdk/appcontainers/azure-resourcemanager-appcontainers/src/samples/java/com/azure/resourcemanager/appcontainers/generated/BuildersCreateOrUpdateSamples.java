@@ -18,7 +18,8 @@ import java.util.Map;
 public final class BuildersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Builders_CreateOrUpdate.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * Builders_CreateOrUpdate.json
      */
     /**
      * Sample code: Builders_CreateOrUpdate_0.

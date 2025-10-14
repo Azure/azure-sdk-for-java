@@ -9,7 +9,12 @@ import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DataDogConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DestinationsConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfigurationKeyVaultConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfigurationKeyVaultConfigurationAuth;
 import com.azure.resourcemanager.appcontainers.models.Header;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
+import com.azure.resourcemanager.appcontainers.models.IngressConfigurationScale;
 import com.azure.resourcemanager.appcontainers.models.LogAnalyticsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.LogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
@@ -34,7 +39,8 @@ import java.util.Map;
  */
 public final class ManagedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
      */
     /**
@@ -55,6 +61,7 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
             .withAppLogsConfiguration(new AppLogsConfiguration().withLogAnalyticsConfiguration(
                 new LogAnalyticsConfiguration().withCustomerId("string").withSharedKey("fakeTokenPlaceholder")))
             .withZoneRedundant(true)
+            .withAvailabilityZones(Arrays.asList("1", "2", "3"))
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
                 .withCertificateValue("Y2VydA==".getBytes())
                 .withCertificatePassword("fakeTokenPlaceholder"))
@@ -78,7 +85,8 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
      * ManagedEnvironments_CreateOrUpdate.json
      */
     /**
@@ -123,6 +131,7 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                     .withMetricsConfiguration(
                         new MetricsConfiguration().withIncludeKeda(true).withDestinations(Arrays.asList("dataDog"))))
             .withZoneRedundant(true)
+            .withAvailabilityZones(Arrays.asList("1", "2", "3"))
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
                 .withCertificateValue("Y2VydA==".getBytes())
                 .withCertificatePassword("fakeTokenPlaceholder"))
@@ -145,6 +154,15 @@ public final class ManagedEnvironmentsCreateOrUpdateSamples {
                 new ManagedEnvironmentPropertiesPeerAuthentication().withMtls(new Mtls().withEnabled(true)))
             .withPeerTrafficConfiguration(new ManagedEnvironmentPropertiesPeerTrafficConfiguration()
                 .withEncryption(new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(true)))
+            .withIngressConfiguration(new IngressConfiguration().withWorkloadProfileName("My-CO-01")
+                .withScale(new IngressConfigurationScale().withMinReplicas(2).withMaxReplicas(4))
+                .withTerminationGracePeriodSeconds(3600)
+                .withHeaderCountLimit(30)
+                .withRequestIdleTimeout(5))
+            .withDiskEncryptionConfiguration(new DiskEncryptionConfiguration().withKeyVaultConfiguration(
+                new DiskEncryptionConfigurationKeyVaultConfiguration().withKeyUrl("fakeTokenPlaceholder")
+                    .withAuth(new DiskEncryptionConfigurationKeyVaultConfigurationAuth().withIdentity(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity"))))
             .create();
     }
 

@@ -17,9 +17,11 @@ import java.util.List;
 public class PartitionKeyInternalHelper {
 
     public static final String MinimumInclusiveEffectivePartitionKey = toHexEncodedBinaryString(PartitionKeyInternal.EmptyPartitionKey.components);
+    public static final byte[] MinimumInclusiveEffectivePartitionKeyBytes = toBinary(PartitionKeyInternal.EmptyPartitionKey.components);
     public static final String MaximumExclusiveEffectivePartitionKey = toHexEncodedBinaryString(PartitionKeyInternal.InfinityPartitionKey.components);
+    public static final byte[] MaximumExclusiveEffectivePartitionKeyBytes = toBinary(PartitionKeyInternal.InfinityPartitionKey.components);
 
-    public static final Range<String> FullRange = new Range<String>(
+    public static final Range<String> FullRange = new Range<>(
         PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
         PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
         true,
@@ -72,7 +74,29 @@ public class PartitionKeyInternalHelper {
         return HexConvert.bytesToHex(stream.asByteBuffer());
     }
 
+    static byte[] toBinary(List<IPartitionKeyComponent> components) {
+        ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
+        for (IPartitionKeyComponent component: components) {
+            component.writeForBinaryEncoding(stream);
+        }
+
+        return stream.toByteArray();
+    }
+
+    static byte[] toBinary(IPartitionKeyComponent[] components) {
+        ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
+        for (IPartitionKeyComponent component: components) {
+            component.writeForBinaryEncoding(stream);
+        }
+
+        return stream.toByteArray();
+    }
+
     static public String getEffectivePartitionKeyForHashPartitioningV2(PartitionKeyInternal partitionKeyInternal) {
+        return HexConvert.bytesToHex(getEffectivePartitionKeyBytesForHashPartitioningV2(partitionKeyInternal));
+    }
+
+    static public byte[] getEffectivePartitionKeyBytesForHashPartitioningV2(PartitionKeyInternal partitionKeyInternal) {
         try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
             for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
                 partitionKeyInternal.components.get(i).writeForHashingV2(byteArrayBuffer);
@@ -88,14 +112,18 @@ public class PartitionKeyInternalHelper {
             // Plus one more just in case.
             hash[0] &= 0x3F;
 
-            return HexConvert.bytesToHex(hash);
+            return hash;
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     static String getEffectivePartitionKeyForMultiHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
-        StringBuilder stringBuilder = new StringBuilder(partitionKeyInternal.components.size() * HASH_V2_EPK_LENGTH);
+        return HexConvert.bytesToHex(getEffectivePartitionKeyBytesForMultiHashPartitioning(partitionKeyInternal));
+    }
+
+    static byte[] getEffectivePartitionKeyBytesForMultiHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
+        byte[] finalHash = new byte[partitionKeyInternal.components.size() * 2 * Long.BYTES];
         for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
             try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
                 partitionKeyInternal.components.get(i).writeForHashingV2(byteArrayBuffer);
@@ -110,16 +138,22 @@ public class PartitionKeyInternalHelper {
                 // Plus one more just in case.
                 hash[0] &= 0x3F;
 
-                stringBuilder.append(HexConvert.bytesToHex(hash));
+                for (int n = 0; n < hash.length; n++) {
+                    finalHash[(i * 2 * Long.BYTES) + n] = hash[n];
+                }
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);
             }
         }
 
-        return stringBuilder.toString();
+        return finalHash;
     }
 
     static String getEffectivePartitionKeyForHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
+        return HexConvert.bytesToHex(getEffectivePartitionKeyBytesForHashPartitioning(partitionKeyInternal));
+    }
+
+    static byte[] getEffectivePartitionKeyBytesForHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
         IPartitionKeyComponent[] truncatedComponents = new IPartitionKeyComponent[partitionKeyInternal.components.size()];
 
         for (int i = 0; i < truncatedComponents.length; i++) {
@@ -145,7 +179,7 @@ public class PartitionKeyInternalHelper {
             partitionKeyComponents[i + 1] = truncatedComponents[i];
         }
 
-        return toHexEncodedBinaryString(partitionKeyComponents);
+        return toBinary(partitionKeyComponents);
     }
 
     public static String getEffectivePartitionKeyString(PartitionKeyInternal partitionKeyInternal, PartitionKeyDefinition partitionKeyDefinition) {
@@ -193,6 +227,54 @@ public class PartitionKeyInternalHelper {
 
             default:
                 return toHexEncodedBinaryString(partitionKeyInternal.components);
+        }
+    }
+
+    public static byte[] getEffectivePartitionKeyBytes(PartitionKeyInternal partitionKeyInternal, PartitionKeyDefinition partitionKeyDefinition) {
+        return getEffectivePartitionKeyBytes(partitionKeyInternal, partitionKeyDefinition, true);
+    }
+
+    public static byte[] getEffectivePartitionKeyBytes(PartitionKeyInternal partitionKeyInternal, PartitionKeyDefinition partitionKeyDefinition, boolean strict) {
+        if (partitionKeyInternal.components == null) {
+            throw new IllegalArgumentException(RMResources.TooFewPartitionKeyComponents);
+        }
+
+        if (partitionKeyInternal.equals(PartitionKeyInternal.EmptyPartitionKey)) {
+            return MinimumInclusiveEffectivePartitionKeyBytes;
+        }
+
+        if (partitionKeyInternal.equals(PartitionKeyInternal.InfinityPartitionKey)) {
+            return MaximumExclusiveEffectivePartitionKeyBytes;
+        }
+
+        if (partitionKeyInternal.components.size() < partitionKeyDefinition.getPaths().size() && partitionKeyDefinition.getKind() != PartitionKind.MULTI_HASH) {
+            throw new IllegalArgumentException(RMResources.TooFewPartitionKeyComponents);
+        }
+
+        if (partitionKeyInternal.components.size() > partitionKeyDefinition.getPaths().size() && strict) {
+            throw new IllegalArgumentException(RMResources.TooManyPartitionKeyComponents);
+        }
+
+        PartitionKind kind = partitionKeyDefinition.getKind();
+        if (kind == null) {
+            kind = PartitionKind.HASH;
+        }
+
+        switch (kind) {
+            case HASH:
+                if (ModelBridgeInternal.isV2(partitionKeyDefinition)) {
+                    // V2
+                    return getEffectivePartitionKeyBytesForHashPartitioningV2(partitionKeyInternal);
+                } else {
+                    // V1
+                    return getEffectivePartitionKeyBytesForHashPartitioning(partitionKeyInternal);
+                }
+
+            case MULTI_HASH:
+                return getEffectivePartitionKeyBytesForMultiHashPartitioning(partitionKeyInternal);
+
+            default:
+                return toBinary(partitionKeyInternal.components);
         }
     }
 

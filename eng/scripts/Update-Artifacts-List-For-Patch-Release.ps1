@@ -73,7 +73,8 @@ foreach ($ymlFile in $ymlFiles) {
     }
 }
 
-$ArtifactInfos = @{}
+# Use OrderedDictionary here for later "FindAllArtifactsThatNeedPatching"
+$ArtifactInfos = New-Object System.Collections.Specialized.OrderedDictionary
 
 Write-Host "Loading libraries from text file."
 
@@ -81,7 +82,7 @@ foreach ($line in Get-Content "${PSScriptRoot}/../pipelines/patch_release_client
     if (($line) -and !($line.StartsWith("#"))) {
         $libraryId = $line.split(" ")[0]
         $groupId, $artifactId = $libraryId.split(":")
-        $ArtifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId
+        $ArtifactInfos[$artifactId] = GetVersionInfoForMavenArtifact -ArtifactId $artifactId -GroupId $groupId
     }
 }
 

@@ -79,7 +79,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedClusters/{clusterName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrReplace(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @BodyParam("application/json") ConnectedClusterInner connectedCluster, @HeaderParam("Accept") String accept,
@@ -160,7 +160,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -171,8 +172,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
-        ConnectedClusterInner connectedCluster) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
+        String clusterName, ConnectedClusterInner connectedCluster) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -196,7 +197,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, clusterName, connectedCluster, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -204,7 +205,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -216,8 +218,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
-        ConnectedClusterInner connectedCluster, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
+        String clusterName, ConnectedClusterInner connectedCluster, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -241,14 +243,15 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, connectedCluster, accept, context);
+        return service.createOrReplace(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, connectedCluster, accept, context);
     }
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -259,10 +262,10 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return the {@link PollerFlux} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner>
-        beginCreateAsync(String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster) {
+    private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateOrReplaceAsync(
+        String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, clusterName, connectedCluster);
+            = createOrReplaceWithResponseAsync(resourceGroupName, clusterName, connectedCluster);
         return this.client.<ConnectedClusterInner, ConnectedClusterInner>getLroResult(mono,
             this.client.getHttpPipeline(), ConnectedClusterInner.class, ConnectedClusterInner.class,
             this.client.getContext());
@@ -271,7 +274,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -283,11 +287,11 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return the {@link PollerFlux} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateAsync(
+    private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateOrReplaceAsync(
         String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, clusterName, connectedCluster, context);
+            = createOrReplaceWithResponseAsync(resourceGroupName, clusterName, connectedCluster, context);
         return this.client.<ConnectedClusterInner, ConnectedClusterInner>getLroResult(mono,
             this.client.getHttpPipeline(), ConnectedClusterInner.class, ConnectedClusterInner.class, context);
     }
@@ -295,7 +299,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -306,15 +311,16 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(String resourceGroupName,
-        String clusterName, ConnectedClusterInner connectedCluster) {
-        return this.beginCreateAsync(resourceGroupName, clusterName, connectedCluster).getSyncPoller();
+    public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner>
+        beginCreateOrReplace(String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster) {
+        return this.beginCreateOrReplaceAsync(resourceGroupName, clusterName, connectedCluster).getSyncPoller();
     }
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -326,15 +332,17 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(String resourceGroupName,
-        String clusterName, ConnectedClusterInner connectedCluster, Context context) {
-        return this.beginCreateAsync(resourceGroupName, clusterName, connectedCluster, context).getSyncPoller();
+    public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateOrReplace(
+        String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster, Context context) {
+        return this.beginCreateOrReplaceAsync(resourceGroupName, clusterName, connectedCluster, context)
+            .getSyncPoller();
     }
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -345,16 +353,17 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectedClusterInner> createAsync(String resourceGroupName, String clusterName,
+    private Mono<ConnectedClusterInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         ConnectedClusterInner connectedCluster) {
-        return beginCreateAsync(resourceGroupName, clusterName, connectedCluster).last()
+        return beginCreateOrReplaceAsync(resourceGroupName, clusterName, connectedCluster).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -366,16 +375,17 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectedClusterInner> createAsync(String resourceGroupName, String clusterName,
+    private Mono<ConnectedClusterInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         ConnectedClusterInner connectedCluster, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, connectedCluster, context).last()
+        return beginCreateOrReplaceAsync(resourceGroupName, clusterName, connectedCluster, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -386,15 +396,16 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedClusterInner create(String resourceGroupName, String clusterName,
+    public ConnectedClusterInner createOrReplace(String resourceGroupName, String clusterName,
         ConnectedClusterInner connectedCluster) {
-        return createAsync(resourceGroupName, clusterName, connectedCluster).block();
+        return createOrReplaceAsync(resourceGroupName, clusterName, connectedCluster).block();
     }
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -406,9 +417,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedClusterInner create(String resourceGroupName, String clusterName,
+    public ConnectedClusterInner createOrReplace(String resourceGroupName, String clusterName,
         ConnectedClusterInner connectedCluster, Context context) {
-        return createAsync(resourceGroupName, clusterName, connectedCluster, context).block();
+        return createOrReplaceAsync(resourceGroupName, clusterName, connectedCluster, context).block();
     }
 
     /**
@@ -1061,7 +1072,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -1096,7 +1107,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -1133,7 +1144,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -1150,7 +1161,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -1168,7 +1179,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -1184,7 +1195,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -1201,7 +1212,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -1230,7 +1241,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -1261,7 +1272,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -1276,7 +1287,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -1293,7 +1304,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -1307,7 +1318,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 

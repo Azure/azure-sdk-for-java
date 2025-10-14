@@ -11,7 +11,7 @@ public final class InMageRcmProtectionContainerMappingDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmProtectionContainerMappingDetails model
-            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"enableAgentAutoUpgrade\":\"bgacnr\"}")
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"enableAgentAutoUpgrade\":\"yymotuz\"}")
                 .toObject(InMageRcmProtectionContainerMappingDetails.class);
     }
 

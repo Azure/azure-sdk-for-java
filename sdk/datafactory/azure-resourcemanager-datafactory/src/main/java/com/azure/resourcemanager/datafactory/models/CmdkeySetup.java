@@ -48,7 +48,7 @@ public final class CmdkeySetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private CmdkeySetupTypeProperties innerTypeProperties() {
+    CmdkeySetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

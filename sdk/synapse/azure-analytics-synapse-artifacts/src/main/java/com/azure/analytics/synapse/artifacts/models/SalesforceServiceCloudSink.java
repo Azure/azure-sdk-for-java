@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,17 +21,20 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "SalesforceServiceCloudSink";
 
     /*
      * The write behavior for the operation. Default is Insert.
      */
+    @Generated
     private SalesforceSinkWriteBehavior writeBehavior;
 
     /*
      * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object externalIdFieldName;
 
     /*
@@ -40,11 +44,13 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * ADF will update the data in the destination object to NULL when doing upsert/update operation and insert NULL
      * value when doing insert operation. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object ignoreNullValues;
 
     /**
      * Creates an instance of SalesforceServiceCloudSink class.
      */
+    @Generated
     public SalesforceServiceCloudSink() {
     }
 
@@ -53,6 +59,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -63,6 +70,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * 
      * @return the writeBehavior value.
      */
+    @Generated
     public SalesforceSinkWriteBehavior getWriteBehavior() {
         return this.writeBehavior;
     }
@@ -73,6 +81,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * @param writeBehavior the writeBehavior value to set.
      * @return the SalesforceServiceCloudSink object itself.
      */
+    @Generated
     public SalesforceServiceCloudSink setWriteBehavior(SalesforceSinkWriteBehavior writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
@@ -84,6 +93,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * 
      * @return the externalIdFieldName value.
      */
+    @Generated
     public Object getExternalIdFieldName() {
         return this.externalIdFieldName;
     }
@@ -95,6 +105,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * @param externalIdFieldName the externalIdFieldName value to set.
      * @return the SalesforceServiceCloudSink object itself.
      */
+    @Generated
     public SalesforceServiceCloudSink setExternalIdFieldName(Object externalIdFieldName) {
         this.externalIdFieldName = externalIdFieldName;
         return this;
@@ -110,6 +121,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * 
      * @return the ignoreNullValues value.
      */
+    @Generated
     public Object getIgnoreNullValues() {
         return this.ignoreNullValues;
     }
@@ -125,6 +137,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the SalesforceServiceCloudSink object itself.
      */
+    @Generated
     public SalesforceServiceCloudSink setIgnoreNullValues(Object ignoreNullValues) {
         this.ignoreNullValues = ignoreNullValues;
         return this;
@@ -133,6 +146,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -142,6 +156,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -151,6 +166,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -160,6 +176,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -169,6 +186,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -178,18 +196,33 @@ public final class SalesforceServiceCloudSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
-        jsonWriter.writeUntypedField("externalIdFieldName", this.externalIdFieldName);
-        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        if (this.externalIdFieldName != null) {
+            jsonWriter.writeUntypedField("externalIdFieldName", this.externalIdFieldName);
+        }
+        if (this.ignoreNullValues != null) {
+            jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -206,6 +239,7 @@ public final class SalesforceServiceCloudSink extends CopySink {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceServiceCloudSink.
      */
+    @Generated
     public static SalesforceServiceCloudSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceServiceCloudSink deserializedSalesforceServiceCloudSink = new SalesforceServiceCloudSink();

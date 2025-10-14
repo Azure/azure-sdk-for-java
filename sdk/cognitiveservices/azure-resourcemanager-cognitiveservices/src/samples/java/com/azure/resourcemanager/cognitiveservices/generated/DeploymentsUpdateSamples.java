@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
 public final class DeploymentsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/
      * UpdateDeployment.json
      */
     /**

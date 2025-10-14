@@ -7,8 +7,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.PrivateLinkResource;
@@ -22,18 +22,18 @@ public final class PrivateLinksListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"tsthsucocm\",\"requiredMembers\":[\"azt\",\"bt\",\"wrqpue\",\"ckzywbiexzfeyue\"],\"requiredZoneNames\":[\"bxu\"]},\"id\":\"bhqwalmuzyoxa\",\"name\":\"pdkzjancuxr\",\"type\":\"d\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"isgwbnbbeldawkz\",\"requiredMembers\":[\"io\",\"rqhakauha\",\"hsfwxosowzxcug\"],\"requiredZoneNames\":[\"ooxdjebwpuc\",\"wfvovbv\",\"euecivyhzceuoj\"]},\"id\":\"rw\",\"name\":\"ueiotwmcdyt\",\"type\":\"x\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response
-            = manager.privateLinks().listByMongoCluster("zfcl", "aaxdbabphlwrq", com.azure.core.util.Context.NONE);
+            = manager.privateLinks().listByMongoCluster("rcrgvx", "vgomz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bxu", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("ooxdjebwpuc", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

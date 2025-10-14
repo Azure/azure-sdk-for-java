@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,99 +22,118 @@ public class CopyActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Copy";
 
     /*
      * List of inputs for the activity.
      */
+    @Generated
     private List<DatasetReference> inputs;
 
     /*
      * List of outputs for the activity.
      */
+    @Generated
     private List<DatasetReference> outputs;
 
     /*
      * Copy activity source.
      */
+    @Generated
     private CopySource source;
 
     /*
      * Copy activity sink.
      */
+    @Generated
     private CopySink sink;
 
     /*
      * Copy activity translator. If not specified, tabular translator is used.
      */
+    @Generated
     private Object translator;
 
     /*
      * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object enableStaging;
 
     /*
      * Specifies interim staging settings when EnableStaging is true.
      */
+    @Generated
     private StagingSettings stagingSettings;
 
     /*
      * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type:
      * integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object parallelCopies;
 
     /*
      * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or
      * Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object dataIntegrationUnits;
 
     /*
      * Whether to skip incompatible row. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableSkipIncompatibleRow;
 
     /*
      * Redirect incompatible row settings when EnableSkipIncompatibleRow is true.
      */
+    @Generated
     private RedirectIncompatibleRowSettings redirectIncompatibleRowSettings;
 
     /*
      * (Deprecated. Please use LogSettings) Log storage settings customer need to provide when enabling session log.
      */
+    @Generated
     private LogStorageSettings logStorageSettings;
 
     /*
      * Log settings customer needs provide when enabling log.
      */
+    @Generated
     private LogSettings logSettings;
 
     /*
      * Preserve Rules.
      */
+    @Generated
     private List<Object> preserveRules;
 
     /*
      * Preserve rules.
      */
+    @Generated
     private List<Object> preserve;
 
     /*
      * Whether to enable Data Consistency validation. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object validateDataConsistency;
 
     /*
      * Specify the fault tolerance for data consistency.
      */
+    @Generated
     private SkipErrorFile skipErrorFile;
 
     /**
      * Creates an instance of CopyActivity class.
      */
+    @Generated
     public CopyActivity() {
     }
 
@@ -122,6 +142,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -132,6 +153,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the inputs value.
      */
+    @Generated
     public List<DatasetReference> getInputs() {
         return this.inputs;
     }
@@ -142,6 +164,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param inputs the inputs value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setInputs(List<DatasetReference> inputs) {
         this.inputs = inputs;
         return this;
@@ -152,6 +175,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the outputs value.
      */
+    @Generated
     public List<DatasetReference> getOutputs() {
         return this.outputs;
     }
@@ -162,6 +186,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param outputs the outputs value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setOutputs(List<DatasetReference> outputs) {
         this.outputs = outputs;
         return this;
@@ -172,6 +197,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the source value.
      */
+    @Generated
     public CopySource getSource() {
         return this.source;
     }
@@ -182,6 +208,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param source the source value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setSource(CopySource source) {
         this.source = source;
         return this;
@@ -192,6 +219,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the sink value.
      */
+    @Generated
     public CopySink getSink() {
         return this.sink;
     }
@@ -202,6 +230,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param sink the sink value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setSink(CopySink sink) {
         this.sink = sink;
         return this;
@@ -212,6 +241,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the translator value.
      */
+    @Generated
     public Object getTranslator() {
         return this.translator;
     }
@@ -222,6 +252,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param translator the translator value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setTranslator(Object translator) {
         this.translator = translator;
         return this;
@@ -233,6 +264,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the enableStaging value.
      */
+    @Generated
     public Object getEnableStaging() {
         return this.enableStaging;
     }
@@ -244,6 +276,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param enableStaging the enableStaging value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setEnableStaging(Object enableStaging) {
         this.enableStaging = enableStaging;
         return this;
@@ -254,6 +287,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the stagingSettings value.
      */
+    @Generated
     public StagingSettings getStagingSettings() {
         return this.stagingSettings;
     }
@@ -264,6 +298,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param stagingSettings the stagingSettings value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setStagingSettings(StagingSettings stagingSettings) {
         this.stagingSettings = stagingSettings;
         return this;
@@ -275,6 +310,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the parallelCopies value.
      */
+    @Generated
     public Object getParallelCopies() {
         return this.parallelCopies;
     }
@@ -286,6 +322,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param parallelCopies the parallelCopies value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setParallelCopies(Object parallelCopies) {
         this.parallelCopies = parallelCopies;
         return this;
@@ -297,6 +334,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the dataIntegrationUnits value.
      */
+    @Generated
     public Object getDataIntegrationUnits() {
         return this.dataIntegrationUnits;
     }
@@ -308,6 +346,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param dataIntegrationUnits the dataIntegrationUnits value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setDataIntegrationUnits(Object dataIntegrationUnits) {
         this.dataIntegrationUnits = dataIntegrationUnits;
         return this;
@@ -319,6 +358,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the enableSkipIncompatibleRow value.
      */
+    @Generated
     public Object getEnableSkipIncompatibleRow() {
         return this.enableSkipIncompatibleRow;
     }
@@ -330,6 +370,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param enableSkipIncompatibleRow the enableSkipIncompatibleRow value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setEnableSkipIncompatibleRow(Object enableSkipIncompatibleRow) {
         this.enableSkipIncompatibleRow = enableSkipIncompatibleRow;
         return this;
@@ -341,6 +382,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the redirectIncompatibleRowSettings value.
      */
+    @Generated
     public RedirectIncompatibleRowSettings getRedirectIncompatibleRowSettings() {
         return this.redirectIncompatibleRowSettings;
     }
@@ -352,6 +394,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param redirectIncompatibleRowSettings the redirectIncompatibleRowSettings value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity
         setRedirectIncompatibleRowSettings(RedirectIncompatibleRowSettings redirectIncompatibleRowSettings) {
         this.redirectIncompatibleRowSettings = redirectIncompatibleRowSettings;
@@ -364,6 +407,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the logStorageSettings value.
      */
+    @Generated
     public LogStorageSettings getLogStorageSettings() {
         return this.logStorageSettings;
     }
@@ -375,6 +419,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setLogStorageSettings(LogStorageSettings logStorageSettings) {
         this.logStorageSettings = logStorageSettings;
         return this;
@@ -385,6 +430,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the logSettings value.
      */
+    @Generated
     public LogSettings getLogSettings() {
         return this.logSettings;
     }
@@ -395,6 +441,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param logSettings the logSettings value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setLogSettings(LogSettings logSettings) {
         this.logSettings = logSettings;
         return this;
@@ -405,6 +452,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the preserveRules value.
      */
+    @Generated
     public List<Object> getPreserveRules() {
         return this.preserveRules;
     }
@@ -415,6 +463,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param preserveRules the preserveRules value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setPreserveRules(List<Object> preserveRules) {
         this.preserveRules = preserveRules;
         return this;
@@ -425,6 +474,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the preserve value.
      */
+    @Generated
     public List<Object> getPreserve() {
         return this.preserve;
     }
@@ -435,6 +485,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param preserve the preserve value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setPreserve(List<Object> preserve) {
         this.preserve = preserve;
         return this;
@@ -446,6 +497,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the validateDataConsistency value.
      */
+    @Generated
     public Object getValidateDataConsistency() {
         return this.validateDataConsistency;
     }
@@ -457,6 +509,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param validateDataConsistency the validateDataConsistency value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setValidateDataConsistency(Object validateDataConsistency) {
         this.validateDataConsistency = validateDataConsistency;
         return this;
@@ -467,6 +520,7 @@ public class CopyActivity extends ExecutionActivity {
      * 
      * @return the skipErrorFile value.
      */
+    @Generated
     public SkipErrorFile getSkipErrorFile() {
         return this.skipErrorFile;
     }
@@ -477,6 +531,7 @@ public class CopyActivity extends ExecutionActivity {
      * @param skipErrorFile the skipErrorFile value to set.
      * @return the CopyActivity object itself.
      */
+    @Generated
     public CopyActivity setSkipErrorFile(SkipErrorFile skipErrorFile) {
         this.skipErrorFile = skipErrorFile;
         return this;
@@ -485,6 +540,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -494,6 +550,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -503,6 +560,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setName(String name) {
         super.setName(name);
@@ -512,6 +570,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setDescription(String description) {
         super.setDescription(description);
@@ -521,6 +580,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setState(ActivityState state) {
         super.setState(state);
@@ -530,6 +590,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -539,6 +600,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -548,6 +610,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CopyActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -557,6 +620,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -591,19 +655,31 @@ public class CopyActivity extends ExecutionActivity {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("source", this.source);
             jsonWriter.writeJsonField("sink", this.sink);
-            jsonWriter.writeUntypedField("translator", this.translator);
-            jsonWriter.writeUntypedField("enableStaging", this.enableStaging);
+            if (this.translator != null) {
+                jsonWriter.writeUntypedField("translator", this.translator);
+            }
+            if (this.enableStaging != null) {
+                jsonWriter.writeUntypedField("enableStaging", this.enableStaging);
+            }
             jsonWriter.writeJsonField("stagingSettings", this.stagingSettings);
-            jsonWriter.writeUntypedField("parallelCopies", this.parallelCopies);
-            jsonWriter.writeUntypedField("dataIntegrationUnits", this.dataIntegrationUnits);
-            jsonWriter.writeUntypedField("enableSkipIncompatibleRow", this.enableSkipIncompatibleRow);
+            if (this.parallelCopies != null) {
+                jsonWriter.writeUntypedField("parallelCopies", this.parallelCopies);
+            }
+            if (this.dataIntegrationUnits != null) {
+                jsonWriter.writeUntypedField("dataIntegrationUnits", this.dataIntegrationUnits);
+            }
+            if (this.enableSkipIncompatibleRow != null) {
+                jsonWriter.writeUntypedField("enableSkipIncompatibleRow", this.enableSkipIncompatibleRow);
+            }
             jsonWriter.writeJsonField("redirectIncompatibleRowSettings", this.redirectIncompatibleRowSettings);
             jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
             jsonWriter.writeJsonField("logSettings", this.logSettings);
             jsonWriter.writeArrayField("preserveRules", this.preserveRules,
                 (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeArrayField("preserve", this.preserve, (writer, element) -> writer.writeUntyped(element));
-            jsonWriter.writeUntypedField("validateDataConsistency", this.validateDataConsistency);
+            if (this.validateDataConsistency != null) {
+                jsonWriter.writeUntypedField("validateDataConsistency", this.validateDataConsistency);
+            }
             jsonWriter.writeJsonField("skipErrorFile", this.skipErrorFile);
             jsonWriter.writeEndObject();
         }
@@ -624,6 +700,7 @@ public class CopyActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CopyActivity.
      */
+    @Generated
     public static CopyActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopyActivity deserializedCopyActivity = new CopyActivity();

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
     /*
      * Unique document model name.
      */
+    @Generated
     private final String modelId;
 
     /*
      * Document model description.
      */
+    @Generated
     private String description;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
@@ -37,6 +41,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * 
      * @param modelId the modelId value to set.
      */
+    @Generated
     public AuthorizeCopyRequest(String modelId) {
         this.modelId = modelId;
     }
@@ -46,6 +51,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * 
      * @return the modelId value.
      */
+    @Generated
     public String getModelId() {
         return this.modelId;
     }
@@ -55,6 +61,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -65,6 +72,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * @param description the description value to set.
      * @return the AuthorizeCopyRequest object itself.
      */
+    @Generated
     public AuthorizeCopyRequest setDescription(String description) {
         this.description = description;
         return this;
@@ -75,6 +83,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -85,6 +94,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * @param tags the tags value to set.
      * @return the AuthorizeCopyRequest object itself.
      */
+    @Generated
     public AuthorizeCopyRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -93,6 +103,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +122,7 @@ public final class AuthorizeCopyRequest implements JsonSerializable<AuthorizeCop
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AuthorizeCopyRequest.
      */
+    @Generated
     public static AuthorizeCopyRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean modelIdFound = false;

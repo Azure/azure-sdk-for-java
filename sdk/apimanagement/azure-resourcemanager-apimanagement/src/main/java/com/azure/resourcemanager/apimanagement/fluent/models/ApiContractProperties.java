@@ -58,6 +58,11 @@ public class ApiContractProperties extends ApiEntityBaseContract {
     private ApiVersionSetContractDetails apiVersionSet;
 
     /*
+     * The provisioning state
+     */
+    private String provisioningState;
+
+    /*
      * Indicates if API revision is accessible via the gateway.
      */
     private Boolean isOnline;
@@ -191,6 +196,26 @@ public class ApiContractProperties extends ApiEntityBaseContract {
      */
     public ApiContractProperties withApiVersionSet(ApiVersionSetContractDetails apiVersionSet) {
         this.apiVersionSet = apiVersionSet;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApiContractProperties object itself.
+     */
+    ApiContractProperties withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 
@@ -453,6 +478,8 @@ public class ApiContractProperties extends ApiEntityBaseContract {
                     deserializedApiContractProperties.protocols = protocols;
                 } else if ("apiVersionSet".equals(fieldName)) {
                     deserializedApiContractProperties.apiVersionSet = ApiVersionSetContractDetails.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApiContractProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

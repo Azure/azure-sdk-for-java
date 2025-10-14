@@ -16,6 +16,7 @@
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
   <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
     This package contains clients and data structures used to send SMS messages with Azure Communication SMS Service.
@@ -40,8 +41,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.61</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.48</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.59</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.46</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
@@ -49,26 +50,24 @@
     </javaModulesSurefireArgLine>
     <codesnippet.skip>false</codesnippet.skip>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.9</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -80,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -12,7 +12,11 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
-/** The AcsChatThreadMemberProperties model. */
+/** * The AcsChatThreadMemberProperties model.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
+ */
+@Deprecated
 @Fluent
 public final class AcsChatThreadMemberProperties implements JsonSerializable<AcsChatThreadMemberProperties> {
     /*

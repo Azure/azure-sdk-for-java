@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
 import java.time.OffsetDateTime;
@@ -51,11 +52,33 @@ public interface Project {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: HTTP strong entity tag value. This is ignored if submitted.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the sourcePlatform property: Source platform for the project.
      * 
      * @return the sourcePlatform value.
      */
     ProjectSourcePlatform sourcePlatform();
+
+    /**
+     * Gets the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used
+     * to connect to the target Azure resource.
+     * 
+     * @return the azureAuthenticationInfo value.
+     */
+    AzureActiveDirectoryApp azureAuthenticationInfo();
 
     /**
      * Gets the targetPlatform property: Target platform for the project.
@@ -183,7 +206,8 @@ public interface Project {
          * The stage of the Project definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSourcePlatform,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithEtag,
+            DefinitionStages.WithSourcePlatform, DefinitionStages.WithAzureAuthenticationInfo,
             DefinitionStages.WithTargetPlatform, DefinitionStages.WithSourceConnectionInfo,
             DefinitionStages.WithTargetConnectionInfo, DefinitionStages.WithDatabasesInfo {
             /**
@@ -216,6 +240,19 @@ public interface Project {
         }
 
         /**
+         * The stage of the Project definition allowing to specify etag.
+         */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: HTTP strong entity tag value. This is ignored if submitted..
+             * 
+             * @param etag HTTP strong entity tag value. This is ignored if submitted.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
+        }
+
+        /**
          * The stage of the Project definition allowing to specify sourcePlatform.
          */
         interface WithSourcePlatform {
@@ -226,6 +263,21 @@ public interface Project {
              * @return the next definition stage.
              */
             WithCreate withSourcePlatform(ProjectSourcePlatform sourcePlatform);
+        }
+
+        /**
+         * The stage of the Project definition allowing to specify azureAuthenticationInfo.
+         */
+        interface WithAzureAuthenticationInfo {
+            /**
+             * Specifies the azureAuthenticationInfo property: Field that defines the Azure active directory application
+             * info, used to connect to the target Azure resource.
+             * 
+             * @param azureAuthenticationInfo Field that defines the Azure active directory application info, used to
+             * connect to the target Azure resource.
+             * @return the next definition stage.
+             */
+            WithCreate withAzureAuthenticationInfo(AzureActiveDirectoryApp azureAuthenticationInfo);
         }
 
         /**
@@ -291,7 +343,8 @@ public interface Project {
     /**
      * The template for Project update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSourcePlatform, UpdateStages.WithTargetPlatform,
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithEtag, UpdateStages.WithSourcePlatform,
+        UpdateStages.WithAzureAuthenticationInfo, UpdateStages.WithTargetPlatform,
         UpdateStages.WithSourceConnectionInfo, UpdateStages.WithTargetConnectionInfo, UpdateStages.WithDatabasesInfo {
         /**
          * Executes the update request.
@@ -327,6 +380,19 @@ public interface Project {
         }
 
         /**
+         * The stage of the Project update allowing to specify etag.
+         */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: HTTP strong entity tag value. This is ignored if submitted..
+             * 
+             * @param etag HTTP strong entity tag value. This is ignored if submitted.
+             * @return the next definition stage.
+             */
+            Update withEtag(String etag);
+        }
+
+        /**
          * The stage of the Project update allowing to specify sourcePlatform.
          */
         interface WithSourcePlatform {
@@ -337,6 +403,21 @@ public interface Project {
              * @return the next definition stage.
              */
             Update withSourcePlatform(ProjectSourcePlatform sourcePlatform);
+        }
+
+        /**
+         * The stage of the Project update allowing to specify azureAuthenticationInfo.
+         */
+        interface WithAzureAuthenticationInfo {
+            /**
+             * Specifies the azureAuthenticationInfo property: Field that defines the Azure active directory application
+             * info, used to connect to the target Azure resource.
+             * 
+             * @param azureAuthenticationInfo Field that defines the Azure active directory application info, used to
+             * connect to the target Azure resource.
+             * @return the next definition stage.
+             */
+            Update withAzureAuthenticationInfo(AzureActiveDirectoryApp azureAuthenticationInfo);
         }
 
         /**

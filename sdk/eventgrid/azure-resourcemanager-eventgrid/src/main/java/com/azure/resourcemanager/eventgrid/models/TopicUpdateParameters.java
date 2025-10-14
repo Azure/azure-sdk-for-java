@@ -197,8 +197,8 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @return the disableLocalAuth value.
      */
@@ -208,8 +208,8 @@ public final class TopicUpdateParameters implements JsonSerializable<TopicUpdate
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the TopicUpdateParameters object itself.

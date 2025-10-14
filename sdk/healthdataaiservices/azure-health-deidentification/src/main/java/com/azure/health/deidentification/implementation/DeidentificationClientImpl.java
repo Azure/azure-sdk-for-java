@@ -44,7 +44,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.health.deidentification.DeidServicesServiceVersion;
+import com.azure.health.deidentification.DeidentificationServiceVersion;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import java.time.Duration;
 import java.util.List;
@@ -78,14 +78,14 @@ public final class DeidentificationClientImpl {
     /**
      * Service version.
      */
-    private final DeidServicesServiceVersion serviceVersion;
+    private final DeidentificationServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public DeidServicesServiceVersion getServiceVersion() {
+    public DeidentificationServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -123,7 +123,7 @@ public final class DeidentificationClientImpl {
      * @param endpoint Url of your De-identification Service.
      * @param serviceVersion Service version.
      */
-    public DeidentificationClientImpl(String endpoint, DeidServicesServiceVersion serviceVersion) {
+    public DeidentificationClientImpl(String endpoint, DeidentificationServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -136,7 +136,7 @@ public final class DeidentificationClientImpl {
      * @param serviceVersion Service version.
      */
     public DeidentificationClientImpl(HttpPipeline httpPipeline, String endpoint,
-        DeidServicesServiceVersion serviceVersion) {
+        DeidentificationServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -149,7 +149,7 @@ public final class DeidentificationClientImpl {
      * @param serviceVersion Service version.
      */
     public DeidentificationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        DeidServicesServiceVersion serviceVersion) {
+        DeidentificationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -162,8 +162,8 @@ public final class DeidentificationClientImpl {
      * The interface defining all the services for DeidentificationClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{endpoint}")
-    @ServiceInterface(name = "DeidentificationClie")
+    @Host("{endpoint}")
+    @ServiceInterface(name = "DeidentificationClient")
     public interface DeidentificationClientService {
         @Get("/jobs/{name}")
         @ExpectedResponses({ 200 })
@@ -172,7 +172,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{name}")
@@ -182,7 +182,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/jobs/{name}")
@@ -191,8 +191,8 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+        Mono<Response<BinaryData>> deidentifyDocuments(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
@@ -202,8 +202,8 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+        Response<BinaryData> deidentifyDocumentsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
@@ -234,7 +234,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobDocuments(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{name}/documents")
@@ -244,7 +244,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobDocumentsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{name}:cancel")
@@ -254,7 +254,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{name}:cancel")
@@ -264,7 +264,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{name}")
@@ -274,8 +274,8 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{name}")
         @ExpectedResponses({ 204 })
@@ -284,8 +284,8 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
+            RequestOptions requestOptions, Context context);
 
         @Post("/deid")
         @ExpectedResponses({ 200 })
@@ -293,7 +293,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deidentify(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deidentifyText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -304,7 +304,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deidentifySync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deidentifyTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -360,6 +360,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -370,11 +371,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -401,7 +405,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -412,10 +416,10 @@ public final class DeidentificationClientImpl {
      * Resource read operation template along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getJobWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getJobWithResponseAsync(String jobName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getJob(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            name, accept, requestOptions, context));
+            jobName, accept, requestOptions, context));
     }
 
     /**
@@ -428,6 +432,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -438,11 +443,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -469,7 +477,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -480,9 +488,9 @@ public final class DeidentificationClientImpl {
      * Resource read operation template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getJobWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getJobWithResponse(String jobName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
+        return service.getJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, accept,
             requestOptions, Context.NONE);
     }
 
@@ -496,6 +504,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -506,11 +515,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -543,6 +555,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -553,11 +566,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -584,7 +600,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -595,12 +611,12 @@ public final class DeidentificationClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createJobWithResponseAsync(String name, BinaryData resource,
+    private Mono<Response<BinaryData>> deidentifyDocumentsWithResponseAsync(String jobName, BinaryData resource,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, contentType, accept, resource, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deidentifyDocuments(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), jobName, contentType, accept, resource, requestOptions, context));
     }
 
     /**
@@ -613,6 +629,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -623,11 +640,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -660,6 +680,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -670,11 +691,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -701,7 +725,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -711,12 +735,12 @@ public final class DeidentificationClientImpl {
      * @return a job containing a batch of documents to de-identify along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createJobWithResponse(String name, BinaryData resource,
+    private Response<BinaryData> deidentifyDocumentsWithResponse(String jobName, BinaryData resource,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, contentType,
-            accept, resource, requestOptions, Context.NONE);
+        return service.deidentifyDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName,
+            contentType, accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -729,6 +753,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -739,11 +764,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -776,6 +804,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -786,11 +815,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -817,7 +849,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -827,257 +859,13 @@ public final class DeidentificationClientImpl {
      * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateJobAsync(String name, BinaryData resource,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createJobWithResponseAsync(name, resource, requestOptions),
-            new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Create a de-identification job.
-     * 
-     * Long-running resource create or replace operation template.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param name The name of a job.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateJob(String name, BinaryData resource,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createJobWithResponse(name, resource, requestOptions),
-            new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Create a de-identification job.
-     * 
-     * Long-running resource create or replace operation template.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param name The name of a job.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeidentificationJob, DeidentificationJob> beginCreateJobWithModelAsync(String name,
+    public PollerFlux<DeidentificationJob, DeidentificationJob> beginDeidentifyDocumentsWithModelAsync(String jobName,
         BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createJobWithResponseAsync(name, resource, requestOptions),
+            () -> this.deidentifyDocumentsWithResponseAsync(jobName, resource, requestOptions),
             new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE)
@@ -1096,6 +884,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1106,11 +895,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1143,6 +935,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1153,11 +946,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1184,7 +980,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1194,19 +990,279 @@ public final class DeidentificationClientImpl {
      * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeidentificationJob, DeidentificationJob> beginCreateJobWithModel(String name,
+    public SyncPoller<DeidentificationJob, DeidentificationJob> beginDeidentifyDocumentsWithModel(String jobName,
         BinaryData resource, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createJobWithResponse(name, resource, requestOptions),
+            () -> this.deidentifyDocumentsWithResponse(jobName, resource, requestOptions),
             new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE)
                     .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DeidentificationJob.class),
             TypeReference.createInstance(DeidentificationJob.class));
+    }
+
+    /**
+     * Create a de-identification job.
+     * 
+     * Long-running resource create or replace operation template.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobName The name of a job.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocumentsAsync(String jobName, BinaryData resource,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deidentifyDocumentsWithResponseAsync(jobName, resource, requestOptions),
+            new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create a de-identification job.
+     * 
+     * Long-running resource create or replace operation template.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobName The name of a job.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String jobName, BinaryData resource,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deidentifyDocumentsWithResponse(jobName, resource, requestOptions),
+            new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1227,6 +1283,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1237,11 +1294,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1304,6 +1364,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1314,11 +1375,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1399,6 +1463,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1409,11 +1474,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1474,6 +1542,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1484,11 +1553,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1570,7 +1642,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1591,22 +1663,22 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobDocumentsSinglePageAsync(String name,
+    private Mono<PagedResponse<BinaryData>> listJobDocumentsSinglePageAsync(String jobName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listJobDocuments(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                name, accept, requestOptions, context))
+                jobName, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1630,7 +1702,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1651,16 +1723,16 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedFlux}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listJobDocumentsAsync(String name, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listJobDocumentsAsync(String jobName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -1673,7 +1745,7 @@ public final class DeidentificationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobDocumentsSinglePageAsync(name, requestOptionsLocal);
+            return listJobDocumentsSinglePageAsync(jobName, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -1707,7 +1779,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1728,19 +1800,19 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobDocumentsSinglePage(String name, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listJobDocumentsSinglePage(String jobName, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res = service.listJobDocumentsSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), jobName, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1764,7 +1836,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1785,16 +1857,17 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items as paginated response with {@link PagedIterable}.
+     * @return paged collection of DeidentificationDocumentDetails items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobDocuments(String name, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -1807,7 +1880,7 @@ public final class DeidentificationClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobDocumentsSinglePage(name, requestOptionsLocal);
+            return listJobDocumentsSinglePage(jobName, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -1837,6 +1910,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1847,11 +1921,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1878,7 +1955,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1888,10 +1965,10 @@ public final class DeidentificationClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelJobWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelJobWithResponseAsync(String jobName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.cancelJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobName, accept, requestOptions, context));
     }
 
     /**
@@ -1909,6 +1986,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1919,11 +1997,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1950,7 +2031,7 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1959,9 +2040,9 @@ public final class DeidentificationClientImpl {
      * @return a job containing a batch of documents to de-identify along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelJobWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelJobWithResponse(String jobName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
+        return service.cancelJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1970,7 +2051,7 @@ public final class DeidentificationClientImpl {
      * 
      * Removes the record of the job from the service. Does not delete any documents.
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1979,10 +2060,9 @@ public final class DeidentificationClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
+    public Mono<Response<Void>> deleteJobWithResponseAsync(String jobName, RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobName, requestOptions, context));
     }
 
     /**
@@ -1990,7 +2070,7 @@ public final class DeidentificationClientImpl {
      * 
      * Removes the record of the job from the service. Does not delete any documents.
      * 
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1999,10 +2079,9 @@ public final class DeidentificationClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
-            requestOptions, Context.NONE);
+    public Response<Void> deleteJobWithResponse(String jobName, RequestOptions requestOptions) {
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2015,9 +2094,23 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     taggedEntities (Optional): {
+     *         encoding: String(Utf8/Utf16/CodePoint) (Required)
+     *         entities (Required): [
+     *              (Required){
+     *                 category: String(Unknown/Account/Age/BioID/City/CountryOrRegion/Date/Device/Doctor/Email/Fax/HealthPlan/Hospital/IDNum/IPAddress/License/LocationOther/MedicalRecord/Organization/Patient/Phone/Profession/SocialSecurity/State/Street/Url/Username/Vehicle/Zip) (Required)
+     *                 offset: int (Required)
+     *                 length: int (Required)
+     *                 text: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -2042,8 +2135,6 @@ public final class DeidentificationClientImpl {
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         path: String (Optional)
-     *         etag: String (Optional)
      *     }
      * }
      * }
@@ -2059,10 +2150,10 @@ public final class DeidentificationClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deidentifyWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deidentifyTextWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deidentify(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deidentifyText(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
@@ -2076,9 +2167,23 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     taggedEntities (Optional): {
+     *         encoding: String(Utf8/Utf16/CodePoint) (Required)
+     *         entities (Required): [
+     *              (Required){
+     *                 category: String(Unknown/Account/Age/BioID/City/CountryOrRegion/Date/Device/Doctor/Email/Fax/HealthPlan/Hospital/IDNum/IPAddress/License/LocationOther/MedicalRecord/Organization/Patient/Phone/Profession/SocialSecurity/State/Street/Url/Username/Vehicle/Zip) (Required)
+     *                 offset: int (Required)
+     *                 length: int (Required)
+     *                 text: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -2103,8 +2208,6 @@ public final class DeidentificationClientImpl {
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         path: String (Optional)
-     *         etag: String (Optional)
      *     }
      * }
      * }
@@ -2119,11 +2222,11 @@ public final class DeidentificationClientImpl {
      * @return response body for de-identification operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deidentifyWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> deidentifyTextWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.deidentifySync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.deidentifyTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2136,6 +2239,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -2146,11 +2250,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -2206,6 +2313,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -2216,11 +2324,14 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -2275,7 +2386,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -2302,8 +2413,8 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listJobDocumentsNextSinglePageAsync(String nextLink,
@@ -2327,7 +2438,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -2354,7 +2465,7 @@ public final class DeidentificationClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DocumentDetails items along with {@link PagedResponse}.
+     * @return paged collection of DeidentificationDocumentDetails items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listJobDocumentsNextSinglePage(String nextLink, RequestOptions requestOptions) {

@@ -253,17 +253,37 @@ public final class Office365Source extends CopySource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("allowedGroups", this.allowedGroups);
-        jsonWriter.writeUntypedField("userScopeFilterUri", this.userScopeFilterUri);
-        jsonWriter.writeUntypedField("dateFilterColumn", this.dateFilterColumn);
-        jsonWriter.writeUntypedField("startTime", this.startTime);
-        jsonWriter.writeUntypedField("endTime", this.endTime);
-        jsonWriter.writeUntypedField("outputColumns", this.outputColumns);
+        if (this.allowedGroups != null) {
+            jsonWriter.writeUntypedField("allowedGroups", this.allowedGroups);
+        }
+        if (this.userScopeFilterUri != null) {
+            jsonWriter.writeUntypedField("userScopeFilterUri", this.userScopeFilterUri);
+        }
+        if (this.dateFilterColumn != null) {
+            jsonWriter.writeUntypedField("dateFilterColumn", this.dateFilterColumn);
+        }
+        if (this.startTime != null) {
+            jsonWriter.writeUntypedField("startTime", this.startTime);
+        }
+        if (this.endTime != null) {
+            jsonWriter.writeUntypedField("endTime", this.endTime);
+        }
+        if (this.outputColumns != null) {
+            jsonWriter.writeUntypedField("outputColumns", this.outputColumns);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

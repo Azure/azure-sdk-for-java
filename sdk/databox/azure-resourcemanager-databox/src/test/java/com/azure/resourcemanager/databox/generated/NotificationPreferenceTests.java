@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationPreferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationPreference model = BinaryData.fromString("{\"stageName\":\"AtAzureDC\",\"sendNotification\":false}")
+        NotificationPreference model = BinaryData.fromString("{\"stageName\":\"DataCopy\",\"sendNotification\":true}")
             .toObject(NotificationPreference.class);
-        Assertions.assertEquals(NotificationStageName.AT_AZURE_DC, model.stageName());
-        Assertions.assertEquals(false, model.sendNotification());
+        Assertions.assertEquals(NotificationStageName.DATA_COPY, model.stageName());
+        Assertions.assertEquals(true, model.sendNotification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotificationPreference model
-            = new NotificationPreference().withStageName(NotificationStageName.AT_AZURE_DC).withSendNotification(false);
+            = new NotificationPreference().withStageName(NotificationStageName.DATA_COPY).withSendNotification(true);
         model = BinaryData.fromObject(model).toObject(NotificationPreference.class);
-        Assertions.assertEquals(NotificationStageName.AT_AZURE_DC, model.stageName());
-        Assertions.assertEquals(false, model.sendNotification());
+        Assertions.assertEquals(NotificationStageName.DATA_COPY, model.stageName());
+        Assertions.assertEquals(true, model.sendNotification());
     }
 }

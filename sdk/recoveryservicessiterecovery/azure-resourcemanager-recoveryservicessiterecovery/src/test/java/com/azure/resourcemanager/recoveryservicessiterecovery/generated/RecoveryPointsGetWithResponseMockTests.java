@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPoint;
@@ -21,23 +21,23 @@ public final class RecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"recoveryPointTime\":\"2021-04-11T08:38:28Z\",\"recoveryPointType\":\"hadxjvvl\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"weuaugtxlzncoqxt\",\"id\":\"ytz\",\"name\":\"lyldjv\",\"type\":\"mxyrazzstjvcszbd\"}";
+            = "{\"properties\":{\"recoveryPointTime\":\"2021-03-23T14:44:12Z\",\"recoveryPointType\":\"mvssr\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"exuwemtgtgeb\",\"id\":\"mm\",\"name\":\"gsks\",\"type\":\"bsxehaxicjojxol\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPoint response = manager.recoveryPoints()
-            .getWithResponse("szopeuku", "dswbsskgq", "emosq", "fsjbpwjwz", "gipdzym", "khxfpz",
+            .getWithResponse("mivapesbfzllej", "wwsfvtgh", "xtmblm", "cleuovel", "sprbxj", "ezujtoud",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T08:38:28Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T14:44:12Z"),
             response.properties().recoveryPointTime());
-        Assertions.assertEquals("hadxjvvl", response.properties().recoveryPointType());
-        Assertions.assertEquals("weuaugtxlzncoqxt", response.location());
+        Assertions.assertEquals("mvssr", response.properties().recoveryPointType());
+        Assertions.assertEquals("exuwemtgtgeb", response.location());
     }
 }

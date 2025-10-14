@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
     /*
      * Error name.
      */
+    @Generated
     private String ename;
 
     /*
      * Error message.
      */
+    @Generated
     private String evalue;
 
     /*
      * Error trace.
      */
+    @Generated
     private List<String> traceback;
 
     /**
      * Creates an instance of RunNotebookError class.
      */
+    @Generated
     public RunNotebookError() {
     }
 
@@ -43,6 +48,7 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
      * 
      * @return the ename value.
      */
+    @Generated
     public String getEname() {
         return this.ename;
     }
@@ -52,6 +58,7 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
      * 
      * @return the evalue value.
      */
+    @Generated
     public String getEvalue() {
         return this.evalue;
     }
@@ -61,6 +68,7 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
      * 
      * @return the traceback value.
      */
+    @Generated
     public List<String> getTraceback() {
         return this.traceback;
     }
@@ -71,6 +79,7 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
      * @param traceback the traceback value to set.
      * @return the RunNotebookError object itself.
      */
+    @Generated
     public RunNotebookError setTraceback(List<String> traceback) {
         this.traceback = traceback;
         return this;
@@ -79,6 +88,7 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +104,7 @@ public final class RunNotebookError implements JsonSerializable<RunNotebookError
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RunNotebookError.
      */
+    @Generated
     public static RunNotebookError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookError deserializedRunNotebookError = new RunNotebookError();

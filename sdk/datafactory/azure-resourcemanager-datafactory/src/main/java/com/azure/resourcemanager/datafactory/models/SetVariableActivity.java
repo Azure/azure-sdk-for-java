@@ -56,7 +56,7 @@ public final class SetVariableActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private SetVariableActivityTypeProperties innerTypeProperties() {
+    SetVariableActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

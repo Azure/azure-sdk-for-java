@@ -16,23 +16,21 @@ public final class RuntimeJavaAgentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeJavaAgent model = BinaryData.fromString(
-            "{\"enabled\":true,\"logging\":{\"loggerSettings\":[{\"logger\":\"jorwkqnyhgbij\",\"level\":\"warn\"},{\"logger\":\"ivfxzsjabibsyst\",\"level\":\"trace\"},{\"logger\":\"fsdjpvkvp\",\"level\":\"error\"}]}}")
+            "{\"enabled\":true,\"logging\":{\"loggerSettings\":[{\"logger\":\"pgvmpipaslthaqfx\",\"level\":\"info\"}]}}")
             .toObject(RuntimeJavaAgent.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("jorwkqnyhgbij", model.logging().loggerSettings().get(0).logger());
-        Assertions.assertEquals(Level.WARN, model.logging().loggerSettings().get(0).level());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("pgvmpipaslthaqfx", model.logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.INFO, model.logging().loggerSettings().get(0).level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuntimeJavaAgent model = new RuntimeJavaAgent().withEnabled(true)
-            .withLogging(new RuntimeJavaAgentLogging()
-                .withLoggerSettings(Arrays.asList(new LoggerSetting().withLogger("jorwkqnyhgbij").withLevel(Level.WARN),
-                    new LoggerSetting().withLogger("ivfxzsjabibsyst").withLevel(Level.TRACE),
-                    new LoggerSetting().withLogger("fsdjpvkvp").withLevel(Level.ERROR))));
+            .withLogging(new RuntimeJavaAgentLogging().withLoggerSettings(
+                Arrays.asList(new LoggerSetting().withLogger("pgvmpipaslthaqfx").withLevel(Level.INFO))));
         model = BinaryData.fromObject(model).toObject(RuntimeJavaAgent.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("jorwkqnyhgbij", model.logging().loggerSettings().get(0).logger());
-        Assertions.assertEquals(Level.WARN, model.logging().loggerSettings().get(0).level());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("pgvmpipaslthaqfx", model.logging().loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.INFO, model.logging().loggerSettings().get(0).level());
     }
 }

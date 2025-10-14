@@ -1,6 +1,6 @@
 # Release History
 
-## 4.28.0-beta.1 (Unreleased)
+## 4.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,84 @@
 
 ### Bugs Fixed
 
+## 4.31.3 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 4.31.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
+## 4.31.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+
+## 4.31.0 (2025-06-26)
+
+### Breaking Changes
+- Deprecated system events from `azure-messaging-eventgrid` package. Users should migrate to the new `azure-messaging-eventgrid-systemevents` package for system events.
+
+## 4.30.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 4.30.0 (2025-05-16)
+
+### Features Added
+- Added new values to `SystemEventNames` related to Azure Communication Services and Azure Edge.
+
+## 4.29.1 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 4.29.0 (2025-02-26)
+
+### Features Added
+- Added `MessageId`, `MessageType`, and `Reaction` properties to the `AcsMessageReceivedEventData` event.
+- Added the `Animated` property to `AcsMessageMediaContent` event.
+
+## 4.28.1 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
+## 4.28.0 (2025-01-21)
+
+### Features Added
+- Added `internetMessageId` property to `AcsEmailDeliveryReportReceivedEventData`.
+- Added `recipientMailServerHostName` property to `AcsEmailDeliveryReportStatusDetails`.
+- Added `segmentCount` property to `AcsSmsReceivedEventData`.
 
 ## 4.27.0 (2024-11-18)
 
@@ -76,7 +153,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
-
 ## 4.22.3 (2024-06-27)
 
 ### Other Changes
@@ -85,7 +161,6 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
-
 
 ## 4.22.2 (2024-05-28)
 
@@ -96,7 +171,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
-
 ## 4.22.1 (2024-04-23)
 
 ### Other Changes
@@ -105,7 +179,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
-
 
 ## 4.22.0 (2024-03-11)
 
@@ -178,7 +251,6 @@
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
-
 ## 4.17.2 (2023-08-18)
 
 ### Other Changes
@@ -196,7 +268,6 @@
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 
 ## 4.17.0 (2023-06-16)
 
@@ -490,7 +561,6 @@
 - Update `azure-core` dependency to `1.17.0`.
 - Update `azure-core-http-netty` dependency to `1.10.0`.
 
-
 ## 4.3.0 (2021-05-12)
 ### New Features
 - Added new Storage system events `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
@@ -573,5 +643,4 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
-
 

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchSkipConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchSkipConfig model = BinaryData.fromString("{\"skip\":false}").toObject(PatchSkipConfig.class);
-        Assertions.assertEquals(false, model.skip());
+        PatchSkipConfig model = BinaryData.fromString("{\"skip\":true}").toObject(PatchSkipConfig.class);
+        Assertions.assertTrue(model.skip());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchSkipConfig model = new PatchSkipConfig().withSkip(false);
+        PatchSkipConfig model = new PatchSkipConfig().withSkip(true);
         model = BinaryData.fromObject(model).toObject(PatchSkipConfig.class);
-        Assertions.assertEquals(false, model.skip());
+        Assertions.assertTrue(model.skip());
     }
 }

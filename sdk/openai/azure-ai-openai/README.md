@@ -1,5 +1,10 @@
 # Azure OpenAI client library for Java
 
+> [!IMPORTANT]
+> This client library won't receive updates in its current form.
+> To use newer OpenAI features, please use the official [OpenAI Java library][openai_java]
+> For Azure specific functionality, we are providing migration guides in azure-ai-openai-stainless.
+
 Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on 
 Azure resources.
 
@@ -47,7 +52,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.12</version>
+    <version>1.0.0-beta.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -108,19 +113,14 @@ Authentication with Entra ID requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
-As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the Azure EntraID application as environment variables:
-`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
-
-Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Entra ID authorization with OpenAI service, please
-refer to [the associated documentation][entra_id_authorization].
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 ```java readme-sample-createOpenAIClientWithEntraID
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
@@ -165,6 +165,45 @@ The following sections provide several code snippets covering some of the most c
 * [Batch operations sample](#batch-operations "Batch Operations")
 * [Structured Outputs](#structured-outputs "Structured Outputs")
 * [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
+
+### Responses
+
+The Responses API is OpenAI's newest form of supporting agentic applications with a surface that should feel familiar to Chat Completions users. For more details on the similarities and additional features please visit [OpenAI's documentation site.](https://platform.openai.com/docs/guides/responses-vs-chat-completions)
+
+To use Responses, there is a separate client that is needed which can be initialized to work for both OpenAI and Azure OpenAI services.
+
+```java readme-sample-createAzureResponsesClient
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+ResponsesClient client = new ResponsesClientBuilder()
+    .credential(defaultCredential)
+    .endpoint("{endpoint}")
+    .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+```
+
+Or for (non-Azure) OpenAI service setup:
+
+```java readme-sample-createNonAzureResponsesClient
+ResponsesClient client = new ResponsesClientBuilder()
+    .credential(new KeyCredential("{openai-secret-key}"))
+    .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+```
+
+For a very minimal demonstration, to get the equivalent of a Chat Completions request with Responses, the request looks like this:
+
+```java readme-sample-sendResponsesUserMessage
+CreateResponsesRequest request = new CreateResponsesRequest(
+        CreateResponsesRequestModel.GPT_4O_MINI, "Hello, world!"
+);
+
+ResponsesResponse response = responsesClient.createResponse(request);
+
+// Print the response
+ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+System.out.println(outputContent.getText());
+```
+
+The full extent of the features supported in the new Responses API surface can be found on [Responses API documentation page.](https://platform.openai.com/docs/api-reference/responses)
 
 ### Legacy completions
 
@@ -543,7 +582,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_subscription]: https://azure.microsoft.com/free/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [jtokkit]: https://github.com/knuddelsgmbh/jtokkit
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
@@ -551,6 +590,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
 [microsoft_docs_text_to_speech]: https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
+[openai_java]: https://github.com/openai/openai-java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
 [quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart
@@ -578,5 +618,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
-[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
-
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

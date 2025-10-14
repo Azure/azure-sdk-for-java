@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationFabricsPurgeSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationFabrics_Purge.json
      */
     /**
@@ -20,6 +20,6 @@ public final class ReplicationFabricsPurgeSamples {
      */
     public static void
         purgesTheSite(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().purge("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.replicationFabrics().purge("resourceGroupPS1", "vault1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

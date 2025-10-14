@@ -187,20 +187,6 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
-        }
-        if (ipTags() != null) {
-            ipTags().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

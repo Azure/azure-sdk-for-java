@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,6 +18,7 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
      * Indicates that the search service can determine where the indexer should execute. This is the default environment
      * when nothing is specified and is the recommended value.
      */
+    @Generated
     public static final IndexerExecutionEnvironment STANDARD = fromString("standard");
 
     /**
@@ -24,6 +26,7 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
      * should only be specified as the execution environment if the indexer needs to access resources securely over
      * shared private link resources.
      */
+    @Generated
     public static final IndexerExecutionEnvironment PRIVATE = fromString("private");
 
     /**
@@ -31,6 +34,7 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IndexerExecutionEnvironment() {
     }
@@ -41,6 +45,7 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
      * @param name a name to look for.
      * @return the corresponding IndexerExecutionEnvironment.
      */
+    @Generated
     public static IndexerExecutionEnvironment fromString(String name) {
         return fromString(name, IndexerExecutionEnvironment.class);
     }
@@ -50,6 +55,7 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
      * 
      * @return known IndexerExecutionEnvironment values.
      */
+    @Generated
     public static Collection<IndexerExecutionEnvironment> values() {
         return values(IndexerExecutionEnvironment.class);
     }

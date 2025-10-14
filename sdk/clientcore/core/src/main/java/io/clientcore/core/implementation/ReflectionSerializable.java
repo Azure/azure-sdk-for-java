@@ -3,8 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -76,7 +75,7 @@ public final class ReflectionSerializable {
     private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
             jsonWriter.writeJson(jsonSerializable).flush();
 
             return returner.apply(outputStream);
@@ -92,7 +91,7 @@ public final class ReflectionSerializable {
      */
     public static void serializeJsonSerializableIntoOutputStream(JsonSerializable<?> jsonSerializable,
         OutputStream outputStream) throws IOException {
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+        try (JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
             jsonWriter.writeJson(jsonSerializable).flush();
         }
     }
@@ -115,20 +114,16 @@ public final class ReflectionSerializable {
                 return ReflectionUtils.getMethodInvoker(clazz,
                     jsonSerializable.getDeclaredMethod("fromJson", JsonReader.class));
             } catch (Exception e) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(e));
+                throw LOGGER.throwableAtError().log(e, IllegalStateException::new);
             }
         });
 
-        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+        try (JsonReader jsonReader = JsonReader.fromBytes(json)) {
             return readJson.invokeStatic(jsonReader);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof Exception) {
-                throw new IOException(e);
-            } else {
-                throw (Error) e;
-            }
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw LOGGER.throwableAtError().log(e, IOException::new);
         }
     }
 

@@ -61,6 +61,10 @@ public final class KubernetesClusterImpl
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -186,6 +190,14 @@ public final class KubernetesClusterImpl
 
     private String kubernetesClusterName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private KubernetesClusterPatchParameters updateKubernetesClusterUpdateParameters;
 
     public KubernetesClusterImpl withExistingResourceGroup(String resourceGroupName) {
@@ -196,14 +208,16 @@ public final class KubernetesClusterImpl
     public KubernetesCluster create() {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusters()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, kubernetesClusterName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public KubernetesCluster create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusters()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, kubernetesClusterName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -211,9 +225,13 @@ public final class KubernetesClusterImpl
         this.innerObject = new KubernetesClusterInner();
         this.serviceManager = serviceManager;
         this.kubernetesClusterName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public KubernetesClusterImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateKubernetesClusterUpdateParameters = new KubernetesClusterPatchParameters();
         return this;
     }
@@ -221,14 +239,16 @@ public final class KubernetesClusterImpl
     public KubernetesCluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusters()
-            .update(resourceGroupName, kubernetesClusterName, updateKubernetesClusterUpdateParameters, Context.NONE);
+            .update(resourceGroupName, kubernetesClusterName, updateIfMatch, updateIfNoneMatch,
+                updateKubernetesClusterUpdateParameters, Context.NONE);
         return this;
     }
 
     public KubernetesCluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getKubernetesClusters()
-            .update(resourceGroupName, kubernetesClusterName, updateKubernetesClusterUpdateParameters, context);
+            .update(resourceGroupName, kubernetesClusterName, updateIfMatch, updateIfNoneMatch,
+                updateKubernetesClusterUpdateParameters, context);
         return this;
     }
 
@@ -336,6 +356,26 @@ public final class KubernetesClusterImpl
         return this;
     }
 
+    public KubernetesClusterImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public KubernetesClusterImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     public KubernetesClusterImpl
         withAdministratorConfiguration(AdministratorConfigurationPatch administratorConfiguration) {
         this.updateKubernetesClusterUpdateParameters.withAdministratorConfiguration(administratorConfiguration);
@@ -349,6 +389,6 @@ public final class KubernetesClusterImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

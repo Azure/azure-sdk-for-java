@@ -18,16 +18,16 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest README.md --java
 ```
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2024-03-01-preview
-use: '@autorest/java@4.1.29'
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b56afb26c5450157006a3a1d9be57bae429051a2/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2025-06-01
+use: '@autorest/java@4.1.52'
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14800a01400c295af0bfa5886e5f4042e4f6c62e/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,AvailablePhoneNumber,AvailablePhoneNumberCost,PhoneNumberAvailabilityStatus,PhoneNumbersBrowseResult,BrowsePhoneNumbersOptions,PhoneNumbersReservationStatus
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -39,6 +39,13 @@ service-interface-as-public: true
 sync-methods: all
 context-client-method-parameter: true
 stream-style-serialization: true
+customization-class: src/main/java/PhoneNumbersCustomization.java
+```
+
+### Set remove-empty-child-schemas
+```yaml
+modelerfour:
+    remove-empty-child-schemas: true
 ```
 
 ### Add readonly attribute to PurchasedPhoneNumber properties
@@ -68,7 +75,6 @@ directive:
       $["properties"]["billingFrequency"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
 directive:
@@ -84,6 +90,7 @@ directive:
       $["properties"]["capabilities"].readOnly = true;
       $["properties"]["error"].readOnly = true;
       $["properties"]["errorCode"].readOnly = true;
+      $["properties"]["isAgreementToNotResellRequired"].readOnly = true;
 ```
 
 ### Rename PhoneNumberOperation to PhoneNumberRawOperation
@@ -229,6 +236,15 @@ directive:
       $["properties"]["values"].readOnly = true;
 ```
 
+### Rename ReservationStatus to PhoneNumbersReservationStatus
+``` yaml
+directive:
+  from: swagger-document
+  where: $.definitions.PhoneNumbersReservation.properties.status.x-ms-enum
+  transform: >
+    $["name"] = "PhoneNumbersReservationStatus";
+```
+
 ``` yaml
 directive:
   from: swagger-document
@@ -243,4 +259,75 @@ directive:
   where: $.parameters.Endpoint
   transform: >
     $["format"] = "";
+```
+
+### Rename AvailablePhoneNumberStatus to PhoneNumberAvailabilityStatus
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.AvailablePhoneNumber.properties.status.x-ms-enum
+  transform: >
+    $["name"] = "PhoneNumberAvailabilityStatus";
+```
+
+### Add readonly attribute to AvailablePhoneNumber properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AvailablePhoneNumber
+    transform: >
+      $["properties"]["assignmentType"].readOnly = true;
+      $["properties"]["capabilities"].readOnly = true;
+      $["properties"]["countryCode"].readOnly = true;
+      $["properties"]["phoneNumberType"].readOnly = true;
+      $["properties"]["status"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumbersReservation properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumbersReservation
+    transform: >
+      $["properties"]["phoneNumbers"].readOnly = true;
+```
+
+### Replace type from PhoneNumberBrowseCapabilities to PhoneNumberCapabilties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumbersBrowseRequest.properties.capabilities
+    transform: >
+      $.type = "object";
+      $.$ref = "#/definitions/PhoneNumberCapabilities";
+```
+
+## Directives to add the countryCode to the PhoneNumbersBrowseRequest
+ ``` yaml
+ directive:
+   - from: swagger-document
+     where: $.definitions.PhoneNumbersBrowseRequest.properties
+     transform: >
+       $.countryCode = {
+         "type": "string",
+         "description": "The ISO 3166-2 country code, e.g. US.",
+         "x-ms-mutability": ["read", "create", "update"]
+       }
+ ```
+
+### Rename from PhoneNumbersBrowseRequest to BrowsePhoneNumbersOptions
+``` yaml
+directive:
+    - rename-model:
+        from: PhoneNumbersBrowseRequest
+        to: BrowsePhoneNumbersOptions
+```
+
+### Set PhoneNumbersBrowseResult fields as readonly
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumbersBrowseResult
+    transform: >
+      $["properties"]["phoneNumbers"].readOnly = true;
 ```

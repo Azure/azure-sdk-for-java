@@ -6,13 +6,17 @@ package com.azure.storage.file.share;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -55,6 +59,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1717,8 +1722,10 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertTrue(aadDirClient.exists());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = directoryBuilderHelper(shareName, dirName).buildDirectoryClient();
         dirClient.create();
@@ -1727,8 +1734,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
-        ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
-        assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+        assertNotNull(aadDirClient.exists());
     }
 
     @Test
@@ -1744,5 +1750,82 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         assertTrue(aadDirClient.exists());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createNFS() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
+
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+        ShareDirectoryInfo response = premiumDirectoryClient.createWithResponse(options, null, null).getValue();
+
+        assertEquals(NfsFileType.DIRECTORY, response.getPosixProperties().getFileType());
+        assertEquals("345", response.getPosixProperties().getOwner());
+        assertEquals("123", response.getPosixProperties().getGroup());
+        assertEquals("7777", response.getPosixProperties().getFileMode());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void setPropertiesNFS() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
+        premiumDirectoryClient.create();
+
+        ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions()
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        ShareDirectoryInfo response = premiumDirectoryClient.setPropertiesWithResponse(options, null, null).getValue();
+
+        assertEquals("345", response.getPosixProperties().getOwner());
+        assertEquals("123", response.getPosixProperties().getGroup());
+        assertEquals("7777", response.getPosixProperties().getFileMode());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getPropertiesNFS() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
+        premiumDirectoryClient.create();
+
+        ShareDirectoryProperties response = premiumDirectoryClient.getPropertiesWithResponse(null, null).getValue();
+
+        assertEquals(NfsFileType.DIRECTORY, response.getPosixProperties().getFileType());
+        assertEquals("0", response.getPosixProperties().getOwner());
+        assertEquals("0", response.getPosixProperties().getGroup());
+        assertEquals("0755", response.getPosixProperties().getFileMode());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @Test
+    public void directoryExistsHandlesParentNotFound() {
+        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("fakeDir");
+        ShareDirectoryClient subDirectoryClient = directoryClient.getSubdirectoryClient(generatePathName());
+
+        Response<Boolean> response = subDirectoryClient.existsWithResponse(null, Context.NONE);
+        assertFalse(response.getValue());
+        assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(),
+            response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 }

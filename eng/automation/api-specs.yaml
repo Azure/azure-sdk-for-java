@@ -5,6 +5,8 @@
   # suffix: suffix for sdk automation, usually it is due to premium sdk
 app:
   service: appcontainers
+app/Microsoft.App/ContainerApps:
+  service: appcontainers
 appplatform:
   suffix: generated
 authorization:
@@ -17,6 +19,8 @@ azurestackhci/Microsoft.AzureStackHCI/StackHCI:
   service: azurestackhci
 cdn:
   suffix: generated
+certificateregistration/Microsoft.CertificateRegistration/CertificateRegistration:
+  service: certificateregistration
 compute:
   suffix: generated
 containerinstance:
@@ -42,12 +46,16 @@ datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+datamigration/Microsoft.DataMigration/DataMigration:
+  service: datamigration
 developerhub:
   service: devhub
 dnc:
   service: delegatednetwork
 dns:
   suffix: generated
+domainregistration/Microsoft.DomainRegistration/DomainRegistration:
+  service: domainregistration
 eventhub:
   service: eventhubs
   suffix: generated
@@ -66,6 +74,18 @@ informatica:
   service: informaticadatamanagement
 keyvault:
   suffix: generated
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
+  service: kubernetesconfiguration
+  suffix: extensiontypes
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensions:
+  service: kubernetesconfiguration
+  suffix: extensions
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/fluxConfigurations:
+  service: kubernetesconfiguration
+  suffix: fluxconfigurations
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/privateLinkScopes:
+  service: kubernetesconfiguration
+  suffix: privatelinkscopes
 liftrastronomer:
   service: astro
 liftrqumulo:
@@ -74,6 +94,9 @@ loadtestservice:
   service: loadtesting
 machinelearningservices:
   service: machinelearning
+migrate/Microsoft.Migrate/AssessmentProjects:
+  service: migration
+  suffix: assessment
 monitor:
   suffix: generated
 msi:
@@ -104,6 +127,18 @@ redis:
   suffix: generated
 resources:
   suffix: generated
+resources/Microsoft.Resources/bicep:
+  service: resources
+  suffix: bicep
+resources/Microsoft.Resources/deploymentScripts:
+  service: resources
+  suffix: deploymentscripts
+resources/Microsoft.Resources/deploymentStacks:
+  service: resources
+  suffix: deploymentstacks
+resources/Microsoft.Resources/templateSpecs:
+  service: resources
+  suffix: templatespecs
 riskiq:
   service: defendereasm
 service-map:

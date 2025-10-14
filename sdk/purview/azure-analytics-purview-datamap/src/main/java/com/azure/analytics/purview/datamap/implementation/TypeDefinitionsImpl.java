@@ -71,7 +71,7 @@ public final class TypeDefinitionsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientTypeDef")
+    @ServiceInterface(name = "DataMapClientTypeDefinitions")
     public interface TypeDefinitionsService {
         @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -346,7 +346,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedef/name/{name}")
         @ExpectedResponses({ 204 })
@@ -355,7 +355,7 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 200 })
@@ -424,8 +424,8 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> batchDelete(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/atlas/v2/types/typedefs")
         @ExpectedResponses({ 204 })
@@ -434,8 +434,8 @@ public final class TypeDefinitionsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> batchDeleteSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/types/typedefs/headers")
         @ExpectedResponses({ 200 })
@@ -3815,9 +3815,8 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), name, accept, requestOptions, context));
+            .withContext(context -> service.delete(this.client.getEndpoint(), name, requestOptions, context));
     }
 
     /**
@@ -3833,8 +3832,7 @@ public final class TypeDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), name, accept, requestOptions, Context.NONE);
+        return service.deleteSync(this.client.getEndpoint(), name, requestOptions, Context.NONE);
     }
 
     /**
@@ -7117,9 +7115,8 @@ public final class TypeDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> batchDeleteWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.batchDelete(this.client.getEndpoint(), contentType, accept, body,
-            requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.batchDelete(this.client.getEndpoint(), contentType, body, requestOptions, context));
     }
 
     /**
@@ -7420,9 +7417,7 @@ public final class TypeDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> batchDeleteWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.batchDeleteSync(this.client.getEndpoint(), contentType, accept, body, requestOptions,
-            Context.NONE);
+        return service.batchDeleteSync(this.client.getEndpoint(), contentType, body, requestOptions, Context.NONE);
     }
 
     /**

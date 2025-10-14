@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,12 +17,14 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
     /**
      * Speller not enabled.
      */
+    @Generated
     public static final QuerySpellerType NONE = fromString("none");
 
     /**
      * Speller corrects individual query terms using a static lexicon for the language specified by the queryLanguage
      * parameter.
      */
+    @Generated
     public static final QuerySpellerType LEXICON = fromString("lexicon");
 
     /**
@@ -29,6 +32,7 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public QuerySpellerType() {
     }
@@ -39,6 +43,7 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
      * @param name a name to look for.
      * @return the corresponding QuerySpellerType.
      */
+    @Generated
     public static QuerySpellerType fromString(String name) {
         return fromString(name, QuerySpellerType.class);
     }
@@ -48,6 +53,7 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
      * 
      * @return known QuerySpellerType values.
      */
+    @Generated
     public static Collection<QuerySpellerType> values() {
         return values(QuerySpellerType.class);
     }

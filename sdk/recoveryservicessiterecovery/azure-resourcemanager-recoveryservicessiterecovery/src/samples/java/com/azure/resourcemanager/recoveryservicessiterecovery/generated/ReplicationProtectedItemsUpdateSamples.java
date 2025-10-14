@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class ReplicationProtectedItemsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectedItems_Update.json
      */
     /**
@@ -29,7 +29,7 @@ public final class ReplicationProtectedItemsUpdateSamples {
     public static void updatesTheReplicationProtectedItemSettings(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         ReplicationProtectedItem resource = manager.replicationProtectedItems()
-            .getWithResponse("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+            .getWithResponse("resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()

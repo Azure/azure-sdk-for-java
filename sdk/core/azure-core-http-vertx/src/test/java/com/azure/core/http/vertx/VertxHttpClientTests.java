@@ -13,7 +13,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.SharedExecutorService;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -45,7 +44,6 @@ import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BOD
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -144,10 +142,11 @@ public class VertxHttpClientTests {
         HttpClient client = new VertxHttpClientProvider().createInstance();
 
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
-            .parallel()
+            .parallel((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0))
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long"))
-            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
+            .flatMap(ignored -> doRequest(client, "/long"), true, 1, 1)
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close),
+                true, 1, 1);
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
             assertArraysEqual(LONG_BODY, response);
@@ -159,6 +158,8 @@ public class VertxHttpClientTests {
     public void testConcurrentRequestsSync() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new VertxHttpClientProvider().createInstance();
+
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
@@ -170,11 +171,9 @@ public class VertxHttpClientTests {
             });
         }
 
-        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(requests, 60, TimeUnit.SECONDS);
-        for (Future<Void> future : futures) {
-            assertTrue(future.isDone());
-            assertDoesNotThrow(() -> future.get());
-        }
+        pool.invokeAll(requests);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
     @Test

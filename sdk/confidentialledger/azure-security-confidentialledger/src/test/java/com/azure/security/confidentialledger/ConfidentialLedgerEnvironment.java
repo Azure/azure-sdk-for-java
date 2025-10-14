@@ -27,6 +27,6 @@ public class ConfidentialLedgerEnvironment {
     }
 
     public static String getConfidentialLedgerAdminOid() {
-        return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_CLIENT_OBJECTID", "d958292f-5b70-4b66-9502-562217cc7eaa");
+        return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_CLIENT_OBJECTID", "46db960a-85e3-447f-b143-590ebea1d752");
     }
 }

@@ -51,7 +51,7 @@ public final class AzureMySqlLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMySqlLinkedServiceTypeProperties innerTypeProperties() {
+    AzureMySqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

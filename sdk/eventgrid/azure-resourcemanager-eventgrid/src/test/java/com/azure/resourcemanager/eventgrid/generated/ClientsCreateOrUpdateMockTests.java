@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Client;
@@ -27,33 +27,32 @@ public final class ClientsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"qrdgrtw\",\"authenticationName\":\"wjzl\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"zzwjcayerzrran\",\"ybylpol\"]},\"state\":\"Disabled\",\"attributes\":{\"jwvuag\":\"datasrleinkfscjfn\",\"klzmijajw\":\"dataqwtltngvmreupt\",\"fsvagh\":\"datal\"},\"provisioningState\":\"Succeeded\"},\"id\":\"wl\",\"name\":\"lr\",\"type\":\"igt\"}";
+            = "{\"properties\":{\"description\":\"i\",\"authenticationName\":\"cqibzj\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"iphryvcjwqwo\",\"sratjhdhzyb\",\"pijhfrzgdkk\",\"gv\"]},\"state\":\"Disabled\",\"attributes\":{\"mzhwilzzhni\":\"datausmmor\",\"neyttl\":\"datamriprlk\",\"bkut\":\"datacxiv\",\"ynbpvzlqywauy\":\"dataumltwjflu\"},\"provisioningState\":\"Succeeded\"},\"id\":\"khmocgjs\",\"name\":\"gouarhwvixqq\",\"type\":\"gljkybsj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Client response = manager.clients()
-            .define("hmkvfruwkudrb")
-            .withExistingNamespace("covdwzqaux", "a")
-            .withDescription("txudqyeme")
-            .withAuthenticationName("naucmcirtnee")
+            .define("v")
+            .withExistingNamespace("bjvbzinzab", "mvoglj")
+            .withDescription("idnwceha")
+            .withAuthenticationName("do")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                .withValidationScheme(ClientCertificateValidationScheme.IP_MATCHES_AUTHENTICATION_NAME)
-                .withAllowedThumbprints(Arrays.asList("cgxefnohaitraniz", "rwgudasmxub", "fbngfcocef")))
-            .withState(ClientState.DISABLED)
-            .withAttributes(mapOf("ud", "datalfmpztr"))
+                .withValidationScheme(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME)
+                .withAllowedThumbprints(Arrays.asList("omqo", "pepiaeapfs", "rgdtpeqnacyheqw", "pqqncju")))
+            .withState(ClientState.ENABLED)
+            .withAttributes(mapOf("qiipsejb", "datazfymcwmbupyvqyvl"))
             .create();
 
-        Assertions.assertEquals("qrdgrtw", response.description());
-        Assertions.assertEquals("wjzl", response.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("i", response.description());
+        Assertions.assertEquals("cqibzj", response.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
             response.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("zzwjcayerzrran",
-            response.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals("iphryvcjwqwo", response.clientCertificateAuthentication().allowedThumbprints().get(0));
         Assertions.assertEquals(ClientState.DISABLED, response.state());
     }
 

@@ -45,7 +45,7 @@ If you want to take dependency on a particular version of the library that is no
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.9.0</version>
+    <version>4.10.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -351,23 +351,23 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable
+[azkeyvault_docs]: https://learn.microsoft.com/azure/key-vault/
+[azure_identity]: https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/
-[azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
-[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/general/quick-create-cli
-[azure_keyvault_portal]: https://docs.microsoft.com/azure/key-vault/general/quick-create-portal
-[azure_keyvault_mhsm]: https://docs.microsoft.com/azure/key-vault/managed-hsm/overview
-[azure_keyvault_mhsm_cli]: https://docs.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
-[default_azure_credential]: https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential
-[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
-[azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
+[azure_keyvault]: https://learn.microsoft.com/azure/key-vault/keys/quick-create-portal
+[azure_keyvault_cli]: https://learn.microsoft.com/azure/key-vault/general/quick-create-cli
+[azure_keyvault_portal]: https://learn.microsoft.com/azure/key-vault/general/quick-create-portal
+[azure_keyvault_mhsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/overview
+[azure_keyvault_mhsm_cli]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
+[default_azure_credential]: https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential
+[managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [keys_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [jwk_specification]: https://tools.ietf.org/html/rfc7517
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2FREADME.png)
+

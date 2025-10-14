@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
     /*
      * Enumeration of supported Text Analysis task results.
      */
+    @Generated
     private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.SENTIMENT_ANALYSIS_RESULTS;
 
     /*
      * The results property.
      */
+    @Generated
     private SentimentResponse results;
 
     /**
      * Creates an instance of SentimentTaskResult class.
      */
+    @Generated
     public SentimentTaskResult() {
     }
 
@@ -36,6 +40,7 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextTaskResultsKind getKind() {
         return this.kind;
@@ -46,6 +51,7 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
      * 
      * @return the results value.
      */
+    @Generated
     public SentimentResponse getResults() {
         return this.results;
     }
@@ -56,6 +62,7 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
      * @param results the results value to set.
      * @return the SentimentTaskResult object itself.
      */
+    @Generated
     public SentimentTaskResult setResults(SentimentResponse results) {
         this.results = results;
         return this;
@@ -64,6 +71,7 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +89,7 @@ public final class SentimentTaskResult extends AnalyzeTextTaskResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentimentTaskResult.
      */
+    @Generated
     public static SentimentTaskResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentTaskResult deserializedSentimentTaskResult = new SentimentTaskResult();

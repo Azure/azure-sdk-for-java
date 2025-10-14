@@ -15,6 +15,7 @@ import org.mockito.verification.VerificationMode;
 
 import static org.mockito.Mockito.times;
 
+@SuppressWarnings("deprecation")
 public abstract class AzureServiceClientBuilderFactoryBaseTests<B, P extends AzureSdkProperties,
                                                                   F extends AzureServiceClientBuilderFactory<B>>
     extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {

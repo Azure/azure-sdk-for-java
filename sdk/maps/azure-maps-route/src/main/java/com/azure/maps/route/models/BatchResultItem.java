@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class BatchResultItem implements JsonSerializable<BatchResultItem> {
     /*
      * HTTP request status code.
      */
+    @Generated
     private Integer statusCode;
 
     /**
      * Creates an instance of BatchResultItem class.
      */
+    @Generated
     public BatchResultItem() {
     }
 
@@ -32,6 +35,7 @@ public class BatchResultItem implements JsonSerializable<BatchResultItem> {
      * 
      * @return the statusCode value.
      */
+    @Generated
     public Integer getStatusCode() {
         return this.statusCode;
     }
@@ -42,6 +46,7 @@ public class BatchResultItem implements JsonSerializable<BatchResultItem> {
      * @param statusCode the statusCode value to set.
      * @return the BatchResultItem object itself.
      */
+    @Generated
     BatchResultItem setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
         return this;
@@ -50,6 +55,7 @@ public class BatchResultItem implements JsonSerializable<BatchResultItem> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -64,6 +70,7 @@ public class BatchResultItem implements JsonSerializable<BatchResultItem> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BatchResultItem.
      */
+    @Generated
     public static BatchResultItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchResultItem deserializedBatchResultItem = new BatchResultItem();

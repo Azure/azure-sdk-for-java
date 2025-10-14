@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,31 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     /*
      * Subscription Id.
      */
+    @Generated
     private String id;
 
     /*
      * Transcription subscription state.
      */
+    @Generated
     private TranscriptionSubscriptionStateInternal state;
 
     /*
      * Subscribed transcription result types.
      */
+    @Generated
     private List<TranscriptionResultTypeInternal> subscribedResultTypes;
+
+    /*
+     * Specifies the locale used for transcription, e.g., en-CA or en-AU.
+     */
+    @Generated
+    private String locale;
 
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
      */
+    @Generated
     public TranscriptionSubscriptionInternal() {
     }
 
@@ -43,6 +54,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -53,6 +65,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * @param id the id value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
      */
+    @Generated
     public TranscriptionSubscriptionInternal setId(String id) {
         this.id = id;
         return this;
@@ -63,6 +76,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * 
      * @return the state value.
      */
+    @Generated
     public TranscriptionSubscriptionStateInternal getState() {
         return this.state;
     }
@@ -73,6 +87,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * @param state the state value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
      */
+    @Generated
     public TranscriptionSubscriptionInternal setState(TranscriptionSubscriptionStateInternal state) {
         this.state = state;
         return this;
@@ -83,6 +98,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * 
      * @return the subscribedResultTypes value.
      */
+    @Generated
     public List<TranscriptionResultTypeInternal> getSubscribedResultTypes() {
         return this.subscribedResultTypes;
     }
@@ -93,6 +109,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * @param subscribedResultTypes the subscribedResultTypes value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
      */
+    @Generated
     public TranscriptionSubscriptionInternal
         setSubscribedResultTypes(List<TranscriptionResultTypeInternal> subscribedResultTypes) {
         this.subscribedResultTypes = subscribedResultTypes;
@@ -100,8 +117,31 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     }
 
     /**
+     * Get the locale property: Specifies the locale used for transcription, e.g., en-CA or en-AU.
+     * 
+     * @return the locale value.
+     */
+    @Generated
+    public String getLocale() {
+        return this.locale;
+    }
+
+    /**
+     * Set the locale property: Specifies the locale used for transcription, e.g., en-CA or en-AU.
+     * 
+     * @param locale the locale value to set.
+     * @return the TranscriptionSubscriptionInternal object itself.
+     */
+    @Generated
+    public TranscriptionSubscriptionInternal setLocale(String locale) {
+        this.locale = locale;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -109,6 +149,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeArrayField("subscribedResultTypes", this.subscribedResultTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("locale", this.locale);
         return jsonWriter.writeEndObject();
     }
 
@@ -120,6 +161,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TranscriptionSubscriptionInternal.
      */
+    @Generated
     public static TranscriptionSubscriptionInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TranscriptionSubscriptionInternal deserializedTranscriptionSubscriptionInternal
@@ -137,6 +179,8 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
                     List<TranscriptionResultTypeInternal> subscribedResultTypes
                         = reader.readArray(reader1 -> TranscriptionResultTypeInternal.fromString(reader1.getString()));
                     deserializedTranscriptionSubscriptionInternal.subscribedResultTypes = subscribedResultTypes;
+                } else if ("locale".equals(fieldName)) {
+                    deserializedTranscriptionSubscriptionInternal.locale = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,7 +14,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.util.TestUtils.assertArraysEqual;
+import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -26,7 +26,8 @@ public class HttpRequestTests {
 
     @Test
     public void constructor() {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"));
+        final HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(URI.create("http://request.uri"), request.getUri());
@@ -37,7 +38,7 @@ public class HttpRequestTests {
     public void constructorWithHeaders() {
         final HttpHeaders headers = new HttpHeaders();
         final HttpRequest request
-            = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri")).setHeaders(headers);
+            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri")).setHeaders(headers);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(URI.create("http://request.uri"), request.getUri());
@@ -49,7 +50,8 @@ public class HttpRequestTests {
     @MethodSource("getBinaryDataBodyVariants")
     public void constructorWithBinaryDataBody(BinaryData data, Long expectedContentLength) {
 
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri")).setBody(data);
+        final HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri")).setBody(data);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(URI.create("http://request.uri"), request.getUri());
@@ -67,7 +69,7 @@ public class HttpRequestTests {
     @ParameterizedTest(name = "[{index}] {displayName}") // BinaryData.toString would trigger buffering.
     @MethodSource("getBinaryDataBodyVariants")
     public void testSetBodyAsBinaryData(BinaryData data, Long expectedContentLength) {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.uri");
+        final HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri("http://request.uri");
 
         request.setBody(data);
 
@@ -83,7 +85,7 @@ public class HttpRequestTests {
 
     @Test
     public void testSetBodyAsString() {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.uri");
+        final HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri("http://request.uri");
 
         request.setBody(BinaryData.fromString(BODY));
 
@@ -94,7 +96,7 @@ public class HttpRequestTests {
 
     @Test
     public void testSetBodyAsByteArray() {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.uri");
+        final HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri("http://request.uri");
 
         request.setBody(BinaryData.fromBytes(BODY_BYTES));
 

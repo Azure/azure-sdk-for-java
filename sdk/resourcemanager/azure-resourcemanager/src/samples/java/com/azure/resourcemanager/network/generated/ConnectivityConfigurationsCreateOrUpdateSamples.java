@@ -5,12 +5,16 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.ConnectivityConfigurationInner;
+import com.azure.resourcemanager.network.models.ConnectedGroupAddressOverlap;
+import com.azure.resourcemanager.network.models.ConnectedGroupPrivateEndpointsScale;
+import com.azure.resourcemanager.network.models.ConnectivityConfigurationPropertiesConnectivityCapabilities;
 import com.azure.resourcemanager.network.models.ConnectivityGroupItem;
 import com.azure.resourcemanager.network.models.ConnectivityTopology;
 import com.azure.resourcemanager.network.models.DeleteExistingPeering;
 import com.azure.resourcemanager.network.models.GroupConnectivity;
 import com.azure.resourcemanager.network.models.Hub;
 import com.azure.resourcemanager.network.models.IsGlobal;
+import com.azure.resourcemanager.network.models.PeeringEnforcement;
 import com.azure.resourcemanager.network.models.UseHubGateway;
 import java.util.Arrays;
 
@@ -19,7 +23,7 @@ import java.util.Arrays;
  */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * NetworkManagerConnectivityConfigurationPut.json
      */
     /**
@@ -39,6 +43,10 @@ public final class ConnectivityConfigurationsCreateOrUpdateSamples {
                         "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myTestConnectivityConfig")
                         .withResourceType("Microsoft.Network/virtualNetworks")))
                     .withIsGlobal(IsGlobal.TRUE)
+                    .withConnectivityCapabilities(new ConnectivityConfigurationPropertiesConnectivityCapabilities()
+                        .withConnectedGroupPrivateEndpointsScale(ConnectedGroupPrivateEndpointsScale.STANDARD)
+                        .withConnectedGroupAddressOverlap(ConnectedGroupAddressOverlap.ALLOWED)
+                        .withPeeringEnforcement(PeeringEnforcement.UNENFORCED))
                     .withAppliesToGroups(Arrays.asList(new ConnectivityGroupItem().withNetworkGroupId(
                         "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1")
                         .withUseHubGateway(UseHubGateway.TRUE)

@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RemoveProtectionContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemoveProtectionContainerMappingInput model
-            = BinaryData.fromString("{\"properties\":{\"providerSpecificInput\":{\"instanceType\":\"fhoqca\"}}}")
-                .toObject(RemoveProtectionContainerMappingInput.class);
-        Assertions.assertEquals("fhoqca", model.properties().providerSpecificInput().instanceType());
+        RemoveProtectionContainerMappingInput model = BinaryData
+            .fromString("{\"properties\":{\"providerSpecificInput\":{\"instanceType\":\"hfbousnfepgfew\"}}}")
+            .toObject(RemoveProtectionContainerMappingInput.class);
+        Assertions.assertEquals("hfbousnfepgfew", model.properties().providerSpecificInput().instanceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemoveProtectionContainerMappingInput model = new RemoveProtectionContainerMappingInput()
             .withProperties(new RemoveProtectionContainerMappingInputProperties().withProviderSpecificInput(
-                new ReplicationProviderContainerUnmappingInput().withInstanceType("fhoqca")));
+                new ReplicationProviderContainerUnmappingInput().withInstanceType("hfbousnfepgfew")));
         model = BinaryData.fromObject(model).toObject(RemoveProtectionContainerMappingInput.class);
-        Assertions.assertEquals("fhoqca", model.properties().providerSpecificInput().instanceType());
+        Assertions.assertEquals("hfbousnfepgfew", model.properties().providerSpecificInput().instanceType());
     }
 }

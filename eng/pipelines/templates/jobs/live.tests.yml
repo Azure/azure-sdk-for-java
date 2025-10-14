@@ -86,15 +86,11 @@ jobs:
         - template: /eng/pipelines/templates/steps/http-fault-injector.yml
 
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
-      # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
-      # Java 18), then install the latest Java version and use that to run tests.
+      # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 21 but we're testing against
+      # Java 24), then install the latest Java version and use that to run tests.
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml
@@ -138,7 +134,7 @@ jobs:
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
-            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+            VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
           UseFederatedAuth: ${{ parameters.UseFederatedAuth }}

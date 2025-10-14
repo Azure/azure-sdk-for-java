@@ -4,7 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: monitor
-    SupportedClouds: 'Public,UsGov,China'
     Artifacts:
       - name: azure-monitor-ingestion
         groupId: com.azure
@@ -12,3 +11,9 @@ extends:
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
+      - name: azure-monitor-query-logs
+        groupId: com.azure
+        safeName: azuremonitorquerylogs
+      - name: azure-monitor-query-metrics
+        groupId: com.azure
+        safeName: azuremonitorquerymetrics

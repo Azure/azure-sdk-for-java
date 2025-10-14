@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getFilteredPartitionMetadata}
@@ -39,7 +40,7 @@ class CosmosPartitionPlannerITest
     "spark.cosmos.container" -> cosmosContainer
   )
   private[this] val clientConfig = CosmosClientConfiguration(
-    userConfigTemplate, useEventualConsistency = true, sparkEnvironmentInfo = "")
+    userConfigTemplate, readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL, sparkEnvironmentInfo = "")
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfigTemplate)
   private[this] val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfigTemplate)
   private[this] var feedRanges = List(NormalizedRange("", "FF"))
@@ -264,7 +265,7 @@ class CosmosPartitionPlannerITest
     )
 
     val initialOffset = CosmosPartitionPlanner.createInitialOffset(
-      mockContainer, changeFeedConfig, partitioningConfig, streamId = Some(testId))
+      mockContainer, containerConfig, changeFeedConfig, partitioningConfig, streamId = Some(testId))
 
     //scalastyle:off null
     initialOffset should not equal null

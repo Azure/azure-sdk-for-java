@@ -256,9 +256,13 @@ public final class WebhookActivityTypeProperties implements JsonSerializable<Web
         jsonWriter.writeUntypedField("url", this.url);
         jsonWriter.writeStringField("timeout", this.timeout);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("body", this.body);
+        if (this.body != null) {
+            jsonWriter.writeUntypedField("body", this.body);
+        }
         jsonWriter.writeJsonField("authentication", this.authentication);
-        jsonWriter.writeUntypedField("reportStatusOnCallBack", this.reportStatusOnCallBack);
+        if (this.reportStatusOnCallBack != null) {
+            jsonWriter.writeUntypedField("reportStatusOnCallBack", this.reportStatusOnCallBack);
+        }
         return jsonWriter.writeEndObject();
     }
 

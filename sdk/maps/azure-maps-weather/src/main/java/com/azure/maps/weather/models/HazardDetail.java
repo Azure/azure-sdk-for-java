@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,27 +19,34 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
 
     /*
      * A severity/hazard index.
-     *   * `0` - No hazard.
-     *   * `1` - Be informed, be aware.
-     *   * `2` - Pay attention, be prepared.
-     *   * `3` - Take action.
-     *   * `4` - Life threatening, emergency.
+     * * `0` - No hazard.
+     * * `1` - Be informed, be aware.
+     * * `2` - Pay attention, be prepared.
+     * * `3` - Take action.
+     * * `4` - Life threatening, emergency.
      */
+    @Generated
     private HazardIndex hazardIndex;
 
     /*
-     * A unique identifier (non-displayable) for each type of hazard: LightRain, ModerateRain, HeavyRain, LightMix, ModerateMix, HeavyMix, LightSnow, ModerateSnow, HeavySnow, LightIce, ModerateIce, HeavyIce, Hail, LargeHail, SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning, FlashFloodWarning, TornadoWarning, TsunamiWarning, SevereThunderstormWarning.
+     * A unique identifier (non-displayable) for each type of hazard: LightRain, ModerateRain, HeavyRain, LightMix,
+     * ModerateMix, HeavyMix, LightSnow, ModerateSnow, HeavySnow, LightIce, ModerateIce, HeavyIce, Hail, LargeHail,
+     * SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning,
+     * FlashFloodWarning, TornadoWarning, TsunamiWarning, SevereThunderstormWarning.
      */
+    @Generated
     private String hazardCode;
 
     /*
      * A displayable short phrase describing the forecasted conditions and precipitation intensity/type.
      */
+    @Generated
     private String shortDescription;
 
     /**
      * Set default HazardDetail constructor to private
      */
+    @Generated
     private HazardDetail() {
     }
 
@@ -52,6 +60,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      *
      * @return the hazardIndex value.
      */
+    @Generated
     public HazardIndex getHazardIndex() {
         return this.hazardIndex;
     }
@@ -65,6 +74,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      *
      * @return the hazardCode value.
      */
+    @Generated
     public String getHazardCode() {
         return this.hazardCode;
     }
@@ -75,6 +85,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -82,10 +93,11 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("hazardIndex", this.hazardIndex == null ? null : this.hazardIndex.toInt());
+        jsonWriter.writeNumberField("hazardIndex", this.hazardIndex == null ? null : this.hazardIndex.getValue());
         jsonWriter.writeStringField("hazardCode", this.hazardCode);
         jsonWriter.writeStringField("shortPhrase", this.shortDescription);
         return jsonWriter.writeEndObject();
@@ -99,6 +111,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HazardDetail.
      */
+    @Generated
     public static HazardDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HazardDetail deserializedHazardDetail = new HazardDetail();
@@ -106,7 +119,7 @@ public final class HazardDetail implements JsonSerializable<HazardDetail> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("hazardIndex".equals(fieldName)) {
-                    deserializedHazardDetail.hazardIndex = HazardIndex.fromInt(reader.getInt());
+                    deserializedHazardDetail.hazardIndex = HazardIndex.fromValue(reader.getInt());
                 } else if ("hazardCode".equals(fieldName)) {
                     deserializedHazardDetail.hazardCode = reader.getString();
                 } else if ("shortPhrase".equals(fieldName)) {

@@ -12,21 +12,21 @@ public final class PatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchProperties model = BinaryData.fromString(
-            "{\"targetEnvironmentId\":\"itgvkx\",\"targetContainerAppId\":\"yqdrf\",\"targetRevisionId\":\"cealzxwh\",\"patchApplyStatus\":\"RevisionCreationFailed\",\"createdAt\":\"2021-04-17T10:43:30Z\",\"lastModifiedAt\":\"2021-03-27T07:28:32Z\",\"patchDetails\":[{\"targetContainerName\":\"hlwigdivbkbxg\",\"targetImage\":\"mf\",\"lastDetectionTime\":\"2021-09-11T08:38:54Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"asqvd\",\"newLayer\":{\"name\":\"y\",\"frameworkAndVersion\":\"xakjsqzhzb\",\"osAndVersion\":\"kgimsidxasic\"},\"oldLayer\":{\"name\":\"vvjskgfmocwahp\",\"frameworkAndVersion\":\"atjeaahh\",\"osAndVersion\":\"hhnakzybbj\"},\"patchType\":\"FrameworkSecurity\"},{\"targetContainerName\":\"jks\",\"targetImage\":\"xkyxvxevblbj\",\"lastDetectionTime\":\"2021-03-19T03:04:44Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"jlageu\",\"newLayer\":{\"name\":\"xuns\",\"frameworkAndVersion\":\"bn\",\"osAndVersion\":\"pxynenlsvxeizzg\"},\"oldLayer\":{\"name\":\"nsrmffeycx\",\"frameworkAndVersion\":\"tpiymerteea\",\"osAndVersion\":\"xqiekkkzddrtk\"},\"patchType\":\"OSSecurity\"},{\"targetContainerName\":\"jbmxvavre\",\"targetImage\":\"de\",\"lastDetectionTime\":\"2021-07-20T03:47:36Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"cuijpxt\",\"newLayer\":{\"name\":\"wprtu\",\"frameworkAndVersion\":\"sawddjibabxvi\",\"osAndVersion\":\"tvtzeexavoxtfg\"},\"oldLayer\":{\"name\":\"dmdqb\",\"frameworkAndVersion\":\"ypq\",\"osAndVersion\":\"sfj\"},\"patchType\":\"FrameworkSecurity\"},{\"targetContainerName\":\"slhhxudbxv\",\"targetImage\":\"d\",\"lastDetectionTime\":\"2021-02-13T16:52:17Z\",\"detectionStatus\":\"Succeeded\",\"newImageName\":\"irudh\",\"newLayer\":{\"name\":\"es\",\"frameworkAndVersion\":\"dlpagzrcxfail\",\"osAndVersion\":\"xwmdboxd\"},\"oldLayer\":{\"name\":\"ft\",\"frameworkAndVersion\":\"qobr\",\"osAndVersion\":\"nac\"},\"patchType\":\"FrameworkAndOSSecurity\"}]}")
+            "{\"targetEnvironmentId\":\"scjavftju\",\"targetContainerAppId\":\"qaz\",\"targetRevisionId\":\"tgguwpijrajcivmm\",\"patchApplyStatus\":\"RebaseFailed\",\"createdAt\":\"2020-12-20T00:44:48Z\",\"lastModifiedAt\":\"2020-12-29T14:32:56Z\",\"patchDetails\":[{\"targetContainerName\":\"gkn\",\"targetImage\":\"uvyinzqodfvpgs\",\"lastDetectionTime\":\"2021-05-18T14:08:31Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"sgbpfgzdjtx\",\"newLayer\":{\"name\":\"lbqvgaqvlgafcqu\",\"frameworkAndVersion\":\"dvetnws\",\"osAndVersion\":\"utnw\"},\"oldLayer\":{\"name\":\"ycvuzhyrmewipmv\",\"frameworkAndVersion\":\"dxukuqgsjjxundxg\",\"osAndVersion\":\"twzhhzjhfjmhv\"},\"patchType\":\"FrameworkSecurity\"}]}")
             .toObject(PatchProperties.class);
-        Assertions.assertEquals("itgvkx", model.targetEnvironmentId());
-        Assertions.assertEquals("yqdrf", model.targetContainerAppId());
-        Assertions.assertEquals("cealzxwh", model.targetRevisionId());
+        Assertions.assertEquals("scjavftju", model.targetEnvironmentId());
+        Assertions.assertEquals("qaz", model.targetContainerAppId());
+        Assertions.assertEquals("tgguwpijrajcivmm", model.targetRevisionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchProperties model = new PatchProperties().withTargetEnvironmentId("itgvkx")
-            .withTargetContainerAppId("yqdrf")
-            .withTargetRevisionId("cealzxwh");
+        PatchProperties model = new PatchProperties().withTargetEnvironmentId("scjavftju")
+            .withTargetContainerAppId("qaz")
+            .withTargetRevisionId("tgguwpijrajcivmm");
         model = BinaryData.fromObject(model).toObject(PatchProperties.class);
-        Assertions.assertEquals("itgvkx", model.targetEnvironmentId());
-        Assertions.assertEquals("yqdrf", model.targetContainerAppId());
-        Assertions.assertEquals("cealzxwh", model.targetRevisionId());
+        Assertions.assertEquals("scjavftju", model.targetEnvironmentId());
+        Assertions.assertEquals("qaz", model.targetContainerAppId());
+        Assertions.assertEquals("tgguwpijrajcivmm", model.targetRevisionId());
     }
 }

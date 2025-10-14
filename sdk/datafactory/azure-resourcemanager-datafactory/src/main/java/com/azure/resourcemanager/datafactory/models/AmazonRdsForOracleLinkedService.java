@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AmazonRdsForOracle database.
+ * AmazonRdsForOracle database. This linked service has supported version property. The Version 1.0 is scheduled for
+ * deprecation while your pipeline will continue to run after EOL but without any bug fix or new features.
  */
 @Fluent
 public final class AmazonRdsForOracleLinkedService extends LinkedService {
@@ -51,7 +52,7 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRdsForLinkedServiceTypeProperties innerTypeProperties() {
+    AmazonRdsForLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -102,7 +103,7 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only used for Version 1.0.
      * 
      * @return the connectionString value.
      */
@@ -112,7 +113,7 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only used for Version 1.0.
      * 
      * @param connectionString the connectionString value to set.
      * @return the AmazonRdsForOracleLinkedService object itself.
@@ -122,6 +123,82 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
             this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the server property: The location of AmazonRdsForOracle database you want to connect to, the supported forms
+     * include connector descriptor, Easy Connect (Plus) Naming and Oracle Net Services Name (Only self-hosted IR).
+     * Type: string. Only used for Version 2.0.
+     * 
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: The location of AmazonRdsForOracle database you want to connect to, the supported forms
+     * include connector descriptor, Easy Connect (Plus) Naming and Oracle Net Services Name (Only self-hosted IR).
+     * Type: string. Only used for Version 2.0.
+     * 
+     * @param server the server value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: Authentication type for connecting to the AmazonRdsForOracle database. Only
+     * used for Version 2.0.
+     * 
+     * @return the authenticationType value.
+     */
+    public AmazonRdsForOracleAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: Authentication type for connecting to the AmazonRdsForOracle database. Only
+     * used for Version 2.0.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService
+        withAuthenticationType(AmazonRdsForOracleAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the username property: The AmazonRdsForOracle database username. Type: string. Only used for Version 2.0.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: The AmazonRdsForOracle database username. Type: string. Only used for Version 2.0.
+     * 
+     * @param username the username value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
         return this;
     }
 
@@ -145,6 +222,289 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
             this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the encryptionClient property: Specifies the encryption client behavior. Supported values are accepted,
+     * rejected, requested or required, default value is required. Type: string. Only used for Version 2.0.
+     * 
+     * @return the encryptionClient value.
+     */
+    public Object encryptionClient() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptionClient();
+    }
+
+    /**
+     * Set the encryptionClient property: Specifies the encryption client behavior. Supported values are accepted,
+     * rejected, requested or required, default value is required. Type: string. Only used for Version 2.0.
+     * 
+     * @param encryptionClient the encryptionClient value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withEncryptionClient(Object encryptionClient) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptionClient(encryptionClient);
+        return this;
+    }
+
+    /**
+     * Get the encryptionTypesClient property: Specifies the encryption algorithms that client can use. Supported values
+     * are AES128, AES192, AES256, 3DES112, 3DES168, default value is (AES256). Type: string. Only used for Version 2.0.
+     * 
+     * @return the encryptionTypesClient value.
+     */
+    public Object encryptionTypesClient() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptionTypesClient();
+    }
+
+    /**
+     * Set the encryptionTypesClient property: Specifies the encryption algorithms that client can use. Supported values
+     * are AES128, AES192, AES256, 3DES112, 3DES168, default value is (AES256). Type: string. Only used for Version 2.0.
+     * 
+     * @param encryptionTypesClient the encryptionTypesClient value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withEncryptionTypesClient(Object encryptionTypesClient) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptionTypesClient(encryptionTypesClient);
+        return this;
+    }
+
+    /**
+     * Get the cryptoChecksumClient property: Specifies the desired data integrity behavior when this client connects to
+     * a server. Supported values are accepted, rejected, requested or required, default value is required. Type:
+     * string. Only used for Version 2.0.
+     * 
+     * @return the cryptoChecksumClient value.
+     */
+    public Object cryptoChecksumClient() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().cryptoChecksumClient();
+    }
+
+    /**
+     * Set the cryptoChecksumClient property: Specifies the desired data integrity behavior when this client connects to
+     * a server. Supported values are accepted, rejected, requested or required, default value is required. Type:
+     * string. Only used for Version 2.0.
+     * 
+     * @param cryptoChecksumClient the cryptoChecksumClient value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withCryptoChecksumClient(Object cryptoChecksumClient) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCryptoChecksumClient(cryptoChecksumClient);
+        return this;
+    }
+
+    /**
+     * Get the cryptoChecksumTypesClient property: Specifies the crypto-checksum algorithms that client can use.
+     * Supported values are SHA1, SHA256, SHA384, SHA512, default value is (SHA512). Type: string. Only used for Version
+     * 2.0.
+     * 
+     * @return the cryptoChecksumTypesClient value.
+     */
+    public Object cryptoChecksumTypesClient() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().cryptoChecksumTypesClient();
+    }
+
+    /**
+     * Set the cryptoChecksumTypesClient property: Specifies the crypto-checksum algorithms that client can use.
+     * Supported values are SHA1, SHA256, SHA384, SHA512, default value is (SHA512). Type: string. Only used for Version
+     * 2.0.
+     * 
+     * @param cryptoChecksumTypesClient the cryptoChecksumTypesClient value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withCryptoChecksumTypesClient(Object cryptoChecksumTypesClient) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCryptoChecksumTypesClient(cryptoChecksumTypesClient);
+        return this;
+    }
+
+    /**
+     * Get the initialLobFetchSize property: Specifies the amount that the source initially fetches for LOB columns,
+     * default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @return the initialLobFetchSize value.
+     */
+    public Object initialLobFetchSize() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().initialLobFetchSize();
+    }
+
+    /**
+     * Set the initialLobFetchSize property: Specifies the amount that the source initially fetches for LOB columns,
+     * default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @param initialLobFetchSize the initialLobFetchSize value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withInitialLobFetchSize(Object initialLobFetchSize) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withInitialLobFetchSize(initialLobFetchSize);
+        return this;
+    }
+
+    /**
+     * Get the fetchSize property: Specifies the number of bytes that the driver allocates to fetch the data in one
+     * database round-trip, default value is 10485760. Type: integer. Only used for Version 2.0.
+     * 
+     * @return the fetchSize value.
+     */
+    public Object fetchSize() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fetchSize();
+    }
+
+    /**
+     * Set the fetchSize property: Specifies the number of bytes that the driver allocates to fetch the data in one
+     * database round-trip, default value is 10485760. Type: integer. Only used for Version 2.0.
+     * 
+     * @param fetchSize the fetchSize value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withFetchSize(Object fetchSize) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withFetchSize(fetchSize);
+        return this;
+    }
+
+    /**
+     * Get the statementCacheSize property: Specifies the number of cursors or statements to be cached for each database
+     * connection, default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @return the statementCacheSize value.
+     */
+    public Object statementCacheSize() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().statementCacheSize();
+    }
+
+    /**
+     * Set the statementCacheSize property: Specifies the number of cursors or statements to be cached for each database
+     * connection, default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @param statementCacheSize the statementCacheSize value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withStatementCacheSize(Object statementCacheSize) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withStatementCacheSize(statementCacheSize);
+        return this;
+    }
+
+    /**
+     * Get the initializationString property: Specifies a command that is issued immediately after connecting to the
+     * database to manage session settings. Type: string. Only used for Version 2.0.
+     * 
+     * @return the initializationString value.
+     */
+    public Object initializationString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().initializationString();
+    }
+
+    /**
+     * Set the initializationString property: Specifies a command that is issued immediately after connecting to the
+     * database to manage session settings. Type: string. Only used for Version 2.0.
+     * 
+     * @param initializationString the initializationString value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withInitializationString(Object initializationString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withInitializationString(initializationString);
+        return this;
+    }
+
+    /**
+     * Get the enableBulkLoad property: Specifies whether to use bulk copy or batch insert when loading data into the
+     * database, default value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @return the enableBulkLoad value.
+     */
+    public Object enableBulkLoad() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().enableBulkLoad();
+    }
+
+    /**
+     * Set the enableBulkLoad property: Specifies whether to use bulk copy or batch insert when loading data into the
+     * database, default value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @param enableBulkLoad the enableBulkLoad value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withEnableBulkLoad(Object enableBulkLoad) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableBulkLoad(enableBulkLoad);
+        return this;
+    }
+
+    /**
+     * Get the supportV1DataTypes property: Specifies whether to use the Version 1.0 data type mappings. Do not set this
+     * to true unless you want to keep backward compatibility with Version 1.0's data type mappings, default value is
+     * false. Type: boolean. Only used for Version 2.0.
+     * 
+     * @return the supportV1DataTypes value.
+     */
+    public Object supportV1DataTypes() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().supportV1DataTypes();
+    }
+
+    /**
+     * Set the supportV1DataTypes property: Specifies whether to use the Version 1.0 data type mappings. Do not set this
+     * to true unless you want to keep backward compatibility with Version 1.0's data type mappings, default value is
+     * false. Type: boolean. Only used for Version 2.0.
+     * 
+     * @param supportV1DataTypes the supportV1DataTypes value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withSupportV1DataTypes(Object supportV1DataTypes) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSupportV1DataTypes(supportV1DataTypes);
+        return this;
+    }
+
+    /**
+     * Get the fetchTswtzAsTimestamp property: Specifies whether the driver returns column value with the TIMESTAMP WITH
+     * TIME ZONE data type as DateTime or string. This setting is ignored if supportV1DataTypes is not true, default
+     * value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @return the fetchTswtzAsTimestamp value.
+     */
+    public Object fetchTswtzAsTimestamp() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fetchTswtzAsTimestamp();
+    }
+
+    /**
+     * Set the fetchTswtzAsTimestamp property: Specifies whether the driver returns column value with the TIMESTAMP WITH
+     * TIME ZONE data type as DateTime or string. This setting is ignored if supportV1DataTypes is not true, default
+     * value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @param fetchTswtzAsTimestamp the fetchTswtzAsTimestamp value to set.
+     * @return the AmazonRdsForOracleLinkedService object itself.
+     */
+    public AmazonRdsForOracleLinkedService withFetchTswtzAsTimestamp(Object fetchTswtzAsTimestamp) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withFetchTswtzAsTimestamp(fetchTswtzAsTimestamp);
         return this;
     }
 

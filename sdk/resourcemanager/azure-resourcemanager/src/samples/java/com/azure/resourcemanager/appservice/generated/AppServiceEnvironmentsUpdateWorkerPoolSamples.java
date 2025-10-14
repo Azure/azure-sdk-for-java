@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInne
  */
 public final class AppServiceEnvironmentsUpdateWorkerPoolSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
      * AppServiceEnvironments_CreateOrUpdateWorkerPool.json
      */
     /**

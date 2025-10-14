@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-  <version>5.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
   <name>Spring Cloud Azure App Configuration Config Web</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
   <properties>
@@ -21,29 +21,29 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-      <version>5.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>3.4.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>3.4.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-bus</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.4.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -51,7 +51,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.14.2</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <version>5.17.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -59,13 +59,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -74,7 +74,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
@@ -118,9 +118,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[3.4.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-web:[3.4.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-bus:[4.2.0]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[3.5.5]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[3.5.5]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-bus:[4.3.0]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -177,7 +177,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.11.3</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>

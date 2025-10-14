@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -24,11 +25,13 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     /*
      * Type of operation.
      */
+    @Generated
     private String kind = "documentModelCompose";
 
     /*
      * Operation result upon success.
      */
+    @Generated
     private DocumentModelDetails result;
 
     /**
@@ -40,6 +43,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
+    @Generated
     public DocumentModelComposeOperationDetails(String operationId, OperationStatus status,
         OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
@@ -50,6 +54,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public String getKind() {
         return this.kind;
@@ -60,6 +65,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      * 
      * @return the result value.
      */
+    @Generated
     public DocumentModelDetails getResult() {
         return this.result;
     }
@@ -70,6 +76,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      * @param result the result value to set.
      * @return the DocumentModelComposeOperationDetails object itself.
      */
+    @Generated
     public DocumentModelComposeOperationDetails setResult(DocumentModelDetails result) {
         this.result = result;
         return this;
@@ -78,6 +85,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentModelComposeOperationDetails setPercentCompleted(Integer percentCompleted) {
         super.setPercentCompleted(percentCompleted);
@@ -87,6 +95,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentModelComposeOperationDetails setApiVersion(String apiVersion) {
         super.setApiVersion(apiVersion);
@@ -96,6 +105,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentModelComposeOperationDetails setTags(Map<String, String> tags) {
         super.setTags(tags);
@@ -105,6 +115,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DocumentModelComposeOperationDetails setError(Error error) {
         super.setError(error);
@@ -114,6 +125,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +156,7 @@ public final class DocumentModelComposeOperationDetails extends OperationDetails
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentModelComposeOperationDetails.
      */
+    @Generated
     public static DocumentModelComposeOperationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean operationIdFound = false;

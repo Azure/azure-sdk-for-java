@@ -62,7 +62,7 @@ public final class TimezonesImpl {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "TimezoneClientTimezo")
+    @ServiceInterface(name = "TimezoneClientTimezones")
     public interface TimezonesService {
         @Get("/timezone/byId/{format}")
         @ExpectedResponses({ 200 })
@@ -149,10 +149,8 @@ public final class TimezonesImpl {
     public Mono<Response<TimeZoneResult>> getTimezoneByIDWithResponseAsync(JsonFormat format, String timezoneId,
         String acceptLanguage, TimeZoneOptions options, OffsetDateTime timeStamp,
         OffsetDateTime daylightSavingsTimeFrom, Integer daylightSavingsTimeLastingYears) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTimezoneByID(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), acceptLanguage, options, timeStamp, daylightSavingsTimeFrom,
-            daylightSavingsTimeLastingYears, format, timezoneId, accept, context));
+        return FluxUtil.withContext(context -> getTimezoneByIDWithResponseAsync(format, timezoneId, acceptLanguage,
+            options, timeStamp, daylightSavingsTimeFrom, daylightSavingsTimeLastingYears, context));
     }
 
     /**
@@ -337,7 +335,7 @@ public final class TimezonesImpl {
      * 
      * The `Get Timezone By Coordinates` API is an HTTP `GET` request that returns current, historical, and future time
      * zone information for a specified latitude-longitude pair. In addition, the API provides sunset and sunrise times
-     * for a given location.
+     * for a given location, with the exception of regions that observe solar days.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates Coordinates of the point for which time zone information is requested. This parameter is a
@@ -363,12 +361,8 @@ public final class TimezonesImpl {
     public Mono<Response<TimeZoneResult>> getTimezoneByCoordinatesWithResponseAsync(JsonFormat format,
         List<Double> coordinates, String acceptLanguage, TimeZoneOptions options, OffsetDateTime timeStamp,
         OffsetDateTime daylightSavingsTimeFrom, Integer daylightSavingsTimeLastingYears) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTimezoneByCoordinates(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), acceptLanguage, options, timeStamp,
-            daylightSavingsTimeFrom, daylightSavingsTimeLastingYears, format, coordinatesConverted, accept, context));
+        return FluxUtil.withContext(context -> getTimezoneByCoordinatesWithResponseAsync(format, coordinates,
+            acceptLanguage, options, timeStamp, daylightSavingsTimeFrom, daylightSavingsTimeLastingYears, context));
     }
 
     /**
@@ -378,7 +372,7 @@ public final class TimezonesImpl {
      * 
      * The `Get Timezone By Coordinates` API is an HTTP `GET` request that returns current, historical, and future time
      * zone information for a specified latitude-longitude pair. In addition, the API provides sunset and sunrise times
-     * for a given location.
+     * for a given location, with the exception of regions that observe solar days.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates Coordinates of the point for which time zone information is requested. This parameter is a
@@ -420,7 +414,7 @@ public final class TimezonesImpl {
      * 
      * The `Get Timezone By Coordinates` API is an HTTP `GET` request that returns current, historical, and future time
      * zone information for a specified latitude-longitude pair. In addition, the API provides sunset and sunrise times
-     * for a given location.
+     * for a given location, with the exception of regions that observe solar days.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates Coordinates of the point for which time zone information is requested. This parameter is a
@@ -457,7 +451,7 @@ public final class TimezonesImpl {
      * 
      * The `Get Timezone By Coordinates` API is an HTTP `GET` request that returns current, historical, and future time
      * zone information for a specified latitude-longitude pair. In addition, the API provides sunset and sunrise times
-     * for a given location.
+     * for a given location, with the exception of regions that observe solar days.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates Coordinates of the point for which time zone information is requested. This parameter is a
@@ -496,7 +490,7 @@ public final class TimezonesImpl {
      * 
      * The `Get Timezone By Coordinates` API is an HTTP `GET` request that returns current, historical, and future time
      * zone information for a specified latitude-longitude pair. In addition, the API provides sunset and sunrise times
-     * for a given location.
+     * for a given location, with the exception of regions that observe solar days.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates Coordinates of the point for which time zone information is requested. This parameter is a
@@ -534,7 +528,7 @@ public final class TimezonesImpl {
      * 
      * The `Get Timezone By Coordinates` API is an HTTP `GET` request that returns current, historical, and future time
      * zone information for a specified latitude-longitude pair. In addition, the API provides sunset and sunrise times
-     * for a given location.
+     * for a given location, with the exception of regions that observe solar days.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates Coordinates of the point for which time zone information is requested. This parameter is a
@@ -579,9 +573,7 @@ public final class TimezonesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<TimeZoneWindows>>> getWindowsTimezoneIdsWithResponseAsync(JsonFormat format) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getWindowsTimezoneIds(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, accept, context));
+        return FluxUtil.withContext(context -> getWindowsTimezoneIdsWithResponseAsync(format, context));
     }
 
     /**
@@ -700,9 +692,7 @@ public final class TimezonesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<IanaId>>> getIanaTimezoneIdsWithResponseAsync(JsonFormat format) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getIanaTimezoneIds(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, accept, context));
+        return FluxUtil.withContext(context -> getIanaTimezoneIdsWithResponseAsync(format, context));
     }
 
     /**
@@ -825,9 +815,7 @@ public final class TimezonesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TimeZoneIanaVersionResult>> getIanaVersionWithResponseAsync(JsonFormat format) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getIanaVersion(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, accept, context));
+        return FluxUtil.withContext(context -> getIanaVersionWithResponseAsync(format, context));
     }
 
     /**
@@ -955,10 +943,8 @@ public final class TimezonesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponseAsync(JsonFormat format,
         String windowsTimezoneId, String windowsTerritoryCode) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.convertWindowsTimezoneToIana(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, windowsTimezoneId, windowsTerritoryCode, accept, context));
+        return FluxUtil.withContext(context -> convertWindowsTimezoneToIanaWithResponseAsync(format, windowsTimezoneId,
+            windowsTerritoryCode, context));
     }
 
     /**

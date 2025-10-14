@@ -10,15 +10,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner;
+import com.azure.resourcemanager.apimanagement.fluent.models.GatewayDebugCredentialsContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayTokenContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeyRegenerationRequestContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListDebugCredentialsContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListTraceContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
 import com.azure.resourcemanager.apimanagement.models.GatewaysCreateOrUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysListKeysResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysUpdateResponse;
+import java.util.Map;
 
 /**
  * An instance of this class provides access to all the operations defined in GatewaysClient.
@@ -332,4 +336,105 @@ public interface GatewaysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     GatewayTokenContractInner generateToken(String resourceGroupName, String serviceName, String gatewayId,
         GatewayTokenRequestContract parameters);
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> invalidateDebugCredentialsWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context);
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invalidateDebugCredentials(String resourceGroupName, String serviceName, String gatewayId);
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GatewayDebugCredentialsContractInner> listDebugCredentialsWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, GatewayListDebugCredentialsContract parameters, Context context);
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List debug credentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayDebugCredentialsContractInner listDebugCredentials(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListDebugCredentialsContract parameters);
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> listTraceWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayListTraceContract parameters, Context context);
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
+     * not have value 'managed'.
+     * @param parameters List trace properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> listTrace(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayListTraceContract parameters);
 }

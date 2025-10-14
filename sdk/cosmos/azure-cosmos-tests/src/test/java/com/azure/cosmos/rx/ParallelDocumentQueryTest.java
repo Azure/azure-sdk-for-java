@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosItemSerializerNoExceptionWrapping;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -288,7 +289,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
 

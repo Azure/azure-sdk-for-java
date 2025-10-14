@@ -86,7 +86,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationItemCollection>> listByReplicationProtectionContainers(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @QueryParam("skipToken") String skipToken, @QueryParam("takeToken") String takeToken,
@@ -97,9 +97,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationItemInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName, @HeaderParam("Accept") String accept,
             Context context);
@@ -109,9 +109,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") EnableMigrationInput input, @HeaderParam("Accept") String accept,
@@ -122,9 +122,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName, @QueryParam("deleteOption") String deleteOption,
             Context context);
@@ -134,9 +134,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") UpdateMigrationItemInput input, @HeaderParam("Accept") String accept,
@@ -147,9 +147,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> migrate(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") MigrateInput migrateInput, @HeaderParam("Accept") String accept,
@@ -160,9 +160,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> pauseReplication(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") PauseReplicationInput pauseReplicationInput,
@@ -173,9 +173,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resumeReplication(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") ResumeReplicationInput resumeReplicationInput,
@@ -186,9 +186,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> resync(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName, @BodyParam("application/json") ResyncInput input,
             @HeaderParam("Accept") String accept, Context context);
@@ -198,9 +198,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> testMigrate(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") TestMigrateInput testMigrateInput, @HeaderParam("Accept") String accept,
@@ -211,9 +211,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> testMigrateCleanup(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("migrationItemName") String migrationItemName,
             @BodyParam("application/json") TestMigrateCleanupInput testMigrateCleanupInput,
@@ -224,11 +224,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationItemCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("skipToken") String skipToken,
-            @QueryParam("takeToken") String takeToken, @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("skipToken") String skipToken, @QueryParam("takeToken") String takeToken,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -251,8 +250,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param skipToken The pagination token.
@@ -266,18 +265,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationItemInner>> listByReplicationProtectionContainersSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String skipToken, String takeToken, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -293,7 +292,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByReplicationProtectionContainers(this.client.getEndpoint(),
-                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
                 fabricName, protectionContainerName, skipToken, takeToken, filter, accept, context))
             .<PagedResponse<MigrationItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -305,8 +304,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param skipToken The pagination token.
@@ -321,18 +320,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MigrationItemInner>> listByReplicationProtectionContainersSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String skipToken, String takeToken, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -348,9 +347,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationProtectionContainers(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, skipToken,
-                takeToken, filter, accept, context)
+            .listByReplicationProtectionContainers(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                skipToken, takeToken, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -360,8 +359,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param skipToken The pagination token.
@@ -373,11 +372,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the list of ASR migration items in the protection container as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationItemInner> listByReplicationProtectionContainersAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
+    private PagedFlux<MigrationItemInner> listByReplicationProtectionContainersAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
         String filter) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, skipToken, takeToken, filter),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink));
     }
@@ -387,8 +386,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -397,13 +396,13 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the list of ASR migration items in the protection container as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationItemInner> listByReplicationProtectionContainersAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
+    private PagedFlux<MigrationItemInner> listByReplicationProtectionContainersAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         final String skipToken = null;
         final String takeToken = null;
         final String filter = null;
         return new PagedFlux<>(
-            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, skipToken, takeToken, filter),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink));
     }
@@ -413,8 +412,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param skipToken The pagination token.
@@ -427,11 +426,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the list of ASR migration items in the protection container as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationItemInner> listByReplicationProtectionContainersAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
+    private PagedFlux<MigrationItemInner> listByReplicationProtectionContainersAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
         String filter, Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, skipToken, takeToken, filter, context),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink, context));
     }
@@ -441,8 +440,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,12 +451,12 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationItemInner> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
+    public PagedIterable<MigrationItemInner> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         final String skipToken = null;
         final String takeToken = null;
         final String filter = null;
-        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceName, resourceGroupName,
+        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, skipToken, takeToken, filter));
     }
 
@@ -466,8 +465,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * Gets the list of ASR migration items in the protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param skipToken The pagination token.
@@ -481,18 +480,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationItemInner> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
+    public PagedIterable<MigrationItemInner> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
         String filter, Context context) {
-        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceName, resourceGroupName,
+        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, skipToken, takeToken, filter, context));
     }
 
     /**
      * Gets the details of a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -502,18 +501,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the details of a migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationItemInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<MigrationItemInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -532,8 +531,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -541,8 +540,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     /**
      * Gets the details of a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -553,18 +552,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the details of a migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationItemInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<MigrationItemInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -583,15 +582,15 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName, accept, context);
     }
 
     /**
      * Gets the details of a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -601,17 +600,17 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the details of a migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -622,17 +621,17 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the details of a migration item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MigrationItemInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<MigrationItemInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, context).block();
     }
 
     /**
      * Gets the details of a migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric unique name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -642,9 +641,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the details of a migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner get(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             Context.NONE).getValue();
     }
 
@@ -653,8 +652,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -665,18 +664,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, EnableMigrationInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -700,8 +699,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -711,8 +710,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -724,19 +723,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, EnableMigrationInput input,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -760,7 +759,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName, input, accept,
             context);
     }
@@ -770,8 +769,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -782,10 +781,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, input);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -796,8 +795,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -809,11 +808,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, input, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -824,8 +823,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -836,11 +835,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input) {
         return this
-            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 input)
             .getSyncPoller();
     }
@@ -850,8 +849,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -863,11 +862,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginCreate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         EnableMigrationInput input, Context context) {
         return this
-            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 input, context)
             .getSyncPoller();
     }
@@ -877,8 +876,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -889,9 +888,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> createAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -900,8 +899,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -913,9 +912,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> createAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -924,8 +923,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -936,9 +935,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner create(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input) {
-        return createAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return createAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input).block();
     }
 
@@ -947,8 +946,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to create an ASR migration item (enable migration).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -960,9 +959,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner create(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, EnableMigrationInput input, Context context) {
-        return createAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return createAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input, context).block();
     }
 
@@ -971,8 +970,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -983,18 +982,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1012,8 +1011,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
                 .error(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, deleteOption, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1023,8 +1022,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1036,19 +1035,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1066,7 +1065,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
                 .error(new IllegalArgumentException("Parameter migrationItemName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName, deleteOption,
             context);
     }
@@ -1076,8 +1075,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1088,9 +1087,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, deleteOption);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
@@ -1101,8 +1100,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1112,10 +1111,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName) {
         final String deleteOption = null;
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, deleteOption);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
@@ -1126,8 +1125,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1139,11 +1138,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, deleteOption, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
@@ -1154,8 +1153,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1165,11 +1164,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName) {
         final String deleteOption = null;
         return this
-            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 deleteOption)
             .getSyncPoller();
     }
@@ -1179,8 +1178,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1192,11 +1191,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, String deleteOption,
         Context context) {
         return this
-            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 deleteOption, context)
             .getSyncPoller();
     }
@@ -1206,8 +1205,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1218,9 +1217,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String deleteOption) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             deleteOption).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1229,8 +1228,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1240,10 +1239,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName) {
         final String deleteOption = null;
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             deleteOption).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1252,8 +1251,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1265,9 +1264,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, String deleteOption, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             deleteOption, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1276,8 +1275,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1286,10 +1285,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName) {
         final String deleteOption = null;
-        deleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        deleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             deleteOption).block();
     }
 
@@ -1298,8 +1297,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to delete an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1310,9 +1309,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, String deleteOption, Context context) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        deleteAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             deleteOption, context).block();
     }
 
@@ -1321,8 +1320,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1333,18 +1332,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1368,8 +1367,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1379,8 +1378,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1392,19 +1391,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1428,7 +1427,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName, input, accept,
             context);
     }
@@ -1438,8 +1437,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1450,10 +1449,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, input);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -1464,8 +1463,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1477,11 +1476,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, input, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -1492,8 +1491,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1504,11 +1503,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input) {
         return this
-            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginUpdateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 input)
             .getSyncPoller();
     }
@@ -1518,8 +1517,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1531,11 +1530,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginUpdate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         UpdateMigrationItemInput input, Context context) {
         return this
-            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginUpdateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 input, context)
             .getSyncPoller();
     }
@@ -1545,8 +1544,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1557,9 +1556,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> updateAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginUpdateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1568,8 +1567,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1581,9 +1580,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> updateAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input, Context context) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginUpdateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1592,8 +1591,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1604,9 +1603,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner update(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner update(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input) {
-        return updateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return updateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input).block();
     }
 
@@ -1615,8 +1614,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to update the recovery settings of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1628,9 +1627,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner update(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner update(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, UpdateMigrationItemInput input, Context context) {
-        return updateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return updateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input, context).block();
     }
 
@@ -1639,8 +1638,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1651,18 +1650,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, MigrateInput migrateInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1687,7 +1686,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.migrate(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, migrateInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1697,8 +1696,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1710,19 +1709,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, MigrateInput migrateInput,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1746,7 +1745,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.migrate(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.migrate(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName, migrateInput,
             accept, context);
     }
@@ -1756,8 +1755,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1768,10 +1767,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, migrateInput);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -1782,8 +1781,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1795,11 +1794,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, migrateInput, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -1810,8 +1809,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1822,11 +1821,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput) {
         return this
-            .beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 migrateInput)
             .getSyncPoller();
     }
@@ -1836,8 +1835,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1849,11 +1848,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginMigrate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         MigrateInput migrateInput, Context context) {
         return this
-            .beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 migrateInput, context)
             .getSyncPoller();
     }
@@ -1863,8 +1862,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1875,9 +1874,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> migrateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> migrateAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput) {
-        return beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, migrateInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1886,8 +1885,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1899,9 +1898,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> migrateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> migrateAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput, Context context) {
-        return beginMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, migrateInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1910,8 +1909,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1922,9 +1921,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner migrate(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner migrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput) {
-        return migrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return migrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             migrateInput).block();
     }
 
@@ -1933,8 +1932,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1946,9 +1945,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner migrate(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner migrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, MigrateInput migrateInput, Context context) {
-        return migrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return migrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             migrateInput, context).block();
     }
 
@@ -1957,8 +1956,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -1969,19 +1968,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> pauseReplicationWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<Flux<ByteBuffer>>> pauseReplicationWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2007,7 +2006,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.pauseReplication(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, pauseReplicationInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2017,8 +2016,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2030,19 +2029,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> pauseReplicationWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<Flux<ByteBuffer>>> pauseReplicationWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2067,8 +2066,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.pauseReplication(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
+        return service.pauseReplication(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
             pauseReplicationInput, accept, context);
     }
 
@@ -2077,8 +2076,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2090,9 +2089,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplicationAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, PauseReplicationInput pauseReplicationInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = pauseReplicationWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = pauseReplicationWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, pauseReplicationInput);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -2103,8 +2102,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2117,10 +2116,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplicationAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, PauseReplicationInput pauseReplicationInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = pauseReplicationWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = pauseReplicationWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, pauseReplicationInput, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -2131,8 +2130,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2143,11 +2142,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        PauseReplicationInput pauseReplicationInput) {
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, PauseReplicationInput pauseReplicationInput) {
         return this
-            .beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginPauseReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, pauseReplicationInput)
             .getSyncPoller();
     }
@@ -2157,8 +2156,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2170,11 +2169,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        PauseReplicationInput pauseReplicationInput, Context context) {
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginPauseReplication(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, PauseReplicationInput pauseReplicationInput, Context context) {
         return this
-            .beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginPauseReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, pauseReplicationInput, context)
             .getSyncPoller();
     }
@@ -2184,8 +2183,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2196,10 +2195,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> pauseReplicationAsync(String resourceName, String resourceGroupName,
+    private Mono<MigrationItemInner> pauseReplicationAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput) {
-        return beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginPauseReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, pauseReplicationInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2208,8 +2207,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2221,10 +2220,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> pauseReplicationAsync(String resourceName, String resourceGroupName,
+    private Mono<MigrationItemInner> pauseReplicationAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         PauseReplicationInput pauseReplicationInput, Context context) {
-        return beginPauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginPauseReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, pauseReplicationInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2233,8 +2232,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2245,9 +2244,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner pauseReplication(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner pauseReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, PauseReplicationInput pauseReplicationInput) {
-        return pauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return pauseReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, pauseReplicationInput).block();
     }
 
@@ -2256,8 +2255,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate pause replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2269,10 +2268,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner pauseReplication(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner pauseReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, PauseReplicationInput pauseReplicationInput,
         Context context) {
-        return pauseReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return pauseReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, pauseReplicationInput, context).block();
     }
 
@@ -2281,8 +2280,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2293,19 +2292,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeReplicationWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<Flux<ByteBuffer>>> resumeReplicationWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2331,7 +2330,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resumeReplication(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, resumeReplicationInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2341,8 +2340,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2354,19 +2353,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeReplicationWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<Flux<ByteBuffer>>> resumeReplicationWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2391,8 +2390,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.resumeReplication(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
+        return service.resumeReplication(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
             resumeReplicationInput, accept, context);
     }
 
@@ -2401,8 +2400,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2414,9 +2413,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplicationAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, ResumeReplicationInput resumeReplicationInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = resumeReplicationWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = resumeReplicationWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, resumeReplicationInput);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -2427,8 +2426,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2441,10 +2440,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplicationAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, ResumeReplicationInput resumeReplicationInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = resumeReplicationWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = resumeReplicationWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, resumeReplicationInput, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -2455,8 +2454,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2467,11 +2466,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        ResumeReplicationInput resumeReplicationInput) {
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, ResumeReplicationInput resumeReplicationInput) {
         return this
-            .beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginResumeReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, resumeReplicationInput)
             .getSyncPoller();
     }
@@ -2481,8 +2480,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2494,11 +2493,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        ResumeReplicationInput resumeReplicationInput, Context context) {
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResumeReplication(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, ResumeReplicationInput resumeReplicationInput, Context context) {
         return this
-            .beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginResumeReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, resumeReplicationInput, context)
             .getSyncPoller();
     }
@@ -2508,8 +2507,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2520,10 +2519,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> resumeReplicationAsync(String resourceName, String resourceGroupName,
+    private Mono<MigrationItemInner> resumeReplicationAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput) {
-        return beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginResumeReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, resumeReplicationInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2532,8 +2531,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2545,10 +2544,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> resumeReplicationAsync(String resourceName, String resourceGroupName,
+    private Mono<MigrationItemInner> resumeReplicationAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         ResumeReplicationInput resumeReplicationInput, Context context) {
-        return beginResumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginResumeReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, resumeReplicationInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2557,8 +2556,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2569,9 +2568,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner resumeReplication(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner resumeReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResumeReplicationInput resumeReplicationInput) {
-        return resumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return resumeReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, resumeReplicationInput).block();
     }
 
@@ -2580,8 +2579,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate resume replication of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2593,10 +2592,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner resumeReplication(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner resumeReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResumeReplicationInput resumeReplicationInput,
         Context context) {
-        return resumeReplicationAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return resumeReplicationAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, resumeReplicationInput, context).block();
     }
 
@@ -2605,8 +2604,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2617,18 +2616,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, ResyncInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2652,8 +2651,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.resync(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.resync(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2663,8 +2662,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2676,19 +2675,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, ResyncInput input,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2712,7 +2711,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.resync(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.resync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName, input, accept,
             context);
     }
@@ -2722,8 +2721,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2734,10 +2733,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginResyncAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginResyncAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input) {
-        Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, input);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -2748,8 +2747,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2761,11 +2760,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginResyncAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginResyncAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = resyncWithResponseAsync(resourceGroupName, resourceName, fabricName,
             protectionContainerName, migrationItemName, input, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -2776,8 +2775,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2788,11 +2787,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input) {
         return this
-            .beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginResyncAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 input)
             .getSyncPoller();
     }
@@ -2802,8 +2801,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2815,11 +2814,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginResync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         ResyncInput input, Context context) {
         return this
-            .beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .beginResyncAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 input, context)
             .getSyncPoller();
     }
@@ -2829,8 +2828,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2841,9 +2840,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> resyncAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> resyncAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input) {
-        return beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginResyncAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2852,8 +2851,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2865,9 +2864,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> resyncAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> resyncAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input, Context context) {
-        return beginResyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return beginResyncAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2876,8 +2875,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2888,9 +2887,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner resync(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner resync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input) {
-        return resyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return resyncAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input).block();
     }
 
@@ -2899,8 +2898,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to resynchronize replication of an ASR migration item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2912,9 +2911,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner resync(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner resync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, ResyncInput input, Context context) {
-        return resyncAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return resyncAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             input, context).block();
     }
 
@@ -2923,8 +2922,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2935,19 +2934,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testMigrateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> testMigrateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -2973,7 +2972,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.testMigrate(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, testMigrateInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2983,8 +2982,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -2996,19 +2995,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testMigrateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> testMigrateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -3033,8 +3032,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.testMigrate(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
+        return service.testMigrate(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
             testMigrateInput, accept, context);
     }
 
@@ -3043,8 +3042,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3055,10 +3054,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        TestMigrateInput testMigrateInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateWithResponseAsync(resourceName, resourceGroupName,
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateAsync(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, TestMigrateInput testMigrateInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, testMigrateInput);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -3069,8 +3068,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3082,11 +3081,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link PollerFlux} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        TestMigrateInput testMigrateInput, Context context) {
+    private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateAsync(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, TestMigrateInput testMigrateInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, testMigrateInput, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -3097,8 +3096,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3109,11 +3108,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput) {
         return this
-            .beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginTestMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, testMigrateInput)
             .getSyncPoller();
     }
@@ -3123,8 +3122,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3136,11 +3135,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrate(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateInput testMigrateInput, Context context) {
         return this
-            .beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginTestMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, testMigrateInput, context)
             .getSyncPoller();
     }
@@ -3150,8 +3149,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3162,9 +3161,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> testMigrateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> testMigrateAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput) {
-        return beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginTestMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, testMigrateInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -3173,8 +3172,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3186,9 +3185,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> testMigrateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<MigrationItemInner> testMigrateAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput, Context context) {
-        return beginTestMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginTestMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, testMigrateInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -3197,8 +3196,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3209,9 +3208,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner testMigrate(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner testMigrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput) {
-        return testMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return testMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             testMigrateInput).block();
     }
 
@@ -3220,8 +3219,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migration of the item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3233,9 +3232,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner testMigrate(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner testMigrate(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput, Context context) {
-        return testMigrateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+        return testMigrateAsync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
             testMigrateInput, context).block();
     }
 
@@ -3244,8 +3243,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3256,19 +3255,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testMigrateCleanupWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<Flux<ByteBuffer>>> testMigrateCleanupWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -3294,7 +3293,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.testMigrateCleanup(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 migrationItemName, testMigrateCleanupInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -3304,8 +3303,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3317,19 +3316,19 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testMigrateCleanupWithResponseAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
+    private Mono<Response<Flux<ByteBuffer>>> testMigrateCleanupWithResponseAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -3354,8 +3353,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.testMigrateCleanup(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-            resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
+        return service.testMigrateCleanup(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName, migrationItemName,
             testMigrateCleanupInput, accept, context);
     }
 
@@ -3364,8 +3363,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3377,9 +3376,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanupAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateCleanupWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateCleanupWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, this.client.getContext());
@@ -3390,8 +3389,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3404,10 +3403,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanupAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateCleanupWithResponseAsync(resourceName, resourceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> mono = testMigrateCleanupWithResponseAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput, context);
         return this.client.<MigrationItemInner, MigrationItemInner>getLroResult(mono, this.client.getHttpPipeline(),
             MigrationItemInner.class, MigrationItemInner.class, context);
@@ -3418,8 +3417,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3430,11 +3429,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        TestMigrateCleanupInput testMigrateCleanupInput) {
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput) {
         return this
-            .beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginTestMigrateCleanupAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, testMigrateCleanupInput)
             .getSyncPoller();
     }
@@ -3444,8 +3443,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3457,11 +3456,11 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the {@link SyncPoller} for polling of migration item.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String migrationItemName,
-        TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
+    public SyncPoller<PollResult<MigrationItemInner>, MigrationItemInner> beginTestMigrateCleanup(
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
+        String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
         return this
-            .beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .beginTestMigrateCleanupAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 migrationItemName, testMigrateCleanupInput, context)
             .getSyncPoller();
     }
@@ -3471,8 +3470,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3483,10 +3482,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> testMigrateCleanupAsync(String resourceName, String resourceGroupName,
+    private Mono<MigrationItemInner> testMigrateCleanupAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput) {
-        return beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginTestMigrateCleanupAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, testMigrateCleanupInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -3495,8 +3494,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3508,10 +3507,10 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MigrationItemInner> testMigrateCleanupAsync(String resourceName, String resourceGroupName,
+    private Mono<MigrationItemInner> testMigrateCleanupAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
-        return beginTestMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return beginTestMigrateCleanupAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, testMigrateCleanupInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -3520,8 +3519,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3532,9 +3531,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner testMigrateCleanup(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner testMigrateCleanup(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput) {
-        return testMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return testMigrateCleanupAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, testMigrateCleanupInput).block();
     }
 
@@ -3543,8 +3542,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * 
      * The operation to initiate test migrate cleanup.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param migrationItemName Migration item name.
@@ -3556,18 +3555,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return migration item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationItemInner testMigrateCleanup(String resourceName, String resourceGroupName, String fabricName,
+    public MigrationItemInner testMigrateCleanup(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput,
         Context context) {
-        return testMigrateCleanupAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return testMigrateCleanupAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             migrationItemName, testMigrateCleanupInput, context).block();
     }
 
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param filter OData filter options.
@@ -3578,18 +3577,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationItemInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<MigrationItemInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -3597,8 +3596,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), skipToken, takeToken, filter, accept, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), skipToken, takeToken, filter, accept, context))
             .<PagedResponse<MigrationItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3607,8 +3607,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param filter OData filter options.
@@ -3620,18 +3620,18 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationItemInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<MigrationItemInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -3640,7 +3640,7 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), skipToken, takeToken, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -3649,8 +3649,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param filter OData filter options.
@@ -3660,36 +3660,36 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the list of migration items in the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationItemInner> listAsync(String resourceName, String resourceGroupName, String skipToken,
+    private PagedFlux<MigrationItemInner> listAsync(String resourceGroupName, String resourceName, String skipToken,
         String takeToken, String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, skipToken, takeToken, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, skipToken, takeToken, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of migration items in the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationItemInner> listAsync(String resourceName, String resourceGroupName) {
+    private PagedFlux<MigrationItemInner> listAsync(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String takeToken = null;
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, skipToken, takeToken, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, skipToken, takeToken, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param filter OData filter options.
@@ -3700,36 +3700,36 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the list of migration items in the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationItemInner> listAsync(String resourceName, String resourceGroupName, String skipToken,
+    private PagedFlux<MigrationItemInner> listAsync(String resourceGroupName, String resourceName, String skipToken,
         String takeToken, String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName, skipToken, takeToken, filter, context),
+            () -> listSinglePageAsync(resourceGroupName, resourceName, skipToken, takeToken, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of migration items in the vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationItemInner> list(String resourceName, String resourceGroupName) {
+    public PagedIterable<MigrationItemInner> list(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String takeToken = null;
         final String filter = null;
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, skipToken, takeToken, filter));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, skipToken, takeToken, filter));
     }
 
     /**
      * Gets the list of migration items in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param filter OData filter options.
@@ -3740,9 +3740,9 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
      * @return the list of migration items in the vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationItemInner> list(String resourceName, String resourceGroupName, String skipToken,
+    public PagedIterable<MigrationItemInner> list(String resourceGroupName, String resourceName, String skipToken,
         String takeToken, String filter, Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, skipToken, takeToken, filter, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, skipToken, takeToken, filter, context));
     }
 
     /**

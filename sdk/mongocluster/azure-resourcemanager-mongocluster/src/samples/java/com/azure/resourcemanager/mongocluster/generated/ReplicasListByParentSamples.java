@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class ReplicasListByParentSamples {
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_ReplicaList.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ReplicaList.json
      */
     /**
      * Sample code: List the replicas linked to a Mongo Cluster resource.

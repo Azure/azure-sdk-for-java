@@ -3,20 +3,22 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, ObjectNodeMap, SparkBridgeImplementationInternal, Strings, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
+import com.azure.cosmos.spark.CosmosConstants.MetricNames
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.{CosmosItemSerializer, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
+import org.apache.spark.sql.connector.metric.CustomTaskMetric
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
@@ -46,14 +48,30 @@ private case class ChangeFeedPartitionReader
   assert(partition.continuationState.isDefined, "Argument 'partition.continuationState' must be defined here.")
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
+  private val startLsn = getPartitionStartLsn
+
+  private val changeFeedLSNRangeMetric = new CustomTaskMetric {
+    override def name(): String = MetricNames.ChangeFeedLsnRange
+    override def value(): Long = getChangeFeedLSNRange
+  }
+  private val changeFeedItemsCntMetric = new CustomTaskMetric {
+    override def name(): String = MetricNames.ChangeFeedItemsCnt
+    override def value(): Long = getChangeFeedItemsCnt
+  }
+  private val changeFeedPartitionIndexMetric = new CustomTaskMetric {
+    override def name(): String = MetricNames.ChangeFeedPartitionIndex
+    override def value(): Long = if (partition.index.isDefined) partition.index.get else -1
+  }
+
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  log.logInfo(s"Reading from feed range ${partition.feedRange} of " +
+  log.logInfo(s"Reading from feed range ${partition.feedRange}, startLsn $getPartitionStartLsn, " +
+    s"endLsn ${partition.endLsn} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(
       config,
-      readConfig.forceEventualConsistency,
+      readConfig.readConsistencyStrategy,
       sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedPartitionReader(partition $partition)")
@@ -86,6 +104,15 @@ private case class ChangeFeedPartitionReader
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
   private val cosmosChangeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
+
+
+  override def currentMetricsValues(): Array[CustomTaskMetric] = {
+    Array(
+      changeFeedLSNRangeMetric,
+      changeFeedItemsCntMetric,
+      changeFeedPartitionIndexMetric
+    )
+  }
 
   private def changeFeedItemFactoryMethod(objectNode: ObjectNode): ChangeFeedSparkRowItem = {
     val pkValue = partitionKeyDefinition match {
@@ -157,10 +184,17 @@ private case class ChangeFeedPartitionReader
     }
   }
 
+  private def getPartitionStartLsn: Long = {
+    if (partition.continuationState.isDefined) {
+      SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
+    } else {
+      0
+    }
+  }
+
   private val changeFeedRequestOptions = {
 
-    val startLsn =
-      SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
+    val startLsn = getPartitionStartLsn
     log.logDebug(
       s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
 
@@ -247,5 +281,29 @@ private case class ChangeFeedPartitionReader
     if (throughputControlClientCacheItemOpt.isDefined) {
       throughputControlClientCacheItemOpt.get.close()
     }
+  }
+
+  private def getChangeFeedItemsCnt: Long = {
+    this.iterator.getTotalChangeFeedItemsCnt
+  }
+
+  private def getChangeFeedLSNRange: Long = {
+    // calculate the changes per lsn
+    val latestLsnOpt = this.iterator.getLatestContinuationToken match {
+      case Some(continuationToken) =>
+        // for cases where the feed range spans multiple physical partitions
+        // pick the smallest lsn
+        Some(SparkBridgeImplementationInternal
+         .extractContinuationTokensFromChangeFeedStateJson(continuationToken)
+         .minBy(_._2)._2)
+      case None =>
+        // for change feed, we would only reach here before the first page got fetched
+        // fallback to use the continuation token from the partition instead
+        Some(SparkBridgeImplementationInternal
+         .extractContinuationTokensFromChangeFeedStateJson(partition.continuationState.get)
+         .minBy(_._2)._2)
+    }
+
+    if (latestLsnOpt.isDefined) latestLsnOpt.get - startLsn else 0
   }
 }

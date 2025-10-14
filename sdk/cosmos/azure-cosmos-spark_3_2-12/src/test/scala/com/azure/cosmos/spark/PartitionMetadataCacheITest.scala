@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations}
 
 import java.time.{Duration, Instant}
@@ -23,7 +24,7 @@ class PartitionMetadataCacheITest
     "spark.cosmos.container" -> cosmosContainer
   )
   private[this] val clientConfig = CosmosClientConfiguration(
-    userConfig, useEventualConsistency = true, sparkEnvironmentInfo = "")
+    userConfig, readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL, sparkEnvironmentInfo = "")
   private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
   private[this] var feedRange: NormalizedRange = NormalizedRange("", "FF")
 

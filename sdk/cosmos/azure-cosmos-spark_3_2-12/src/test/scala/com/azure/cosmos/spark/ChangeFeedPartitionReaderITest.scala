@@ -100,7 +100,7 @@ class ChangeFeedPartitionReaderITest
 
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
-  val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
+  val diagnosticsConfig = DiagnosticsConfig()
   val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(lsn1),
    Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
@@ -189,7 +189,7 @@ class ChangeFeedPartitionReaderITest
 
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
-  val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
+  val diagnosticsConfig = DiagnosticsConfig()
   val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(Math.max(lsn1, lsn2) + 1)
    , Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
@@ -227,6 +227,105 @@ class ChangeFeedPartitionReaderITest
 
  }
 
+ "change feed partition reader" should "report custom metrics" in {
+  val cosmosEndpoint = TestConfigurations.HOST
+  val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  val testId = UUID.randomUUID().toString
+  val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+   "source_" + testId,
+   "/sequenceNumber",
+   ThroughputProperties.createManualThroughput(400)).block()
+  val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(sourceContainerResponse.getProperties.getId)
+  val rid = sourceContainerResponse.getProperties.getResourceId
+  val continuationState = s"""{
+  "V": 1,
+  "Rid": "$rid",
+  "Mode": "INCREMENTAL",
+  "StartFrom": {
+    "Type": "BEGINNING"
+  },
+  "Continuation": {
+    "V": 1,
+    "Rid": "$rid",
+    "Continuation": [
+      {
+        "token": "1",
+        "range": {
+          "min": "",
+          "max": "FF"
+        }
+      }
+    ],
+    "Range": {
+      "min": "",
+      "max": "FF"
+    }
+  }
+}"""
+  val encoder = Base64.getEncoder
+  val encodedBytes = encoder.encode(continuationState.getBytes("UTF-8"))
+  val continuationStateEncoded = new String(encodedBytes, "UTF-8")
+
+  val changeFeedCfg = Map(
+   "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+   "spark.cosmos.accountKey" -> cosmosMasterKey,
+   "spark.cosmos.database" -> cosmosDatabase,
+   "spark.cosmos.container" -> sourceContainer.getId(),
+   "spark.cosmos.read.inferSchema.enabled" -> "false",
+  )
+  var inputtedDocuments = 10
+  var lsn1 = 0L
+  for (_ <- 0 until inputtedDocuments) {
+   lsn1 = ingestTestDocuments(sourceContainer, 1)
+  }
+
+  val structs = Array(
+   StructField("_rawBody", StringType, false),
+   StructField("_etag", StringType, false),
+   StructField("_ts", StringType, false),
+   StructField("id", StringType, false),
+   StructField("_lsn", StringType, false)
+  )
+  val schema = new StructType(structs)
+
+  val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
+  val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
+  val diagnosticsConfig = DiagnosticsConfig()
+  val cosmosInputPartition =
+   new CosmosInputPartition(
+    NormalizedRange("", "FF"),
+    Some(lsn1 + 1),
+    Some(continuationStateEncoded),
+    index = Some(2))
+  val changeFeedPartitionReader = new ChangeFeedPartitionReader(
+   cosmosInputPartition,
+   changeFeedCfg,
+   schema,
+   diagnosticContext,
+   cosmosClientStateHandles,
+   diagnosticsConfig,
+   ""
+  )
+  var count = 0
+  implicit val ec: ExecutionContext = ExecutionContext.global
+  Future {
+   while (changeFeedPartitionReader.next()) {
+    changeFeedPartitionReader.get()
+    count += 1
+   }
+  }
+  sleep(2000)
+
+  val currentMetrics = changeFeedPartitionReader.currentMetricsValues()
+  currentMetrics.length shouldBe 3
+  currentMetrics(0).name() shouldBe CosmosConstants.MetricNames.ChangeFeedLsnRange
+  currentMetrics(0).value() shouldBe(lsn1 - 1)
+  currentMetrics(1).name() shouldBe CosmosConstants.MetricNames.ChangeFeedItemsCnt
+  currentMetrics(1).value() shouldBe 10
+  currentMetrics(2).name() shouldBe CosmosConstants.MetricNames.ChangeFeedPartitionIndex
+  currentMetrics(2).value() shouldBe 2
+ }
+
  private[this] def initializeAndBroadcastCosmosClientStatesForContainer(config: Map[String, String])
  : Broadcast[CosmosClientMetadataCachesSnapshots] = {
   val userConfig = CosmosConfig.getEffectiveConfig(None, None, config)
@@ -235,7 +334,7 @@ class ChangeFeedPartitionReaderITest
   val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   val cosmosClientConfig = CosmosClientConfiguration(
    effectiveUserConfig,
-   useEventualConsistency = readConfig.forceEventualConsistency,
+   readConsistencyStrategy = readConfig.readConsistencyStrategy,
    "")
   val calledFrom = s"ChangeFeedPartitionReaderTest.initializeAndBroadcastCosmosClientStateForContainer"
   Loan(

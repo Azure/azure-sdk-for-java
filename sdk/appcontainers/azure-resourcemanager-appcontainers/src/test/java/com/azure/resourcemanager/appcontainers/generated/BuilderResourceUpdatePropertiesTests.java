@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BuilderResourceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BuilderResourceUpdateProperties model = BinaryData.fromString("{\"environmentId\":\"suyonobglaocq\"}")
+        BuilderResourceUpdateProperties model = BinaryData.fromString("{\"environmentId\":\"zlfbxzpuzycispnq\"}")
             .toObject(BuilderResourceUpdateProperties.class);
-        Assertions.assertEquals("suyonobglaocq", model.environmentId());
+        Assertions.assertEquals("zlfbxzpuzycispnq", model.environmentId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BuilderResourceUpdateProperties model
-            = new BuilderResourceUpdateProperties().withEnvironmentId("suyonobglaocq");
+            = new BuilderResourceUpdateProperties().withEnvironmentId("zlfbxzpuzycispnq");
         model = BinaryData.fromObject(model).toObject(BuilderResourceUpdateProperties.class);
-        Assertions.assertEquals("suyonobglaocq", model.environmentId());
+        Assertions.assertEquals("zlfbxzpuzycispnq", model.environmentId());
     }
 }

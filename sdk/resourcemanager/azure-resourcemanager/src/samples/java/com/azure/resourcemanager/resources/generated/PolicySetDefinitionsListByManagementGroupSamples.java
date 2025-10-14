@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * listPolicySetDefinitionsByManagementGroup.json
      */
     /**
@@ -23,6 +23,6 @@ public final class PolicySetDefinitionsListByManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .listByManagementGroup("MyManagementGroup", null, null, com.azure.core.util.Context.NONE);
+            .listByManagementGroup("MyManagementGroup", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

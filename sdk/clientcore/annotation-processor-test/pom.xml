@@ -1,0 +1,219 @@
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.clientcore</groupId>
+    <artifactId>clientcore-parent</artifactId>
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <relativePath>../../parents/clientcore-parent</relativePath>
+  </parent>
+
+  <groupId>io.clientcore</groupId>
+  <artifactId>annotation-processor-test</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor-test;current} -->
+
+  <name>Java Core library tests for annotation-processor features.</name>
+  <description>Tests that validate features of the annotation-processor tooling.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.skip>true</jacoco.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <spotless.skip>true</spotless.skip>
+    <revapi.skip>true</revapi.skip>
+    <doclint>all,-missing</doclint>
+    <javaModulesSurefireArgLine>
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
+
+      --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>run-annotation-processing</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <release>8</release>
+              <proc>only</proc>
+              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+              <annotationProcessorPaths>
+                <annotationProcessorPath>
+                  <groupId>io.clientcore</groupId>
+                  <artifactId>annotation-processor</artifactId>
+                  <version>1.0.0-beta.4</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
+                </annotationProcessorPath>
+              </annotationProcessorPaths>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
+              <compilerArgs>
+                <arg>-Xlint:-options</arg>
+              </compilerArgs>
+              <!-- Exclude module-info.java as this is not supported in Java 8 and is not needed by annotation processor -->
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>annotation-processor</artifactId>
+            <version>1.0.0-beta.4</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <!-- This plugin removes previously generated *ServiceImpl files before annotation processing runs, preventing FileExists errors during code generation. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-clean-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>custom-clean</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>src/main/java/io/clientcore/annotation/processor/test/</directory>
+                  <includes>
+                    <include>**/*ServiceImpl.java</include>
+                  </includes>
+                </fileset>
+              </filesets>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy the generated impl file to src/main -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-and-clean-generated-impl</id>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <available file="target/generated-sources/io/clientcore/annotation/processor/test/" type="dir" property="generated.dir.exists"/>
+                <copy todir="src/main/java/io/clientcore/annotation/processor/test/"
+                      overwrite="true"
+                      failonerror="false"
+                      verbose="true">
+                  <fileset dir="target/generated-sources/io/clientcore/annotation/processor/test/" erroronmissingdir="false">
+                    <include name="**/*.java"/>
+                  </fileset>
+                </copy>
+                <!-- Delete the generated-sources directory after copying -->
+                <delete dir="target/generated-sources/io/clientcore/annotation/processor/test/" failonerror="false"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

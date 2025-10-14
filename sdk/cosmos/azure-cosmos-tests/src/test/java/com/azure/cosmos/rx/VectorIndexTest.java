@@ -309,6 +309,7 @@ public class VectorIndexTest extends TestSuiteBase {
             if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
                 assertThat(expected.get(i).getQuantizationSizeInBytes()).isEqualTo(actual.get(i).getQuantizationSizeInBytes());
+                assertThat(expected.get(i).getVectorIndexShardKeys()).isEqualTo(actual.get(i).getVectorIndexShardKeys());
             }
             if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
                 assertThat(expected.get(i).getIndexingSearchListSize()).isEqualTo(actual.get(i).getIndexingSearchListSize());
@@ -326,12 +327,14 @@ public class VectorIndexTest extends TestSuiteBase {
         cosmosVectorIndexSpec2.setPath("/vector2");
         cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
         cosmosVectorIndexSpec2.setQuantizationSizeInBytes(2);
+        cosmosVectorIndexSpec2.setVectorIndexShardKeys(Arrays.asList("/zipCode"));
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec3.setPath("/vector3");
         cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
         cosmosVectorIndexSpec3.setQuantizationSizeInBytes(2);
         cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
+        cosmosVectorIndexSpec3.setVectorIndexShardKeys(Arrays.asList("/country/city"));
 
         return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
     }

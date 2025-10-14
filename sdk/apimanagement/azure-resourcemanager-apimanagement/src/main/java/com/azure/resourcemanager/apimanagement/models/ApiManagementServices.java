@@ -144,13 +144,15 @@ public interface ApiManagementServices {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource migrateToStv2(String resourceGroupName, String serviceName, Context context);
+    ApiManagementServiceResource migrateToStv2(String resourceGroupName, String serviceName,
+        MigrateToStv2Contract parameters, Context context);
 
     /**
      * List all API Management services within a resource group.

@@ -54,7 +54,7 @@ public final class RoleDefinitionsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AccessControlClientR")
+    @ServiceInterface(name = "AccessControlClientRoleDefinitions")
     public interface RoleDefinitionsService {
         @Get("/roleDefinitions")
         @ExpectedResponses({ 200 })

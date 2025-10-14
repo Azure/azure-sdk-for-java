@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PrivateLinkResourceListResult;
@@ -21,19 +21,19 @@ public final class PrivateEndpointConnectionsListPrivateLinkResourcesWithRespons
     @Test
     public void testListPrivateLinkResourcesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"iwdyyhdt\",\"requiredMembers\":[\"brwqwv\",\"wceh\",\"rtrgpdlbtbxhyfwj\"],\"requiredZoneNames\":[\"tuzrltpecsdkbqfz\",\"vttqjntvhnjp\",\"hjlugcupcyfrhoo\"]},\"id\":\"v\",\"name\":\"vuxyeeafdxsuwly\",\"type\":\"xzhgbspdx\"},{\"properties\":{\"groupId\":\"qu\",\"requiredMembers\":[\"xqomzdfaupqve\",\"dzwnkbjqp\",\"modwhqu\",\"sochtuxap\"],\"requiredZoneNames\":[\"wqlbxmynslcvyn\",\"vwttts\",\"czroddc\",\"qimodnbjmj\"]},\"id\":\"k\",\"name\":\"bucmzkqt\",\"type\":\"fja\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ywwumbusnawb\",\"requiredMembers\":[\"jkhmsobua\",\"okiclrmmudvo\",\"t\",\"scidkwzn\"],\"requiredZoneNames\":[\"lizd\",\"ysmzgbogdj\"]},\"id\":\"uybcp\",\"name\":\"dvuotkvkbpmk\",\"type\":\"pbnkcwauylkbdsk\"},{\"properties\":{\"groupId\":\"frtlukaf\",\"requiredMembers\":[\"lempahyuxxei\",\"eonpwrnhqa\",\"uvvysphjkxgfmes\",\"jeqqfynvckxtanl\"],\"requiredZoneNames\":[\"rvzhdn\",\"qcuwtpss\"]},\"id\":\"q\",\"name\":\"nolspvxpiegxlzd\",\"type\":\"atptzkmfvdrkcw\"},{\"properties\":{\"groupId\":\"nwsffiahf\",\"requiredMembers\":[\"zzxirxxk\"],\"requiredZoneNames\":[\"kdqzhrhk\",\"vvpyznjwmduuz\",\"yjbzzws\"]},\"id\":\"sqytktvof\",\"name\":\"xorhsxcsoaxcme\",\"type\":\"kpxt\"},{\"properties\":{\"groupId\":\"nkubwkd\",\"requiredMembers\":[\"lnbyiowetwwjv\",\"ycygcvgebf\"],\"requiredZoneNames\":[\"yan\",\"ecvttkgopdjqnsic\",\"cqtec\",\"exscxhzh\"]},\"id\":\"jlypwgwbycfam\",\"name\":\"ikisppygothi\",\"type\":\"irhhbogxw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateEndpointConnections()
-            .listPrivateLinkResourcesWithResponse("mbipysehyyb", "bfjcvmk", com.azure.core.util.Context.NONE)
+            .listPrivateLinkResourcesWithResponse("yvrexit", "zrikno", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tuzrltpecsdkbqfz", response.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("lizd", response.value().get(0).requiredZoneNames().get(0));
     }
 }

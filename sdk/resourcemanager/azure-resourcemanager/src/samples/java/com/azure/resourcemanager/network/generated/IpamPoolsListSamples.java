@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class IpamPoolsListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_List.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_List.json
      */
     /**
      * Sample code: IpamPools_List.

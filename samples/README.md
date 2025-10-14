@@ -62,7 +62,7 @@ attempt to be a complete directory of guides contained in this repository.
 - [How to use **Azure Core Tracing Opentelemetry
   **](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-tracing-opentelemetry#examples)
 - [How to configure, access, and analyze **logging
-  ** information](https://learn.microsoft.com/en-us/azure/developer/java/sdk/logging-overview)
+  ** information](https://learn.microsoft.com/azure/developer/java/sdk/logging-overview)
 
 #### Azure Security KeyVault Keys
 

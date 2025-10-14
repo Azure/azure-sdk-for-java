@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -56,6 +57,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
+    private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
@@ -87,6 +89,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         logger.info("Lease with token {}: processing task started with owner {}.",
             this.lease.getLeaseToken(), this.lease.getOwner());
         this.hasMoreResults = true;
+        this.hasServerContinuationTokenChange = false;
         this.checkpointer.setCancellationToken(cancellationToken);
 
         return Flux.just(this)
@@ -119,8 +122,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 return this.documentClient.createDocumentChangeFeedQuery(
                         this.settings.getCollectionSelfLink(),
                         this.options,
-                        itemType)
-                    .limitRequest(1);
+                        itemType);
             })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
@@ -135,6 +137,10 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         .getContinuationTokenCount() == 1,
                     "For ChangeFeedProcessor the continuation state should always have one range/continuation");
 
+                this.hasServerContinuationTokenChange =
+                    !StringUtils.equals(this.lastServerContinuationToken, continuationToken)
+                        && StringUtils.isNotEmpty(continuationToken);
+
                 this.lastServerContinuationToken = continuationToken;
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
 
@@ -142,7 +148,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     logger.info("Lease with token {}: processing {} feeds with owner {}.",
                         this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
-                        .doOnError(throwable -> logger.debug(
+                        .doOnError(throwable -> logger.warn(
                             "Lease with token {}: Exception was thrown from thread {}",
                             this.lease.getLeaseToken(),
                             Thread.currentThread().getId(),
@@ -153,23 +159,26 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 } else {
-                    // still need to checkpoint with the new continuation token
-                    return this.checkpointer.checkpointPartition(continuationState)
-                        .doOnError(throwable -> {
-                            logger.debug(
-                                "Failed to checkpoint Lease with token {} from thread {}",
-                                this.lease.getLeaseToken(),
-                                Thread.currentThread().getId(),
-                                throwable);
-                        })
-                        .flatMap(lease -> {
-                            this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
-                            if (cancellationToken.isCancellationRequested()) {
-                                return Mono.error(new TaskCancelledException());
+                    // only skip checkpoint for 304 & noServerContinuationToken change
+                    boolean shouldSkipCheckpoint = !hasServerContinuationTokenChange && !hasMoreResults;
+                    return Mono.just(shouldSkipCheckpoint)
+                        .flatMap(skipCheckpoint -> {
+                            if (skipCheckpoint) {
+                                return Mono.empty();
+                            } else {
+                                return this.checkpointer.checkpointPartition(continuationState)
+                                    .doOnError(throwable -> {
+                                        logger.warn(
+                                            "Failed to checkpoint Lease with token {} from thread {}",
+                                            this.lease.getLeaseToken(),
+                                            Thread.currentThread().getId(),
+                                            throwable);
+                                    });
                             }
-
-
-                            return Mono.empty();
+                        })
+                        .doOnSuccess((Void) -> {
+                            this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
+                            if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
             })

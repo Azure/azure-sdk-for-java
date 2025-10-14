@@ -173,7 +173,9 @@ public final class DataMapperMapping implements JsonSerializable<DataMapperMappi
         jsonWriter.writeStringField("sourceEntityName", this.sourceEntityName);
         jsonWriter.writeJsonField("sourceConnectionReference", this.sourceConnectionReference);
         jsonWriter.writeJsonField("attributeMappingInfo", this.attributeMappingInfo);
-        jsonWriter.writeUntypedField("sourceDenormalizeInfo", this.sourceDenormalizeInfo);
+        if (this.sourceDenormalizeInfo != null) {
+            jsonWriter.writeUntypedField("sourceDenormalizeInfo", this.sourceDenormalizeInfo);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
     /*
      * The stream name which is used for preview.
      */
+    @Generated
     private String streamName;
 
     /*
      * Row limits for preview response.
      */
+    @Generated
     private Integer rowLimits;
 
     /*
      * Array of column names.
      */
+    @Generated
     private List<String> columns;
 
     /*
      * The expression which is used for preview.
      */
+    @Generated
     private String expression;
 
     /**
      * Creates an instance of DataFlowDebugCommandPayload class.
      */
+    @Generated
     public DataFlowDebugCommandPayload() {
     }
 
@@ -48,6 +54,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * 
      * @return the streamName value.
      */
+    @Generated
     public String getStreamName() {
         return this.streamName;
     }
@@ -58,6 +65,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * @param streamName the streamName value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
+    @Generated
     public DataFlowDebugCommandPayload setStreamName(String streamName) {
         this.streamName = streamName;
         return this;
@@ -68,6 +76,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * 
      * @return the rowLimits value.
      */
+    @Generated
     public Integer getRowLimits() {
         return this.rowLimits;
     }
@@ -78,6 +87,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * @param rowLimits the rowLimits value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
+    @Generated
     public DataFlowDebugCommandPayload setRowLimits(Integer rowLimits) {
         this.rowLimits = rowLimits;
         return this;
@@ -88,6 +98,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * 
      * @return the columns value.
      */
+    @Generated
     public List<String> getColumns() {
         return this.columns;
     }
@@ -98,6 +109,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * @param columns the columns value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
+    @Generated
     public DataFlowDebugCommandPayload setColumns(List<String> columns) {
         this.columns = columns;
         return this;
@@ -108,6 +120,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * 
      * @return the expression value.
      */
+    @Generated
     public String getExpression() {
         return this.expression;
     }
@@ -118,6 +131,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * @param expression the expression value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
+    @Generated
     public DataFlowDebugCommandPayload setExpression(String expression) {
         this.expression = expression;
         return this;
@@ -126,6 +140,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class DataFlowDebugCommandPayload implements JsonSerializable<DataF
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowDebugCommandPayload.
      */
+    @Generated
     public static DataFlowDebugCommandPayload fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugCommandPayload deserializedDataFlowDebugCommandPayload = new DataFlowDebugCommandPayload();

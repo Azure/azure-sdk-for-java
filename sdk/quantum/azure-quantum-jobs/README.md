@@ -5,7 +5,7 @@ Azure Quantum is a Microsoft Azure service that you can use to run quantum compu
 - Enumerate provider status and quotas
 
 
-[Source code][source] | [API reference documentation](https://azure.github.io/azure-sdk-for-java/) | [Product documentation](https://docs.microsoft.com/azure/quantum/) | [Samples][samples]
+[Source code][source] | [API reference documentation](https://azure.github.io/azure-sdk-for-java/) | [Product documentation](https://learn.microsoft.com/azure/quantum/) | [Samples][samples]
 
 ## Getting started
 
@@ -20,7 +20,7 @@ Install the Azure Quantum Jobs client library for Java by adding the following t
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-quantum-jobs</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -186,7 +186,7 @@ All Quantum Jobs service operations will throw a RequestFailedException on failu
 
 ## Next steps
 
-*  Visit our [Product documentation](https://docs.microsoft.com/azure/quantum/) to learn more about Azure Quantum.
+*  Visit our [Product documentation](https://learn.microsoft.com/azure/quantum/) to learn more about Azure Quantum.
 
 ## Contributing
 
@@ -205,25 +205,25 @@ additional questions or comments.
 
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/quantum/azure-quantum-jobs/src
-[style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
-[token-credential]: https://docs.microsoft.com/dotnet/api/azure.core.tokencredential?view=azure-dotnet
-[resource-groups]: https://docs.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal
-[workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
+[style-guide-msft]: https://learn.microsoft.com/style-guide/capitalization
+[token-credential]: https://learn.microsoft.com/dotnet/api/azure.core.tokencredential?view=azure-dotnet
+[resource-groups]: https://learn.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal
+[workspaces]: https://learn.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [location]: https://azure.microsoft.com/global-infrastructure/services/?products=quantum
-[blob-storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
+[blob-storage]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-introduction
 [contributing]: https://github.com/Azure/azure-sdk-for-java/tree/main/CONTRIBUTING.md
 [subscriptions]: https://ms.portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade
-[credentials]: https://docs.microsoft.com/dotnet/api/overview/azure/identity-readme#credentials
-[style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
+[credentials]: https://learn.microsoft.com/dotnet/api/overview/azure/identity-readme#credentials
+[style-guide-msft]: https://learn.microsoft.com/style-guide/capitalization
 [style-guide-cloud]: https://aka.ms/azsdk/cloud-style-guide
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [azure_quantum]: https://azure.microsoft.com/services/quantum/
-[azure_quantum_workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
+[azure_quantum_workspaces]: https://learn.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [azure_storage]: https://azure.microsoft.com/free/storage/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_contact]: mailto:opencode@microsoft.com
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/quantum/azure-quantum-jobs/src/samples/java/com/azure/quantum/jobs
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
+

@@ -17,23 +17,23 @@ public interface ReplicationProtectionIntents {
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ASR replication protection intent objects in the vault as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ReplicationProtectionIntent> list(String resourceName, String resourceGroupName);
+    PagedIterable<ReplicationProtectionIntent> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of replication protection intent objects.
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param context The context to associate with this operation.
@@ -43,7 +43,7 @@ public interface ReplicationProtectionIntents {
      * @return the list of ASR replication protection intent objects in the vault as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ReplicationProtectionIntent> list(String resourceName, String resourceGroupName, String skipToken,
+    PagedIterable<ReplicationProtectionIntent> list(String resourceGroupName, String resourceName, String skipToken,
         String takeToken, Context context);
 
     /**
@@ -51,8 +51,8 @@ public interface ReplicationProtectionIntents {
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +60,7 @@ public interface ReplicationProtectionIntents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an ASR replication protection intent along with {@link Response}.
      */
-    Response<ReplicationProtectionIntent> getWithResponse(String resourceName, String resourceGroupName,
+    Response<ReplicationProtectionIntent> getWithResponse(String resourceGroupName, String resourceName,
         String intentObjectName, Context context);
 
     /**
@@ -68,15 +68,15 @@ public interface ReplicationProtectionIntents {
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an ASR replication protection intent.
      */
-    ReplicationProtectionIntent get(String resourceName, String resourceGroupName, String intentObjectName);
+    ReplicationProtectionIntent get(String resourceGroupName, String resourceName, String intentObjectName);
 
     /**
      * Gets the details of a Replication protection intent item.

@@ -712,7 +712,15 @@ private[cosmos] class CosmosRowConverterBase(
                 case _ => null
             }
         } else {
-            null
+            objectNode.get(MetadataJsonBodyAttributeName) match {
+                case metadataNode: JsonNode =>
+                    metadataNode.get(IdAttributeName) match {
+                        case valueNode: JsonNode =>
+                            Option(valueNode).fold(null: String)(v => v.asText(null))
+                        case _ => null
+                    }
+                case _ => null
+            }
         }
     }
 

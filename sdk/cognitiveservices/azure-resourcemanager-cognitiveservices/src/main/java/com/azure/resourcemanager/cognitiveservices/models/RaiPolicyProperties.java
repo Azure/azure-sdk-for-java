@@ -24,7 +24,7 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
 
     /*
      * Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3.
-     * Please use 'Asynchronous_filter' after 2024-10-01. It is the same as 'Deferred' in previous version.
+     * Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.
      */
     private RaiPolicyMode mode;
 
@@ -60,7 +60,7 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
 
     /**
      * Get the mode property: Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2,
-     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2024-10-01. It is the same as 'Deferred' in
+     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in
      * previous version.
      * 
      * @return the mode value.
@@ -71,7 +71,7 @@ public final class RaiPolicyProperties implements JsonSerializable<RaiPolicyProp
 
     /**
      * Set the mode property: Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2,
-     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2024-10-01. It is the same as 'Deferred' in
+     * Asynchronous_filter =3. Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in
      * previous version.
      * 
      * @param mode the mode value to set.

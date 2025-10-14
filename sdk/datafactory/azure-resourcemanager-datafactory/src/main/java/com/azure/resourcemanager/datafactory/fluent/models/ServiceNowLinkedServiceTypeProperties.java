@@ -324,13 +324,23 @@ public final class ServiceNowLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("endpoint", this.endpoint);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

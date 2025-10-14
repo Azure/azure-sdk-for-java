@@ -342,10 +342,11 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
-            .parallel()
+            .parallel((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0))
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long"))
-            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
+            .flatMap(ignored -> doRequest(client, "/long"), true, 1, 1)
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close),
+                true, 1, 1);
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
             assertArraysEqual(LONG_BODY, response);
@@ -358,7 +359,7 @@ public class JdkHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,46 +21,55 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
     /*
      * The ServiceEndpoint property.
      */
+    @Generated
     private String serviceEndpoint;
 
     /*
      * The ContainerName property.
      */
+    @Generated
     private String containerName;
 
     /*
      * The Prefix property.
      */
+    @Generated
     private String prefix;
 
     /*
      * The Marker property.
      */
+    @Generated
     private String marker;
 
     /*
      * The MaxResults property.
      */
+    @Generated
     private int maxResults;
 
     /*
      * The Delimiter property.
      */
+    @Generated
     private String delimiter;
 
     /*
      * The Segment property.
      */
+    @Generated
     private BlobHierarchyListSegment segment;
 
     /*
      * The NextMarker property.
      */
+    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of ListBlobsHierarchySegmentResponse class.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse() {
     }
 
@@ -69,6 +78,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the serviceEndpoint value.
      */
+    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -79,6 +89,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -89,6 +100,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the containerName value.
      */
+    @Generated
     public String getContainerName() {
         return this.containerName;
     }
@@ -99,6 +111,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param containerName the containerName value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
@@ -109,6 +122,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the prefix value.
      */
+    @Generated
     public String getPrefix() {
         return this.prefix;
     }
@@ -119,6 +133,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param prefix the prefix value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
@@ -129,6 +144,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the marker value.
      */
+    @Generated
     public String getMarker() {
         return this.marker;
     }
@@ -139,6 +155,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param marker the marker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
@@ -149,6 +166,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the maxResults value.
      */
+    @Generated
     public int getMaxResults() {
         return this.maxResults;
     }
@@ -159,6 +177,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
@@ -169,6 +188,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the delimiter value.
      */
+    @Generated
     public String getDelimiter() {
         return this.delimiter;
     }
@@ -179,6 +199,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param delimiter the delimiter value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
@@ -189,6 +210,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the segment value.
      */
+    @Generated
     public BlobHierarchyListSegment getSegment() {
         return this.segment;
     }
@@ -199,6 +221,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param segment the segment value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setSegment(BlobHierarchyListSegment segment) {
         this.segment = segment;
         return this;
@@ -209,6 +232,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * 
      * @return the nextMarker value.
      */
+    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -219,19 +243,22 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsHierarchySegmentResponse object itself.
      */
+    @Generated
     public ListBlobsHierarchySegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringAttribute("ContainerName", this.containerName);
@@ -252,6 +279,7 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * null if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListBlobsHierarchySegmentResponse.
      */
+    @Generated
     public static ListBlobsHierarchySegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -266,9 +294,11 @@ public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<
      * null if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListBlobsHierarchySegmentResponse.
      */
+    @Generated
     public static ListBlobsHierarchySegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ListBlobsHierarchySegmentResponse deserializedListBlobsHierarchySegmentResponse
                 = new ListBlobsHierarchySegmentResponse();

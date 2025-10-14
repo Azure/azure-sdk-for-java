@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.DeletedServiceContract;
@@ -21,20 +21,20 @@ public final class DeletedServicesPurgeMockTests {
     @Test
     public void testPurge() throws Exception {
         String responseStr
-            = "{\"properties\":{\"serviceId\":\"jbpwjwzqgipdz\",\"scheduledPurgeDate\":\"2021-09-22T11:45:18Z\",\"deletionDate\":\"2021-01-08T00:12:16Z\"},\"location\":\"fpzcuudqhadx\",\"id\":\"vvlyibweuaugtxl\",\"name\":\"ncoqxtvytzq\",\"type\":\"yldjvzm\"}";
+            = "{\"properties\":{\"serviceId\":\"va\",\"scheduledPurgeDate\":\"2021-11-01T12:37:16Z\",\"deletionDate\":\"2021-09-09T07:02:40Z\"},\"location\":\"yeedvpmodktdut\",\"id\":\"dvvgkmorbpcje\",\"name\":\"fyvuztnsv\",\"type\":\"shkkgygfohrmehh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeletedServiceContract response
-            = manager.deletedServices().purge("qpvhszopeukufds", "bsskgqjemosq", com.azure.core.util.Context.NONE);
+            = manager.deletedServices().purge("cuiaun", "odincfbaoboiahk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jbpwjwzqgipdz", response.serviceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T11:45:18Z"), response.scheduledPurgeDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T00:12:16Z"), response.deletionDate());
+        Assertions.assertEquals("va", response.serviceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T12:37:16Z"), response.scheduledPurgeDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T07:02:40Z"), response.deletionDate());
     }
 }

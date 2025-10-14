@@ -4,73 +4,158 @@
 
 package com.azure.maps.weather.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Defines values for DailyDuration.
  */
-public final class DailyDuration extends ExpandableStringEnum<DailyDuration> {
+public final class DailyDuration implements ExpandableEnum<Integer>, JsonSerializable<DailyDuration> {
+    private static final Map<Integer, DailyDuration> VALUES = new ConcurrentHashMap<>();
+
+    private static final Function<Integer, DailyDuration> NEW_INSTANCE = DailyDuration::new;
+
     /**
      * 1 day.
      */
-    public static final DailyDuration ONE_DAY = fromInt(1);
+    @Generated
+    public static final DailyDuration ONE_DAY = fromValue(1);
 
     /**
      * 2 days.
      */
-    public static final DailyDuration TWO_DAYS = fromInt(2);
+    @Generated
+    public static final DailyDuration TWO_DAYS = fromValue(2);
 
     /**
      * 3 days.
      */
-    public static final DailyDuration THREE_DAYS = fromInt(3);
+    @Generated
+    public static final DailyDuration THREE_DAYS = fromValue(3);
 
     /**
      * 4 days.
      */
-    public static final DailyDuration FOUR_DAYS = fromInt(4);
+    @Generated
+    public static final DailyDuration FOUR_DAYS = fromValue(4);
 
     /**
      * 5 days.
      */
-    public static final DailyDuration FIVE_DAYS = fromInt(5);
+    @Generated
+    public static final DailyDuration FIVE_DAYS = fromValue(5);
 
     /**
      * 6 days.
      */
-    public static final DailyDuration SIX_DAYS = fromInt(6);
+    @Generated
+    public static final DailyDuration SIX_DAYS = fromValue(6);
 
     /**
      * 7 days.
      */
-    public static final DailyDuration SEVEN_DAYS = fromInt(7);
+    @Generated
+    public static final DailyDuration SEVEN_DAYS = fromValue(7);
 
-    /**
-     * Creates a new instance of DailyDuration value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public DailyDuration() {
+    private final Integer value;
+
+    private DailyDuration(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DailyDuration from its string representation.
+     * Creates or finds a DailyDuration.
      * 
-     * @param name a name to look for.
+     * @param value a value to look for.
      * @return the corresponding DailyDuration.
+     * @throws IllegalArgumentException if value is null.
      */
-    public static DailyDuration fromInt(int name) {
-        return fromString(String.valueOf(name), DailyDuration.class);
+    @Generated
+    public static DailyDuration fromValue(Integer value) {
+        if (value == null) {
+            throw new IllegalArgumentException("'value' cannot be null.");
+        }
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known DailyDuration values.
      * 
-     * @return known DailyDuration values.
+     * @return Known DailyDuration values.
      */
+    @Generated
     public static Collection<DailyDuration> values() {
-        return values(DailyDuration.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the DailyDuration instance.
+     * 
+     * @return the value of the DailyDuration instance.
+     */
+    @Generated
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of DailyDuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailyDuration if the JsonReader was pointing to an instance of it, or null if the
+     * JsonReader was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DailyDuration.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    @Generated
+    public static DailyDuration fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return DailyDuration.fromValue(jsonReader.getInt());
+    }
+
+    @Generated
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Generated
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Generated
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

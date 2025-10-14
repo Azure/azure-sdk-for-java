@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsPatchesClient;
@@ -69,13 +71,23 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientContainerAppsPatches")
     public interface ContainerAppsPatchesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PatchCollection>> listByContainerApp(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PatchCollection> listByContainerAppSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @QueryParam("$filter") String filter,
@@ -92,10 +104,30 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches/{patchName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ContainerAppsPatchResourceInner> getSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("patchName") String patchName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches/{patchName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("patchName") String patchName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches/{patchName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("patchName") String patchName,
@@ -113,6 +145,17 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches/{patchName}/skipConfig")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> skipConfigureSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("patchName") String patchName,
+            @BodyParam("application/json") PatchSkipConfig patchSkipConfig, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches/{patchName}/apply")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -123,10 +166,28 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/patches/{patchName}/apply")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> applySync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("patchName") String patchName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PatchCollection>> listByContainerAppNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PatchCollection> listByContainerAppNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -178,47 +239,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param filter The filter to apply on the operation. For example, $filter=properties/patchApplyStatus eq
      * 'Succeeded'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App patch collection along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContainerAppsPatchResourceInner>> listByContainerAppSinglePageAsync(
-        String resourceGroupName, String containerAppName, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByContainerApp(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List Container Apps Patch resources by ContainerApp.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param filter The filter to apply on the operation. For example, $filter=properties/patchApplyStatus eq
-     * 'Succeeded'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,18 +276,80 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param filter The filter to apply on the operation. For example, $filter=properties/patchApplyStatus eq
      * 'Succeeded'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App patch collection along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ContainerAppsPatchResourceInner> listByContainerAppSinglePage(String resourceGroupName,
+        String containerAppName, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PatchCollection> res
+            = service.listByContainerAppSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, containerAppName, filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Container Apps Patch resources by ContainerApp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App the Patch is associated.
+     * @param filter The filter to apply on the operation. For example, $filter=properties/patchApplyStatus eq
+     * 'Succeeded'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App patch collection as paginated response with {@link PagedFlux}.
+     * @return container App patch collection along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ContainerAppsPatchResourceInner> listByContainerAppAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ContainerAppsPatchResourceInner> listByContainerAppSinglePage(String resourceGroupName,
         String containerAppName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByContainerAppSinglePageAsync(resourceGroupName, containerAppName, filter, context),
-            nextLink -> listByContainerAppNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PatchCollection> res
+            = service.listByContainerAppSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, containerAppName, filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -284,7 +366,8 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     public PagedIterable<ContainerAppsPatchResourceInner> listByContainerApp(String resourceGroupName,
         String containerAppName) {
         final String filter = null;
-        return new PagedIterable<>(listByContainerAppAsync(resourceGroupName, containerAppName, filter));
+        return new PagedIterable<>(() -> listByContainerAppSinglePage(resourceGroupName, containerAppName, filter),
+            nextLink -> listByContainerAppNextSinglePage(nextLink));
     }
 
     /**
@@ -303,7 +386,9 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerAppsPatchResourceInner> listByContainerApp(String resourceGroupName,
         String containerAppName, String filter, Context context) {
-        return new PagedIterable<>(listByContainerAppAsync(resourceGroupName, containerAppName, filter, context));
+        return new PagedIterable<>(
+            () -> listByContainerAppSinglePage(resourceGroupName, containerAppName, filter, context),
+            nextLink -> listByContainerAppNextSinglePage(nextLink, context));
     }
 
     /**
@@ -353,47 +438,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details for specific Container Apps Patch by patch name along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerAppsPatchResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String containerAppName, String patchName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (patchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, patchName, accept, context);
-    }
-
-    /**
-     * Get details for specific Container Apps Patch by patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -421,7 +465,31 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerAppsPatchResourceInner> getWithResponse(String resourceGroupName, String containerAppName,
         String patchName, Context context) {
-        return getWithResponseAsync(resourceGroupName, containerAppName, patchName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (patchName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, containerAppName, patchName, accept, context);
     }
 
     /**
@@ -486,38 +554,81 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName,
+        String patchName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (patchName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, containerAppName, patchName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete specific Container Apps Patch by patch name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App the Patch is associated.
+     * @param patchName The name of the patch.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerAppName,
-        String patchName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName, String patchName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
         if (patchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, patchName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, containerAppName, patchName, accept, context);
     }
 
     /**
@@ -545,28 +656,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerAppName,
-        String patchName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, containerAppName, patchName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete specific Container Apps Patch by patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -575,7 +664,8 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String patchName) {
-        return this.beginDeleteAsync(resourceGroupName, containerAppName, patchName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, containerAppName, patchName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -593,7 +683,8 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String patchName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, containerAppName, patchName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, containerAppName, patchName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -619,32 +710,13 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String patchName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, containerAppName, patchName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete specific Container Apps Patch by patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String patchName) {
-        deleteAsync(resourceGroupName, containerAppName, patchName).block();
+        beginDelete(resourceGroupName, containerAppName, patchName).getFinalResult();
     }
 
     /**
@@ -660,7 +732,7 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String patchName, Context context) {
-        deleteAsync(resourceGroupName, containerAppName, patchName, context).block();
+        beginDelete(resourceGroupName, containerAppName, patchName, context).getFinalResult();
     }
 
     /**
@@ -718,43 +790,94 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
      * @param patchSkipConfig Configure patcher to skip a patch or not.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> skipConfigureWithResponseAsync(String resourceGroupName,
-        String containerAppName, String patchName, PatchSkipConfig patchSkipConfig, Context context) {
+    private Response<BinaryData> skipConfigureWithResponse(String resourceGroupName, String containerAppName,
+        String patchName, PatchSkipConfig patchSkipConfig) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
         if (patchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
         }
         if (patchSkipConfig == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter patchSkipConfig is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchSkipConfig is required and cannot be null."));
         } else {
             patchSkipConfig.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.skipConfigure(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.skipConfigureSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, containerAppName, patchName, patchSkipConfig, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Configure the Container Apps Patch skip option by patch name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App the Patch is associated.
+     * @param patchName The name of the patch.
+     * @param patchSkipConfig Configure patcher to skip a patch or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> skipConfigureWithResponse(String resourceGroupName, String containerAppName,
+        String patchName, PatchSkipConfig patchSkipConfig, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (patchName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+        }
+        if (patchSkipConfig == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchSkipConfig is required and cannot be null."));
+        } else {
+            patchSkipConfig.validate();
+        }
+        final String accept = "application/json";
+        return service.skipConfigureSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, patchName, patchSkipConfig, accept,
             context);
     }
@@ -787,29 +910,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
      * @param patchSkipConfig Configure patcher to skip a patch or not.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSkipConfigureAsync(String resourceGroupName,
-        String containerAppName, String patchName, PatchSkipConfig patchSkipConfig, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = skipConfigureWithResponseAsync(resourceGroupName, containerAppName, patchName, patchSkipConfig, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Configure the Container Apps Patch skip option by patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
-     * @param patchSkipConfig Configure patcher to skip a patch or not.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -818,8 +918,9 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSkipConfigure(String resourceGroupName, String containerAppName,
         String patchName, PatchSkipConfig patchSkipConfig) {
-        return this.beginSkipConfigureAsync(resourceGroupName, containerAppName, patchName, patchSkipConfig)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = skipConfigureWithResponse(resourceGroupName, containerAppName, patchName, patchSkipConfig);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -838,8 +939,9 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSkipConfigure(String resourceGroupName, String containerAppName,
         String patchName, PatchSkipConfig patchSkipConfig, Context context) {
-        return this.beginSkipConfigureAsync(resourceGroupName, containerAppName, patchName, patchSkipConfig, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = skipConfigureWithResponse(resourceGroupName, containerAppName, patchName, patchSkipConfig, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -868,26 +970,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
      * @param patchSkipConfig Configure patcher to skip a patch or not.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> skipConfigureAsync(String resourceGroupName, String containerAppName, String patchName,
-        PatchSkipConfig patchSkipConfig, Context context) {
-        return beginSkipConfigureAsync(resourceGroupName, containerAppName, patchName, patchSkipConfig, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Configure the Container Apps Patch skip option by patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
-     * @param patchSkipConfig Configure patcher to skip a patch or not.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,7 +977,7 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void skipConfigure(String resourceGroupName, String containerAppName, String patchName,
         PatchSkipConfig patchSkipConfig) {
-        skipConfigureAsync(resourceGroupName, containerAppName, patchName, patchSkipConfig).block();
+        beginSkipConfigure(resourceGroupName, containerAppName, patchName, patchSkipConfig).getFinalResult();
     }
 
     /**
@@ -913,7 +995,7 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void skipConfigure(String resourceGroupName, String containerAppName, String patchName,
         PatchSkipConfig patchSkipConfig, Context context) {
-        skipConfigureAsync(resourceGroupName, containerAppName, patchName, patchSkipConfig, context).block();
+        beginSkipConfigure(resourceGroupName, containerAppName, patchName, patchSkipConfig, context).getFinalResult();
     }
 
     /**
@@ -962,38 +1044,81 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Patch along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> applyWithResponse(String resourceGroupName, String containerAppName,
+        String patchName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (patchName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.applySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, containerAppName, patchName, accept, Context.NONE);
+    }
+
+    /**
+     * Apply a Container Apps Patch resource with patch name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App the Patch is associated.
+     * @param patchName The name of the patch.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Patch along with {@link Response} on successful completion of {@link Mono}.
+     * @return container App Patch along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> applyWithResponseAsync(String resourceGroupName, String containerAppName,
-        String patchName, Context context) {
+    private Response<BinaryData> applyWithResponse(String resourceGroupName, String containerAppName, String patchName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
         if (patchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter patchName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.apply(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, patchName, accept, context);
+        return service.applySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, containerAppName, patchName, accept, context);
     }
 
     /**
@@ -1022,29 +1147,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App Patch.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ContainerAppsPatchResourceInner>, ContainerAppsPatchResourceInner>
-        beginApplyAsync(String resourceGroupName, String containerAppName, String patchName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = applyWithResponseAsync(resourceGroupName, containerAppName, patchName, context);
-        return this.client.<ContainerAppsPatchResourceInner, ContainerAppsPatchResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ContainerAppsPatchResourceInner.class, ContainerAppsPatchResourceInner.class,
-            context);
-    }
-
-    /**
-     * Apply a Container Apps Patch resource with patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1053,7 +1155,9 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppsPatchResourceInner>, ContainerAppsPatchResourceInner>
         beginApply(String resourceGroupName, String containerAppName, String patchName) {
-        return this.beginApplyAsync(resourceGroupName, containerAppName, patchName).getSyncPoller();
+        Response<BinaryData> response = applyWithResponse(resourceGroupName, containerAppName, patchName);
+        return this.client.<ContainerAppsPatchResourceInner, ContainerAppsPatchResourceInner>getLroResult(response,
+            ContainerAppsPatchResourceInner.class, ContainerAppsPatchResourceInner.class, Context.NONE);
     }
 
     /**
@@ -1071,7 +1175,9 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerAppsPatchResourceInner>, ContainerAppsPatchResourceInner>
         beginApply(String resourceGroupName, String containerAppName, String patchName, Context context) {
-        return this.beginApplyAsync(resourceGroupName, containerAppName, patchName, context).getSyncPoller();
+        Response<BinaryData> response = applyWithResponse(resourceGroupName, containerAppName, patchName, context);
+        return this.client.<ContainerAppsPatchResourceInner, ContainerAppsPatchResourceInner>getLroResult(response,
+            ContainerAppsPatchResourceInner.class, ContainerAppsPatchResourceInner.class, context);
     }
 
     /**
@@ -1098,25 +1204,6 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App the Patch is associated.
      * @param patchName The name of the patch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Patch on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContainerAppsPatchResourceInner> applyAsync(String resourceGroupName, String containerAppName,
-        String patchName, Context context) {
-        return beginApplyAsync(resourceGroupName, containerAppName, patchName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Apply a Container Apps Patch resource with patch name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App the Patch is associated.
-     * @param patchName The name of the patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1124,7 +1211,7 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsPatchResourceInner apply(String resourceGroupName, String containerAppName, String patchName) {
-        return applyAsync(resourceGroupName, containerAppName, patchName).block();
+        return beginApply(resourceGroupName, containerAppName, patchName).getFinalResult();
     }
 
     /**
@@ -1142,7 +1229,7 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerAppsPatchResourceInner apply(String resourceGroupName, String containerAppName, String patchName,
         Context context) {
-        return applyAsync(resourceGroupName, containerAppName, patchName, context).block();
+        return beginApply(resourceGroupName, containerAppName, patchName, context).getFinalResult();
     }
 
     /**
@@ -1177,26 +1264,57 @@ public final class ContainerAppsPatchesClientImpl implements ContainerAppsPatche
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App patch collection along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ContainerAppsPatchResourceInner> listByContainerAppNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PatchCollection> res
+            = service.listByContainerAppNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App patch collection along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return container App patch collection along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContainerAppsPatchResourceInner>> listByContainerAppNextSinglePageAsync(String nextLink,
+    private PagedResponse<ContainerAppsPatchResourceInner> listByContainerAppNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByContainerAppNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PatchCollection> res
+            = service.listByContainerAppNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerAppsPatchesClientImpl.class);
 }

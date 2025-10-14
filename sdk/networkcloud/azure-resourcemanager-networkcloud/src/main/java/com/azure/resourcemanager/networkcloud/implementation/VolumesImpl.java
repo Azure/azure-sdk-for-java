@@ -79,8 +79,10 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String volumeName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, volumeName, context);
+    public OperationStatusResult delete(String resourceGroupName, String volumeName, String ifMatch, String ifNoneMatch,
+        Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, volumeName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -127,10 +129,13 @@ public final class VolumesImpl implements Volumes {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        return this.delete(resourceGroupName, volumeName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, volumeName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -141,7 +146,7 @@ public final class VolumesImpl implements Volumes {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        return this.delete(resourceGroupName, volumeName, context);
+        return this.delete(resourceGroupName, volumeName, ifMatch, ifNoneMatch, context);
     }
 
     private VolumesClient serviceClient() {

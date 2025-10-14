@@ -12,8 +12,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.ManagedIdentityParameters;
-import com.azure.identity.implementation.ManagedIdentityType;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
@@ -89,11 +87,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
     final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final IdentityClientOptions identityClientOptions;
     private final String managedIdentityId;
-    static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
     static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
-
-    static final String USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI = "USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI";
 
     /**
      * Creates an instance of the ManagedIdentityCredential with the client ID of a
@@ -120,12 +115,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
          * Choose credential based on available environment variables in this order:
          *
          * Azure Arc: IDENTITY_ENDPOINT, IMDS_ENDPOINT
-         * Service Fabric: IDENTITY_ENDPOINT, IDENTITY_HEADER, IDENTITY_SERVER_THUMBPRINT
-         * App Service 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER (MSI_ENDPOINT and MSI_SECRET will also be set.)
-         * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
-         * Cloud Shell: MSI_ENDPOINT
-         * Pod Identity V2 (AksExchangeToken): AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE
-         * IMDS/Pod Identity V1: No variables set.
+         * Other scenarios: Delegated to MSAL.
          */
         if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
             && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
@@ -136,49 +126,11 @@ public final class ManagedIdentityCredential implements TokenCredential {
             clientBuilder.clientAssertionPath(configuration.get(AZURE_FEDERATED_TOKEN_FILE));
             clientBuilder.clientAssertionTimeout(Duration.ofMinutes(5));
             managedIdentityServiceCredential = new AksExchangeTokenCredential(clientIdentifier,
-                clientBuilder
-                    .identityClientOptions(
-                        updateIdentityClientOptions(ManagedIdentityType.AKS, identityClientOptions, configuration))
-                    .build());
+                clientBuilder.identityClientOptions(identityClientOptions).build());
         } else {
-            identityClientOptions.setManagedIdentityType(getManagedIdentityEnv(configuration));
             managedIdentityServiceCredential = new ManagedIdentityMsalCredential(clientId, clientBuilder.build());
         }
         LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
-    }
-
-    private IdentityClientOptions updateIdentityClientOptions(ManagedIdentityType managedIdentityType,
-        IdentityClientOptions clientOptions, Configuration configuration) {
-        switch (managedIdentityType) {
-            case APP_SERVICE:
-                return clientOptions.setManagedIdentityType(ManagedIdentityType.APP_SERVICE)
-                    .setManagedIdentityParameters(new ManagedIdentityParameters()
-                        .setMsiEndpoint(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT))
-                        .setMsiSecret(configuration.get(Configuration.PROPERTY_MSI_SECRET))
-                        .setIdentityEndpoint(configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
-                        .setIdentityHeader(configuration.get(Configuration.PROPERTY_IDENTITY_HEADER)));
-
-            case SERVICE_FABRIC:
-                return clientOptions.setManagedIdentityType(ManagedIdentityType.SERVICE_FABRIC)
-                    .setManagedIdentityParameters(new ManagedIdentityParameters()
-                        .setIdentityServerThumbprint(configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT))
-                        .setIdentityEndpoint(configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
-                        .setIdentityHeader(configuration.get(Configuration.PROPERTY_IDENTITY_HEADER)));
-
-            case ARC:
-                return clientOptions.setManagedIdentityType(ManagedIdentityType.ARC)
-                    .setManagedIdentityParameters(new ManagedIdentityParameters()
-                        .setIdentityEndpoint(configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT)));
-
-            case VM:
-                return clientOptions.setManagedIdentityType(ManagedIdentityType.VM);
-
-            case AKS:
-                return clientOptions.setManagedIdentityType(ManagedIdentityType.AKS);
-
-            default:
-                return clientOptions;
-        }
     }
 
     /**
@@ -199,6 +151,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     + " https://aka.ms/azsdk/java/identity/managedidentitycredential/troubleshoot")));
         }
 
+        // Not having a managedIdentityId at this point means it is a system-assigned managed identity.
+        // Check a couple cases that are not supported for user-assigned managed identity.
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
             if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
@@ -210,7 +164,18 @@ public final class ManagedIdentityCredential implements TokenCredential {
                         + (identityClientOptions.isChained()
                             ? "DefaultAzureCredentialBuilder."
                             : "ManagedIdentityCredentialBuilder."))));
+
             }
+
+            if (ManagedIdentitySourceType.SERVICE_FABRIC.equals(managedIdentitySourceType)) {
+                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
+                    new CredentialUnavailableException("Specifying a clientId or resourceId is not supported by the"
+                        + " Service Fabric managed identity environment. The managed identity configuration is"
+                        + " determined by the Service Fabric cluster resource configuration. See"
+                        + " https://aka.ms/servicefabricmi for more information.")));
+            }
+
+            LOGGER.info("User-assigned Managed Identity ID: " + getClientId());
         }
 
         return managedIdentityServiceCredential.authenticate(request)
@@ -218,29 +183,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 managedIdentityServiceCredential.getEnvironment()))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClientOptions, request, error));
-    }
-
-    ManagedIdentityType getManagedIdentityEnv(Configuration configuration) {
-        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            return ManagedIdentityType.APP_SERVICE;
-        } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
-            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
-                    return ManagedIdentityType.SERVICE_FABRIC;
-                } else {
-                    return ManagedIdentityType.APP_SERVICE;
-                }
-            } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
-                return ManagedIdentityType.ARC;
-            } else {
-                return ManagedIdentityType.VM;
-            }
-        } else if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
-            && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
-            return ManagedIdentityType.AKS;
-        } else {
-            return ManagedIdentityType.VM;
-        }
     }
 
     String fetchManagedIdentityId(String clientId, String resourceId, String objectId) {

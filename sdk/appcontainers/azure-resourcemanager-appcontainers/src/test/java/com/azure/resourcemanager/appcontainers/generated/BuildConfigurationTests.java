@@ -16,56 +16,58 @@ public final class BuildConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BuildConfiguration model = BinaryData.fromString(
-            "{\"baseOs\":\"krvrns\",\"platform\":\"hqjohxcrsbfova\",\"platformVersion\":\"ruvw\",\"environmentVariables\":[{\"name\":\"qfsubcgjbirx\",\"value\":\"pybsrfbjfdtw\"},{\"name\":\"sotftpvj\",\"value\":\"bexilzznfqqnv\"},{\"name\":\"pmqtaru\",\"value\":\"ujmkcjhwqy\"},{\"name\":\"jrybnwjewgdrjer\",\"value\":\"naenqpehindo\"}],\"preBuildSteps\":[{\"description\":\"fthnzdn\",\"scripts\":[\"gnayqigynduh\"],\"httpGet\":{\"url\":\"hqlkthumaqo\",\"fileName\":\"gycdu\",\"headers\":[\"tgccymvaolpss\"]}},{\"description\":\"lfmmdnbbglzpswi\",\"scripts\":[\"cwyhzdxssa\",\"bzmnvdfznud\",\"od\",\"xzb\"],\"httpGet\":{\"url\":\"blylpstdbh\",\"fileName\":\"srzdzucerscdn\",\"headers\":[\"vfiwjmygtdss\",\"s\",\"tmweriofzpyq\"]}},{\"description\":\"mwabnetshhszhedp\",\"scripts\":[\"iwubmwmbesldnk\",\"wtppjflcxogaoko\"],\"httpGet\":{\"url\":\"m\",\"fileName\":\"ikvmkqzeqqk\",\"headers\":[\"fzxmhhvhgureodkw\"]}}]}")
+            "{\"baseOs\":\"wmdyvxqtay\",\"platform\":\"ww\",\"platformVersion\":\"yqbexrmcqibycno\",\"environmentVariables\":[{\"name\":\"nmefqsgzvahapj\",\"value\":\"zhpvgqzcjrvxd\"}],\"preBuildSteps\":[{\"description\":\"wlxkvugfhzovaw\",\"scripts\":[\"u\",\"luthn\"],\"httpGet\":{\"url\":\"rnxipei\",\"fileName\":\"jzuaejxdultskzbb\",\"headers\":[\"umveekgpwozuhkf\",\"bsjyofdx\",\"uusdttouwa\"]}},{\"description\":\"ekqvkeln\",\"scripts\":[\"bxwyjsflhhcaa\",\"n\",\"ixisxyawjoy\"],\"httpGet\":{\"url\":\"cslyjpk\",\"fileName\":\"dzyexznelixh\",\"headers\":[\"tfolhbnx\",\"nalaulppg\",\"dtpnapnyiropuhp\"]}},{\"description\":\"vpgylgqgitxmed\",\"scripts\":[\"slynqwwnc\"],\"httpGet\":{\"url\":\"zhxgktrmgucn\",\"fileName\":\"kteo\",\"headers\":[\"wptfdy\",\"pfqbuaceopzf\"]}},{\"description\":\"hhuao\",\"scripts\":[\"cq\",\"qxolzdahzx\"],\"httpGet\":{\"url\":\"obgbkdmoizp\",\"fileName\":\"tmgrcfbun\",\"headers\":[\"qjhhkxbpv\",\"ymjhxxjyngudivkr\",\"swbxqz\",\"szjfauvjfdxxivet\"]}}]}")
             .toObject(BuildConfiguration.class);
-        Assertions.assertEquals("krvrns", model.baseOs());
-        Assertions.assertEquals("hqjohxcrsbfova", model.platform());
-        Assertions.assertEquals("ruvw", model.platformVersion());
-        Assertions.assertEquals("qfsubcgjbirx", model.environmentVariables().get(0).name());
-        Assertions.assertEquals("pybsrfbjfdtw", model.environmentVariables().get(0).value());
-        Assertions.assertEquals("fthnzdn", model.preBuildSteps().get(0).description());
-        Assertions.assertEquals("gnayqigynduh", model.preBuildSteps().get(0).scripts().get(0));
-        Assertions.assertEquals("hqlkthumaqo", model.preBuildSteps().get(0).httpGet().url());
-        Assertions.assertEquals("gycdu", model.preBuildSteps().get(0).httpGet().fileName());
-        Assertions.assertEquals("tgccymvaolpss", model.preBuildSteps().get(0).httpGet().headers().get(0));
+        Assertions.assertEquals("wmdyvxqtay", model.baseOs());
+        Assertions.assertEquals("ww", model.platform());
+        Assertions.assertEquals("yqbexrmcqibycno", model.platformVersion());
+        Assertions.assertEquals("nmefqsgzvahapj", model.environmentVariables().get(0).name());
+        Assertions.assertEquals("zhpvgqzcjrvxd", model.environmentVariables().get(0).value());
+        Assertions.assertEquals("wlxkvugfhzovaw", model.preBuildSteps().get(0).description());
+        Assertions.assertEquals("u", model.preBuildSteps().get(0).scripts().get(0));
+        Assertions.assertEquals("rnxipei", model.preBuildSteps().get(0).httpGet().url());
+        Assertions.assertEquals("jzuaejxdultskzbb", model.preBuildSteps().get(0).httpGet().fileName());
+        Assertions.assertEquals("umveekgpwozuhkf", model.preBuildSteps().get(0).httpGet().headers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BuildConfiguration model = new BuildConfiguration().withBaseOs("krvrns")
-            .withPlatform("hqjohxcrsbfova")
-            .withPlatformVersion("ruvw")
+        BuildConfiguration model = new BuildConfiguration().withBaseOs("wmdyvxqtay")
+            .withPlatform("ww")
+            .withPlatformVersion("yqbexrmcqibycno")
             .withEnvironmentVariables(
-                Arrays.asList(new EnvironmentVariable().withName("qfsubcgjbirx").withValue("pybsrfbjfdtw"),
-                    new EnvironmentVariable().withName("sotftpvj").withValue("bexilzznfqqnv"),
-                    new EnvironmentVariable().withName("pmqtaru").withValue("ujmkcjhwqy"),
-                    new EnvironmentVariable().withName("jrybnwjewgdrjer").withValue("naenqpehindo")))
+                Arrays.asList(new EnvironmentVariable().withName("nmefqsgzvahapj").withValue("zhpvgqzcjrvxd")))
             .withPreBuildSteps(Arrays.asList(
-                new PreBuildStep().withDescription("fthnzdn")
-                    .withScripts(Arrays.asList("gnayqigynduh"))
-                    .withHttpGet(new HttpGet().withUrl("hqlkthumaqo")
-                        .withFileName("gycdu")
-                        .withHeaders(Arrays.asList("tgccymvaolpss"))),
-                new PreBuildStep().withDescription("lfmmdnbbglzpswi")
-                    .withScripts(Arrays.asList("cwyhzdxssa", "bzmnvdfznud", "od", "xzb"))
-                    .withHttpGet(new HttpGet().withUrl("blylpstdbh")
-                        .withFileName("srzdzucerscdn")
-                        .withHeaders(Arrays.asList("vfiwjmygtdss", "s", "tmweriofzpyq"))),
-                new PreBuildStep().withDescription("mwabnetshhszhedp")
-                    .withScripts(Arrays.asList("iwubmwmbesldnk", "wtppjflcxogaoko"))
-                    .withHttpGet(new HttpGet().withUrl("m")
-                        .withFileName("ikvmkqzeqqk")
-                        .withHeaders(Arrays.asList("fzxmhhvhgureodkw")))));
+                new PreBuildStep().withDescription("wlxkvugfhzovaw")
+                    .withScripts(Arrays.asList("u", "luthn"))
+                    .withHttpGet(new HttpGet().withUrl("rnxipei")
+                        .withFileName("jzuaejxdultskzbb")
+                        .withHeaders(Arrays.asList("umveekgpwozuhkf", "bsjyofdx", "uusdttouwa"))),
+                new PreBuildStep().withDescription("ekqvkeln")
+                    .withScripts(Arrays.asList("bxwyjsflhhcaa", "n", "ixisxyawjoy"))
+                    .withHttpGet(new HttpGet().withUrl("cslyjpk")
+                        .withFileName("dzyexznelixh")
+                        .withHeaders(Arrays.asList("tfolhbnx", "nalaulppg", "dtpnapnyiropuhp"))),
+                new PreBuildStep().withDescription("vpgylgqgitxmed")
+                    .withScripts(Arrays.asList("slynqwwnc"))
+                    .withHttpGet(new HttpGet().withUrl("zhxgktrmgucn")
+                        .withFileName("kteo")
+                        .withHeaders(Arrays.asList("wptfdy", "pfqbuaceopzf"))),
+                new PreBuildStep().withDescription("hhuao")
+                    .withScripts(Arrays.asList("cq", "qxolzdahzx"))
+                    .withHttpGet(new HttpGet().withUrl("obgbkdmoizp")
+                        .withFileName("tmgrcfbun")
+                        .withHeaders(Arrays.asList("qjhhkxbpv", "ymjhxxjyngudivkr", "swbxqz", "szjfauvjfdxxivet")))));
         model = BinaryData.fromObject(model).toObject(BuildConfiguration.class);
-        Assertions.assertEquals("krvrns", model.baseOs());
-        Assertions.assertEquals("hqjohxcrsbfova", model.platform());
-        Assertions.assertEquals("ruvw", model.platformVersion());
-        Assertions.assertEquals("qfsubcgjbirx", model.environmentVariables().get(0).name());
-        Assertions.assertEquals("pybsrfbjfdtw", model.environmentVariables().get(0).value());
-        Assertions.assertEquals("fthnzdn", model.preBuildSteps().get(0).description());
-        Assertions.assertEquals("gnayqigynduh", model.preBuildSteps().get(0).scripts().get(0));
-        Assertions.assertEquals("hqlkthumaqo", model.preBuildSteps().get(0).httpGet().url());
-        Assertions.assertEquals("gycdu", model.preBuildSteps().get(0).httpGet().fileName());
-        Assertions.assertEquals("tgccymvaolpss", model.preBuildSteps().get(0).httpGet().headers().get(0));
+        Assertions.assertEquals("wmdyvxqtay", model.baseOs());
+        Assertions.assertEquals("ww", model.platform());
+        Assertions.assertEquals("yqbexrmcqibycno", model.platformVersion());
+        Assertions.assertEquals("nmefqsgzvahapj", model.environmentVariables().get(0).name());
+        Assertions.assertEquals("zhpvgqzcjrvxd", model.environmentVariables().get(0).value());
+        Assertions.assertEquals("wlxkvugfhzovaw", model.preBuildSteps().get(0).description());
+        Assertions.assertEquals("u", model.preBuildSteps().get(0).scripts().get(0));
+        Assertions.assertEquals("rnxipei", model.preBuildSteps().get(0).httpGet().url());
+        Assertions.assertEquals("jzuaejxdultskzbb", model.preBuildSteps().get(0).httpGet().fileName());
+        Assertions.assertEquals("umveekgpwozuhkf", model.preBuildSteps().get(0).httpGet().headers().get(0));
     }
 }

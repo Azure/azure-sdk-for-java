@@ -17,35 +17,35 @@ public final class AdditionalLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdditionalLocation model = BinaryData.fromString(
-            "{\"location\":\"nacyheqwb\",\"sku\":{\"name\":\"Standard\",\"capacity\":1885580225},\"zones\":[\"jubkhjozfymcwmb\",\"pyvqy\",\"li\",\"iipsejbsvsiaies\"],\"publicIPAddresses\":[\"dzydisnuep\",\"wyj\",\"nldpxottd\"],\"privateIPAddresses\":[\"ocqibz\",\"ihweeb\",\"ph\"],\"publicIpAddressId\":\"vcjwqwoqsratj\",\"virtualNetworkConfiguration\":{\"vnetid\":\"zybspijhfrzgdkk\",\"subnetname\":\"v\",\"subnetResourceId\":\"khsusmmorf\"},\"gatewayRegionalUrl\":\"hwilz\",\"natGatewayState\":\"Disabled\",\"outboundPublicIPAddresses\":[\"mriprlk\",\"neyttl\",\"cxiv\",\"bkut\"],\"disableGateway\":true,\"platformVersion\":\"stv2\"}")
+            "{\"location\":\"uvlbefvwc\",\"sku\":{\"name\":\"StandardV2\",\"capacity\":123850215},\"zones\":[\"ylrwoxzg\",\"psyxjije\",\"pdvrbkerdkdkga\",\"qwjxi\"],\"publicIPAddresses\":[\"kc\",\"feygzqp\",\"oisfmnaybdjn\"],\"privateIPAddresses\":[\"entq\",\"ntwhymxymulwiv\"],\"publicIpAddressId\":\"o\",\"virtualNetworkConfiguration\":{\"vnetid\":\"lsycoyb\",\"subnetname\":\"a\",\"subnetResourceId\":\"ubfajc\"},\"gatewayRegionalUrl\":\"hjqwmchqoh\",\"natGatewayState\":\"Enabled\",\"outboundPublicIPAddresses\":[\"up\",\"kiymjzpwd\",\"vwtiwsmosa\"],\"disableGateway\":false,\"platformVersion\":\"stv2\"}")
             .toObject(AdditionalLocation.class);
-        Assertions.assertEquals("nacyheqwb", model.location());
-        Assertions.assertEquals(SkuType.STANDARD, model.sku().name());
-        Assertions.assertEquals(1885580225, model.sku().capacity());
-        Assertions.assertEquals("jubkhjozfymcwmb", model.zones().get(0));
-        Assertions.assertEquals("vcjwqwoqsratj", model.publicIpAddressId());
-        Assertions.assertEquals("khsusmmorf", model.virtualNetworkConfiguration().subnetResourceId());
-        Assertions.assertEquals(NatGatewayState.DISABLED, model.natGatewayState());
-        Assertions.assertEquals(true, model.disableGateway());
+        Assertions.assertEquals("uvlbefvwc", model.location());
+        Assertions.assertEquals(SkuType.STANDARD_V2, model.sku().name());
+        Assertions.assertEquals(123850215, model.sku().capacity());
+        Assertions.assertEquals("ylrwoxzg", model.zones().get(0));
+        Assertions.assertEquals("o", model.publicIpAddressId());
+        Assertions.assertEquals("ubfajc", model.virtualNetworkConfiguration().subnetResourceId());
+        Assertions.assertEquals(NatGatewayState.ENABLED, model.natGatewayState());
+        Assertions.assertFalse(model.disableGateway());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdditionalLocation model = new AdditionalLocation().withLocation("nacyheqwb")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD).withCapacity(1885580225))
-            .withZones(Arrays.asList("jubkhjozfymcwmb", "pyvqy", "li", "iipsejbsvsiaies"))
-            .withPublicIpAddressId("vcjwqwoqsratj")
-            .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId("khsusmmorf"))
-            .withNatGatewayState(NatGatewayState.DISABLED)
-            .withDisableGateway(true);
+        AdditionalLocation model = new AdditionalLocation().withLocation("uvlbefvwc")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD_V2).withCapacity(123850215))
+            .withZones(Arrays.asList("ylrwoxzg", "psyxjije", "pdvrbkerdkdkga", "qwjxi"))
+            .withPublicIpAddressId("o")
+            .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId("ubfajc"))
+            .withNatGatewayState(NatGatewayState.ENABLED)
+            .withDisableGateway(false);
         model = BinaryData.fromObject(model).toObject(AdditionalLocation.class);
-        Assertions.assertEquals("nacyheqwb", model.location());
-        Assertions.assertEquals(SkuType.STANDARD, model.sku().name());
-        Assertions.assertEquals(1885580225, model.sku().capacity());
-        Assertions.assertEquals("jubkhjozfymcwmb", model.zones().get(0));
-        Assertions.assertEquals("vcjwqwoqsratj", model.publicIpAddressId());
-        Assertions.assertEquals("khsusmmorf", model.virtualNetworkConfiguration().subnetResourceId());
-        Assertions.assertEquals(NatGatewayState.DISABLED, model.natGatewayState());
-        Assertions.assertEquals(true, model.disableGateway());
+        Assertions.assertEquals("uvlbefvwc", model.location());
+        Assertions.assertEquals(SkuType.STANDARD_V2, model.sku().name());
+        Assertions.assertEquals(123850215, model.sku().capacity());
+        Assertions.assertEquals("ylrwoxzg", model.zones().get(0));
+        Assertions.assertEquals("o", model.publicIpAddressId());
+        Assertions.assertEquals("ubfajc", model.virtualNetworkConfiguration().subnetResourceId());
+        Assertions.assertEquals(NatGatewayState.ENABLED, model.natGatewayState());
+        Assertions.assertFalse(model.disableGateway());
     }
 }

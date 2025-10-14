@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,28 +23,33 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
 
     /*
      * The list of stopwords. This property and the stopwords list property cannot both be set.
      */
+    @Generated
     private List<String> stopwords;
 
     /*
      * A predefined list of stopwords to use. This property and the stopwords property cannot both be set. Default is
      * English.
      */
+    @Generated
     private StopwordsList stopwordsList;
 
     /*
      * A value indicating whether to ignore case. If true, all words are converted to lower case first. Default is
      * false.
      */
+    @Generated
     private Boolean caseIgnored;
 
     /*
      * A value indicating whether to ignore the last search term if it's a stop word. Default is true.
      */
+    @Generated
     private Boolean trailingStopWordsRemoved;
 
     /**
@@ -51,6 +57,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
+    @Generated
     public StopwordsTokenFilter(String name) {
         super(name);
     }
@@ -60,6 +67,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -71,6 +79,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the stopwords value.
      */
+    @Generated
     public List<String> getStopwords() {
         return this.stopwords;
     }
@@ -82,6 +91,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwords the stopwords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
+    @Generated
     public StopwordsTokenFilter setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
@@ -93,6 +103,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the stopwordsList value.
      */
+    @Generated
     public StopwordsList getStopwordsList() {
         return this.stopwordsList;
     }
@@ -104,6 +115,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwordsList the stopwordsList value to set.
      * @return the StopwordsTokenFilter object itself.
      */
+    @Generated
     public StopwordsTokenFilter setStopwordsList(StopwordsList stopwordsList) {
         this.stopwordsList = stopwordsList;
         return this;
@@ -115,6 +127,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the caseIgnored value.
      */
+    @Generated
     public Boolean isCaseIgnored() {
         return this.caseIgnored;
     }
@@ -126,6 +139,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param caseIgnored the caseIgnored value to set.
      * @return the StopwordsTokenFilter object itself.
      */
+    @Generated
     public StopwordsTokenFilter setCaseIgnored(Boolean caseIgnored) {
         this.caseIgnored = caseIgnored;
         return this;
@@ -137,6 +151,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the trailingStopWordsRemoved value.
      */
+    @Generated
     public Boolean areTrailingStopWordsRemoved() {
         return this.trailingStopWordsRemoved;
     }
@@ -148,6 +163,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param trailingStopWordsRemoved the trailingStopWordsRemoved value to set.
      * @return the StopwordsTokenFilter object itself.
      */
+    @Generated
     public StopwordsTokenFilter setTrailingStopWordsRemoved(Boolean trailingStopWordsRemoved) {
         this.trailingStopWordsRemoved = trailingStopWordsRemoved;
         return this;
@@ -156,6 +172,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -177,6 +194,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StopwordsTokenFilter.
      */
+    @Generated
     public static StopwordsTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityStatusType;
@@ -22,28 +22,29 @@ public final class NetworkStatusListByLocationWithResponseMockTests {
     @Test
     public void testListByLocationWithResponse() throws Exception {
         String responseStr
-            = "{\"dnsServers\":[\"hvlxudheka\"],\"connectivityStatus\":[{\"name\":\"irmid\",\"status\":\"failure\",\"error\":\"j\",\"lastUpdated\":\"2021-06-20T11:47:08Z\",\"lastStatusChange\":\"2021-06-04T10:44:32Z\",\"resourceType\":\"zfbqygkxrlfojl\",\"isOptional\":true},{\"name\":\"pum\",\"status\":\"success\",\"error\":\"bod\",\"lastUpdated\":\"2021-04-13T04:16:49Z\",\"lastStatusChange\":\"2021-02-17T11:24:45Z\",\"resourceType\":\"ykduumwbc\",\"isOptional\":true},{\"name\":\"j\",\"status\":\"failure\",\"error\":\"pdxtsaujtc\",\"lastUpdated\":\"2021-07-24T16:35:14Z\",\"lastStatusChange\":\"2021-07-13T02:56:08Z\",\"resourceType\":\"ybolqoxuptsli\",\"isOptional\":true}]}";
+            = "{\"dnsServers\":[\"snq\",\"yefnakdmtpjksdlu\",\"ytjxhxwtitt\"],\"connectivityStatus\":[{\"name\":\"vukvupuplug\",\"status\":\"initializing\",\"error\":\"nvpdvctqdapy\",\"lastUpdated\":\"2021-01-03T18:42:35Z\",\"lastStatusChange\":\"2021-05-28T22:41:24Z\",\"resourceType\":\"p\",\"isOptional\":false},{\"name\":\"jbsilbnrucq\",\"status\":\"success\",\"error\":\"rnzmjrgfb\",\"lastUpdated\":\"2021-03-27T19:04:08Z\",\"lastStatusChange\":\"2021-02-03T00:12:15Z\",\"resourceType\":\"zwkbcstzuwbgae\",\"isOptional\":true}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkStatusContract response = manager.networkStatus()
-            .listByLocationWithResponse("kz", "hizxpusddmwnfhmj", "suqnk", com.azure.core.util.Context.NONE)
+            .listByLocationWithResponse("abnnxhcxctshxo", "ftforylxaknwkjzv", "psymtupyjtrxxz",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hvlxudheka", response.dnsServers().get(0));
-        Assertions.assertEquals("irmid", response.connectivityStatus().get(0).name());
-        Assertions.assertEquals(ConnectivityStatusType.FAILURE, response.connectivityStatus().get(0).status());
-        Assertions.assertEquals("j", response.connectivityStatus().get(0).error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T11:47:08Z"),
+        Assertions.assertEquals("snq", response.dnsServers().get(0));
+        Assertions.assertEquals("vukvupuplug", response.connectivityStatus().get(0).name());
+        Assertions.assertEquals(ConnectivityStatusType.INITIALIZING, response.connectivityStatus().get(0).status());
+        Assertions.assertEquals("nvpdvctqdapy", response.connectivityStatus().get(0).error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T18:42:35Z"),
             response.connectivityStatus().get(0).lastUpdated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T10:44:32Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T22:41:24Z"),
             response.connectivityStatus().get(0).lastStatusChange());
-        Assertions.assertEquals("zfbqygkxrlfojl", response.connectivityStatus().get(0).resourceType());
-        Assertions.assertEquals(true, response.connectivityStatus().get(0).isOptional());
+        Assertions.assertEquals("p", response.connectivityStatus().get(0).resourceType());
+        Assertions.assertFalse(response.connectivityStatus().get(0).isOptional());
     }
 }

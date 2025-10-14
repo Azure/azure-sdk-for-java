@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,32 +22,38 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
     /*
      * Log storage linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object path;
 
     /*
      * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object logLevel;
 
     /*
      * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableReliableLogging;
 
     /*
      * (Deprecated. Please use LogSettings) Log storage settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of LogStorageSettings class.
      */
+    @Generated
     public LogStorageSettings() {
     }
 
@@ -55,6 +62,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -65,6 +73,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the LogStorageSettings object itself.
      */
+    @Generated
     public LogStorageSettings setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -76,6 +85,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -87,6 +97,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * @param path the path value to set.
      * @return the LogStorageSettings object itself.
      */
+    @Generated
     public LogStorageSettings setPath(Object path) {
         this.path = path;
         return this;
@@ -98,6 +109,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * 
      * @return the logLevel value.
      */
+    @Generated
     public Object getLogLevel() {
         return this.logLevel;
     }
@@ -109,6 +121,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * @param logLevel the logLevel value to set.
      * @return the LogStorageSettings object itself.
      */
+    @Generated
     public LogStorageSettings setLogLevel(Object logLevel) {
         this.logLevel = logLevel;
         return this;
@@ -120,6 +133,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * 
      * @return the enableReliableLogging value.
      */
+    @Generated
     public Object getEnableReliableLogging() {
         return this.enableReliableLogging;
     }
@@ -131,6 +145,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * @param enableReliableLogging the enableReliableLogging value to set.
      * @return the LogStorageSettings object itself.
      */
+    @Generated
     public LogStorageSettings setEnableReliableLogging(Object enableReliableLogging) {
         this.enableReliableLogging = enableReliableLogging;
         return this;
@@ -141,6 +156,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -151,6 +167,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * @param additionalProperties the additionalProperties value to set.
      * @return the LogStorageSettings object itself.
      */
+    @Generated
     public LogStorageSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -159,13 +176,20 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
-        jsonWriter.writeUntypedField("path", this.path);
-        jsonWriter.writeUntypedField("logLevel", this.logLevel);
-        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
+        if (this.logLevel != null) {
+            jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        }
+        if (this.enableReliableLogging != null) {
+            jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -183,6 +207,7 @@ public final class LogStorageSettings implements JsonSerializable<LogStorageSett
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LogStorageSettings.
      */
+    @Generated
     public static LogStorageSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LogStorageSettings deserializedLogStorageSettings = new LogStorageSettings();

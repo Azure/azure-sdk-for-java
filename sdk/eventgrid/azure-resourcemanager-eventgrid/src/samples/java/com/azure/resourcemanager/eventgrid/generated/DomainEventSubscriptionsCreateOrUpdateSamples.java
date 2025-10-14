@@ -14,7 +14,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 public final class DomainEventSubscriptionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * DomainEventSubscriptions_CreateOrUpdate.json
      */
     /**

@@ -11,9 +11,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies the Linux operating system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list of supported
- * Linux distributions, see [Linux on Azure-Endorsed
- * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+ * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions,
+ * see [Linux on Azure-Endorsed
+ * Distributions](https://learn.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
  */
 @Fluent
 public final class LinuxConfiguration extends OSConfiguration {
@@ -114,21 +114,6 @@ public final class LinuxConfiguration extends OSConfiguration {
     public LinuxConfiguration withSshKeyPair(SshKeyPair sshKeyPair) {
         this.sshKeyPair = sshKeyPair;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (ssh() != null) {
-            ssh().validate();
-        }
-        if (sshKeyPair() != null) {
-            sshKeyPair().validate();
-        }
     }
 
     /**

@@ -246,12 +246,8 @@ public class JsonSerializable {
      * @param value the value of the property.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> void set(String propertyName, T value, CosmosItemSerializer itemSerializer) {
-        checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
-        checkArgument(
-            itemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER,
-            "Argument 'itemSerializer' must be the DEFAULT_SERIALIZER when using this method.");
-        set(propertyName, value, itemSerializer, false);
+    public <T> void set(String propertyName, T value) {
+        set(propertyName, value, DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, false);
     }
 
     /**

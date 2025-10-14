@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
     /*
      * Identifier of the target model.
      */
+    @Generated
     private UUID modelId;
 
     /*
      * Errors returned during the copy operation.
      */
+    @Generated
     private List<ErrorInformation> errors;
 
     /**
      * Creates an instance of CopyResult class.
      */
+    @Generated
     public CopyResult() {
     }
 
@@ -40,6 +44,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
      * 
      * @return the modelId value.
      */
+    @Generated
     public UUID getModelId() {
         return this.modelId;
     }
@@ -50,6 +55,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
      * @param modelId the modelId value to set.
      * @return the CopyResult object itself.
      */
+    @Generated
     public CopyResult setModelId(UUID modelId) {
         this.modelId = modelId;
         return this;
@@ -60,6 +66,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<ErrorInformation> getErrors() {
         return this.errors;
     }
@@ -70,6 +77,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
      * @param errors the errors value to set.
      * @return the CopyResult object itself.
      */
+    @Generated
     public CopyResult setErrors(List<ErrorInformation> errors) {
         this.errors = errors;
         return this;
@@ -78,6 +86,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class CopyResult implements JsonSerializable<CopyResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CopyResult.
      */
+    @Generated
     public static CopyResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopyResult deserializedCopyResult = new CopyResult();

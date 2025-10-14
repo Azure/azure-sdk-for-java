@@ -39,6 +39,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -3910,5 +3911,66 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                     .buildDirectoryAsyncClient();
 
         StepVerifier.create(aadDirClient.exists()).expectNext(true).verifyComplete();
+    }
+
+    @Test
+    public void pathGetSystemPropertiesDirectory() {
+        // setup
+        FileSystemEncryptionScopeOptions encryptionScope
+            = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
+                .setEncryptionScopeOverridePrevented(true);
+
+        dataLakeFileSystemAsyncClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+        DataLakeFileSystemAsyncClient client
+            = getFileSystemClientBuilder(dataLakeFileSystemAsyncClient.getFileSystemUrl())
+                .credential(getDataLakeCredential())
+                .fileSystemEncryptionScopeOptions(encryptionScope)
+                .buildAsyncClient();
+
+        DataLakeDirectoryAsyncClient dc = client.getDirectoryAsyncClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions();
+        options.setPermissions("rwxr-x---");
+        String owner = testResourceNamer.randomUuid();
+        String group = testResourceNamer.randomUuid();
+        options.setOwner(owner);
+        options.setGroup(group);
+
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl("control")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type");
+        options.setPathHttpHeaders(headers);
+        options.setMetadata(Collections.singletonMap("foo", "bar"));
+
+        StepVerifier
+            .create(client.create().then(dc.createWithResponse(options)).then(dc.getSystemPropertiesWithResponse(null)))
+            .assertNext(r -> {
+                PathSystemProperties value = r.getValue();
+
+                // should be present in the response
+                assertEquals(200, r.getStatusCode());
+                assertNotNull(value.getCreationTime());
+                assertNotNull(value.getLastModified());
+                assertNotNull(value.getETag());
+                assertEquals(0, value.getFileSize());
+                assertTrue(value.isDirectory());
+                assertTrue(value.isServerEncrypted());
+                assertEquals(ENCRYPTION_SCOPE_STRING, value.getEncryptionScope());
+                assertEquals(owner, value.getOwner());
+                assertEquals(group, value.getGroup());
+                assertEquals(PathPermissions.parseSymbolic("rwxr-x---").toString(), value.getPermissions().toString());
+
+                // should not be present in the response
+                validateUserDefinedHeadersNotPresent(r);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void pathGetSystemPropertiesDirectoryMin() {
+        StepVerifier.create(dc.getSystemProperties()).expectNextCount(1).verifyComplete();
     }
 }

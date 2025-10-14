@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class FieldValueSelectionMark extends ExpandableStringEnum<FieldVal
     /**
      * Static value selected for FieldValueSelectionMark.
      */
+    @Generated
     public static final FieldValueSelectionMark SELECTED = fromString("selected");
 
     /**
      * Static value unselected for FieldValueSelectionMark.
      */
+    @Generated
     public static final FieldValueSelectionMark UNSELECTED = fromString("unselected");
 
     /**
@@ -26,6 +29,7 @@ public final class FieldValueSelectionMark extends ExpandableStringEnum<FieldVal
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FieldValueSelectionMark() {
     }
@@ -36,6 +40,7 @@ public final class FieldValueSelectionMark extends ExpandableStringEnum<FieldVal
      * @param name a name to look for.
      * @return the corresponding FieldValueSelectionMark.
      */
+    @Generated
     public static FieldValueSelectionMark fromString(String name) {
         return fromString(name, FieldValueSelectionMark.class);
     }
@@ -45,6 +50,7 @@ public final class FieldValueSelectionMark extends ExpandableStringEnum<FieldVal
      * 
      * @return known FieldValueSelectionMark values.
      */
+    @Generated
     public static Collection<FieldValueSelectionMark> values() {
         return values(FieldValueSelectionMark.class);
     }

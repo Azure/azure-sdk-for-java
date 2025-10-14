@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionInner;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of Subscription.
@@ -36,7 +37,7 @@ public interface Subscription {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to Event Subscription resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -76,6 +77,13 @@ public interface Subscription {
      * @return the expirationTimeUtc value.
      */
     OffsetDateTime expirationTimeUtc();
+
+    /**
+     * Gets the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the name of the resource group.
@@ -127,9 +135,9 @@ public interface Subscription {
          * The stage of the Subscription definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDeliveryConfiguration, DefinitionStages.WithEventDeliverySchema,
-            DefinitionStages.WithFiltersConfiguration, DefinitionStages.WithExpirationTimeUtc {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDeliveryConfiguration,
+            DefinitionStages.WithEventDeliverySchema, DefinitionStages.WithFiltersConfiguration,
+            DefinitionStages.WithExpirationTimeUtc {
             /**
              * Executes the create request.
              * 
@@ -144,6 +152,19 @@ public interface Subscription {
              * @return the created resource.
              */
             Subscription create(Context context);
+        }
+
+        /**
+         * The stage of the Subscription definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Tags relating to Event Subscription resource..
+             * 
+             * @param tags Tags relating to Event Subscription resource.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -210,7 +231,8 @@ public interface Subscription {
     /**
      * The template for Subscription update.
      */
-    interface Update extends UpdateStages.WithDeliveryConfiguration, UpdateStages.WithEventDeliverySchema,
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithDeliveryConfiguration, UpdateStages.WithEventDeliverySchema,
         UpdateStages.WithFiltersConfiguration, UpdateStages.WithExpirationTimeUtc {
         /**
          * Executes the update request.
@@ -232,6 +254,19 @@ public interface Subscription {
      * The Subscription update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Subscription update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Tags relating to Event Subscription resource..
+             * 
+             * @param tags Tags relating to Event Subscription resource.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
         /**
          * The stage of the Subscription update allowing to specify deliveryConfiguration.
          */

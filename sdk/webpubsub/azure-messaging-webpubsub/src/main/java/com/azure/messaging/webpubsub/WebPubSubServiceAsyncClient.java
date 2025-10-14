@@ -13,6 +13,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -25,7 +28,10 @@ import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
+import com.azure.messaging.webpubsub.models.WebPubSubGroupConnection;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -407,6 +413,59 @@ public final class WebPubSubServiceAsyncClient {
         requestBody.setFilter(filter);
         BinaryData body = BinaryData.fromObject(requestBody);
         return addConnectionsToGroupsWithResponse(body, new RequestOptions()).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * List connections in a group.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of connections to include in a single response. It should be between 1 and 200.</td></tr>
+     *     <tr><td>top</td><td>Integer</td>
+     *     <td>No</td><td>The maximum number of connections to return. If the value is not set, then all the connections in a group are returned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param group Target group name, whose length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<WebPubSubGroupConnection> listConnectionsInGroup(String group, RequestOptions requestOptions) {
+        PagedFlux<BinaryData> binaryDataPagedFlux
+            = this.serviceClient.listConnectionsInGroupAsync(hub, group, requestOptions);
+
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? binaryDataPagedFlux.byPage().take(1)
+                : binaryDataPagedFlux.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(bd -> bd.toObject(WebPubSubGroupConnection.class))
+                    .collect(java.util.stream.Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**

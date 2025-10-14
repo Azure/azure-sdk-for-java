@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DaprComponentResiliencyPolicyHttpRetryBackOffConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration model
-            = BinaryData.fromString("{\"initialDelayInMilliseconds\":431216153,\"maxIntervalInMilliseconds\":63319486}")
-                .toObject(DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration.class);
-        Assertions.assertEquals(431216153, model.initialDelayInMilliseconds());
-        Assertions.assertEquals(63319486, model.maxIntervalInMilliseconds());
+        DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration model = BinaryData
+            .fromString("{\"initialDelayInMilliseconds\":99692229,\"maxIntervalInMilliseconds\":2101966797}")
+            .toObject(DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration.class);
+        Assertions.assertEquals(99692229, model.initialDelayInMilliseconds());
+        Assertions.assertEquals(2101966797, model.maxIntervalInMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration model
-            = new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration().withInitialDelayInMilliseconds(431216153)
-                .withMaxIntervalInMilliseconds(63319486);
+            = new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration().withInitialDelayInMilliseconds(99692229)
+                .withMaxIntervalInMilliseconds(2101966797);
         model = BinaryData.fromObject(model).toObject(DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration.class);
-        Assertions.assertEquals(431216153, model.initialDelayInMilliseconds());
-        Assertions.assertEquals(63319486, model.maxIntervalInMilliseconds());
+        Assertions.assertEquals(99692229, model.initialDelayInMilliseconds());
+        Assertions.assertEquals(2101966797, model.maxIntervalInMilliseconds());
     }
 }

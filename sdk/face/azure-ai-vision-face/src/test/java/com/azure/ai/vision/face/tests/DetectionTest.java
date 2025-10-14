@@ -12,11 +12,11 @@ import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.tests.commands.detection.DetectSyncFunction;
 import com.azure.ai.vision.face.tests.commands.detection.DetectionFunctionProvider;
-import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-@DisplayNameGeneration(FaceDisplayNameGenerator.class)
+@DisplayNameGeneration(DisplayNameGenerator.Standard.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @RecordWithoutRequestBody
 public class DetectionTest extends FaceClientTestBase {
@@ -46,7 +46,7 @@ public class DetectionTest extends FaceClientTestBase {
 
         Assertions.assertNotNull(detectResults);
 
-        Assertions.assertEquals(detectResults.size(), 1);
+        Assertions.assertEquals(1, detectResults.size());
         FaceDetectionResult result = detectResults.get(0);
 
         Assertions.assertEquals(returnFaceId, result.getFaceId() != null);

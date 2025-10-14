@@ -91,6 +91,7 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
         propertyMapper.from(properties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
         propertyMapper.from(properties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
         propertyMapper.from(properties.getMaxConcurrentSessions()).to(builder::maxConcurrentSessions);
+        propertyMapper.from(properties.getSessionIdleTimeout()).to(builder::sessionIdleTimeout);
 
         propertyMapper.from(this.errorHandler).to(builder::processError);
 

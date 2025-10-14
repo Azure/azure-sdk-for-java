@@ -16,9 +16,9 @@ public class GetAMultivariateModel {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariategetmultivariatemodel.getamultivariatemodel
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-get-multivariate-model.get-a-multivariate-model
         AnomalyDetectionModel response
             = multivariateClient.getMultivariateModel("45aad126-aafd-11ea-b8fb-d89ef3400c5f");
-        // END:com.azure.ai.anomalydetector.generated.multivariategetmultivariatemodel.getamultivariatemodel
+        // END:com.azure.ai.anomalydetector.generated.multivariate-get-multivariate-model.get-a-multivariate-model
     }
 }

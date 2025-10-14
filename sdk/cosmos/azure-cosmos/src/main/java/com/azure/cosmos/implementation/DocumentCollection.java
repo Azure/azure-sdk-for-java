@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.SerializableWrapper;
 import com.azure.cosmos.models.ChangeFeedPolicy;
@@ -16,7 +15,6 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -179,7 +177,7 @@ public final class DocumentCollection extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            this.set(Constants.Properties.DEFAULT_TTL, timeToLive, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.set(Constants.Properties.DEFAULT_TTL, timeToLive);
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
             remove(Constants.Properties.DEFAULT_TTL);
         }
@@ -199,7 +197,7 @@ public final class DocumentCollection extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            super.set(Constants.Properties.ANALYTICAL_STORAGE_TTL, timeToLive, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            super.set(Constants.Properties.ANALYTICAL_STORAGE_TTL, timeToLive);
         } else if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
             super.remove(Constants.Properties.ANALYTICAL_STORAGE_TTL);
         }
@@ -247,7 +245,7 @@ public final class DocumentCollection extends Resource {
         }
 
         this.uniqueKeyPolicy = uniqueKeyPolicy;
-        this.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
     }
 
     /**
@@ -271,7 +269,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
 
-        this.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
     }
 
     /**
@@ -299,7 +297,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CHANGE_FEED_POLICY cannot be null.");
         }
 
-        this.set(Constants.Properties.CHANGE_FEED_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.CHANGE_FEED_POLICY, value);
     }
 
     /**
@@ -332,7 +330,7 @@ public final class DocumentCollection extends Resource {
             }
         });
 
-        this.set(Constants.Properties.COMPUTED_PROPERTIES, computedProperties, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.COMPUTED_PROPERTIES, computedProperties);
     }
 
     /**
@@ -414,7 +412,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("ClientEncryptionPolicy cannot be null.");
         }
 
-        this.set(Constants.Properties.CLIENT_ENCRYPTION_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
     }
 
     /**
@@ -441,7 +439,7 @@ public final class DocumentCollection extends Resource {
      */
     public void setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
         checkNotNull(value, "cosmosVectorEmbeddingPolicy cannot be null");
-        this.set(Constants.Properties.VECTOR_EMBEDDING_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.VECTOR_EMBEDDING_POLICY, value);
     }
 
     /**
@@ -468,7 +466,7 @@ public final class DocumentCollection extends Resource {
      */
     public void setFullTextPolicy(CosmosFullTextPolicy value) {
         checkNotNull(value, "cosmosFullTextPolicy cannot be null");
-        this.set(Constants.Properties.FULL_TEXT_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.FULL_TEXT_POLICY, value);
     }
 
     public void populatePropertyBag() {
@@ -484,14 +482,14 @@ public final class DocumentCollection extends Resource {
             ModelBridgeInternal.populatePropertyBag(this.partitionKeyDefinition);
             this.set(
                 Constants.Properties.PARTITION_KEY,
-                this.partitionKeyDefinition,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.partitionKeyDefinition
+            );
         }
         ModelBridgeInternal.populatePropertyBag(this.indexingPolicy);
         ModelBridgeInternal.populatePropertyBag(this.uniqueKeyPolicy);
 
-        this.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        this.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
+        this.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
     }
 
     @Override

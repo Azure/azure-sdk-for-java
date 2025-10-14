@@ -75,28 +75,28 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultSettingCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultSettingInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("vaultSettingName") String vaultSettingName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("vaultSettingName") String vaultSettingName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("vaultSettingName") String vaultSettingName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("vaultSettingName") String vaultSettingName,
             @BodyParam("application/json") VaultSettingCreationInput input, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -113,25 +113,25 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vault setting along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultSettingInner>> listSinglePageAsync(String resourceName, String resourceGroupName) {
+    private Mono<PagedResponse<VaultSettingInner>> listSinglePageAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -139,8 +139,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<VaultSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -151,8 +151,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -160,18 +160,18 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the list of vault setting along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultSettingInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<VaultSettingInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -180,7 +180,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -191,16 +191,16 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vault setting as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VaultSettingInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+    private PagedFlux<VaultSettingInner> listAsync(String resourceGroupName, String resourceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -209,8 +209,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -218,8 +218,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the list of vault setting as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VaultSettingInner> listAsync(String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
+    private PagedFlux<VaultSettingInner> listAsync(String resourceGroupName, String resourceName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -228,16 +228,16 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vault setting as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultSettingInner> list(String resourceName, String resourceGroupName) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName));
+    public PagedIterable<VaultSettingInner> list(String resourceGroupName, String resourceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
     /**
@@ -245,8 +245,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,8 +254,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the list of vault setting as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultSettingInner> list(String resourceName, String resourceGroupName, Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
+    public PagedIterable<VaultSettingInner> list(String resourceGroupName, String resourceName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -263,8 +263,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -272,18 +272,18 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the vault setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultSettingInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<VaultSettingInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String vaultSettingName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -295,8 +295,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), vaultSettingName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), vaultSettingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -305,8 +305,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,18 +315,18 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the vault setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultSettingInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<VaultSettingInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String vaultSettingName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -338,7 +338,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), vaultSettingName, accept, context);
     }
 
@@ -347,8 +347,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -356,8 +356,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the vault setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultSettingInner> getAsync(String resourceName, String resourceGroupName, String vaultSettingName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, vaultSettingName)
+    private Mono<VaultSettingInner> getAsync(String resourceGroupName, String resourceName, String vaultSettingName) {
+        return getWithResponseAsync(resourceGroupName, resourceName, vaultSettingName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -366,8 +366,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,9 +376,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the vault setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VaultSettingInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<VaultSettingInner> getWithResponse(String resourceGroupName, String resourceName,
         String vaultSettingName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, vaultSettingName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, vaultSettingName, context).block();
     }
 
     /**
@@ -386,8 +386,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -395,8 +395,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the vault setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultSettingInner get(String resourceName, String resourceGroupName, String vaultSettingName) {
-        return getWithResponse(resourceName, resourceGroupName, vaultSettingName, Context.NONE).getValue();
+    public VaultSettingInner get(String resourceGroupName, String resourceName, String vaultSettingName) {
+        return getWithResponse(resourceGroupName, resourceName, vaultSettingName, Context.NONE).getValue();
     }
 
     /**
@@ -404,8 +404,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,18 +414,18 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return vault setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String vaultSettingName, VaultSettingCreationInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -442,8 +442,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), vaultSettingName, input, accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), vaultSettingName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -452,8 +453,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -463,18 +464,18 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return vault setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String vaultSettingName, VaultSettingCreationInput input, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -491,7 +492,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), vaultSettingName, input, accept, context);
     }
 
@@ -500,8 +501,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,10 +511,10 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the {@link PollerFlux} for polling of vault setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultSettingInner>, VaultSettingInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input) {
+    private PollerFlux<PollResult<VaultSettingInner>, VaultSettingInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String vaultSettingName, VaultSettingCreationInput input) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceName, resourceGroupName, vaultSettingName, input);
+            = createWithResponseAsync(resourceGroupName, resourceName, vaultSettingName, input);
         return this.client.<VaultSettingInner, VaultSettingInner>getLroResult(mono, this.client.getHttpPipeline(),
             VaultSettingInner.class, VaultSettingInner.class, this.client.getContext());
     }
@@ -523,8 +524,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -534,11 +535,11 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the {@link PollerFlux} for polling of vault setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VaultSettingInner>, VaultSettingInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input, Context context) {
+    private PollerFlux<PollResult<VaultSettingInner>, VaultSettingInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String vaultSettingName, VaultSettingCreationInput input, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceName, resourceGroupName, vaultSettingName, input, context);
+            = createWithResponseAsync(resourceGroupName, resourceName, vaultSettingName, input, context);
         return this.client.<VaultSettingInner, VaultSettingInner>getLroResult(mono, this.client.getHttpPipeline(),
             VaultSettingInner.class, VaultSettingInner.class, context);
     }
@@ -548,8 +549,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,9 +559,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the {@link SyncPoller} for polling of vault setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceName,
-        String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input).getSyncPoller();
+    public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceGroupName,
+        String resourceName, String vaultSettingName, VaultSettingCreationInput input) {
+        return this.beginCreateAsync(resourceGroupName, resourceName, vaultSettingName, input).getSyncPoller();
     }
 
     /**
@@ -568,8 +569,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -579,9 +580,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return the {@link SyncPoller} for polling of vault setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceName,
-        String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input, context).getSyncPoller();
+    public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceGroupName,
+        String resourceName, String vaultSettingName, VaultSettingCreationInput input, Context context) {
+        return this.beginCreateAsync(resourceGroupName, resourceName, vaultSettingName, input, context).getSyncPoller();
     }
 
     /**
@@ -589,8 +590,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -599,9 +600,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return vault setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultSettingInner> createAsync(String resourceName, String resourceGroupName, String vaultSettingName,
+    private Mono<VaultSettingInner> createAsync(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input).last()
+        return beginCreateAsync(resourceGroupName, resourceName, vaultSettingName, input).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -610,8 +611,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -621,9 +622,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return vault setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultSettingInner> createAsync(String resourceName, String resourceGroupName, String vaultSettingName,
+    private Mono<VaultSettingInner> createAsync(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, vaultSettingName, input, context).last()
+        return beginCreateAsync(resourceGroupName, resourceName, vaultSettingName, input, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -632,8 +633,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,9 +643,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return vault setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultSettingInner create(String resourceName, String resourceGroupName, String vaultSettingName,
+    public VaultSettingInner create(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input) {
-        return createAsync(resourceName, resourceGroupName, vaultSettingName, input).block();
+        return createAsync(resourceGroupName, resourceName, vaultSettingName, input).block();
     }
 
     /**
@@ -652,8 +653,8 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -663,9 +664,9 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      * @return vault setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultSettingInner create(String resourceName, String resourceGroupName, String vaultSettingName,
+    public VaultSettingInner create(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input, Context context) {
-        return createAsync(resourceName, resourceGroupName, vaultSettingName, input, context).block();
+        return createAsync(resourceGroupName, resourceName, vaultSettingName, input, context).block();
     }
 
     /**

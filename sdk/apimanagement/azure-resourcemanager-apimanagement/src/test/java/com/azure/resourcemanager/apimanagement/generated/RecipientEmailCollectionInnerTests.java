@@ -14,22 +14,25 @@ public final class RecipientEmailCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecipientEmailCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"email\":\"tibhlennt\"},\"id\":\"vrkpsa\",\"name\":\"d\",\"type\":\"xvzmlghny\"}],\"count\":4684665514852234763,\"nextLink\":\"euukppdi\"}")
+            "{\"value\":[{\"properties\":{\"email\":\"e\"},\"id\":\"lzuqloiwyayyzivr\",\"name\":\"itcdqlhchwhrk\",\"type\":\"jlei\"},{\"properties\":{\"email\":\"fiplhx\"},\"id\":\"nsmy\",\"name\":\"jow\",\"type\":\"yeyzm\"},{\"properties\":{\"email\":\"qcmhnxlzbu\"},\"id\":\"o\",\"name\":\"machbkv\",\"type\":\"rpbj\"},{\"properties\":{\"email\":\"goqple\"},\"id\":\"mumk\",\"name\":\"dllc\",\"type\":\"dpr\"}],\"count\":2981295842748232942,\"nextLink\":\"qggoxsst\"}")
             .toObject(RecipientEmailCollectionInner.class);
-        Assertions.assertEquals("tibhlennt", model.value().get(0).email());
-        Assertions.assertEquals(4684665514852234763L, model.count());
-        Assertions.assertEquals("euukppdi", model.nextLink());
+        Assertions.assertEquals("e", model.value().get(0).email());
+        Assertions.assertEquals(2981295842748232942L, model.count());
+        Assertions.assertEquals("qggoxsst", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecipientEmailCollectionInner model = new RecipientEmailCollectionInner()
-            .withValue(Arrays.asList(new RecipientEmailContractInner().withEmail("tibhlennt")))
-            .withCount(4684665514852234763L)
-            .withNextLink("euukppdi");
+            .withValue(Arrays.asList(new RecipientEmailContractInner().withEmail("e"),
+                new RecipientEmailContractInner().withEmail("fiplhx"),
+                new RecipientEmailContractInner().withEmail("qcmhnxlzbu"),
+                new RecipientEmailContractInner().withEmail("goqple")))
+            .withCount(2981295842748232942L)
+            .withNextLink("qggoxsst");
         model = BinaryData.fromObject(model).toObject(RecipientEmailCollectionInner.class);
-        Assertions.assertEquals("tibhlennt", model.value().get(0).email());
-        Assertions.assertEquals(4684665514852234763L, model.count());
-        Assertions.assertEquals("euukppdi", model.nextLink());
+        Assertions.assertEquals("e", model.value().get(0).email());
+        Assertions.assertEquals(2981295842748232942L, model.count());
+        Assertions.assertEquals("qggoxsst", model.nextLink());
     }
 }

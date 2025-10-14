@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.spark.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SparkStatementLanguageType extends ExpandableStringEnum<Spark
     /**
      * Static value spark for SparkStatementLanguageType.
      */
+    @Generated
     public static final SparkStatementLanguageType SPARK = fromString("spark");
 
     /**
      * Static value pyspark for SparkStatementLanguageType.
      */
+    @Generated
     public static final SparkStatementLanguageType PY_SPARK = fromString("pyspark");
 
     /**
      * Static value dotnetspark for SparkStatementLanguageType.
      */
+    @Generated
     public static final SparkStatementLanguageType DOT_NET_SPARK = fromString("dotnetspark");
 
     /**
      * Static value sql for SparkStatementLanguageType.
      */
+    @Generated
     public static final SparkStatementLanguageType SQL = fromString("sql");
 
     /**
@@ -36,6 +41,7 @@ public final class SparkStatementLanguageType extends ExpandableStringEnum<Spark
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkStatementLanguageType() {
     }
@@ -46,6 +52,7 @@ public final class SparkStatementLanguageType extends ExpandableStringEnum<Spark
      * @param name a name to look for.
      * @return the corresponding SparkStatementLanguageType.
      */
+    @Generated
     public static SparkStatementLanguageType fromString(String name) {
         return fromString(name, SparkStatementLanguageType.class);
     }
@@ -55,6 +62,7 @@ public final class SparkStatementLanguageType extends ExpandableStringEnum<Spark
      * 
      * @return known SparkStatementLanguageType values.
      */
+    @Generated
     public static Collection<SparkStatementLanguageType> values() {
         return values(SparkStatementLanguageType.class);
     }

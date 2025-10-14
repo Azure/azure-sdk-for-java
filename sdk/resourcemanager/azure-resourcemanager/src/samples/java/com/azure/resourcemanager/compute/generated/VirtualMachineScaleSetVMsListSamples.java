@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetVMsListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MinimumSet_Gen.json
      */
     /**
@@ -23,12 +23,12 @@ public final class VirtualMachineScaleSetVMsListSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .list("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, null, null, com.azure.core.util.Context.NONE);
+            .list("rgcompute", "aaaaaaaaaaaaaa", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_MaximumSet_Gen.json
      */
     /**
@@ -43,5 +43,23 @@ public final class VirtualMachineScaleSetVMsListSamples {
             .getVirtualMachineScaleSetVMs()
             .list("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaa",
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_List_WithResiliencyView.json
+     */
+    /**
+     * Sample code: List Vmss VMs with ResilientVMDeletionStatus.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void listVmssVMsWithResilientVMDeletionStatus(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMs()
+            .list("resourceGroupname", "vmssName", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

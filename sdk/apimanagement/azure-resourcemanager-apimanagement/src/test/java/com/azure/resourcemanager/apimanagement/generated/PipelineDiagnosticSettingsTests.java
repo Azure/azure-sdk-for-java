@@ -18,59 +18,65 @@ public final class PipelineDiagnosticSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PipelineDiagnosticSettings model = BinaryData.fromString(
-            "{\"request\":{\"headers\":[\"lohap\"],\"body\":{\"bytes\":529518315},\"dataMasking\":{\"queryParams\":[{\"value\":\"glqdhm\",\"mode\":\"Hide\"},{\"value\":\"alcxpjbyy\",\"mode\":\"Hide\"},{\"value\":\"qcjenkyhf\",\"mode\":\"Hide\"},{\"value\":\"qxfx\",\"mode\":\"Mask\"}],\"headers\":[{\"value\":\"pzqjhhhq\",\"mode\":\"Mask\"},{\"value\":\"vcacoyv\",\"mode\":\"Mask\"},{\"value\":\"izus\",\"mode\":\"Hide\"}]}},\"response\":{\"headers\":[\"cmnlzijiufehg\",\"vflnwyvqkxrerln\",\"ylyl\"],\"body\":{\"bytes\":1965919560},\"dataMasking\":{\"queryParams\":[{\"value\":\"qztw\",\"mode\":\"Hide\"},{\"value\":\"upgxyjtcdxabbujf\",\"mode\":\"Mask\"},{\"value\":\"nbbklqpxzucafed\",\"mode\":\"Hide\"}],\"headers\":[{\"value\":\"a\",\"mode\":\"Mask\"},{\"value\":\"dgnhgookrtalvnbw\",\"mode\":\"Hide\"}]}}}")
+            "{\"request\":{\"headers\":[\"tco\",\"cujp\"],\"body\":{\"bytes\":1620086774},\"dataMasking\":{\"queryParams\":[{\"value\":\"jkmvbi\",\"mode\":\"Hide\"},{\"value\":\"fqcvovj\",\"mode\":\"Hide\"},{\"value\":\"sj\",\"mode\":\"Mask\"},{\"value\":\"myejiriuxegthor\",\"mode\":\"Hide\"}],\"headers\":[{\"value\":\"pjfe\",\"mode\":\"Mask\"},{\"value\":\"pptcbgqnzmnhii\",\"mode\":\"Hide\"},{\"value\":\"w\",\"mode\":\"Mask\"},{\"value\":\"kbbccc\",\"mode\":\"Mask\"}]}},\"response\":{\"headers\":[\"xnyuffatsgftipwc\",\"byubhiqdxyurnpn\",\"hza\"],\"body\":{\"bytes\":1607484792},\"dataMasking\":{\"queryParams\":[{\"value\":\"gbylbuig\",\"mode\":\"Mask\"}],\"headers\":[{\"value\":\"crkdlbn\",\"mode\":\"Mask\"},{\"value\":\"h\",\"mode\":\"Hide\"},{\"value\":\"zlwxaeaovur\",\"mode\":\"Hide\"},{\"value\":\"d\",\"mode\":\"Mask\"}]}}}")
             .toObject(PipelineDiagnosticSettings.class);
-        Assertions.assertEquals("lohap", model.request().headers().get(0));
-        Assertions.assertEquals(529518315, model.request().body().bytes());
-        Assertions.assertEquals("glqdhm", model.request().dataMasking().queryParams().get(0).value());
+        Assertions.assertEquals("tco", model.request().headers().get(0));
+        Assertions.assertEquals(1620086774, model.request().body().bytes());
+        Assertions.assertEquals("jkmvbi", model.request().dataMasking().queryParams().get(0).value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.request().dataMasking().queryParams().get(0).mode());
-        Assertions.assertEquals("pzqjhhhq", model.request().dataMasking().headers().get(0).value());
+        Assertions.assertEquals("pjfe", model.request().dataMasking().headers().get(0).value());
         Assertions.assertEquals(DataMaskingMode.MASK, model.request().dataMasking().headers().get(0).mode());
-        Assertions.assertEquals("cmnlzijiufehg", model.response().headers().get(0));
-        Assertions.assertEquals(1965919560, model.response().body().bytes());
-        Assertions.assertEquals("qztw", model.response().dataMasking().queryParams().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.response().dataMasking().queryParams().get(0).mode());
-        Assertions.assertEquals("a", model.response().dataMasking().headers().get(0).value());
+        Assertions.assertEquals("xnyuffatsgftipwc", model.response().headers().get(0));
+        Assertions.assertEquals(1607484792, model.response().body().bytes());
+        Assertions.assertEquals("gbylbuig", model.response().dataMasking().queryParams().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.response().dataMasking().queryParams().get(0).mode());
+        Assertions.assertEquals("crkdlbn", model.response().dataMasking().headers().get(0).value());
         Assertions.assertEquals(DataMaskingMode.MASK, model.response().dataMasking().headers().get(0).mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelineDiagnosticSettings model = new PipelineDiagnosticSettings()
-            .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("lohap"))
-                .withBody(new BodyDiagnosticSettings().withBytes(529518315))
-                .withDataMasking(new DataMasking()
-                    .withQueryParams(
-                        Arrays.asList(new DataMaskingEntity().withValue("glqdhm").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("alcxpjbyy").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("qcjenkyhf").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("qxfx").withMode(DataMaskingMode.MASK)))
-                    .withHeaders(
-                        Arrays.asList(new DataMaskingEntity().withValue("pzqjhhhq").withMode(DataMaskingMode.MASK),
-                            new DataMaskingEntity().withValue("vcacoyv").withMode(DataMaskingMode.MASK),
-                            new DataMaskingEntity().withValue("izus").withMode(DataMaskingMode.HIDE)))))
-            .withResponse(new HttpMessageDiagnostic()
-                .withHeaders(Arrays.asList("cmnlzijiufehg", "vflnwyvqkxrerln", "ylyl"))
-                .withBody(new BodyDiagnosticSettings().withBytes(1965919560))
-                .withDataMasking(new DataMasking()
-                    .withQueryParams(
-                        Arrays.asList(new DataMaskingEntity().withValue("qztw").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("upgxyjtcdxabbujf").withMode(DataMaskingMode.MASK),
-                            new DataMaskingEntity().withValue("nbbklqpxzucafed").withMode(DataMaskingMode.HIDE)))
-                    .withHeaders(Arrays.asList(new DataMaskingEntity().withValue("a").withMode(DataMaskingMode.MASK),
-                        new DataMaskingEntity().withValue("dgnhgookrtalvnbw").withMode(DataMaskingMode.HIDE)))));
+        PipelineDiagnosticSettings model
+            = new PipelineDiagnosticSettings()
+                .withRequest(
+                    new HttpMessageDiagnostic().withHeaders(Arrays.asList("tco", "cujp"))
+                        .withBody(new BodyDiagnosticSettings().withBytes(1620086774))
+                        .withDataMasking(
+                            new DataMasking()
+                                .withQueryParams(Arrays.asList(
+                                    new DataMaskingEntity().withValue("jkmvbi").withMode(DataMaskingMode.HIDE),
+                                    new DataMaskingEntity().withValue("fqcvovj").withMode(DataMaskingMode.HIDE),
+                                    new DataMaskingEntity().withValue("sj").withMode(DataMaskingMode.MASK),
+                                    new DataMaskingEntity().withValue("myejiriuxegthor")
+                                        .withMode(DataMaskingMode.HIDE)))
+                                .withHeaders(Arrays.asList(
+                                    new DataMaskingEntity().withValue("pjfe").withMode(DataMaskingMode.MASK),
+                                    new DataMaskingEntity().withValue("pptcbgqnzmnhii").withMode(DataMaskingMode.HIDE),
+                                    new DataMaskingEntity().withValue("w").withMode(DataMaskingMode.MASK),
+                                    new DataMaskingEntity().withValue("kbbccc").withMode(DataMaskingMode.MASK)))))
+                .withResponse(new HttpMessageDiagnostic()
+                    .withHeaders(Arrays.asList("xnyuffatsgftipwc", "byubhiqdxyurnpn", "hza"))
+                    .withBody(new BodyDiagnosticSettings().withBytes(1607484792))
+                    .withDataMasking(new DataMasking()
+                        .withQueryParams(
+                            Arrays.asList(new DataMaskingEntity().withValue("gbylbuig").withMode(DataMaskingMode.MASK)))
+                        .withHeaders(
+                            Arrays.asList(new DataMaskingEntity().withValue("crkdlbn").withMode(DataMaskingMode.MASK),
+                                new DataMaskingEntity().withValue("h").withMode(DataMaskingMode.HIDE),
+                                new DataMaskingEntity().withValue("zlwxaeaovur").withMode(DataMaskingMode.HIDE),
+                                new DataMaskingEntity().withValue("d").withMode(DataMaskingMode.MASK)))));
         model = BinaryData.fromObject(model).toObject(PipelineDiagnosticSettings.class);
-        Assertions.assertEquals("lohap", model.request().headers().get(0));
-        Assertions.assertEquals(529518315, model.request().body().bytes());
-        Assertions.assertEquals("glqdhm", model.request().dataMasking().queryParams().get(0).value());
+        Assertions.assertEquals("tco", model.request().headers().get(0));
+        Assertions.assertEquals(1620086774, model.request().body().bytes());
+        Assertions.assertEquals("jkmvbi", model.request().dataMasking().queryParams().get(0).value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.request().dataMasking().queryParams().get(0).mode());
-        Assertions.assertEquals("pzqjhhhq", model.request().dataMasking().headers().get(0).value());
+        Assertions.assertEquals("pjfe", model.request().dataMasking().headers().get(0).value());
         Assertions.assertEquals(DataMaskingMode.MASK, model.request().dataMasking().headers().get(0).mode());
-        Assertions.assertEquals("cmnlzijiufehg", model.response().headers().get(0));
-        Assertions.assertEquals(1965919560, model.response().body().bytes());
-        Assertions.assertEquals("qztw", model.response().dataMasking().queryParams().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.response().dataMasking().queryParams().get(0).mode());
-        Assertions.assertEquals("a", model.response().dataMasking().headers().get(0).value());
+        Assertions.assertEquals("xnyuffatsgftipwc", model.response().headers().get(0));
+        Assertions.assertEquals(1607484792, model.response().body().bytes());
+        Assertions.assertEquals("gbylbuig", model.response().dataMasking().queryParams().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.response().dataMasking().queryParams().get(0).mode());
+        Assertions.assertEquals("crkdlbn", model.response().dataMasking().headers().get(0).value());
         Assertions.assertEquals(DataMaskingMode.MASK, model.response().dataMasking().headers().get(0).mode());
     }
 }

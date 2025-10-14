@@ -71,6 +71,7 @@ import java.util.stream.Collectors;
  * DynamicResponse response = dynamicRequest
  *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&#47;&#123;petId&#125;&quot;&#41; &#47;&#47; may already be set if request is created from a client
  *     .setPathParam&#40;&quot;petId&quot;, &quot;2343245&quot;&#41;
+ *     .setHttpMethod&#40;HttpMethod.POST&#41;
  *     .send&#40;&#41;; &#47;&#47; makes the service call
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.getrequest -->

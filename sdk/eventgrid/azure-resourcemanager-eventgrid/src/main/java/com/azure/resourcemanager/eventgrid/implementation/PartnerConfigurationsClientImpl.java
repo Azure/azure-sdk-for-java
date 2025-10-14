@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerConfigurationsClient;
@@ -72,13 +74,22 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientPartnerConfigurations")
     public interface PartnerConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PartnerConfigurationInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -93,11 +104,30 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
             @BodyParam("application/json") PartnerConfigurationInner partnerConfigurationInfo,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PartnerConfigurationInner partnerConfigurationInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             Context context);
@@ -113,10 +143,29 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PartnerConfigurationsListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -131,10 +180,28 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerConfigurations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PartnerConfigurationsListResult> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default/authorizePartner")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationInner>> authorizePartner(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") Partner partnerInfo, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default/authorizePartner")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PartnerConfigurationInner> authorizePartnerSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") Partner partnerInfo, @HeaderParam("Accept") String accept, Context context);
@@ -149,10 +216,27 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
             @BodyParam("application/json") Partner partnerInfo, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default/unauthorizePartner")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PartnerConfigurationInner> unauthorizePartnerSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") Partner partnerInfo, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PartnerConfigurationsListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PartnerConfigurationsListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -196,40 +280,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * Get properties of a partner configuration.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a partner configuration.
-     * 
-     * Get properties of a partner configuration.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -255,7 +305,23 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -321,36 +387,79 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information along with {@link Response} on successful completion of {@link Mono}.
+     * @return partner configuration information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        PartnerConfigurationInner partnerConfigurationInfo, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
+        PartnerConfigurationInner partnerConfigurationInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerConfigurationInfo == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter partnerConfigurationInfo is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter partnerConfigurationInfo is required and cannot be null."));
         } else {
             partnerConfigurationInfo.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), partnerConfigurationInfo, accept, Context.NONE);
+    }
+
+    /**
+     * Create or update a partner configuration.
+     * 
+     * Synchronously creates or updates a partner configuration with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerConfigurationInfo Partner configuration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return partner configuration information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
+        PartnerConfigurationInner partnerConfigurationInfo, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (partnerConfigurationInfo == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Parameter partnerConfigurationInfo is required and cannot be null."));
+        } else {
+            partnerConfigurationInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             this.client.getApiVersion(), partnerConfigurationInfo, accept, context);
     }
 
@@ -383,29 +492,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of partner configuration information.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, partnerConfigurationInfo, context);
-        return this.client.<PartnerConfigurationInner, PartnerConfigurationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PartnerConfigurationInner.class, PartnerConfigurationInner.class, context);
-    }
-
-    /**
-     * Create or update a partner configuration.
-     * 
-     * Synchronously creates or updates a partner configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerConfigurationInfo Partner configuration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -414,7 +500,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, partnerConfigurationInfo);
+        return this.client.<PartnerConfigurationInner, PartnerConfigurationInner>getLroResult(response,
+            PartnerConfigurationInner.class, PartnerConfigurationInner.class, Context.NONE);
     }
 
     /**
@@ -433,7 +521,10 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo, context).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, partnerConfigurationInfo, context);
+        return this.client.<PartnerConfigurationInner, PartnerConfigurationInner>getLroResult(response,
+            PartnerConfigurationInner.class, PartnerConfigurationInner.class, context);
     }
 
     /**
@@ -462,26 +553,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerConfigurationInner> createOrUpdateAsync(String resourceGroupName,
-        PartnerConfigurationInner partnerConfigurationInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, partnerConfigurationInfo, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update a partner configuration.
-     * 
-     * Synchronously creates or updates a partner configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerConfigurationInfo Partner configuration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,7 +561,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerConfigurationInner createOrUpdate(String resourceGroupName,
         PartnerConfigurationInner partnerConfigurationInfo) {
-        return createOrUpdateAsync(resourceGroupName, partnerConfigurationInfo).block();
+        return beginCreateOrUpdate(resourceGroupName, partnerConfigurationInfo).getFinalResult();
     }
 
     /**
@@ -509,7 +580,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerConfigurationInner createOrUpdate(String resourceGroupName,
         PartnerConfigurationInner partnerConfigurationInfo, Context context) {
-        return createOrUpdateAsync(resourceGroupName, partnerConfigurationInfo, context).block();
+        return beginCreateOrUpdate(resourceGroupName, partnerConfigurationInfo, context).getFinalResult();
     }
 
     /**
@@ -549,28 +620,60 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * Delete existing partner configuration.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), Context.NONE);
+    }
+
+    /**
+     * Delete a partner configuration.
+     * 
+     * Delete existing partner configuration.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             this.client.getApiVersion(), context);
     }
 
@@ -598,26 +701,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * Delete existing partner configuration.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a partner configuration.
-     * 
-     * Delete existing partner configuration.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -625,7 +708,8 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
-        return this.beginDeleteAsync(resourceGroupName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -642,7 +726,8 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -667,30 +752,13 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * Delete existing partner configuration.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a partner configuration.
-     * 
-     * Delete existing partner configuration.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName) {
-        deleteAsync(resourceGroupName).block();
+        beginDelete(resourceGroupName).getFinalResult();
     }
 
     /**
@@ -706,7 +774,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, Context context) {
-        deleteAsync(resourceGroupName, context).block();
+        beginDelete(resourceGroupName, context).getFinalResult();
     }
 
     /**
@@ -756,36 +824,79 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information along with {@link Response} on successful completion of {@link Mono}.
+     * @return partner configuration information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName,
+        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (partnerConfigurationUpdateParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter partnerConfigurationUpdateParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter partnerConfigurationUpdateParameters is required and cannot be null."));
         } else {
             partnerConfigurationUpdateParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), partnerConfigurationUpdateParameters, accept, Context.NONE);
+    }
+
+    /**
+     * Update a partner configuration.
+     * 
+     * Synchronously updates a partner configuration with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerConfigurationUpdateParameters Partner configuration update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return partner configuration information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName,
+        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (partnerConfigurationUpdateParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter partnerConfigurationUpdateParameters is required and cannot be null."));
+        } else {
+            partnerConfigurationUpdateParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             this.client.getApiVersion(), partnerConfigurationUpdateParameters, accept, context);
     }
 
@@ -818,30 +929,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of partner configuration information.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginUpdateAsync(
-        String resourceGroupName, PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, partnerConfigurationUpdateParameters, context);
-        return this.client.<PartnerConfigurationInner, PartnerConfigurationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PartnerConfigurationInner.class, PartnerConfigurationInner.class, context);
-    }
-
-    /**
-     * Update a partner configuration.
-     * 
-     * Synchronously updates a partner configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerConfigurationUpdateParameters Partner configuration update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -850,7 +937,9 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginUpdate(
         String resourceGroupName, PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters) {
-        return this.beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, partnerConfigurationUpdateParameters);
+        return this.client.<PartnerConfigurationInner, PartnerConfigurationInner>getLroResult(response,
+            PartnerConfigurationInner.class, PartnerConfigurationInner.class, Context.NONE);
     }
 
     /**
@@ -870,7 +959,10 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     public SyncPoller<PollResult<PartnerConfigurationInner>, PartnerConfigurationInner> beginUpdate(
         String resourceGroupName, PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, partnerConfigurationUpdateParameters, context);
+        return this.client.<PartnerConfigurationInner, PartnerConfigurationInner>getLroResult(response,
+            PartnerConfigurationInner.class, PartnerConfigurationInner.class, context);
     }
 
     /**
@@ -899,26 +991,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PartnerConfigurationInner> updateAsync(String resourceGroupName,
-        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, partnerConfigurationUpdateParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a partner configuration.
-     * 
-     * Synchronously updates a partner configuration with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerConfigurationUpdateParameters Partner configuration update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -927,7 +999,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerConfigurationInner update(String resourceGroupName,
         PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters) {
-        return updateAsync(resourceGroupName, partnerConfigurationUpdateParameters).block();
+        return beginUpdate(resourceGroupName, partnerConfigurationUpdateParameters).getFinalResult();
     }
 
     /**
@@ -946,7 +1018,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerConfigurationInner update(String resourceGroupName,
         PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters, Context context) {
-        return updateAsync(resourceGroupName, partnerConfigurationUpdateParameters, context).block();
+        return beginUpdate(resourceGroupName, partnerConfigurationUpdateParameters, context).getFinalResult();
     }
 
     /**
@@ -991,43 +1063,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * List all the partner configurations under a resource group.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List partner configurations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerConfigurationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * List partner configurations under a resource group.
-     * 
-     * List all the partner configurations under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1044,15 +1079,68 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * List all the partner configurations under a resource group.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List partner configurations operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PartnerConfigurationInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PartnerConfigurationsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * List partner configurations under a resource group.
+     * 
+     * List all the partner configurations under a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List partner configurations operation as paginated response with {@link PagedFlux}.
+     * @return result of the List partner configurations operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerConfigurationInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PartnerConfigurationInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PartnerConfigurationsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -1068,7 +1156,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerConfigurationInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName));
     }
 
     /**
@@ -1085,7 +1173,7 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerConfigurationInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context));
     }
 
     /**
@@ -1123,45 +1211,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
             .<PagedResponse<PartnerConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List partner configurations under an Azure subscription.
-     * 
-     * List all the partner configurations under an Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List partner configurations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerConfigurationInner>> listSinglePageAsync(String filter, Integer top,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1216,16 +1265,65 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List partner configurations operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PartnerConfigurationInner> listSinglePage(String filter, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PartnerConfigurationsListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List partner configurations under an Azure subscription.
+     * 
+     * List all the partner configurations under an Azure subscription.
+     * 
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List partner configurations operation as paginated response with {@link PagedFlux}.
+     * @return result of the List partner configurations operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartnerConfigurationInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PartnerConfigurationInner> listSinglePage(String filter, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PartnerConfigurationsListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1241,7 +1339,8 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     public PagedIterable<PartnerConfigurationInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listAsync(filter, top));
+        return new PagedIterable<>(() -> listSinglePage(filter, top),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1264,7 +1363,8 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerConfigurationInner> list(String filter, Integer top, Context context) {
-        return new PagedIterable<>(listAsync(filter, top, context));
+        return new PagedIterable<>(() -> listSinglePage(filter, top, context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1313,45 +1413,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be authorized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerConfigurationInner>> authorizePartnerWithResponseAsync(String resourceGroupName,
-        Partner partnerInfo, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (partnerInfo == null) {
-            return Mono.error(new IllegalArgumentException("Parameter partnerInfo is required and cannot be null."));
-        } else {
-            partnerInfo.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.authorizePartner(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), partnerInfo, accept, context);
-    }
-
-    /**
-     * Authorize a partner.
-     * 
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerInfo The information of the partner to be authorized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1379,7 +1440,29 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerConfigurationInner> authorizePartnerWithResponse(String resourceGroupName,
         Partner partnerInfo, Context context) {
-        return authorizePartnerWithResponseAsync(resourceGroupName, partnerInfo, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (partnerInfo == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter partnerInfo is required and cannot be null."));
+        } else {
+            partnerInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.authorizePartnerSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), partnerInfo, accept, context);
     }
 
     /**
@@ -1446,45 +1529,6 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be unauthorized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerConfigurationInner>> unauthorizePartnerWithResponseAsync(String resourceGroupName,
-        Partner partnerInfo, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (partnerInfo == null) {
-            return Mono.error(new IllegalArgumentException("Parameter partnerInfo is required and cannot be null."));
-        } else {
-            partnerInfo.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.unauthorizePartner(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), partnerInfo, accept, context);
-    }
-
-    /**
-     * Unauthorize a partner.
-     * 
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerInfo The information of the partner to be unauthorized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1512,7 +1556,29 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerConfigurationInner> unauthorizePartnerWithResponse(String resourceGroupName,
         Partner partnerInfo, Context context) {
-        return unauthorizePartnerWithResponseAsync(resourceGroupName, partnerInfo, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (partnerInfo == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter partnerInfo is required and cannot be null."));
+        } else {
+            partnerInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.unauthorizePartnerSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), partnerInfo, accept, context);
     }
 
     /**
@@ -1564,27 +1630,57 @@ public final class PartnerConfigurationsClientImpl implements PartnerConfigurati
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List partner configurations operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<PartnerConfigurationInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PartnerConfigurationsListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List partner configurations operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return result of the List partner configurations operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartnerConfigurationInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+    private PagedResponse<PartnerConfigurationInner> listBySubscriptionNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PartnerConfigurationsListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PartnerConfigurationsClientImpl.class);
 }

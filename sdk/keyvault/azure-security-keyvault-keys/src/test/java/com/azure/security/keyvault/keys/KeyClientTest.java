@@ -23,12 +23,13 @@ import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -525,7 +526,6 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // TODO: Remove assumption once Key Vault allows for creating exportable keys.
         Assumptions.assumeTrue(runManagedHsmTest && runReleaseKeyTest);
 
         createKeyClient(httpClient, serviceVersion);
@@ -556,9 +556,6 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // Key Rotation is not yet enabled in Managed HSM.
-        Assumptions.assumeTrue(!isHsmEnabled);
-
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("nonExistentKey", 20);
@@ -573,9 +570,6 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // Key Rotation is not yet enabled in Managed HSM.
-        Assumptions.assumeTrue(!isHsmEnabled);
-
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -585,14 +579,23 @@ public class KeyClientTest extends KeyClientTestBase {
         KeyRotationPolicy keyRotationPolicy = keyClient.getKeyRotationPolicy(keyName);
 
         assertNotNull(keyRotationPolicy);
-        assertNull(keyRotationPolicy.getId());
-        assertNull(keyRotationPolicy.getCreatedOn());
-        assertNull(keyRotationPolicy.getUpdatedOn());
-        assertNull(keyRotationPolicy.getExpiresIn());
-        assertEquals(1, keyRotationPolicy.getLifetimeActions().size());
-        assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getAction());
-        assertEquals("P30D", keyRotationPolicy.getLifetimeActions().get(0).getTimeBeforeExpiry());
-        assertNull(keyRotationPolicy.getLifetimeActions().get(0).getTimeAfterCreate());
+
+        // HSM has a different implementation than Key Vault.
+        if (isHsmEnabled) {
+            assertEquals("", keyRotationPolicy.getId());
+            assertEquals(OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), keyRotationPolicy.getCreatedOn());
+            assertEquals(OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), keyRotationPolicy.getUpdatedOn());
+            assertEquals("", keyRotationPolicy.getExpiresIn());
+        } else {
+            assertNull(keyRotationPolicy.getId());
+            assertNull(keyRotationPolicy.getCreatedOn());
+            assertNull(keyRotationPolicy.getUpdatedOn());
+            assertNull(keyRotationPolicy.getExpiresIn());
+            assertEquals(1, keyRotationPolicy.getLifetimeActions().size());
+            assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getAction());
+            assertEquals("P30D", keyRotationPolicy.getLifetimeActions().get(0).getTimeBeforeExpiry());
+            assertNull(keyRotationPolicy.getLifetimeActions().get(0).getTimeAfterCreate());
+        }
     }
 
     /**
@@ -600,12 +603,9 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @Disabled("Disable after https://github.com/Azure/azure-sdk-for-java/issues/31510 is fixed.")
-    //@DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
+    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient,
         KeyServiceVersion serviceVersion) {
-        // Key Rotation is not yet enabled in Managed HSM.
-        Assumptions.assumeTrue(!isHsmEnabled);
 
         createKeyClient(httpClient, serviceVersion);
 
@@ -626,9 +626,6 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // Key Rotation is not yet enabled in Managed HSM.
-        Assumptions.assumeTrue(!isHsmEnabled);
-
         createKeyClient(httpClient, serviceVersion);
 
         updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicy) -> {
@@ -648,17 +645,19 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // Key Rotation is not yet enabled in Managed HSM.
-        Assumptions.assumeTrue(!isHsmEnabled);
-
         createKeyClient(httpClient, serviceVersion);
 
-        String keyName = testResourceNamer.randomName("rotateKey", 20);
-        KeyVaultKey createdKey = keyClient.createRsaKey(new CreateRsaKeyOptions(keyName));
-        KeyVaultKey rotatedKey = keyClient.rotateKey(keyName);
+        rotateKeyRunner((keyName, keyRotationPolicy) -> {
+            KeyVaultKey createdKey = keyClient.createRsaKey(new CreateRsaKeyOptions(keyName));
 
-        assertEquals(createdKey.getName(), rotatedKey.getName());
-        assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
+            // Making sure we set a rotation policy because MHSM keys do not come with one.
+            keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
+
+            KeyVaultKey rotatedKey = keyClient.rotateKey(keyName);
+
+            assertEquals(createdKey.getName(), rotatedKey.getName());
+            assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
+        });
     }
 
     /**

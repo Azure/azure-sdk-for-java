@@ -12,24 +12,24 @@ public final class HyperVReplica2012EventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplica2012EventDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplica2012\",\"containerName\":\"yttzgixgyrih\",\"fabricName\":\"mgb\",\"remoteContainerName\":\"lqtxnrflkndrn\",\"remoteFabricName\":\"gfjo\"}")
+            "{\"instanceType\":\"HyperVReplica2012\",\"containerName\":\"rostvrjeqmtzz\",\"fabricName\":\"qrztrxal\",\"remoteContainerName\":\"d\",\"remoteFabricName\":\"bsrwrsnrhpqat\"}")
             .toObject(HyperVReplica2012EventDetails.class);
-        Assertions.assertEquals("yttzgixgyrih", model.containerName());
-        Assertions.assertEquals("mgb", model.fabricName());
-        Assertions.assertEquals("lqtxnrflkndrn", model.remoteContainerName());
-        Assertions.assertEquals("gfjo", model.remoteFabricName());
+        Assertions.assertEquals("rostvrjeqmtzz", model.containerName());
+        Assertions.assertEquals("qrztrxal", model.fabricName());
+        Assertions.assertEquals("d", model.remoteContainerName());
+        Assertions.assertEquals("bsrwrsnrhpqat", model.remoteFabricName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplica2012EventDetails model = new HyperVReplica2012EventDetails().withContainerName("yttzgixgyrih")
-            .withFabricName("mgb")
-            .withRemoteContainerName("lqtxnrflkndrn")
-            .withRemoteFabricName("gfjo");
+        HyperVReplica2012EventDetails model = new HyperVReplica2012EventDetails().withContainerName("rostvrjeqmtzz")
+            .withFabricName("qrztrxal")
+            .withRemoteContainerName("d")
+            .withRemoteFabricName("bsrwrsnrhpqat");
         model = BinaryData.fromObject(model).toObject(HyperVReplica2012EventDetails.class);
-        Assertions.assertEquals("yttzgixgyrih", model.containerName());
-        Assertions.assertEquals("mgb", model.fabricName());
-        Assertions.assertEquals("lqtxnrflkndrn", model.remoteContainerName());
-        Assertions.assertEquals("gfjo", model.remoteFabricName());
+        Assertions.assertEquals("rostvrjeqmtzz", model.containerName());
+        Assertions.assertEquals("qrztrxal", model.fabricName());
+        Assertions.assertEquals("d", model.remoteContainerName());
+        Assertions.assertEquals("bsrwrsnrhpqat", model.remoteFabricName());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.standbypool.generated;
  */
 public final class StandbyVirtualMachinePoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-03-01/StandbyVirtualMachinePools_Delete.json
+     * x-ms-original-file: 2025-03-01/StandbyVirtualMachinePools_Delete.json
      */
     /**
      * Sample code: StandbyVirtualMachinePools_Delete.

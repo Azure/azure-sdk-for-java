@@ -11,7 +11,7 @@ public final class DatacenterAddressLocationResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatacenterAddressLocationResponse model = BinaryData.fromString(
-            "{\"datacenterAddressType\":\"DatacenterAddressLocation\",\"contactPersonName\":\"i\",\"company\":\"blxgwimf\",\"street1\":\"hfjx\",\"street2\":\"szkkfoqre\",\"street3\":\"kzikfjawneaivxwc\",\"city\":\"lpcirelsf\",\"state\":\"enwabfatk\",\"zip\":\"dxbjhwuaanozj\",\"country\":\"ph\",\"phone\":\"ulpjr\",\"phoneExtension\":\"ag\",\"addressType\":\"vimjwos\",\"additionalShippingInformation\":\"xitc\",\"supportedCarriersForReturnShipment\":[\"cktqumiekkezzi\",\"hlyfjhdgqgg\",\"bdunygaeqid\"],\"dataCenterAzureLocation\":\"fatpxllrxcyjmoa\"}")
+            "{\"datacenterAddressType\":\"DatacenterAddressLocation\",\"contactPersonName\":\"bldtlww\",\"company\":\"kdmtncvokotll\",\"street1\":\"yhgsy\",\"street2\":\"ogjltdtbnnhad\",\"street3\":\"crkvcikhnv\",\"city\":\"mqg\",\"state\":\"queziky\",\"zip\":\"gxk\",\"country\":\"la\",\"phone\":\"elwuipi\",\"phoneExtension\":\"jzkzi\",\"addressType\":\"vvcnayr\",\"additionalShippingInformation\":\"rnxxmueed\",\"supportedCarriersForReturnShipment\":[\"dvstkw\",\"qtc\",\"ealmfmtdaaygdvwv\"],\"dataCenterAzureLocation\":\"iohgwxrtfud\"}")
             .toObject(DatacenterAddressLocationResponse.class);
     }
 

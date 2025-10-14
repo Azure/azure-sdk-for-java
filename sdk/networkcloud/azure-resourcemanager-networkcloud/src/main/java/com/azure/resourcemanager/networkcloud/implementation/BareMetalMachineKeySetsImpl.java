@@ -76,9 +76,9 @@ public final class BareMetalMachineKeySetsImpl implements BareMetalMachineKeySet
     }
 
     public OperationStatusResult delete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        Context context) {
-        OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, clusterName, bareMetalMachineKeySetName, context);
+        String ifMatch, String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .delete(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -141,10 +141,14 @@ public final class BareMetalMachineKeySetsImpl implements BareMetalMachineKeySet
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachineKeySets'.", id)));
         }
-        return this.delete(resourceGroupName, clusterName, bareMetalMachineKeySetName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, clusterName, bareMetalMachineKeySetName, localIfMatch, localIfNoneMatch,
+            Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -160,7 +164,7 @@ public final class BareMetalMachineKeySetsImpl implements BareMetalMachineKeySet
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachineKeySets'.", id)));
         }
-        return this.delete(resourceGroupName, clusterName, bareMetalMachineKeySetName, context);
+        return this.delete(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch, context);
     }
 
     private BareMetalMachineKeySetsClient serviceClient() {

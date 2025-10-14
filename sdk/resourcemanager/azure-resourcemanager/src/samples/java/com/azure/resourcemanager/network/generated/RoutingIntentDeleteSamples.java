@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class RoutingIntentDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/RoutingIntentDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/RoutingIntentDelete.json
      */
     /**
      * Sample code: RouteTableDelete.

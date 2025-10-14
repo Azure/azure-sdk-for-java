@@ -14,44 +14,36 @@ public final class EmailTemplateUpdateParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EmailTemplateUpdateParameterProperties model = BinaryData.fromString(
-            "{\"subject\":\"hjqwmchqoh\",\"title\":\"xcpup\",\"description\":\"i\",\"body\":\"j\",\"parameters\":[{\"name\":\"lvw\",\"title\":\"wsmosao\",\"description\":\"qnamppultassa\"},{\"name\":\"ewnazeajbkajlcyi\",\"title\":\"ddcvxodk\",\"description\":\"fsxxby\"},{\"name\":\"sqlv\",\"title\":\"cpwgoljtzxnmxsd\",\"description\":\"ygoogxqapjxva\"},{\"name\":\"jfucsaodjnosdkv\",\"title\":\"fasgm\",\"description\":\"rnzpducdaak\"}]}")
+            "{\"subject\":\"etamfddrvlkpzwb\",\"title\":\"recchdidrmu\",\"description\":\"ahmjedbiu\",\"body\":\"khhwmj\",\"parameters\":[{\"name\":\"eunxcqrrihufoi\",\"title\":\"piybxvgnzuzpbg\",\"description\":\"cscpiuzvkunh\"},{\"name\":\"mjuk\",\"title\":\"r\",\"description\":\"a\"}]}")
             .toObject(EmailTemplateUpdateParameterProperties.class);
-        Assertions.assertEquals("hjqwmchqoh", model.subject());
-        Assertions.assertEquals("xcpup", model.title());
-        Assertions.assertEquals("i", model.description());
-        Assertions.assertEquals("j", model.body());
-        Assertions.assertEquals("lvw", model.parameters().get(0).name());
-        Assertions.assertEquals("wsmosao", model.parameters().get(0).title());
-        Assertions.assertEquals("qnamppultassa", model.parameters().get(0).description());
+        Assertions.assertEquals("etamfddrvlkpzwb", model.subject());
+        Assertions.assertEquals("recchdidrmu", model.title());
+        Assertions.assertEquals("ahmjedbiu", model.description());
+        Assertions.assertEquals("khhwmj", model.body());
+        Assertions.assertEquals("eunxcqrrihufoi", model.parameters().get(0).name());
+        Assertions.assertEquals("piybxvgnzuzpbg", model.parameters().get(0).title());
+        Assertions.assertEquals("cscpiuzvkunh", model.parameters().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailTemplateUpdateParameterProperties model
-            = new EmailTemplateUpdateParameterProperties().withSubject("hjqwmchqoh")
-                .withTitle("xcpup")
-                .withDescription("i")
-                .withBody("j")
-                .withParameters(Arrays.asList(
-                    new EmailTemplateParametersContractProperties().withName("lvw")
-                        .withTitle("wsmosao")
-                        .withDescription("qnamppultassa"),
-                    new EmailTemplateParametersContractProperties().withName("ewnazeajbkajlcyi")
-                        .withTitle("ddcvxodk")
-                        .withDescription("fsxxby"),
-                    new EmailTemplateParametersContractProperties().withName("sqlv")
-                        .withTitle("cpwgoljtzxnmxsd")
-                        .withDescription("ygoogxqapjxva"),
-                    new EmailTemplateParametersContractProperties().withName("jfucsaodjnosdkv")
-                        .withTitle("fasgm")
-                        .withDescription("rnzpducdaak")));
+        EmailTemplateUpdateParameterProperties model = new EmailTemplateUpdateParameterProperties()
+            .withSubject("etamfddrvlkpzwb")
+            .withTitle("recchdidrmu")
+            .withDescription("ahmjedbiu")
+            .withBody("khhwmj")
+            .withParameters(Arrays.asList(
+                new EmailTemplateParametersContractProperties().withName("eunxcqrrihufoi")
+                    .withTitle("piybxvgnzuzpbg")
+                    .withDescription("cscpiuzvkunh"),
+                new EmailTemplateParametersContractProperties().withName("mjuk").withTitle("r").withDescription("a")));
         model = BinaryData.fromObject(model).toObject(EmailTemplateUpdateParameterProperties.class);
-        Assertions.assertEquals("hjqwmchqoh", model.subject());
-        Assertions.assertEquals("xcpup", model.title());
-        Assertions.assertEquals("i", model.description());
-        Assertions.assertEquals("j", model.body());
-        Assertions.assertEquals("lvw", model.parameters().get(0).name());
-        Assertions.assertEquals("wsmosao", model.parameters().get(0).title());
-        Assertions.assertEquals("qnamppultassa", model.parameters().get(0).description());
+        Assertions.assertEquals("etamfddrvlkpzwb", model.subject());
+        Assertions.assertEquals("recchdidrmu", model.title());
+        Assertions.assertEquals("ahmjedbiu", model.description());
+        Assertions.assertEquals("khhwmj", model.body());
+        Assertions.assertEquals("eunxcqrrihufoi", model.parameters().get(0).name());
+        Assertions.assertEquals("piybxvgnzuzpbg", model.parameters().get(0).title());
+        Assertions.assertEquals("cscpiuzvkunh", model.parameters().get(0).description());
     }
 }

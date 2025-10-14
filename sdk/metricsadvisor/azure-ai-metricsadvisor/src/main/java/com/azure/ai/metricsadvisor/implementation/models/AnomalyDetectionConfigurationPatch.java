@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
     /*
      * anomaly detection configuration name
      */
+    @Generated
     private String name;
 
     /*
      * anomaly detection configuration description
      */
+    @Generated
     private String description;
 
     /*
      * The wholeMetricConfiguration property.
      */
+    @Generated
     private WholeMetricConfigurationPatch wholeMetricConfiguration;
 
     /*
      * detection configuration for series group
      */
+    @Generated
     private List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations;
 
     /*
      * detection configuration for specific series
      */
+    @Generated
     private List<SeriesConfiguration> seriesOverrideConfigurations;
 
     /**
      * Creates an instance of AnomalyDetectionConfigurationPatch class.
      */
+    @Generated
     public AnomalyDetectionConfigurationPatch() {
     }
 
@@ -53,6 +60,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -63,6 +71,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * @param name the name value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
+    @Generated
     public AnomalyDetectionConfigurationPatch setName(String name) {
         this.name = name;
         return this;
@@ -73,6 +82,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -83,6 +93,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * @param description the description value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
+    @Generated
     public AnomalyDetectionConfigurationPatch setDescription(String description) {
         this.description = description;
         return this;
@@ -93,6 +104,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * 
      * @return the wholeMetricConfiguration value.
      */
+    @Generated
     public WholeMetricConfigurationPatch getWholeMetricConfiguration() {
         return this.wholeMetricConfiguration;
     }
@@ -103,6 +115,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * @param wholeMetricConfiguration the wholeMetricConfiguration value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
+    @Generated
     public AnomalyDetectionConfigurationPatch
         setWholeMetricConfiguration(WholeMetricConfigurationPatch wholeMetricConfiguration) {
         this.wholeMetricConfiguration = wholeMetricConfiguration;
@@ -114,6 +127,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * 
      * @return the dimensionGroupOverrideConfigurations value.
      */
+    @Generated
     public List<DimensionGroupConfiguration> getDimensionGroupOverrideConfigurations() {
         return this.dimensionGroupOverrideConfigurations;
     }
@@ -124,6 +138,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * @param dimensionGroupOverrideConfigurations the dimensionGroupOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
+    @Generated
     public AnomalyDetectionConfigurationPatch setDimensionGroupOverrideConfigurations(
         List<DimensionGroupConfiguration> dimensionGroupOverrideConfigurations) {
         this.dimensionGroupOverrideConfigurations = dimensionGroupOverrideConfigurations;
@@ -135,6 +150,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * 
      * @return the seriesOverrideConfigurations value.
      */
+    @Generated
     public List<SeriesConfiguration> getSeriesOverrideConfigurations() {
         return this.seriesOverrideConfigurations;
     }
@@ -145,6 +161,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * @param seriesOverrideConfigurations the seriesOverrideConfigurations value to set.
      * @return the AnomalyDetectionConfigurationPatch object itself.
      */
+    @Generated
     public AnomalyDetectionConfigurationPatch
         setSeriesOverrideConfigurations(List<SeriesConfiguration> seriesOverrideConfigurations) {
         this.seriesOverrideConfigurations = seriesOverrideConfigurations;
@@ -154,6 +171,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,6 +193,7 @@ public final class AnomalyDetectionConfigurationPatch implements JsonSerializabl
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnomalyDetectionConfigurationPatch.
      */
+    @Generated
     public static AnomalyDetectionConfigurationPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyDetectionConfigurationPatch deserializedAnomalyDetectionConfigurationPatch

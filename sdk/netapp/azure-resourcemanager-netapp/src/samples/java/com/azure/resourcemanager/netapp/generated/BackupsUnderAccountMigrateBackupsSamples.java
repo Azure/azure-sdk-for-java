@@ -11,8 +11,9 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderAccountMigrateBackupsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderAccount_Migrate.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderAccount_Migrate.
+     * json
      */
     /**
      * Sample code: BackupsUnderAccount_Migrate.
@@ -22,7 +23,7 @@ public final class BackupsUnderAccountMigrateBackupsSamples {
     public static void backupsUnderAccountMigrate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         manager.backupsUnderAccounts()
             .migrateBackups("myRG", "account1", new BackupsMigrationRequest().withBackupVaultId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
                 com.azure.core.util.Context.NONE);
     }
 }

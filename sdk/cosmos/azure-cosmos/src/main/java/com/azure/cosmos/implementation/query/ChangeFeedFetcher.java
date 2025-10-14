@@ -4,12 +4,12 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
@@ -58,8 +58,9 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
-        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+        DiagnosticsClientContext diagnosticsClientContext) {
+        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
@@ -78,7 +79,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 client,
                 requestOptionProperties,
                 collectionLink,
-                isSplitHandlingDisabled);
+                isSplitHandlingDisabled,
+                diagnosticsClientContext);
         this.createRequestFunc = createRequestFunc;
         this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
         this.endLSN = endLSN;
@@ -300,19 +302,14 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         RxDocumentClientImpl client,
         Map<String, Object> requestOptionProperties,
         String collectionLink,
-        boolean isSplitHandlingDisabled) {
+        boolean isSplitHandlingDisabled,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         DocumentClientRetryPolicy feedRangeContinuationRetryPolicy;
 
         // constructing retry policies for changeFeed requests
         DocumentClientRetryPolicy retryPolicyInstance =
-            client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
-
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
-            client.getCollectionCache(),
-            retryPolicyInstance,
-            collectionLink,
-            requestOptionProperties);
+            client.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext);
 
         if (isSplitHandlingDisabled) {
             // True for ChangeFeedProcessor - where all retry-logic is handled

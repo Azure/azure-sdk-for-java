@@ -36,9 +36,9 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
      * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the password, see [How
      * to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root
+     * VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root
      * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
+     * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
     private String adminPassword;
 
@@ -94,10 +94,10 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
      * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
      * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
-     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * login password in a Windows VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
      * Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
+     * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
      * 
      * @return the adminPassword value.
      */
@@ -114,10 +114,10 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
      * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
      * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
      * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
-     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * login password in a Windows VM](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
      * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
      * Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
+     * Extension](https://learn.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
      * 
      * @param adminPassword the adminPassword value to set.
      * @return the OSProfile object itself.
@@ -145,17 +145,6 @@ public final class OSProfile implements JsonSerializable<OSProfile> {
     public OSProfile withOsConfiguration(OSConfiguration osConfiguration) {
         this.osConfiguration = osConfiguration;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (osConfiguration() != null) {
-            osConfiguration().validate();
-        }
     }
 
     /**

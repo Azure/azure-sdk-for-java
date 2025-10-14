@@ -77,7 +77,7 @@ public final class ResourceSetRulesImpl {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PurviewAccountClient")
+    @ServiceInterface(name = "PurviewAccountClientResourceSetRules")
     public interface ResourceSetRulesService {
         @Get("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
         @ExpectedResponses({ 200 })

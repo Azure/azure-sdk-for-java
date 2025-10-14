@@ -37,9 +37,9 @@ public final class DomainPropertiesTests {
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
         Assertions.assertEquals("hsfwxosowzxcug", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.disableLocalAuth());
-        Assertions.assertEquals(true, model.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(true, model.autoDeleteTopicWithLastSubscription());
+        Assertions.assertTrue(model.disableLocalAuth());
+        Assertions.assertTrue(model.autoCreateTopicWithFirstSubscription());
+        Assertions.assertTrue(model.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.dataResidencyBoundary());
     }
 
@@ -89,9 +89,9 @@ public final class DomainPropertiesTests {
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
         Assertions.assertEquals("hsfwxosowzxcug", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.disableLocalAuth());
-        Assertions.assertEquals(true, model.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(true, model.autoDeleteTopicWithLastSubscription());
+        Assertions.assertTrue(model.disableLocalAuth());
+        Assertions.assertTrue(model.autoCreateTopicWithFirstSubscription());
+        Assertions.assertTrue(model.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.dataResidencyBoundary());
     }
 

@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests<KafkaBinderConfigurationProperties, KafkaBinderConfigurationPropertiesBeanPostProcessor> {
 
     AzureKafkaOAuth2BinderConfigurationTests() {
-        super(new KafkaBinderConfigurationPropertiesBeanPostProcessor(new AzureGlobalProperties()));
+        super(new KafkaBinderConfigurationPropertiesBeanPostProcessor());
     }
 
     private final ApplicationContextRunner contextRunnerWithoutEventHubsURL = new ApplicationContextRunner()

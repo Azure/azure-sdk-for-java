@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -21,26 +22,31 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
     /*
      * alert id
      */
+    @Generated
     private String id;
 
     /*
      * anomaly time
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * created time
      */
+    @Generated
     private OffsetDateTime createdTime;
 
     /*
      * modified time
      */
+    @Generated
     private OffsetDateTime modifiedTime;
 
     /**
      * Creates an instance of AnomalyAlert class.
      */
+    @Generated
     public AnomalyAlert() {
     }
 
@@ -49,6 +55,7 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -58,6 +65,7 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
      * 
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -67,6 +75,7 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
      * 
      * @return the createdTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedTime() {
         return this.createdTime;
     }
@@ -76,6 +85,7 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
      * 
      * @return the modifiedTime value.
      */
+    @Generated
     public OffsetDateTime getModifiedTime() {
         return this.modifiedTime;
     }
@@ -83,6 +93,7 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +108,7 @@ public final class AnomalyAlert implements JsonSerializable<AnomalyAlert> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnomalyAlert.
      */
+    @Generated
     public static AnomalyAlert fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyAlert deserializedAnomalyAlert = new AnomalyAlert();

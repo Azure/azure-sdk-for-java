@@ -11,7 +11,6 @@ trigger:
     include:
       - sdk/spring/
     exclude:
-      - sdk/spring/spring-cloud-azure-starter-monitor/
       - sdk/spring/spring-cloud-azure-starter-monitor-test/
 
 pr:
@@ -25,7 +24,6 @@ pr:
     include:
       - sdk/spring/
     exclude:
-      - sdk/spring/spring-cloud-azure-starter-monitor/
       - sdk/spring/spring-cloud-azure-starter-monitor-test/
 
 # Note - the name parameter cannot contain dashes (-) which is why both
@@ -146,6 +144,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-keyvault-certificates'
   type: boolean
   default: true
+- name: release_springcloudazurestarterkeyvaultjca
+  displayName: 'spring-cloud-azure-starter-keyvault-jca'
+  type: boolean
+  default: true
 - name: release_springcloudazurestarterkeyvaultsecrets
   displayName: 'spring-cloud-azure-starter-keyvault-secrets'
   type: boolean
@@ -240,6 +242,10 @@ parameters:
   default: true
 - name: release_springcloudazurestarterappconfigurationconfig
   displayName: 'spring-cloud-azure-starter-appconfiguration-config'
+  type: boolean
+  default: true
+- name: release_springcloudazurestartermonitor
+  displayName: 'spring-cloud-azure-starter-monitor'
   type: boolean
   default: true
 
@@ -427,6 +433,13 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultcertificates }}
+      - name: spring-cloud-azure-starter-keyvault-jca
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterkeyvaultjca
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultjca }}
       - name: spring-cloud-azure-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvaultsecrets
@@ -590,5 +603,12 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
+      - name: spring-cloud-azure-starter-monitor
+        groupId: com.azure.spring
+        safeName: springcloudazurestartermonitor
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestartermonitor }}
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*

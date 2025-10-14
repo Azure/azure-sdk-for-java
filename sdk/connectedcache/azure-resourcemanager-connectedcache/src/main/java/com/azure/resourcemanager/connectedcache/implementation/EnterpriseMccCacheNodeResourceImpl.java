@@ -12,7 +12,10 @@ import com.azure.resourcemanager.connectedcache.fluent.models.EnterpriseMccCache
 import com.azure.resourcemanager.connectedcache.models.CacheNodeProperty;
 import com.azure.resourcemanager.connectedcache.models.ConnectedCachePatchResource;
 import com.azure.resourcemanager.connectedcache.models.EnterpriseMccCacheNodeResource;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeAutoUpdateHistory;
 import com.azure.resourcemanager.connectedcache.models.MccCacheNodeInstallDetails;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeIssueHistory;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeTlsCertificateHistory;
 import java.util.Collections;
 import java.util.Map;
 
@@ -173,6 +176,39 @@ public final class EnterpriseMccCacheNodeResourceImpl implements EnterpriseMccCa
             .getCacheNodeInstallDetails(resourceGroupName, customerResourceName, cacheNodeResourceName);
     }
 
+    public Response<MccCacheNodeAutoUpdateHistory> getCacheNodeAutoUpdateHistoryWithResponse(Context context) {
+        return serviceManager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
+                context);
+    }
+
+    public MccCacheNodeAutoUpdateHistory getCacheNodeAutoUpdateHistory() {
+        return serviceManager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeAutoUpdateHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+    }
+
+    public Response<MccCacheNodeIssueHistory> getCacheNodeMccIssueDetailsHistoryWithResponse(Context context) {
+        return serviceManager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
+                cacheNodeResourceName, context);
+    }
+
+    public MccCacheNodeIssueHistory getCacheNodeMccIssueDetailsHistory() {
+        return serviceManager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeMccIssueDetailsHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+    }
+
+    public Response<MccCacheNodeTlsCertificateHistory> getCacheNodeTlsCertificateHistoryWithResponse(Context context) {
+        return serviceManager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeTlsCertificateHistoryWithResponse(resourceGroupName, customerResourceName,
+                cacheNodeResourceName, context);
+    }
+
+    public MccCacheNodeTlsCertificateHistory getCacheNodeTlsCertificateHistory() {
+        return serviceManager.enterpriseMccCacheNodesOperations()
+            .getCacheNodeTlsCertificateHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+    }
+
     public EnterpriseMccCacheNodeResourceImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -199,6 +235,6 @@ public final class EnterpriseMccCacheNodeResourceImpl implements EnterpriseMccCa
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

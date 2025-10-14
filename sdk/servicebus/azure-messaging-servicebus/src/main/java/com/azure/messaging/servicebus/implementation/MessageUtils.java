@@ -10,7 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
@@ -459,7 +459,7 @@ public final class MessageUtils {
             return null;
         }
 
-        RuleDescriptionImpl ruleDescription = new RuleDescriptionImpl();
+        RuleDescription ruleDescription = new RuleDescription();
         if (ruleDescribedType.getDescribed() instanceof Iterable) {
             @SuppressWarnings("unchecked")
             Iterator<Object> describedRule = ((Iterable<Object>) ruleDescribedType.getDescribed()).iterator();

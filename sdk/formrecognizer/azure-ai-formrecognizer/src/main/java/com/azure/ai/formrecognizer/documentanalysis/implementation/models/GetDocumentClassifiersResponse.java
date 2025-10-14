@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
     /*
      * List of document classifiers.
      */
+    @Generated
     private final List<DocumentClassifierDetails> value;
 
     /*
      * Link to the next page of document classifiers.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -32,6 +35,7 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
      * 
      * @param value the value value to set.
      */
+    @Generated
     public GetDocumentClassifiersResponse(List<DocumentClassifierDetails> value) {
         this.value = value;
     }
@@ -41,6 +45,7 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
      * 
      * @return the value value.
      */
+    @Generated
     public List<DocumentClassifierDetails> getValue() {
         return this.value;
     }
@@ -50,6 +55,7 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -60,6 +66,7 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
      * @param nextLink the nextLink value to set.
      * @return the GetDocumentClassifiersResponse object itself.
      */
+    @Generated
     public GetDocumentClassifiersResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -68,6 +75,7 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +93,7 @@ public final class GetDocumentClassifiersResponse implements JsonSerializable<Ge
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GetDocumentClassifiersResponse.
      */
+    @Generated
     public static GetDocumentClassifiersResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

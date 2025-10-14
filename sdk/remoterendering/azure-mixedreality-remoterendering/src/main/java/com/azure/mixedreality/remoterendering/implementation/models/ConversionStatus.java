@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class ConversionStatus extends ExpandableStringEnum<ConversionStatu
     /**
      * The conversion was created but hasn't started.
      */
+    @Generated
     public static final ConversionStatus NOT_STARTED = fromString("NotStarted");
 
     /**
      * The conversion is running.
      */
+    @Generated
     public static final ConversionStatus RUNNING = fromString("Running");
 
     /**
      * The conversion was cancelled. This is a terminal state.
      */
+    @Generated
     public static final ConversionStatus CANCELLED = fromString("Cancelled");
 
     /**
      * The conversion has failed. Check the 'error' field for more details. This is a terminal state.
      */
+    @Generated
     public static final ConversionStatus FAILED = fromString("Failed");
 
     /**
      * The conversion has succeeded. Check the 'output' field for output asset location. This is a terminal state.
      */
+    @Generated
     public static final ConversionStatus SUCCEEDED = fromString("Succeeded");
 
     /**
@@ -41,6 +47,7 @@ public final class ConversionStatus extends ExpandableStringEnum<ConversionStatu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ConversionStatus() {
     }
@@ -51,6 +58,7 @@ public final class ConversionStatus extends ExpandableStringEnum<ConversionStatu
      * @param name a name to look for.
      * @return the corresponding ConversionStatus.
      */
+    @Generated
     public static ConversionStatus fromString(String name) {
         return fromString(name, ConversionStatus.class);
     }
@@ -60,6 +68,7 @@ public final class ConversionStatus extends ExpandableStringEnum<ConversionStatu
      * 
      * @return known ConversionStatus values.
      */
+    @Generated
     public static Collection<ConversionStatus> values() {
         return values(ConversionStatus.class);
     }

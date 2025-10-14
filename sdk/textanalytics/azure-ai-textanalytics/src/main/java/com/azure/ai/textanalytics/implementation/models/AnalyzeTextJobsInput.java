@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
     /*
      * Optional display name for the analysis job.
      */
+    @Generated
     private String displayName;
 
     /*
      * The analysisInput property.
      */
+    @Generated
     private MultiLanguageAnalysisInput analysisInput;
 
     /*
      * The set of tasks to execute on the input documents.
      */
+    @Generated
     private List<AnalyzeTextLROTask> tasks;
 
     /**
      * Creates an instance of AnalyzeTextJobsInput class.
      */
+    @Generated
     public AnalyzeTextJobsInput() {
     }
 
@@ -43,6 +48,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * 
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -53,6 +59,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * @param displayName the displayName value to set.
      * @return the AnalyzeTextJobsInput object itself.
      */
+    @Generated
     public AnalyzeTextJobsInput setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -63,6 +70,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * 
      * @return the analysisInput value.
      */
+    @Generated
     public MultiLanguageAnalysisInput getAnalysisInput() {
         return this.analysisInput;
     }
@@ -73,6 +81,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeTextJobsInput object itself.
      */
+    @Generated
     public AnalyzeTextJobsInput setAnalysisInput(MultiLanguageAnalysisInput analysisInput) {
         this.analysisInput = analysisInput;
         return this;
@@ -83,6 +92,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * 
      * @return the tasks value.
      */
+    @Generated
     public List<AnalyzeTextLROTask> getTasks() {
         return this.tasks;
     }
@@ -93,6 +103,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * @param tasks the tasks value to set.
      * @return the AnalyzeTextJobsInput object itself.
      */
+    @Generated
     public AnalyzeTextJobsInput setTasks(List<AnalyzeTextLROTask> tasks) {
         this.tasks = tasks;
         return this;
@@ -101,6 +112,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class AnalyzeTextJobsInput implements JsonSerializable<AnalyzeTextJ
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeTextJobsInput.
      */
+    @Generated
     public static AnalyzeTextJobsInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextJobsInput deserializedAnalyzeTextJobsInput = new AnalyzeTextJobsInput();

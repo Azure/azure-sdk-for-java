@@ -53,6 +53,4 @@ extends:
                   - ${{ artifact }}
             - ${{ else }}:
               - ${{ parameters.Artifacts }}
-            ArtifactName: packages
             EnableIntegrationStage: false
-

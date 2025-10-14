@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NatGatewaysUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NatGatewayUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NatGatewayUpdateTags.json
      */
     /**
      * Sample code: Update nat gateway tags.
@@ -22,6 +22,24 @@ public final class NatGatewaysUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateNatGatewayTags(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNatGateways()
+            .updateTagsWithResponse("rg1", "test-natGateway",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * NatGatewayUpdateTagsStandardV2Sku.json
+     */
+    /**
+     * Sample code: Update nat gateway with StandardV2 Sku tags.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateNatGatewayWithStandardV2SkuTags(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.networks()
             .manager()
             .serviceClient()

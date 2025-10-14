@@ -1,14 +1,981 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0 (2025-09-24)
 
-### Features Added
+- Azure Resource Manager Oracle Database client library for Java. This package contains Microsoft Azure SDK for Oracle Database Management SDK.  Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OracleSubscriptionUpdateProperties` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.DefinedFileSystemConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.AllConnectionStringType` was modified
+
+* `validate()` was removed
+
+#### `models.ExadbVmClusterProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DbNodeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CloudVmClusterProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DbNodeDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DayOfWeek` was modified
+
+* `validate()` was removed
+
+#### `models.Month` was modified
+
+* `validate()` was removed
+
+#### `models.DbServerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProfileType` was modified
+
+* `validate()` was removed
+
+#### `models.NsgCidr` was modified
+
+* `validate()` was removed
+
+#### `models.ExascaleDbStorageDetails` was modified
+
+* `validate()` was removed
+
+#### `models.AddRemoveDbNode` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseCrossRegionDisasterRecoveryProperties` was modified
+
+* `withScheduledOperations(models.ScheduledOperationsType)` was removed
+* `validate()` was removed
+
+#### `models.PlanUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.SystemVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RemoveVirtualMachineFromExadbVmClusterDetails` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseFromBackupTimestampProperties` was modified
+
+* `withScheduledOperations(models.ScheduledOperationsType)` was removed
+* `validate()` was removed
+
+#### `models.AzureSubscriptions` was modified
+
+* `validate()` was removed
+
+#### `models.ExadbVmClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.DisasterRecoveryConfigurationDetails` was modified
+
+* `validate()` was removed
+
+#### `models.LongTermBackUpScheduleDetails` was modified
+
+* `validate()` was removed
+
+#### `models.PeerDbDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DbSystemShapeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExadbVmClusterUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApexDetailsType` was modified
+
+* `validate()` was removed
+
+#### `models.CloudExadataInfrastructureUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GenerateAutonomousDatabaseWalletDetails` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseBackupUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.DbSystemShapes` was modified
+
+* `listByLocation(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.VirtualNetworkAddressProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CloudVmClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.PortRange` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseCloneProperties` was modified
+
+* `validate()` was removed
+* `withScheduledOperations(models.ScheduledOperationsType)` was removed
+
+#### `models.OracleSubscriptionUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.FileSystemConfigurationDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ExascaleDbNodeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExadataIormConfig` was modified
+
+* `validate()` was removed
+
+#### `models.FlexComponentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DnsPrivateZoneProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseUpdateProperties` was modified
+
+* `withScheduledOperations(models.ScheduledOperationsTypeUpdate)` was removed
+* `scheduledOperations()` was removed
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseBackupUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EstimatedPatchingTime` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.CloudExadataInfrastructureUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.GiVersions` was modified
+
+* `listByLocation(java.lang.String,models.SystemShapes,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledOperationsType` was modified
+
+* `validate()` was removed
+
+#### `models.GiMinorVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DbNodeAction` was modified
+
+* `validate()` was removed
+
+#### `models.OracleSubscriptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CloudExadataInfrastructureProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDbVersionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExadbVmClusterStorageDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DayOfWeekUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ExascaleDbStorageVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseCharacterSetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseNationalCharacterSetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExascaleDbStorageVaultTagsUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.Plan` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseBaseProperties` was modified
+
+* `validate()` was removed
+* `withScheduledOperations(models.ScheduledOperationsType)` was removed
+* `scheduledOperations()` was removed
+
+#### `models.DbIormConfig` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionUrlType` was modified
+
+* `validate()` was removed
+
+#### `models.DbServerPatchingDetails` was modified
+
+* `validate()` was removed
+
+#### `models.CustomerContact` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseProperties` was modified
+
+* `withScheduledOperations(models.ScheduledOperationsType)` was removed
+* `validate()` was removed
+
+#### `models.ExascaleDbStorageInputDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DnsPrivateViewProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseStandbySummary` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionStringType` was modified
+
+* `validate()` was removed
+
+#### `models.CloudVmClusterUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateIpAddressesFilter` was modified
+
+* `validate()` was removed
+
+#### `models.RestoreAutonomousDatabaseDetails` was modified
+
+* `validate()` was removed
+
+#### `models.DataCollectionOptions` was modified
+
+* `validate()` was removed
+
+#### `models.MaintenanceWindow` was modified
+
+* `validate()` was removed
+
+#### `models.AutonomousDatabaseBackupProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledOperationsTypeUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.GiVersionProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ResourceAnchor$UpdateStages` was added
+
+* `models.DbSystem$DefinitionStages` was added
+
+* `models.NetworkAnchorProperties` was added
+
+* `models.ResourceAnchor` was added
+
+* `models.StorageManagementType` was added
+
+* `models.DbSystemSourceType` was added
+
+* `models.NetworkAnchor$Update` was added
+
+* `models.ResourceAnchors` was added
+
+* `models.DbSystemUpdateProperties` was added
+
+* `models.DbSystemBaseProperties` was added
+
+* `models.DbSystemOptions` was added
+
+* `models.ResourceAnchorUpdate` was added
+
+* `models.AutonomousDatabaseLifecycleAction` was added
+
+* `models.DbSystemProperties` was added
+
+* `models.DbVersions` was added
+
+* `models.DbSystemUpdate` was added
+
+* `models.ResourceAnchorProperties` was added
+
+* `models.ResourceAnchor$Update` was added
+
+* `models.ExadataVmClusterStorageManagementType` was added
+
+* `models.ConfigureExascaleCloudExadataInfrastructureDetails` was added
+
+* `models.DbVersionProperties` was added
+
+* `models.NetworkAnchorUpdateProperties` was added
+
+* `models.DiskRedundancyType` was added
+
+* `models.AutonomousDatabaseLifecycleActionEnum` was added
+
+* `models.DbSystem` was added
+
+* `models.NetworkAnchors` was added
+
+* `models.NetworkAnchor$UpdateStages` was added
+
+* `models.DbVersion` was added
+
+* `models.DbSystemDatabaseEditionType` was added
+
+* `models.NetworkAnchor` was added
+
+* `models.NetworkAnchor$Definition` was added
+
+* `models.ShapeFamilyType` was added
+
+* `models.NetworkAnchor$DefinitionStages` was added
+
+* `models.ExascaleConfigDetails` was added
+
+* `models.DbSystem$Update` was added
+
+* `models.DbSystem$UpdateStages` was added
+
+* `models.BaseDbSystemShapes` was added
+
+* `models.DbSystemLifecycleState` was added
+
+* `models.DbSystem$Definition` was added
+
+* `models.ShapeAttribute` was added
+
+* `models.NetworkAnchorUpdate` was added
+
+* `models.DnsForwardingRule` was added
+
+* `models.ResourceAnchor$DefinitionStages` was added
+
+* `models.ResourceAnchor$Definition` was added
+
+* `models.StorageVolumePerformanceMode` was added
+
+* `models.DbSystems` was added
+
+#### `models.ExadbVmClusterProperties` was modified
+
+* `shapeAttribute()` was added
+* `withShapeAttribute(models.ShapeAttribute)` was added
+
+#### `models.CloudVmClusterProperties` was modified
+
+* `exascaleDbStorageVaultId()` was added
+* `withExascaleDbStorageVaultId(java.lang.String)` was added
+* `storageManagementType()` was added
+
+#### `models.AutonomousDatabaseCrossRegionDisasterRecoveryProperties` was modified
+
+* `withScheduledOperationsList(java.util.List)` was added
+
+#### `models.AutonomousDatabaseFromBackupTimestampProperties` was modified
+
+* `withScheduledOperationsList(java.util.List)` was added
+
+#### `models.DbSystemShapeProperties` was modified
+
+* `shapeAttributes()` was added
+
+#### `models.AutonomousDatabase` was modified
+
+* `action(models.AutonomousDatabaseLifecycleAction,com.azure.core.util.Context)` was added
+* `action(models.AutonomousDatabaseLifecycleAction)` was added
+
+#### `models.DbSystemShapes` was modified
+
+* `listByLocation(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AutonomousDatabaseCloneProperties` was modified
+
+* `withScheduledOperationsList(java.util.List)` was added
+
+#### `models.AutonomousDatabaseUpdateProperties` was modified
+
+* `withScheduledOperationsList(java.util.List)` was added
+* `scheduledOperationsList()` was added
+
+#### `models.GiVersions` was modified
+
+* `listByLocation(java.lang.String,models.SystemShapes,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `OracleDatabaseManager` was modified
+
+* `dbVersions()` was added
+* `networkAnchors()` was added
+* `resourceAnchors()` was added
+* `dbSystems()` was added
+
+#### `models.CloudExadataInfrastructureProperties` was modified
+
+* `exascaleConfig()` was added
+
+#### `models.CloudExadataInfrastructure` was modified
+
+* `configureExascale(models.ConfigureExascaleCloudExadataInfrastructureDetails,com.azure.core.util.Context)` was added
+* `configureExascale(models.ConfigureExascaleCloudExadataInfrastructureDetails)` was added
+
+#### `models.AutonomousDatabases` was modified
+
+* `action(java.lang.String,java.lang.String,models.AutonomousDatabaseLifecycleAction,com.azure.core.util.Context)` was added
+* `action(java.lang.String,java.lang.String,models.AutonomousDatabaseLifecycleAction)` was added
+
+#### `models.ExascaleDbStorageVaultProperties` was modified
+
+* `withExadataInfrastructureId(java.lang.String)` was added
+* `attachedShapeAttributes()` was added
+* `exadataInfrastructureId()` was added
+
+#### `models.AutonomousDatabaseBaseProperties` was modified
+
+* `scheduledOperationsList()` was added
+* `withScheduledOperationsList(java.util.List)` was added
+
+#### `models.AutonomousDatabaseProperties` was modified
+
+* `withScheduledOperationsList(java.util.List)` was added
+
+#### `models.CloudExadataInfrastructures` was modified
+
+* `configureExascale(java.lang.String,java.lang.String,models.ConfigureExascaleCloudExadataInfrastructureDetails)` was added
+* `configureExascale(java.lang.String,java.lang.String,models.ConfigureExascaleCloudExadataInfrastructureDetails,com.azure.core.util.Context)` was added
+
+## 1.1.0 (2025-06-04)
+
+- Azure Resource Manager Oracle Database client library for Java. This package contains Microsoft Azure SDK for Oracle Database Management SDK.  Package api-version 2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DnsPrivateZoneListResult` was removed
+
+#### `models.GiVersionListResult` was removed
+
+#### `models.VirtualNetworkAddressListResult` was removed
+
+#### `models.DbServerListResult` was removed
+
+#### `models.AutonomousDbVersionListResult` was removed
+
+#### `models.SystemVersionListResult` was removed
+
+#### `models.AutonomousDatabaseListResult` was removed
+
+#### `models.DbNodeListResult` was removed
+
+#### `models.DnsPrivateViewListResult` was removed
+
+#### `models.AutonomousDatabaseCharacterSetListResult` was removed
+
+#### `models.AutonomousDatabaseBackupListResult` was removed
+
+#### `models.DbSystemShapeListResult` was removed
+
+#### `models.CloudVmClusterListResult` was removed
+
+#### `models.AutonomousDatabaseNationalCharacterSetListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.OracleSubscriptionListResult` was removed
+
+#### `models.CloudExadataInfrastructureListResult` was removed
+
+#### `models.AllConnectionStringType` was modified
+
+* `withHigh(java.lang.String)` was removed
+* `withLow(java.lang.String)` was removed
+* `withMedium(java.lang.String)` was removed
+
+#### `models.CloudVmClusterProperties` was modified
+
+* `java.lang.Float ocpuCount()` -> `java.lang.Double ocpuCount()`
+* `withOcpuCount(java.lang.Float)` was removed
+
+#### `models.ProfileType` was modified
+
+* `withDisplayName(java.lang.String)` was removed
+* `withTlsAuthentication(models.TlsAuthenticationType)` was removed
+* `withSessionMode(models.SessionModeType)` was removed
+* `withSyntaxFormat(models.SyntaxFormatType)` was removed
+* `withIsRegional(java.lang.Boolean)` was removed
+* `withValue(java.lang.String)` was removed
+* `withConsumerGroup(models.ConsumerGroup)` was removed
+* `withProtocol(models.ProtocolType)` was removed
+* `withHostFormat(models.HostFormatType)` was removed
+
+#### `models.DbSystemShapeProperties` was modified
+
+* `java.lang.Integer availableCoreCount()` -> `int availableCoreCount()`
+
+#### `models.ApexDetailsType` was modified
+
+* `withApexVersion(java.lang.String)` was removed
+* `withOrdsVersion(java.lang.String)` was removed
+
+#### `models.DbSystemShapes` was modified
+
+* `listByLocation(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AutonomousDatabaseCloneProperties` was modified
+
+* `timeMaintenanceEnd()` was removed
+* `timeOfLastRefreshPoint()` was removed
+* `inMemoryAreaInGbs()` was removed
+* `memoryPerOracleComputeUnitInGbs()` was removed
+* `availableUpgradeVersions()` was removed
+* `timeDeletionOfFreeAutonomousDatabase()` was removed
+* `connectionStrings()` was removed
+* `sqlWebDeveloperUrl()` was removed
+* `supportedRegionsToCloneTo()` was removed
+* `timeDataGuardRoleChanged()` was removed
+* `isPreview()` was removed
+* `timeMaintenanceBegin()` was removed
+* `provisionableCpus()` was removed
+* `nextLongTermBackupTimestamp()` was removed
+* `apexDetails()` was removed
+* `timeOfLastSwitchover()` was removed
+* `usedDataStorageSizeInTbs()` was removed
+* `serviceConsoleUrl()` was removed
+* `failedDataRecoveryInSeconds()` was removed
+* `localDisasterRecoveryType()` was removed
+* `actualUsedDataStorageSizeInTbs()` was removed
+* `timeOfLastRefresh()` was removed
+* `lifecycleDetails()` was removed
+* `withComputeCount(java.lang.Float)` was removed
+* `peerDbIds()` was removed
+* `usedDataStorageSizeInGbs()` was removed
+* `ociUrl()` was removed
+* `ocid()` was removed
+* `lifecycleState()` was removed
+* `localStandbyDb()` was removed
+* `dataSafeStatus()` was removed
+* `timeOfLastFailover()` was removed
+* `operationsInsightsStatus()` was removed
+* `timeCreated()` was removed
+* `privateEndpoint()` was removed
+* `isRemoteDataGuardEnabled()` was removed
+* `timeLocalDataGuardEnabled()` was removed
+* `allocatedStorageSizeInTbs()` was removed
+* `timeReclamationOfFreeAutonomousDatabase()` was removed
+* `provisioningState()` was removed
+* `connectionUrls()` was removed
+
+#### `models.ExadataIormConfig` was modified
+
+* `withDbPlans(java.util.List)` was removed
+* `withLifecycleState(models.IormLifecycleState)` was removed
+* `withLifecycleDetails(java.lang.String)` was removed
+* `withObjective(models.Objective)` was removed
+
+#### `models.DnsPrivateZoneProperties` was modified
+
+* `java.lang.Boolean isProtected()` -> `boolean isProtected()`
+* `java.lang.Integer serial()` -> `int serial()`
+
+#### `models.AutonomousDatabaseUpdateProperties` was modified
+
+* `withComputeCount(java.lang.Float)` was removed
+* `java.lang.Float computeCount()` -> `java.lang.Double computeCount()`
+
+#### `models.GiVersions` was modified
+
+* `listByLocation(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `OracleDatabaseManager` was modified
+
+* `fluent.OracleDatabaseResourceManager serviceClient()` -> `fluent.OracleDatabaseManagementClient serviceClient()`
+
+#### `models.AutonomousDatabaseBaseProperties` was modified
+
+* `withComputeCount(java.lang.Float)` was removed
+* `java.lang.Float computeCount()` -> `java.lang.Double computeCount()`
+
+#### `models.DbIormConfig` was modified
+
+* `withDbName(java.lang.String)` was removed
+* `withShare(java.lang.Integer)` was removed
+* `withFlashCacheLimit(java.lang.String)` was removed
+
+#### `models.ConnectionUrlType` was modified
+
+* `withDatabaseTransformsUrl(java.lang.String)` was removed
+* `withSqlDevWebUrl(java.lang.String)` was removed
+* `withApexUrl(java.lang.String)` was removed
+* `withOrdsUrl(java.lang.String)` was removed
+* `withMongoDbUrl(java.lang.String)` was removed
+* `withMachineLearningNotebookUrl(java.lang.String)` was removed
+* `withGraphStudioUrl(java.lang.String)` was removed
+
+#### `models.AutonomousDatabaseProperties` was modified
+
+* `lifecycleState()` was removed
+* `availableUpgradeVersions()` was removed
+* `usedDataStorageSizeInTbs()` was removed
+* `timeMaintenanceBegin()` was removed
+* `timeOfLastSwitchover()` was removed
+* `timeLocalDataGuardEnabled()` was removed
+* `supportedRegionsToCloneTo()` was removed
+* `inMemoryAreaInGbs()` was removed
+* `timeMaintenanceEnd()` was removed
+* `usedDataStorageSizeInGbs()` was removed
+* `timeDeletionOfFreeAutonomousDatabase()` was removed
+* `nextLongTermBackupTimestamp()` was removed
+* `timeOfLastRefresh()` was removed
+* `provisionableCpus()` was removed
+* `actualUsedDataStorageSizeInTbs()` was removed
+* `operationsInsightsStatus()` was removed
+* `timeReclamationOfFreeAutonomousDatabase()` was removed
+* `localStandbyDb()` was removed
+* `ociUrl()` was removed
+* `timeOfLastFailover()` was removed
+* `ocid()` was removed
+* `serviceConsoleUrl()` was removed
+* `connectionUrls()` was removed
+* `isRemoteDataGuardEnabled()` was removed
+* `timeCreated()` was removed
+* `lifecycleDetails()` was removed
+* `memoryPerOracleComputeUnitInGbs()` was removed
+* `withComputeCount(java.lang.Float)` was removed
+* `localDisasterRecoveryType()` was removed
+* `peerDbIds()` was removed
+* `failedDataRecoveryInSeconds()` was removed
+* `timeOfLastRefreshPoint()` was removed
+* `allocatedStorageSizeInTbs()` was removed
+* `sqlWebDeveloperUrl()` was removed
+* `apexDetails()` was removed
+* `dataSafeStatus()` was removed
+* `connectionStrings()` was removed
+* `timeDataGuardRoleChanged()` was removed
+* `privateEndpoint()` was removed
+* `provisioningState()` was removed
+* `isPreview()` was removed
+
+#### `models.DnsPrivateViewProperties` was modified
+
+* `java.lang.Boolean isProtected()` -> `boolean isProtected()`
+
+#### `models.AutonomousDatabaseStandbySummary` was modified
+
+* `withTimeDataGuardRoleChanged(java.lang.String)` was removed
+* `withLifecycleDetails(java.lang.String)` was removed
+* `withTimeDisasterRecoveryRoleChanged(java.lang.String)` was removed
+* `withLagTimeInSeconds(java.lang.Integer)` was removed
+* `withLifecycleState(models.AutonomousDatabaseLifecycleState)` was removed
+
+#### `models.ConnectionStringType` was modified
+
+* `withDedicated(java.lang.String)` was removed
+* `withLow(java.lang.String)` was removed
+* `withHigh(java.lang.String)` was removed
+* `withMedium(java.lang.String)` was removed
+* `withProfiles(java.util.List)` was removed
+* `withAllConnectionStrings(models.AllConnectionStringType)` was removed
+
+#### `models.CloudVmClusterUpdateProperties` was modified
+
+* `withOcpuCount(java.lang.Float)` was removed
+* `java.lang.Float ocpuCount()` -> `java.lang.Double ocpuCount()`
+
+### Features Added
+
+* `models.DefinedFileSystemConfiguration` was added
+
+* `models.ExadbVmClusterProperties` was added
+
+* `models.GridImageType` was added
+
+* `models.ExascaleDbStorageVault` was added
+
+* `implementation.models.ExascaleDbStorageVaultListResult` was added
+
+* `implementation.models.AutonomousDatabaseBackupListResult` was added
+
+* `models.DbNodeDetails` was added
+
+* `models.ExascaleDbStorageVault$UpdateStages` was added
+
+* `models.FlexComponent` was added
+
+* `models.ExascaleDbStorageVaults` was added
+
+* `implementation.models.ExascaleDbNodeListResult` was added
+
+* `implementation.models.CloudExadataInfrastructureListResult` was added
+
+* `models.ExascaleDbStorageDetails` was added
+
+* `models.ExadbVmClusters` was added
+
+* `implementation.models.GiMinorVersionListResult` was added
+
+* `models.AutonomousDatabaseCrossRegionDisasterRecoveryProperties` was added
+
+* `implementation.models.OracleSubscriptionListResult` was added
+
+* `models.RemoveVirtualMachineFromExadbVmClusterDetails` was added
+
+* `models.FlexComponents` was added
+
+* `models.AutonomousDatabaseFromBackupTimestampProperties` was added
+
+* `models.AzureSubscriptions` was added
+
+* `models.ExadbVmClusterUpdate` was added
+
+* `models.ExascaleDbStorageVaultLifecycleState` was added
+
+* `models.DisasterRecoveryConfigurationDetails` was added
+
+* `models.ShapeFamily` was added
+
+* `implementation.models.AutonomousDatabaseCharacterSetListResult` was added
+
+* `implementation.models.DnsPrivateZoneListResult` was added
+
+* `implementation.models.DbSystemShapeListResult` was added
+
+* `implementation.models.DnsPrivateViewListResult` was added
+
+* `models.ExadbVmClusterUpdateProperties` was added
+
+* `models.ExadbVmCluster` was added
+
+* `models.ExadbVmCluster$UpdateStages` was added
+
+* `models.GiMinorVersions` was added
+
+* `implementation.models.OperationListResult` was added
+
+* `implementation.models.DbServerListResult` was added
+
+* `models.ExascaleDbStorageVault$DefinitionStages` was added
+
+* `models.ExadbVmCluster$Definition` was added
+
+* `implementation.models.GiVersionListResult` was added
+
+* `models.FileSystemConfigurationDetails` was added
+
+* `implementation.models.DbNodeListResult` was added
+
+* `implementation.models.FlexComponentListResult` was added
+
+* `models.ExascaleDbNodeProperties` was added
+
+* `models.SystemShapes` was added
+
+* `models.AddSubscriptionOperationState` was added
+
+* `models.ExadbVmClusterLifecycleState` was added
+
+* `implementation.models.CloudVmClusterListResult` was added
+
+* `models.ExadbVmCluster$DefinitionStages` was added
+
+* `models.FlexComponentProperties` was added
+
+* `models.ExascaleDbNodes` was added
+
+* `models.HardwareType` was added
+
+* `models.ExascaleDbStorageVault$Definition` was added
+
+* `implementation.models.ExadbVmClusterListResult` was added
+
+* `implementation.models.AutonomousDatabaseNationalCharacterSetListResult` was added
+
+* `models.GiMinorVersionProperties` was added
+
+* `models.ExadbVmClusterStorageDetails` was added
+
+* `models.ExascaleDbStorageVaultProperties` was added
+
+* `models.ExascaleDbStorageVaultTagsUpdate` was added
+
+* `models.DbActionResponse` was added
+
+* `implementation.models.AutonomousDbVersionListResult` was added
+
+* `implementation.models.AutonomousDatabaseListResult` was added
+
+* `models.ExascaleDbStorageInputDetails` was added
+
+* `models.GiMinorVersion` was added
+
+* `models.ExascaleDbStorageVault$Update` was added
+
+* `implementation.models.VirtualNetworkAddressListResult` was added
+
+* `models.ExascaleDbNode` was added
+
+* `implementation.models.SystemVersionListResult` was added
+
+* `models.ExadbVmCluster$Update` was added
+
+#### `models.CloudVmClusterProperties` was modified
+
+* `withOcpuCount(java.lang.Double)` was added
+* `fileSystemConfigurationDetails()` was added
+* `withFileSystemConfigurationDetails(java.util.List)` was added
+* `computeModel()` was added
+
+#### `models.DbServerProperties` was modified
+
+* `computeModel()` was added
+
+#### `models.OracleSubscriptions` was modified
+
+* `addAzureSubscriptions(models.AzureSubscriptions)` was added
+* `addAzureSubscriptions(models.AzureSubscriptions,com.azure.core.util.Context)` was added
+
+#### `models.PeerDbDetails` was modified
+
+* `peerDbLocation()` was added
+* `withPeerDbLocation(java.lang.String)` was added
+* `peerDbOcid()` was added
+* `withPeerDbOcid(java.lang.String)` was added
+
+#### `models.DbSystemShapeProperties` was modified
+
+* `computeModel()` was added
+* `areServerTypesSupported()` was added
+* `displayName()` was added
+* `shapeName()` was added
+
+#### `models.AutonomousDatabase` was modified
+
+* `changeDisasterRecoveryConfiguration(models.DisasterRecoveryConfigurationDetails)` was added
+* `changeDisasterRecoveryConfiguration(models.DisasterRecoveryConfigurationDetails,com.azure.core.util.Context)` was added
+
+#### `models.DbSystemShapes` was modified
+
+* `listByLocation(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AutonomousDatabaseCloneProperties` was modified
+
+* `withComputeCount(java.lang.Double)` was added
+
+#### `models.AutonomousDatabaseUpdateProperties` was modified
+
+* `withComputeCount(java.lang.Double)` was added
+
+#### `models.GiVersions` was modified
+
+* `listByLocation(java.lang.String,models.SystemShapes,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `OracleDatabaseManager` was modified
+
+* `flexComponents()` was added
+* `exascaleDbNodes()` was added
+* `exascaleDbStorageVaults()` was added
+* `giMinorVersions()` was added
+* `exadbVmClusters()` was added
+
+#### `models.OracleSubscriptionProperties` was modified
+
+* `azureSubscriptionIds()` was added
+* `lastOperationStatusDetail()` was added
+* `addSubscriptionOperationState()` was added
+
+#### `models.CloudExadataInfrastructureProperties` was modified
+
+* `storageServerType()` was added
+* `computeModel()` was added
+* `databaseServerType()` was added
+* `withStorageServerType(java.lang.String)` was added
+* `definedFileSystemConfiguration()` was added
+* `withDatabaseServerType(java.lang.String)` was added
+
+#### `models.AutonomousDatabases` was modified
+
+* `changeDisasterRecoveryConfiguration(java.lang.String,java.lang.String,models.DisasterRecoveryConfigurationDetails)` was added
+* `changeDisasterRecoveryConfiguration(java.lang.String,java.lang.String,models.DisasterRecoveryConfigurationDetails,com.azure.core.util.Context)` was added
+
+#### `models.AutonomousDatabaseBaseProperties` was modified
+
+* `withComputeCount(java.lang.Double)` was added
+* `timeDisasterRecoveryRoleChanged()` was added
+* `remoteDisasterRecoveryConfiguration()` was added
+
+#### `models.AutonomousDatabaseProperties` was modified
+
+* `withComputeCount(java.lang.Double)` was added
+
+#### `models.CloudVmClusterUpdateProperties` was modified
+
+* `fileSystemConfigurationDetails()` was added
+* `withFileSystemConfigurationDetails(java.util.List)` was added
+* `withOcpuCount(java.lang.Double)` was added
 
 ## 1.0.0 (2024-07-04)
 

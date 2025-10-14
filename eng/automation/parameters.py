@@ -17,7 +17,7 @@ MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{ver
 
 SDK_ROOT = "../../"  # related to file dir
 AUTOREST_CORE_VERSION = "3.9.7"
-AUTOREST_JAVA = "@autorest/java@4.1.43"
+AUTOREST_JAVA = "@autorest/java@4.1.59"
 DEFAULT_VERSION = "1.0.0-beta.1"
 GROUP_ID = "com.azure.resourcemanager"
 API_SPECS_FILE = "api-specs.yaml"
@@ -29,8 +29,37 @@ JAR_FORMAT = "sdk/{service}/{artifact_id}/target/{artifact_id}-{version}.jar"
 CHANGELOG_FORMAT = "sdk/{service}/{artifact_id}/CHANGELOG.md"
 
 MODELERFOUR_ARGUMENTS = "--modelerfour.additional-checks=false --modelerfour.lenient-model-deduplication=true"
-FLUENTLITE_ARGUMENTS = "{0} --azure-arm --verbose --sdk-integration --generate-samples --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL".format(
+FLUENTLITE_ARGUMENTS = "{0} --azure-arm --verbose --sdk-integration --generate-samples --generate-tests --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL".format(
     MODELERFOUR_ARGUMENTS
+)
+FLUENTPREMIUM_ARGUMENTS = (
+    "--verbose --generate-samples --fluent --java.fluent --java.license-header=MICROSOFT_MIT_SMALL"
+)
+
+FLUENT_PREMIUM_PACKAGES = (
+    "azure-resourcemanager-appplatform",
+    "azure-resourcemanager-appservice",
+    "azure-resourcemanager-authorization",
+    "azure-resourcemanager-cdn",
+    "azure-resourcemanager-compute",
+    "azure-resourcemanager-containerinstance",
+    "azure-resourcemanager-containerregistry",
+    "azure-resourcemanager-containerservice",
+    "azure-resourcemanager-cosmos",
+    "azure-resourcemanager-dns",
+    "azure-resourcemanager-eventhubs",
+    "azure-resourcemanager-keyvault",
+    "azure-resourcemanager-monitor",
+    "azure-resourcemanager-msi",
+    "azure-resourcemanager-network",
+    "azure-resourcemanager-privatedns",
+    "azure-resourcemanager-redis",
+    "azure-resourcemanager-resources",
+    "azure-resourcemanager-search",
+    "azure-resourcemanager-servicebus",
+    "azure-resourcemanager-sql",
+    "azure-resourcemanager-storage",
+    "azure-resourcemanager-trafficmanager",
 )
 
 CI_HEADER = """\

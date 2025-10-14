@@ -17,10 +17,10 @@ public class MetadataPolicyGet {
             = new MetadataPolicyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.metadatapolicyget.metadatapolicyget
+        // BEGIN:com.azure.analytics.purview.administration.generated.metadata-policy-get.metadata-policy-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = metadataPolicyClient.getWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.metadatapolicyget.metadatapolicyget
+        // END:com.azure.analytics.purview.administration.generated.metadata-policy-get.metadata-policy-get
     }
 }

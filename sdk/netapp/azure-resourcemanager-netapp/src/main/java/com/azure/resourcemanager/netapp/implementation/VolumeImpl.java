@@ -17,12 +17,12 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
@@ -36,7 +36,6 @@ import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
@@ -249,6 +248,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().coolAccessRetrievalPolicy();
     }
 
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.innerModel().coolAccessTieringPolicy();
+    }
+
     public String unixPermissions() {
         return this.innerModel().unixPermissions();
     }
@@ -341,10 +344,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Long inheritedSizeInBytes() {
         return this.innerModel().inheritedSizeInBytes();
-    }
-
-    public VolumeLanguage language() {
-        return this.innerModel().language();
     }
 
     public Region region() {
@@ -473,12 +472,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void splitCloneFromParent() {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
+    public Volume splitCloneFromParent() {
+        return serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void splitCloneFromParent(Context context) {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
+    public Volume splitCloneFromParent(Context context) {
+        return serviceManager.volumes()
+            .splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakFileLocks() {
@@ -498,14 +498,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         Context context) {
         return serviceManager.volumes()
             .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
-    }
-
-    public ListQuotaReportResponse listQuotaReport() {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
-    }
-
-    public ListQuotaReportResponse listQuotaReport(Context context) {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakReplication() {
@@ -737,11 +729,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withIsRestoring(Boolean isRestoring) {
-        this.innerModel().withIsRestoring(isRestoring);
-        return this;
-    }
-
     public VolumeImpl withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
         if (isInCreateMode()) {
             this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
@@ -847,6 +834,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
+    public VolumeImpl withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccessTieringPolicy(coolAccessTieringPolicy);
+            return this;
+        } else {
+            this.updateBody.withCoolAccessTieringPolicy(coolAccessTieringPolicy);
+            return this;
+        }
+    }
+
     public VolumeImpl withUnixPermissions(String unixPermissions) {
         if (isInCreateMode()) {
             this.innerModel().withUnixPermissions(unixPermissions);
@@ -922,11 +919,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withLanguage(VolumeLanguage language) {
-        this.innerModel().withLanguage(language);
-        return this;
-    }
-
     public VolumeImpl withUsageThreshold(Long usageThreshold) {
         this.updateBody.withUsageThreshold(usageThreshold);
         return this;
@@ -943,6 +935,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

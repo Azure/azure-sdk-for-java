@@ -13,21 +13,21 @@ public final class ApiVersionSetEntityBaseTests {
     public void testDeserialize() throws Exception {
         ApiVersionSetEntityBase model = BinaryData
             .fromString(
-                "{\"description\":\"grhydk\",\"versionQueryName\":\"ywezskiecafyg\",\"versionHeaderName\":\"xieqv\"}")
+                "{\"description\":\"dmvr\",\"versionQueryName\":\"mqerndb\",\"versionHeaderName\":\"yeofltfnnxrkad\"}")
             .toObject(ApiVersionSetEntityBase.class);
-        Assertions.assertEquals("grhydk", model.description());
-        Assertions.assertEquals("ywezskiecafyg", model.versionQueryName());
-        Assertions.assertEquals("xieqv", model.versionHeaderName());
+        Assertions.assertEquals("dmvr", model.description());
+        Assertions.assertEquals("mqerndb", model.versionQueryName());
+        Assertions.assertEquals("yeofltfnnxrkad", model.versionHeaderName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetEntityBase model = new ApiVersionSetEntityBase().withDescription("grhydk")
-            .withVersionQueryName("ywezskiecafyg")
-            .withVersionHeaderName("xieqv");
+        ApiVersionSetEntityBase model = new ApiVersionSetEntityBase().withDescription("dmvr")
+            .withVersionQueryName("mqerndb")
+            .withVersionHeaderName("yeofltfnnxrkad");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetEntityBase.class);
-        Assertions.assertEquals("grhydk", model.description());
-        Assertions.assertEquals("ywezskiecafyg", model.versionQueryName());
-        Assertions.assertEquals("xieqv", model.versionHeaderName());
+        Assertions.assertEquals("dmvr", model.description());
+        Assertions.assertEquals("mqerndb", model.versionQueryName());
+        Assertions.assertEquals("yeofltfnnxrkad", model.versionHeaderName());
     }
 }

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -19,11 +20,13 @@ public final class MarkdownParsingSubmode extends ExpandableStringEnum<MarkdownP
      * documents. This can result in a single markdown file producing multiple search documents. This is the default
      * sub-mode.
      */
+    @Generated
     public static final MarkdownParsingSubmode ONE_TO_MANY = fromString("oneToMany");
 
     /**
      * Indicates that each markdown file will be parsed into a single search document.
      */
+    @Generated
     public static final MarkdownParsingSubmode ONE_TO_ONE = fromString("oneToOne");
 
     /**
@@ -31,6 +34,7 @@ public final class MarkdownParsingSubmode extends ExpandableStringEnum<MarkdownP
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MarkdownParsingSubmode() {
     }
@@ -41,6 +45,7 @@ public final class MarkdownParsingSubmode extends ExpandableStringEnum<MarkdownP
      * @param name a name to look for.
      * @return the corresponding MarkdownParsingSubmode.
      */
+    @Generated
     public static MarkdownParsingSubmode fromString(String name) {
         return fromString(name, MarkdownParsingSubmode.class);
     }
@@ -50,6 +55,7 @@ public final class MarkdownParsingSubmode extends ExpandableStringEnum<MarkdownP
      * 
      * @return known MarkdownParsingSubmode values.
      */
+    @Generated
     public static Collection<MarkdownParsingSubmode> values() {
         return values(MarkdownParsingSubmode.class);
     }

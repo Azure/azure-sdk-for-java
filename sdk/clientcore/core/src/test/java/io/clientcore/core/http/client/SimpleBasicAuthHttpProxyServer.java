@@ -33,7 +33,7 @@ public final class SimpleBasicAuthHttpProxyServer {
     }
 
     public ProxyEndpoint start() {
-        this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
+        this.proxyServer = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String requestUri = req.getServletPath();
 
             if (!Objects.equals(requestUri, serviceEndpoint)) {
@@ -45,13 +45,11 @@ public final class SimpleBasicAuthHttpProxyServer {
             if (proxyAuthorization == null) {
                 resp.setStatus(407);
                 resp.setHeader("Proxy-Authenticate", "Basic");
-
                 return;
             }
 
             if (!proxyAuthorization.startsWith("Basic")) {
                 resp.setStatus(401);
-
                 return;
             }
 
@@ -67,7 +65,7 @@ public final class SimpleBasicAuthHttpProxyServer {
 
         this.proxyServer.start();
 
-        return new ProxyEndpoint("localhost", this.proxyServer.getHttpPort());
+        return new ProxyEndpoint("localhost", this.proxyServer.getPort());
     }
 
     public void shutdown() {

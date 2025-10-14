@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsListHostingEnvironmentDetectorResponsesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
      * Diagnostics_ListHostingEnvironmentDetectorResponses.json
      */
     /**

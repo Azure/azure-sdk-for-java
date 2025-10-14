@@ -15,58 +15,88 @@ public final class VolumePatchPropertiesExportPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatchPropertiesExportPolicy model = BinaryData.fromString(
-            "{\"rules\":[{\"ruleIndex\":486073857,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":true,\"cifs\":true,\"nfsv3\":true,\"nfsv41\":true,\"allowedClients\":\"npcdpumnzgm\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"}]}")
+            "{\"rules\":[{\"ruleIndex\":1305719459,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":false,\"cifs\":true,\"nfsv3\":true,\"nfsv41\":true,\"allowedClients\":\"koymkcd\",\"hasRootAccess\":true,\"chownMode\":\"Unrestricted\"},{\"ruleIndex\":823230249,\"unixReadOnly\":true,\"unixReadWrite\":true,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":true,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":true,\"kerberos5pReadOnly\":false,\"kerberos5pReadWrite\":false,\"cifs\":false,\"nfsv3\":true,\"nfsv41\":true,\"allowedClients\":\"rsndsytgadgvra\",\"hasRootAccess\":false,\"chownMode\":\"Restricted\"},{\"ruleIndex\":999689633,\"unixReadOnly\":false,\"unixReadWrite\":false,\"kerberos5ReadOnly\":true,\"kerberos5ReadWrite\":false,\"kerberos5iReadOnly\":true,\"kerberos5iReadWrite\":false,\"kerberos5pReadOnly\":true,\"kerberos5pReadWrite\":true,\"cifs\":false,\"nfsv3\":false,\"nfsv41\":true,\"allowedClients\":\"ubjibww\",\"hasRootAccess\":true,\"chownMode\":\"Unrestricted\"}]}")
             .toObject(VolumePatchPropertiesExportPolicy.class);
-        Assertions.assertEquals(486073857, model.rules().get(0).ruleIndex());
-        Assertions.assertEquals(true, model.rules().get(0).unixReadOnly());
-        Assertions.assertEquals(true, model.rules().get(0).unixReadWrite());
-        Assertions.assertEquals(true, model.rules().get(0).kerberos5ReadOnly());
-        Assertions.assertEquals(false, model.rules().get(0).kerberos5ReadWrite());
-        Assertions.assertEquals(true, model.rules().get(0).kerberos5IReadOnly());
-        Assertions.assertEquals(false, model.rules().get(0).kerberos5IReadWrite());
-        Assertions.assertEquals(false, model.rules().get(0).kerberos5PReadOnly());
-        Assertions.assertEquals(true, model.rules().get(0).kerberos5PReadWrite());
-        Assertions.assertEquals(true, model.rules().get(0).cifs());
-        Assertions.assertEquals(true, model.rules().get(0).nfsv3());
-        Assertions.assertEquals(true, model.rules().get(0).nfsv41());
-        Assertions.assertEquals("npcdpumnzgm", model.rules().get(0).allowedClients());
-        Assertions.assertEquals(false, model.rules().get(0).hasRootAccess());
-        Assertions.assertEquals(ChownMode.RESTRICTED, model.rules().get(0).chownMode());
+        Assertions.assertEquals(1305719459, model.rules().get(0).ruleIndex());
+        Assertions.assertTrue(model.rules().get(0).unixReadOnly());
+        Assertions.assertTrue(model.rules().get(0).unixReadWrite());
+        Assertions.assertTrue(model.rules().get(0).kerberos5ReadOnly());
+        Assertions.assertTrue(model.rules().get(0).kerberos5ReadWrite());
+        Assertions.assertTrue(model.rules().get(0).kerberos5IReadOnly());
+        Assertions.assertFalse(model.rules().get(0).kerberos5IReadWrite());
+        Assertions.assertFalse(model.rules().get(0).kerberos5PReadOnly());
+        Assertions.assertFalse(model.rules().get(0).kerberos5PReadWrite());
+        Assertions.assertTrue(model.rules().get(0).cifs());
+        Assertions.assertTrue(model.rules().get(0).nfsv3());
+        Assertions.assertTrue(model.rules().get(0).nfsv41());
+        Assertions.assertEquals("koymkcd", model.rules().get(0).allowedClients());
+        Assertions.assertTrue(model.rules().get(0).hasRootAccess());
+        Assertions.assertEquals(ChownMode.UNRESTRICTED, model.rules().get(0).chownMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumePatchPropertiesExportPolicy model = new VolumePatchPropertiesExportPolicy()
-            .withRules(Arrays.asList(new ExportPolicyRule().withRuleIndex(486073857)
+        VolumePatchPropertiesExportPolicy model = new VolumePatchPropertiesExportPolicy().withRules(Arrays.asList(
+            new ExportPolicyRule().withRuleIndex(1305719459)
                 .withUnixReadOnly(true)
                 .withUnixReadWrite(true)
+                .withKerberos5ReadOnly(true)
+                .withKerberos5ReadWrite(true)
+                .withKerberos5IReadOnly(true)
+                .withKerberos5IReadWrite(false)
+                .withKerberos5PReadOnly(false)
+                .withKerberos5PReadWrite(false)
+                .withCifs(true)
+                .withNfsv3(true)
+                .withNfsv41(true)
+                .withAllowedClients("koymkcd")
+                .withHasRootAccess(true)
+                .withChownMode(ChownMode.UNRESTRICTED),
+            new ExportPolicyRule().withRuleIndex(823230249)
+                .withUnixReadOnly(true)
+                .withUnixReadWrite(true)
+                .withKerberos5ReadOnly(true)
+                .withKerberos5ReadWrite(true)
+                .withKerberos5IReadOnly(true)
+                .withKerberos5IReadWrite(true)
+                .withKerberos5PReadOnly(false)
+                .withKerberos5PReadWrite(false)
+                .withCifs(false)
+                .withNfsv3(true)
+                .withNfsv41(true)
+                .withAllowedClients("rsndsytgadgvra")
+                .withHasRootAccess(false)
+                .withChownMode(ChownMode.RESTRICTED),
+            new ExportPolicyRule().withRuleIndex(999689633)
+                .withUnixReadOnly(false)
+                .withUnixReadWrite(false)
                 .withKerberos5ReadOnly(true)
                 .withKerberos5ReadWrite(false)
                 .withKerberos5IReadOnly(true)
                 .withKerberos5IReadWrite(false)
-                .withKerberos5PReadOnly(false)
+                .withKerberos5PReadOnly(true)
                 .withKerberos5PReadWrite(true)
-                .withCifs(true)
-                .withNfsv3(true)
+                .withCifs(false)
+                .withNfsv3(false)
                 .withNfsv41(true)
-                .withAllowedClients("npcdpumnzgm")
-                .withHasRootAccess(false)
-                .withChownMode(ChownMode.RESTRICTED)));
+                .withAllowedClients("ubjibww")
+                .withHasRootAccess(true)
+                .withChownMode(ChownMode.UNRESTRICTED)));
         model = BinaryData.fromObject(model).toObject(VolumePatchPropertiesExportPolicy.class);
-        Assertions.assertEquals(486073857, model.rules().get(0).ruleIndex());
-        Assertions.assertEquals(true, model.rules().get(0).unixReadOnly());
-        Assertions.assertEquals(true, model.rules().get(0).unixReadWrite());
-        Assertions.assertEquals(true, model.rules().get(0).kerberos5ReadOnly());
-        Assertions.assertEquals(false, model.rules().get(0).kerberos5ReadWrite());
-        Assertions.assertEquals(true, model.rules().get(0).kerberos5IReadOnly());
-        Assertions.assertEquals(false, model.rules().get(0).kerberos5IReadWrite());
-        Assertions.assertEquals(false, model.rules().get(0).kerberos5PReadOnly());
-        Assertions.assertEquals(true, model.rules().get(0).kerberos5PReadWrite());
-        Assertions.assertEquals(true, model.rules().get(0).cifs());
-        Assertions.assertEquals(true, model.rules().get(0).nfsv3());
-        Assertions.assertEquals(true, model.rules().get(0).nfsv41());
-        Assertions.assertEquals("npcdpumnzgm", model.rules().get(0).allowedClients());
-        Assertions.assertEquals(false, model.rules().get(0).hasRootAccess());
-        Assertions.assertEquals(ChownMode.RESTRICTED, model.rules().get(0).chownMode());
+        Assertions.assertEquals(1305719459, model.rules().get(0).ruleIndex());
+        Assertions.assertTrue(model.rules().get(0).unixReadOnly());
+        Assertions.assertTrue(model.rules().get(0).unixReadWrite());
+        Assertions.assertTrue(model.rules().get(0).kerberos5ReadOnly());
+        Assertions.assertTrue(model.rules().get(0).kerberos5ReadWrite());
+        Assertions.assertTrue(model.rules().get(0).kerberos5IReadOnly());
+        Assertions.assertFalse(model.rules().get(0).kerberos5IReadWrite());
+        Assertions.assertFalse(model.rules().get(0).kerberos5PReadOnly());
+        Assertions.assertFalse(model.rules().get(0).kerberos5PReadWrite());
+        Assertions.assertTrue(model.rules().get(0).cifs());
+        Assertions.assertTrue(model.rules().get(0).nfsv3());
+        Assertions.assertTrue(model.rules().get(0).nfsv41());
+        Assertions.assertEquals("koymkcd", model.rules().get(0).allowedClients());
+        Assertions.assertTrue(model.rules().get(0).hasRootAccess());
+        Assertions.assertEquals(ChownMode.UNRESTRICTED, model.rules().get(0).chownMode());
     }
 }

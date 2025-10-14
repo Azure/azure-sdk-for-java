@@ -113,10 +113,6 @@ jobs:
         parameters:
           OS: ${{ parameters.OSName }}
 
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
-
       - template: /eng/pipelines/templates/steps/install-graalvm-jdk.yml
         parameters:
           GraalVMJdkVersion: '22.3.0'
@@ -161,7 +157,7 @@ jobs:
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
-            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+            VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 

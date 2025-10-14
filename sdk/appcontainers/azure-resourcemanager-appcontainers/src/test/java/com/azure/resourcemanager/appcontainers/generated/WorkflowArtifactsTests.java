@@ -13,17 +13,17 @@ public final class WorkflowArtifactsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkflowArtifacts model = BinaryData.fromString(
-            "{\"appSettings\":\"datavhycvdimwrzregzg\",\"files\":\"datafutrwpweryekzkd\",\"filesToDelete\":[\"ottaw\",\"yos\"]}")
+            "{\"appSettings\":\"datavweht\",\"files\":\"datamxhzzysevus\",\"filesToDelete\":[\"zrrryv\",\"imipskdyzatvfuz\",\"aftjvvruxwigsy\"]}")
             .toObject(WorkflowArtifacts.class);
-        Assertions.assertEquals("ottaw", model.filesToDelete().get(0));
+        Assertions.assertEquals("zrrryv", model.filesToDelete().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowArtifacts model = new WorkflowArtifacts().withAppSettings("datavhycvdimwrzregzg")
-            .withFiles("datafutrwpweryekzkd")
-            .withFilesToDelete(Arrays.asList("ottaw", "yos"));
+        WorkflowArtifacts model = new WorkflowArtifacts().withAppSettings("datavweht")
+            .withFiles("datamxhzzysevus")
+            .withFilesToDelete(Arrays.asList("zrrryv", "imipskdyzatvfuz", "aftjvvruxwigsy"));
         model = BinaryData.fromObject(model).toObject(WorkflowArtifacts.class);
-        Assertions.assertEquals("ottaw", model.filesToDelete().get(0));
+        Assertions.assertEquals("zrrryv", model.filesToDelete().get(0));
     }
 }

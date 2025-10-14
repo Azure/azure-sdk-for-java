@@ -30,9 +30,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/misc/
-     * OperationsList.json
+     * x-ms-original-file: 2023-01-01/misc/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -53,9 +51,7 @@ public final class OperationsListSamples {
  */
 public final class StorageTaskAssignmentListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksList/ListStorageTaskAssignmentIds.json
+     * x-ms-original-file: 2023-01-01/storageTasksList/ListStorageTaskAssignmentIds.json
      */
     /**
      * Sample code: ListStorageTaskAssignmentsByResourceGroup.
@@ -91,9 +87,7 @@ import java.util.Map;
  */
 public final class StorageTasksCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/PutStorageTask.json
+     * x-ms-original-file: 2023-01-01/storageTasksCrud/PutStorageTask.json
      */
     /**
      * Sample code: PutStorageTask.
@@ -145,9 +139,7 @@ public final class StorageTasksCreateSamples {
  */
 public final class StorageTasksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/DeleteStorageTask.json
+     * x-ms-original-file: 2023-01-01/storageTasksCrud/DeleteStorageTask.json
      */
     /**
      * Sample code: DeleteStorageTask.
@@ -168,9 +160,7 @@ public final class StorageTasksDeleteSamples {
  */
 public final class StorageTasksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/GetStorageTask.json
+     * x-ms-original-file: 2023-01-01/storageTasksCrud/GetStorageTask.json
      */
     /**
      * Sample code: GetStorageTask.
@@ -191,9 +181,7 @@ public final class StorageTasksGetByResourceGroupSamples {
  */
 public final class StorageTasksListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksList/ListStorageTasksBySubscription.json
+     * x-ms-original-file: 2023-01-01/storageTasksList/ListStorageTasksBySubscription.json
      */
     /**
      * Sample code: ListStorageTasksBySubscription.
@@ -215,9 +203,7 @@ public final class StorageTasksListSamples {
  */
 public final class StorageTasksListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksList/ListStorageTasksByResourceGroup.json
+     * x-ms-original-file: 2023-01-01/storageTasksList/ListStorageTasksByResourceGroup.json
      */
     /**
      * Sample code: ListStorageTasksByResourceGroup.
@@ -248,9 +234,7 @@ import java.util.Arrays;
  */
 public final class StorageTasksPreviewActionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/misc/
-     * PerformStorageTaskActionsPreview.json
+     * x-ms-original-file: 2023-01-01/misc/PerformStorageTaskActionsPreview.json
      */
     /**
      * Sample code: PerformStorageTaskActionsPreview.
@@ -353,7 +337,7 @@ import com.azure.resourcemanager.storageactions.models.StorageTask;
 import com.azure.resourcemanager.storageactions.models.StorageTaskAction;
 import com.azure.resourcemanager.storageactions.models.StorageTaskOperation;
 import com.azure.resourcemanager.storageactions.models.StorageTaskOperationName;
-import com.azure.resourcemanager.storageactions.models.StorageTaskProperties;
+import com.azure.resourcemanager.storageactions.models.StorageTaskUpdateProperties;
 import com.azure.resourcemanager.storageactions.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -364,9 +348,7 @@ import java.util.Map;
  */
 public final class StorageTasksUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksCrud/PatchStorageTask.json
+     * x-ms-original-file: 2023-01-01/storageTasksCrud/PatchStorageTask.json
      */
     /**
      * Sample code: PatchStorageTask.
@@ -383,8 +365,7 @@ public final class StorageTasksUpdateSamples {
                     "/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
                     new UserAssignedIdentity())))
             .withProperties(
-                new StorageTaskProperties().withEnabled(true)
-                    .withDescription("My Storage task")
+                new StorageTaskUpdateProperties().withEnabled(true)
                     .withAction(new StorageTaskAction()
                         .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
                             .withOperations(Arrays
@@ -421,9 +402,7 @@ public final class StorageTasksUpdateSamples {
  */
 public final class StorageTasksReportListSamples {
     /*
-     * x-ms-original-file:
-     * specification/storageactions/resource-manager/Microsoft.StorageActions/stable/2023-01-01/examples/
-     * storageTasksList/ListStorageTasksRunReportSummary.json
+     * x-ms-original-file: 2023-01-01/storageTasksList/ListStorageTasksRunReportSummary.json
      */
     /**
      * Sample code: ListStorageTasksByResourceGroup.

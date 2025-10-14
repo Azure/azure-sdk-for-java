@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
     /*
      * The context associated with the call.
      */
+    @Generated
     private String incomingCallContext;
 
     /*
      * The rejection reason.
      */
+    @Generated
     private CallRejectReasonInternal callRejectReason;
 
     /**
      * Creates an instance of RejectCallRequestInternal class.
      */
+    @Generated
     public RejectCallRequestInternal() {
     }
 
@@ -37,6 +41,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
      * 
      * @return the incomingCallContext value.
      */
+    @Generated
     public String getIncomingCallContext() {
         return this.incomingCallContext;
     }
@@ -47,6 +52,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the RejectCallRequestInternal object itself.
      */
+    @Generated
     public RejectCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         return this;
@@ -57,6 +63,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
      * 
      * @return the callRejectReason value.
      */
+    @Generated
     public CallRejectReasonInternal getCallRejectReason() {
         return this.callRejectReason;
     }
@@ -67,6 +74,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
      * @param callRejectReason the callRejectReason value to set.
      * @return the RejectCallRequestInternal object itself.
      */
+    @Generated
     public RejectCallRequestInternal setCallRejectReason(CallRejectReasonInternal callRejectReason) {
         this.callRejectReason = callRejectReason;
         return this;
@@ -75,6 +83,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RejectCallRequestInternal.
      */
+    @Generated
     public static RejectCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RejectCallRequestInternal deserializedRejectCallRequestInternal = new RejectCallRequestInternal();

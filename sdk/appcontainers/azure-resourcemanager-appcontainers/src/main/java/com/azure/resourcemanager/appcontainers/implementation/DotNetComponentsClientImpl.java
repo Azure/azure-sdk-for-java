@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.DotNetComponentsClient;
@@ -69,13 +71,23 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientDotNetComponents")
     public interface DotNetComponentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DotNetComponentsCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DotNetComponentsCollection> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
@@ -92,10 +104,32 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DotNetComponentInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DotNetComponentInner dotNetComponentEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName, @PathParam("name") String name,
@@ -116,6 +150,18 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DotNetComponentInner dotNetComponentEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,10 +172,28 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/dotNetComponents/{name}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DotNetComponentsCollection>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DotNetComponentsCollection> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -178,46 +242,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the .NET Components for a managed environment along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DotNetComponentInner>> listSinglePageAsync(String resourceGroupName,
-        String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, environmentName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get the .NET Components for a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -234,17 +258,77 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the .NET Components for a managed environment along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DotNetComponentInner> listSinglePage(String resourceGroupName, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DotNetComponentsCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                environmentName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the .NET Components for a managed environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the .NET Components for a managed environment as paginated response with {@link PagedFlux}.
+     * @return the .NET Components for a managed environment along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DotNetComponentInner> listAsync(String resourceGroupName, String environmentName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DotNetComponentInner> listSinglePage(String resourceGroupName, String environmentName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, environmentName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DotNetComponentsCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                environmentName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -259,7 +343,8 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DotNetComponentInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, environmentName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -275,7 +360,8 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DotNetComponentInner> list(String resourceGroupName, String environmentName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, environmentName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -324,46 +410,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a .NET Component along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DotNetComponentInner>> getWithResponseAsync(String resourceGroupName, String environmentName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, name, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a .NET Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -390,7 +436,30 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DotNetComponentInner> getWithResponse(String resourceGroupName, String environmentName, String name,
         Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -468,43 +537,93 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
      * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component along with {@link Response} on successful completion of {@link Mono}.
+     * @return .NET Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String name, DotNetComponentInner dotNetComponentEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (dotNetComponentEnvelope == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dotNetComponentEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dotNetComponentEnvelope is required and cannot be null."));
         } else {
             dotNetComponentEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, name, this.client.getApiVersion(), dotNetComponentEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Creates or updates a .NET Component.
+     * 
+     * Creates or updates a .NET Component in a Managed Environment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the .NET Component.
+     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return .NET Component along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String name, DotNetComponentInner dotNetComponentEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (dotNetComponentEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dotNetComponentEnvelope is required and cannot be null."));
+        } else {
+            dotNetComponentEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             environmentName, name, this.client.getApiVersion(), dotNetComponentEnvelope, accept, context);
     }
 
@@ -540,32 +659,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
      * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of .NET Component.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DotNetComponentInner>, DotNetComponentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, environmentName,
-            name, dotNetComponentEnvelope, context);
-        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DotNetComponentInner.class, DotNetComponentInner.class, context);
-    }
-
-    /**
-     * Creates or updates a .NET Component.
-     * 
-     * Creates or updates a .NET Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,8 +667,10 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope);
+        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(response,
+            DotNetComponentInner.class, DotNetComponentInner.class, Context.NONE);
     }
 
     /**
@@ -597,8 +692,10 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context);
+        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(response,
+            DotNetComponentInner.class, DotNetComponentInner.class, context);
     }
 
     /**
@@ -631,29 +728,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
      * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DotNetComponentInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
-        String name, DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a .NET Component.
-     * 
-     * Creates or updates a .NET Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -662,7 +736,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner createOrUpdate(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope).block();
+        return beginCreateOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope).getFinalResult();
     }
 
     /**
@@ -683,7 +757,8 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner createOrUpdate(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context).block();
+        return beginCreateOrUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context)
+            .getFinalResult();
     }
 
     /**
@@ -745,43 +820,93 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
      * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component along with {@link Response} on successful completion of {@link Mono}.
+     * @return .NET Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String environmentName,
-        String name, DotNetComponentInner dotNetComponentEnvelope, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String environmentName, String name,
+        DotNetComponentInner dotNetComponentEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (dotNetComponentEnvelope == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter dotNetComponentEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dotNetComponentEnvelope is required and cannot be null."));
         } else {
             dotNetComponentEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, name, this.client.getApiVersion(), dotNetComponentEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Update properties of a .NET Component
+     * 
+     * Patches a .NET Component using JSON Merge Patch.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the .NET Component.
+     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return .NET Component along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String environmentName, String name,
+        DotNetComponentInner dotNetComponentEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (dotNetComponentEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dotNetComponentEnvelope is required and cannot be null."));
+        } else {
+            dotNetComponentEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             environmentName, name, this.client.getApiVersion(), dotNetComponentEnvelope, accept, context);
     }
 
@@ -817,32 +942,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
      * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of .NET Component.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DotNetComponentInner>, DotNetComponentInner> beginUpdateAsync(
-        String resourceGroupName, String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context);
-        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DotNetComponentInner.class, DotNetComponentInner.class, context);
-    }
-
-    /**
-     * Update properties of a .NET Component
-     * 
-     * Patches a .NET Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -851,7 +950,10 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginUpdate(String resourceGroupName,
         String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope) {
-        return this.beginUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope);
+        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(response,
+            DotNetComponentInner.class, DotNetComponentInner.class, Context.NONE);
     }
 
     /**
@@ -872,8 +974,10 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DotNetComponentInner>, DotNetComponentInner> beginUpdate(String resourceGroupName,
         String environmentName, String name, DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context);
+        return this.client.<DotNetComponentInner, DotNetComponentInner>getLroResult(response,
+            DotNetComponentInner.class, DotNetComponentInner.class, context);
     }
 
     /**
@@ -906,28 +1010,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
      * @param dotNetComponentEnvelope Configuration details of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Component on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DotNetComponentInner> updateAsync(String resourceGroupName, String environmentName, String name,
-        DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return beginUpdateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update properties of a .NET Component
-     * 
-     * Patches a .NET Component using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
-     * @param dotNetComponentEnvelope Configuration details of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -936,7 +1018,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner update(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope) {
-        return updateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope).block();
+        return beginUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope).getFinalResult();
     }
 
     /**
@@ -957,7 +1039,7 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DotNetComponentInner update(String resourceGroupName, String environmentName, String name,
         DotNetComponentInner dotNetComponentEnvelope, Context context) {
-        return updateAsync(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context).block();
+        return beginUpdate(resourceGroupName, environmentName, name, dotNetComponentEnvelope, context).getFinalResult();
     }
 
     /**
@@ -1006,37 +1088,77 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, name, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete a .NET Component.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param name Name of the .NET Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
-        String name, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             environmentName, name, this.client.getApiVersion(), accept, context);
     }
 
@@ -1065,28 +1187,6 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String environmentName,
-        String name, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, environmentName, name, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a .NET Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1095,7 +1195,8 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String name) {
-        return this.beginDeleteAsync(resourceGroupName, environmentName, name).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, environmentName, name);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1113,7 +1214,8 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName, String name,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, environmentName, name, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, environmentName, name, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1139,31 +1241,13 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param name Name of the .NET Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, environmentName, name, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a .NET Component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param name Name of the .NET Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String name) {
-        deleteAsync(resourceGroupName, environmentName, name).block();
+        beginDelete(resourceGroupName, environmentName, name).getFinalResult();
     }
 
     /**
@@ -1179,17 +1263,20 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String name, Context context) {
-        deleteAsync(resourceGroupName, environmentName, name, context).block();
+        beginDelete(resourceGroupName, environmentName, name, context).getFinalResult();
     }
 
     /**
+     * Get the .NET Components for a managed environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Components ARM resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the .NET Components for a managed environment along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DotNetComponentInner>> listNextSinglePageAsync(String nextLink) {
@@ -1208,6 +1295,37 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
     }
 
     /**
+     * Get the .NET Components for a managed environment.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the .NET Components for a managed environment along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DotNetComponentInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DotNetComponentsCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the .NET Components for a managed environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1215,21 +1333,25 @@ public final class DotNetComponentsClientImpl implements DotNetComponentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return .NET Components ARM resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the .NET Components for a managed environment along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DotNetComponentInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DotNetComponentInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DotNetComponentsCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DotNetComponentsClientImpl.class);
 }

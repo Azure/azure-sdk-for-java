@@ -3,91 +3,10 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.maps.route.implementation.models.BatchRequest" />
-      <Class name="com.azure.maps.route.implementation.models.ErrorDetail" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonFeatureCollection" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonFeatureCollectionData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonGeometryCollection" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonGeometryCollectionData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonLineString" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonLineStringData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiLineString" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiLineStringData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPoint" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPointData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPolygon" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPolygonData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPoint" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPointData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPolygon" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPolygonData" />
-      <Class name="com.azure.maps.route.implementation.models.RouteDirectionParametersPrivate" />
-      <Class name="com.azure.maps.route.implementation.models.RouteDirectionsBatchResultPrivate" />
-      <Class name="com.azure.maps.route.implementation.models.RouteMatrixResultPrivate" />
-      <Class name="com.azure.maps.route.models.BaseRouteOptions" />
-      <Class name="com.azure.maps.route.models.MapsSearchRoute" />
-      <Class name="com.azure.maps.route.models.RouteDirections" />
-      <Class name="com.azure.maps.route.models.RouteDirectionsBatchItem" />
-      <Class name="com.azure.maps.route.models.RouteDirectionsBatchResult" />
-      <Class name="com.azure.maps.route.models.RouteDirectionsOptions" />
-      <Class name="com.azure.maps.route.models.RouteDirectionsParameters" />
-      <Class name="com.azure.maps.route.models.RouteGuidance" />
-      <Class name="com.azure.maps.route.models.RouteInstruction" />
-      <Class name="com.azure.maps.route.models.RouteMatrixOptions" />
-      <Class name="com.azure.maps.route.models.RouteMatrixQuery" />
-      <Class name="com.azure.maps.route.models.RouteMatrixResult" />
-      <Class name="com.azure.maps.route.models.RouteSectionTec" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.maps.route.implementation.RouteClientImplBuilder" />
-      <Class name="com.azure.maps.route.implementation.models.BatchRequest" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonFeatureCollection" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonFeatureCollectionData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonGeometryCollection" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonGeometryCollectionData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonLineString" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonLineStringData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiLineString" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiLineStringData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPoint" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPointData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPolygon" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonMultiPolygonData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPoint" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPointData" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPolygon" />
-      <Class name="com.azure.maps.route.implementation.models.GeoJsonPolygonData" />
-      <Class name="com.azure.maps.route.implementation.models.RouteDirectionParametersPrivate" />
-      <Class name="com.azure.maps.route.models.BaseRouteOptions" />
-      <Class name="com.azure.maps.route.models.RouteDirectionsOptions" />
-      <Class name="com.azure.maps.route.models.RouteDirectionsParameters" />
-      <Class name="com.azure.maps.route.models.RouteMatrixOptions" />
-      <Class name="com.azure.maps.route.models.RouteMatrixQuery" />
-      <Class name="com.azure.maps.route.models.RouteSectionTec" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Or>
       <Class name="com.azure.maps.route.implementation.helpers.RouteDirectionsBatchResultPropertiesHelper" />
       <Class name="com.azure.maps.route.implementation.helpers.RouteMatrixResultPropertiesHelper" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Or>
-      <Class name="com.azure.maps.route.models.RouteDirectionsBatchItem" />
-      <Class name="com.azure.maps.route.models.RouteInstruction" />
-      <Class name="com.azure.maps.route.models.RouteLeg" />
-      <Class name="com.azure.maps.route.models.RouteMatrix" />
-      <Class name="com.azure.maps.route.models.RouteRange" />
-      <Class name="com.azure.maps.route.models.RouteReport" />
-      <Class name="com.azure.maps.route.models.RouteSummary" />
     </Or>
   </Match>
 </FindBugsFilter>

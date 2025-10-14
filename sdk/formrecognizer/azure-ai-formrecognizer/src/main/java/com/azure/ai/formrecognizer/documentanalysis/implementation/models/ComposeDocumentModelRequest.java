@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,21 +23,25 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     /*
      * Unique document model name.
      */
+    @Generated
     private final String modelId;
 
     /*
      * Document model description.
      */
+    @Generated
     private String description;
 
     /*
      * List of component document models to compose.
      */
+    @Generated
     private final List<ComponentDocumentModelDetails> componentModels;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
@@ -45,6 +50,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * @param modelId the modelId value to set.
      * @param componentModels the componentModels value to set.
      */
+    @Generated
     public ComposeDocumentModelRequest(String modelId, List<ComponentDocumentModelDetails> componentModels) {
         this.modelId = modelId;
         this.componentModels = componentModels;
@@ -55,6 +61,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * 
      * @return the modelId value.
      */
+    @Generated
     public String getModelId() {
         return this.modelId;
     }
@@ -64,6 +71,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -74,6 +82,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * @param description the description value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
+    @Generated
     public ComposeDocumentModelRequest setDescription(String description) {
         this.description = description;
         return this;
@@ -84,6 +93,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * 
      * @return the componentModels value.
      */
+    @Generated
     public List<ComponentDocumentModelDetails> getComponentModels() {
         return this.componentModels;
     }
@@ -93,6 +103,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -103,6 +114,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * @param tags the tags value to set.
      * @return the ComposeDocumentModelRequest object itself.
      */
+    @Generated
     public ComposeDocumentModelRequest setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -111,6 +123,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -131,6 +144,7 @@ public final class ComposeDocumentModelRequest implements JsonSerializable<Compo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ComposeDocumentModelRequest.
      */
+    @Generated
     public static ComposeDocumentModelRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean modelIdFound = false;

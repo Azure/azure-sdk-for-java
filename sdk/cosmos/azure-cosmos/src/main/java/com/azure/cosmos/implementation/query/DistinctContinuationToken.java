@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -61,7 +60,7 @@ public class DistinctContinuationToken extends JsonSerializable {
      * @param sourceToken Value to set for property 'sourceToken'.
      */
     public void setSourceToken(String sourceToken) {
-        this.set(SOURCE_TOKEN_PROPERTY_NAME, sourceToken, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
     }
 
     UInt128 getLastHash() {
@@ -79,9 +78,9 @@ public class DistinctContinuationToken extends JsonSerializable {
      */
     public void setLastHash(UInt128 lastHash) {
         if (lastHash != null) {
-            this.set(LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer().array(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.set(LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer().array());
         } else {
-            this.set(LAST_HASH_PROPERTY_NAME, null, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.set(LAST_HASH_PROPERTY_NAME, null);
         }
     }
 

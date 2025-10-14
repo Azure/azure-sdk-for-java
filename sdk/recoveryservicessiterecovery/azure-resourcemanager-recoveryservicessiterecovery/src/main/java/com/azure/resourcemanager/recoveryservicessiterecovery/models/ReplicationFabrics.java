@@ -17,37 +17,37 @@ public interface ReplicationFabrics {
      * 
      * Gets a list of the Azure Site Recovery fabrics in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the Azure Site Recovery fabrics in the vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Fabric> list(String resourceName, String resourceGroupName);
+    PagedIterable<Fabric> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of ASR fabrics.
      * 
      * Gets a list of the Azure Site Recovery fabrics in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the Azure Site Recovery fabrics in the vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Fabric> list(String resourceName, String resourceGroupName, Context context);
+    PagedIterable<Fabric> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the details of an ASR fabric.
      * 
      * Gets the details of an Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
@@ -56,7 +56,7 @@ public interface ReplicationFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Azure Site Recovery fabric along with {@link Response}.
      */
-    Response<Fabric> getWithResponse(String resourceName, String resourceGroupName, String fabricName, String filter,
+    Response<Fabric> getWithResponse(String resourceGroupName, String resourceName, String fabricName, String filter,
         Context context);
 
     /**
@@ -64,67 +64,67 @@ public interface ReplicationFabrics {
      * 
      * Gets the details of an Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Azure Site Recovery fabric.
      */
-    Fabric get(String resourceName, String resourceGroupName, String fabricName);
+    Fabric get(String resourceGroupName, String resourceName, String fabricName);
 
     /**
      * Purges the site.
      * 
      * The operation to purge(force delete) an Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName ASR fabric to purge.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void purge(String resourceName, String resourceGroupName, String fabricName);
+    void purge(String resourceGroupName, String resourceName, String fabricName);
 
     /**
      * Purges the site.
      * 
      * The operation to purge(force delete) an Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName ASR fabric to purge.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void purge(String resourceName, String resourceGroupName, String fabricName, Context context);
+    void purge(String resourceGroupName, String resourceName, String fabricName, Context context);
 
     /**
      * Checks the consistency of the ASR fabric.
      * 
      * The operation to perform a consistency check on the fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
      */
-    Fabric checkConsistency(String resourceName, String resourceGroupName, String fabricName);
+    Fabric checkConsistency(String resourceGroupName, String resourceName, String fabricName);
 
     /**
      * Checks the consistency of the ASR fabric.
      * 
      * The operation to perform a consistency check on the fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,44 +132,44 @@ public interface ReplicationFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
      */
-    Fabric checkConsistency(String resourceName, String resourceGroupName, String fabricName, Context context);
+    Fabric checkConsistency(String resourceGroupName, String resourceName, String fabricName, Context context);
 
     /**
      * Migrates the site to AAD.
      * 
      * The operation to migrate an Azure Site Recovery fabric to AAD.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName ASR fabric to migrate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void migrateToAad(String resourceName, String resourceGroupName, String fabricName);
+    void migrateToAad(String resourceGroupName, String resourceName, String fabricName);
 
     /**
      * Migrates the site to AAD.
      * 
      * The operation to migrate an Azure Site Recovery fabric to AAD.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName ASR fabric to migrate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void migrateToAad(String resourceName, String resourceGroupName, String fabricName, Context context);
+    void migrateToAad(String resourceGroupName, String resourceName, String fabricName, Context context);
 
     /**
      * Perform failover of the process server.
      * 
      * The operation to move replications from a process server to another process server.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric containing the process server.
      * @param failoverProcessServerRequest The input to the failover process server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,7 +177,7 @@ public interface ReplicationFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
      */
-    Fabric reassociateGateway(String resourceName, String resourceGroupName, String fabricName,
+    Fabric reassociateGateway(String resourceGroupName, String resourceName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest);
 
     /**
@@ -185,8 +185,8 @@ public interface ReplicationFabrics {
      * 
      * The operation to move replications from a process server to another process server.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The name of the fabric containing the process server.
      * @param failoverProcessServerRequest The input to the failover process server operation.
      * @param context The context to associate with this operation.
@@ -195,7 +195,7 @@ public interface ReplicationFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
      */
-    Fabric reassociateGateway(String resourceName, String resourceGroupName, String fabricName,
+    Fabric reassociateGateway(String resourceGroupName, String resourceName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest, Context context);
 
     /**
@@ -203,37 +203,37 @@ public interface ReplicationFabrics {
      * 
      * The operation to delete or remove an Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName ASR fabric to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceName, String resourceGroupName, String fabricName);
+    void delete(String resourceGroupName, String resourceName, String fabricName);
 
     /**
      * Deletes the site.
      * 
      * The operation to delete or remove an Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName ASR fabric to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceName, String resourceGroupName, String fabricName, Context context);
+    void delete(String resourceGroupName, String resourceName, String fabricName, Context context);
 
     /**
      * Renews certificate for the fabric.
      * 
      * Renews the connection certificate for the ASR replication fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName fabric name to renew certs for.
      * @param renewCertificate Renew certificate input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +241,7 @@ public interface ReplicationFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
      */
-    Fabric renewCertificate(String resourceName, String resourceGroupName, String fabricName,
+    Fabric renewCertificate(String resourceGroupName, String resourceName, String fabricName,
         RenewCertificateInput renewCertificate);
 
     /**
@@ -249,8 +249,8 @@ public interface ReplicationFabrics {
      * 
      * Renews the connection certificate for the ASR replication fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName fabric name to renew certs for.
      * @param renewCertificate Renew certificate input.
      * @param context The context to associate with this operation.
@@ -259,7 +259,7 @@ public interface ReplicationFabrics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
      */
-    Fabric renewCertificate(String resourceName, String resourceGroupName, String fabricName,
+    Fabric renewCertificate(String resourceGroupName, String resourceName, String fabricName,
         RenewCertificateInput renewCertificate, Context context);
 
     /**

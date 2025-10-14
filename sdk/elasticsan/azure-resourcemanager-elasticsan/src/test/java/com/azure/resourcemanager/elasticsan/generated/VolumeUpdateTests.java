@@ -13,18 +13,19 @@ public final class VolumeUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeUpdate model = BinaryData
-            .fromString("{\"properties\":{\"sizeGiB\":8884342571785633710,\"managedBy\":{\"resourceId\":\"tyq\"}}}")
+            .fromString(
+                "{\"properties\":{\"sizeGiB\":1527245682960158213,\"managedBy\":{\"resourceId\":\"kzjancuxrhdwbav\"}}}")
             .toObject(VolumeUpdate.class);
-        Assertions.assertEquals(8884342571785633710L, model.sizeGiB());
-        Assertions.assertEquals("tyq", model.managedBy().resourceId());
+        Assertions.assertEquals(1527245682960158213L, model.sizeGiB());
+        Assertions.assertEquals("kzjancuxrhdwbav", model.managedBy().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeUpdate model = new VolumeUpdate().withSizeGiB(8884342571785633710L)
-            .withManagedBy(new ManagedByInfo().withResourceId("tyq"));
+        VolumeUpdate model = new VolumeUpdate().withSizeGiB(1527245682960158213L)
+            .withManagedBy(new ManagedByInfo().withResourceId("kzjancuxrhdwbav"));
         model = BinaryData.fromObject(model).toObject(VolumeUpdate.class);
-        Assertions.assertEquals(8884342571785633710L, model.sizeGiB());
-        Assertions.assertEquals("tyq", model.managedBy().resourceId());
+        Assertions.assertEquals(1527245682960158213L, model.sizeGiB());
+        Assertions.assertEquals("kzjancuxrhdwbav", model.managedBy().resourceId());
     }
 }

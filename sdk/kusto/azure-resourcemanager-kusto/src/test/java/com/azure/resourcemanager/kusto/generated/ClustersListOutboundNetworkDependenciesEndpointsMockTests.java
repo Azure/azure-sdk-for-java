@@ -22,7 +22,7 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsMockTests {
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"category\":\"tmcdzsufcohd\",\"endpoints\":[{\"domainName\":\"mcmuapc\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"evwqqxeyskonq\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"fkbg\",\"endpointDetails\":[{},{}]},{\"domainName\":\"wxeqocljmygvkzqk\",\"endpointDetails\":[{},{}]}],\"provisioningState\":\"Canceled\"},\"etag\":\"zefezrxcczurtl\",\"id\":\"ipqxbkwvzgnzv\",\"name\":\"fbzdixzmqpnoda\",\"type\":\"opqhewjptmc\"}]}";
+            = "{\"value\":[{\"properties\":{\"category\":\"jlrigjkskyrioovz\",\"endpoints\":[{\"domainName\":\"waabzmifrygzn\",\"endpointDetails\":[{}]},{\"domainName\":\"ri\",\"endpointDetails\":[{}]}],\"provisioningState\":\"Deleting\"},\"etag\":\"opxlhslnelxieixy\",\"id\":\"llxecwc\",\"name\":\"ojphslhc\",\"type\":\"wjutifdwfmv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OutboundNetworkDependenciesEndpoint> response = manager.clusters()
-            .listOutboundNetworkDependenciesEndpoints("ysi", "sgqcwdho", com.azure.core.util.Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints("nptgoeiybba", "pfhvfslk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tmcdzsufcohd", response.iterator().next().category());
-        Assertions.assertEquals("mcmuapc", response.iterator().next().endpoints().get(0).domainName());
+        Assertions.assertEquals("jlrigjkskyrioovz", response.iterator().next().category());
+        Assertions.assertEquals("waabzmifrygzn", response.iterator().next().endpoints().get(0).domainName());
     }
 }

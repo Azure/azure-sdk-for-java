@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 public final class AppServiceEnvironmentsChangeVnetSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_ChangeVnet.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/AppServiceEnvironments_ChangeVnet.
      * json
      */
     /**

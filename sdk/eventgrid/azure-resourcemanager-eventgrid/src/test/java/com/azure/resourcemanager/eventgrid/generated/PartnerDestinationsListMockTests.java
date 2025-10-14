@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
@@ -24,28 +24,28 @@ public final class PartnerDestinationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"5d3e3f36-36c7-4299-acc4-68d10378d0ac\",\"endpointServiceContext\":\"xttpfs\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-03T22:20:24Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"cum\",\"messageForActivation\":\"dau\"},\"location\":\"llfeothx\",\"tags\":{\"uast\":\"igrjdljlkqhvkrbz\",\"pruulhg\":\"xk\",\"izwxvs\":\"t\"},\"id\":\"ksgfyyskyekg\",\"name\":\"fxcz\",\"type\":\"fcck\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"e0084fbe-45ed-44cb-8e26-e158abc6b33b\",\"endpointServiceContext\":\"noiicsu\",\"expirationTimeIfNotActivatedUtc\":\"2021-10-22T07:29:32Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"a\",\"messageForActivation\":\"rdsjrho\"},\"location\":\"qwgusxxhdo\",\"tags\":{\"bdmvsby\":\"wyblv\",\"kmkwjfbo\":\"daelqpv\",\"v\":\"loggdusxursu\",\"qrizfwihvaan\":\"xcjkcoqwczsy\"},\"id\":\"qtnhjrfd\",\"name\":\"fdvbbaexxjfwtg\",\"type\":\"fkkauigvmua\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerDestination> response
-            = manager.partnerDestinations().list("juypwyiulaynosu", 2064621352, com.azure.core.util.Context.NONE);
+            = manager.partnerDestinations().list("lpbyxroiduyq", 2088682801, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("llfeothx", response.iterator().next().location());
-        Assertions.assertEquals("igrjdljlkqhvkrbz", response.iterator().next().tags().get("uast"));
-        Assertions.assertEquals(UUID.fromString("5d3e3f36-36c7-4299-acc4-68d10378d0ac"),
+        Assertions.assertEquals("qwgusxxhdo", response.iterator().next().location());
+        Assertions.assertEquals("wyblv", response.iterator().next().tags().get("bdmvsby"));
+        Assertions.assertEquals(UUID.fromString("e0084fbe-45ed-44cb-8e26-e158abc6b33b"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("xttpfs", response.iterator().next().endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T22:20:24Z"),
+        Assertions.assertEquals("noiicsu", response.iterator().next().endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T07:29:32Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.ACTIVATED,
             response.iterator().next().activationState());
-        Assertions.assertEquals("cum", response.iterator().next().endpointBaseUrl());
-        Assertions.assertEquals("dau", response.iterator().next().messageForActivation());
+        Assertions.assertEquals("a", response.iterator().next().endpointBaseUrl());
+        Assertions.assertEquals("rdsjrho", response.iterator().next().messageForActivation());
     }
 }

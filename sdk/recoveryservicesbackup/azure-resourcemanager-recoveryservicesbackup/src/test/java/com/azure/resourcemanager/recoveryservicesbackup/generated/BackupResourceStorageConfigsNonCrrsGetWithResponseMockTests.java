@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfigResource;
@@ -25,27 +25,27 @@ public final class BackupResourceStorageConfigsNonCrrsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageModelType\":\"ReadAccessGeoZoneRedundant\",\"storageType\":\"LocallyRedundant\",\"storageTypeState\":\"Locked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Invalid\"},\"eTag\":\"wlpjfelqerppt\",\"location\":\"bgqnz\",\"tags\":{\"gckbb\":\"iilialwc\"},\"id\":\"ccgzpraoxnyu\",\"name\":\"fa\",\"type\":\"sgftipwc\"}";
+            = "{\"properties\":{\"storageModelType\":\"ReadAccessGeoZoneRedundant\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Locked\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Enabled\",\"xcoolState\":\"Disabled\"},\"eTag\":\"oclxiut\",\"location\":\"jc\",\"tags\":{\"r\":\"zjd\",\"xjeaoqaqbzgyh\":\"jb\",\"v\":\"w\"},\"id\":\"atbwbqam\",\"name\":\"e\",\"type\":\"liys\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupResourceConfigResource response = manager.backupResourceStorageConfigsNonCrrs()
-            .getWithResponse("ycsjmlbem", "ej", com.azure.core.util.Context.NONE)
+            .getWithResponse("yujlfyoumpckyecl", "digp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bgqnz", response.location());
-        Assertions.assertEquals("iilialwc", response.tags().get("gckbb"));
+        Assertions.assertEquals("jc", response.location());
+        Assertions.assertEquals("zjd", response.tags().get("r"));
         Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, response.properties().storageModelType());
-        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, response.properties().storageType());
+        Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
         Assertions.assertEquals(StorageTypeState.LOCKED, response.properties().storageTypeState());
-        Assertions.assertEquals(true, response.properties().crossRegionRestoreFlag());
+        Assertions.assertEquals(false, response.properties().crossRegionRestoreFlag());
         Assertions.assertEquals(DedupState.ENABLED, response.properties().dedupState());
-        Assertions.assertEquals(XcoolState.INVALID, response.properties().xcoolState());
-        Assertions.assertEquals("wlpjfelqerppt", response.etag());
+        Assertions.assertEquals(XcoolState.DISABLED, response.properties().xcoolState());
+        Assertions.assertEquals("oclxiut", response.etag());
     }
 }

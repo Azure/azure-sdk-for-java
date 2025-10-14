@@ -14,25 +14,29 @@ public final class ConsistencyCheckTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConsistencyCheckTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"ConsistencyCheckTaskDetails\",\"vmDetails\":[{\"vmName\":\"kbudbtwaokb\",\"cloudName\":\"lyttaaknwfr\",\"details\":[\"sm\",\"p\",\"ujd\"],\"errorIds\":[\"toleksc\",\"ctnanqimwbzxp\",\"cldpkawn\"]}]}")
+            "{\"instanceType\":\"ConsistencyCheckTaskDetails\",\"vmDetails\":[{\"vmName\":\"cominxojjluxx\",\"cloudName\":\"ilz\",\"details\":[\"zqjmueza\",\"ovribq\"],\"errorIds\":[\"ok\",\"tvwt\",\"znkcqwwxwjy\",\"fgwhnkbtlwljs\"]},{\"vmName\":\"ctsnldkpwol\",\"cloudName\":\"s\",\"details\":[\"bteogfg\",\"iijrykwlefksxq\",\"eazfpxgnmqvzvlu\",\"q\"],\"errorIds\":[\"ossscyva\"]}]}")
             .toObject(ConsistencyCheckTaskDetails.class);
-        Assertions.assertEquals("kbudbtwaokb", model.vmDetails().get(0).vmName());
-        Assertions.assertEquals("lyttaaknwfr", model.vmDetails().get(0).cloudName());
-        Assertions.assertEquals("sm", model.vmDetails().get(0).details().get(0));
-        Assertions.assertEquals("toleksc", model.vmDetails().get(0).errorIds().get(0));
+        Assertions.assertEquals("cominxojjluxx", model.vmDetails().get(0).vmName());
+        Assertions.assertEquals("ilz", model.vmDetails().get(0).cloudName());
+        Assertions.assertEquals("zqjmueza", model.vmDetails().get(0).details().get(0));
+        Assertions.assertEquals("ok", model.vmDetails().get(0).errorIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConsistencyCheckTaskDetails model = new ConsistencyCheckTaskDetails()
-            .withVmDetails(Arrays.asList(new InconsistentVmDetails().withVmName("kbudbtwaokb")
-                .withCloudName("lyttaaknwfr")
-                .withDetails(Arrays.asList("sm", "p", "ujd"))
-                .withErrorIds(Arrays.asList("toleksc", "ctnanqimwbzxp", "cldpkawn"))));
+        ConsistencyCheckTaskDetails model = new ConsistencyCheckTaskDetails().withVmDetails(Arrays.asList(
+            new InconsistentVmDetails().withVmName("cominxojjluxx")
+                .withCloudName("ilz")
+                .withDetails(Arrays.asList("zqjmueza", "ovribq"))
+                .withErrorIds(Arrays.asList("ok", "tvwt", "znkcqwwxwjy", "fgwhnkbtlwljs")),
+            new InconsistentVmDetails().withVmName("ctsnldkpwol")
+                .withCloudName("s")
+                .withDetails(Arrays.asList("bteogfg", "iijrykwlefksxq", "eazfpxgnmqvzvlu", "q"))
+                .withErrorIds(Arrays.asList("ossscyva"))));
         model = BinaryData.fromObject(model).toObject(ConsistencyCheckTaskDetails.class);
-        Assertions.assertEquals("kbudbtwaokb", model.vmDetails().get(0).vmName());
-        Assertions.assertEquals("lyttaaknwfr", model.vmDetails().get(0).cloudName());
-        Assertions.assertEquals("sm", model.vmDetails().get(0).details().get(0));
-        Assertions.assertEquals("toleksc", model.vmDetails().get(0).errorIds().get(0));
+        Assertions.assertEquals("cominxojjluxx", model.vmDetails().get(0).vmName());
+        Assertions.assertEquals("ilz", model.vmDetails().get(0).cloudName());
+        Assertions.assertEquals("zqjmueza", model.vmDetails().get(0).details().get(0));
+        Assertions.assertEquals("ok", model.vmDetails().get(0).errorIds().get(0));
     }
 }

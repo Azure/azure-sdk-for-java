@@ -4,22 +4,25 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Audio channel type to stream, eg. unmixed audio, mixed audio.
+ * The audio channel type to stream, e.g., unmixed audio, mixed audio.
  */
 public final class MediaStreamingAudioChannelTypeInternal
     extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
     /**
      * Static value mixed for MediaStreamingAudioChannelTypeInternal.
      */
+    @Generated
     public static final MediaStreamingAudioChannelTypeInternal MIXED = fromString("mixed");
 
     /**
      * Static value unmixed for MediaStreamingAudioChannelTypeInternal.
      */
+    @Generated
     public static final MediaStreamingAudioChannelTypeInternal UNMIXED = fromString("unmixed");
 
     /**
@@ -27,6 +30,7 @@ public final class MediaStreamingAudioChannelTypeInternal
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MediaStreamingAudioChannelTypeInternal() {
     }
@@ -37,6 +41,7 @@ public final class MediaStreamingAudioChannelTypeInternal
      * @param name a name to look for.
      * @return the corresponding MediaStreamingAudioChannelTypeInternal.
      */
+    @Generated
     public static MediaStreamingAudioChannelTypeInternal fromString(String name) {
         return fromString(name, MediaStreamingAudioChannelTypeInternal.class);
     }
@@ -46,6 +51,7 @@ public final class MediaStreamingAudioChannelTypeInternal
      * 
      * @return known MediaStreamingAudioChannelTypeInternal values.
      */
+    @Generated
     public static Collection<MediaStreamingAudioChannelTypeInternal> values() {
         return values(MediaStreamingAudioChannelTypeInternal.class);
     }

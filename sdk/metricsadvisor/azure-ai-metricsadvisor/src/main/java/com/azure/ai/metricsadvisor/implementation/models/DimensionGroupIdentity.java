@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class DimensionGroupIdentity implements JsonSerializable<DimensionG
     /*
      * dimension specified for series group
      */
+    @Generated
     private Map<String, String> dimension;
 
     /**
      * Creates an instance of DimensionGroupIdentity class.
      */
+    @Generated
     public DimensionGroupIdentity() {
     }
 
@@ -33,6 +36,7 @@ public final class DimensionGroupIdentity implements JsonSerializable<DimensionG
      * 
      * @return the dimension value.
      */
+    @Generated
     public Map<String, String> getDimension() {
         return this.dimension;
     }
@@ -43,6 +47,7 @@ public final class DimensionGroupIdentity implements JsonSerializable<DimensionG
      * @param dimension the dimension value to set.
      * @return the DimensionGroupIdentity object itself.
      */
+    @Generated
     public DimensionGroupIdentity setDimension(Map<String, String> dimension) {
         this.dimension = dimension;
         return this;
@@ -51,6 +56,7 @@ public final class DimensionGroupIdentity implements JsonSerializable<DimensionG
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class DimensionGroupIdentity implements JsonSerializable<DimensionG
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DimensionGroupIdentity.
      */
+    @Generated
     public static DimensionGroupIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DimensionGroupIdentity deserializedDimensionGroupIdentity = new DimensionGroupIdentity();

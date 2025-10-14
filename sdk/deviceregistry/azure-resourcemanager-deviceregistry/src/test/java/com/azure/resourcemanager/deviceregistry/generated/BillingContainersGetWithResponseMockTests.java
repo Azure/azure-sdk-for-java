@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.BillingContainer;
@@ -20,17 +20,18 @@ public final class BillingContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\"},\"etag\":\"cogjltdtbn\",\"id\":\"adoocrkvc\",\"name\":\"khnvpam\",\"type\":\"gxqquezik\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"etag\":\"hxkizvytnrzv\",\"id\":\"jraaeranokqguk\",\"name\":\"jqnv\",\"type\":\"roylaxxu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        BillingContainer response
-            = manager.billingContainers().getWithResponse("xdy", com.azure.core.util.Context.NONE).getValue();
+        BillingContainer response = manager.billingContainers()
+            .getWithResponse("gsftufqobrjlnacg", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

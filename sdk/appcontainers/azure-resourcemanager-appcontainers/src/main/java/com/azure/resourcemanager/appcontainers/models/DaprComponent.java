@@ -141,13 +141,13 @@ public interface DaprComponent {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, connectedEnvironmentName.
+             * Specifies resourceGroupName, environmentName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param connectedEnvironmentName Name of the connected environment.
+             * @param environmentName Name of the Managed Environment.
              * @return the next definition stage.
              */
-            WithCreate withExistingConnectedEnvironment(String resourceGroupName, String connectedEnvironmentName);
+            WithCreate withExistingManagedEnvironment(String resourceGroupName, String environmentName);
         }
 
         /**

@@ -13,8 +13,7 @@ import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 public final class NetAppResourceCheckQuotaAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/CheckQuotaAvailability
-     * .json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/CheckQuotaAvailability.json
      */
     /**
      * Sample code: CheckQuotaAvailability.

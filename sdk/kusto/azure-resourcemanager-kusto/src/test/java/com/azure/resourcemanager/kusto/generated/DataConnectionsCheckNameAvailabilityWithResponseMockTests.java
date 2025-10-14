@@ -23,7 +23,7 @@ public final class DataConnectionsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":false,\"name\":\"qinfszpyglqd\",\"message\":\"rjzralcx\",\"reason\":\"AlreadyExists\"}";
+            = "{\"nameAvailable\":true,\"name\":\"xiwkgfbql\",\"message\":\"qkhychocok\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class DataConnectionsCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.dataConnections()
-            .checkNameAvailabilityWithResponse("czhcoeocnh", "qr", "ttjzcfyjzpt",
-                new DataConnectionCheckNameRequest().withName("rl"), com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("awmo", "ia", "cz",
+                new DataConnectionCheckNameRequest().withName("vodrrslblxydkxr"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("qinfszpyglqd", response.name());
-        Assertions.assertEquals("rjzralcx", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("xiwkgfbql", response.name());
+        Assertions.assertEquals("qkhychocok", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

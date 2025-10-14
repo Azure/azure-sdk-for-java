@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,16 +23,19 @@ public final class MetricsData extends MonitorDomain {
      * List of metrics. Only one metric in the list is currently supported by Application Insights storage. If multiple
      * data points were sent only the first one will be used.
      */
+    @Generated
     private List<MetricDataPoint> metrics;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /**
      * Creates an instance of MetricsData class.
      */
+    @Generated
     public MetricsData() {
     }
 
@@ -41,6 +45,7 @@ public final class MetricsData extends MonitorDomain {
      * 
      * @return the metrics value.
      */
+    @Generated
     public List<MetricDataPoint> getMetrics() {
         return this.metrics;
     }
@@ -52,6 +57,7 @@ public final class MetricsData extends MonitorDomain {
      * @param metrics the metrics value to set.
      * @return the MetricsData object itself.
      */
+    @Generated
     public MetricsData setMetrics(List<MetricDataPoint> metrics) {
         this.metrics = metrics;
         return this;
@@ -62,6 +68,7 @@ public final class MetricsData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -72,6 +79,7 @@ public final class MetricsData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the MetricsData object itself.
      */
+    @Generated
     public MetricsData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -80,6 +88,7 @@ public final class MetricsData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MetricsData setVersion(int version) {
         super.setVersion(version);
@@ -89,6 +98,7 @@ public final class MetricsData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +122,7 @@ public final class MetricsData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricsData.
      */
+    @Generated
     public static MetricsData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricsData deserializedMetricsData = new MetricsData();

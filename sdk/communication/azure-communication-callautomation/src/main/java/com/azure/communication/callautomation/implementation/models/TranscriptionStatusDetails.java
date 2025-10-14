@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,80 +15,95 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
     /**
      * Static value subscriptionStarted for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails SUBSCRIPTION_STARTED = fromString("subscriptionStarted");
 
     /**
      * Static value streamConnectionReestablished for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails STREAM_CONNECTION_REESTABLISHED
         = fromString("streamConnectionReestablished");
 
     /**
      * Static value streamConnectionUnsuccessful for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails STREAM_CONNECTION_UNSUCCESSFUL
         = fromString("streamConnectionUnsuccessful");
 
     /**
      * Static value streamUrlMissing for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails STREAM_URL_MISSING = fromString("streamUrlMissing");
 
     /**
      * Static value serviceShutdown for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails SERVICE_SHUTDOWN = fromString("serviceShutdown");
 
     /**
      * Static value streamConnectionInterrupted for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails STREAM_CONNECTION_INTERRUPTED
         = fromString("streamConnectionInterrupted");
 
     /**
      * Static value speechServicesConnectionError for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails SPEECH_SERVICES_CONNECTION_ERROR
         = fromString("speechServicesConnectionError");
 
     /**
      * Static value subscriptionStopped for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails SUBSCRIPTION_STOPPED = fromString("subscriptionStopped");
 
     /**
      * Static value unspecifiedError for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
      * Static value authenticationFailure for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails AUTHENTICATION_FAILURE = fromString("authenticationFailure");
 
     /**
      * Static value badRequest for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails BAD_REQUEST = fromString("badRequest");
 
     /**
      * Static value tooManyRequests for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails TOO_MANY_REQUESTS = fromString("tooManyRequests");
 
     /**
      * Static value forbidden for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails FORBIDDEN = fromString("forbidden");
 
     /**
      * Static value serviceTimeout for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails SERVICE_TIMEOUT = fromString("serviceTimeout");
 
     /**
      * Static value transcriptionLocaleUpdated for TranscriptionStatusDetails.
      */
+    @Generated
     public static final TranscriptionStatusDetails TRANSCRIPTION_LOCALE_UPDATED
         = fromString("transcriptionLocaleUpdated");
 
@@ -96,6 +112,7 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TranscriptionStatusDetails() {
     }
@@ -106,6 +123,7 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
      * @param name a name to look for.
      * @return the corresponding TranscriptionStatusDetails.
      */
+    @Generated
     public static TranscriptionStatusDetails fromString(String name) {
         return fromString(name, TranscriptionStatusDetails.class);
     }
@@ -115,6 +133,7 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
      * 
      * @return known TranscriptionStatusDetails values.
      */
+    @Generated
     public static Collection<TranscriptionStatusDetails> values() {
         return values(TranscriptionStatusDetails.class);
     }

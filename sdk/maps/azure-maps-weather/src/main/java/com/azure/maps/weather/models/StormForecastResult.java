@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class StormForecastResult implements JsonSerializable<StormForecast
     /*
      * The list of Government-issued forecasts
      */
+    @Generated
     private List<StormForecast> stormForecasts;
 
     /*
      * The is the link to the next page of the features returned. If it's the last page, no this field.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Set default StormForecastResult constructor to private
      */
+    @Generated
     private StormForecastResult() {
     }
 
@@ -38,23 +42,15 @@ public final class StormForecastResult implements JsonSerializable<StormForecast
      *
      * @return the stormForecasts value.
      */
+    @Generated
     public List<StormForecast> getStormForecasts() {
         return this.stormForecasts;
     }
 
     /**
-     * Get the nextLink property: The is the link to the next page of the features returned. If it's the last page, no
-     * this field.
-     *
-     * @return the nextLink value.
-     */
-    public String getNextLink() {
-        return this.nextLink;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,6 +67,7 @@ public final class StormForecastResult implements JsonSerializable<StormForecast
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the StormForecastResult.
      */
+    @Generated
     public static StormForecastResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StormForecastResult deserializedStormForecastResult = new StormForecastResult();

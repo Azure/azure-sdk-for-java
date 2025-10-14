@@ -43,7 +43,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-purview-sharing</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -407,11 +407,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-sharing/src
 [package]: https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-sharing
-[share_product_documentation]: https://docs.microsoft.com/azure/purview/concept-data-share
+[share_product_documentation]: https://learn.microsoft.com/azure/purview/concept-data-share
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-sharing/src/samples/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-[create_azure_purview_account]: https://docs.microsoft.com/azure/purview/create-catalog-portal
+[create_azure_purview_account]: https://learn.microsoft.com/azure/purview/create-catalog-portal
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK

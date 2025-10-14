@@ -67,12 +67,12 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.9.9</version> <!-- {x-version-update;org.apache.maven:maven-plugin-api;external_dependency} -->
+      <version>3.9.11</version> <!-- {x-version-update;org.apache.maven:maven-plugin-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
+      <version>3.15.1</version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>com.github.javaparser</groupId>
       <artifactId>javaparser-core</artifactId>
-      <version>3.26.2</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
+      <version>3.27.0</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
     </dependency>
 
     <!-- Annotation scanning -->
@@ -101,31 +101,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Unit Test -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -142,12 +142,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-plugin-plugin;external_dependency} -->
+        <version>3.15.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-plugin-plugin;external_dependency} -->
         <executions>
 
           <execution>
@@ -205,7 +205,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -223,12 +223,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <dependencies>
           <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            <groupId>io.clientcore</groupId>
+            <artifactId>linting-extensions</artifactId>
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:linting-extensions;current} -->
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -237,11 +237,12 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <configLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
+          <suppressionsLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
-          <encoding>UTF-8</encoding>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
@@ -256,11 +257,6 @@
         <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <dependencies>
           <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
-          <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs</artifactId>
             <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
@@ -269,7 +265,7 @@
           <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -277,7 +273,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${project.parent.relativePath}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
           <fork>true</fork>
         </configuration>
       </plugin>
@@ -286,25 +282,25 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
         <dependencies>
           <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            <groupId>io.clientcore</groupId>
+            <artifactId>linting-extensions</artifactId>
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:linting-extensions;current} -->
           </dependency>
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-java</artifactId>
-            <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
           </dependency>
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-reporter-json</artifactId>
-            <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+            <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
           </dependency>
         </dependencies>
       </plugin>

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class PipelineReferenceType extends ExpandableStringEnum<PipelineRe
     /**
      * Static value PipelineReference for PipelineReferenceType.
      */
+    @Generated
     public static final PipelineReferenceType PIPELINE_REFERENCE = fromString("PipelineReference");
 
     /**
@@ -21,6 +23,7 @@ public final class PipelineReferenceType extends ExpandableStringEnum<PipelineRe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PipelineReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class PipelineReferenceType extends ExpandableStringEnum<PipelineRe
      * @param name a name to look for.
      * @return the corresponding PipelineReferenceType.
      */
+    @Generated
     public static PipelineReferenceType fromString(String name) {
         return fromString(name, PipelineReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class PipelineReferenceType extends ExpandableStringEnum<PipelineRe
      * 
      * @return known PipelineReferenceType values.
      */
+    @Generated
     public static Collection<PipelineReferenceType> values() {
         return values(PipelineReferenceType.class);
     }

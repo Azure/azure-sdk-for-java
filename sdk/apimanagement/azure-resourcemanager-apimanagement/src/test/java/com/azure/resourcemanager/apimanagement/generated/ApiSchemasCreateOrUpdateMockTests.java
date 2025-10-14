@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.SchemaContract;
@@ -21,26 +21,26 @@ public final class ApiSchemasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"contentType\":\"z\",\"document\":{\"value\":\"mmydtdtftmizuz\",\"definitions\":\"dataurgyzcslazp\",\"components\":\"dataqoyimxp\"}},\"id\":\"gkttea\",\"name\":\"bgacnqpjuytv\",\"type\":\"deylpbyb\"}";
+            = "{\"properties\":{\"contentType\":\"vjhxvpmq\",\"document\":{\"value\":\"qu\",\"definitions\":\"dataphngr\",\"components\":\"dataexoweorocr\"},\"provisioningState\":\"Succeeded\"},\"id\":\"gbq\",\"name\":\"fy\",\"type\":\"vhtvijvwmrg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaContract response = manager.apiSchemas()
-            .define("tpcjpt")
-            .withExistingApi("fzwncv", "efx", "n")
-            .withContentType("tqrcjqp")
-            .withValue("vn")
-            .withDefinitions("datarrhpgsjbio")
-            .withComponents("datawviqehmdqvaolid")
-            .withIfMatch("rkd")
+            .define("ogfcnxcxgxum")
+            .withExistingApi("rzcqfevnkyakckte", "og", "sddjkkdedesua")
+            .withContentType("qxmyvkxixypavi")
+            .withValue("czgo")
+            .withDefinitions("dataps")
+            .withComponents("dataichmxczbyfkoc")
+            .withIfMatch("ihavis")
             .create();
 
-        Assertions.assertEquals("z", response.contentType());
-        Assertions.assertEquals("mmydtdtftmizuz", response.value());
+        Assertions.assertEquals("vjhxvpmq", response.contentType());
+        Assertions.assertEquals("qu", response.value());
     }
 }

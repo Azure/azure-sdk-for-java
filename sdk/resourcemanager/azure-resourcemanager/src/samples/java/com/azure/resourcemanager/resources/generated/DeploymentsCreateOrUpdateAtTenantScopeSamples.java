@@ -17,8 +17,8 @@ import java.util.Map;
 public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentAtTenant.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
+     * PutDeploymentAtTenant.json
      */
     /**
      * Sample code: Create deployment at tenant scope.
@@ -28,7 +28,7 @@ public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
     public static void createDeploymentAtTenantScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdateAtTenantScope("tenant-dep01",
                 new ScopedDeployment().withLocation("eastus")

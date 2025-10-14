@@ -13,7 +13,11 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-/** The AcsChatMemberRemovedFromThreadWithUserEventData model. */
+/** * The AcsChatMemberRemovedFromThreadWithUserEventData model.
+ *
+ * @deprecated This class is deprecated and may be removed in future releases.
+ */
+@Deprecated
 @Fluent
 public final class AcsChatMemberRemovedFromThreadWithUserEventData extends AcsChatThreadEventBaseProperties {
     /*

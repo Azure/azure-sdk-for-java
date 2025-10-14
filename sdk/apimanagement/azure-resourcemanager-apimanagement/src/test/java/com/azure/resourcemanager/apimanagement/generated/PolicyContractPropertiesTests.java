@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyContractProperties model = BinaryData.fromString("{\"value\":\"hoi\",\"format\":\"xml-link\"}")
+        PolicyContractProperties model = BinaryData.fromString("{\"value\":\"qpbrlc\",\"format\":\"xml-link\"}")
             .toObject(PolicyContractProperties.class);
-        Assertions.assertEquals("hoi", model.value());
+        Assertions.assertEquals("qpbrlc", model.value());
         Assertions.assertEquals(PolicyContentFormat.XML_LINK, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyContractProperties model
-            = new PolicyContractProperties().withValue("hoi").withFormat(PolicyContentFormat.XML_LINK);
+            = new PolicyContractProperties().withValue("qpbrlc").withFormat(PolicyContentFormat.XML_LINK);
         model = BinaryData.fromObject(model).toObject(PolicyContractProperties.class);
-        Assertions.assertEquals("hoi", model.value());
+        Assertions.assertEquals("qpbrlc", model.value());
         Assertions.assertEquals(PolicyContentFormat.XML_LINK, model.format());
     }
 }

@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.AnomalyStatus;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,6 +21,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
     /*
      * anomaly severity
      */
+    @Generated
     private Severity anomalySeverity;
 
     /*
@@ -27,21 +29,25 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * 
      * only return for alerting anomaly result
      */
+    @Generated
     private AnomalyStatus anomalyStatus;
 
     /*
      * value of the anomaly
      */
+    @Generated
     private Double value;
 
     /*
      * expected value of the anomaly given by smart detector
      */
+    @Generated
     private Double expectedValue;
 
     /**
      * Creates an instance of AnomalyProperty class.
      */
+    @Generated
     public AnomalyProperty() {
     }
 
@@ -50,6 +56,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * 
      * @return the anomalySeverity value.
      */
+    @Generated
     public Severity getAnomalySeverity() {
         return this.anomalySeverity;
     }
@@ -60,6 +67,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * @param anomalySeverity the anomalySeverity value to set.
      * @return the AnomalyProperty object itself.
      */
+    @Generated
     public AnomalyProperty setAnomalySeverity(Severity anomalySeverity) {
         this.anomalySeverity = anomalySeverity;
         return this;
@@ -72,6 +80,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * 
      * @return the anomalyStatus value.
      */
+    @Generated
     public AnomalyStatus getAnomalyStatus() {
         return this.anomalyStatus;
     }
@@ -81,6 +90,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * 
      * @return the value value.
      */
+    @Generated
     public Double getValue() {
         return this.value;
     }
@@ -90,6 +100,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * 
      * @return the expectedValue value.
      */
+    @Generated
     public Double getExpectedValue() {
         return this.expectedValue;
     }
@@ -97,6 +108,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -114,6 +126,7 @@ public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyProperty.
      */
+    @Generated
     public static AnomalyProperty fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyProperty deserializedAnomalyProperty = new AnomalyProperty();

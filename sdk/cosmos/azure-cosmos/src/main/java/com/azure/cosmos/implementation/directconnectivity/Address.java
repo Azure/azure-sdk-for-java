@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Constants;
@@ -46,7 +44,7 @@ public class Address extends Resource {
     }
 
     void setIsPrimary(boolean isPrimary) {
-        this.set(Constants.Properties.IS_PRIMARY, isPrimary, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.IS_PRIMARY, isPrimary);
     }
 
     public String getProtocolScheme() {
@@ -55,7 +53,7 @@ public class Address extends Resource {
 
     void setProtocol(String protocol) {
 
-        this.set(Constants.Properties.PROTOCOL, protocol, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.PROTOCOL, protocol);
     }
 
     public String getLogicalUri() {
@@ -63,7 +61,7 @@ public class Address extends Resource {
     }
 
     void setLogicalUri(String logicalUri) {
-        this.set(Constants.Properties.LOGICAL_URI, logicalUri, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.LOGICAL_URI, logicalUri);
     }
 
     public String getPhyicalUri() {
@@ -71,7 +69,7 @@ public class Address extends Resource {
     }
 
     void setPhysicalUri(String phyicalUri) {
-        this.set(Constants.Properties.PHYISCAL_URI, phyicalUri, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.PHYISCAL_URI, phyicalUri);
     }
 
     public String getPartitionIndex() {
@@ -79,7 +77,7 @@ public class Address extends Resource {
     }
 
     void setPartitionIndex(String partitionIndex) {
-        this.set(Constants.Properties.PARTITION_INDEX, partitionIndex, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.PARTITION_INDEX, partitionIndex);
     }
 
     public String getParitionKeyRangeId() {
@@ -87,7 +85,7 @@ public class Address extends Resource {
     }
 
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
-        this.set(Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
     }
 
     @Override

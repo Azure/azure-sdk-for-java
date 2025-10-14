@@ -62,13 +62,23 @@ public final class SchemasClientImpl implements SchemasClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryManage")
+    @ServiceInterface(name = "DeviceRegistryManagementClientSchemas")
     public interface SchemasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SchemaInner>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("schemaRegistryName") String schemaRegistryName, @PathParam("schemaName") String schemaName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SchemaInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("schemaRegistryName") String schemaRegistryName, @PathParam("schemaName") String schemaName,
@@ -84,7 +94,17 @@ public final class SchemasClientImpl implements SchemasClient {
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SchemaInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SchemaInner> createOrReplaceSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("schemaRegistryName") String schemaRegistryName, @PathParam("schemaName") String schemaName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SchemaInner resource, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -92,7 +112,17 @@ public final class SchemasClientImpl implements SchemasClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("schemaRegistryName") String schemaRegistryName, @PathParam("schemaName") String schemaName,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("schemaRegistryName") String schemaRegistryName, @PathParam("schemaName") String schemaName,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas")
@@ -105,10 +135,28 @@ public final class SchemasClientImpl implements SchemasClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SchemaListResult> listBySchemaRegistrySync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("schemaRegistryName") String schemaRegistryName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SchemaListResult>> listBySchemaRegistryNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SchemaListResult> listBySchemaRegistryNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -127,70 +175,11 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SchemaInner>> getWithResponseAsync(String resourceGroupName, String schemaRegistryName,
         String schemaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Schema along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SchemaInner>> getWithResponseAsync(String resourceGroupName, String schemaRegistryName,
-        String schemaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, schemaRegistryName, schemaName, accept, context);
     }
 
     /**
@@ -225,7 +214,9 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaInner> getWithResponse(String resourceGroupName, String schemaRegistryName, String schemaName,
         Context context) {
-        return getWithResponseAsync(resourceGroupName, schemaRegistryName, schemaName, context).block();
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, schemaRegistryName, schemaName, accept, context);
     }
 
     /**
@@ -259,30 +250,6 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SchemaInner>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String schemaRegistryName, String schemaName, SchemaInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -290,54 +257,6 @@ public final class SchemasClientImpl implements SchemasClient {
                 this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, contentType, accept,
                 resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Create a Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema definition along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SchemaInner>> createOrReplaceWithResponseAsync(String resourceGroupName,
-        String schemaRegistryName, String schemaName, SchemaInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrReplace(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, contentType, accept,
-            resource, context);
     }
 
     /**
@@ -375,8 +294,11 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaInner> createOrReplaceWithResponse(String resourceGroupName, String schemaRegistryName,
         String schemaName, SchemaInner resource, Context context) {
-        return createOrReplaceWithResponseAsync(resourceGroupName, schemaRegistryName, schemaName, resource, context)
-            .block();
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, contentType, accept,
+            resource, context);
     }
 
     /**
@@ -412,70 +334,10 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String schemaRegistryName,
         String schemaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param schemaName Schema name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String schemaRegistryName,
-        String schemaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        if (schemaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, schemaRegistryName, schemaName, accept, context);
     }
 
     /**
@@ -510,7 +372,8 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String schemaRegistryName, String schemaName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, schemaRegistryName, schemaName, context).block();
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, schemaName, context);
     }
 
     /**
@@ -542,22 +405,6 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SchemaInner>> listBySchemaRegistrySinglePageAsync(String resourceGroupName,
         String schemaRegistryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySchemaRegistry(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -565,46 +412,6 @@ public final class SchemasClientImpl implements SchemasClient {
             .<PagedResponse<SchemaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List Schema resources by SchemaRegistry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaRegistryName Schema registry name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SchemaInner>> listBySchemaRegistrySinglePageAsync(String resourceGroupName,
-        String schemaRegistryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (schemaRegistryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter schemaRegistryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listBySchemaRegistry(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -628,18 +435,42 @@ public final class SchemasClientImpl implements SchemasClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param schemaRegistryName Schema registry name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Schema list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SchemaInner> listBySchemaRegistrySinglePage(String resourceGroupName,
+        String schemaRegistryName) {
+        final String accept = "application/json";
+        Response<SchemaListResult> res
+            = service.listBySchemaRegistrySync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Schema resources by SchemaRegistry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schemaRegistryName Schema registry name parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a Schema list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SchemaInner> listBySchemaRegistryAsync(String resourceGroupName, String schemaRegistryName,
-        Context context) {
-        return new PagedFlux<>(
-            () -> listBySchemaRegistrySinglePageAsync(resourceGroupName, schemaRegistryName, context),
-            nextLink -> listBySchemaRegistryNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SchemaInner> listBySchemaRegistrySinglePage(String resourceGroupName,
+        String schemaRegistryName, Context context) {
+        final String accept = "application/json";
+        Response<SchemaListResult> res
+            = service.listBySchemaRegistrySync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, schemaRegistryName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -654,7 +485,8 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaInner> listBySchemaRegistry(String resourceGroupName, String schemaRegistryName) {
-        return new PagedIterable<>(listBySchemaRegistryAsync(resourceGroupName, schemaRegistryName));
+        return new PagedIterable<>(() -> listBySchemaRegistrySinglePage(resourceGroupName, schemaRegistryName),
+            nextLink -> listBySchemaRegistryNextSinglePage(nextLink));
     }
 
     /**
@@ -671,7 +503,8 @@ public final class SchemasClientImpl implements SchemasClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SchemaInner> listBySchemaRegistry(String resourceGroupName, String schemaRegistryName,
         Context context) {
-        return new PagedIterable<>(listBySchemaRegistryAsync(resourceGroupName, schemaRegistryName, context));
+        return new PagedIterable<>(() -> listBySchemaRegistrySinglePage(resourceGroupName, schemaRegistryName, context),
+            nextLink -> listBySchemaRegistryNextSinglePage(nextLink, context));
     }
 
     /**
@@ -686,13 +519,6 @@ public final class SchemasClientImpl implements SchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SchemaInner>> listBySchemaRegistryNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -706,26 +532,36 @@ public final class SchemasClientImpl implements SchemasClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Schema list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SchemaInner> listBySchemaRegistryNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<SchemaListResult> res
+            = service.listBySchemaRegistryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Schema list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the response of a Schema list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SchemaInner>> listBySchemaRegistryNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<SchemaInner> listBySchemaRegistryNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySchemaRegistryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<SchemaListResult> res
+            = service.listBySchemaRegistryNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

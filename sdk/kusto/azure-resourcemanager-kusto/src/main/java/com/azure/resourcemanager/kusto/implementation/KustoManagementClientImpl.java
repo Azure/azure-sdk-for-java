@@ -379,7 +379,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-08-15";
+        this.apiVersion = "2024-04-13";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.skus = new SkusClientImpl(this);

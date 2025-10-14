@@ -52,7 +52,7 @@ public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMLExecutePipelineActivityTypeProperties innerTypeProperties() {
+    AzureMLExecutePipelineActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

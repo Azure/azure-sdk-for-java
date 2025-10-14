@@ -31,6 +31,16 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     private OffsetDateTime creationDate;
 
     /*
+     * The snapshot creation date of the backup
+     */
+    private OffsetDateTime snapshotCreationDate;
+
+    /*
+     * The completion date of the backup
+     */
+    private OffsetDateTime completionDate;
+
+    /*
      * Azure lifecycle management
      */
     private String provisioningState;
@@ -103,6 +113,24 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
+    }
+
+    /**
+     * Get the snapshotCreationDate property: The snapshot creation date of the backup.
+     * 
+     * @return the snapshotCreationDate value.
+     */
+    public OffsetDateTime snapshotCreationDate() {
+        return this.snapshotCreationDate;
+    }
+
+    /**
+     * Get the completionDate property: The completion date of the backup.
+     * 
+     * @return the completionDate value.
+     */
+    public OffsetDateTime completionDate() {
+        return this.completionDate;
     }
 
     /**
@@ -291,6 +319,12 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
                     deserializedBackupProperties.backupId = reader.getString();
                 } else if ("creationDate".equals(fieldName)) {
                     deserializedBackupProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("snapshotCreationDate".equals(fieldName)) {
+                    deserializedBackupProperties.snapshotCreationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completionDate".equals(fieldName)) {
+                    deserializedBackupProperties.completionDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBackupProperties.provisioningState = reader.getString();

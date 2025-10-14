@@ -774,7 +774,7 @@ public class DataLakeFileSystemAsyncClient {
     /**
      * Returns a reactive Publisher emitting all the files/directories in this filesystem that have been recently soft
      * deleted lazily as needed. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

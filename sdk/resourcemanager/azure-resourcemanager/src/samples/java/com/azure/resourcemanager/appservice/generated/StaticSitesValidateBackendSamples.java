@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBacken
 public final class StaticSitesValidateBackendSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ValidateLinkedBackendForStaticSite.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ValidateLinkedBackendForStaticSite.
      * json
      */
     /**

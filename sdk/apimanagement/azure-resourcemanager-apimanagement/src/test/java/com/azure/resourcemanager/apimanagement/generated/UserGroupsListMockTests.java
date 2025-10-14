@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
@@ -23,22 +23,22 @@ public final class UserGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"ilhdbbxm\",\"description\":\"yxhcw\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"ac\"},\"id\":\"oji\",\"name\":\"laqqfrgiplxr\",\"type\":\"fbsbkvfkvdbbpo\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"exgien\",\"description\":\"sijqygofshdaehxv\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"fgkysymhuxslm\"},\"id\":\"lbpegcetezaa\",\"name\":\"wszrbttzsqeyr\",\"type\":\"fhfgoyxxszpai\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GroupContract> response = manager.userGroups()
-            .list("wxrqiwxeppu", "kizoakzvjy", "obevfbmxzobpghs", "lkpajio", 26722675, 825614552,
+            .list("uveljfa", "in", "fziztgddahymvk", "jtdhmig", 1266685077, 2018246432,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ilhdbbxm", response.iterator().next().displayName());
-        Assertions.assertEquals("yxhcw", response.iterator().next().description());
-        Assertions.assertEquals(GroupType.EXTERNAL, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("ac", response.iterator().next().externalId());
+        Assertions.assertEquals("exgien", response.iterator().next().displayName());
+        Assertions.assertEquals("sijqygofshdaehxv", response.iterator().next().description());
+        Assertions.assertEquals(GroupType.SYSTEM, response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("fgkysymhuxslm", response.iterator().next().externalId());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,46 +22,54 @@ public class SalesforceV2LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SalesforceV2";
 
     /*
      * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object environmentUrl;
 
     /*
      * The authentication type to be used to connect to the Salesforce. Currently, we only support
      * OAuth2ClientCredentials, it is also the default value
      */
+    @Generated
     private Object authenticationType;
 
     /*
      * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance.
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by
      * Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object apiVersion;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
+    @Generated
     private String encryptedCredential;
 
     /**
      * Creates an instance of SalesforceV2LinkedService class.
      */
+    @Generated
     public SalesforceV2LinkedService() {
     }
 
@@ -69,6 +78,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -80,6 +90,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the environmentUrl value.
      */
+    @Generated
     public Object getEnvironmentUrl() {
         return this.environmentUrl;
     }
@@ -91,6 +102,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * @param environmentUrl the environmentUrl value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
+    @Generated
     public SalesforceV2LinkedService setEnvironmentUrl(Object environmentUrl) {
         this.environmentUrl = environmentUrl;
         return this;
@@ -102,6 +114,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -113,6 +126,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
+    @Generated
     public SalesforceV2LinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -124,6 +138,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -135,6 +150,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
+    @Generated
     public SalesforceV2LinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -146,6 +162,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -157,6 +174,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * @param clientSecret the clientSecret value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
+    @Generated
     public SalesforceV2LinkedService setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -168,6 +186,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the apiVersion value.
      */
+    @Generated
     public Object getApiVersion() {
         return this.apiVersion;
     }
@@ -179,6 +198,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * @param apiVersion the apiVersion value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
+    @Generated
     public SalesforceV2LinkedService setApiVersion(Object apiVersion) {
         this.apiVersion = apiVersion;
         return this;
@@ -190,6 +210,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public String getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -201,6 +222,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceV2LinkedService object itself.
      */
+    @Generated
     public SalesforceV2LinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -209,6 +231,17 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SalesforceV2LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SalesforceV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -218,6 +251,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2LinkedService setDescription(String description) {
         super.setDescription(description);
@@ -227,6 +261,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -236,6 +271,7 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -245,9 +281,11 @@ public class SalesforceV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -260,11 +298,19 @@ public class SalesforceV2LinkedService extends LinkedService {
             || apiVersion != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
-            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-            jsonWriter.writeUntypedField("clientId", this.clientId);
+            if (this.environmentUrl != null) {
+                jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+            }
+            if (this.authenticationType != null) {
+                jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            }
+            if (this.clientId != null) {
+                jsonWriter.writeUntypedField("clientId", this.clientId);
+            }
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-            jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+            if (this.apiVersion != null) {
+                jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+            }
             jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
             jsonWriter.writeEndObject();
         }
@@ -284,6 +330,7 @@ public class SalesforceV2LinkedService extends LinkedService {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceV2LinkedService.
      */
+    @Generated
     public static SalesforceV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceV2LinkedService deserializedSalesforceV2LinkedService = new SalesforceV2LinkedService();
@@ -292,7 +339,9 @@ public class SalesforceV2LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSalesforceV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSalesforceV2LinkedService.setDescription(reader.getString());

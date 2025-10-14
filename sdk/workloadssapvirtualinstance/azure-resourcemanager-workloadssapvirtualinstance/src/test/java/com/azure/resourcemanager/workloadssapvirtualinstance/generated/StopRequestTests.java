@@ -12,17 +12,17 @@ public final class StopRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StopRequest model
-            = BinaryData.fromString("{\"softStopTimeoutSeconds\":326462522043604891,\"deallocateVm\":false}")
+            = BinaryData.fromString("{\"softStopTimeoutSeconds\":2264360285985918261,\"deallocateVm\":false}")
                 .toObject(StopRequest.class);
-        Assertions.assertEquals(326462522043604891L, model.softStopTimeoutSeconds());
-        Assertions.assertEquals(false, model.deallocateVm());
+        Assertions.assertEquals(2264360285985918261L, model.softStopTimeoutSeconds());
+        Assertions.assertFalse(model.deallocateVm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StopRequest model = new StopRequest().withSoftStopTimeoutSeconds(326462522043604891L).withDeallocateVm(false);
+        StopRequest model = new StopRequest().withSoftStopTimeoutSeconds(2264360285985918261L).withDeallocateVm(false);
         model = BinaryData.fromObject(model).toObject(StopRequest.class);
-        Assertions.assertEquals(326462522043604891L, model.softStopTimeoutSeconds());
-        Assertions.assertEquals(false, model.deallocateVm());
+        Assertions.assertEquals(2264360285985918261L, model.softStopTimeoutSeconds());
+        Assertions.assertFalse(model.deallocateVm());
     }
 }

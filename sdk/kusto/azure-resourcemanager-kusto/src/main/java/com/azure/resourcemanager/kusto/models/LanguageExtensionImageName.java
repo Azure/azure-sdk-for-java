@@ -37,6 +37,16 @@ public final class LanguageExtensionImageName extends ExpandableStringEnum<Langu
     public static final LanguageExtensionImageName PYTHON_CUSTOM_IMAGE = fromString("PythonCustomImage");
 
     /**
+     * Static value Python3_11_7 for LanguageExtensionImageName.
+     */
+    public static final LanguageExtensionImageName PYTHON3_11_7 = fromString("Python3_11_7");
+
+    /**
+     * Static value Python3_11_7_DL for LanguageExtensionImageName.
+     */
+    public static final LanguageExtensionImageName PYTHON3_11_7_DL = fromString("Python3_11_7_DL");
+
+    /**
      * Creates a new instance of LanguageExtensionImageName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

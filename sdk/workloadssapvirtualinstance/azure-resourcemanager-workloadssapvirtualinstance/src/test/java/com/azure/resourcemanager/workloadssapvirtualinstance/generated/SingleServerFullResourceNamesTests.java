@@ -17,33 +17,38 @@ public final class SingleServerFullResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SingleServerFullResourceNames model = BinaryData.fromString(
-            "{\"namingPatternType\":\"FullResourceName\",\"virtualMachine\":{\"vmName\":\"nhsjcnyej\",\"hostName\":\"ryhtnapczwlokjy\",\"networkInterfaces\":[{\"networkInterfaceName\":\"vnipjox\"},{\"networkInterfaceName\":\"nchgej\"},{\"networkInterfaceName\":\"odmailzyd\"}],\"osDiskName\":\"o\",\"dataDiskNames\":{\"vcputegj\":[\"huxinpmqnj\",\"qwixjspro\"],\"odjpslwejd\":[\"mfdatscmdvpj\",\"u\",\"suuv\",\"kjozkrwfnd\"]}}}")
+            "{\"namingPatternType\":\"FullResourceName\",\"virtualMachine\":{\"vmName\":\"tnb\",\"hostName\":\"kzgcwrwcl\",\"networkInterfaces\":[{\"networkInterfaceName\":\"ljdousk\"},{\"networkInterfaceName\":\"vkocrcjdkwtn\"},{\"networkInterfaceName\":\"bnjbiksqrglssain\"}],\"osDiskName\":\"jwnzlljfmp\",\"dataDiskNames\":{\"feusnhut\":[\"vmgxsab\",\"yqduujit\",\"jczdzevndh\",\"rwpdappdsbdkvwrw\"],\"ftyxolniw\":[\"ltmrldh\",\"gjzzdatqxhocdg\",\"ablgphuticndvk\",\"ozwyiftyhxhuro\"],\"jkot\":[\"cukjf\",\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\"],\"dgak\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"]}}}")
             .toObject(SingleServerFullResourceNames.class);
-        Assertions.assertEquals("nhsjcnyej", model.virtualMachine().vmName());
-        Assertions.assertEquals("ryhtnapczwlokjy", model.virtualMachine().hostName());
-        Assertions.assertEquals("vnipjox", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("o", model.virtualMachine().osDiskName());
-        Assertions.assertEquals("huxinpmqnj", model.virtualMachine().dataDiskNames().get("vcputegj").get(0));
+        Assertions.assertEquals("tnb", model.virtualMachine().vmName());
+        Assertions.assertEquals("kzgcwrwcl", model.virtualMachine().hostName());
+        Assertions.assertEquals("ljdousk", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("jwnzlljfmp", model.virtualMachine().osDiskName());
+        Assertions.assertEquals("vmgxsab", model.virtualMachine().dataDiskNames().get("feusnhut").get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SingleServerFullResourceNames model = new SingleServerFullResourceNames()
-            .withVirtualMachine(new VirtualMachineResourceNames().withVmName("nhsjcnyej")
-                .withHostName("ryhtnapczwlokjy")
-                .withNetworkInterfaces(
-                    Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("vnipjox"),
-                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("nchgej"),
-                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("odmailzyd")))
-                .withOsDiskName("o")
-                .withDataDiskNames(mapOf("vcputegj", Arrays.asList("huxinpmqnj", "qwixjspro"), "odjpslwejd",
-                    Arrays.asList("mfdatscmdvpj", "u", "suuv", "kjozkrwfnd"))));
+        SingleServerFullResourceNames model
+            = new SingleServerFullResourceNames()
+                .withVirtualMachine(
+                    new VirtualMachineResourceNames().withVmName("tnb")
+                        .withHostName("kzgcwrwcl")
+                        .withNetworkInterfaces(
+                            Arrays.asList(new NetworkInterfaceResourceNames().withNetworkInterfaceName("ljdousk"),
+                                new NetworkInterfaceResourceNames().withNetworkInterfaceName("vkocrcjdkwtn"),
+                                new NetworkInterfaceResourceNames().withNetworkInterfaceName("bnjbiksqrglssain")))
+                        .withOsDiskName("jwnzlljfmp")
+                        .withDataDiskNames(mapOf("feusnhut",
+                            Arrays.asList("vmgxsab", "yqduujit", "jczdzevndh", "rwpdappdsbdkvwrw"), "ftyxolniw",
+                            Arrays.asList("ltmrldh", "gjzzdatqxhocdg", "ablgphuticndvk", "ozwyiftyhxhuro"), "jkot",
+                            Arrays.asList("cukjf", "giawx", "lryplwckbasyy", "nddhsgcbacph"), "dgak",
+                            Arrays.asList("qgoulznd", "i", "wyqkgfgibm"))));
         model = BinaryData.fromObject(model).toObject(SingleServerFullResourceNames.class);
-        Assertions.assertEquals("nhsjcnyej", model.virtualMachine().vmName());
-        Assertions.assertEquals("ryhtnapczwlokjy", model.virtualMachine().hostName());
-        Assertions.assertEquals("vnipjox", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("o", model.virtualMachine().osDiskName());
-        Assertions.assertEquals("huxinpmqnj", model.virtualMachine().dataDiskNames().get("vcputegj").get(0));
+        Assertions.assertEquals("tnb", model.virtualMachine().vmName());
+        Assertions.assertEquals("kzgcwrwcl", model.virtualMachine().hostName());
+        Assertions.assertEquals("ljdousk", model.virtualMachine().networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("jwnzlljfmp", model.virtualMachine().osDiskName());
+        Assertions.assertEquals("vmgxsab", model.virtualMachine().dataDiskNames().get("feusnhut").get(0));
     }
 
     // Use "Map.of" if available

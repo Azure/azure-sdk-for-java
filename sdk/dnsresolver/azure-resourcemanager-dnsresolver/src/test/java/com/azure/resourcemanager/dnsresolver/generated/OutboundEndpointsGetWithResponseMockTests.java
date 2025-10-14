@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.OutboundEndpoint;
@@ -21,21 +21,21 @@ public final class OutboundEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"vdrhvoo\",\"properties\":{\"subnet\":{\"id\":\"otbobzdopcj\"},\"provisioningState\":\"Updating\",\"resourceGuid\":\"dldwmgxc\"},\"location\":\"slpmutwuo\",\"tags\":{\"qsluicp\":\"pkhjwni\",\"modfvuefywsbpfvm\":\"ggkzzlvmbmpa\"},\"id\":\"yhrfouyftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\"}";
+            = "{\"etag\":\"yqtfihwh\",\"properties\":{\"subnet\":{\"id\":\"tzingamvpph\"},\"provisioningState\":\"Deleting\",\"resourceGuid\":\"zudphqamvdkfw\"},\"location\":\"wcvtbvkayhmtnvyq\",\"tags\":{\"cjaesgvvs\":\"kzwpcnpw\",\"wygzlvdnkfxusem\":\"cyajguqf\",\"pfcqdp\":\"wzrmuh\"},\"id\":\"qxqvpsvuoymgc\",\"name\":\"elvezrypq\",\"type\":\"mfe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OutboundEndpoint response = manager.outboundEndpoints()
-            .getWithResponse("wdmhdlxyjrxs", "gafcnihgwqapnedg", "bcvkcvqvpkeq", com.azure.core.util.Context.NONE)
+            .getWithResponse("ughftqsx", "qxujxukndxd", "grjguufzd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("slpmutwuo", response.location());
-        Assertions.assertEquals("pkhjwni", response.tags().get("qsluicp"));
-        Assertions.assertEquals("otbobzdopcj", response.subnet().id());
+        Assertions.assertEquals("wcvtbvkayhmtnvyq", response.location());
+        Assertions.assertEquals("kzwpcnpw", response.tags().get("cjaesgvvs"));
+        Assertions.assertEquals("tzingamvpph", response.subnet().id());
     }
 }

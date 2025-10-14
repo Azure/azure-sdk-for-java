@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class Error implements JsonSerializable<Error> {
     /*
      * The type of the error.
      */
+    @Generated
     private String type;
 
     /*
      * A brief summary of the error.
      */
+    @Generated
     private String title;
 
     /*
      * The name of the parameter that resulted in the error.
      */
+    @Generated
     private String name;
 
     /*
      * A detailed description of the error.
      */
+    @Generated
     private String detail;
 
     /*
      * The HTTP status code that the error maps to.
      */
+    @Generated
     private Integer status;
 
     /**
      * Creates an instance of Error class.
      */
+    @Generated
     public Error() {
     }
 
@@ -52,6 +59,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -62,6 +70,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param type the type value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setType(String type) {
         this.type = type;
         return this;
@@ -72,6 +81,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the title value.
      */
+    @Generated
     public String getTitle() {
         return this.title;
     }
@@ -82,6 +92,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param title the title value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setTitle(String title) {
         this.title = title;
         return this;
@@ -92,6 +103,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -102,6 +114,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param name the name value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setName(String name) {
         this.name = name;
         return this;
@@ -112,6 +125,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the detail value.
      */
+    @Generated
     public String getDetail() {
         return this.detail;
     }
@@ -122,6 +136,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param detail the detail value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setDetail(String detail) {
         this.detail = detail;
         return this;
@@ -132,6 +147,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the status value.
      */
+    @Generated
     public Integer getStatus() {
         return this.status;
     }
@@ -142,6 +158,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param status the status value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setStatus(Integer status) {
         this.status = status;
         return this;
@@ -150,6 +167,7 @@ public final class Error implements JsonSerializable<Error> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -169,6 +187,7 @@ public final class Error implements JsonSerializable<Error> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Error.
      */
+    @Generated
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Error deserializedError = new Error();

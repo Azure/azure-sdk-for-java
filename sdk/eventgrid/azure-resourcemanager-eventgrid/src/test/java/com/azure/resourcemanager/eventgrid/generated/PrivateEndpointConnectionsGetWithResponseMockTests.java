@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PersistedConnectionStatus;
@@ -24,26 +24,26 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"vhjudxdyyrudmahs\"},\"groupIds\":[\"dkxbq\",\"sgfenffdxb\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"chivdrijanxndmuv\",\"actionsRequired\":\"dlmz\"},\"provisioningState\":\"Creating\"},\"id\":\"p\",\"name\":\"rmuhcuhtuzlx\",\"type\":\"wyopgarpfctwrapc\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"itwhlbecgihz\"},\"groupIds\":[\"mnrrabo\",\"rwwxywpj\",\"spboxhifp\",\"skpeswyhhmifjua\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"c\",\"actionsRequired\":\"peglyuqvcmlaexb\"},\"provisioningState\":\"Failed\"},\"id\":\"ufpnezsjzaymld\",\"name\":\"orhyogzmsimehtc\",\"type\":\"uwdhtq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("njcytesmfucrtfod", PrivateEndpointConnectionsParentType.TOPICS, "uauzmz", "vrtrfz",
+            .getWithResponse("igavk", PrivateEndpointConnectionsParentType.DOMAINS, "yxzerejr", "pzjbyetjxryo",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vhjudxdyyrudmahs", response.privateEndpoint().id());
-        Assertions.assertEquals("dkxbq", response.groupIds().get(0));
-        Assertions.assertEquals(PersistedConnectionStatus.APPROVED,
+        Assertions.assertEquals("itwhlbecgihz", response.privateEndpoint().id());
+        Assertions.assertEquals("mnrrabo", response.groupIds().get(0));
+        Assertions.assertEquals(PersistedConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("chivdrijanxndmuv", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dlmz", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals(ResourceProvisioningState.CREATING, response.provisioningState());
+        Assertions.assertEquals("c", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("peglyuqvcmlaexb", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(ResourceProvisioningState.FAILED, response.provisioningState());
     }
 }

@@ -14,13 +14,13 @@ public final class RevocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Revocation model = BinaryData.fromString(
-            "{\"requestedAt\":\"2021-03-19T13:58:34Z\",\"effectiveAt\":\"2021-01-09T05:37:53Z\",\"reason\":\"ryplwckbasyypn\",\"remarks\":\"hsgcbacphejkot\",\"status\":\"Succeeded\",\"failureReason\":\"oulzndlikwyq\"}")
+            "{\"requestedAt\":\"2021-10-17T04:41:11Z\",\"effectiveAt\":\"2021-06-24T22:10:09Z\",\"reason\":\"ndv\",\"remarks\":\"ozwyiftyhxhuro\",\"status\":\"Succeeded\",\"failureReason\":\"xolniwpwcukjfk\"}")
             .toObject(Revocation.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T13:58:34Z"), model.requestedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T05:37:53Z"), model.effectiveAt());
-        Assertions.assertEquals("ryplwckbasyypn", model.reason());
-        Assertions.assertEquals("hsgcbacphejkot", model.remarks());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T04:41:11Z"), model.requestedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T22:10:09Z"), model.effectiveAt());
+        Assertions.assertEquals("ndv", model.reason());
+        Assertions.assertEquals("ozwyiftyhxhuro", model.remarks());
         Assertions.assertEquals(RevocationStatus.SUCCEEDED, model.status());
-        Assertions.assertEquals("oulzndlikwyq", model.failureReason());
+        Assertions.assertEquals("xolniwpwcukjfk", model.failureReason());
     }
 }

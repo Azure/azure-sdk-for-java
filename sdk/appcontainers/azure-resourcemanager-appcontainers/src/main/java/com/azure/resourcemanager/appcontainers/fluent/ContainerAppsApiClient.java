@@ -152,6 +152,13 @@ public interface ContainerAppsApiClient {
     ContainerAppsBuildsClient getContainerAppsBuilds();
 
     /**
+     * Gets the ContainerAppsLabelHistoriesClient object to access its operations.
+     * 
+     * @return the ContainerAppsLabelHistoriesClient object.
+     */
+    ContainerAppsLabelHistoriesClient getContainerAppsLabelHistories();
+
+    /**
      * Gets the ContainerAppsPatchesClient object to access its operations.
      * 
      * @return the ContainerAppsPatchesClient object.
@@ -311,6 +318,20 @@ public interface ContainerAppsApiClient {
      * @return the DaprSubscriptionsClient object.
      */
     DaprSubscriptionsClient getDaprSubscriptions();
+
+    /**
+     * Gets the HttpRouteConfigsClient object to access its operations.
+     * 
+     * @return the HttpRouteConfigsClient object.
+     */
+    HttpRouteConfigsClient getHttpRouteConfigs();
+
+    /**
+     * Gets the MaintenanceConfigurationsClient object to access its operations.
+     * 
+     * @return the MaintenanceConfigurationsClient object.
+     */
+    MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
      * Gets the ManagedEnvironmentsStoragesClient object to access its operations.

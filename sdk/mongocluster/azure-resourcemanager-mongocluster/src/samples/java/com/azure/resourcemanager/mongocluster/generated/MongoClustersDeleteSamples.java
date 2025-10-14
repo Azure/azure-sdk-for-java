@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class MongoClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2024-07-01/MongoClusters_Delete.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Delete.json
      */
     /**
      * Sample code: Deletes a Mongo Cluster resource.

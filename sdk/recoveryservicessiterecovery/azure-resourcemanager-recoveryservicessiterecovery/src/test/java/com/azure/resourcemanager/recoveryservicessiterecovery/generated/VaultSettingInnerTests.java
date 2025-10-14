@@ -13,22 +13,22 @@ public final class VaultSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultSettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"migrationSolutionId\":\"yxvrqtvbczsul\",\"vmwareToAzureProviderType\":\"gglmepjpfsey\"},\"location\":\"sa\",\"id\":\"gpszngafpg\",\"name\":\"lkvec\",\"type\":\"ujcngo\"}")
+            "{\"properties\":{\"migrationSolutionId\":\"n\",\"vmwareToAzureProviderType\":\"ytzpo\"},\"location\":\"wxigpxv\",\"id\":\"qm\",\"name\":\"upxvpifd\",\"type\":\"aifyzyzeyuubeids\"}")
             .toObject(VaultSettingInner.class);
-        Assertions.assertEquals("yxvrqtvbczsul", model.properties().migrationSolutionId());
-        Assertions.assertEquals("gglmepjpfsey", model.properties().vmwareToAzureProviderType());
-        Assertions.assertEquals("sa", model.location());
+        Assertions.assertEquals("n", model.properties().migrationSolutionId());
+        Assertions.assertEquals("ytzpo", model.properties().vmwareToAzureProviderType());
+        Assertions.assertEquals("wxigpxv", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VaultSettingInner model = new VaultSettingInner()
-            .withProperties(new VaultSettingProperties().withMigrationSolutionId("yxvrqtvbczsul")
-                .withVmwareToAzureProviderType("gglmepjpfsey"))
-            .withLocation("sa");
+            .withProperties(
+                new VaultSettingProperties().withMigrationSolutionId("n").withVmwareToAzureProviderType("ytzpo"))
+            .withLocation("wxigpxv");
         model = BinaryData.fromObject(model).toObject(VaultSettingInner.class);
-        Assertions.assertEquals("yxvrqtvbczsul", model.properties().migrationSolutionId());
-        Assertions.assertEquals("gglmepjpfsey", model.properties().vmwareToAzureProviderType());
-        Assertions.assertEquals("sa", model.location());
+        Assertions.assertEquals("n", model.properties().migrationSolutionId());
+        Assertions.assertEquals("ytzpo", model.properties().vmwareToAzureProviderType());
+        Assertions.assertEquals("wxigpxv", model.location());
     }
 }

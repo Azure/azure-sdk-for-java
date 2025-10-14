@@ -16,8 +16,11 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
-import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamesCommon;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamesPreV1;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamesV1;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
@@ -50,6 +53,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -107,6 +111,8 @@ public final class DiagnosticsProvider {
     private final CosmosClientTelemetryConfig telemetryConfig;
     private final boolean shouldSystemExitOnError;
 
+    private final AtomicLong diagnosticsHandlerFailures = new AtomicLong(0);
+
     final Supplier<Double> samplingRateSnapshotSupplier;
 
 
@@ -130,6 +136,12 @@ public final class DiagnosticsProvider {
         this.diagnosticHandlers = new ArrayList<>(
             clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
         Tracer tracerCandidate = clientTelemetryConfigAccessor.getOrCreateTracer(clientTelemetryConfig);
+
+        LOGGER.debug(
+            "TracerCandidate: {} - {}",
+            tracerCandidate.getClass().getCanonicalName(),
+            tracerCandidate.isEnabled()
+        );
 
         if (tracerCandidate.isEnabled()) {
             this.tracer = tracerCandidate;
@@ -208,6 +220,10 @@ public final class DiagnosticsProvider {
         }
 
         return null;
+    }
+
+    public long getDiagnosticHandlerFailuresSnapshot() {
+        return this.diagnosticsHandlerFailures.get();
     }
 
     /**
@@ -538,6 +554,7 @@ public final class DiagnosticsProvider {
                 try {
                     handler.handleDiagnostics(cosmosCtx, context);
                 } catch (Exception e) {
+                    this.diagnosticsHandlerFailures.incrementAndGet();
                     LOGGER.error("HandledDiagnostics failed. ", e);
                 }
             }
@@ -950,6 +967,10 @@ public final class DiagnosticsProvider {
             ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
             : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
 
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = requestOptions != null
+            ? requestOptions.getReadConsistencyStrategy()
+            : null;
+
         CosmosDiagnosticsContext cosmosCtx = cosmosCtxFromUpstream != null
             ? cosmosCtxFromUpstream
             : ctxAccessor.create(
@@ -962,6 +983,7 @@ public final class DiagnosticsProvider {
                 operationType,
                 null,
                 clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
+                clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestLevelReadConsistencyStrategy),
                 maxItemCount,
                 thresholds,
                 trackingId,
@@ -1362,6 +1384,7 @@ public final class DiagnosticsProvider {
         private final String clientId;
         private final String connectionMode;
         private final String userAgent;
+        private final EnumSet<AttributeNamingScheme> namingSchemes;
 
         public OpenTelemetryCosmosTracer(
             Tracer tracer,
@@ -1379,6 +1402,7 @@ public final class DiagnosticsProvider {
             this.clientId = clientId;
             this.userAgent = userAgent;
             this.connectionMode = connectionMode;
+            this.namingSchemes = clientTelemetryConfigAccessor.getOtelSpanAttributeNamingSchema(config);
         }
 
         private boolean isTransportLevelTracingEnabled() {
@@ -1416,29 +1440,85 @@ public final class DiagnosticsProvider {
             if (tracer instanceof EnabledNoOpTracer) {
                 spanOptions = new StartSpanOptions(SpanKind.INTERNAL);
             } else {
-                spanOptions = new StartSpanOptions(SpanKind.INTERNAL)
-                    .setAttribute("db.system", "cosmosdb")
-                    .setAttribute("db.operation", spanName)
-                    .setAttribute("net.peer.name", cosmosCtx.getAccountName())
-                    .setAttribute("db.cosmosdb.operation_type",cosmosCtx.getOperationType())
-                    .setAttribute("db.cosmosdb.resource_type",cosmosCtx.getResourceType())
-                    .setAttribute("db.name", cosmosCtx.getDatabaseName())
-                    .setAttribute("db.cosmosdb.client_id", this.clientId)
-                    .setAttribute("user_agent.original", this.userAgent)
-                    .setAttribute("db.cosmosdb.connection_mode", this.connectionMode);
 
-                if (!cosmosCtx.getOperationId().isEmpty() &&
-                    !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
-                    spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
+                // mutual exclusive attributes - PRE_V1_RELEASE used when both are enabled
+                if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+                    spanOptions = new StartSpanOptions(SpanKind.INTERNAL)
+                        .setAttribute(AttributeNamesCommon.DB_SYSTEM.toString(), "cosmosdb");
+                } else {
+                    spanOptions = new StartSpanOptions(SpanKind.CLIENT)
+                        .setAttribute(AttributeNamesCommon.DB_SYSTEM.toString(), "Cosmos");
                 }
 
-                if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
-                    spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
-                }
+                // common attributes which exits in all versions
+                spanOptions = spanOptions
+                    .setAttribute(AttributeNamesCommon.DB_OPERATION.toString(), spanName)
+                    .setAttribute(AttributeNamesCommon.USER_AGENT.toString(), this.userAgent);
 
                 String containerName = cosmosCtx.getContainerName();
-                if (containerName != null) {
-                    spanOptions.setAttribute("db.cosmosdb.container", containerName);
+
+                // possibly additive attributes which could exist with different names
+                if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+                    spanOptions = spanOptions
+                        .setAttribute(AttributeNamesPreV1.NET_PEER_NAME.toString(), cosmosCtx.getAccountName())
+                        .setAttribute(AttributeNamesPreV1.CDB_OPERATION_TYPE.toString(), cosmosCtx.getOperationType())
+                        .setAttribute(AttributeNamesPreV1.CDB_RESOURCE_TYPE.toString(), cosmosCtx.getResourceType())
+                        .setAttribute(AttributeNamesPreV1.CDB_DB_NAME.toString(), cosmosCtx.getDatabaseName())
+                        .setAttribute(AttributeNamesPreV1.CDB_CLIENT_ID.toString(), this.clientId)
+                        .setAttribute(AttributeNamesPreV1.CDB_CONNECTION_MODE.toString(), this.connectionMode);
+
+                    if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
+                        spanOptions = spanOptions
+                            .setAttribute(
+                                AttributeNamesPreV1.CDB_QUERY_STATEMENT.toString(),
+                                cosmosCtx.getQueryStatement());
+                    }
+
+                    if (!cosmosCtx.getOperationId().isEmpty() &&
+                        !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
+
+                        spanOptions = spanOptions
+                            .setAttribute(AttributeNamesPreV1.CDB_OPERATION_ID.toString(), cosmosCtx.getOperationId());
+                    }
+
+                    if (containerName != null) {
+                        spanOptions.setAttribute(AttributeNamesPreV1.CDB_CONTAINER_NAME.toString(), containerName);
+                    }
+                }
+
+                if (namingSchemes.contains(AttributeNamingScheme.V1)) {
+                    String operation = cosmosCtx.getResourceType() + "_" + cosmosCtx.getOperationType();
+                    if (cosmosCtx.getOperationId() != null && !cosmosCtx.getOperationId().isEmpty()) {
+                        operation += "(" + cosmosCtx.getOperationId() + ")";
+                    }
+
+                    spanOptions = spanOptions
+                        .setAttribute(AttributeNamesV1.DB_SYSTEM_NAME.toString(), "azure.cosmosdb")
+                        .setAttribute(AttributeNamesV1.DB_OPERATION_NAME.toString(), spanName)
+                        .setAttribute(AttributeNamesV1.SERVER_ADDRESS.toString(), cosmosCtx.getAccountName())
+                        .setAttribute(AttributeNamesV1.DB_NAMESPACE.toString(), cosmosCtx.getDatabaseName())
+
+                        // needed because Azure Monitor filters out all but few db.* attributes
+                        .setAttribute(AttributeNamesV1.CDB_NAMESPACE.toString(), cosmosCtx.getDatabaseName())
+
+                        .setAttribute(AttributeNamesV1.CLIENT_ID.toString(), this.clientId)
+                        .setAttribute(AttributeNamesV1.CDB_CONNECTION_MODE.toString(), this.connectionMode)
+                        .setAttribute(AttributeNamesV1.CDB_OPERATION.toString(), operation);
+
+                    if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
+                        spanOptions = spanOptions
+                            .setAttribute(AttributeNamesV1.DB_QUERY_TEXT.toString(), cosmosCtx.getQueryStatement())
+
+                            // needed because Azure Monitor filters out all but few db.* attributes
+                            .setAttribute(AttributeNamesV1.CDB_QUERY_TEXT.toString(), cosmosCtx.getQueryStatement());
+                    }
+
+                    if (containerName != null) {
+                        spanOptions.setAttribute(AttributeNamesV1.DB_COLLECTION_NAME.toString(), containerName);
+
+                        // needed because Azure Monitor filters out all but few db.* attributes
+                        spanOptions.setAttribute(AttributeNamesV1.CDB_COLLECTION_NAME.toString(), containerName);
+                    }
                 }
             }
 
@@ -1475,10 +1555,19 @@ public final class DiagnosticsProvider {
             }
 
             if (isEmptyCompletion) {
-                tracer.setAttribute(
-                    "db.cosmosdb.is_empty_completion",
-                    Boolean.toString(true),
-                    context);
+                if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+                    tracer.setAttribute(
+                        AttributeNamesPreV1.CDB_IS_EMPTY_COMPLETION.toString(),
+                        Boolean.toString(true),
+                        context);
+                }
+
+                if (namingSchemes.contains(AttributeNamingScheme.V1)) {
+                    tracer.setAttribute(
+                        AttributeNamesV1.CDB_IS_EMPTY_COMPLETION.toString(),
+                        true,
+                        context);
+                }
 
                 tracer.end(errorMessage, finalError, context);
                 return;
@@ -1505,12 +1594,28 @@ public final class DiagnosticsProvider {
                     exceptionType = finalError.getClass().getCanonicalName();
                 }
 
-                tracer.setAttribute("exception.escaped", Boolean.toString(cosmosCtx.isFailure()), context);
-                tracer.setAttribute("exception.type", exceptionType, context);
-                if (errorMessage != null) {
-                    tracer.setAttribute("exception.message", errorMessage, context);
+                if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+                    tracer.setAttribute(
+                        AttributeNamesPreV1.EXCEPTION_ESCAPED.toString(),
+                        Boolean.toString(cosmosCtx.isFailure()), context);
+                    tracer.setAttribute(AttributeNamesPreV1.EXCEPTION_TYPE.toString(), exceptionType, context);
+                    if (errorMessage != null) {
+                        tracer.setAttribute(AttributeNamesPreV1.EXCEPTION_MESSAGE.toString(), errorMessage, context);
+                    }
+                    tracer.setAttribute(
+                        AttributeNamesPreV1.EXCEPTION_STACKTRACE.toString(),
+                        prettifyCallstack(finalError), context);
                 }
-                tracer.setAttribute("exception.stacktrace", prettifyCallstack(finalError), context);
+
+                if (namingSchemes.contains(AttributeNamingScheme.V1)) {
+                    tracer.setAttribute(AttributeNamesV1.ERROR_TYPE.toString(), exceptionType, context);
+                    if (errorMessage != null) {
+                        tracer.setAttribute(AttributeNamesV1.CDB_ERROR_MESSAGE.toString(), errorMessage, context);
+                    }
+                    tracer.setAttribute(
+                        AttributeNamesV1.CDB_ERROR_STACKTRACE.toString(),
+                        prettifyCallstack(finalError), context);
+                }
             }
 
             if (this.isTransportLevelTracingEnabled()) {
@@ -1518,27 +1623,119 @@ public final class DiagnosticsProvider {
             }
 
             tracer.setAttribute(
-                "db.cosmosdb.status_code",
-                Integer.toString(cosmosCtx.getStatusCode()),
+                AttributeNamesV1.CDB_CONSISTENCY_LEVEL.toString(),
+                cosmosCtx.getEffectiveConsistencyLevel().toString(),
                 context);
-            tracer.setAttribute(
-                "db.cosmosdb.sub_status_code",
-                Integer.toString(cosmosCtx.getSubStatusCode()),
-                context);
-            tracer.setAttribute(
-                "db.cosmosdb.request_charge",
-                Float.toString(cosmosCtx.getTotalRequestCharge()),
-                context);
-            tracer.setAttribute("db.cosmosdb.request_content_length",cosmosCtx.getMaxRequestPayloadSizeInBytes(), context);
-            tracer.setAttribute("db.cosmosdb.max_response_content_length_bytes",cosmosCtx.getMaxResponsePayloadSizeInBytes(), context);
-            tracer.setAttribute("db.cosmosdb.retry_count",cosmosCtx.getRetryCount() , context);
+
+            if (cosmosCtx.getEffectiveReadConsistencyStrategy() != null
+                && ctxAccessor.getOperationType(cosmosCtx).isReadOnlyOperation()) {
+
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_READ_CONSISTENCY_STRATEGY.toString(),
+                    cosmosCtx.getEffectiveReadConsistencyStrategy().toString(),
+                    context);
+            }
+
+            if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+                tracer.setAttribute(
+                    AttributeNamesPreV1.CDB_STATUS_CODE.toString(),
+                    Integer.toString(cosmosCtx.getStatusCode()),
+                    context);
+                tracer.setAttribute(
+                    AttributeNamesPreV1.CDB_SUB_STATUS_CODE.toString(),
+                    Integer.toString(cosmosCtx.getSubStatusCode()),
+                    context);
+                tracer.setAttribute(
+                    AttributeNamesPreV1.CDB_REQUEST_CHARGE.toString(),
+                    Float.toString(cosmosCtx.getTotalRequestCharge()),
+                    context);
+
+                tracer.setAttribute(
+                    AttributeNamesPreV1.CDB_REQUEST_CONTENT_SIZE.toString(),
+                    cosmosCtx.getMaxRequestPayloadSizeInBytes(),
+                    context);
+                tracer.setAttribute(
+                    AttributeNamesPreV1.CDB_RESPONSE_CONTENT_SIZE.toString(),
+                    cosmosCtx.getMaxResponsePayloadSizeInBytes(),
+                    context);
+                tracer.setAttribute(
+                    AttributeNamesPreV1.CDB_RETRY_COUNT.toString(),
+                    cosmosCtx.getRetryCount(),
+                    context);
+            }
+
+            if (namingSchemes.contains(AttributeNamingScheme.V1)) {
+                tracer.setAttribute(
+                    AttributeNamesV1.DB_RESPONSE_STATUS_CODE.toString(),
+                    Integer.toString(cosmosCtx.getStatusCode()),
+                    context);
+
+                // // needed because Azure Monitor filters out all but few db.* attributes
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_RESPONSE_STATUS_CODE.toString(),
+                    (Integer)cosmosCtx.getStatusCode(),
+                    context);
+
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_RESPONSE_SUB_STATUS_CODE.toString(),
+                    (Integer) cosmosCtx.getSubStatusCode(),
+                    context);
+
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_REQUEST_CHARGE.toString(),
+                    (double) cosmosCtx.getTotalRequestCharge(),
+                    context);
+
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_REQUEST_BODY_SIZE.toString(),
+                    (Integer)cosmosCtx.getMaxRequestPayloadSizeInBytes(),
+                    context);
+
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_MAX_RESPONSE_BODY_SIZE.toString(),
+                    (Integer)cosmosCtx.getMaxResponsePayloadSizeInBytes(),
+                    context);
+
+                if (cosmosCtx.getActualItemCount() != null) {
+                    tracer.setAttribute(
+                        AttributeNamesV1.DB_OPERATION_BATCH_SIZE.toString(),
+                        cosmosCtx.getActualItemCount(),
+                        context
+                    );
+
+                    // needed because Azure Monitor filters out all but few db.* attributes
+                    tracer.setAttribute(
+                        AttributeNamesV1.CDB_OPERATION_BATCH_SIZE.toString(),
+                        cosmosCtx.getActualItemCount(),
+                        context
+                    );
+
+                }
+
+                tracer.setAttribute(
+                    AttributeNamesV1.CDB_RETRY_COUNT.toString(),
+                    cosmosCtx.getRetryCount(),
+                    context);
+            }
 
             Set<String> regionsContacted = cosmosCtx.getContactedRegionNames();
             if (!regionsContacted.isEmpty()) {
-                tracer.setAttribute(
-                    "db.cosmosdb.regions_contacted",
-                    String.join(", ", regionsContacted),
-                    context);
+
+                String regionsContactedAsString = String.join(", ", regionsContacted);
+
+                if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
+                    tracer.setAttribute(
+                        AttributeNamesPreV1.CDB_CONTACTED_REGIONS.toString(),
+                        regionsContactedAsString,
+                        context);
+                }
+
+                if (namingSchemes.contains(AttributeNamingScheme.V1)) {
+                    tracer.setAttribute(
+                        AttributeNamesV1.CDB_CONTACTED_REGIONS.toString(),
+                        regionsContactedAsString,
+                        context);
+                }
             }
 
             tracer.end(errorMessage, finalError, context);
@@ -1698,6 +1895,7 @@ public final class DiagnosticsProvider {
         if (throwable instanceof Error) {
             handleFatalError((Error) throwable, systemExitCode);
         } else {
+            this.diagnosticsHandlerFailures.incrementAndGet();
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
             throw new RuntimeException(throwable);
         }

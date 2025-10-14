@@ -51,7 +51,7 @@ public final class LookupActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private LookupActivityTypeProperties innerTypeProperties() {
+    LookupActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

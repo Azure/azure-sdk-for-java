@@ -17,9 +17,9 @@ public class SystemScanRulesetsGetByVersion {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildSystemScanRulesetsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetsgetbyversion.systemscanrulesetsgetbyversion
+        // BEGIN:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-get-by-version.system-scan-rulesets-get-by-version
         RequestOptions requestOptions = new RequestOptions().addQueryParam("dataSourceType", "AzureStorage");
         Response<BinaryData> response = systemScanRulesetsClient.getByVersionWithResponse(1, requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.systemscanrulesetsgetbyversion.systemscanrulesetsgetbyversion
+        // END:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-get-by-version.system-scan-rulesets-get-by-version
     }
 }

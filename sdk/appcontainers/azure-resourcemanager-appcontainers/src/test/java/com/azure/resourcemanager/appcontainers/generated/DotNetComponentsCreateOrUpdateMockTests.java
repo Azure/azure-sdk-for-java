@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponent;
@@ -25,35 +25,34 @@ public final class DotNetComponentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"zdqiqdlrat\",\"value\":\"wxoauwxsuy\"},{\"propertyName\":\"nhrfgslgl\",\"value\":\"ry\"},{\"propertyName\":\"zihuioaeo\",\"value\":\"ajtfey\"}],\"serviceBinds\":[{\"name\":\"gdd\",\"serviceId\":\"hdccxb\"},{\"name\":\"uqutkzwtjww\",\"serviceId\":\"zytijcx\"}]},\"id\":\"ondegjdydhqkkk\",\"name\":\"juck\",\"type\":\"a\"}";
+            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"ahqmom\",\"value\":\"corkfrocgbmxl\"},{\"propertyName\":\"mzezbjesylslu\",\"value\":\"qfygpny\"}],\"serviceBinds\":[{\"name\":\"uqs\",\"serviceId\":\"gqyvouprsytqzss\"},{\"name\":\"mgw\",\"serviceId\":\"ivrxpfduiol\"}]},\"id\":\"yqvpbfjpo\",\"name\":\"z\",\"type\":\"cfzlu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DotNetComponent response
-            = manager.dotNetComponents()
-                .define("ceeg")
-                .withExistingManagedEnvironment("ovyzt", "lnomfpb")
-                .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
-                .withConfigurations(Arrays.asList(
-                    new DotNetComponentConfigurationProperty().withPropertyName("nji").withValue("ukkrehyh"),
-                    new DotNetComponentConfigurationProperty().withPropertyName("joduifvulxfaryrv")
-                        .withValue("gdezvjqwahoy"),
-                    new DotNetComponentConfigurationProperty().withPropertyName("axqvjweiwtczkddn")
-                        .withValue("vbooqbmdqrxy"),
-                    new DotNetComponentConfigurationProperty().withPropertyName("ae").withValue("cflwtjdtlr")))
-                .withServiceBinds(Arrays
-                    .asList(new DotNetComponentServiceBind().withName("oyycuxdtz").withServiceId("ipsdudgcozzomehx")))
-                .create();
+        DotNetComponent response = manager.dotNetComponents()
+            .define("mkaeplrajubow")
+            .withExistingManagedEnvironment("ehzlry", "jpch")
+            .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
+            .withConfigurations(Arrays.asList(
+                new DotNetComponentConfigurationProperty().withPropertyName("eikmwlaoklfni")
+                    .withValue("xgucbmtredscnn"),
+                new DotNetComponentConfigurationProperty().withPropertyName("jcyyuvtzrxzhcle").withValue("wtzqzcloyhy"),
+                new DotNetComponentConfigurationProperty().withPropertyName("gi").withValue("zgyresgzsdt"),
+                new DotNetComponentConfigurationProperty().withPropertyName("byorjplb").withValue("ychakvy")))
+            .withServiceBinds(
+                Arrays.asList(new DotNetComponentServiceBind().withName("vumkxqjsiuep").withServiceId("xfnzlpq"),
+                    new DotNetComponentServiceBind().withName("ft").withServiceId("fvulb")))
+            .create();
 
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, response.componentType());
-        Assertions.assertEquals("zdqiqdlrat", response.configurations().get(0).propertyName());
-        Assertions.assertEquals("wxoauwxsuy", response.configurations().get(0).value());
-        Assertions.assertEquals("gdd", response.serviceBinds().get(0).name());
-        Assertions.assertEquals("hdccxb", response.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("ahqmom", response.configurations().get(0).propertyName());
+        Assertions.assertEquals("corkfrocgbmxl", response.configurations().get(0).value());
+        Assertions.assertEquals("uqs", response.serviceBinds().get(0).name());
+        Assertions.assertEquals("gqyvouprsytqzss", response.serviceBinds().get(0).serviceId());
     }
 }

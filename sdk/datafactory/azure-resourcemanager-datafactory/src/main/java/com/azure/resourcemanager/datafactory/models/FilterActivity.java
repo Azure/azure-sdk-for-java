@@ -51,7 +51,7 @@ public final class FilterActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private FilterActivityTypeProperties innerTypeProperties() {
+    FilterActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

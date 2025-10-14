@@ -51,7 +51,7 @@ public final class JiraLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private JiraLinkedServiceTypeProperties innerTypeProperties() {
+    JiraLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

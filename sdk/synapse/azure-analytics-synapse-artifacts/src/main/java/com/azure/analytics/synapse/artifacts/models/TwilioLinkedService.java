@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class TwilioLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Twilio";
 
     /*
      * The Account SID of Twilio service.
      */
+    @Generated
     private Object userName;
 
     /*
      * The auth token of Twilio service.
      */
+    @Generated
     private SecretBase password;
 
     /**
      * Creates an instance of TwilioLinkedService class.
      */
+    @Generated
     public TwilioLinkedService() {
     }
 
@@ -44,6 +49,7 @@ public class TwilioLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class TwilioLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -64,6 +71,7 @@ public class TwilioLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the TwilioLinkedService object itself.
      */
+    @Generated
     public TwilioLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -74,6 +82,7 @@ public class TwilioLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -84,6 +93,7 @@ public class TwilioLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the TwilioLinkedService object itself.
      */
+    @Generated
     public TwilioLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -92,6 +102,17 @@ public class TwilioLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public TwilioLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public TwilioLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -101,6 +122,7 @@ public class TwilioLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TwilioLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -110,6 +132,7 @@ public class TwilioLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TwilioLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -119,6 +142,7 @@ public class TwilioLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TwilioLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -128,9 +152,11 @@ public class TwilioLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -159,6 +185,7 @@ public class TwilioLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TwilioLinkedService.
      */
+    @Generated
     public static TwilioLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TwilioLinkedService deserializedTwilioLinkedService = new TwilioLinkedService();
@@ -167,7 +194,9 @@ public class TwilioLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedTwilioLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedTwilioLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedTwilioLinkedService.setDescription(reader.getString());

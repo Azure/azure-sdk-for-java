@@ -14,13 +14,13 @@ public final class SchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"n\",\"displayName\":\"xisxyawjoyaqcsl\",\"description\":\"pkii\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"hnrztfol\":\"eli\",\"dtpnapnyiropuhp\":\"bnxknalaulppg\",\"gqgitxmedjvcsl\":\"gvpgy\"}},\"id\":\"qwwncw\",\"name\":\"zhxgktrmgucn\",\"type\":\"pkteo\"},{\"properties\":{\"uuid\":\"wptfdy\",\"displayName\":\"fqbuaceopzf\",\"description\":\"hhuao\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Canceled\",\"tags\":{\"t\":\"xolzdahzx\",\"grcfb\":\"bgbkdmoizpost\",\"bpvjymjhx\":\"nrmfqjhhk\"}},\"id\":\"yngudivk\",\"name\":\"tswb\",\"type\":\"qzvszjf\"}],\"nextLink\":\"vjfdx\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"moy\",\"displayName\":\"dyuib\",\"description\":\"fdn\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"fukiscvwmzhw\":\"fcjnaeoisrvhmgor\",\"nzeyqxtjj\":\"lefaxvxilcbtgn\",\"vodggxdbee\":\"zqlqhyc\",\"wiuagydwqf\":\"mieknlraria\"}},\"id\":\"lyr\",\"name\":\"giagtcojo\",\"type\":\"qwogfnzjvus\"}],\"nextLink\":\"ld\"}")
             .toObject(SchemaListResult.class);
-        Assertions.assertEquals("xisxyawjoyaqcsl", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("pkii", model.value().get(0).properties().description());
+        Assertions.assertEquals("dyuib", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("fdn", model.value().get(0).properties().description());
         Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, model.value().get(0).properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, model.value().get(0).properties().schemaType());
-        Assertions.assertEquals("eli", model.value().get(0).properties().tags().get("hnrztfol"));
-        Assertions.assertEquals("vjfdx", model.nextLink());
+        Assertions.assertEquals("fcjnaeoisrvhmgor", model.value().get(0).properties().tags().get("fukiscvwmzhw"));
+        Assertions.assertEquals("ld", model.nextLink());
     }
 }

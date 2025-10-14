@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
@@ -24,23 +24,23 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"zabwmvog\",\"location\":\"jsvlpg\",\"tags\":{\"iomqoqpepiaea\":\"wcehaqidoyzlt\",\"eqwbpqqncjubkhj\":\"fsergdtpeqnacy\",\"qiipsejb\":\"zfymcwmbupyvqyvl\",\"ieswhddzydisn\":\"vsi\"},\"id\":\"epywyjlnldpxottd\",\"name\":\"i\",\"type\":\"ocqibz\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"ubz\",\"location\":\"vpvdylytcovqse\",\"tags\":{\"xzfxn\":\"fjb\"},\"id\":\"mlbmuoswkjm\",\"name\":\"ihdcyyyzlw\",\"type\":\"bwzjnufzrf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RecoveryPointResource> response = manager.recoveryPointsRecommendedForMoves()
-            .list("quxweyslandkd", "djhunhghcgawnr", "nquoxsotireimse", "bfsx", "tcyilbvz",
-                new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("xcjzlquze")
-                    .withExcludedRPList(Arrays.asList("jxebj", "b")),
+            .list("iuomzczfkiceevs", "axwspcaxikhfjqeb", "lcxkxgzzromv", "g", "sem",
+                new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("esrfsvpinkzpatq")
+                    .withExcludedRPList(Arrays.asList("swxspvckojaz", "bgspf")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jsvlpg", response.iterator().next().location());
-        Assertions.assertEquals("wcehaqidoyzlt", response.iterator().next().tags().get("iomqoqpepiaea"));
-        Assertions.assertEquals("zabwmvog", response.iterator().next().etag());
+        Assertions.assertEquals("vpvdylytcovqse", response.iterator().next().location());
+        Assertions.assertEquals("fjb", response.iterator().next().tags().get("xzfxn"));
+        Assertions.assertEquals("ubz", response.iterator().next().etag());
     }
 }

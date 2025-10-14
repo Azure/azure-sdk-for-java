@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DaprSubscriptionRouteRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprSubscriptionRouteRule model = BinaryData.fromString("{\"match\":\"tuicds\",\"path\":\"dfmmpzhzzwvy\"}")
-            .toObject(DaprSubscriptionRouteRule.class);
-        Assertions.assertEquals("tuicds", model.match());
-        Assertions.assertEquals("dfmmpzhzzwvy", model.path());
+        DaprSubscriptionRouteRule model
+            = BinaryData.fromString("{\"match\":\"socnequygdjboq\",\"path\":\"mtqjkqevadrmm\"}")
+                .toObject(DaprSubscriptionRouteRule.class);
+        Assertions.assertEquals("socnequygdjboq", model.match());
+        Assertions.assertEquals("mtqjkqevadrmm", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprSubscriptionRouteRule model = new DaprSubscriptionRouteRule().withMatch("tuicds").withPath("dfmmpzhzzwvy");
+        DaprSubscriptionRouteRule model
+            = new DaprSubscriptionRouteRule().withMatch("socnequygdjboq").withPath("mtqjkqevadrmm");
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionRouteRule.class);
-        Assertions.assertEquals("tuicds", model.match());
-        Assertions.assertEquals("dfmmpzhzzwvy", model.path());
+        Assertions.assertEquals("socnequygdjboq", model.match());
+        Assertions.assertEquals("mtqjkqevadrmm", model.path());
     }
 }

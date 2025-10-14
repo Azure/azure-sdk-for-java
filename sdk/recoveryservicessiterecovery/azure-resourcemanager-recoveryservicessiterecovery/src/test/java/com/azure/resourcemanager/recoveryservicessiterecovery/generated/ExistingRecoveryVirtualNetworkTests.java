@@ -12,19 +12,18 @@ public final class ExistingRecoveryVirtualNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExistingRecoveryVirtualNetwork model = BinaryData.fromString(
-            "{\"resourceType\":\"Existing\",\"recoveryVirtualNetworkId\":\"xsyaowuzowpuoh\",\"recoverySubnetName\":\"cprgukxrztiochl\"}")
+            "{\"resourceType\":\"Existing\",\"recoveryVirtualNetworkId\":\"vr\",\"recoverySubnetName\":\"nvgyshqrdgrtwme\"}")
             .toObject(ExistingRecoveryVirtualNetwork.class);
-        Assertions.assertEquals("xsyaowuzowpuoh", model.recoveryVirtualNetworkId());
-        Assertions.assertEquals("cprgukxrztiochl", model.recoverySubnetName());
+        Assertions.assertEquals("vr", model.recoveryVirtualNetworkId());
+        Assertions.assertEquals("nvgyshqrdgrtwme", model.recoverySubnetName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExistingRecoveryVirtualNetwork model
-            = new ExistingRecoveryVirtualNetwork().withRecoveryVirtualNetworkId("xsyaowuzowpuoh")
-                .withRecoverySubnetName("cprgukxrztiochl");
+        ExistingRecoveryVirtualNetwork model = new ExistingRecoveryVirtualNetwork().withRecoveryVirtualNetworkId("vr")
+            .withRecoverySubnetName("nvgyshqrdgrtwme");
         model = BinaryData.fromObject(model).toObject(ExistingRecoveryVirtualNetwork.class);
-        Assertions.assertEquals("xsyaowuzowpuoh", model.recoveryVirtualNetworkId());
-        Assertions.assertEquals("cprgukxrztiochl", model.recoverySubnetName());
+        Assertions.assertEquals("vr", model.recoveryVirtualNetworkId());
+        Assertions.assertEquals("nvgyshqrdgrtwme", model.recoverySubnetName());
     }
 }

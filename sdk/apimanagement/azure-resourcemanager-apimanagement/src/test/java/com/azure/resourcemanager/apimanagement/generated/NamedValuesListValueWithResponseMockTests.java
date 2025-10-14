@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NamedValueSecretContract;
@@ -20,19 +20,19 @@ import reactor.core.publisher.Mono;
 public final class NamedValuesListValueWithResponseMockTests {
     @Test
     public void testListValueWithResponse() throws Exception {
-        String responseStr = "{\"value\":\"pllitx\"}";
+        String responseStr = "{\"value\":\"xyxf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NamedValueSecretContract response = manager.namedValues()
-            .listValueWithResponse("eaeyzwloqrmgdhym", "pvlxtywu", "hj", com.azure.core.util.Context.NONE)
+            .listValueWithResponse("zcbjfpxoy", "nm", "niqw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pllitx", response.value());
+        Assertions.assertEquals("xyxf", response.value());
     }
 }

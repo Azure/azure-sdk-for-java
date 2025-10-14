@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,36 +21,43 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
     /*
      * metric configuration identifier.
      */
+    @Generated
     private String id;
 
     /*
      * Telemetry type.
      */
+    @Generated
     private String telemetryType;
 
     /*
      * A collection of filters to scope metrics that UX needs.
      */
+    @Generated
     private List<FilterConjunctionGroupInfo> filterGroups;
 
     /*
      * Telemetry's metric dimension whose value is to be aggregated. Example values: Duration, Count(),...
      */
+    @Generated
     private String projection;
 
     /*
      * Aggregation type. This is the aggregation done from everything within a single server.
      */
+    @Generated
     private AggregationType aggregation;
 
     /*
      * Aggregation type. This Aggregation is done across the values for all the servers taken together.
      */
+    @Generated
     private AggregationType backEndAggregation;
 
     /**
      * Creates an instance of DerivedMetricInfo class.
      */
+    @Generated
     public DerivedMetricInfo() {
     }
 
@@ -58,6 +66,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -68,6 +77,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @param id the id value to set.
      * @return the DerivedMetricInfo object itself.
      */
+    @Generated
     public DerivedMetricInfo setId(String id) {
         this.id = id;
         return this;
@@ -78,6 +88,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * 
      * @return the telemetryType value.
      */
+    @Generated
     public String getTelemetryType() {
         return this.telemetryType;
     }
@@ -88,6 +99,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @param telemetryType the telemetryType value to set.
      * @return the DerivedMetricInfo object itself.
      */
+    @Generated
     public DerivedMetricInfo setTelemetryType(String telemetryType) {
         this.telemetryType = telemetryType;
         return this;
@@ -98,6 +110,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * 
      * @return the filterGroups value.
      */
+    @Generated
     public List<FilterConjunctionGroupInfo> getFilterGroups() {
         return this.filterGroups;
     }
@@ -108,6 +121,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @param filterGroups the filterGroups value to set.
      * @return the DerivedMetricInfo object itself.
      */
+    @Generated
     public DerivedMetricInfo setFilterGroups(List<FilterConjunctionGroupInfo> filterGroups) {
         this.filterGroups = filterGroups;
         return this;
@@ -119,6 +133,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * 
      * @return the projection value.
      */
+    @Generated
     public String getProjection() {
         return this.projection;
     }
@@ -130,6 +145,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @param projection the projection value to set.
      * @return the DerivedMetricInfo object itself.
      */
+    @Generated
     public DerivedMetricInfo setProjection(String projection) {
         this.projection = projection;
         return this;
@@ -141,6 +157,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * 
      * @return the aggregation value.
      */
+    @Generated
     public AggregationType getAggregation() {
         return this.aggregation;
     }
@@ -152,6 +169,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @param aggregation the aggregation value to set.
      * @return the DerivedMetricInfo object itself.
      */
+    @Generated
     public DerivedMetricInfo setAggregation(AggregationType aggregation) {
         this.aggregation = aggregation;
         return this;
@@ -163,6 +181,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * 
      * @return the backEndAggregation value.
      */
+    @Generated
     public AggregationType getBackEndAggregation() {
         return this.backEndAggregation;
     }
@@ -174,6 +193,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @param backEndAggregation the backEndAggregation value to set.
      * @return the DerivedMetricInfo object itself.
      */
+    @Generated
     public DerivedMetricInfo setBackEndAggregation(AggregationType backEndAggregation) {
         this.backEndAggregation = backEndAggregation;
         return this;
@@ -182,6 +202,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -204,6 +225,7 @@ public final class DerivedMetricInfo implements JsonSerializable<DerivedMetricIn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DerivedMetricInfo.
      */
+    @Generated
     public static DerivedMetricInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DerivedMetricInfo deserializedDerivedMetricInfo = new DerivedMetricInfo();

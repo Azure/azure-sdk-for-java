@@ -16,51 +16,51 @@ public final class NetworkSecurityPerimeterProfileAccessRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterProfileAccessRule model = BinaryData.fromString(
-            "{\"fullyQualifiedArmId\":\"ucsofldpuviyf\",\"name\":\"abeolhbhlvbm\",\"type\":\"qi\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"udfbsfarf\",\"iowl\",\"jxnqp\",\"wgfstmhqykizm\"],\"subscriptions\":[{\"id\":\"oafcluqvox\"},{\"id\":\"cjimryvwgcwwpbmz\"},{\"id\":\"esyds\"}],\"networkSecurityPerimeters\":[{\"id\":\"ohec\",\"perimeterGuid\":\"opwndyqleallk\",\"location\":\"tkhlowkxxpvbr\"}],\"fullyQualifiedDomainNames\":[\"mzsyzfhotl\",\"ikcyyc\"],\"emailAddresses\":[\"sjlpjrtwszhv\",\"uic\",\"hvtrrmhwrbfdpyf\"],\"phoneNumbers\":[\"hvj\",\"lrocuyzlwh\"]}}")
+            "{\"fullyQualifiedArmId\":\"jvlgfggcvkyyliz\",\"name\":\"bjpsfxsfuztlvtm\",\"type\":\"gbwidqlvh\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"fizr\",\"jfnmjmvlwyz\",\"iblkujr\",\"lfojuidjp\"],\"subscriptions\":[{\"id\":\"ucejikzoeovvtz\"},{\"id\":\"et\"},{\"id\":\"ln\"}],\"networkSecurityPerimeters\":[{\"id\":\"juzkdbqz\",\"perimeterGuid\":\"xrzvhqjwtrhtgvgz\",\"location\":\"rrkolawjmjs\"}],\"fullyQualifiedDomainNames\":[\"okcdxfzzzwyjaf\",\"tlhguynuchl\",\"mltx\",\"whmozusgzvlnsnnj\"],\"emailAddresses\":[\"afolpymwamxqzrag\",\"gdphtvdula\"],\"phoneNumbers\":[\"ejchcsrlz\",\"nmzlanru\"]}}")
             .toObject(NetworkSecurityPerimeterProfileAccessRule.class);
-        Assertions.assertEquals("ucsofldpuviyf", model.fullyQualifiedArmId());
-        Assertions.assertEquals("abeolhbhlvbm", model.name());
-        Assertions.assertEquals("qi", model.type());
-        Assertions.assertEquals(NetworkSecurityPerimeterProfileAccessRuleDirection.OUTBOUND, model.direction());
-        Assertions.assertEquals("udfbsfarf", model.addressPrefixes().get(0));
-        Assertions.assertEquals("oafcluqvox", model.subscriptions().get(0).id());
-        Assertions.assertEquals("ohec", model.networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals("opwndyqleallk", model.networkSecurityPerimeters().get(0).perimeterGuid());
-        Assertions.assertEquals("tkhlowkxxpvbr", model.networkSecurityPerimeters().get(0).location());
-        Assertions.assertEquals("mzsyzfhotl", model.fullyQualifiedDomainNames().get(0));
-        Assertions.assertEquals("sjlpjrtwszhv", model.emailAddresses().get(0));
-        Assertions.assertEquals("hvj", model.phoneNumbers().get(0));
+        Assertions.assertEquals("jvlgfggcvkyyliz", model.fullyQualifiedArmId());
+        Assertions.assertEquals("bjpsfxsfuztlvtm", model.name());
+        Assertions.assertEquals("gbwidqlvh", model.type());
+        Assertions.assertEquals(NetworkSecurityPerimeterProfileAccessRuleDirection.INBOUND, model.direction());
+        Assertions.assertEquals("fizr", model.addressPrefixes().get(0));
+        Assertions.assertEquals("ucejikzoeovvtz", model.subscriptions().get(0).id());
+        Assertions.assertEquals("juzkdbqz", model.networkSecurityPerimeters().get(0).id());
+        Assertions.assertEquals("xrzvhqjwtrhtgvgz", model.networkSecurityPerimeters().get(0).perimeterGuid());
+        Assertions.assertEquals("rrkolawjmjs", model.networkSecurityPerimeters().get(0).location());
+        Assertions.assertEquals("okcdxfzzzwyjaf", model.fullyQualifiedDomainNames().get(0));
+        Assertions.assertEquals("afolpymwamxqzrag", model.emailAddresses().get(0));
+        Assertions.assertEquals("ejchcsrlz", model.phoneNumbers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityPerimeterProfileAccessRule model
-            = new NetworkSecurityPerimeterProfileAccessRule().withFullyQualifiedArmId("ucsofldpuviyf")
-                .withName("abeolhbhlvbm")
-                .withType("qi")
-                .withDirection(NetworkSecurityPerimeterProfileAccessRuleDirection.OUTBOUND)
-                .withAddressPrefixes(Arrays.asList("udfbsfarf", "iowl", "jxnqp", "wgfstmhqykizm"))
-                .withSubscriptions(Arrays.asList(new NetworkSecurityPerimeterSubscription().withId("oafcluqvox"),
-                    new NetworkSecurityPerimeterSubscription().withId("cjimryvwgcwwpbmz"),
-                    new NetworkSecurityPerimeterSubscription().withId("esyds")))
-                .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeterInfo().withId("ohec")
-                    .withPerimeterGuid("opwndyqleallk")
-                    .withLocation("tkhlowkxxpvbr")))
-                .withFullyQualifiedDomainNames(Arrays.asList("mzsyzfhotl", "ikcyyc"))
-                .withEmailAddresses(Arrays.asList("sjlpjrtwszhv", "uic", "hvtrrmhwrbfdpyf"))
-                .withPhoneNumbers(Arrays.asList("hvj", "lrocuyzlwh"));
+        NetworkSecurityPerimeterProfileAccessRule model = new NetworkSecurityPerimeterProfileAccessRule()
+            .withFullyQualifiedArmId("jvlgfggcvkyyliz")
+            .withName("bjpsfxsfuztlvtm")
+            .withType("gbwidqlvh")
+            .withDirection(NetworkSecurityPerimeterProfileAccessRuleDirection.INBOUND)
+            .withAddressPrefixes(Arrays.asList("fizr", "jfnmjmvlwyz", "iblkujr", "lfojuidjp"))
+            .withSubscriptions(Arrays.asList(new NetworkSecurityPerimeterSubscription().withId("ucejikzoeovvtz"),
+                new NetworkSecurityPerimeterSubscription().withId("et"),
+                new NetworkSecurityPerimeterSubscription().withId("ln")))
+            .withNetworkSecurityPerimeters(Arrays.asList(new NetworkSecurityPerimeterInfo().withId("juzkdbqz")
+                .withPerimeterGuid("xrzvhqjwtrhtgvgz")
+                .withLocation("rrkolawjmjs")))
+            .withFullyQualifiedDomainNames(Arrays.asList("okcdxfzzzwyjaf", "tlhguynuchl", "mltx", "whmozusgzvlnsnnj"))
+            .withEmailAddresses(Arrays.asList("afolpymwamxqzrag", "gdphtvdula"))
+            .withPhoneNumbers(Arrays.asList("ejchcsrlz", "nmzlanru"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterProfileAccessRule.class);
-        Assertions.assertEquals("ucsofldpuviyf", model.fullyQualifiedArmId());
-        Assertions.assertEquals("abeolhbhlvbm", model.name());
-        Assertions.assertEquals("qi", model.type());
-        Assertions.assertEquals(NetworkSecurityPerimeterProfileAccessRuleDirection.OUTBOUND, model.direction());
-        Assertions.assertEquals("udfbsfarf", model.addressPrefixes().get(0));
-        Assertions.assertEquals("oafcluqvox", model.subscriptions().get(0).id());
-        Assertions.assertEquals("ohec", model.networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals("opwndyqleallk", model.networkSecurityPerimeters().get(0).perimeterGuid());
-        Assertions.assertEquals("tkhlowkxxpvbr", model.networkSecurityPerimeters().get(0).location());
-        Assertions.assertEquals("mzsyzfhotl", model.fullyQualifiedDomainNames().get(0));
-        Assertions.assertEquals("sjlpjrtwszhv", model.emailAddresses().get(0));
-        Assertions.assertEquals("hvj", model.phoneNumbers().get(0));
+        Assertions.assertEquals("jvlgfggcvkyyliz", model.fullyQualifiedArmId());
+        Assertions.assertEquals("bjpsfxsfuztlvtm", model.name());
+        Assertions.assertEquals("gbwidqlvh", model.type());
+        Assertions.assertEquals(NetworkSecurityPerimeterProfileAccessRuleDirection.INBOUND, model.direction());
+        Assertions.assertEquals("fizr", model.addressPrefixes().get(0));
+        Assertions.assertEquals("ucejikzoeovvtz", model.subscriptions().get(0).id());
+        Assertions.assertEquals("juzkdbqz", model.networkSecurityPerimeters().get(0).id());
+        Assertions.assertEquals("xrzvhqjwtrhtgvgz", model.networkSecurityPerimeters().get(0).perimeterGuid());
+        Assertions.assertEquals("rrkolawjmjs", model.networkSecurityPerimeters().get(0).location());
+        Assertions.assertEquals("okcdxfzzzwyjaf", model.fullyQualifiedDomainNames().get(0));
+        Assertions.assertEquals("afolpymwamxqzrag", model.emailAddresses().get(0));
+        Assertions.assertEquals("ejchcsrlz", model.phoneNumbers().get(0));
     }
 }

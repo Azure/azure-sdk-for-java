@@ -3,10 +3,13 @@
 
 package io.clientcore.core.serialization.json.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.serialization.json.implementation.JsonUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -16,6 +19,7 @@ import java.util.Objects;
 /**
  * Class representing the JSON number type
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class JsonNumber extends JsonElement {
     private static final ClientLogger LOGGER = new ClientLogger(JsonNumber.class);
 
@@ -32,76 +36,20 @@ public final class JsonNumber extends JsonElement {
      * ({@code .}) or an exponent ({@code e} or {@code E}), the string will be parsed as a floating point number,
      * otherwise it will be parsed as an integer.
      * <p>
-     * Parsing attempts to use the smallest container that can represent the number. For floating points it'll attempt
-     * to use {@link Float#parseFloat(String)}, if that fails it'll use {@link Double#parseDouble(String)}, and finally
-     * if that fails it'll use {@link BigDecimal#BigDecimal(String)}. For integers it'll attempt to use
-     * {@link Integer#parseInt(String)}, if that fails it'll use {@link Long#parseLong(String)}, and finally if that
-     * fails it'll use {@link BigInteger#BigInteger(String)}.
+     * For integer numbers, this method will return the smallest number type that can represent the number. Where
+     * {@link Integer} is preferred over {@link Long} and {@link Long} is preferred over {@link BigInteger}.
+     * <p>
+     * For floating point numbers, {@link Double} will be preferred but {@link BigDecimal} will be used if the number
+     * is too large to fit in a {@link Double}.
      * <p>
      * If the string is one of the special floating point representations ({@code NaN}, {@code Infinity}, etc), then
-     * the value will be represented using {@link Float}.
+     * the value will be represented using {@link Double}.
      *
      * @param value The string-based numeric value the JsonNumber will represent.
      * @throws NumberFormatException If the string is not a valid number.
      */
     JsonNumber(String value) throws IllegalArgumentException {
-        int length = value.length();
-        boolean floatingPoint = false;
-        boolean infinity = value.contains("Infinity");
-        if (infinity) {
-            // Use Double.parseDouble to handle Infinity.
-            this.value = Double.parseDouble(value);
-            return;
-        }
-
-        for (int i = 0; i < length; i++) {
-            char c = value.charAt(i);
-            if (c == '.' || c == 'e' || c == 'E') {
-                floatingPoint = true;
-                break;
-            }
-        }
-
-        this.value = floatingPoint ? handleFloatingPoint(value) : handleInteger(value);
-    }
-
-    private static Number handleFloatingPoint(String value) {
-        // Floating point parsing will return Infinity if the String value is larger than what can be contained by
-        // the numeric type. Check if the String contains the Infinity representation to know when to scale up the
-        // numeric type.
-        // Additionally, due to the handling of values that can't fit into the numeric type, the only time floating
-        // point parsing will throw is when the string value is invalid.
-        float f = Float.parseFloat(value);
-
-        // If the float wasn't infinite, return it.
-        if (!Float.isInfinite(f)) {
-            return f;
-        }
-
-        double d = Double.parseDouble(value);
-        if (!Double.isInfinite(d)) {
-            return d;
-        }
-
-        return new BigDecimal(value);
-    }
-
-    private static Number handleInteger(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException failedInteger) {
-            try {
-                return Long.parseLong(value);
-            } catch (NumberFormatException failedLong) {
-                failedLong.addSuppressed(failedInteger);
-                try {
-                    return new BigInteger(value);
-                } catch (NumberFormatException failedBigDecimal) {
-                    failedBigDecimal.addSuppressed(failedLong);
-                    throw LOGGER.logThrowableAsError(failedBigDecimal);
-                }
-            }
-        }
+        this.value = JsonUtils.parseNumber(value);
     }
 
     /**
@@ -150,9 +98,14 @@ public final class JsonNumber extends JsonElement {
      * {@link IllegalStateException} will be thrown. Otherwise, a JSON number representing the numeric value will be
      * created and returned.
      * <p>
-     * The {@link JsonNumber} returned will have a {@link JsonNumber#getValue()} that is the smallest type that can
-     * represent the numeric value. Numeric types used are {@link Integer}, {@link Long}, {@link BigInteger},
-     * {@link Float}, {@link Double}, and {@link BigDecimal}.
+     * For integer numbers, this method will return the smallest number type that can represent the number. Where
+     * {@link Integer} is preferred over {@link Long} and {@link Long} is preferred over {@link BigInteger}.
+     * <p>
+     * For floating point numbers, {@link Double} will be preferred but {@link BigDecimal} will be used if the number
+     * is too large to fit in a {@link Double}.
+     * <p>
+     * If the string is one of the special floating point representations ({@code NaN}, {@code Infinity}, etc), then
+     * the value will be represented using {@link Double}.
      *
      * @param jsonReader The JsonReader to deserialize from.
      * @return The deserialized JSON number.
@@ -166,8 +119,9 @@ public final class JsonNumber extends JsonElement {
         }
 
         if (token != JsonToken.NUMBER) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + "."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("token", token.name())
+                .log("JsonReader is pointing to an invalid token for deserialization.", IllegalStateException::new);
         }
 
         return new JsonNumber(jsonReader.getString());

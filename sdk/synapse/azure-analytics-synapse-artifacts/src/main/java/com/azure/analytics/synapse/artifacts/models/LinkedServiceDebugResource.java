@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     /*
      * Properties of linked service.
      */
+    @Generated
     private LinkedService properties;
 
     /**
      * Creates an instance of LinkedServiceDebugResource class.
      */
+    @Generated
     public LinkedServiceDebugResource() {
     }
 
@@ -31,6 +34,7 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public LinkedService getProperties() {
         return this.properties;
     }
@@ -41,6 +45,7 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
      * @param properties the properties value to set.
      * @return the LinkedServiceDebugResource object itself.
      */
+    @Generated
     public LinkedServiceDebugResource setProperties(LinkedService properties) {
         this.properties = properties;
         return this;
@@ -49,6 +54,7 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LinkedServiceDebugResource setName(String name) {
         super.setName(name);
@@ -58,6 +64,7 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedServiceDebugResource.
      */
+    @Generated
     public static LinkedServiceDebugResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedServiceDebugResource deserializedLinkedServiceDebugResource = new LinkedServiceDebugResource();

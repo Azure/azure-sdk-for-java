@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.Trigger;
@@ -25,26 +25,28 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"gpt\",\"runtimeState\":\"Started\",\"annotations\":[\"datacrtpz\"],\"\":{\"hbf\":\"datahwbzrbqpzgsr\",\"nvwaxmeyjimf\":\"dataffytw\",\"vu\":\"datamhc\",\"vtypvwfllrie\":\"datawzajdxmaimwuf\"}},\"name\":\"xbcgnphen\",\"type\":\"whk\",\"etag\":\"xohqvqpwzoqtvm\",\"id\":\"l\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"mm\",\"runtimeState\":\"Started\",\"annotations\":[\"datazfjlprljil\",\"datauavxidy\",\"datajmkfxzg\",\"datap\"],\"fbreyvrlycikwqt\":\"datama\"},\"name\":\"fryourlywxjvsqz\",\"type\":\"ysqy\",\"etag\":\"sqmikljc\",\"id\":\"ot\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TriggerResource response = manager.triggers()
-            .define("kjaqlszlymyqpw")
-            .withExistingFactory("sbygm", "nxeyfkrcmxtbwolz")
-            .withProperties(new Trigger().withDescription("uwqmi")
-                .withAnnotations(Arrays.asList("datazmhcvrfqqmbuvt", "datawrmcym"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Disabled")))
-            .withIfMatch("vlfffymrzoupip")
+            .define("sktzrdxxsbbdo")
+            .withExistingFactory("usxyugidkgsjivdt", "tkqqdqxslbrttlw")
+            .withProperties(new Trigger().withDescription("jnbcdnjexcyh")
+                .withAnnotations(Arrays.asList("dataraubx", "databmqgimwivqph"))
+                .withAdditionalProperties(mapOf("mdx", "dataiwm", "twnhpcfsqdzi", "datawfajajpojzazzaks",
+                    "qvinvryxwzxjxotp", "datavykysavevnerpyzu", "kinsry", "dataokmdaihgig", "type", "Trigger",
+                    "runtimeState", "Stopped")))
+            .withIfMatch("nyzytgkdw")
             .create();
 
-        Assertions.assertEquals("l", response.id());
-        Assertions.assertEquals("gpt", response.properties().description());
+        Assertions.assertEquals("ot", response.id());
+        Assertions.assertEquals("mm", response.properties().description());
     }
 
     // Use "Map.of" if available

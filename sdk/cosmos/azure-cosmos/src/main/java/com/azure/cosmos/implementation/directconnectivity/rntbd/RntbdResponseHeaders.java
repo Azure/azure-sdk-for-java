@@ -26,10 +26,11 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdIndexingDirective;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @SuppressWarnings("UnstableApiUsage")
 @JsonFilter("RntbdToken")
-class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
+public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     // region Fields
 
@@ -205,25 +206,28 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return this.payloadPresent.isPresent() && this.payloadPresent.getValue(Byte.class) != 0x00;
     }
 
-    List<Map.Entry<String, String>> asList(final RntbdContext context, final UUID activityId) {
+    public Map<String, String> asMap(final String serverVersion, final UUID activityId) {
 
-        final ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount() + 2);
-        builder.add(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
-        builder.add(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
+        checkNotNull(serverVersion, "Argument 'serverVersion' must not be null.");
+        checkNotNull(activityId, "Argument 'activityId' must not be null.");
+
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(
+            this.computeCount(false) + 2);
+        builder.put(new Entry(HttpHeaders.SERVER_VERSION, serverVersion));
+        builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
         this.collectEntries((token, toEntry) -> {
             if (token.isPresent()) {
-                builder.add(toEntry.apply(token));
+                builder.put(toEntry.apply(token));
             }
         });
 
         return builder.build();
     }
 
-    public Map<String, String> asMap(final RntbdContext context, final UUID activityId) {
+    public Map<String, String> asMap(final UUID activityId) {
 
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
-        builder.put(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount(false) + 1);
         builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
         this.collectEntries((token, toEntry) -> {

@@ -36,7 +36,7 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
     SecretProperties properties;
 
     /**
-     * Creates an empty instance of the Secret.
+     * Creates an empty instance of KeyVaultSecret. This constructor is used by the deserializer.
      */
     KeyVaultSecret() {
         properties = new SecretProperties();

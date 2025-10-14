@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class ProviderGetFunctionAppStacksForLocationSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetFunctionAppStacksForLocation.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetFunctionAppStacksForLocation.json
      */
     /**
      * Sample code: Get Locations Function App Stacks.

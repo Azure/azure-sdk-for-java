@@ -14,25 +14,25 @@ public final class VolumePatchPropertiesDataProtectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatchPropertiesDataProtection model = BinaryData.fromString(
-            "{\"backup\":{\"backupPolicyId\":\"knso\",\"policyEnforced\":false,\"backupVaultId\":\"xbldtlwwrlkdmtn\"},\"snapshot\":{\"snapshotPolicyId\":\"kotl\"}}")
+            "{\"backup\":{\"backupPolicyId\":\"vpuvks\",\"policyEnforced\":false,\"backupVaultId\":\"aknynfsynljphuop\"},\"snapshot\":{\"snapshotPolicyId\":\"lqiyntorzihl\"}}")
             .toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("knso", model.backup().backupPolicyId());
-        Assertions.assertEquals(false, model.backup().policyEnforced());
-        Assertions.assertEquals("xbldtlwwrlkdmtn", model.backup().backupVaultId());
-        Assertions.assertEquals("kotl", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("vpuvks", model.backup().backupPolicyId());
+        Assertions.assertFalse(model.backup().policyEnforced());
+        Assertions.assertEquals("aknynfsynljphuop", model.backup().backupVaultId());
+        Assertions.assertEquals("lqiyntorzihl", model.snapshot().snapshotPolicyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumePatchPropertiesDataProtection model = new VolumePatchPropertiesDataProtection()
-            .withBackup(new VolumeBackupProperties().withBackupPolicyId("knso")
+            .withBackup(new VolumeBackupProperties().withBackupPolicyId("vpuvks")
                 .withPolicyEnforced(false)
-                .withBackupVaultId("xbldtlwwrlkdmtn"))
-            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("kotl"));
+                .withBackupVaultId("aknynfsynljphuop"))
+            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("lqiyntorzihl"));
         model = BinaryData.fromObject(model).toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("knso", model.backup().backupPolicyId());
-        Assertions.assertEquals(false, model.backup().policyEnforced());
-        Assertions.assertEquals("xbldtlwwrlkdmtn", model.backup().backupVaultId());
-        Assertions.assertEquals("kotl", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("vpuvks", model.backup().backupPolicyId());
+        Assertions.assertFalse(model.backup().policyEnforced());
+        Assertions.assertEquals("aknynfsynljphuop", model.backup().backupVaultId());
+        Assertions.assertEquals("lqiyntorzihl", model.snapshot().snapshotPolicyId());
     }
 }

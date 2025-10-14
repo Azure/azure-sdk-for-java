@@ -6,16 +6,18 @@ Purchased phone numbers can come with many capabilities, depending on the countr
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
+
 ## Getting started
 
 ### Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
-- [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+-   An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+-   [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+-   [Apache Maven](https://maven.apache.org/download.cgi).
+-   A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
+
 #### Include the BOM file
 
 Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
@@ -34,6 +36,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
+
 and then include the direct dependency in the dependencies section without the version tag.
 
 ```xml
@@ -46,16 +49,17 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
+
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
+[//]: # "{x-version-update-start;com.azure:azure-communication-phonenumbers;current}"
 
-[//]: # ({x-version-update-start;com.azure:azure-communication-phonenumbers;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
-  <version>1.1.4</version>
+  <version>1.4.0</version>
 </dependency>
 ```
 
@@ -63,13 +67,14 @@ add the direct dependency to your project as follows.
 
 This SDK provides functionality to easily manage `direct offer` and `direct routing` numbers.
 
-The `direct offer` numbers come in two types: Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
+The `direct offer` numbers come in three types: Geographic, Toll-Free and Mobile. Geographic and Mobile phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
 They are managed using the `PhoneNumbersClient`
 
 The `direct routing` feature enables connecting your existing telephony infrastructure to ACS.
 The configuration is managed using the `SipRoutingClient`, which provides methods for setting up SIP trunks and voice routing rules, in order to properly handle calls for your telephony subnet.
 
 ### Initializing Client
+
 Clients can be initialized using the Azure Active Directory Authentication.
 
 ```java readme-sample-createPhoneNumberClientWithAAD
@@ -131,19 +136,30 @@ SipRoutingClient sipRoutingClient = new SipRoutingClientBuilder()
     .httpClient(httpClient)
     .buildClient();
 ```
+
 Alternatively, you can provide the entire connection string using the connectionString() function of the client instead of providing the endpoint and access key.
 
 ### Phone numbers client
 
 #### Phone Number Types overview
 
-Phone numbers come in two types; Geographic and Toll-Free. Geographic phone plans are phone plans associated with a location, whose phone numbers' area codes are associated with the area code of a geographic location. Toll-Free phone plans are phone plans not associated location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888.
+Phone numbers come in three types; Geographic, Toll-Free and Mobile. Toll-Free numbers are not associated with a location. For example, in the US, toll-free numbers can come with area codes such as 800 or 888. Geographic and Mobile phone numbers are phone numbers associated with a location.
+ 
+Phone number types with the same country are grouped into a phone plan group with that phone number type. For example all Toll-Free phone numbers within the same country are grouped into a phone plan group.
 
 #### Searching and Purchasing and Releasing numbers
 
 Phone numbers can be searched through the search creation API by providing an area code, quantity of phone numbers, application type, phone number type, and capabilities. The provided quantity of phone numbers will be reserved for ten minutes and can be purchased within this time. If the search is not purchased, the phone numbers will become available to others after ten minutes. If the search is purchased, then the phone numbers are purchased for the Azure resources.
 
 Phone numbers can also be released using the release API.
+
+#### Browsing and reserving phone numbers
+
+The Browse and Reservations APIs provide an alternate way to acquire phone numbers via a shopping-cart-like experience. This is achieved by splitting the search operation, which finds and reserves numbers using a single LRO, into two separate synchronous steps, Browse and Reservation.
+
+The browse operation retrieves a random sample of phone numbers that are available for purchase for a given country, with optional filtering criteria to narrow down results. The returned phone numbers are not reserved for any customer.
+
+Reservations represent a collection of phone numbers that are locked by a specific customer and are awaiting purchase. They have an expiration time of 15 minutes after the last modification or 2 hours from creation time. A reservation can include numbers from different countries, in contrast with the Search operation. Customers can create, retrieve, modify (by adding and removing numbers), delete, and purchase reservations. Purchasing a reservation is an LRO.
 
 ### SIP routing client
 
@@ -157,6 +173,7 @@ Once a route is matched, the call is routed to the first trunk in the route's tr
 ### PhoneNumbersClient
 
 #### Get Purchased Phone Number
+
 Gets the specified purchased phone number.
 
 ```java readme-sample-getPurchasedPhoneNumber
@@ -166,6 +183,7 @@ System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode())
 ```
 
 #### Get All Purchased Phone Numbers
+
 Lists all the purchased phone numbers.
 
 ```java readme-sample-listPhoneNumbers
@@ -175,11 +193,36 @@ System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
 System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
 ```
 
+### Browse and reserve available phone numbers
+
+Use the Browse and Reservations API to reserve a phone number
+
+```java readme-sample-browseAndReservePhoneNumbers
+PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
+String reservationId = UUID.randomUUID().toString();
+
+BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions("US", PhoneNumberType.TOLL_FREE)
+        .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+        .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+PhoneNumbersBrowseResult result = phoneNumberClient.browseAvailableNumbers(browseRequest);
+
+List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+
+numbersToAdd.add(result.getPhoneNumbers().get(0));
+
+PhoneNumbersReservation reservationResponse = phoneNumberClient.createOrUpdateReservation(
+        new CreateOrUpdateReservationOptions(reservationId).setPhoneNumbersToAdd(numbersToAdd));
+System.out.println("Reservation ID: " + reservationResponse.getId());
+```
+
 ### Long Running Operations
 
 The Phone Number Client supports a variety of long-running operations that allow indefinite polling time to the functions listed down below.
 
 #### Search for Available Phone Numbers
+
 Search for available phone numbers by providing the area code, assignment type, phone number capabilities, phone number type, and quantity. The result of the search can then be used to purchase the numbers. Note that for the toll-free phone number type, providing the area code is optional.
 
 ```java readme-sample-searchAvailablePhoneNumbers
@@ -204,6 +247,7 @@ if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
 ```
 
 #### Purchase Phone Numbers
+
 The result of searching for phone numbers is a `PhoneNumberSearchResult`. This can be used to get the numbers' details and purchase numbers by passing in the `searchId` to the purchase number API.
 
 ```java readme-sample-purchasePhoneNumbers
@@ -212,7 +256,18 @@ PollResponse<PhoneNumberOperation> purchaseResponse =
 System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
 ```
 
+#### Purchase Phone Number Reservation
+
+Begin the purchas of a reservation
+
+```java readme-sample-purchaseReservation
+PollResponse<PhoneNumberOperation> purchaseResponse =
+    phoneNumberClient.beginReservationPurchase(reservationId, Context.NONE).waitForCompletion();
+System.out.println("Purchase reservation is complete: " + purchaseResponse.getStatus());
+```
+
 #### Release Phone Number
+
 Releases a purchased phone number.
 
 ```java readme-sample-releasePhoneNumber
@@ -222,11 +277,13 @@ System.out.println("Release phone number is complete: " + releaseResponse.getSta
 ```
 
 #### Updating Phone Number Capabilities
+
 Updates Phone Number Capabilities for Calling and SMS to one of:
-- `PhoneNumberCapabilityValue.NONE`
-- `PhoneNumberCapabilityValue.INBOUND`
-- `PhoneNumberCapabilityValue.OUTBOUND`
-- `PhoneNumberCapabilityValue.INBOUND_OUTBOUND`
+
+-   `PhoneNumberCapabilityValue.NONE`
+-   `PhoneNumberCapabilityValue.INBOUND`
+-   `PhoneNumberCapabilityValue.OUTBOUND`
+-   `PhoneNumberCapabilityValue.INBOUND_OUTBOUND`
 
 ```java readme-sample-updatePhoneNumberCapabilities
 PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
@@ -311,7 +368,6 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
-
 ## Troubleshooting
 
 In progress.
@@ -321,15 +377,12 @@ In progress.
 Check out other client libraries for Azure communication service
 
 <!-- LINKS -->
+
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-communication-phonenumbers
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-phonenumbers/src
-
-
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-phonenumbers%2FREADME.png)

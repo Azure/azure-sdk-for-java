@@ -28,6 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -70,7 +71,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryManage")
+    @ServiceInterface(name = "DeviceRegistryManagementClientAssetEndpointProfiles")
     public interface AssetEndpointProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
@@ -82,10 +83,30 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AssetEndpointProfileInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrReplace(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AssetEndpointProfileInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrReplaceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
@@ -102,15 +123,33 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") AssetEndpointProfileUpdate properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AssetEndpointProfileUpdate properties, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("assetEndpointProfileName") String assetEndpointProfileName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("assetEndpointProfileName") String assetEndpointProfileName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("assetEndpointProfileName") String assetEndpointProfileName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles")
@@ -122,10 +161,27 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AssetEndpointProfileListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetEndpointProfileListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AssetEndpointProfileListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -141,7 +197,23 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AssetEndpointProfileListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetEndpointProfileListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AssetEndpointProfileListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -159,63 +231,11 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetEndpointProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String assetEndpointProfileName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AssetEndpointProfile along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetEndpointProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String assetEndpointProfileName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, context);
     }
 
     /**
@@ -249,7 +269,9 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssetEndpointProfileInner> getByResourceGroupWithResponse(String resourceGroupName,
         String assetEndpointProfileName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, assetEndpointProfileName, context).block();
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, context);
     }
 
     /**
@@ -281,27 +303,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String assetEndpointProfileName, AssetEndpointProfileInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -317,40 +318,39 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asset Endpoint Profile definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String assetEndpointProfileName,
+        AssetEndpointProfileInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * Create a AssetEndpointProfile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return asset Endpoint Profile definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
+    private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String assetEndpointProfileName,
+        AssetEndpointProfileInner resource, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrReplace(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept, resource,
             context);
     }
@@ -382,29 +382,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of asset Endpoint Profile definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginCreateOrReplaceAsync(
-        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner resource,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrReplaceWithResponseAsync(resourceGroupName, assetEndpointProfileName, resource, context);
-        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(mono,
-            this.client.getHttpPipeline(), AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, context);
-    }
-
-    /**
-     * Create a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,7 +390,10 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginCreateOrReplace(
         String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner resource) {
-        return this.beginCreateOrReplaceAsync(resourceGroupName, assetEndpointProfileName, resource).getSyncPoller();
+        Response<BinaryData> response
+            = createOrReplaceWithResponse(resourceGroupName, assetEndpointProfileName, resource);
+        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(response,
+            AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, Context.NONE);
     }
 
     /**
@@ -432,8 +412,10 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginCreateOrReplace(
         String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileInner resource,
         Context context) {
-        return this.beginCreateOrReplaceAsync(resourceGroupName, assetEndpointProfileName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrReplaceWithResponse(resourceGroupName, assetEndpointProfileName, resource, context);
+        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(response,
+            AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, context);
     }
 
     /**
@@ -460,25 +442,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetEndpointProfileInner> createOrReplaceAsync(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileInner resource, Context context) {
-        return beginCreateOrReplaceAsync(resourceGroupName, assetEndpointProfileName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,7 +450,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner createOrReplace(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileInner resource) {
-        return createOrReplaceAsync(resourceGroupName, assetEndpointProfileName, resource).block();
+        return beginCreateOrReplace(resourceGroupName, assetEndpointProfileName, resource).getFinalResult();
     }
 
     /**
@@ -505,7 +468,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner createOrReplace(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileInner resource, Context context) {
-        return createOrReplaceAsync(resourceGroupName, assetEndpointProfileName, resource, context).block();
+        return beginCreateOrReplace(resourceGroupName, assetEndpointProfileName, resource, context).getFinalResult();
     }
 
     /**
@@ -522,27 +485,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String assetEndpointProfileName, AssetEndpointProfileUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -558,41 +500,41 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asset Endpoint Profile definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String assetEndpointProfileName,
+        AssetEndpointProfileUpdate properties) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept,
+            properties, Context.NONE);
+    }
+
+    /**
+     * Update a AssetEndpointProfile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return asset Endpoint Profile definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String assetEndpointProfileName, AssetEndpointProfileUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String assetEndpointProfileName,
+        AssetEndpointProfileUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, assetEndpointProfileName, contentType, accept, properties, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, contentType, accept,
+            properties, context);
     }
 
     /**
@@ -622,29 +564,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of asset Endpoint Profile definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdateAsync(
-        String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, assetEndpointProfileName, properties, context);
-        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(mono,
-            this.client.getHttpPipeline(), AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, context);
-    }
-
-    /**
-     * Update a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -653,7 +572,9 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner>
         beginUpdate(String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties) {
-        return this.beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, assetEndpointProfileName, properties);
+        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(response,
+            AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, Context.NONE);
     }
 
     /**
@@ -672,7 +593,10 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     public SyncPoller<PollResult<AssetEndpointProfileInner>, AssetEndpointProfileInner> beginUpdate(
         String resourceGroupName, String assetEndpointProfileName, AssetEndpointProfileUpdate properties,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, assetEndpointProfileName, properties, context);
+        return this.client.<AssetEndpointProfileInner, AssetEndpointProfileInner>getLroResult(response,
+            AssetEndpointProfileInner.class, AssetEndpointProfileInner.class, context);
     }
 
     /**
@@ -699,25 +623,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset Endpoint Profile definition on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetEndpointProfileInner> updateAsync(String resourceGroupName, String assetEndpointProfileName,
-        AssetEndpointProfileUpdate properties, Context context) {
-        return beginUpdateAsync(resourceGroupName, assetEndpointProfileName, properties, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -726,7 +631,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileUpdate properties) {
-        return updateAsync(resourceGroupName, assetEndpointProfileName, properties).block();
+        return beginUpdate(resourceGroupName, assetEndpointProfileName, properties).getFinalResult();
     }
 
     /**
@@ -744,7 +649,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetEndpointProfileInner update(String resourceGroupName, String assetEndpointProfileName,
         AssetEndpointProfileUpdate properties, Context context) {
-        return updateAsync(resourceGroupName, assetEndpointProfileName, properties, context).block();
+        return beginUpdate(resourceGroupName, assetEndpointProfileName, properties, context).getFinalResult();
     }
 
     /**
@@ -760,27 +665,26 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String assetEndpointProfileName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a AssetEndpointProfile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String assetEndpointProfileName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, Context.NONE);
     }
 
     /**
@@ -792,31 +696,13 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String assetEndpointProfileName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (assetEndpointProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter assetEndpointProfileName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, assetEndpointProfileName, accept, context);
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String assetEndpointProfileName,
+        Context context) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, assetEndpointProfileName, context);
     }
 
     /**
@@ -842,27 +728,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String assetEndpointProfileName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, assetEndpointProfileName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -870,7 +735,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String assetEndpointProfileName) {
-        return this.beginDeleteAsync(resourceGroupName, assetEndpointProfileName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, assetEndpointProfileName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -887,7 +753,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String assetEndpointProfileName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, assetEndpointProfileName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, assetEndpointProfileName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -911,30 +778,13 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String assetEndpointProfileName, Context context) {
-        return beginDeleteAsync(resourceGroupName, assetEndpointProfileName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a AssetEndpointProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param assetEndpointProfileName Asset Endpoint Profile name parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String assetEndpointProfileName) {
-        deleteAsync(resourceGroupName, assetEndpointProfileName).block();
+        beginDelete(resourceGroupName, assetEndpointProfileName).getFinalResult();
     }
 
     /**
@@ -949,7 +799,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String assetEndpointProfileName, Context context) {
-        deleteAsync(resourceGroupName, assetEndpointProfileName, context).block();
+        beginDelete(resourceGroupName, assetEndpointProfileName, context).getFinalResult();
     }
 
     /**
@@ -965,18 +815,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetEndpointProfileInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -984,41 +822,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             .<PagedResponse<AssetEndpointProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List AssetEndpointProfile resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetEndpointProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1040,16 +843,38 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * List AssetEndpointProfile resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AssetEndpointProfileInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        final String accept = "application/json";
+        Response<AssetEndpointProfileListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List AssetEndpointProfile resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssetEndpointProfileInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AssetEndpointProfileInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        final String accept = "application/json";
+        Response<AssetEndpointProfileListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1063,7 +888,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1078,7 +904,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1091,14 +918,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetEndpointProfileInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1106,35 +925,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
             .<PagedResponse<AssetEndpointProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List AssetEndpointProfile resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetEndpointProfileInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1153,16 +943,35 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
     /**
      * List AssetEndpointProfile resources by subscription ID.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AssetEndpointProfileInner> listSinglePage() {
+        final String accept = "application/json";
+        Response<AssetEndpointProfileListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List AssetEndpointProfile resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssetEndpointProfileInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AssetEndpointProfileInner> listSinglePage(Context context) {
+        final String accept = "application/json";
+        Response<AssetEndpointProfileListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1174,7 +983,7 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1188,7 +997,8 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetEndpointProfileInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1203,13 +1013,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetEndpointProfileInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1223,28 +1026,38 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AssetEndpointProfileInner> listByResourceGroupNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<AssetEndpointProfileListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetEndpointProfileInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+    private PagedResponse<AssetEndpointProfileInner> listByResourceGroupNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AssetEndpointProfileListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1259,13 +1072,6 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssetEndpointProfileInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1279,27 +1085,37 @@ public final class AssetEndpointProfilesClientImpl implements AssetEndpointProfi
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AssetEndpointProfileInner> listBySubscriptionNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<AssetEndpointProfileListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a AssetEndpointProfile list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetEndpointProfileInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+    private PagedResponse<AssetEndpointProfileInner> listBySubscriptionNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AssetEndpointProfileListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

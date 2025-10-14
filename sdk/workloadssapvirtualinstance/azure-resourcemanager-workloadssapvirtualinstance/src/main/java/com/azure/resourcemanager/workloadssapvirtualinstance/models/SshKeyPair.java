@@ -12,9 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The SSH Key-pair used to authenticate with the VM. The key needs to be at least 2048-bit and in ssh-rsa format.
- * &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in
- * Azure](https://docs.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
+ * The SSH Key-pair used to authenticate with the VM. The key needs to be at least 2048-bit and in ssh-rsa format. For
+ * creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in
+ * Azure](https://learn.microsoft.com/azure/virtual-machines/linux/create-ssh-keys-detailed).
  */
 @Fluent
 public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
@@ -72,14 +72,6 @@ public final class SshKeyPair implements JsonSerializable<SshKeyPair> {
     public SshKeyPair withPrivateKey(String privateKey) {
         this.privateKey = privateKey;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

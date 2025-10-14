@@ -12,14 +12,15 @@ import java.util.Arrays;
 public final class DaprSecretsCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprSecretsCollectionInner model
-            = BinaryData.fromString("{\"value\":[{\"name\":\"vxwc\",\"value\":\"lpcirelsf\"}]}")
-                .toObject(DaprSecretsCollectionInner.class);
+        DaprSecretsCollectionInner model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"yrnxxmueedn\",\"value\":\"dvstkw\"},{\"name\":\"tchealmf\",\"value\":\"d\"},{\"name\":\"ygdvwv\",\"value\":\"iohgwxrtfud\"}]}")
+            .toObject(DaprSecretsCollectionInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprSecretsCollectionInner model = new DaprSecretsCollectionInner().withValue(Arrays.asList(new DaprSecret()));
+        DaprSecretsCollectionInner model = new DaprSecretsCollectionInner()
+            .withValue(Arrays.asList(new DaprSecret(), new DaprSecret(), new DaprSecret()));
         model = BinaryData.fromObject(model).toObject(DaprSecretsCollectionInner.class);
     }
 }

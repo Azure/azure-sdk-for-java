@@ -14,24 +14,25 @@ public final class SupportedOSDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedOSDetails model = BinaryData.fromString(
-            "{\"osName\":\"izfavkjzwf\",\"osType\":\"yay\",\"osVersions\":[{\"version\":\"zs\",\"servicePack\":\"wxrzxmdewsrsxkrp\"},{\"version\":\"jazejwwviyoyp\",\"servicePack\":\"hbrnnhjx\"}]}")
+            "{\"osName\":\"cgm\",\"osType\":\"tpfinzcpdltkr\",\"osVersions\":[{\"version\":\"tbdrvcqgue\",\"servicePack\":\"hompheqdurelyu\"},{\"version\":\"fyoum\",\"servicePack\":\"kyeclcdigpta\"}]}")
             .toObject(SupportedOSDetails.class);
-        Assertions.assertEquals("izfavkjzwf", model.osName());
-        Assertions.assertEquals("yay", model.osType());
-        Assertions.assertEquals("zs", model.osVersions().get(0).version());
-        Assertions.assertEquals("wxrzxmdewsrsxkrp", model.osVersions().get(0).servicePack());
+        Assertions.assertEquals("cgm", model.osName());
+        Assertions.assertEquals("tpfinzcpdltkr", model.osType());
+        Assertions.assertEquals("tbdrvcqgue", model.osVersions().get(0).version());
+        Assertions.assertEquals("hompheqdurelyu", model.osVersions().get(0).servicePack());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedOSDetails model = new SupportedOSDetails().withOsName("izfavkjzwf")
-            .withOsType("yay")
-            .withOsVersions(Arrays.asList(new OSVersionWrapper().withVersion("zs").withServicePack("wxrzxmdewsrsxkrp"),
-                new OSVersionWrapper().withVersion("jazejwwviyoyp").withServicePack("hbrnnhjx")));
+        SupportedOSDetails model = new SupportedOSDetails().withOsName("cgm")
+            .withOsType("tpfinzcpdltkr")
+            .withOsVersions(
+                Arrays.asList(new OSVersionWrapper().withVersion("tbdrvcqgue").withServicePack("hompheqdurelyu"),
+                    new OSVersionWrapper().withVersion("fyoum").withServicePack("kyeclcdigpta")));
         model = BinaryData.fromObject(model).toObject(SupportedOSDetails.class);
-        Assertions.assertEquals("izfavkjzwf", model.osName());
-        Assertions.assertEquals("yay", model.osType());
-        Assertions.assertEquals("zs", model.osVersions().get(0).version());
-        Assertions.assertEquals("wxrzxmdewsrsxkrp", model.osVersions().get(0).servicePack());
+        Assertions.assertEquals("cgm", model.osName());
+        Assertions.assertEquals("tpfinzcpdltkr", model.osType());
+        Assertions.assertEquals("tbdrvcqgue", model.osVersions().get(0).version());
+        Assertions.assertEquals("hompheqdurelyu", model.osVersions().get(0).servicePack());
     }
 }

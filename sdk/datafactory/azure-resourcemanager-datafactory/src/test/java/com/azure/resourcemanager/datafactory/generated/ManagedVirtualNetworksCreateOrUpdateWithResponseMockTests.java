@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ManagedVirtualNetwork;
@@ -24,24 +24,24 @@ public final class ManagedVirtualNetworksCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"q\",\"alias\":\"psxycvoexbx\",\"\":{\"acgmnelozzfwyegd\":\"datavxwlfmbb\",\"esdfujfpn\":\"datatfktmdlfkjjucptr\",\"msybvjfnuyoy\":\"datafzabl\"}},\"name\":\"a\",\"type\":\"nnlasf\",\"etag\":\"jyvu\",\"id\":\"exlpmbtmc\"}";
+            = "{\"properties\":{\"vNetId\":\"pbln\",\"alias\":\"ugecijrncv\",\"bcjvvdafbt\":\"datauwurcxtyfbbomug\"},\"name\":\"xvkoiebplyyxml\",\"type\":\"seaogqiybfskxu\",\"etag\":\"sddrye\",\"id\":\"lqqcwpgipttpse\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedVirtualNetworkResource response = manager.managedVirtualNetworks()
-            .define("r")
-            .withExistingFactory("fb", "sdoaypi")
-            .withProperties(new ManagedVirtualNetwork()
-                .withAdditionalProperties(mapOf("vNetId", "hlbzxyejoxdbrjul", "alias", "qgunptbpicc")))
-            .withIfMatch("ekb")
+            .define("ipwkxf")
+            .withExistingFactory("gxohiwkkht", "eukclay")
+            .withProperties(new ManagedVirtualNetwork().withAdditionalProperties(mapOf("ucuai", "datatqnmmlosokv",
+                "vNetId", "harsvai", "cjafh", "datayd", "alias", "medioakprlajt", "k", "datavqtyd")))
+            .withIfMatch("mxlnt")
             .create();
 
-        Assertions.assertEquals("exlpmbtmc", response.id());
+        Assertions.assertEquals("lqqcwpgipttpse", response.id());
     }
 
     // Use "Map.of" if available

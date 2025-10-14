@@ -5,6 +5,7 @@ package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
+import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 
 import java.time.Duration;
 import java.util.List;
@@ -24,6 +25,10 @@ public final class MetricsQueryResult {
     private final List<MetricResult> metrics;
 
     private String resourceId;
+
+    static {
+        MetricsHelper.setMetricsQueryResultAccessor(MetricsQueryResult::setResourceId);
+    }
 
     /**
      * Creates an instance of the response to a metrics query.
@@ -98,6 +103,10 @@ public final class MetricsQueryResult {
      */
     public String getResourceId() {
         return resourceId;
+    }
+
+    private void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
     }
 
     /**

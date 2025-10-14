@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,14 +13,15 @@ import java.util.Map;
  */
 public final class SchemaRegistriesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2024-09-01-preview/Create_SchemaRegistry.json
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_SchemaRegistry.json
      */
     /**
-     * Sample code: Create_SchemaRegistry.
+     * Sample code: CreateOrReplace_SchemaRegistry.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void createSchemaRegistry(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void
+        createOrReplaceSchemaRegistry(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.schemaRegistries()
             .define("my-schema-registry")
             .withRegion("West Europe")
@@ -32,7 +31,6 @@ public final class SchemaRegistriesCreateOrReplaceSamples {
                 .withDisplayName("Schema Registry namespace 001")
                 .withDescription("This is a sample Schema Registry")
                 .withStorageAccountContainerUrl("my-blob-storage.blob.core.windows.net/my-container"))
-            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
             .create();
     }
 

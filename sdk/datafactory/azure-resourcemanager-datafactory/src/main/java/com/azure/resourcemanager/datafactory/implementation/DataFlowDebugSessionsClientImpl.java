@@ -26,8 +26,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowDebugSessionsClient;
@@ -88,10 +90,30 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/createDataFlowDebugSession")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CreateDataFlowDebugSessionRequest request,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryDataFlowDebugSessions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryDataFlowDebugSessionsResponse>> queryByFactory(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryDataFlowDebugSessions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<QueryDataFlowDebugSessionsResponse> queryByFactorySync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -107,10 +129,31 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/addDataFlowToDebugSession")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AddDataFlowToDebugSessionResponseInner> addDataFlowSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DataFlowDebugPackage request,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/deleteDataFlowDebugSession")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DeleteDataFlowDebugSessionRequest request,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/deleteDataFlowDebugSession")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion,
@@ -129,10 +172,29 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/executeDataFlowDebugCommand")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> executeCommandSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataFlowDebugCommandRequest request, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<QueryDataFlowDebugSessionsResponse>> queryByFactoryNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<QueryDataFlowDebugSessionsResponse> queryByFactoryNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -185,39 +247,84 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return response body structure for creating data flow debug session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String factoryName,
-        CreateDataFlowDebugSessionRequest request, Context context) {
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String factoryName,
+        CreateDataFlowDebugSessionRequest request) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter request is required and cannot be null."));
         } else {
             request.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), request, accept, Context.NONE);
+    }
+
+    /**
+     * Creates a data flow debug session.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param request Data flow debug session definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createWithResponse(String resourceGroupName, String factoryName,
+        CreateDataFlowDebugSessionRequest request, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (request == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        return service.createSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             factoryName, this.client.getApiVersion(), request, accept, context);
     }
 
@@ -248,31 +355,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response body structure for creating data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
-        beginCreateAsync(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, factoryName, request, context);
-        return this.client
-            .<CreateDataFlowDebugSessionResponseInner, CreateDataFlowDebugSessionResponseInner>getLroResult(mono,
-                this.client.getHttpPipeline(), CreateDataFlowDebugSessionResponseInner.class,
-                CreateDataFlowDebugSessionResponseInner.class, context);
-    }
-
-    /**
-     * Creates a data flow debug session.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -281,7 +363,11 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
-        return this.beginCreateAsync(resourceGroupName, factoryName, request).getSyncPoller();
+        Response<BinaryData> response = createWithResponse(resourceGroupName, factoryName, request);
+        return this.client
+            .<CreateDataFlowDebugSessionResponseInner, CreateDataFlowDebugSessionResponseInner>getLroResult(response,
+                CreateDataFlowDebugSessionResponseInner.class, CreateDataFlowDebugSessionResponseInner.class,
+                Context.NONE);
     }
 
     /**
@@ -300,7 +386,10 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request,
             Context context) {
-        return this.beginCreateAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
+        Response<BinaryData> response = createWithResponse(resourceGroupName, factoryName, request, context);
+        return this.client
+            .<CreateDataFlowDebugSessionResponseInner, CreateDataFlowDebugSessionResponseInner>getLroResult(response,
+                CreateDataFlowDebugSessionResponseInner.class, CreateDataFlowDebugSessionResponseInner.class, context);
     }
 
     /**
@@ -327,25 +416,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CreateDataFlowDebugSessionResponseInner> createAsync(String resourceGroupName, String factoryName,
-        CreateDataFlowDebugSessionRequest request, Context context) {
-        return beginCreateAsync(resourceGroupName, factoryName, request, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a data flow debug session.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -354,7 +424,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFlowDebugSessionResponseInner create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request) {
-        return createAsync(resourceGroupName, factoryName, request).block();
+        return beginCreate(resourceGroupName, factoryName, request).getFinalResult();
     }
 
     /**
@@ -372,7 +442,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFlowDebugSessionResponseInner create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request, Context context) {
-        return createAsync(resourceGroupName, factoryName, request, context).block();
+        return beginCreate(resourceGroupName, factoryName, request, context).getFinalResult();
     }
 
     /**
@@ -418,45 +488,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataFlowDebugSessionInfoInner>> queryByFactorySinglePageAsync(String resourceGroupName,
-        String factoryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .queryByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Query all active data flow debug sessions.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,17 +504,78 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataFlowDebugSessionInfoInner> queryByFactorySinglePage(String resourceGroupName,
+        String factoryName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<QueryDataFlowDebugSessionsResponse> res
+            = service.queryByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Query all active data flow debug sessions.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions as paginated response with {@link PagedFlux}.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataFlowDebugSessionInfoInner> queryByFactoryAsync(String resourceGroupName, String factoryName,
-        Context context) {
-        return new PagedFlux<>(() -> queryByFactorySinglePageAsync(resourceGroupName, factoryName, context),
-            nextLink -> queryByFactoryNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataFlowDebugSessionInfoInner> queryByFactorySinglePage(String resourceGroupName,
+        String factoryName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<QueryDataFlowDebugSessionsResponse> res
+            = service.queryByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -498,7 +590,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(queryByFactoryAsync(resourceGroupName, factoryName));
+        return new PagedIterable<>(() -> queryByFactorySinglePage(resourceGroupName, factoryName),
+            nextLink -> queryByFactoryNextSinglePage(nextLink));
     }
 
     /**
@@ -515,7 +608,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(String resourceGroupName, String factoryName,
         Context context) {
-        return new PagedIterable<>(queryByFactoryAsync(resourceGroupName, factoryName, context));
+        return new PagedIterable<>(() -> queryByFactorySinglePage(resourceGroupName, factoryName, context),
+            nextLink -> queryByFactoryNextSinglePage(nextLink, context));
     }
 
     /**
@@ -566,48 +660,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition with debug content.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AddDataFlowToDebugSessionResponseInner>> addDataFlowWithResponseAsync(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.addDataFlow(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, this.client.getApiVersion(), request, accept, context);
-    }
-
-    /**
-     * Add a data flow into debug session.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -635,7 +687,33 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddDataFlowToDebugSessionResponseInner> addDataFlowWithResponse(String resourceGroupName,
         String factoryName, DataFlowDebugPackage request, Context context) {
-        return addDataFlowWithResponseAsync(resourceGroupName, factoryName, request, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (request == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        return service.addDataFlowSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -702,47 +780,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition for deletion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
-        DeleteDataFlowDebugSessionRequest request, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, this.client.getApiVersion(), request, accept, context);
-    }
-
-    /**
-     * Deletes a data flow debug session.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -769,7 +806,33 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         DeleteDataFlowDebugSessionRequest request, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, request, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (request == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -835,39 +898,86 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> executeCommandWithResponse(String resourceGroupName, String factoryName,
+        DataFlowDebugCommandRequest request) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (request == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String accept = "application/json";
+        return service.executeCommandSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), request, accept, Context.NONE);
+    }
+
+    /**
+     * Execute a data flow debug command.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param request Data flow debug command definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> executeCommandWithResponseAsync(String resourceGroupName,
-        String factoryName, DataFlowDebugCommandRequest request, Context context) {
+    private Response<BinaryData> executeCommandWithResponse(String resourceGroupName, String factoryName,
+        DataFlowDebugCommandRequest request, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter request is required and cannot be null."));
         } else {
             request.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.executeCommand(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.executeCommandSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             factoryName, this.client.getApiVersion(), request, accept, context);
     }
 
@@ -899,31 +1009,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response body structure of data flow result for data preview,
-     * statistics or expression preview.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
-        beginExecuteCommandAsync(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = executeCommandWithResponseAsync(resourceGroupName, factoryName, request, context);
-        return this.client.<DataFlowDebugCommandResponseInner, DataFlowDebugCommandResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), DataFlowDebugCommandResponseInner.class,
-            DataFlowDebugCommandResponseInner.class, context);
-    }
-
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -933,7 +1018,9 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
-        return this.beginExecuteCommandAsync(resourceGroupName, factoryName, request).getSyncPoller();
+        Response<BinaryData> response = executeCommandWithResponse(resourceGroupName, factoryName, request);
+        return this.client.<DataFlowDebugCommandResponseInner, DataFlowDebugCommandResponseInner>getLroResult(response,
+            DataFlowDebugCommandResponseInner.class, DataFlowDebugCommandResponseInner.class, Context.NONE);
     }
 
     /**
@@ -953,7 +1040,9 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request,
             Context context) {
-        return this.beginExecuteCommandAsync(resourceGroupName, factoryName, request, context).getSyncPoller();
+        Response<BinaryData> response = executeCommandWithResponse(resourceGroupName, factoryName, request, context);
+        return this.client.<DataFlowDebugCommandResponseInner, DataFlowDebugCommandResponseInner>getLroResult(response,
+            DataFlowDebugCommandResponseInner.class, DataFlowDebugCommandResponseInner.class, context);
     }
 
     /**
@@ -981,26 +1070,6 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataFlowDebugCommandResponseInner> executeCommandAsync(String resourceGroupName, String factoryName,
-        DataFlowDebugCommandRequest request, Context context) {
-        return beginExecuteCommandAsync(resourceGroupName, factoryName, request, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1009,7 +1078,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponseInner executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request) {
-        return executeCommandAsync(resourceGroupName, factoryName, request).block();
+        return beginExecuteCommand(resourceGroupName, factoryName, request).getFinalResult();
     }
 
     /**
@@ -1027,7 +1096,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponseInner executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request, Context context) {
-        return executeCommandAsync(resourceGroupName, factoryName, request, context).block();
+        return beginExecuteCommand(resourceGroupName, factoryName, request, context).getFinalResult();
     }
 
     /**
@@ -1061,27 +1130,57 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataFlowDebugSessionInfoInner> queryByFactoryNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<QueryDataFlowDebugSessionsResponse> res
+            = service.queryByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of active debug sessions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataFlowDebugSessionInfoInner>> queryByFactoryNextSinglePageAsync(String nextLink,
+    private PagedResponse<DataFlowDebugSessionInfoInner> queryByFactoryNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<QueryDataFlowDebugSessionsResponse> res
+            = service.queryByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowDebugSessionsClientImpl.class);
 }

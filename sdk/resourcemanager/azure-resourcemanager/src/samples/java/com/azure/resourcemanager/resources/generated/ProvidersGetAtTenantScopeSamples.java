@@ -10,7 +10,7 @@ package com.azure.resourcemanager.resources.generated;
 public final class ProvidersGetAtTenantScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetNamedProviderAtTenant.
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/GetNamedProviderAtTenant.
      * json
      */
     /**

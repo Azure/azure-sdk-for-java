@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,19 @@ public final class WebhookHookInfo extends HookInfo {
     /*
      * hook type
      */
+    @Generated
     private HookType hookType = HookType.WEBHOOK;
 
     /*
      * The hookParameter property.
      */
+    @Generated
     private WebhookHookParameter hookParameter;
-
-    /*
-     * Hook unique id
-     */
-    private UUID hookId;
 
     /**
      * Creates an instance of WebhookHookInfo class.
      */
+    @Generated
     public WebhookHookInfo() {
     }
 
@@ -43,6 +42,7 @@ public final class WebhookHookInfo extends HookInfo {
      * 
      * @return the hookType value.
      */
+    @Generated
     @Override
     public HookType getHookType() {
         return this.hookType;
@@ -53,6 +53,7 @@ public final class WebhookHookInfo extends HookInfo {
      * 
      * @return the hookParameter value.
      */
+    @Generated
     public WebhookHookParameter getHookParameter() {
         return this.hookParameter;
     }
@@ -63,24 +64,16 @@ public final class WebhookHookInfo extends HookInfo {
      * @param hookParameter the hookParameter value to set.
      * @return the WebhookHookInfo object itself.
      */
+    @Generated
     public WebhookHookInfo setHookParameter(WebhookHookParameter hookParameter) {
         this.hookParameter = hookParameter;
         return this;
     }
 
     /**
-     * Get the hookId property: Hook unique id.
-     * 
-     * @return the hookId value.
-     */
-    @Override
-    public UUID getHookId() {
-        return this.hookId;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setHookName(String hookName) {
         super.setHookName(hookName);
@@ -90,6 +83,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setDescription(String description) {
         super.setDescription(description);
@@ -99,6 +93,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setExternalLink(String externalLink) {
         super.setExternalLink(externalLink);
@@ -108,6 +103,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfo setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -117,6 +113,7 @@ public final class WebhookHookInfo extends HookInfo {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +135,7 @@ public final class WebhookHookInfo extends HookInfo {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebhookHookInfo.
      */
+    @Generated
     public static WebhookHookInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookHookInfo deserializedWebhookHookInfo = new WebhookHookInfo();
@@ -148,8 +146,8 @@ public final class WebhookHookInfo extends HookInfo {
                 if ("hookName".equals(fieldName)) {
                     deserializedWebhookHookInfo.setHookName(reader.getString());
                 } else if ("hookId".equals(fieldName)) {
-                    deserializedWebhookHookInfo.hookId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedWebhookHookInfo
+                        .setHookId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("description".equals(fieldName)) {
                     deserializedWebhookHookInfo.setDescription(reader.getString());
                 } else if ("externalLink".equals(fieldName)) {

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,18 +18,24 @@ import java.io.IOException;
 public final class SunGlare implements JsonSerializable<SunGlare> {
 
     /*
-     * If the vehicle heading value is not provided for a waypoint, then the service will calculate a heading based upon the location of neighboring waypoints if provided.
+     * If the vehicle heading value is not provided for a waypoint, then the service will calculate a heading based upon
+     * the location of neighboring waypoints if provided.
      */
+    @Generated
     private Integer calculatedVehicleHeading;
 
     /*
-     * An index from 0 to 100 indicating sun glare intensity for a driver. A value of 50 and above can be considered a hazard for some drivers and a value of 100 signifies the driver is driving straight into the sun and atmospheric conditions are clear allowing for the full intensity of the sun to blind the driver.
+     * An index from 0 to 100 indicating sun glare intensity for a driver. A value of 50 and above can be considered a
+     * hazard for some drivers and a value of 100 signifies the driver is driving straight into the sun and atmospheric
+     * conditions are clear allowing for the full intensity of the sun to blind the driver.
      */
+    @Generated
     private Integer glareIndex;
 
     /**
      * Set default SunGlare constructor to private
      */
+    @Generated
     private SunGlare() {
     }
 
@@ -38,6 +45,7 @@ public final class SunGlare implements JsonSerializable<SunGlare> {
      *
      * @return the calculatedVehicleHeading value.
      */
+    @Generated
     public Integer getCalculatedVehicleHeading() {
         return this.calculatedVehicleHeading;
     }
@@ -49,6 +57,7 @@ public final class SunGlare implements JsonSerializable<SunGlare> {
      *
      * @return the glareIndex value.
      */
+    @Generated
     public Integer getGlareIndex() {
         return this.glareIndex;
     }
@@ -56,6 +65,7 @@ public final class SunGlare implements JsonSerializable<SunGlare> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,6 +82,7 @@ public final class SunGlare implements JsonSerializable<SunGlare> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the SunGlare.
      */
+    @Generated
     public static SunGlare fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SunGlare deserializedSunGlare = new SunGlare();

@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,16 +18,19 @@ public final class AnomalyAlertingConfigurationLogicType
     /**
      * Static value AND for AnomalyAlertingConfigurationLogicType.
      */
+    @Generated
     public static final AnomalyAlertingConfigurationLogicType AND = fromString("AND");
 
     /**
      * Static value OR for AnomalyAlertingConfigurationLogicType.
      */
+    @Generated
     public static final AnomalyAlertingConfigurationLogicType OR = fromString("OR");
 
     /**
      * Static value XOR for AnomalyAlertingConfigurationLogicType.
      */
+    @Generated
     public static final AnomalyAlertingConfigurationLogicType XOR = fromString("XOR");
 
     /**
@@ -34,6 +38,7 @@ public final class AnomalyAlertingConfigurationLogicType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AnomalyAlertingConfigurationLogicType() {
     }
@@ -44,6 +49,7 @@ public final class AnomalyAlertingConfigurationLogicType
      * @param name a name to look for.
      * @return the corresponding AnomalyAlertingConfigurationLogicType.
      */
+    @Generated
     public static AnomalyAlertingConfigurationLogicType fromString(String name) {
         return fromString(name, AnomalyAlertingConfigurationLogicType.class);
     }
@@ -53,6 +59,7 @@ public final class AnomalyAlertingConfigurationLogicType
      * 
      * @return known AnomalyAlertingConfigurationLogicType values.
      */
+    @Generated
     public static Collection<AnomalyAlertingConfigurationLogicType> values() {
         return values(AnomalyAlertingConfigurationLogicType.class);
     }

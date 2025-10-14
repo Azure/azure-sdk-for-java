@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "DatabricksSparkPython";
 
     /*
      * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object pythonFile;
 
     /*
      * Command line parameters that will be passed to the Python file.
      */
+    @Generated
     private List<Object> parameters;
 
     /*
      * A list of libraries to be installed on the cluster that will execute the job.
      */
+    @Generated
     private List<Map<String, Object>> libraries;
 
     /**
      * Creates an instance of DatabricksSparkPythonActivity class.
      */
+    @Generated
     public DatabricksSparkPythonActivity() {
     }
 
@@ -50,6 +56,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * 
      * @return the pythonFile value.
      */
+    @Generated
     public Object getPythonFile() {
         return this.pythonFile;
     }
@@ -72,6 +80,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * @param pythonFile the pythonFile value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
+    @Generated
     public DatabricksSparkPythonActivity setPythonFile(Object pythonFile) {
         this.pythonFile = pythonFile;
         return this;
@@ -82,6 +91,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * 
      * @return the parameters value.
      */
+    @Generated
     public List<Object> getParameters() {
         return this.parameters;
     }
@@ -92,6 +102,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
+    @Generated
     public DatabricksSparkPythonActivity setParameters(List<Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -102,6 +113,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * 
      * @return the libraries value.
      */
+    @Generated
     public List<Map<String, Object>> getLibraries() {
         return this.libraries;
     }
@@ -112,6 +124,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
+    @Generated
     public DatabricksSparkPythonActivity setLibraries(List<Map<String, Object>> libraries) {
         this.libraries = libraries;
         return this;
@@ -120,6 +133,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -129,6 +143,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -138,6 +153,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setName(String name) {
         super.setName(name);
@@ -147,6 +163,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setDescription(String description) {
         super.setDescription(description);
@@ -156,6 +173,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setState(ActivityState state) {
         super.setState(state);
@@ -165,6 +183,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -174,6 +193,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -183,6 +203,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkPythonActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -192,6 +213,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -232,6 +254,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DatabricksSparkPythonActivity.
      */
+    @Generated
     public static DatabricksSparkPythonActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatabricksSparkPythonActivity deserializedDatabricksSparkPythonActivity

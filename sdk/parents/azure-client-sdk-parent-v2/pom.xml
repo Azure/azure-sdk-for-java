@@ -1,0 +1,1630 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-client-sdk-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
+
+  <name>Microsoft Azure SDK for Java V2 - Client Libraries</name>
+  <description>Parent POM for Microsoft Azure SDK for Java V2</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-sdk-parent</artifactId>
+    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
+    <relativePath>../azure-sdk-parent/pom.xml</relativePath>
+  </parent>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/</url>
+    </site>
+  </distributionManagement>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>${issues.url}</url>
+  </issueManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection/>
+    <tag>HEAD</tag>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <projectTestSourceDirectory>${project.build.testSourceDirectory}</projectTestSourceDirectory>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <testMode>playback</testMode>
+
+    <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
+    <build.context>azure-client-sdk-parent-v2</build.context>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
+    <jacoco.skip>false</jacoco.skip>
+    <revapi.skip>false</revapi.skip>
+
+    <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
+    <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+
+    <!-- This property determines the max heap size of the Surefire JVM. By default 4GB, or 4096MB, is used. -->
+    <surefireXmx>4096m</surefireXmx>
+
+    <!-- This property configures the max heap size of the Surefire JVM. -->
+    <surefireJvmXmx>-Xmx${surefireXmx}</surefireJvmXmx>
+
+    <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
+    <heapDumpOnOom>
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
+      <!-- Heap dump is produced before crashing. This flag makes sure JVM exists promptly after disaster instead of waiting for time out -->
+      -XX:+CrashOnOutOfMemoryError
+    </heapDumpOnOom>
+
+    <jacocoUnitTestAgent></jacocoUnitTestAgent>
+
+    <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
+    <defaultSurefireArgLine>
+      @{jacocoUnitTestAgent}
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultSurefireArgLine>
+
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
+    <javaModulesSurefireArgLine>
+    </javaModulesSurefireArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <additionalSurefireArgLine>
+    </additionalSurefireArgLine>
+
+    <jacocoIntegrationTestAgent></jacocoIntegrationTestAgent>
+
+    <!-- Reserved for general Failsafe JVM arguments that affect all SDKs. -->
+    <defaultFailsafeArgLine>
+      @{jacocoIntegrationTestAgent}
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultFailsafeArgLine>
+
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in integration testing. -->
+    <!-- Defaults to the same value as Surefire. -->
+    <javaModulesFailsafeArgLine>
+      ${javaModulesSurefireArgLine}
+    </javaModulesFailsafeArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <!-- Defaults to the same value as Surefire. -->
+    <additionalFailsafeArgLine>
+      ${additionalSurefireArgLine}
+    </additionalFailsafeArgLine>
+
+    <!-- This property configures whether PLAYBACK tests are ran in parallel. Default is concurrent. -->
+    <!-- Choices are same_thread (no parallelization) and concurrent (parallelization). -->
+    <parallelizeTests>concurrent</parallelizeTests>
+
+    <!-- This property configures whether LIVE or RECORD tests are ran in parallel. Default is same_thread. -->
+    <!-- Choices are same_thread (no parallelization) and concurrent (parallelization). -->
+    <parallelizeLiveTests>same_thread</parallelizeLiveTests>
+
+    <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
+    <codesnippet.skip>false</codesnippet.skip>
+
+    <!-- The following properties configure the maven-checkstyle-plugin. -->
+    <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
+    <checkstyle.skip>false</checkstyle.skip>
+
+    <!-- These properties configures whether maven-checkstyle-plugin should fail on errors. -->
+    <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
+    <checkstyle.failsOnError>true</checkstyle.failsOnError>
+
+    <!-- This property configures a regex of source files to exclude from Checkstyle. -->
+    <checkstyle.excludes></checkstyle.excludes>
+
+    <!-- This property configures whether test source files are included in Checkstyle. Default is true. -->
+    <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
+
+    <!-- This property configures the location of the checkstyle-suppressions.xml file. -->
+    <checkstyle.suppressionsLocation/>
+
+    <!-- The following properties configure the spotbugs-maven-plugin. -->
+    <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
+    <spotbugs.skip>true</spotbugs.skip>
+
+    <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
+    <spotbugs.includeTests>false</spotbugs.includeTests>
+
+    <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
+    <spotbugs.failOnError>true</spotbugs.failOnError>
+
+    <!-- This property configures where the Spotbugs exclusion file can be found. -->
+    <spotbugs.excludeFilterFile/>
+
+    <graalvm.disable>true</graalvm.disable>
+    <nativeImage.buildArgs></nativeImage.buildArgs>
+
+    <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
+    <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
+
+    <!-- The following properties configure compile skipping. -->
+    <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
+    <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
+    <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
+    <skipCompile>false</skipCompile>
+    <skipTestCompile>false</skipTestCompile>
+
+    <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
+    <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
+
+    <!-- JavaDoc properties -->
+
+    <!-- Azure core source path is included here and it's packages are excluded as almost all client libraries
+    need inherited javadocs from core and explicitly adding this exclusion in each library is not maintainable. So,
+    by default, we exclude core packages in the parent pom and in core packages override this exclusion -->
+    <javadoc.excludePackageNames>com.azure.core.v2.*</javadoc.excludePackageNames>
+    <javadoc.sourcepath></javadoc.sourcepath>
+
+    <!-- Used to skip maven-shade-plugin. This should only be used as part of CI builds to allow for parallel builds in non-shipping pipelines. -->
+    <!-- In the future this should be removed once maven-shade-plugin no longer as a possibility of deadlocking in parallel builds. -->
+    <!-- See https://issues.apache.org/jira/projects/MSHADE/issues/MSHADE-384 -->
+    <shade.skip>false</shade.skip>
+
+    <!-- Disables Spotless linting. -->
+    <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
+    <spotless.skip>false</spotless.skip>
+
+    <!-- Skips Spotless applying code style formatting. -->
+    <spotless.apply.skip>false</spotless.apply.skip>
+
+    <!-- Skips Spotless running code style formatting verification. -->
+    <spotless.check.skip>false</spotless.check.skip>
+
+    <!-- Skips animal-sniffer-maven-plugin. -->
+    <animal.sniffer.skip>true</animal.sniffer.skip>
+
+    <animal.sniffer.ignores></animal.sniffer.ignores>
+    <maven.test.skip>false</maven.test.skip>
+    <maven.javadoc.skip>false</maven.javadoc.skip>
+
+    <!-- This property configures whether doclinting includes warning and erroring for missing tags and descriptions. -->
+    <!-- By default, missing tags and descriptions are included as issues. -->
+    <!-- If needed, temporarily, override this property in a child POM with a value of '-' to exclude this validation. -->
+    <!-- Even with this validation excluded other linting tooling, such as Checkstyle, may still raise errors. -->
+    <doclintMissingInclusion></doclintMissingInclusion>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <!-- must be on the classpath -->
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <classifier>runtime</classifier>
+      <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>**.properties</exclude>
+        </excludes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- This plugin checks dependencies for android API level compatibility -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>1.24</version> <!-- {x-version-update;org.codehaus.mojo:animal-sniffer-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <skip>${animal.sniffer.skip}</skip>
+              <signature>
+                <groupId>com.toasttab.android</groupId>
+                <artifactId>gummy-bears-api-26</artifactId>
+                <version>0.12.0</version> <!-- {x-version-update;com.toasttab.android:gummy-bears-api-26;external_dependency} -->
+              </signature>
+              <failOnError>false</failOnError>
+              <ignores>${animal.sniffer.ignores}</ignores>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This plugin configures the bas requirements for compilation -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+      </plugin>
+
+      <!-- This plugin scans checkstyle issues in the code -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Configure the jar plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <outputDirectory>${packageOutputDirectory}</outputDirectory>
+          <archive combine.children="append">
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <!-- Configures the codesnippet replacement plugin -->
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>${codesnippet.skip}</skip>
+          <readmeGlob>**/*.md</readmeGlob>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippets</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippets</id>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Configure the javadoc plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Configure the source plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${packageOutputDirectory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Copy the pom file to output -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <dataFileIncludes>
+            <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
+          </dataFileIncludes>
+          <excludes combine.children="append">
+            <exclude>META-INF/**</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-unit.exec</destFile>
+              <propertyName>jacocoUnitTestAgent</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>integration-prepare-agent</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+              <propertyName>jacocoIntegrationTestAgent</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>merge-unit-and-integration</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <includes>
+                    <include>jacoco-unit.exec</include>
+                    <include>jacoco-it.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes combine.children="append">
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                <exclude>**/com/azure/cosmos/encryption/implementation/mdesrc/**/*</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <skip>${jacoco.skip}</skip>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.min.linecoverage}</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.min.branchcoverage}</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Allows the sample sources to be built during test-compile phase. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${basedir}/README.md</file>
+                  <type>md</type>
+                  <classifier>readme</classifier>
+                </artifact>
+                <artifact>
+                  <file>${basedir}/CHANGELOG.md</file>
+                  <type>md</type>
+                  <classifier>changelog</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Checks public surface area for breaking changes. -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <!--
+            Rule: https://maven.apache.org/enforcer/enforcer-rules/bannedDependencies.html
+            We have a list of blessed dependencies here: https://azure.github.io/azure-sdk/java_implementation.html#dependencies
+            Format of includes / excludes is the following: 'groupId[:artifactId][:version][:type][:scope][:classifier]'.
+            Wildcards can be used.
+            -->
+            <bannedDependencies>
+              <searchTransitive>false</searchTransitive>
+              <excludes>
+                <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                dependencies when they are used for test scope or otherwise) -->
+                <exclude>*:*:*:*:runtime</exclude>
+                <exclude>*:*:*:*:compile</exclude>
+                <exclude>*:*:*:*:provided</exclude>
+              </excludes>
+              <includes combine.children="append">
+                <include>com.azure.v2:*</include>
+                <include>io.clientcore:*</include>
+
+                <!-- Used by many libraries to bring in annotations used by Reactor -->
+                <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+
+            <!--
+            Rule: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html
+            -->
+            <requireReleaseDeps>
+              <message>No Snapshots Allowed!</message>
+            </requireReleaseDeps>
+
+            <!--
+            Rule: https://maven.apache.org/enforcer/enforcer-rules/requireSameVersions.html
+            This rule is used to enforce that all modules depend on the same version of particular dependencies or
+            plugins.
+            -->
+          </rules>
+          <fail>true</fail>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <applySkip>${spotless.apply.skip}</applySkip>
+          <checkSkip>${spotless.check.skip}</checkSkip>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <!-- This plugin configures the bas requirements for compilation -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <configuration>
+            <showWarnings>true</showWarnings>
+            <failOnWarning>true</failOnWarning>
+            <skipMain>${skipCompile}</skipMain>
+            <skip>${skipTestCompile}</skip>
+            <compilerArgs combine.children="append" combine.self="append">
+              <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+              <arg>-Xlint:cast</arg>
+              <arg>-Xlint:classfile</arg>
+              <arg>-Xlint:${compiler.failondeprecatedstatus}deprecation</arg>
+              <arg>-Xlint:dep-ann</arg>
+              <arg>-Xlint:divzero</arg>
+              <arg>-Xlint:empty</arg>
+              <arg>-Xlint:fallthrough</arg>
+              <arg>-Xlint:finally</arg>
+              <arg>-Xlint:options</arg>
+              <arg>-Xlint:overrides</arg>
+              <arg>-Xlint:path</arg>
+              <!-- <arg>-Xlint:processing</arg> -->
+              <arg>-Xlint:rawtypes</arg>
+              <!-- <arg>-Xlint:serial</arg> -->
+              <arg>-Xlint:static</arg>
+              <arg>-Xlint:try</arg>
+              <arg>-Xlint:unchecked</arg>
+              <arg>-Xlint:varargs</arg>
+            </compilerArgs>
+
+            <!-- Default is annotation processing being off. -->
+            <proc>${compiler.proc}</proc>
+
+            <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin scans checkstyle issues in the code -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>io.clientcore</groupId>
+              <artifactId>linting-extensions</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:linting-extensions;dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            </dependency>
+          </dependencies>
+          <configuration>
+            <skip>${checkstyle.skip}</skip>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/vnext/checkstyle.xml</configLocation>
+            <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
+            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/java.header</headerLocation>
+            <excludes>${checkstyle.excludes}</excludes>
+            <propertyExpansion>samedir=</propertyExpansion>
+            <outputEncoding>UTF-8</outputEncoding>
+            <consoleOutput>true</consoleOutput>
+            <includeTestSourceDirectory>${checkstyle.includeTestSourceDirectory}</includeTestSourceDirectory>
+            <linkXRef>true</linkXRef>
+            <failsOnError>${checkstyle.failsOnError}</failsOnError>
+            <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin scans reports spotbugs in the code -->
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+            </dependency>
+            <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+          </dependencies>
+          <configuration>
+            <skip>${spotbugs.skip}</skip>
+            <effort>max</effort>
+            <threshold>low</threshold>
+            <xmlOutput>true</xmlOutput>
+            <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+            <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
+            <includeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/spotbugs-include.xml</includeFilterFile>
+            <fork>true</fork>
+            <failOnError>${spotbugs.failOnError}</failOnError>
+            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+            <includeTests>${spotbugs.includeTests}</includeTests>
+
+            <!-- Enable this plugin when issues documented are fixed -->
+            <!--          <plugins>-->
+            <!--            <plugin>-->
+            <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
+            <!--              <artifactId>findsecbugs-plugin</artifactId>-->
+            <!--              <version>1.9.0</version> &lt;!&ndash; {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} &ndash;&gt;-->
+            <!--            </plugin>-->
+            <!--          </plugins>-->
+          </configuration>
+        </plugin>
+
+        <!-- This plugin generates Javadocs -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+          <configuration>
+            <skip>${maven.javadoc.skip}</skip>
+            <source>1.8</source>
+            <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+            <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+            <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
+              for more Java documentation, including quick starts, tutorials, and code samples.
+            </bottom>
+            <linksource>false</linksource>
+            <excludePackageNames combine.children="append">
+              *.impl*:
+              *.implementation:
+              *.implementation*:
+              *.samples:
+              com.azure.tools.checkstyle*:
+              ${javadoc.excludePackageNames}
+            </excludePackageNames>
+            <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
+            <sourceFileExcludes>
+              <sourceFileExclude>module-info.java</sourceFileExclude>
+            </sourceFileExcludes>
+            <sourcepath>
+              ${javadoc.sourcepath}
+            </sourcepath>
+            <links combine.children="append">
+              <!-- JDK APIs -->
+              <link>https://docs.oracle.com/javase/8/docs/api/</link>
+            </links>
+            <detectJavaApiLink>false</detectJavaApiLink>
+            <offline>true</offline>
+            <offlineLinks>
+              <!-- JDK APIs -->
+              <offlineLink>
+                <url>https://docs.oracle.com/javase/8/docs/api/</url>
+                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/java8/</location>
+              </offlineLink>
+            </offlineLinks>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
+            <doclint>all,${doclintMissingInclusion}missing</doclint>
+            <quiet>true</quiet>
+            <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin runs tests -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <configuration>
+            <skip>${maven.test.skip}</skip>
+            <runOrder>alphabetical</runOrder>
+            <useSystemClassLoader>false</useSystemClassLoader>
+            <systemPropertyVariables combine.children="append">
+              <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+              <!-- Always set junit.jupiter.execution.parallel.enabled to true. -->
+              <!-- This simply configures whether test parallelization is enabled, the default parallelization mode is same_thread. -->
+              <!-- same_thread indicates no parallelization, but without parallelization enabled @ExecutionMode annotations don't take effect. -->
+              <!-- See https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution for more details. -->
+              <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
+              <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
+              <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
+            </systemPropertyVariables>
+            <forkCount>1</forkCount>
+            <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultSurefireArgLine}
+              ${additionalSurefireArgLine}
+            </argLine>
+          </configuration>
+          <dependencies>
+            <!-- This dependency is required until maven-surefire-plugin updates the version they use. -->
+            <!-- The current dependency version doesn't support Java 17. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+            <dependency>
+              <!-- must be on the classpath -->
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <classifier>runtime</classifier>
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <!-- This plugin runs integration tests -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <configuration>
+            <skip>${maven.test.skip}</skip>
+            <runOrder>alphabetical</runOrder>
+            <useSystemClassLoader>false</useSystemClassLoader>
+            <systemPropertyVariables combine.children="append">
+              <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+              <!-- Always set junit.jupiter.execution.parallel.enabled to true. -->
+              <!-- This simply configures whether test parallelization is enabled, the default parallelization mode is same_thread. -->
+              <!-- same_thread indicates no parallelization, but without parallelization enabled @ExecutionMode annotations don't take effect. -->
+              <!-- See https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution for more details. -->
+              <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
+              <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
+              <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
+            </systemPropertyVariables>
+            <forkCount>1</forkCount>
+            <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultFailsafeArgLine}
+              ${additionalFailsafeArgLine}
+            </argLine>
+          </configuration>
+          <dependencies>
+            <!-- This dependency is required until maven-failsafe-plugin updates the version they use. -->
+            <!-- The current dependency version doesn't support Java 17. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+            <dependency>
+              <!-- must be on the classpath -->
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <classifier>runtime</classifier>
+              <version>0.8.13</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <!-- Checks public surface area for breaking changes. -->
+        <plugin>
+          <groupId>org.revapi</groupId>
+          <artifactId>revapi-maven-plugin</artifactId>
+          <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <configuration>
+            <skip>${revapi.skip}</skip>
+            <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
+            <analysisConfigurationFiles>
+              <configurationFile>
+                <path>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/revapi/clientcore/revapi.json</path>
+              </configurationFile>
+            </analysisConfigurationFiles>
+            <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+            <checkDependencies>false</checkDependencies>
+            <failBuildOnProblemsFound>${revapi.failBuildOnProblemsFound}</failBuildOnProblemsFound>
+            <!-- The following configures reporting to file in addition to CLI reporting. -->
+            <analysisConfiguration>
+              <revapi.reporter.json id="file-report">
+                <minSeverity>NON_BREAKING</minSeverity>
+                <minCriticality>error</minCriticality>
+                <indent>true</indent>
+                <output>${project.build.directory}/revapi.json</output>
+                <keepEmptyFile>false</keepEmptyFile>
+              </revapi.reporter.json>
+            </analysisConfiguration>
+            <pipelineConfiguration>
+              <filters>
+                <include>
+                  <item>class-and-package-tree-filter-provider</item>
+                </include>
+              </filters>
+            </pipelineConfiguration>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>io.clientcore</groupId>
+              <artifactId>linting-extensions</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:linting-extensions;dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-java</artifactId>
+              <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-reporter-json</artifactId>
+              <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>com.fasterxml.jackson.core</groupId>
+              <artifactId>jackson-databind</artifactId>
+              <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+          <configuration>
+            <skip>${shade.skip}</skip>
+          </configuration>
+        </plugin>
+
+        <!-- This plugin formats source code. -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+          <configuration>
+            <skip>${spotless.skip}</skip>
+            <java>
+              <eclipse>
+                <version>4.21.0</version> <!-- 4.21.0 is the last version of the Eclipse formatter supporting Java 8. -->
+                <file>${project.basedir}/${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+              </eclipse>
+            </java>
+          </configuration>
+          <executions>
+            <execution>
+              <id>spotless-apply</id>
+              <goals>
+                <goal>apply</goal>
+              </goals>
+              <phase>process-sources</phase>
+            </execution>
+            <execution>
+              <id>spotless-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <reportSets>
+          <reportSet>
+            <id>non-aggregate</id>
+            <reports>
+              <report>checkstyle</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <reportSets>
+          <reportSet>
+            <id>non-aggregate</id>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>summary</report>
+              <report>dependency-info</report>
+              <report>dependency-management</report>
+              <report>dependency-convergence</report>
+              <report>ci-management</report>
+              <report>dependencies</report>
+              <report>issue-management</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <checkDependencies>false</checkDependencies>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+
+    <!-- Skip module-info.java on Java 8 -->
+    <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>[1.8,9)</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+      </properties>
+      <build>
+        <plugins>
+          <!-- Don't compile module-info.java, see java 9+ profile -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+              <testExcludes>
+                <testExclude>module-info.java</testExclude>
+              </testExcludes>
+
+              <testSource>1.8</testSource>
+              <testTarget>1.8</testTarget>
+            </configuration>
+          </plugin>
+          <!-- Avoid errors from module-info -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <sourceFileExcludes>
+                <sourceFileExclude>module-info.java</sourceFileExclude>
+              </sourceFileExcludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <reporting>
+        <plugins>
+          <!-- Avoid errors from module-info -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <sourceFileExcludes>
+                <sourceFileExclude>module-info.java</sourceFileExclude>
+              </sourceFileExcludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
+
+    <!-- Setup for Java 9+ -->
+    <profile>
+      <id>java9plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <compilerArgs combine.children="append">
+                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:removal</arg>
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+              </compilerArgs>
+            </configuration>
+            <executions>
+              <!-- compile first with VM's default Java version -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
+              <execution>
+                <id>default-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>${java.vm.specification.version}</release>
+                </configuration>
+              </execution>
+
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <includes>
+                    <include>module-info.java</include>
+                  </includes>
+                </configuration>
+              </execution>
+
+              <!-- then compile without module-info for Java 8 -->
+              <execution>
+                <id>base-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
+                  <release>8</release>
+                  <excludes>
+                    <exclude>module-info.java</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+
+              <!-- test compile with the current VM's default Java version -->
+              <execution>
+                <id>default-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>${java.vm.specification.version}</release>
+                  <testRelease>${java.vm.specification.version}</testRelease>
+                  <useModulePath>false</useModulePath>
+                </configuration>
+              </execution>
+
+              <!-- then compile with Java 8 -->
+              <execution>
+                <id>base-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
+                  <testExcludes>
+                    <testExclude>module-info.java</testExclude>
+                  </testExcludes>
+                  <useModulePath>false</useModulePath>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                ${defaultSurefireArgLine}
+                ${javaModulesSurefireArgLine}
+                ${additionalSurefireArgLine}
+              </argLine>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                ${defaultFailsafeArgLine}
+                ${javaModulesFailsafeArgLine}
+                ${additionalFailsafeArgLine}
+              </argLine>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>add-generated-sources</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.build.directory}/generated-sources/</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
+      This is specifically done to prevent requiring python as a pre-requisite since
+      this is only needed by the build system. -->
+    <profile>
+      <id>generate-overview-from-readme</id>
+      <activation>
+        <property>
+          <name>generate-overview</name>
+        </property>
+        <file>
+          <exists>${basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>generate-overview-from-readme</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>--rf</argument>
+                    <argument>${project.basedir}/README.md</argument>
+                    <argument>--ofp</argument>
+                    <argument>${project.build.directory}${file.separator}</argument>
+                    <argument>--v</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- Add the overview argument to the javadoc args -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration combine.children="append">
+              <overview>${project.build.directory}/readme_overview.html</overview>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Verify that the CHANGELOG is formatted correctly. -->
+    <profile>
+      <id>verify-changelog</id>
+      <activation>
+        <property>
+          <name>verify-changelog</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>verify-readme-codesnippet</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>pwsh</executable>
+                  <arguments>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/common/scripts/Verify-Changelog.ps1</argument>
+                    <argument>-ChangeLogLocation</argument>
+                    <argument>${project.basedir}/CHANGELOG.md</argument>
+                    <argument>-VersionString</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <properties>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <properties>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <properties>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <properties>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>transform-spotbugs</id>
+      <activation>
+        <file>
+          <exists>${packageOutputDirectory}/spotbugs/spotbugsXml.xml</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <!-- This plugin exports spotbugs reports in html form -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>${packageOutputDirectory}/spotbugs</dir>
+                  <includes>
+                    <include>spotbugsXml.xml</include>
+                  </includes>
+                  <outputDir>${packageOutputDirectory}/spotbugs</outputDir>
+                  <stylesheet>fancy-hist.xsl</stylesheet>
+                  <fileMappers>
+                    <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                      <targetExtension>.html</targetExtension>
+                    </fileMapper>
+                  </fileMappers>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>native</id>
+      <dependencies>
+        <!-- graalvm test dependencies -->
+        <dependency>
+          <groupId>org.graalvm.buildtools</groupId>
+          <artifactId>junit-platform-native</artifactId>
+          <version>0.9.19</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>0.10.5</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>${graalvm.disable}</skip>
+              <buildArgs>--no-fallback ${nativeImage.buildArgs} -H:IncludeResources=.*</buildArgs>
+            </configuration>
+            <extensions>true</extensions>
+            <executions>
+              <execution>
+                <id>test-native</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <phase>test</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
+    <!-- If Reactor milestones are needed again in the future, and they're being released -->
+    <!-- to the Spring Milestone repository uncomment the XML below. -->
+    <profile>
+      <id>external-dependency-version-overrides</id>
+      <activation>
+        <property>
+          <name>env.VERSION_OVERRIDE_TESTS</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>repository.spring.milestone</id>
+          <name>Spring Milestone Repository</name>
+          <url>https://repo.spring.io/milestone</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+
+    <profile>
+      <id>test-module-base-compile</id>
+      <activation>
+        <file>
+          <exists>${projectTestSourceDirectory}/module-info.java</exists>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <testRelease>11</testRelease>
+                  <testIncludes>
+                    <testInclude>module-info.java</testInclude>
+                  </testIncludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>local-checkstyle-suppressions</id>
+      <activation>
+        <file>
+          <exists>checkstyle-suppressions.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>local-spotbugs-exclude</id>
+      <activation>
+        <file>
+          <exists>spotbugs-exclude.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+      </properties>
+    </profile>
+  </profiles>
+</project>

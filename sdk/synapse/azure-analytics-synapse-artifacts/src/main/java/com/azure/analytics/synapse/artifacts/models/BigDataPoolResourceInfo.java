@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -25,101 +26,121 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     /*
      * The state of the Big Data pool.
      */
+    @Generated
     private String provisioningState;
 
     /*
      * Auto-scaling properties
      */
+    @Generated
     private AutoScaleProperties autoScale;
 
     /*
      * The time when the Big Data pool was created.
      */
+    @Generated
     private OffsetDateTime creationDate;
 
     /*
      * Auto-pausing properties
      */
+    @Generated
     private AutoPauseProperties autoPause;
 
     /*
      * Whether compute isolation is required or not.
      */
+    @Generated
     private Boolean isComputeIsolationEnabled;
 
     /*
      * Whether session level packages enabled.
      */
+    @Generated
     private Boolean sessionLevelPackagesEnabled;
 
     /*
      * The cache size
      */
+    @Generated
     private Integer cacheSize;
 
     /*
      * Dynamic Executor Allocation
      */
+    @Generated
     private DynamicExecutorAllocation dynamicExecutorAllocation;
 
     /*
      * The Spark events folder
      */
+    @Generated
     private String sparkEventsFolder;
 
     /*
      * The number of nodes in the Big Data pool.
      */
+    @Generated
     private Integer nodeCount;
 
     /*
      * Library version requirements
      */
+    @Generated
     private LibraryRequirements libraryRequirements;
 
     /*
      * List of custom libraries/packages associated with the spark pool.
      */
+    @Generated
     private List<LibraryInfo> customLibraries;
 
     /*
      * Spark configuration file to specify additional properties
      */
+    @Generated
     private LibraryRequirements sparkConfigProperties;
 
     /*
      * The Apache Spark version.
      */
+    @Generated
     private String sparkVersion;
 
     /*
      * The default folder where Spark logs will be written.
      */
+    @Generated
     private String defaultSparkLogFolder;
 
     /*
      * The level of compute power that each node in the Big Data pool has.
      */
+    @Generated
     private NodeSize nodeSize;
 
     /*
      * The kind of nodes that the Big Data pool provides.
      */
+    @Generated
     private NodeSizeFamily nodeSizeFamily;
 
     /*
      * The time when the Big Data pool was updated successfully.
      */
+    @Generated
     private OffsetDateTime lastSucceededTimestamp;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -127,11 +148,13 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of BigDataPoolResourceInfo class.
      */
+    @Generated
     public BigDataPoolResourceInfo() {
     }
 
@@ -140,6 +163,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String getProvisioningState() {
         return this.provisioningState;
     }
@@ -150,6 +174,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param provisioningState the provisioningState value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
@@ -160,6 +185,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the autoScale value.
      */
+    @Generated
     public AutoScaleProperties getAutoScale() {
         return this.autoScale;
     }
@@ -170,6 +196,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param autoScale the autoScale value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setAutoScale(AutoScaleProperties autoScale) {
         this.autoScale = autoScale;
         return this;
@@ -180,6 +207,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the creationDate value.
      */
+    @Generated
     public OffsetDateTime getCreationDate() {
         return this.creationDate;
     }
@@ -190,6 +218,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param creationDate the creationDate value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
         return this;
@@ -200,6 +229,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the autoPause value.
      */
+    @Generated
     public AutoPauseProperties getAutoPause() {
         return this.autoPause;
     }
@@ -210,6 +240,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param autoPause the autoPause value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setAutoPause(AutoPauseProperties autoPause) {
         this.autoPause = autoPause;
         return this;
@@ -220,6 +251,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the isComputeIsolationEnabled value.
      */
+    @Generated
     public Boolean isComputeIsolationEnabled() {
         return this.isComputeIsolationEnabled;
     }
@@ -230,6 +262,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param isComputeIsolationEnabled the isComputeIsolationEnabled value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled) {
         this.isComputeIsolationEnabled = isComputeIsolationEnabled;
         return this;
@@ -240,6 +273,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the sessionLevelPackagesEnabled value.
      */
+    @Generated
     public Boolean isSessionLevelPackagesEnabled() {
         return this.sessionLevelPackagesEnabled;
     }
@@ -250,6 +284,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param sessionLevelPackagesEnabled the sessionLevelPackagesEnabled value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled) {
         this.sessionLevelPackagesEnabled = sessionLevelPackagesEnabled;
         return this;
@@ -260,6 +295,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the cacheSize value.
      */
+    @Generated
     public Integer getCacheSize() {
         return this.cacheSize;
     }
@@ -270,6 +306,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param cacheSize the cacheSize value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setCacheSize(Integer cacheSize) {
         this.cacheSize = cacheSize;
         return this;
@@ -280,6 +317,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the dynamicExecutorAllocation value.
      */
+    @Generated
     public DynamicExecutorAllocation getDynamicExecutorAllocation() {
         return this.dynamicExecutorAllocation;
     }
@@ -290,6 +328,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param dynamicExecutorAllocation the dynamicExecutorAllocation value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setDynamicExecutorAllocation(DynamicExecutorAllocation dynamicExecutorAllocation) {
         this.dynamicExecutorAllocation = dynamicExecutorAllocation;
         return this;
@@ -300,6 +339,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the sparkEventsFolder value.
      */
+    @Generated
     public String getSparkEventsFolder() {
         return this.sparkEventsFolder;
     }
@@ -310,6 +350,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param sparkEventsFolder the sparkEventsFolder value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setSparkEventsFolder(String sparkEventsFolder) {
         this.sparkEventsFolder = sparkEventsFolder;
         return this;
@@ -320,6 +361,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the nodeCount value.
      */
+    @Generated
     public Integer getNodeCount() {
         return this.nodeCount;
     }
@@ -330,6 +372,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param nodeCount the nodeCount value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setNodeCount(Integer nodeCount) {
         this.nodeCount = nodeCount;
         return this;
@@ -340,6 +383,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the libraryRequirements value.
      */
+    @Generated
     public LibraryRequirements getLibraryRequirements() {
         return this.libraryRequirements;
     }
@@ -350,6 +394,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param libraryRequirements the libraryRequirements value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setLibraryRequirements(LibraryRequirements libraryRequirements) {
         this.libraryRequirements = libraryRequirements;
         return this;
@@ -360,6 +405,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the customLibraries value.
      */
+    @Generated
     public List<LibraryInfo> getCustomLibraries() {
         return this.customLibraries;
     }
@@ -370,6 +416,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param customLibraries the customLibraries value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setCustomLibraries(List<LibraryInfo> customLibraries) {
         this.customLibraries = customLibraries;
         return this;
@@ -380,6 +427,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the sparkConfigProperties value.
      */
+    @Generated
     public LibraryRequirements getSparkConfigProperties() {
         return this.sparkConfigProperties;
     }
@@ -390,6 +438,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
         this.sparkConfigProperties = sparkConfigProperties;
         return this;
@@ -400,6 +449,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the sparkVersion value.
      */
+    @Generated
     public String getSparkVersion() {
         return this.sparkVersion;
     }
@@ -410,6 +460,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param sparkVersion the sparkVersion value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setSparkVersion(String sparkVersion) {
         this.sparkVersion = sparkVersion;
         return this;
@@ -420,6 +471,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the defaultSparkLogFolder value.
      */
+    @Generated
     public String getDefaultSparkLogFolder() {
         return this.defaultSparkLogFolder;
     }
@@ -430,6 +482,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param defaultSparkLogFolder the defaultSparkLogFolder value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setDefaultSparkLogFolder(String defaultSparkLogFolder) {
         this.defaultSparkLogFolder = defaultSparkLogFolder;
         return this;
@@ -440,6 +493,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the nodeSize value.
      */
+    @Generated
     public NodeSize getNodeSize() {
         return this.nodeSize;
     }
@@ -450,6 +504,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param nodeSize the nodeSize value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setNodeSize(NodeSize nodeSize) {
         this.nodeSize = nodeSize;
         return this;
@@ -460,6 +515,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the nodeSizeFamily value.
      */
+    @Generated
     public NodeSizeFamily getNodeSizeFamily() {
         return this.nodeSizeFamily;
     }
@@ -470,6 +526,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @param nodeSizeFamily the nodeSizeFamily value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
+    @Generated
     public BigDataPoolResourceInfo setNodeSizeFamily(NodeSizeFamily nodeSizeFamily) {
         this.nodeSizeFamily = nodeSizeFamily;
         return this;
@@ -480,6 +537,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the lastSucceededTimestamp value.
      */
+    @Generated
     public OffsetDateTime getLastSucceededTimestamp() {
         return this.lastSucceededTimestamp;
     }
@@ -490,6 +548,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -500,6 +559,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -511,6 +571,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -519,6 +580,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BigDataPoolResourceInfo setTags(Map<String, String> tags) {
         super.setTags(tags);
@@ -528,6 +590,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BigDataPoolResourceInfo setLocation(String location) {
         super.setLocation(location);
@@ -537,6 +600,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -595,6 +659,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BigDataPoolResourceInfo.
      */
+    @Generated
     public static BigDataPoolResourceInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BigDataPoolResourceInfo deserializedBigDataPoolResourceInfo = new BigDataPoolResourceInfo();

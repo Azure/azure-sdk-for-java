@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -33,7 +32,7 @@ public final class SubmitStartRequest implements JsonSerializable<SubmitStartReq
     private Resources resources;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -104,7 +103,7 @@ public final class SubmitStartRequest implements JsonSerializable<SubmitStartReq
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -113,7 +112,7 @@ public final class SubmitStartRequest implements JsonSerializable<SubmitStartReq
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the SubmitStartRequest object itself.
@@ -122,40 +121,6 @@ public final class SubmitStartRequest implements JsonSerializable<SubmitStartReq
         this.correlationid = correlationid;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (schedule() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property schedule in model SubmitStartRequest"));
-        } else {
-            schedule().validate();
-        }
-        if (executionParameters() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property executionParameters in model SubmitStartRequest"));
-        } else {
-            executionParameters().validate();
-        }
-        if (resources() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resources in model SubmitStartRequest"));
-        } else {
-            resources().validate();
-        }
-        if (correlationid() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property correlationid in model SubmitStartRequest"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SubmitStartRequest.class);
 
     /**
      * {@inheritDoc}

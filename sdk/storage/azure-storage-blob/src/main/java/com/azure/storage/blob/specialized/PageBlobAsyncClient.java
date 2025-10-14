@@ -707,8 +707,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
                 destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(), encryptionScope,
-                context)
+                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
+                getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

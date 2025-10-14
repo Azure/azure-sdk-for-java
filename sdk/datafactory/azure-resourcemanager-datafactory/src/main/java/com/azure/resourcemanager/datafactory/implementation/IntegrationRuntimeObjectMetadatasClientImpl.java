@@ -21,8 +21,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimeObjectMetadatasClient;
@@ -76,10 +78,32 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> refreshSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SsisObjectMetadataListResponseInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GetSsisObjectMetadataRequest getMetadataRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SsisObjectMetadataListResponseInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("integrationRuntimeName") String integrationRuntimeName,
@@ -134,37 +158,80 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> refreshWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (integrationRuntimeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.refreshSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, integrationRuntimeName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Refresh a SSIS integration runtime object metadata.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the status of the operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String resourceGroupName, String factoryName,
+    private Response<BinaryData> refreshWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.refresh(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.refreshSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             factoryName, integrationRuntimeName, this.client.getApiVersion(), accept, context);
     }
 
@@ -195,30 +262,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the status of the operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
-        beginRefreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = refreshWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, context);
-        return this.client.<SsisObjectMetadataStatusResponseInner, SsisObjectMetadataStatusResponseInner>getLroResult(
-            mono, this.client.getHttpPipeline(), SsisObjectMetadataStatusResponseInner.class,
-            SsisObjectMetadataStatusResponseInner.class, context);
-    }
-
-    /**
-     * Refresh a SSIS integration runtime object metadata.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -227,7 +270,10 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return this.beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
+        Response<BinaryData> response = refreshWithResponse(resourceGroupName, factoryName, integrationRuntimeName);
+        return this.client.<SsisObjectMetadataStatusResponseInner, SsisObjectMetadataStatusResponseInner>getLroResult(
+            response, SsisObjectMetadataStatusResponseInner.class, SsisObjectMetadataStatusResponseInner.class,
+            Context.NONE);
     }
 
     /**
@@ -245,7 +291,11 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
-        return this.beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
+        Response<BinaryData> response
+            = refreshWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
+        return this.client.<SsisObjectMetadataStatusResponseInner, SsisObjectMetadataStatusResponseInner>getLroResult(
+            response, SsisObjectMetadataStatusResponseInner.class, SsisObjectMetadataStatusResponseInner.class,
+            context);
     }
 
     /**
@@ -272,25 +322,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SsisObjectMetadataStatusResponseInner> refreshAsync(String resourceGroupName, String factoryName,
-        String integrationRuntimeName, Context context) {
-        return beginRefreshAsync(resourceGroupName, factoryName, integrationRuntimeName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Refresh a SSIS integration runtime object metadata.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -299,7 +330,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        return refreshAsync(resourceGroupName, factoryName, integrationRuntimeName).block();
+        return beginRefresh(resourceGroupName, factoryName, integrationRuntimeName).getFinalResult();
     }
 
     /**
@@ -317,7 +348,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String factoryName,
         String integrationRuntimeName, Context context) {
-        return refreshAsync(resourceGroupName, factoryName, integrationRuntimeName, context).block();
+        return beginRefresh(resourceGroupName, factoryName, integrationRuntimeName, context).getFinalResult();
     }
 
     /**
@@ -372,52 +403,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param getMetadataRequest The parameters for getting a SSIS object metadata.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SsisObjectMetadataListResponseInner>> getWithResponseAsync(String resourceGroupName,
-        String factoryName, String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (integrationRuntimeName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
-        }
-        if (getMetadataRequest != null) {
-            getMetadataRequest.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            integrationRuntimeName, this.client.getApiVersion(), getMetadataRequest, accept, context);
-    }
-
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -447,8 +432,34 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SsisObjectMetadataListResponseInner> getWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context) {
-        return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (integrationRuntimeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+        }
+        if (getMetadataRequest != null) {
+            getMetadataRequest.validate();
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, integrationRuntimeName, this.client.getApiVersion(), getMetadataRequest, accept, context);
     }
 
     /**
@@ -469,4 +480,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         return getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, Context.NONE)
             .getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeObjectMetadatasClientImpl.class);
 }

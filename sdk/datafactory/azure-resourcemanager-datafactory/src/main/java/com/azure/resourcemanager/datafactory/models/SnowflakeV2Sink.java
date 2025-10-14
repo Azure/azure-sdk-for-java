@@ -160,14 +160,28 @@ public final class SnowflakeV2Sink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        if (this.preCopyScript != null) {
+            jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        }
         jsonWriter.writeJsonField("importSettings", this.importSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

@@ -29,6 +29,28 @@ pr:
       - sdk/kubernetesconfiguration/pom.xml
       - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/pom.xml
 
+parameters:
+  - name: release_azureresourcemanagerkubernetesconfiguration
+    displayName: azure-resourcemanager-kubernetesconfiguration
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerkubernetesconfigurationextensions
+    displayName: azure-resourcemanager-kubernetesconfiguration-extensions
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerkubernetesconfigurationfluxconfigurations
+    displayName: azure-resourcemanager-kubernetesconfiguration-fluxconfigurations
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerkubernetesconfigurationextensiontypes
+    displayName: azure-resourcemanager-kubernetesconfiguration-extensiontypes
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerkubernetesconfigurationprivatelinkscopes
+    displayName: azure-resourcemanager-kubernetesconfiguration-privatelinkscopes
+    type: boolean
+    default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -37,3 +59,20 @@ extends:
       - name: azure-resourcemanager-kubernetesconfiguration
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkubernetesconfiguration
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfiguration }}
+      - name: azure-resourcemanager-kubernetesconfiguration-extensions
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationextensions
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationextensions }}
+      - name: azure-resourcemanager-kubernetesconfiguration-fluxconfigurations
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationfluxconfigurations
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationfluxconfigurations }}
+      - name: azure-resourcemanager-kubernetesconfiguration-extensiontypes
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationextensiontypes
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationextensiontypes }}
+      - name: azure-resourcemanager-kubernetesconfiguration-privatelinkscopes
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkubernetesconfigurationprivatelinkscopes
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkubernetesconfigurationprivatelinkscopes }}

@@ -100,7 +100,9 @@ public final class ParquetDatasetTypeProperties implements JsonSerializable<Parq
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("location", this.location);
-        jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
+        if (this.compressionCodec != null) {
+            jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
+        }
         return jsonWriter.writeEndObject();
     }
 

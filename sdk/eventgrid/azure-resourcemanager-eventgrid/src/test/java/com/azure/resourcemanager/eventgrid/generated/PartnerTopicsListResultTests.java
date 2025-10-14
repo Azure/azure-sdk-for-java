@@ -25,71 +25,132 @@ public final class PartnerTopicsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"4f6f9778-ceca-4ec8-a621-8a860b63a76b\",\"source\":\"tbxqmuluxlxq\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"bycucrwnamikz\":{},\"brqbsmswzi\":{},\"gfuhokzrusw\":{},\"vhczznvfby\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-12-08T17:30:41Z\",\"provisioningState\":\"Creating\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"xzv\",\"messageForActivation\":\"wmxqhndvnoamlds\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"jhhflzokxcoxpel\",\"tenantId\":\"eta\",\"userAssignedIdentities\":{\"npbs\":{\"principalId\":\"xo\",\"clientId\":\"ftgz\"},\"ozihmipgawt\":{\"principalId\":\"e\",\"clientId\":\"occsr\"},\"ztrksxwpndf\":{\"principalId\":\"pkyjcxcjxgrytfm\",\"clientId\":\"ycilrmcaykggnox\"}}},\"location\":\"pfnznthjtwkj\",\"tags\":{\"tcqiosmg\":\"rxuzvoam\",\"xqdlyrtltlapr\":\"zah\",\"atbhjmznn\":\"tz\"},\"id\":\"s\",\"name\":\"qeqala\",\"type\":\"vlagun\"}],\"nextLink\":\"gfebwlnb\"}")
+            "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"9957763c-ead0-4534-be8d-06ce73c63a6c\",\"source\":\"llxecwc\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"lhc\":{},\"wjutifdwfmv\":{},\"gorqjbttzh\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-01-05T10:30:14Z\",\"provisioningState\":\"Updating\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"onqjujeickpzvcpo\",\"messageForActivation\":\"xelnwc\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ex\",\"tenantId\":\"lfmk\",\"userAssignedIdentities\":{\"mxyasflvgsgzw\":{\"principalId\":\"zuawxtzxpuamwa\",\"clientId\":\"xrvxcushsphai\"},\"ljhlnymzotq\":{\"principalId\":\"akoi\",\"clientId\":\"nsmjbl\"}}},\"location\":\"ryuzcbmqqv\",\"tags\":{\"ujlzqnhcvsqltn\":\"wfgtayxonsup\"},\"id\":\"oibgsxg\",\"name\":\"xfyqonmpqoxwdo\",\"type\":\"dbxiqx\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"a702d427-fd02-484c-bf5e-40108e56fdfa\",\"source\":\"bimhtmwwinhe\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"vwbcblembnkbwv\":{},\"vxkdivqihebwtswb\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-01-18T05:52:32Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"agegiz\",\"messageForActivation\":\"jfelisdjubggbqig\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"zgakgacyrcmj\",\"tenantId\":\"spofapvuhry\",\"userAssignedIdentities\":{\"f\":{\"principalId\":\"frzgbzjed\",\"clientId\":\"tkvnlvxbcuiiznkt\"},\"kiwbuqnyoph\":{\"principalId\":\"snvpdibmi\",\"clientId\":\"stbz\"},\"e\":{\"principalId\":\"yls\",\"clientId\":\"rpfbcunezz\"},\"ylptrsqqwztcm\":{\"principalId\":\"lfwyfwlwxjwetn\",\"clientId\":\"ihclafzv\"}}},\"location\":\"qkc\",\"tags\":{\"xfdeqvhpsyl\":\"waxfewzjkj\",\"bffmbmxz\":\"ksh\",\"jx\":\"rgywwp\"},\"id\":\"nptfujgi\",\"name\":\"gaao\",\"type\":\"pttaqutd\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"8b076c3b-3c2a-4a13-ab8a-8220bc85afe4\",\"source\":\"xswvru\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"ehkfkimrtixok\":{},\"fqyinljqepqw\":{},\"ixmonstshiyxg\":{},\"elfclducc\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-18T23:01:08Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"cobiegstmninwjiz\",\"messageForActivation\":\"lnghgshejjtbxqmu\"},\"identity\":{\"type\":\"None\",\"principalId\":\"zvners\",\"tenantId\":\"cucrwnamikze\",\"userAssignedIdentities\":{\"hczznvf\":{\"principalId\":\"smswziqgfuh\",\"clientId\":\"zruswh\"},\"umwmxqhnd\":{\"principalId\":\"cjsxjww\",\"clientId\":\"z\"}}},\"location\":\"noamldsehaohdj\",\"tags\":{\"coxpelnjeta\":\"lzok\",\"g\":\"ltsxoatf\"},\"id\":\"pnpbswveflocc\",\"name\":\"rmozihmipgawt\",\"type\":\"xp\"},{\"properties\":{\"partnerRegistrationImmutableId\":\"1087f6d0-1c79-4615-b02e-ab45004f022e\",\"source\":\"xcjxgrytfmpcy\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"aykggnoxu\":{},\"t\":{},\"ksxwpnd\":{}}},\"expirationTimeIfNotActivatedUtc\":\"2021-01-21T22:39:06Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"Activated\",\"partnerTopicFriendlyDescription\":\"hjtwkjaosrx\",\"messageForActivation\":\"voamktcqiosmg\"},\"identity\":{\"type\":\"None\",\"principalId\":\"qdlyrtl\",\"tenantId\":\"ap\",\"userAssignedIdentities\":{\"agunbtgfebw\":{\"principalId\":\"katbhjm\",\"clientId\":\"nbsoqeqalarv\"}}},\"location\":\"nbmhyree\",\"tags\":{\"lyyzglgouwtlmjj\":\"qavbpdqmj\",\"baxk\":\"uojqt\",\"lbfjkwr\":\"eytu\"},\"id\":\"snkq\",\"name\":\"hsyrqunj\",\"type\":\"hdenxaulk\"}],\"nextLink\":\"kdk\"}")
             .toObject(PartnerTopicsListResult.class);
-        Assertions.assertEquals("pfnznthjtwkj", model.value().get(0).location());
-        Assertions.assertEquals("rxuzvoam", model.value().get(0).tags().get("tcqiosmg"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("jhhflzokxcoxpel", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("eta", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("xo",
-            model.value().get(0).identity().userAssignedIdentities().get("npbs").principalId());
-        Assertions.assertEquals("ftgz",
-            model.value().get(0).identity().userAssignedIdentities().get("npbs").clientId());
-        Assertions.assertEquals(UUID.fromString("4f6f9778-ceca-4ec8-a621-8a860b63a76b"),
+        Assertions.assertEquals("ryuzcbmqqv", model.value().get(0).location());
+        Assertions.assertEquals("wfgtayxonsup", model.value().get(0).tags().get("ujlzqnhcvsqltn"));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("ex", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("lfmk", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("zuawxtzxpuamwa",
+            model.value().get(0).identity().userAssignedIdentities().get("mxyasflvgsgzw").principalId());
+        Assertions.assertEquals("xrvxcushsphai",
+            model.value().get(0).identity().userAssignedIdentities().get("mxyasflvgsgzw").clientId());
+        Assertions.assertEquals(UUID.fromString("9957763c-ead0-4534-be8d-06ce73c63a6c"),
             model.value().get(0).partnerRegistrationImmutableId());
-        Assertions.assertEquals("tbxqmuluxlxq", model.value().get(0).source());
+        Assertions.assertEquals("llxecwc", model.value().get(0).source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.value().get(0).eventTypeInfo().kind());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T17:30:41Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T10:30:14Z"),
             model.value().get(0).expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, model.value().get(0).activationState());
-        Assertions.assertEquals("xzv", model.value().get(0).partnerTopicFriendlyDescription());
-        Assertions.assertEquals("wmxqhndvnoamlds", model.value().get(0).messageForActivation());
-        Assertions.assertEquals("gfebwlnb", model.nextLink());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, model.value().get(0).activationState());
+        Assertions.assertEquals("onqjujeickpzvcpo", model.value().get(0).partnerTopicFriendlyDescription());
+        Assertions.assertEquals("xelnwc", model.value().get(0).messageForActivation());
+        Assertions.assertEquals("kdk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerTopicsListResult model = new PartnerTopicsListResult().withValue(Arrays.asList(new PartnerTopicInner()
-            .withLocation("pfnznthjtwkj")
-            .withTags(mapOf("tcqiosmg", "rxuzvoam", "xqdlyrtltlapr", "zah", "atbhjmznn", "tz"))
-            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
-                .withPrincipalId("jhhflzokxcoxpel")
-                .withTenantId("eta")
-                .withUserAssignedIdentities(mapOf("npbs",
-                    new UserIdentityProperties().withPrincipalId("xo").withClientId("ftgz"), "ozihmipgawt",
-                    new UserIdentityProperties().withPrincipalId("e").withClientId("occsr"), "ztrksxwpndf",
-                    new UserIdentityProperties().withPrincipalId("pkyjcxcjxgrytfm").withClientId("ycilrmcaykggnox"))))
-            .withPartnerRegistrationImmutableId(UUID.fromString("4f6f9778-ceca-4ec8-a621-8a860b63a76b"))
-            .withSource("tbxqmuluxlxq")
-            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(
-                    mapOf("bycucrwnamikz", new InlineEventProperties(), "brqbsmswzi", new InlineEventProperties(),
-                        "gfuhokzrusw", new InlineEventProperties(), "vhczznvfby", new InlineEventProperties())))
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-12-08T17:30:41Z"))
-            .withActivationState(PartnerTopicActivationState.NEVER_ACTIVATED)
-            .withPartnerTopicFriendlyDescription("xzv")
-            .withMessageForActivation("wmxqhndvnoamlds"))).withNextLink("gfebwlnb");
+        PartnerTopicsListResult model = new PartnerTopicsListResult().withValue(Arrays
+            .asList(
+                new PartnerTopicInner()
+                    .withLocation("ryuzcbmqqv")
+                    .withTags(mapOf("ujlzqnhcvsqltn", "wfgtayxonsup"))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED)
+                        .withPrincipalId("ex")
+                        .withTenantId("lfmk")
+                        .withUserAssignedIdentities(mapOf("mxyasflvgsgzw",
+                            new UserIdentityProperties().withPrincipalId("zuawxtzxpuamwa")
+                                .withClientId("xrvxcushsphai"),
+                            "ljhlnymzotq",
+                            new UserIdentityProperties().withPrincipalId("akoi").withClientId("nsmjbl"))))
+                    .withPartnerRegistrationImmutableId(UUID.fromString("9957763c-ead0-4534-be8d-06ce73c63a6c"))
+                    .withSource("llxecwc")
+                    .withEventTypeInfo(new EventTypeInfo()
+                        .withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(
+                            mapOf(
+                                "lhc", new InlineEventProperties(), "wjutifdwfmv", new InlineEventProperties(),
+                                "gorqjbttzh", new InlineEventProperties())))
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-01-05T10:30:14Z"))
+                    .withActivationState(PartnerTopicActivationState.DEACTIVATED)
+                    .withPartnerTopicFriendlyDescription("onqjujeickpzvcpo")
+                    .withMessageForActivation("xelnwc"),
+                new PartnerTopicInner().withLocation("qkc")
+                    .withTags(mapOf("xfdeqvhpsyl", "waxfewzjkj", "bffmbmxz", "ksh", "jx", "rgywwp"))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withPrincipalId("zgakgacyrcmj")
+                        .withTenantId("spofapvuhry")
+                        .withUserAssignedIdentities(mapOf("f",
+                            new UserIdentityProperties().withPrincipalId("frzgbzjed").withClientId("tkvnlvxbcuiiznkt"),
+                            "kiwbuqnyoph",
+                            new UserIdentityProperties().withPrincipalId("snvpdibmi").withClientId("stbz"), "e",
+                            new UserIdentityProperties().withPrincipalId("yls").withClientId("rpfbcunezz"),
+                            "ylptrsqqwztcm",
+                            new UserIdentityProperties().withPrincipalId("lfwyfwlwxjwetn").withClientId("ihclafzv"))))
+                    .withPartnerRegistrationImmutableId(UUID.fromString("a702d427-fd02-484c-bf5e-40108e56fdfa"))
+                    .withSource("bimhtmwwinhe")
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("vwbcblembnkbwv", new InlineEventProperties(), "vxkdivqihebwtswb",
+                            new InlineEventProperties())))
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-01-18T05:52:32Z"))
+                    .withActivationState(PartnerTopicActivationState.NEVER_ACTIVATED)
+                    .withPartnerTopicFriendlyDescription("agegiz")
+                    .withMessageForActivation("jfelisdjubggbqig"),
+                new PartnerTopicInner().withLocation("noamldsehaohdj")
+                    .withTags(mapOf("coxpelnjeta", "lzok", "g", "ltsxoatf"))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.NONE)
+                        .withPrincipalId("zvners")
+                        .withTenantId("cucrwnamikze")
+                        .withUserAssignedIdentities(mapOf("hczznvf",
+                            new UserIdentityProperties().withPrincipalId("smswziqgfuh").withClientId("zruswh"),
+                            "umwmxqhnd", new UserIdentityProperties().withPrincipalId("cjsxjww").withClientId("z"))))
+                    .withPartnerRegistrationImmutableId(UUID.fromString("8b076c3b-3c2a-4a13-ab8a-8220bc85afe4"))
+                    .withSource("xswvru")
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("ehkfkimrtixok", new InlineEventProperties(), "fqyinljqepqw",
+                            new InlineEventProperties(), "ixmonstshiyxg", new InlineEventProperties(), "elfclducc",
+                            new InlineEventProperties())))
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-18T23:01:08Z"))
+                    .withActivationState(PartnerTopicActivationState.NEVER_ACTIVATED)
+                    .withPartnerTopicFriendlyDescription("cobiegstmninwjiz")
+                    .withMessageForActivation("lnghgshejjtbxqmu"),
+                new PartnerTopicInner().withLocation("nbmhyree")
+                    .withTags(mapOf("lyyzglgouwtlmjj", "qavbpdqmj", "baxk", "uojqt", "lbfjkwr", "eytu"))
+                    .withIdentity(new IdentityInfo().withType(IdentityType.NONE)
+                        .withPrincipalId("qdlyrtl")
+                        .withTenantId("ap")
+                        .withUserAssignedIdentities(mapOf("agunbtgfebw",
+                            new UserIdentityProperties().withPrincipalId("katbhjm").withClientId("nbsoqeqalarv"))))
+                    .withPartnerRegistrationImmutableId(UUID.fromString("1087f6d0-1c79-4615-b02e-ab45004f022e"))
+                    .withSource("xcjxgrytfmpcy")
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("aykggnoxu", new InlineEventProperties(), "t",
+                            new InlineEventProperties(), "ksxwpnd", new InlineEventProperties())))
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-01-21T22:39:06Z"))
+                    .withActivationState(PartnerTopicActivationState.ACTIVATED)
+                    .withPartnerTopicFriendlyDescription("hjtwkjaosrx")
+                    .withMessageForActivation("voamktcqiosmg")))
+            .withNextLink("kdk");
         model = BinaryData.fromObject(model).toObject(PartnerTopicsListResult.class);
-        Assertions.assertEquals("pfnznthjtwkj", model.value().get(0).location());
-        Assertions.assertEquals("rxuzvoam", model.value().get(0).tags().get("tcqiosmg"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("jhhflzokxcoxpel", model.value().get(0).identity().principalId());
-        Assertions.assertEquals("eta", model.value().get(0).identity().tenantId());
-        Assertions.assertEquals("xo",
-            model.value().get(0).identity().userAssignedIdentities().get("npbs").principalId());
-        Assertions.assertEquals("ftgz",
-            model.value().get(0).identity().userAssignedIdentities().get("npbs").clientId());
-        Assertions.assertEquals(UUID.fromString("4f6f9778-ceca-4ec8-a621-8a860b63a76b"),
+        Assertions.assertEquals("ryuzcbmqqv", model.value().get(0).location());
+        Assertions.assertEquals("wfgtayxonsup", model.value().get(0).tags().get("ujlzqnhcvsqltn"));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("ex", model.value().get(0).identity().principalId());
+        Assertions.assertEquals("lfmk", model.value().get(0).identity().tenantId());
+        Assertions.assertEquals("zuawxtzxpuamwa",
+            model.value().get(0).identity().userAssignedIdentities().get("mxyasflvgsgzw").principalId());
+        Assertions.assertEquals("xrvxcushsphai",
+            model.value().get(0).identity().userAssignedIdentities().get("mxyasflvgsgzw").clientId());
+        Assertions.assertEquals(UUID.fromString("9957763c-ead0-4534-be8d-06ce73c63a6c"),
             model.value().get(0).partnerRegistrationImmutableId());
-        Assertions.assertEquals("tbxqmuluxlxq", model.value().get(0).source());
+        Assertions.assertEquals("llxecwc", model.value().get(0).source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.value().get(0).eventTypeInfo().kind());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T17:30:41Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T10:30:14Z"),
             model.value().get(0).expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, model.value().get(0).activationState());
-        Assertions.assertEquals("xzv", model.value().get(0).partnerTopicFriendlyDescription());
-        Assertions.assertEquals("wmxqhndvnoamlds", model.value().get(0).messageForActivation());
-        Assertions.assertEquals("gfebwlnb", model.nextLink());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, model.value().get(0).activationState());
+        Assertions.assertEquals("onqjujeickpzvcpo", model.value().get(0).partnerTopicFriendlyDescription());
+        Assertions.assertEquals("xelnwc", model.value().get(0).messageForActivation());
+        Assertions.assertEquals("kdk", model.nextLink());
     }
 
     // Use "Map.of" if available

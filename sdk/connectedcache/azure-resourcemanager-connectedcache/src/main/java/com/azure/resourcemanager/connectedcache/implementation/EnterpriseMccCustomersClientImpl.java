@@ -28,6 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -70,7 +71,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ConnectedCacheManage")
+    @ServiceInterface(name = "ConnectedCacheManagementClientEnterpriseMccCustomers")
     public interface EnterpriseMccCustomersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
@@ -82,10 +83,30 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCustomerResourceInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EnterpriseMccCustomerResourceInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("customerResourceName") String customerResourceName,
@@ -102,15 +123,33 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ConnectedCachePatchResource properties, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCustomerResourceInner> updateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectedCachePatchResource properties, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("customerResourceName") String customerResourceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("customerResourceName") String customerResourceName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("customerResourceName") String customerResourceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers")
@@ -123,10 +162,28 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCustomerResourceListResult> listByResourceGroupSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnterpriseMccCustomerResourceListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCustomerResourceListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -142,7 +199,23 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCustomerResourceListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnterpriseMccCustomerResourceListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnterpriseMccCustomerResourceListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -161,64 +234,11 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnterpriseMccCustomerResourceInner>>
         getByResourceGroupWithResponseAsync(String resourceGroupName, String customerResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the enterprise mcc customer resource information using this get call.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the enterprise mcc customer resource information using this get call along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnterpriseMccCustomerResourceInner>>
-        getByResourceGroupWithResponseAsync(String resourceGroupName, String customerResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
     }
 
     /**
@@ -253,7 +273,9 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnterpriseMccCustomerResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String customerResourceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, customerResourceName, context).block();
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context);
     }
 
     /**
@@ -287,27 +309,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String customerResourceName, EnterpriseMccCustomerResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -323,41 +324,39 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
      * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the high level Nodes needed to provision customer resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
+        EnterpriseMccCustomerResourceInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, resource,
+            Context.NONE);
+    }
+
+    /**
+     * This api creates an enterprise mcc customer with the specified create parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return represents the high level Nodes needed to provision customer resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String customerResourceName, EnterpriseMccCustomerResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String customerResourceName,
+        EnterpriseMccCustomerResourceInner resource, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, resource,
             context);
     }
@@ -391,31 +390,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the high level Nodes needed to provision customer
-     * resources.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EnterpriseMccCustomerResourceInner>, EnterpriseMccCustomerResourceInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String customerResourceName,
-            EnterpriseMccCustomerResourceInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, customerResourceName, resource, context);
-        return this.client.<EnterpriseMccCustomerResourceInner, EnterpriseMccCustomerResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), EnterpriseMccCustomerResourceInner.class,
-            EnterpriseMccCustomerResourceInner.class, context);
-    }
-
-    /**
-     * This api creates an enterprise mcc customer with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -426,7 +400,9 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     public SyncPoller<PollResult<EnterpriseMccCustomerResourceInner>, EnterpriseMccCustomerResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String customerResourceName,
             EnterpriseMccCustomerResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, customerResourceName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, customerResourceName, resource);
+        return this.client.<EnterpriseMccCustomerResourceInner, EnterpriseMccCustomerResourceInner>getLroResult(
+            response, EnterpriseMccCustomerResourceInner.class, EnterpriseMccCustomerResourceInner.class, Context.NONE);
     }
 
     /**
@@ -446,8 +422,10 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     public SyncPoller<PollResult<EnterpriseMccCustomerResourceInner>, EnterpriseMccCustomerResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String customerResourceName,
             EnterpriseMccCustomerResourceInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, customerResourceName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, customerResourceName, resource, context);
+        return this.client.<EnterpriseMccCustomerResourceInner, EnterpriseMccCustomerResourceInner>getLroResult(
+            response, EnterpriseMccCustomerResourceInner.class, EnterpriseMccCustomerResourceInner.class, context);
     }
 
     /**
@@ -475,26 +453,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnterpriseMccCustomerResourceInner> createOrUpdateAsync(String resourceGroupName,
-        String customerResourceName, EnterpriseMccCustomerResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, customerResourceName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This api creates an enterprise mcc customer with the specified create parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -503,7 +461,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCustomerResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         EnterpriseMccCustomerResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, customerResourceName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, customerResourceName, resource).getFinalResult();
     }
 
     /**
@@ -521,7 +479,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnterpriseMccCustomerResourceInner createOrUpdate(String resourceGroupName, String customerResourceName,
         EnterpriseMccCustomerResourceInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, customerResourceName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, customerResourceName, resource, context).getFinalResult();
     }
 
     /**
@@ -539,27 +497,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnterpriseMccCustomerResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String customerResourceName, ConnectedCachePatchResource properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -567,50 +504,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
                 this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept,
                 properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * This api updates an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the high level Nodes needed to provision customer resources along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnterpriseMccCustomerResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String customerResourceName, ConnectedCachePatchResource properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, customerResourceName, contentType, accept, properties, context);
     }
 
     /**
@@ -647,7 +540,11 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnterpriseMccCustomerResourceInner> updateWithResponse(String resourceGroupName,
         String customerResourceName, ConnectedCachePatchResource properties, Context context) {
-        return updateWithResponseAsync(resourceGroupName, customerResourceName, properties, context).block();
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, contentType, accept, properties,
+            context);
     }
 
     /**
@@ -680,27 +577,26 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String customerResourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, customerResourceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This api deletes an existing enterprise mcc customer resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, Context.NONE);
     }
 
     /**
@@ -712,31 +608,13 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String customerResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (customerResourceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter customerResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, customerResourceName, accept, context);
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String customerResourceName,
+        Context context) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, customerResourceName, context);
     }
 
     /**
@@ -761,27 +639,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String customerResourceName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, customerResourceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * This api deletes an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -789,7 +646,8 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName) {
-        return this.beginDeleteAsync(resourceGroupName, customerResourceName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, customerResourceName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -806,7 +664,8 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customerResourceName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, customerResourceName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, customerResourceName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -830,30 +689,13 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param customerResourceName Name of the Customer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String customerResourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, customerResourceName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This api deletes an existing enterprise mcc customer resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param customerResourceName Name of the Customer resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName) {
-        deleteAsync(resourceGroupName, customerResourceName).block();
+        beginDelete(resourceGroupName, customerResourceName).getFinalResult();
     }
 
     /**
@@ -868,7 +710,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String customerResourceName, Context context) {
-        deleteAsync(resourceGroupName, customerResourceName, context).block();
+        beginDelete(resourceGroupName, customerResourceName, context).getFinalResult();
     }
 
     /**
@@ -885,18 +727,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -904,42 +734,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             .<PagedResponse<EnterpriseMccCustomerResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * This api gets the information about all enterprise mcc customer resources under the given subscription and
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -964,18 +758,41 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        final String accept = "application/json";
+        Response<EnterpriseMccCustomerResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * This api gets the information about all enterprise mcc customer resources under the given subscription and
+     * resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnterpriseMccCustomerResourceInner> listByResourceGroupAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+        final String accept = "application/json";
+        Response<EnterpriseMccCustomerResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -991,7 +808,8 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1009,7 +827,8 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1022,14 +841,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1037,35 +848,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
             .<PagedResponse<EnterpriseMccCustomerResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * This api gets information about all enterpriseMccCustomer resources under the given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1085,17 +867,35 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     /**
      * This api gets information about all enterpriseMccCustomer resources under the given subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listSinglePage() {
+        final String accept = "application/json";
+        Response<EnterpriseMccCustomerResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * This api gets information about all enterpriseMccCustomer resources under the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnterpriseMccCustomerResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listSinglePage(Context context) {
+        final String accept = "application/json";
+        Response<EnterpriseMccCustomerResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1108,7 +908,7 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1123,7 +923,8 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnterpriseMccCustomerResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1139,13 +940,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>>
         listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1159,28 +953,38 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<EnterpriseMccCustomerResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>>
-        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listByResourceGroupNextSinglePage(String nextLink,
+        Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<EnterpriseMccCustomerResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1196,13 +1000,6 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>>
         listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1216,27 +1013,37 @@ public final class EnterpriseMccCustomersClientImpl implements EnterpriseMccCust
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<EnterpriseMccCustomerResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a EnterpriseMccCustomerResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnterpriseMccCustomerResourceInner>>
-        listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<EnterpriseMccCustomerResourceInner> listBySubscriptionNextSinglePage(String nextLink,
+        Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<EnterpriseMccCustomerResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

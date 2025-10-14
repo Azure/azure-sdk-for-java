@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
 public final class ProtectedItemsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/StopProtection.json
      */
     /**
@@ -36,7 +36,7 @@ public final class ProtectedItemsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ConfigureProtection.json
      */
     /**

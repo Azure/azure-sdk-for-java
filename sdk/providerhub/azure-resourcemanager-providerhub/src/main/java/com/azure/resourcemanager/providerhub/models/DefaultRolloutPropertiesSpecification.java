@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The DefaultRolloutPropertiesSpecification model.
+ * The default rollout specification.
  */
 @Fluent
 public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutSpecification {
@@ -21,6 +21,16 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
      * Creates an instance of DefaultRolloutPropertiesSpecification class.
      */
     public DefaultRolloutPropertiesSpecification() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultRolloutPropertiesSpecification
+        withExpeditedRollout(DefaultRolloutSpecificationExpeditedRollout expeditedRollout) {
+        super.withExpeditedRollout(expeditedRollout);
+        return this;
     }
 
     /**
@@ -101,12 +111,25 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultRolloutPropertiesSpecification
+        withAutoProvisionConfig(DefaultRolloutSpecificationAutoProvisionConfig autoProvisionConfig) {
+        super.withAutoProvisionConfig(autoProvisionConfig);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
+        if (expeditedRollout() != null) {
+            expeditedRollout().validate();
+        }
         if (canary() != null) {
             canary().validate();
         }
@@ -131,6 +154,9 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
         }
+        if (autoProvisionConfig() != null) {
+            autoProvisionConfig().validate();
+        }
     }
 
     /**
@@ -139,6 +165,7 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expeditedRollout", expeditedRollout());
         jsonWriter.writeJsonField("canary", canary());
         jsonWriter.writeJsonField("lowTraffic", lowTraffic());
         jsonWriter.writeJsonField("mediumTraffic", mediumTraffic());
@@ -148,6 +175,7 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
         jsonWriter.writeJsonField("providerRegistration", providerRegistration());
         jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("autoProvisionConfig", autoProvisionConfig());
         return jsonWriter.writeEndObject();
     }
 
@@ -167,7 +195,10 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("canary".equals(fieldName)) {
+                if ("expeditedRollout".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withExpeditedRollout(DefaultRolloutSpecificationExpeditedRollout.fromJson(reader));
+                } else if ("canary".equals(fieldName)) {
                     deserializedDefaultRolloutPropertiesSpecification
                         .withCanary(DefaultRolloutSpecificationCanary.fromJson(reader));
                 } else if ("lowTraffic".equals(fieldName)) {
@@ -193,6 +224,9 @@ public final class DefaultRolloutPropertiesSpecification extends DefaultRolloutS
                         = reader.readArray(reader1 -> ResourceTypeRegistrationInner.fromJson(reader1));
                     deserializedDefaultRolloutPropertiesSpecification
                         .withResourceTypeRegistrations(resourceTypeRegistrations);
+                } else if ("autoProvisionConfig".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesSpecification
+                        .withAutoProvisionConfig(DefaultRolloutSpecificationAutoProvisionConfig.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

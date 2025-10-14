@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.AzureADPartnerClientAut
 import java.io.IOException;
 
 /**
- * Azure Active Directory Partner Client Authentication.
+ * Microsoft Entra ID Partner Client Authentication.
  */
 @Fluent
 public final class AzureADPartnerClientAuthentication extends PartnerClientAuthentication {
@@ -22,7 +22,7 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     private PartnerClientAuthenticationType clientAuthenticationType = PartnerClientAuthenticationType.AZURE_AD;
 
     /*
-     * AzureAD ClientAuthentication Properties
+     * Microsoft Entra ID ClientAuthentication Properties
      */
     private AzureADPartnerClientAuthenticationProperties innerProperties;
 
@@ -43,17 +43,17 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     }
 
     /**
-     * Get the innerProperties property: AzureAD ClientAuthentication Properties.
+     * Get the innerProperties property: Microsoft Entra ID ClientAuthentication Properties.
      * 
      * @return the innerProperties value.
      */
-    private AzureADPartnerClientAuthenticationProperties innerProperties() {
+    AzureADPartnerClientAuthenticationProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
-     * will be included as the bearer token in delivery requests.
+     * Get the azureActiveDirectoryTenantId property: The Microsoft Entra ID Tenant ID to get the access token that will
+     * be included as the bearer token in delivery requests.
      * 
      * @return the azureActiveDirectoryTenantId value.
      */
@@ -62,8 +62,8 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     }
 
     /**
-     * Set the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
-     * will be included as the bearer token in delivery requests.
+     * Set the azureActiveDirectoryTenantId property: The Microsoft Entra ID Tenant ID to get the access token that will
+     * be included as the bearer token in delivery requests.
      * 
      * @param azureActiveDirectoryTenantId the azureActiveDirectoryTenantId value to set.
      * @return the AzureADPartnerClientAuthentication object itself.
@@ -77,8 +77,8 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     }
 
     /**
-     * Get the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
-     * the access token that will be included as the bearer token in delivery requests.
+     * Get the azureActiveDirectoryApplicationIdOrUri property: The Microsoft Entra ID Application ID or URI to get the
+     * access token that will be included as the bearer token in delivery requests.
      * 
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
@@ -87,8 +87,8 @@ public final class AzureADPartnerClientAuthentication extends PartnerClientAuthe
     }
 
     /**
-     * Set the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
-     * the access token that will be included as the bearer token in delivery requests.
+     * Set the azureActiveDirectoryApplicationIdOrUri property: The Microsoft Entra ID Application ID or URI to get the
+     * access token that will be included as the bearer token in delivery requests.
      * 
      * @param azureActiveDirectoryApplicationIdOrUri the azureActiveDirectoryApplicationIdOrUri value to set.
      * @return the AzureADPartnerClientAuthentication object itself.

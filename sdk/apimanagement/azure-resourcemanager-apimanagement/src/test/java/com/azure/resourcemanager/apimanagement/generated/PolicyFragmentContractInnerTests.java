@@ -13,21 +13,21 @@ public final class PolicyFragmentContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyFragmentContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"sk\",\"description\":\"ddida\",\"format\":\"rawxml\"},\"id\":\"lrqmtlp\",\"name\":\"yxroiduyqypffmno\",\"type\":\"ic\"}")
+            "{\"properties\":{\"value\":\"iigz\",\"description\":\"uck\",\"format\":\"xml\",\"provisioningState\":\"ksw\"},\"id\":\"iiqqcqikclsmalns\",\"name\":\"woykdnonaaxwm\",\"type\":\"zrujlqcwnyn\"}")
             .toObject(PolicyFragmentContractInner.class);
-        Assertions.assertEquals("sk", model.value());
-        Assertions.assertEquals("ddida", model.description());
-        Assertions.assertEquals(PolicyFragmentContentFormat.RAWXML, model.format());
+        Assertions.assertEquals("iigz", model.value());
+        Assertions.assertEquals("uck", model.description());
+        Assertions.assertEquals(PolicyFragmentContentFormat.XML, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyFragmentContractInner model = new PolicyFragmentContractInner().withValue("sk")
-            .withDescription("ddida")
-            .withFormat(PolicyFragmentContentFormat.RAWXML);
+        PolicyFragmentContractInner model = new PolicyFragmentContractInner().withValue("iigz")
+            .withDescription("uck")
+            .withFormat(PolicyFragmentContentFormat.XML);
         model = BinaryData.fromObject(model).toObject(PolicyFragmentContractInner.class);
-        Assertions.assertEquals("sk", model.value());
-        Assertions.assertEquals("ddida", model.description());
-        Assertions.assertEquals(PolicyFragmentContentFormat.RAWXML, model.format());
+        Assertions.assertEquals("iigz", model.value());
+        Assertions.assertEquals("uck", model.description());
+        Assertions.assertEquals(PolicyFragmentContentFormat.XML, model.format());
     }
 }

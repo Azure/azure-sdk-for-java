@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
     /**
      * Static value ASC for RunQueryOrder.
      */
+    @Generated
     public static final RunQueryOrder ASC = fromString("ASC");
 
     /**
      * Static value DESC for RunQueryOrder.
      */
+    @Generated
     public static final RunQueryOrder DESC = fromString("DESC");
 
     /**
@@ -26,6 +29,7 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RunQueryOrder() {
     }
@@ -36,6 +40,7 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
      * @param name a name to look for.
      * @return the corresponding RunQueryOrder.
      */
+    @Generated
     public static RunQueryOrder fromString(String name) {
         return fromString(name, RunQueryOrder.class);
     }
@@ -45,6 +50,7 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
      * 
      * @return known RunQueryOrder values.
      */
+    @Generated
     public static Collection<RunQueryOrder> values() {
         return values(RunQueryOrder.class);
     }

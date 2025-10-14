@@ -14,24 +14,24 @@ public final class SingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SingleSignOnProperties model = BinaryData.fromString(
-            "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"bngui\",\"singleSignOnUrl\":\"wu\",\"aadDomains\":[\"a\",\"x\"]}")
+            "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"btndo\",\"singleSignOnUrl\":\"n\",\"aadDomains\":[\"cn\",\"ujitcjedftww\"]}")
             .toObject(SingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
-        Assertions.assertEquals("bngui", model.enterpriseAppId());
-        Assertions.assertEquals("wu", model.singleSignOnUrl());
-        Assertions.assertEquals("a", model.aadDomains().get(0));
+        Assertions.assertEquals("btndo", model.enterpriseAppId());
+        Assertions.assertEquals("n", model.singleSignOnUrl());
+        Assertions.assertEquals("cn", model.aadDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SingleSignOnProperties model = new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-            .withEnterpriseAppId("bngui")
-            .withSingleSignOnUrl("wu")
-            .withAadDomains(Arrays.asList("a", "x"));
+            .withEnterpriseAppId("btndo")
+            .withSingleSignOnUrl("n")
+            .withAadDomains(Arrays.asList("cn", "ujitcjedftww"));
         model = BinaryData.fromObject(model).toObject(SingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
-        Assertions.assertEquals("bngui", model.enterpriseAppId());
-        Assertions.assertEquals("wu", model.singleSignOnUrl());
-        Assertions.assertEquals("a", model.aadDomains().get(0));
+        Assertions.assertEquals("btndo", model.enterpriseAppId());
+        Assertions.assertEquals("n", model.singleSignOnUrl());
+        Assertions.assertEquals("cn", model.aadDomains().get(0));
     }
 }

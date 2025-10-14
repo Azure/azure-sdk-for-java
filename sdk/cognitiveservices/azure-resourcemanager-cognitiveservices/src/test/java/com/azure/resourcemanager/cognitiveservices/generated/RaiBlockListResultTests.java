@@ -17,26 +17,25 @@ public final class RaiBlockListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"lrri\",\"value\":[{\"etag\":\"xsmiccwrwfscjf\",\"tags\":{\"tiby\":\"szqujizdvoq\",\"lgy\":\"wb\"},\"properties\":{\"description\":\"tp\"},\"id\":\"hjoxo\",\"name\":\"smsks\",\"type\":\"pi\"},{\"etag\":\"oljxkcgx\",\"tags\":{\"l\":\"sffgcvizqzd\",\"youpfgfbkj\":\"w\",\"ttsttktlahbqact\":\"bdyhgkfminsgowz\"},\"properties\":{\"description\":\"zukxitmmqtgqq\"},\"id\":\"x\",\"name\":\"rnxrxcpj\",\"type\":\"isavok\"}]}")
+            "{\"nextLink\":\"mjdftu\",\"value\":[{\"etag\":\"ucea\",\"tags\":{\"m\":\"czu\",\"w\":\"jw\"},\"properties\":{\"description\":\"oknssxmojmsvpkjp\"},\"id\":\"vk\",\"name\":\"cfzq\",\"type\":\"jyxgtczh\"},{\"etag\":\"bsdshmkxmaehvbbx\",\"tags\":{\"kgxywr\":\"pltfnhtba\"},\"properties\":{\"description\":\"yklyhpluodpvruud\"},\"id\":\"gzibthostgktstv\",\"name\":\"xeclzedqbcvhzlhp\",\"type\":\"odqkdlwwqfb\"}]}")
             .toObject(RaiBlockListResult.class);
-        Assertions.assertEquals("lrri", model.nextLink());
-        Assertions.assertEquals("szqujizdvoq", model.value().get(0).tags().get("tiby"));
-        Assertions.assertEquals("tp", model.value().get(0).properties().description());
+        Assertions.assertEquals("mjdftu", model.nextLink());
+        Assertions.assertEquals("czu", model.value().get(0).tags().get("m"));
+        Assertions.assertEquals("oknssxmojmsvpkjp", model.value().get(0).properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlockListResult model = new RaiBlockListResult().withNextLink("lrri")
+        RaiBlockListResult model = new RaiBlockListResult().withNextLink("mjdftu")
             .withValue(Arrays.asList(
-                new RaiBlocklistInner().withTags(mapOf("tiby", "szqujizdvoq", "lgy", "wb"))
-                    .withProperties(new RaiBlocklistProperties().withDescription("tp")),
-                new RaiBlocklistInner()
-                    .withTags(mapOf("l", "sffgcvizqzd", "youpfgfbkj", "w", "ttsttktlahbqact", "bdyhgkfminsgowz"))
-                    .withProperties(new RaiBlocklistProperties().withDescription("zukxitmmqtgqq"))));
+                new RaiBlocklistInner().withTags(mapOf("m", "czu", "w", "jw"))
+                    .withProperties(new RaiBlocklistProperties().withDescription("oknssxmojmsvpkjp")),
+                new RaiBlocklistInner().withTags(mapOf("kgxywr", "pltfnhtba"))
+                    .withProperties(new RaiBlocklistProperties().withDescription("yklyhpluodpvruud"))));
         model = BinaryData.fromObject(model).toObject(RaiBlockListResult.class);
-        Assertions.assertEquals("lrri", model.nextLink());
-        Assertions.assertEquals("szqujizdvoq", model.value().get(0).tags().get("tiby"));
-        Assertions.assertEquals("tp", model.value().get(0).properties().description());
+        Assertions.assertEquals("mjdftu", model.nextLink());
+        Assertions.assertEquals("czu", model.value().get(0).tags().get("m"));
+        Assertions.assertEquals("oknssxmojmsvpkjp", model.value().get(0).properties().description());
     }
 
     // Use "Map.of" if available

@@ -17,40 +17,36 @@ public final class NacosComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NacosComponent model = BinaryData.fromString(
-            "{\"componentType\":\"Nacos\",\"ingress\":{\"fqdn\":\"yngjgvrquvpygglp\"},\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"eljtiahxmfqryarv\",\"value\":\"zqbglcjkays\"},{\"propertyName\":\"hz\",\"value\":\"ubtlmjtg\"},{\"propertyName\":\"ioskkfmkmfdjxyxg\",\"value\":\"kqvjcteoedlr\"},{\"propertyName\":\"skkzpxvjnzdpvo\",\"value\":\"jhpcn\"}],\"scale\":{\"minReplicas\":379540195,\"maxReplicas\":2097322331},\"serviceBinds\":[{\"name\":\"ytexvzilmhivzk\",\"serviceId\":\"wncknr\"},{\"name\":\"ajlskzptj\",\"serviceId\":\"lwe\"},{\"name\":\"yrth\",\"serviceId\":\"lehmcgcjeinueho\"},{\"name\":\"mvfejvqnttmbqd\",\"serviceId\":\"zfivfokpysthhzag\"}]}")
+            "{\"componentType\":\"Nacos\",\"ingress\":{\"fqdn\":\"qywwwmhk\"},\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"rympmlq\",\"value\":\"nhzd\"},{\"propertyName\":\"wih\",\"value\":\"fjiiknjdiqf\"},{\"propertyName\":\"ejhpclbiedfsbwc\",\"value\":\"vbvzipbwxgo\"}],\"scale\":{\"minReplicas\":273485362,\"maxReplicas\":544919003},\"serviceBinds\":[{\"name\":\"s\",\"serviceId\":\"knpdgzigjsu\"},{\"name\":\"whgsaodkww\",\"serviceId\":\"afoctohz\"},{\"name\":\"quvwsxbgn\",\"serviceId\":\"ervqchoadhrsxqvz\"},{\"name\":\"pabdsrg\",\"serviceId\":\"jglzrsubklrxhjnl\"}]}")
             .toObject(NacosComponent.class);
-        Assertions.assertEquals("eljtiahxmfqryarv", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("zqbglcjkays", model.configurations().get(0).value());
-        Assertions.assertEquals(379540195, model.scale().minReplicas());
-        Assertions.assertEquals(2097322331, model.scale().maxReplicas());
-        Assertions.assertEquals("ytexvzilmhivzk", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("wncknr", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("rympmlq", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("nhzd", model.configurations().get(0).value());
+        Assertions.assertEquals(273485362, model.scale().minReplicas());
+        Assertions.assertEquals(544919003, model.scale().maxReplicas());
+        Assertions.assertEquals("s", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("knpdgzigjsu", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NacosComponent model
-            = new NacosComponent()
-                .withConfigurations(Arrays.asList(
-                    new JavaComponentConfigurationProperty().withPropertyName("eljtiahxmfqryarv")
-                        .withValue("zqbglcjkays"),
-                    new JavaComponentConfigurationProperty().withPropertyName("hz").withValue("ubtlmjtg"),
-                    new JavaComponentConfigurationProperty().withPropertyName("ioskkfmkmfdjxyxg")
-                        .withValue("kqvjcteoedlr"),
-                    new JavaComponentConfigurationProperty().withPropertyName("skkzpxvjnzdpvo").withValue("jhpcn")))
-                .withScale(new JavaComponentPropertiesScale().withMinReplicas(379540195).withMaxReplicas(2097322331))
-                .withServiceBinds(
-                    Arrays.asList(new JavaComponentServiceBind().withName("ytexvzilmhivzk").withServiceId("wncknr"),
-                        new JavaComponentServiceBind().withName("ajlskzptj").withServiceId("lwe"),
-                        new JavaComponentServiceBind().withName("yrth").withServiceId("lehmcgcjeinueho"),
-                        new JavaComponentServiceBind().withName("mvfejvqnttmbqd").withServiceId("zfivfokpysthhzag")))
-                .withIngress(new JavaComponentIngress());
+        NacosComponent model = new NacosComponent()
+            .withConfigurations(
+                Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("rympmlq").withValue("nhzd"),
+                    new JavaComponentConfigurationProperty().withPropertyName("wih").withValue("fjiiknjdiqf"),
+                    new JavaComponentConfigurationProperty().withPropertyName("ejhpclbiedfsbwc")
+                        .withValue("vbvzipbwxgo")))
+            .withScale(new JavaComponentPropertiesScale().withMinReplicas(273485362).withMaxReplicas(544919003))
+            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("s").withServiceId("knpdgzigjsu"),
+                new JavaComponentServiceBind().withName("whgsaodkww").withServiceId("afoctohz"),
+                new JavaComponentServiceBind().withName("quvwsxbgn").withServiceId("ervqchoadhrsxqvz"),
+                new JavaComponentServiceBind().withName("pabdsrg").withServiceId("jglzrsubklrxhjnl")))
+            .withIngress(new JavaComponentIngress());
         model = BinaryData.fromObject(model).toObject(NacosComponent.class);
-        Assertions.assertEquals("eljtiahxmfqryarv", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("zqbglcjkays", model.configurations().get(0).value());
-        Assertions.assertEquals(379540195, model.scale().minReplicas());
-        Assertions.assertEquals(2097322331, model.scale().maxReplicas());
-        Assertions.assertEquals("ytexvzilmhivzk", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("wncknr", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("rympmlq", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("nhzd", model.configurations().get(0).value());
+        Assertions.assertEquals(273485362, model.scale().minReplicas());
+        Assertions.assertEquals(544919003, model.scale().maxReplicas());
+        Assertions.assertEquals("s", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("knpdgzigjsu", model.serviceBinds().get(0).serviceId());
     }
 }

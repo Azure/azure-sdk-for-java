@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class QueryRewritesDebugInfo implements JsonSerializable<QueryRewri
     /*
      * List of query rewrites generated for the text query.
      */
+    @Generated
     private QueryRewritesValuesDebugInfo text;
 
     /*
      * List of query rewrites generated for the vectorizable text queries.
      */
+    @Generated
     private List<QueryRewritesValuesDebugInfo> vectors;
 
     /**
      * Creates an instance of QueryRewritesDebugInfo class.
      */
+    @Generated
     public QueryRewritesDebugInfo() {
     }
 
@@ -40,6 +44,7 @@ public final class QueryRewritesDebugInfo implements JsonSerializable<QueryRewri
      * 
      * @return the text value.
      */
+    @Generated
     public QueryRewritesValuesDebugInfo getText() {
         return this.text;
     }
@@ -49,6 +54,7 @@ public final class QueryRewritesDebugInfo implements JsonSerializable<QueryRewri
      * 
      * @return the vectors value.
      */
+    @Generated
     public List<QueryRewritesValuesDebugInfo> getVectors() {
         return this.vectors;
     }
@@ -56,6 +62,7 @@ public final class QueryRewritesDebugInfo implements JsonSerializable<QueryRewri
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +77,7 @@ public final class QueryRewritesDebugInfo implements JsonSerializable<QueryRewri
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryRewritesDebugInfo.
      */
+    @Generated
     public static QueryRewritesDebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QueryRewritesDebugInfo deserializedQueryRewritesDebugInfo = new QueryRewritesDebugInfo();

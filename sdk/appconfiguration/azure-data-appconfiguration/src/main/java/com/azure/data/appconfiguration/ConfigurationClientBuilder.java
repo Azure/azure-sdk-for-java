@@ -43,6 +43,7 @@ import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
+import com.azure.data.appconfiguration.models.ConfigurationAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -143,6 +144,8 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     private RetryOptions retryOptions;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
+
+    private ConfigurationAudience audience;
 
     /**
      * Constructs a new builder used to configure and build {@link ConfigurationClient ConfigurationClients} and
@@ -270,7 +273,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(endpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
@@ -536,5 +539,37 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra. The audience is not
+     * considered when using a shared key.
+     *
+     * @param audience {@link ConfigurationAudience} of the service to be used when making requests.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder audience(ConfigurationAudience audience) {
+        this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Gets the default scope for the given endpoint.
+     *
+     * @param endpoint The endpoint to get the default scope for.
+     * @return The default scope for the given endpoint.
+     */
+    private String getDefaultScope(String endpoint) {
+        String defaultValue = "/.default";
+        if (audience == null || audience.toString().isEmpty()) {
+            if (endpoint.endsWith("azconfig.azure.us") || endpoint.endsWith("appconfig.azure.us")) {
+                return ConfigurationAudience.AZURE_GOVERNMENT + defaultValue;
+            } else if (endpoint.endsWith("azconfig.azure.cn") || endpoint.endsWith("appconfig.azure.cn")) {
+                return ConfigurationAudience.AZURE_CHINA + defaultValue;
+            } else {
+                return ConfigurationAudience.AZURE_PUBLIC_CLOUD + defaultValue;
+            }
+        }
+        return audience + defaultValue;
     }
 }

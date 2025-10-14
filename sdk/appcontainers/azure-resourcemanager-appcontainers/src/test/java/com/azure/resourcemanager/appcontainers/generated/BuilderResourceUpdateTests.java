@@ -17,25 +17,24 @@ public final class BuilderResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BuilderResourceUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"b4104829-5349-4778-88a0-75a1d17d0f27\",\"tenantId\":\"c7c8ed8f-6676-43e1-946b-eba852da6263\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"hoxus\":{\"principalId\":\"5c89f141-3aad-45b9-b682-eda412c10ec9\",\"clientId\":\"9b79cffa-f8c2-41d0-af24-09054047b57c\"},\"abgy\":{\"principalId\":\"eca30c6f-90e0-4c72-ab6b-abf0d0b9e132\",\"clientId\":\"91424844-23c7-479e-a878-f29a05571ed5\"}}},\"tags\":{\"ef\":\"bjtazqugxywpmu\"},\"properties\":{\"environmentId\":\"fqkquj\"}}")
+            "{\"identity\":{\"principalId\":\"4dab0a89-99af-4485-ac2d-1612cf03166e\",\"tenantId\":\"4c86363d-c12a-48a7-b68a-512869a05dbb\",\"type\":\"None\",\"userAssignedIdentities\":{\"ujqgidok\":{\"principalId\":\"b753ab65-48fc-4b8f-a96e-c20a24b796fd\",\"clientId\":\"bef1670a-f93c-4b0f-8cda-26c0d9100b7b\"}}},\"tags\":{\"gsncghkjeszz\":\"jyoxgvclt\",\"mxnehmp\":\"bijhtxfvgxbf\",\"godebfqkkrbmpu\":\"ec\"},\"properties\":{\"environmentId\":\"iw\"}}")
             .toObject(BuilderResourceUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("bjtazqugxywpmu", model.tags().get("ef"));
-        Assertions.assertEquals("fqkquj", model.environmentId());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("jyoxgvclt", model.tags().get("gsncghkjeszz"));
+        Assertions.assertEquals("iw", model.environmentId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BuilderResourceUpdate model = new BuilderResourceUpdate()
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("hoxus", new UserAssignedIdentity(), "abgy", new UserAssignedIdentity())))
-            .withTags(mapOf("ef", "bjtazqugxywpmu"))
-            .withEnvironmentId("fqkquj");
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("ujqgidok", new UserAssignedIdentity())))
+            .withTags(mapOf("gsncghkjeszz", "jyoxgvclt", "mxnehmp", "bijhtxfvgxbf", "godebfqkkrbmpu", "ec"))
+            .withEnvironmentId("iw");
         model = BinaryData.fromObject(model).toObject(BuilderResourceUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("bjtazqugxywpmu", model.tags().get("ef"));
-        Assertions.assertEquals("fqkquj", model.environmentId());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("jyoxgvclt", model.tags().get("gsncghkjeszz"));
+        Assertions.assertEquals("iw", model.environmentId());
     }
 
     // Use "Map.of" if available

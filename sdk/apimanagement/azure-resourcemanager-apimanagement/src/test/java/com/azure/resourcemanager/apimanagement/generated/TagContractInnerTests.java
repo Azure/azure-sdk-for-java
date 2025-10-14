@@ -13,15 +13,15 @@ public final class TagContractInnerTests {
     public void testDeserialize() throws Exception {
         TagContractInner model = BinaryData
             .fromString(
-                "{\"properties\":{\"displayName\":\"hnp\"},\"id\":\"myqwcab\",\"name\":\"nuilee\",\"type\":\"aswlp\"}")
+                "{\"properties\":{\"displayName\":\"k\"},\"id\":\"ctwwgzw\",\"name\":\"jlmec\",\"type\":\"og\"}")
             .toObject(TagContractInner.class);
-        Assertions.assertEquals("hnp", model.displayName());
+        Assertions.assertEquals("k", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagContractInner model = new TagContractInner().withDisplayName("hnp");
+        TagContractInner model = new TagContractInner().withDisplayName("k");
         model = BinaryData.fromObject(model).toObject(TagContractInner.class);
-        Assertions.assertEquals("hnp", model.displayName());
+        Assertions.assertEquals("k", model.displayName());
     }
 }

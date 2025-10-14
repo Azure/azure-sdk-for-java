@@ -12,18 +12,18 @@ public final class ContainerRegistryWithCustomImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerRegistryWithCustomImage model
-            = BinaryData.fromString("{\"server\":\"bhsfxob\",\"image\":\"tkblmpewww\"}")
+            = BinaryData.fromString("{\"server\":\"mtsavjcbpwxqp\",\"image\":\"knftguvriuh\"}")
                 .toObject(ContainerRegistryWithCustomImage.class);
-        Assertions.assertEquals("bhsfxob", model.server());
-        Assertions.assertEquals("tkblmpewww", model.image());
+        Assertions.assertEquals("mtsavjcbpwxqp", model.server());
+        Assertions.assertEquals("knftguvriuh", model.image());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerRegistryWithCustomImage model
-            = new ContainerRegistryWithCustomImage().withServer("bhsfxob").withImage("tkblmpewww");
+            = new ContainerRegistryWithCustomImage().withServer("mtsavjcbpwxqp").withImage("knftguvriuh");
         model = BinaryData.fromObject(model).toObject(ContainerRegistryWithCustomImage.class);
-        Assertions.assertEquals("bhsfxob", model.server());
-        Assertions.assertEquals("tkblmpewww", model.image());
+        Assertions.assertEquals("mtsavjcbpwxqp", model.server());
+        Assertions.assertEquals("knftguvriuh", model.image());
     }
 }

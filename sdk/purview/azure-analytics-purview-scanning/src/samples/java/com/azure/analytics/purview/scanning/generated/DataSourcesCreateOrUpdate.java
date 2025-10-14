@@ -17,10 +17,10 @@ public class DataSourcesCreateOrUpdate {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildDataSourcesClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcescreateorupdate.datasourcescreateorupdate
+        // BEGIN:com.azure.analytics.purview.scanning.generated.data-sources-create-or-update.data-sources-create-or-update
         RequestOptions requestOptions = new RequestOptions().setBody(BinaryData.fromString(
             "{\"kind\":\"AzureStorage\",\"properties\":{\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"Collection-rZX\"},\"endpoint\":\"https://azurestorage.core.windows.net/\"}}"));
         Response<BinaryData> response = dataSourcesClient.createOrUpdateWithResponse("myDataSource", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.datasourcescreateorupdate.datasourcescreateorupdate
+        // END:com.azure.analytics.purview.scanning.generated.data-sources-create-or-update.data-sources-create-or-update
     }
 }

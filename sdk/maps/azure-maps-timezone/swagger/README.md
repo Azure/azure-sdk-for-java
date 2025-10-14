@@ -58,7 +58,7 @@ title: TimezoneClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Timezone/preview/1.0/timezone.json
 namespace: com.azure.maps.timezone
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -71,8 +71,18 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: CountryRecord,IanaId,TimeZoneWindows,TimeZoneResult,TimezoneOptions,TimeZoneNames,TimeZoneId,TimeZoneIanaVersionResult,ReferenceTime,TimeTransition
+custom-types: CountryRecord,IanaId,TimeZoneWindows,TimeZoneResult,TimeZoneOptions,TimeZoneNames,TimeZoneId,TimeZoneIanaVersionResult,ReferenceTime,TimeTransition
 customization-class: src/main/java/TimezoneCustomization.java
 generic-response-type: true
 no-custom-headers: true
+```
+
+### Rename TimezoneOptions to TimeZoneOptions
+
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.parameters.TimezoneOptions
+    transform: >
+      $["x-ms-enum"].name = "TimeZoneOptions";
 ```

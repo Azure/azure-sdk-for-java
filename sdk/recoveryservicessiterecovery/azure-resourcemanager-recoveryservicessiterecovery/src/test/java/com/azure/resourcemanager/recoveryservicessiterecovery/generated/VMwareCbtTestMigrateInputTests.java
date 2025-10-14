@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.ManagedRunCommandScriptInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtNicInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtTestMigrateInput;
 import java.util.Arrays;
@@ -14,70 +15,71 @@ public final class VMwareCbtTestMigrateInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareCbtTestMigrateInput model = BinaryData.fromString(
-            "{\"instanceType\":\"VMwareCbt\",\"recoveryPointId\":\"zisvbrqgcyjpgaw\",\"networkId\":\"pkwonrzpghlr\",\"vmNics\":[{\"nicId\":\"gblxbu\",\"isPrimaryNic\":\"brvjztaflv\",\"targetSubnetName\":\"fjihvfjcqrttjfuq\",\"targetStaticIPAddress\":\"fjewfeqbavdo\",\"isSelectedForMigration\":\"wy\",\"targetNicName\":\"fm\",\"testSubnetName\":\"lvxgwzz\",\"testStaticIPAddress\":\"dtlcjgpvcqzv\"},{\"nicId\":\"rbvgwxhlxr\",\"isPrimaryNic\":\"xvmdr\",\"targetSubnetName\":\"n\",\"targetStaticIPAddress\":\"ovazoymdvhhpl\",\"isSelectedForMigration\":\"wwd\",\"targetNicName\":\"tveqmg\",\"testSubnetName\":\"swzeyxry\",\"testStaticIPAddress\":\"r\"},{\"nicId\":\"hpwbuklvsmfasgt\",\"isPrimaryNic\":\"v\",\"targetSubnetName\":\"poil\",\"targetStaticIPAddress\":\"ja\",\"isSelectedForMigration\":\"cez\",\"targetNicName\":\"ft\",\"testSubnetName\":\"l\",\"testStaticIPAddress\":\"okjyghzt\"},{\"nicId\":\"smiwtpcflc\",\"isPrimaryNic\":\"zswwvwi\",\"targetSubnetName\":\"djtvbf\",\"targetStaticIPAddress\":\"hruptsyq\",\"isSelectedForMigration\":\"nqswxdowumxquk\",\"targetNicName\":\"diohclqddn\",\"testSubnetName\":\"k\",\"testStaticIPAddress\":\"bweddpnyzc\"}],\"osUpgradeVersion\":\"jsmka\"}")
+            "{\"instanceType\":\"VMwareCbt\",\"recoveryPointId\":\"vqbugihcdvfoizo\",\"networkId\":\"bloejzsaxzgkq\",\"vmNics\":[{\"nicId\":\"eppjnaphifkfrp\",\"isPrimaryNic\":\"p\",\"targetSubnetName\":\"bpebrmj\",\"targetStaticIPAddress\":\"fpghtbttpkim\",\"isSelectedForMigration\":\"hnkkhbykrs\",\"targetNicName\":\"rcmelycpgokut\",\"testSubnetName\":\"vybnzbnvmshfuzz\",\"testStaticIPAddress\":\"pyixlv\"},{\"nicId\":\"cgulaebxi\",\"isPrimaryNic\":\"uq\",\"targetSubnetName\":\"ptessjlw\",\"targetStaticIPAddress\":\"atpvbl\",\"isSelectedForMigration\":\"xgxqayga\",\"targetNicName\":\"kvc\",\"testSubnetName\":\"pvlcjbvyez\",\"testStaticIPAddress\":\"jkqonbw\"},{\"nicId\":\"iieyozvrc\",\"isPrimaryNic\":\"fpucwn\",\"targetSubnetName\":\"gqefgzjvbxqcb\",\"targetStaticIPAddress\":\"arxt\",\"isSelectedForMigration\":\"ciagvkdlhu\",\"targetNicName\":\"klbjoafmjfe\",\"testSubnetName\":\"lvoepknarse\",\"testStaticIPAddress\":\"ncsqoacbuqd\"}],\"osUpgradeVersion\":\"apleq\",\"postMigrationSteps\":[{\"stepName\":\"xenvszgl\",\"scriptUrl\":\"yakeszsu\",\"scriptParameters\":\"vulaqcwggc\"}]}")
             .toObject(VMwareCbtTestMigrateInput.class);
-        Assertions.assertEquals("zisvbrqgcyjpgaw", model.recoveryPointId());
-        Assertions.assertEquals("pkwonrzpghlr", model.networkId());
-        Assertions.assertEquals("gblxbu", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("brvjztaflv", model.vmNics().get(0).isPrimaryNic());
-        Assertions.assertEquals("fjihvfjcqrttjfuq", model.vmNics().get(0).targetSubnetName());
-        Assertions.assertEquals("fjewfeqbavdo", model.vmNics().get(0).targetStaticIpAddress());
-        Assertions.assertEquals("wy", model.vmNics().get(0).isSelectedForMigration());
-        Assertions.assertEquals("fm", model.vmNics().get(0).targetNicName());
-        Assertions.assertEquals("lvxgwzz", model.vmNics().get(0).testSubnetName());
-        Assertions.assertEquals("dtlcjgpvcqzv", model.vmNics().get(0).testStaticIpAddress());
-        Assertions.assertEquals("jsmka", model.osUpgradeVersion());
+        Assertions.assertEquals("vqbugihcdvfoizo", model.recoveryPointId());
+        Assertions.assertEquals("bloejzsaxzgkq", model.networkId());
+        Assertions.assertEquals("eppjnaphifkfrp", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("p", model.vmNics().get(0).isPrimaryNic());
+        Assertions.assertEquals("bpebrmj", model.vmNics().get(0).targetSubnetName());
+        Assertions.assertEquals("fpghtbttpkim", model.vmNics().get(0).targetStaticIpAddress());
+        Assertions.assertEquals("hnkkhbykrs", model.vmNics().get(0).isSelectedForMigration());
+        Assertions.assertEquals("rcmelycpgokut", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals("vybnzbnvmshfuzz", model.vmNics().get(0).testSubnetName());
+        Assertions.assertEquals("pyixlv", model.vmNics().get(0).testStaticIpAddress());
+        Assertions.assertEquals("apleq", model.osUpgradeVersion());
+        Assertions.assertEquals("xenvszgl", model.postMigrationSteps().get(0).stepName());
+        Assertions.assertEquals("yakeszsu", model.postMigrationSteps().get(0).scriptUrl());
+        Assertions.assertEquals("vulaqcwggc", model.postMigrationSteps().get(0).scriptParameters());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtTestMigrateInput model = new VMwareCbtTestMigrateInput().withRecoveryPointId("zisvbrqgcyjpgaw")
-            .withNetworkId("pkwonrzpghlr")
+        VMwareCbtTestMigrateInput model = new VMwareCbtTestMigrateInput().withRecoveryPointId("vqbugihcdvfoizo")
+            .withNetworkId("bloejzsaxzgkq")
             .withVmNics(Arrays.asList(
-                new VMwareCbtNicInput().withNicId("gblxbu")
-                    .withIsPrimaryNic("brvjztaflv")
-                    .withTargetSubnetName("fjihvfjcqrttjfuq")
-                    .withTargetStaticIpAddress("fjewfeqbavdo")
-                    .withIsSelectedForMigration("wy")
-                    .withTargetNicName("fm")
-                    .withTestSubnetName("lvxgwzz")
-                    .withTestStaticIpAddress("dtlcjgpvcqzv"),
-                new VMwareCbtNicInput().withNicId("rbvgwxhlxr")
-                    .withIsPrimaryNic("xvmdr")
-                    .withTargetSubnetName("n")
-                    .withTargetStaticIpAddress("ovazoymdvhhpl")
-                    .withIsSelectedForMigration("wwd")
-                    .withTargetNicName("tveqmg")
-                    .withTestSubnetName("swzeyxry")
-                    .withTestStaticIpAddress("r"),
-                new VMwareCbtNicInput().withNicId("hpwbuklvsmfasgt")
-                    .withIsPrimaryNic("v")
-                    .withTargetSubnetName("poil")
-                    .withTargetStaticIpAddress("ja")
-                    .withIsSelectedForMigration("cez")
-                    .withTargetNicName("ft")
-                    .withTestSubnetName("l")
-                    .withTestStaticIpAddress("okjyghzt"),
-                new VMwareCbtNicInput().withNicId("smiwtpcflc")
-                    .withIsPrimaryNic("zswwvwi")
-                    .withTargetSubnetName("djtvbf")
-                    .withTargetStaticIpAddress("hruptsyq")
-                    .withIsSelectedForMigration("nqswxdowumxquk")
-                    .withTargetNicName("diohclqddn")
-                    .withTestSubnetName("k")
-                    .withTestStaticIpAddress("bweddpnyzc")))
-            .withOsUpgradeVersion("jsmka");
+                new VMwareCbtNicInput().withNicId("eppjnaphifkfrp")
+                    .withIsPrimaryNic("p")
+                    .withTargetSubnetName("bpebrmj")
+                    .withTargetStaticIpAddress("fpghtbttpkim")
+                    .withIsSelectedForMigration("hnkkhbykrs")
+                    .withTargetNicName("rcmelycpgokut")
+                    .withTestSubnetName("vybnzbnvmshfuzz")
+                    .withTestStaticIpAddress("pyixlv"),
+                new VMwareCbtNicInput().withNicId("cgulaebxi")
+                    .withIsPrimaryNic("uq")
+                    .withTargetSubnetName("ptessjlw")
+                    .withTargetStaticIpAddress("atpvbl")
+                    .withIsSelectedForMigration("xgxqayga")
+                    .withTargetNicName("kvc")
+                    .withTestSubnetName("pvlcjbvyez")
+                    .withTestStaticIpAddress("jkqonbw"),
+                new VMwareCbtNicInput().withNicId("iieyozvrc")
+                    .withIsPrimaryNic("fpucwn")
+                    .withTargetSubnetName("gqefgzjvbxqcb")
+                    .withTargetStaticIpAddress("arxt")
+                    .withIsSelectedForMigration("ciagvkdlhu")
+                    .withTargetNicName("klbjoafmjfe")
+                    .withTestSubnetName("lvoepknarse")
+                    .withTestStaticIpAddress("ncsqoacbuqd")))
+            .withOsUpgradeVersion("apleq")
+            .withPostMigrationSteps(Arrays.asList(new ManagedRunCommandScriptInput().withStepName("xenvszgl")
+                .withScriptUrl("yakeszsu")
+                .withScriptParameters("vulaqcwggc")));
         model = BinaryData.fromObject(model).toObject(VMwareCbtTestMigrateInput.class);
-        Assertions.assertEquals("zisvbrqgcyjpgaw", model.recoveryPointId());
-        Assertions.assertEquals("pkwonrzpghlr", model.networkId());
-        Assertions.assertEquals("gblxbu", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("brvjztaflv", model.vmNics().get(0).isPrimaryNic());
-        Assertions.assertEquals("fjihvfjcqrttjfuq", model.vmNics().get(0).targetSubnetName());
-        Assertions.assertEquals("fjewfeqbavdo", model.vmNics().get(0).targetStaticIpAddress());
-        Assertions.assertEquals("wy", model.vmNics().get(0).isSelectedForMigration());
-        Assertions.assertEquals("fm", model.vmNics().get(0).targetNicName());
-        Assertions.assertEquals("lvxgwzz", model.vmNics().get(0).testSubnetName());
-        Assertions.assertEquals("dtlcjgpvcqzv", model.vmNics().get(0).testStaticIpAddress());
-        Assertions.assertEquals("jsmka", model.osUpgradeVersion());
+        Assertions.assertEquals("vqbugihcdvfoizo", model.recoveryPointId());
+        Assertions.assertEquals("bloejzsaxzgkq", model.networkId());
+        Assertions.assertEquals("eppjnaphifkfrp", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("p", model.vmNics().get(0).isPrimaryNic());
+        Assertions.assertEquals("bpebrmj", model.vmNics().get(0).targetSubnetName());
+        Assertions.assertEquals("fpghtbttpkim", model.vmNics().get(0).targetStaticIpAddress());
+        Assertions.assertEquals("hnkkhbykrs", model.vmNics().get(0).isSelectedForMigration());
+        Assertions.assertEquals("rcmelycpgokut", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals("vybnzbnvmshfuzz", model.vmNics().get(0).testSubnetName());
+        Assertions.assertEquals("pyixlv", model.vmNics().get(0).testStaticIpAddress());
+        Assertions.assertEquals("apleq", model.osUpgradeVersion());
+        Assertions.assertEquals("xenvszgl", model.postMigrationSteps().get(0).stepName());
+        Assertions.assertEquals("yakeszsu", model.postMigrationSteps().get(0).scriptUrl());
+        Assertions.assertEquals("vulaqcwggc", model.postMigrationSteps().get(0).scriptParameters());
     }
 }

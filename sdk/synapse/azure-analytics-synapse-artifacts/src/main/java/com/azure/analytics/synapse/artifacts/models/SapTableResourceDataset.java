@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class SapTableResourceDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SapTableResource";
 
     /*
      * The name of the SAP Table. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tableName;
 
     /**
      * Creates an instance of SapTableResourceDataset class.
      */
+    @Generated
     public SapTableResourceDataset() {
     }
 
@@ -39,6 +43,7 @@ public class SapTableResourceDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public class SapTableResourceDataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -59,6 +65,7 @@ public class SapTableResourceDataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the SapTableResourceDataset object itself.
      */
+    @Generated
     public SapTableResourceDataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -67,6 +74,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setDescription(String description) {
         super.setDescription(description);
@@ -76,6 +84,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -85,6 +94,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -94,6 +104,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -103,6 +114,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -112,6 +124,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -121,6 +134,7 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapTableResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -130,13 +144,18 @@ public class SapTableResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -163,6 +182,7 @@ public class SapTableResourceDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapTableResourceDataset.
      */
+    @Generated
     public static SapTableResourceDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapTableResourceDataset deserializedSapTableResourceDataset = new SapTableResourceDataset();

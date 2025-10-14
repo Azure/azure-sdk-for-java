@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Resource usage statistics for a Job.
@@ -41,56 +42,24 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final OffsetDateTime lastUpdateTime;
 
     /*
+     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+     */
+    @Generated
+    private final Duration userCpuTime;
+
+    /*
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
+     */
+    @Generated
+    private final Duration kernelCpuTime;
+
+    /*
      * The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
      * started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the
      * Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
      */
     @Generated
     private final Duration wallClockTime;
-
-    /*
-     * The total number of disk read operations made by all Tasks in the Job.
-     */
-    @Generated
-    private final long readIOps;
-
-    /*
-     * The total number of disk write operations made by all Tasks in the Job.
-     */
-    @Generated
-    private final long writeIOps;
-
-    /*
-     * The total amount of data in GiB read from disk by all Tasks in the Job.
-     */
-    @Generated
-    private final double readIOGiB;
-
-    /*
-     * The total amount of data in GiB written to disk by all Tasks in the Job.
-     */
-    @Generated
-    private final double writeIOGiB;
-
-    /*
-     * The total number of Tasks successfully completed in the Job during the given time range. A Task completes
-     * successfully if it returns exit code 0.
-     */
-    @Generated
-    private final long numSucceededTasks;
-
-    /*
-     * The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its
-     * maximum retry count without returning exit code 0.
-     */
-    @Generated
-    private final long numFailedTasks;
-
-    /*
-     * The total number of retries on all the Tasks in the Job during the given time range.
-     */
-    @Generated
-    private final long numTaskRetries;
 
     /*
      * The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between the
@@ -100,6 +69,45 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      */
     @Generated
     private final Duration waitTime;
+
+    /**
+     * Creates an instance of BatchJobStatistics class.
+     *
+     * @param url the url value to set.
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
+     * @param wallClockTime the wallClockTime value to set.
+     * @param readIops the readIops value to set.
+     * @param writeIops the writeIops value to set.
+     * @param readIoGiB the readIoGiB value to set.
+     * @param writeIoGiB the writeIoGiB value to set.
+     * @param succeededTasksCount the succeededTasksCount value to set.
+     * @param failedTasksCount the failedTasksCount value to set.
+     * @param taskRetriesCount the taskRetriesCount value to set.
+     * @param waitTime the waitTime value to set.
+     */
+    @Generated
+    private BatchJobStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIops, long writeIops,
+        double readIoGiB, double writeIoGiB, long succeededTasksCount, long failedTasksCount, long taskRetriesCount,
+        Duration waitTime) {
+        this.url = url;
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.userCpuTime = userCpuTime;
+        this.kernelCpuTime = kernelCpuTime;
+        this.wallClockTime = wallClockTime;
+        this.readIops = readIops;
+        this.writeIops = writeIops;
+        this.readIoGiB = readIoGiB;
+        this.writeIoGiB = writeIoGiB;
+        this.succeededTasksCount = succeededTasksCount;
+        this.failedTasksCount = failedTasksCount;
+        this.taskRetriesCount = taskRetriesCount;
+        this.waitTime = waitTime;
+    }
 
     /**
      * Get the url property: The URL of the statistics.
@@ -133,6 +141,28 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     }
 
     /**
+     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by all Tasks in the Job.
+     *
+     * @return the userCpuTime value.
+     */
+    @Generated
+    public Duration getUserCpuTime() {
+        return this.userCpuTime;
+    }
+
+    /**
+     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by all Tasks in the Job.
+     *
+     * @return the kernelCpuTime value.
+     */
+    @Generated
+    public Duration getKernelCpuTime() {
+        return this.kernelCpuTime;
+    }
+
+    /**
      * Get the wallClockTime property: The total wall clock time of all Tasks in the Job. The wall clock time is the
      * elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the
      * statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall
@@ -146,79 +176,6 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     }
 
     /**
-     * Get the readIOps property: The total number of disk read operations made by all Tasks in the Job.
-     *
-     * @return the readIOps value.
-     */
-    @Generated
-    public long getReadIOps() {
-        return this.readIOps;
-    }
-
-    /**
-     * Get the writeIOps property: The total number of disk write operations made by all Tasks in the Job.
-     *
-     * @return the writeIOps value.
-     */
-    @Generated
-    public long getWriteIOps() {
-        return this.writeIOps;
-    }
-
-    /**
-     * Get the readIOGiB property: The total amount of data in GiB read from disk by all Tasks in the Job.
-     *
-     * @return the readIOGiB value.
-     */
-    @Generated
-    public double getReadIOGiB() {
-        return this.readIOGiB;
-    }
-
-    /**
-     * Get the writeIOGiB property: The total amount of data in GiB written to disk by all Tasks in the Job.
-     *
-     * @return the writeIOGiB value.
-     */
-    @Generated
-    public double getWriteIOGiB() {
-        return this.writeIOGiB;
-    }
-
-    /**
-     * Get the numSucceededTasks property: The total number of Tasks successfully completed in the Job during the given
-     * time range. A Task completes successfully if it returns exit code 0.
-     *
-     * @return the numSucceededTasks value.
-     */
-    @Generated
-    public long getNumSucceededTasks() {
-        return this.numSucceededTasks;
-    }
-
-    /**
-     * Get the numFailedTasks property: The total number of Tasks in the Job that failed during the given time range. A
-     * Task fails if it exhausts its maximum retry count without returning exit code 0.
-     *
-     * @return the numFailedTasks value.
-     */
-    @Generated
-    public long getNumFailedTasks() {
-        return this.numFailedTasks;
-    }
-
-    /**
-     * Get the numTaskRetries property: The total number of retries on all the Tasks in the Job during the given time
-     * range.
-     *
-     * @return the numTaskRetries value.
-     */
-    @Generated
-    public long getNumTaskRetries() {
-        return this.numTaskRetries;
-    }
-
-    /**
      * Get the waitTime property: The total wait time of all Tasks in the Job. The wait time for a Task is defined as
      * the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to
      * failures, the wait time is the time to the most recent Task execution.) This value is only reported in the
@@ -229,79 +186,6 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     @Generated
     public Duration getWaitTime() {
         return this.waitTime;
-    }
-
-    /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
-     */
-    @Generated
-    private final Duration kernelCpuTime;
-
-    /**
-     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in the Job.
-     *
-     * @return the kernelCpuTime value.
-     */
-    @Generated
-    public Duration getKernelCpuTime() {
-        return this.kernelCpuTime;
-    }
-
-    /*
-     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by all Tasks in the Job.
-     */
-    @Generated
-    private final Duration userCpuTime;
-
-    /**
-     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by all Tasks in the Job.
-     *
-     * @return the userCpuTime value.
-     */
-    @Generated
-    public Duration getUserCpuTime() {
-        return this.userCpuTime;
-    }
-
-    /**
-     * Creates an instance of BatchJobStatistics class.
-     *
-     * @param url the url value to set.
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCpuTime the userCpuTime value to set.
-     * @param kernelCpuTime the kernelCpuTime value to set.
-     * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
-     * @param numSucceededTasks the numSucceededTasks value to set.
-     * @param numFailedTasks the numFailedTasks value to set.
-     * @param numTaskRetries the numTaskRetries value to set.
-     * @param waitTime the waitTime value to set.
-     */
-    @Generated
-    private BatchJobStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
-        double readIOGiB, double writeIOGiB, long numSucceededTasks, long numFailedTasks, long numTaskRetries,
-        Duration waitTime) {
-        this.url = url;
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.userCpuTime = userCpuTime;
-        this.kernelCpuTime = kernelCpuTime;
-        this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
-        this.numSucceededTasks = numSucceededTasks;
-        this.numFailedTasks = numFailedTasks;
-        this.numTaskRetries = numTaskRetries;
-        this.waitTime = waitTime;
     }
 
     /**
@@ -319,13 +203,13 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
         jsonWriter.writeStringField("userCPUTime", CoreUtils.durationToStringWithDays(this.userCpuTime));
         jsonWriter.writeStringField("kernelCPUTime", CoreUtils.durationToStringWithDays(this.kernelCpuTime));
         jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
-        jsonWriter.writeLongField("readIOps", this.readIOps);
-        jsonWriter.writeLongField("writeIOps", this.writeIOps);
-        jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
-        jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
-        jsonWriter.writeLongField("numSucceededTasks", this.numSucceededTasks);
-        jsonWriter.writeLongField("numFailedTasks", this.numFailedTasks);
-        jsonWriter.writeLongField("numTaskRetries", this.numTaskRetries);
+        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIops, null));
+        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIops, null));
+        jsonWriter.writeDoubleField("readIOGiB", this.readIoGiB);
+        jsonWriter.writeDoubleField("writeIOGiB", this.writeIoGiB);
+        jsonWriter.writeStringField("numSucceededTasks", Objects.toString(this.succeededTasksCount, null));
+        jsonWriter.writeStringField("numFailedTasks", Objects.toString(this.failedTasksCount, null));
+        jsonWriter.writeStringField("numTaskRetries", Objects.toString(this.taskRetriesCount, null));
         jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
         return jsonWriter.writeEndObject();
     }
@@ -339,8 +223,8 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchJobStatistics.
      */
+    @Generated
     public static BatchJobStatistics fromJson(JsonReader jsonReader) throws IOException {
-        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             String url = null;
             OffsetDateTime startTime = null;
@@ -348,13 +232,13 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
             Duration userCpuTime = null;
             Duration kernelCpuTime = null;
             Duration wallClockTime = null;
-            long readIOps = 0L;
-            long writeIOps = 0L;
-            double readIOGiB = 0.0;
-            double writeIOGiB = 0.0;
-            long numSucceededTasks = 0L;
-            long numFailedTasks = 0L;
-            long numTaskRetries = 0L;
+            long readIops = Long.parseLong("0");
+            long writeIops = Long.parseLong("0");
+            double readIoGiB = 0.0;
+            double writeIoGiB = 0.0;
+            long succeededTasksCount = Long.parseLong("0");
+            long failedTasksCount = Long.parseLong("0");
+            long taskRetriesCount = Long.parseLong("0");
             Duration waitTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -374,78 +258,20 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String readIOpsStr = reader.getString();
-                        try {
-                            readIOps = Long.parseLong(readIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric readIOps, but found: " + readIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        readIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected readIOps to be a number or string, but found other type");
-                    }
+                    readIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("writeIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String writeIOpsStr = reader.getString();
-                        try {
-                            writeIOps = Long.parseLong(writeIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric writeIOps, but found: " + writeIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        writeIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected writeIOps to be a number or string, but found other type");
-                    }
+                    writeIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("readIOGiB".equals(fieldName)) {
-                    readIOGiB = reader.getDouble();
+                    readIoGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
-                    writeIOGiB = reader.getDouble();
+                    writeIoGiB = reader.getDouble();
                 } else if ("numSucceededTasks".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String numSucceededTasksStr = reader.getString();
-                        try {
-                            numSucceededTasks = Long.parseLong(numSucceededTasksStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException(
-                                "Expected numeric numSucceededTasks, but found: " + numSucceededTasksStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        numSucceededTasks = reader.getLong();
-                    } else {
-                        throw new IOException(
-                            "Expected numSucceededTasks to be a number or string, but found other type");
-                    }
+                    succeededTasksCount
+                        = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("numFailedTasks".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String numFailedTasksStr = reader.getString();
-                        try {
-                            numFailedTasks = Long.parseLong(numFailedTasksStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric numFailedTasks, but found: " + numFailedTasksStr,
-                                e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        numFailedTasks = reader.getLong();
-                    } else {
-                        throw new IOException("Expected numFailedTasks to be a number or string, but found other type");
-                    }
+                    failedTasksCount = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("numTaskRetries".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String numTaskRetriesStr = reader.getString();
-                        try {
-                            numTaskRetries = Long.parseLong(numTaskRetriesStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric numTaskRetries, but found: " + numTaskRetriesStr,
-                                e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        numTaskRetries = reader.getLong();
-                    } else {
-                        throw new IOException("Expected numTaskRetries to be a number or string, but found other type");
-                    }
+                    taskRetriesCount = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("waitTime".equals(fieldName)) {
                     waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {
@@ -453,8 +279,125 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
                 }
             }
             return new BatchJobStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime, wallClockTime,
-                readIOps, writeIOps, readIOGiB, writeIOGiB, numSucceededTasks, numFailedTasks, numTaskRetries,
+                readIops, writeIops, readIoGiB, writeIoGiB, succeededTasksCount, failedTasksCount, taskRetriesCount,
                 waitTime);
         });
+    }
+
+    /*
+     * The total number of disk read operations made by all Tasks in the Job.
+     */
+    @Generated
+    private final long readIops;
+
+    /*
+     * The total number of disk write operations made by all Tasks in the Job.
+     */
+    @Generated
+    private final long writeIops;
+
+    /**
+     * Get the readIops property: The total number of disk read operations made by all Tasks in the Job.
+     *
+     * @return the readIops value.
+     */
+    @Generated
+    public long getReadIops() {
+        return this.readIops;
+    }
+
+    /**
+     * Get the writeIops property: The total number of disk write operations made by all Tasks in the Job.
+     *
+     * @return the writeIops value.
+     */
+    @Generated
+    public long getWriteIops() {
+        return this.writeIops;
+    }
+
+    /*
+     * The total amount of data in GiB read from disk by all Tasks in the Job.
+     */
+    @Generated
+    private final double readIoGiB;
+
+    /*
+     * The total amount of data in GiB written to disk by all Tasks in the Job.
+     */
+    @Generated
+    private final double writeIoGiB;
+
+    /**
+     * Get the readIoGiB property: The total amount of data in GiB read from disk by all Tasks in the Job.
+     *
+     * @return the readIoGiB value.
+     */
+    @Generated
+    public double getReadIoGiB() {
+        return this.readIoGiB;
+    }
+
+    /**
+     * Get the writeIoGiB property: The total amount of data in GiB written to disk by all Tasks in the Job.
+     *
+     * @return the writeIoGiB value.
+     */
+    @Generated
+    public double getWriteIoGiB() {
+        return this.writeIoGiB;
+    }
+
+    /*
+     * The total number of Tasks successfully completed in the Job during the given time range. A Task completes
+     * successfully if it returns exit code 0.
+     */
+    @Generated
+    private final long succeededTasksCount;
+
+    /*
+     * The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its
+     * maximum retry count without returning exit code 0.
+     */
+    @Generated
+    private final long failedTasksCount;
+
+    /*
+     * The total number of retries on all the Tasks in the Job during the given time range.
+     */
+    @Generated
+    private final long taskRetriesCount;
+
+    /**
+     * Get the succeededTasksCount property: The total number of Tasks successfully completed in the Job during the
+     * given time range. A Task completes successfully if it returns exit code 0.
+     *
+     * @return the succeededTasksCount value.
+     */
+    @Generated
+    public long getSucceededTasksCount() {
+        return this.succeededTasksCount;
+    }
+
+    /**
+     * Get the failedTasksCount property: The total number of Tasks in the Job that failed during the given time range.
+     * A Task fails if it exhausts its maximum retry count without returning exit code 0.
+     *
+     * @return the failedTasksCount value.
+     */
+    @Generated
+    public long getFailedTasksCount() {
+        return this.failedTasksCount;
+    }
+
+    /**
+     * Get the taskRetriesCount property: The total number of retries on all the Tasks in the Job during the given time
+     * range.
+     *
+     * @return the taskRetriesCount value.
+     */
+    @Generated
+    public long getTaskRetriesCount() {
+        return this.taskRetriesCount;
     }
 }

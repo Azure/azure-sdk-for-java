@@ -54,7 +54,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      * 
      * @return the innerTypeProperties value.
      */
-    private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
+    SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

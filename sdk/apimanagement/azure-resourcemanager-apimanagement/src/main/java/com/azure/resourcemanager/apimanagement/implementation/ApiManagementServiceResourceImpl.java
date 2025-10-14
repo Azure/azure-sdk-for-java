@@ -19,7 +19,11 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuPro
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceUpdateParameters;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.LegacyPortalStatus;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
@@ -170,6 +174,10 @@ public final class ApiManagementServiceResourceImpl implements ApiManagementServ
         return this.innerModel().publicNetworkAccess();
     }
 
+    public ConfigurationApi configurationApi() {
+        return this.innerModel().configurationApi();
+    }
+
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
         return this.innerModel().virtualNetworkConfiguration();
     }
@@ -245,6 +253,14 @@ public final class ApiManagementServiceResourceImpl implements ApiManagementServ
 
     public PlatformVersion platformVersion() {
         return this.innerModel().platformVersion();
+    }
+
+    public LegacyPortalStatus legacyPortalStatus() {
+        return this.innerModel().legacyPortalStatus();
+    }
+
+    public DeveloperPortalStatus developerPortalStatus() {
+        return this.innerModel().developerPortalStatus();
     }
 
     public Region region() {
@@ -355,8 +371,9 @@ public final class ApiManagementServiceResourceImpl implements ApiManagementServ
         return serviceManager.apiManagementServices().migrateToStv2(resourceGroupName, serviceName);
     }
 
-    public ApiManagementServiceResource migrateToStv2(Context context) {
-        return serviceManager.apiManagementServices().migrateToStv2(resourceGroupName, serviceName, context);
+    public ApiManagementServiceResource migrateToStv2(MigrateToStv2Contract parameters, Context context) {
+        return serviceManager.apiManagementServices()
+            .migrateToStv2(resourceGroupName, serviceName, parameters, context);
     }
 
     public Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(Context context) {
@@ -488,6 +505,16 @@ public final class ApiManagementServiceResourceImpl implements ApiManagementServ
         }
     }
 
+    public ApiManagementServiceResourceImpl withConfigurationApi(ConfigurationApi configurationApi) {
+        if (isInCreateMode()) {
+            this.innerModel().withConfigurationApi(configurationApi);
+            return this;
+        } else {
+            this.updateParameters.withConfigurationApi(configurationApi);
+            return this;
+        }
+    }
+
     public ApiManagementServiceResourceImpl
         withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         if (isInCreateMode()) {
@@ -596,6 +623,26 @@ public final class ApiManagementServiceResourceImpl implements ApiManagementServ
             return this;
         } else {
             this.updateParameters.withPrivateEndpointConnections(privateEndpointConnections);
+            return this;
+        }
+    }
+
+    public ApiManagementServiceResourceImpl withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        if (isInCreateMode()) {
+            this.innerModel().withLegacyPortalStatus(legacyPortalStatus);
+            return this;
+        } else {
+            this.updateParameters.withLegacyPortalStatus(legacyPortalStatus);
+            return this;
+        }
+    }
+
+    public ApiManagementServiceResourceImpl withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeveloperPortalStatus(developerPortalStatus);
+            return this;
+        } else {
+            this.updateParameters.withDeveloperPortalStatus(developerPortalStatus);
             return this;
         }
     }

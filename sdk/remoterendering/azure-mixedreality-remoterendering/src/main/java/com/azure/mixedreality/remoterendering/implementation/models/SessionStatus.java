@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,27 +15,32 @@ public final class SessionStatus extends ExpandableStringEnum<SessionStatus> {
     /**
      * The rendering session has encountered an error, and is unusable. This is a terminal state.
      */
+    @Generated
     public static final SessionStatus ERROR = fromString("Error");
 
     /**
      * The rendering session enters the 'Expired' state when it has been in the 'Ready' state longer than its lease
      * time. This is a terminal state.
      */
+    @Generated
     public static final SessionStatus EXPIRED = fromString("Expired");
 
     /**
      * The rendering session is starting, but not accepting incoming connections yet.
      */
+    @Generated
     public static final SessionStatus STARTING = fromString("Starting");
 
     /**
      * The rendering session is ready for incoming connections.
      */
+    @Generated
     public static final SessionStatus READY = fromString("Ready");
 
     /**
      * The rendering session has been stopped with the 'Stop Session' operation. This is a terminal state.
      */
+    @Generated
     public static final SessionStatus STOPPED = fromString("Stopped");
 
     /**
@@ -42,6 +48,7 @@ public final class SessionStatus extends ExpandableStringEnum<SessionStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SessionStatus() {
     }
@@ -52,6 +59,7 @@ public final class SessionStatus extends ExpandableStringEnum<SessionStatus> {
      * @param name a name to look for.
      * @return the corresponding SessionStatus.
      */
+    @Generated
     public static SessionStatus fromString(String name) {
         return fromString(name, SessionStatus.class);
     }
@@ -61,6 +69,7 @@ public final class SessionStatus extends ExpandableStringEnum<SessionStatus> {
      * 
      * @return known SessionStatus values.
      */
+    @Generated
     public static Collection<SessionStatus> values() {
         return values(SessionStatus.class);
     }

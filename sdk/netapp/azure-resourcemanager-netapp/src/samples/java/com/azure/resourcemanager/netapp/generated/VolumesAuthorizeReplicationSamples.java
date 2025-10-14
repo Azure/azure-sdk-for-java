@@ -11,8 +11,9 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
  */
 public final class VolumesAuthorizeReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_AuthorizeReplication.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_AuthorizeReplication.
+     * json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.
@@ -23,7 +24,7 @@ public final class VolumesAuthorizeReplicationSamples {
         manager.volumes()
             .authorizeReplication("myRG", "account1", "pool1", "volume1",
                 new AuthorizeRequest().withRemoteVolumeResourceId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRemoteRG/providers/Microsoft.NetApp/netAppAccounts/remoteAccount1/capacityPools/remotePool1/volumes/remoteVolume1"),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRemoteRG/providers/Microsoft.NetApp/netAppAccounts/remoteAccount1/capacityPools/remotePool1/volumes/remoteVolume1"),
                 com.azure.core.util.Context.NONE);
     }
 }

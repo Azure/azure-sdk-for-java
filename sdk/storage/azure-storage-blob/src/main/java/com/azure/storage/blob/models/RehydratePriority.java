@@ -4,6 +4,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class RehydratePriority extends ExpandableStringEnum<RehydratePrior
     /**
      * Static value High for RehydratePriority.
      */
+    @Generated
     public static final RehydratePriority HIGH = fromString("High");
 
     /**
      * Static value Standard for RehydratePriority.
      */
+    @Generated
     public static final RehydratePriority STANDARD = fromString("Standard");
 
     /**
@@ -27,6 +30,7 @@ public final class RehydratePriority extends ExpandableStringEnum<RehydratePrior
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RehydratePriority() {
     }
@@ -37,6 +41,7 @@ public final class RehydratePriority extends ExpandableStringEnum<RehydratePrior
      * @param name a name to look for.
      * @return the corresponding RehydratePriority.
      */
+    @Generated
     public static RehydratePriority fromString(String name) {
         return fromString(name, RehydratePriority.class);
     }
@@ -46,6 +51,7 @@ public final class RehydratePriority extends ExpandableStringEnum<RehydratePrior
      * 
      * @return known RehydratePriority values.
      */
+    @Generated
     public static Collection<RehydratePriority> values() {
         return values(RehydratePriority.class);
     }

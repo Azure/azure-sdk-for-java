@@ -50,6 +50,10 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
     }
@@ -132,6 +136,14 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
 
     private String clusterManagerName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private ClusterManagerPatchParameters updateClusterManagerUpdateParameters;
 
     public ClusterManagerImpl withExistingResourceGroup(String resourceGroupName) {
@@ -142,14 +154,16 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     public ClusterManager create() {
         this.innerObject = serviceManager.serviceClient()
             .getClusterManagers()
-            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public ClusterManager create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusterManagers()
-            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, clusterManagerName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -157,9 +171,13 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         this.innerObject = new ClusterManagerInner();
         this.serviceManager = serviceManager;
         this.clusterManagerName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public ClusterManagerImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateClusterManagerUpdateParameters = new ClusterManagerPatchParameters();
         return this;
     }
@@ -167,8 +185,8 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     public ClusterManager apply() {
         this.innerObject = serviceManager.serviceClient()
             .getClusterManagers()
-            .updateWithResponse(resourceGroupName, clusterManagerName, updateClusterManagerUpdateParameters,
-                Context.NONE)
+            .updateWithResponse(resourceGroupName, clusterManagerName, updateIfMatch, updateIfNoneMatch,
+                updateClusterManagerUpdateParameters, Context.NONE)
             .getValue();
         return this;
     }
@@ -176,7 +194,8 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
     public ClusterManager apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusterManagers()
-            .updateWithResponse(resourceGroupName, clusterManagerName, updateClusterManagerUpdateParameters, context)
+            .updateWithResponse(resourceGroupName, clusterManagerName, updateIfMatch, updateIfNoneMatch,
+                updateClusterManagerUpdateParameters, context)
             .getValue();
         return this;
     }
@@ -261,7 +280,27 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         return this;
     }
 
+    public ClusterManagerImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public ClusterManagerImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

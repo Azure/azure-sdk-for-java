@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
+import com.azure.resourcemanager.compute.models.ScheduleProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Map;
 public final class CapacityReservationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
      */
     /**
@@ -34,6 +35,54 @@ public final class CapacityReservationsCreateOrUpdateSamples {
                     .withTags(mapOf("department", "HR"))
                     .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L))
                     .withZones(Arrays.asList("1")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a targeted capacity reservation.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createOrUpdateATargetedCapacityReservation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate("myResourceGroup", "targetedCapacityReservationGroup", "targetedCapacityReservation",
+                new CapacityReservationInner().withLocation("westus")
+                    .withTags(mapOf("department", "HR"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L))
+                    .withZones(Arrays.asList("1")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a block capacity reservation.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateABlockCapacityReservation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate("myResourceGroup", "blockCapacityReservationGroup", "blockCapacityReservation",
+                new CapacityReservationInner().withLocation("westus")
+                    .withTags(mapOf("department", "HR"))
+                    .withSku(new Sku().withName("Standard_ND96isr_H100_v5").withCapacity(1L))
+                    .withZones(Arrays.asList("1"))
+                    .withScheduleProfile(new ScheduleProfile().withStart("2025-08-01").withEnd("2025-08-02")),
                 com.azure.core.util.Context.NONE);
     }
 

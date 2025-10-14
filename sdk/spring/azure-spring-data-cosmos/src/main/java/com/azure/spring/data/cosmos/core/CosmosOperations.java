@@ -372,10 +372,9 @@ public interface CosmosOperations {
      *
      * @param querySpec the document query spec
      * @param containerName the container name
-     * @param <T> type class of domainType
      * @return sum result
      */
-    <T> long sum(SqlQuerySpec querySpec, String containerName);
+    long sum(SqlQuerySpec querySpec, String containerName);
 
     /**
      * To get converter

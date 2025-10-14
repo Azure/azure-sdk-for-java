@@ -98,7 +98,7 @@ public final class ChatCompletionsToolCallSample {
                 System.out.println("Date: " + parameters.date);
                 String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
-                ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(functionCallResult, toolCallId);
+                ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(toolCallId).setContent(functionCallResult);
 
                 chatMessages.add(toolRequestMessage);
             }

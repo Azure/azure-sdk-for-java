@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,42 +22,93 @@ public class TeradataLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Teradata";
 
     /*
      * Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * AuthenticationType to be used for connection.
      */
+    @Generated
     private TeradataAuthenticationType authenticationType;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password for authentication.
      */
+    @Generated
     private SecretBase password;
+
+    /*
+     * SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”, “Require”, “Verify-CA”,
+     * “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with resultType string). Only applied
+     * for version 2.0.
+     */
+    @Generated
+    private Object sslMode;
+
+    /*
+     * The port numbers when connecting to server through non HTTPS/TLS connections. Type: integer (or Expression with
+     * resultType integer). Only used for V2. Only applied for version 2.0.
+     */
+    @Generated
+    private Object portNumber;
+
+    /*
+     * The port numbers when connecting to server through HTTPS/TLS connections. Type: integer (or Expression with
+     * resultType integer). Only applied for version 2.0.
+     */
+    @Generated
+    private Object httpsPortNumber;
+
+    /*
+     * Specifies whether to encrypt all communication with the Teradata database. Allowed values are 0 or 1. This
+     * setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression with resultType integer). Only
+     * applied for version 2.0.
+     */
+    @Generated
+    private Object useDataEncryption;
+
+    /*
+     * The character set to use for the connection. Type: string (or Expression with resultType string). Only applied
+     * for version 2.0.
+     */
+    @Generated
+    private Object characterSet;
+
+    /*
+     * The maximum size of the response buffer for SQL requests, in bytes. Type: integer. Only applied for version 2.0.
+     */
+    @Generated
+    private Object maxRespSize;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of TeradataLinkedService class.
      */
+    @Generated
     public TeradataLinkedService() {
     }
 
@@ -65,6 +117,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -76,6 +129,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -87,6 +141,7 @@ public class TeradataLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the TeradataLinkedService object itself.
      */
+    @Generated
     public TeradataLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -97,6 +152,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -107,6 +163,7 @@ public class TeradataLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the TeradataLinkedService object itself.
      */
+    @Generated
     public TeradataLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -117,6 +174,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public TeradataAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -127,6 +185,7 @@ public class TeradataLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the TeradataLinkedService object itself.
      */
+    @Generated
     public TeradataLinkedService setAuthenticationType(TeradataAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -137,6 +196,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -147,6 +207,7 @@ public class TeradataLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the TeradataLinkedService object itself.
      */
+    @Generated
     public TeradataLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -157,6 +218,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -167,8 +229,157 @@ public class TeradataLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the TeradataLinkedService object itself.
      */
+    @Generated
     public TeradataLinkedService setPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”,
+     * “Require”, “Verify-CA”, “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @return the sslMode value.
+     */
+    @Generated
+    public Object getSslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”,
+     * “Require”, “Verify-CA”, “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    @Generated
+    public TeradataLinkedService setSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the portNumber property: The port numbers when connecting to server through non HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only used for V2. Only applied for version 2.0.
+     * 
+     * @return the portNumber value.
+     */
+    @Generated
+    public Object getPortNumber() {
+        return this.portNumber;
+    }
+
+    /**
+     * Set the portNumber property: The port numbers when connecting to server through non HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only used for V2. Only applied for version 2.0.
+     * 
+     * @param portNumber the portNumber value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    @Generated
+    public TeradataLinkedService setPortNumber(Object portNumber) {
+        this.portNumber = portNumber;
+        return this;
+    }
+
+    /**
+     * Get the httpsPortNumber property: The port numbers when connecting to server through HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only applied for version 2.0.
+     * 
+     * @return the httpsPortNumber value.
+     */
+    @Generated
+    public Object getHttpsPortNumber() {
+        return this.httpsPortNumber;
+    }
+
+    /**
+     * Set the httpsPortNumber property: The port numbers when connecting to server through HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only applied for version 2.0.
+     * 
+     * @param httpsPortNumber the httpsPortNumber value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    @Generated
+    public TeradataLinkedService setHttpsPortNumber(Object httpsPortNumber) {
+        this.httpsPortNumber = httpsPortNumber;
+        return this;
+    }
+
+    /**
+     * Get the useDataEncryption property: Specifies whether to encrypt all communication with the Teradata database.
+     * Allowed values are 0 or 1. This setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression
+     * with resultType integer). Only applied for version 2.0.
+     * 
+     * @return the useDataEncryption value.
+     */
+    @Generated
+    public Object getUseDataEncryption() {
+        return this.useDataEncryption;
+    }
+
+    /**
+     * Set the useDataEncryption property: Specifies whether to encrypt all communication with the Teradata database.
+     * Allowed values are 0 or 1. This setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression
+     * with resultType integer). Only applied for version 2.0.
+     * 
+     * @param useDataEncryption the useDataEncryption value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    @Generated
+    public TeradataLinkedService setUseDataEncryption(Object useDataEncryption) {
+        this.useDataEncryption = useDataEncryption;
+        return this;
+    }
+
+    /**
+     * Get the characterSet property: The character set to use for the connection. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @return the characterSet value.
+     */
+    @Generated
+    public Object getCharacterSet() {
+        return this.characterSet;
+    }
+
+    /**
+     * Set the characterSet property: The character set to use for the connection. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @param characterSet the characterSet value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    @Generated
+    public TeradataLinkedService setCharacterSet(Object characterSet) {
+        this.characterSet = characterSet;
+        return this;
+    }
+
+    /**
+     * Get the maxRespSize property: The maximum size of the response buffer for SQL requests, in bytes. Type: integer.
+     * Only applied for version 2.0.
+     * 
+     * @return the maxRespSize value.
+     */
+    @Generated
+    public Object getMaxRespSize() {
+        return this.maxRespSize;
+    }
+
+    /**
+     * Set the maxRespSize property: The maximum size of the response buffer for SQL requests, in bytes. Type: integer.
+     * Only applied for version 2.0.
+     * 
+     * @param maxRespSize the maxRespSize value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    @Generated
+    public TeradataLinkedService setMaxRespSize(Object maxRespSize) {
+        this.maxRespSize = maxRespSize;
         return this;
     }
 
@@ -178,6 +389,7 @@ public class TeradataLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -189,6 +401,7 @@ public class TeradataLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the TeradataLinkedService object itself.
      */
+    @Generated
     public TeradataLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -197,6 +410,17 @@ public class TeradataLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public TeradataLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public TeradataLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -206,6 +430,7 @@ public class TeradataLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -215,6 +440,7 @@ public class TeradataLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -224,6 +450,7 @@ public class TeradataLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -233,9 +460,11 @@ public class TeradataLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -246,15 +475,47 @@ public class TeradataLinkedService extends LinkedService {
             || authenticationType != null
             || username != null
             || password != null
+            || sslMode != null
+            || portNumber != null
+            || httpsPortNumber != null
+            || useDataEncryption != null
+            || characterSet != null
+            || maxRespSize != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
-            jsonWriter.writeUntypedField("server", this.server);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
+            if (this.server != null) {
+                jsonWriter.writeUntypedField("server", this.server);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.sslMode != null) {
+                jsonWriter.writeUntypedField("sslMode", this.sslMode);
+            }
+            if (this.portNumber != null) {
+                jsonWriter.writeUntypedField("portNumber", this.portNumber);
+            }
+            if (this.httpsPortNumber != null) {
+                jsonWriter.writeUntypedField("httpsPortNumber", this.httpsPortNumber);
+            }
+            if (this.useDataEncryption != null) {
+                jsonWriter.writeUntypedField("useDataEncryption", this.useDataEncryption);
+            }
+            if (this.characterSet != null) {
+                jsonWriter.writeUntypedField("characterSet", this.characterSet);
+            }
+            if (this.maxRespSize != null) {
+                jsonWriter.writeUntypedField("maxRespSize", this.maxRespSize);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -273,6 +534,7 @@ public class TeradataLinkedService extends LinkedService {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TeradataLinkedService.
      */
+    @Generated
     public static TeradataLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TeradataLinkedService deserializedTeradataLinkedService = new TeradataLinkedService();
@@ -281,7 +543,9 @@ public class TeradataLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedTeradataLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedTeradataLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedTeradataLinkedService.setDescription(reader.getString());
@@ -310,6 +574,18 @@ public class TeradataLinkedService extends LinkedService {
                             deserializedTeradataLinkedService.username = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
                             deserializedTeradataLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("sslMode".equals(fieldName)) {
+                            deserializedTeradataLinkedService.sslMode = reader.readUntyped();
+                        } else if ("portNumber".equals(fieldName)) {
+                            deserializedTeradataLinkedService.portNumber = reader.readUntyped();
+                        } else if ("httpsPortNumber".equals(fieldName)) {
+                            deserializedTeradataLinkedService.httpsPortNumber = reader.readUntyped();
+                        } else if ("useDataEncryption".equals(fieldName)) {
+                            deserializedTeradataLinkedService.useDataEncryption = reader.readUntyped();
+                        } else if ("characterSet".equals(fieldName)) {
+                            deserializedTeradataLinkedService.characterSet = reader.readUntyped();
+                        } else if ("maxRespSize".equals(fieldName)) {
+                            deserializedTeradataLinkedService.maxRespSize = reader.readUntyped();
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedTeradataLinkedService.encryptedCredential = reader.readUntyped();
                         } else {

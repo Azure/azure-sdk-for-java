@@ -13,21 +13,21 @@ public final class DeletedServiceContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedServiceContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"serviceId\":\"xe\",\"scheduledPurgeDate\":\"2021-09-03T04:13:50Z\",\"deletionDate\":\"2021-08-28T14:18:59Z\"},\"location\":\"e\",\"id\":\"kldmaxxijv\",\"name\":\"kwsdgkj\",\"type\":\"yacwrasekwefc\"}")
+            "{\"properties\":{\"serviceId\":\"fxnxml\",\"scheduledPurgeDate\":\"2021-05-22T00:14:10Z\",\"deletionDate\":\"2021-03-13T07:11:16Z\"},\"location\":\"kjmdihdcyy\",\"id\":\"zlwhbwzjnufzrfgm\",\"name\":\"qgnnbz\",\"type\":\"tftedz\"}")
             .toObject(DeletedServiceContractInner.class);
-        Assertions.assertEquals("xe", model.serviceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T04:13:50Z"), model.scheduledPurgeDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T14:18:59Z"), model.deletionDate());
+        Assertions.assertEquals("fxnxml", model.serviceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T00:14:10Z"), model.scheduledPurgeDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T07:11:16Z"), model.deletionDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeletedServiceContractInner model = new DeletedServiceContractInner().withServiceId("xe")
-            .withScheduledPurgeDate(OffsetDateTime.parse("2021-09-03T04:13:50Z"))
-            .withDeletionDate(OffsetDateTime.parse("2021-08-28T14:18:59Z"));
+        DeletedServiceContractInner model = new DeletedServiceContractInner().withServiceId("fxnxml")
+            .withScheduledPurgeDate(OffsetDateTime.parse("2021-05-22T00:14:10Z"))
+            .withDeletionDate(OffsetDateTime.parse("2021-03-13T07:11:16Z"));
         model = BinaryData.fromObject(model).toObject(DeletedServiceContractInner.class);
-        Assertions.assertEquals("xe", model.serviceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T04:13:50Z"), model.scheduledPurgeDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T14:18:59Z"), model.deletionDate());
+        Assertions.assertEquals("fxnxml", model.serviceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T00:14:10Z"), model.scheduledPurgeDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T07:11:16Z"), model.deletionDate());
     }
 }

@@ -13,18 +13,18 @@ public final class ApiManagementServiceSkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiManagementServiceSkuProperties model
-            = BinaryData.fromString("{\"name\":\"Isolated\",\"capacity\":988609328}")
+            = BinaryData.fromString("{\"name\":\"StandardV2\",\"capacity\":1972815156}")
                 .toObject(ApiManagementServiceSkuProperties.class);
-        Assertions.assertEquals(SkuType.ISOLATED, model.name());
-        Assertions.assertEquals(988609328, model.capacity());
+        Assertions.assertEquals(SkuType.STANDARD_V2, model.name());
+        Assertions.assertEquals(1972815156, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiManagementServiceSkuProperties model
-            = new ApiManagementServiceSkuProperties().withName(SkuType.ISOLATED).withCapacity(988609328);
+            = new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD_V2).withCapacity(1972815156);
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceSkuProperties.class);
-        Assertions.assertEquals(SkuType.ISOLATED, model.name());
-        Assertions.assertEquals(988609328, model.capacity());
+        Assertions.assertEquals(SkuType.STANDARD_V2, model.name());
+        Assertions.assertEquals(1972815156, model.capacity());
     }
 }

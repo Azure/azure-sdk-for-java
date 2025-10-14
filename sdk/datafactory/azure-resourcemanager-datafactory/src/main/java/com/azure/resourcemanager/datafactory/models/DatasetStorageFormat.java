@@ -128,8 +128,12 @@ public class DatasetStorageFormat implements JsonSerializable<DatasetStorageForm
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("serializer", this.serializer);
-        jsonWriter.writeUntypedField("deserializer", this.deserializer);
+        if (this.serializer != null) {
+            jsonWriter.writeUntypedField("serializer", this.serializer);
+        }
+        if (this.deserializer != null) {
+            jsonWriter.writeUntypedField("deserializer", this.deserializer);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

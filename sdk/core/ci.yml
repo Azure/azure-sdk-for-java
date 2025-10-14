@@ -42,10 +42,6 @@ parameters:
     displayName: 'azure-core-amqp'
     type: boolean
     default: true
-  - name: release_azurecoreamqpexperimental
-    displayName: 'azure-core-amqp-experimental'
-    type: boolean
-    default: false
   - name: release_azurecoreexperimental
     displayName: 'azure-core-experimental'
     type: boolean
@@ -106,14 +102,13 @@ extends:
         groupId: com.azure
         safeName: azurecore
         releaseInBatch: ${{ parameters.release_azurecore }}
+        triggeringPaths:
+        - /sdk/parents/azure-sdk-parent
+        - /sdk/parents/azure-client-sdk-parent
       - name: azure-core-amqp
         groupId: com.azure
         safeName: azurecoreamqp
         releaseInBatch: ${{ parameters.release_azurecoreamqp }}
-      - name: azure-core-amqp-experimental
-        groupId: com.azure
-        safeName: azurecoreamqpexperimental
-        releaseInBatch: ${{ parameters.release_azurecoreamqpexperimental }}
       - name: azure-core-experimental
         groupId: com.azure
         safeName: azurecoreexperimental
@@ -170,36 +165,30 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
-    AdditionalStagesAfterBuild:
-      - stage: DependencyVersionOverridesTests
-        displayName: 'Dependency Version Overrides'
-        dependsOn: []
-        jobs:
-          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
-            parameters:
-              Artifacts:
-                - name: azure-core-version-tests
-                  groupId: com.azure
-                  safeName: azurecoreversiontests
-              VersionOverrides:
-                - jackson_2.10
-                - jackson_2.11
-                - jackson_2.12
-                - jackson_2.13
-                - jackson_2.14
-                - jackson_2.15
-                - jackson_2.16
-                - jackson_2.17
-                - jackson_2.18
-                - reactor_2020
-                - reactor_2022
-                - reactor_2023
-                - reactor_2024
-              TestGoals: surefire:test
+
+    # This needs to be temporarily here for the PR pipeline.
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
+    # Run separate version override tests using a different artifacts list
+    # This matrix config overrides the ArtifactsJson variable
+    AdditionalMatrixConfigs:
+      - Name: version_overrides_tests
+        Path: sdk/core/version-overrides-matrix.json
+        Selection: all
+        PRBatching: false
+        GenerateVMJobs: true
+      - Name: version_overrides_vertx_tests
+        Path: sdk/core/version-overrides-vertx-matrix.json
+        Selection: all
+        PRBatching: false
+        GenerateVMJobs: true
 
     LiveTestStages:
       - template: /sdk/storage/tests-template.yml
         parameters:
           AdditionalMatrixReplace:
             - TestFromSource=(.*)/true
-

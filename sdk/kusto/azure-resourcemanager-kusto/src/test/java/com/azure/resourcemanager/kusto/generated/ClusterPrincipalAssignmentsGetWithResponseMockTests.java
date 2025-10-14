@@ -23,7 +23,7 @@ public final class ClusterPrincipalAssignmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalId\":\"vwf\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"yxonsupe\",\"principalType\":\"User\",\"tenantName\":\"zqn\",\"principalName\":\"vsqltnzoibgsxg\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"qonmpqoxwdof\"},\"id\":\"bxiqxeiiqbimht\",\"name\":\"wwinhehf\",\"type\":\"pofvwb\"}";
+            = "{\"properties\":{\"principalId\":\"ninwjizc\",\"role\":\"AllDatabasesMonitor\",\"tenantId\":\"ghgshejjtbxqmu\",\"principalType\":\"Group\",\"tenantName\":\"lxqzvn\",\"principalName\":\"sbycucrwnamikz\",\"provisioningState\":\"Failed\",\"aadObjectId\":\"bsmswziqgf\"},\"id\":\"hokzrusw\",\"name\":\"vhczznvfby\",\"type\":\"jsxjwwix\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class ClusterPrincipalAssignmentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterPrincipalAssignment response = manager.clusterPrincipalAssignments()
-            .getWithResponse("oi", "knsmjblmljhlnymz", "tqyryuzcbmqqv", com.azure.core.util.Context.NONE)
+            .getWithResponse("pqwhixmonst", "hiyxgvelfclduc", "birdsvuwcobiegs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vwf", response.principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, response.role());
-        Assertions.assertEquals("yxonsupe", response.tenantId());
-        Assertions.assertEquals(PrincipalType.USER, response.principalType());
+        Assertions.assertEquals("ninwjizc", response.principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_MONITOR, response.role());
+        Assertions.assertEquals("ghgshejjtbxqmu", response.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
     }
 }

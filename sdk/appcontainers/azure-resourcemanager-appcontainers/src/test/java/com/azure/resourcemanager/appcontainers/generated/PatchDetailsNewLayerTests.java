@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchDetailsNewLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchDetailsNewLayer model = BinaryData
-            .fromString(
-                "{\"name\":\"jdhttzaefedxi\",\"frameworkAndVersion\":\"hrphkmcrjdqn\",\"osAndVersion\":\"fzpbgtgkyl\"}")
-            .toObject(PatchDetailsNewLayer.class);
-        Assertions.assertEquals("jdhttzaefedxi", model.name());
-        Assertions.assertEquals("hrphkmcrjdqn", model.frameworkAndVersion());
-        Assertions.assertEquals("fzpbgtgkyl", model.osAndVersion());
+        PatchDetailsNewLayer model
+            = BinaryData.fromString("{\"name\":\"gclrci\",\"frameworkAndVersion\":\"soxfrken\",\"osAndVersion\":\"m\"}")
+                .toObject(PatchDetailsNewLayer.class);
+        Assertions.assertEquals("gclrci", model.name());
+        Assertions.assertEquals("soxfrken", model.frameworkAndVersion());
+        Assertions.assertEquals("m", model.osAndVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchDetailsNewLayer model = new PatchDetailsNewLayer().withName("jdhttzaefedxi")
-            .withFrameworkAndVersion("hrphkmcrjdqn")
-            .withOsAndVersion("fzpbgtgkyl");
+        PatchDetailsNewLayer model
+            = new PatchDetailsNewLayer().withName("gclrci").withFrameworkAndVersion("soxfrken").withOsAndVersion("m");
         model = BinaryData.fromObject(model).toObject(PatchDetailsNewLayer.class);
-        Assertions.assertEquals("jdhttzaefedxi", model.name());
-        Assertions.assertEquals("hrphkmcrjdqn", model.frameworkAndVersion());
-        Assertions.assertEquals("fzpbgtgkyl", model.osAndVersion());
+        Assertions.assertEquals("gclrci", model.name());
+        Assertions.assertEquals("soxfrken", model.frameworkAndVersion());
+        Assertions.assertEquals("m", model.osAndVersion());
     }
 }

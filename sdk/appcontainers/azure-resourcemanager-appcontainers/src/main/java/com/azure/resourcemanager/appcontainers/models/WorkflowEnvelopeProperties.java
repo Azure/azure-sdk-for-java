@@ -114,7 +114,9 @@ public final class WorkflowEnvelopeProperties implements JsonSerializable<Workfl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("files", this.files);
+        if (this.files != null) {
+            jsonWriter.writeUntypedField("files", this.files);
+        }
         jsonWriter.writeStringField("flowState", this.flowState == null ? null : this.flowState.toString());
         jsonWriter.writeJsonField("health", this.health);
         return jsonWriter.writeEndObject();

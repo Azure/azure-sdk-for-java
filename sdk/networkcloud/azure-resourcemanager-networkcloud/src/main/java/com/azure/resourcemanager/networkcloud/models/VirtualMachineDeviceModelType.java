@@ -22,6 +22,11 @@ public final class VirtualMachineDeviceModelType extends ExpandableStringEnum<Vi
     public static final VirtualMachineDeviceModelType T2 = fromString("T2");
 
     /**
+     * Static value T3 for VirtualMachineDeviceModelType.
+     */
+    public static final VirtualMachineDeviceModelType T3 = fromString("T3");
+
+    /**
      * Creates a new instance of VirtualMachineDeviceModelType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

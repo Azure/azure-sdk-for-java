@@ -52,7 +52,7 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRedshiftLinkedServiceTypeProperties innerTypeProperties() {
+    AmazonRedshiftLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

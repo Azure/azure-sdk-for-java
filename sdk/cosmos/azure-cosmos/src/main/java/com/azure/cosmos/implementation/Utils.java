@@ -6,12 +6,10 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.uuid.EthernetAddress;
-import com.azure.cosmos.implementation.uuid.Generators;
-import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -77,6 +75,10 @@ public class Utils {
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
 
+    public static final Duration ONE_SECOND = Duration.ofSeconds(1);
+    public static final Duration HALF_SECOND = Duration.ofMillis(500);
+    public static final Duration SIX_SECONDS = Duration.ofSeconds(6);
+
     private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
         createAndInitializeObjectMapper(true);
     private static final ObjectMapper simpleObjectMapperDisallowingDuplicatedProperties =
@@ -84,12 +86,31 @@ public class Utils {
 
     private static final ObjectMapper durationEnabledObjectMapper = createAndInitializeDurationObjectMapper();
     private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
-    private static final TimeBasedGenerator TIME_BASED_GENERATOR =
-            Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
+
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
         new AtomicReference<>(null);
+
+    public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
+        if (Strings.isNullOrEmpty(serializationInclusionMode)) {
+            return simpleObjectMapper;
+        } else if ("Always".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        } else if ("NonNull".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        } else if ("NonEmpty".equalsIgnoreCase(serializationInclusionMode)) {
+        return createAndInitializeObjectMapper(false)
+            .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        } else if ("NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        }
+
+        return simpleObjectMapper;
+    }
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
@@ -370,7 +391,7 @@ public class Utils {
 
     public static boolean isWriteOperation(OperationType operationType) {
         return operationType == OperationType.Create || operationType == OperationType.Upsert || operationType == OperationType.Delete || operationType == OperationType.Replace
-                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch;
+                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch || operationType == OperationType.Patch;
     }
 
     private static String addTrailingSlash(String path) {
@@ -461,10 +482,6 @@ public class Utils {
     public static String nowAsRFC1123() {
         ZonedDateTime now = ZonedDateTime.now(GMT_ZONE_ID);
         return Utils.RFC_1123_DATE_TIME.format(now);
-    }
-
-    public static UUID randomUUID() {
-        return TIME_BASED_GENERATOR.generate();
     }
 
     public static String instantAsUTCRFC1123(Instant instant){
@@ -674,6 +691,7 @@ public class Utils {
         boolean isIdValidationEnabled) {
 
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
+
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
@@ -688,6 +706,7 @@ public class Utils {
                 onAfterSerialization.accept(jsonTreeMap);
             }
 
+            ObjectMapper mapper = ensureItemSerializerAccessor().getItemObjectMapper(serializer);
             JsonNode jsonNode;
 
             if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
@@ -695,10 +714,10 @@ public class Utils {
             } else if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
-                jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
+                jsonNode = mapper.convertValue(jsonTreeMap, JsonNode.class);
             }
 
-            simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
+            mapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
@@ -784,5 +803,15 @@ public class Utils {
                     String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
 
         return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
+    }
+
+    public static Duration min(Duration duration1, Duration duration2) {
+        if (duration1 == null) {
+            return duration2;
+        } else if (duration2 == null) {
+            return duration1;
+        } else {
+            return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
+        }
     }
 }

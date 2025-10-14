@@ -29,8 +29,11 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.UsersClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GenerateSsoUrlResultInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserContractInner;
@@ -44,6 +47,8 @@ import com.azure.resourcemanager.apimanagement.models.UsersCreateOrUpdateRespons
 import com.azure.resourcemanager.apimanagement.models.UsersGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersGetResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersUpdateResponse;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -130,9 +135,9 @@ public final class UsersClientImpl implements UsersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("userId") String userId, @QueryParam("deleteSubscriptions") Boolean deleteSubscriptions,
             @QueryParam("notify") Boolean notify, @HeaderParam("If-Match") String ifMatch,
@@ -992,8 +997,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String userId,
-        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1042,8 +1047,8 @@ public final class UsersClientImpl implements UsersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String userId,
-        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1079,18 +1084,47 @@ public final class UsersClientImpl implements UsersClient {
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
+     * @param deleteSubscriptions Whether to delete user's subscription or not.
+     * @param notify Send an Account Closed Email notification to the User.
+     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
+     * portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String userId, String ifMatch) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch,
+            deleteSubscriptions, notify, appType);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch) {
         final Boolean deleteSubscriptions = null;
         final Boolean notify = null;
         final AppType appType = null;
-        return deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify,
-            appType).flatMap(ignored -> Mono.empty());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch,
+            deleteSubscriptions, notify, appType);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1109,13 +1143,140 @@ public final class UsersClientImpl implements UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String userId, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch,
+            deleteSubscriptions, notify, appType, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String userId,
+        String ifMatch) {
+        final Boolean deleteSubscriptions = null;
+        final Boolean notify = null;
+        final AppType appType = null;
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteSubscriptions Whether to delete user's subscription or not.
+     * @param notify Send an Account Closed Email notification to the User.
+     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
+     * portal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String userId,
+        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteSubscriptions Whether to delete user's subscription or not.
+     * @param notify Send an Account Closed Email notification to the User.
+     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
+     * portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId,
-        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify,
-            appType, context).block();
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType) {
+        return beginDeleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String userId, String ifMatch) {
+        final Boolean deleteSubscriptions = null;
+        final Boolean notify = null;
+        final AppType appType = null;
+        return beginDeleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteSubscriptions Whether to delete user's subscription or not.
+     * @param notify Send an Account Closed Email notification to the User.
+     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
+     * portal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1135,8 +1296,31 @@ public final class UsersClientImpl implements UsersClient {
         final Boolean deleteSubscriptions = null;
         final Boolean notify = null;
         final AppType appType = null;
-        deleteWithResponse(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType,
-            Context.NONE);
+        deleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType).block();
+    }
+
+    /**
+     * Deletes specific user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteSubscriptions Whether to delete user's subscription or not.
+     * @param notify Send an Account Closed Email notification to the User.
+     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
+     * portal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+        deleteAsync(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType, context)
+            .block();
     }
 
     /**

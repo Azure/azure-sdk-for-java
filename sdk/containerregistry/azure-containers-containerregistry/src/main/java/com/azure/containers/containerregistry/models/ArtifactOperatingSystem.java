@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,71 +15,85 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
     /**
      * Static value aix for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem AIX = fromString("aix");
 
     /**
      * Static value android for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem ANDROID = fromString("android");
 
     /**
      * Static value darwin for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem DARWIN = fromString("darwin");
 
     /**
      * Static value dragonfly for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem DRAGONFLY = fromString("dragonfly");
 
     /**
      * Static value freebsd for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem FREE_BSD = fromString("freebsd");
 
     /**
      * Static value illumos for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem ILLUMOS = fromString("illumos");
 
     /**
      * Static value ios for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem IOS = fromString("ios");
 
     /**
      * Static value js for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem JS = fromString("js");
 
     /**
      * Static value linux for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem LINUX = fromString("linux");
 
     /**
      * Static value netbsd for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem NET_BSD = fromString("netbsd");
 
     /**
      * Static value openbsd for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem OPEN_BSD = fromString("openbsd");
 
     /**
      * Static value plan9 for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem PLAN9 = fromString("plan9");
 
     /**
      * Static value solaris for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem SOLARIS = fromString("solaris");
 
     /**
      * Static value windows for ArtifactOperatingSystem.
      */
+    @Generated
     public static final ArtifactOperatingSystem WINDOWS = fromString("windows");
 
     /**
@@ -86,6 +101,7 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ArtifactOperatingSystem() {
     }
@@ -96,6 +112,7 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
      * @param name a name to look for.
      * @return the corresponding ArtifactOperatingSystem.
      */
+    @Generated
     public static ArtifactOperatingSystem fromString(String name) {
         return fromString(name, ArtifactOperatingSystem.class);
     }
@@ -105,6 +122,7 @@ public final class ArtifactOperatingSystem extends ExpandableStringEnum<Artifact
      * 
      * @return known ArtifactOperatingSystem values.
      */
+    @Generated
     public static Collection<ArtifactOperatingSystem> values() {
         return values(ArtifactOperatingSystem.class);
     }

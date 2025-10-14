@@ -17,10 +17,10 @@ public class TriggersDeleteTrigger {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildTriggersClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.triggersdeletetrigger.triggersdeletetrigger
+        // BEGIN:com.azure.analytics.purview.scanning.generated.triggers-delete-trigger.triggers-delete-trigger
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = triggersClient.deleteTriggerWithResponse("DataSource1", "Scan1", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.triggersdeletetrigger.triggersdeletetrigger
+        // END:com.azure.analytics.purview.scanning.generated.triggers-delete-trigger.triggers-delete-trigger
     }
 }

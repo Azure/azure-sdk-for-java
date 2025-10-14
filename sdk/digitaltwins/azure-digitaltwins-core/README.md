@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -138,16 +138,16 @@ For more information see the Code of Conduct FAQ or contact opencode@microsoft.c
 
 <!-- LINKS -->
 [microsoft_sdk_download]: https://azure.microsoft.com/downloads/?sdk=java
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [nuget]: https://www.nuget.org/
 [azure_portal]: https://portal.azure.com/
-[azure_rest_api]: https://docs.microsoft.com/rest/api/azure/
+[azure_rest_api]: https://learn.microsoft.com/rest/api/azure/
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core
-[token_credential]: https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable
-[digital_twins_documentation]: https://docs.microsoft.com/azure/digital-twins/
-[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest
+[token_credential]: https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable
+[digital_twins_documentation]: https://learn.microsoft.com/azure/digital-twins/
+[azure_cli]: https://learn.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest
 [iot_cli_extension]: https://github.com/Azure/azure-iot-cli-extension/releases
-[iot_cli_doc]: https://docs.microsoft.com/cli/azure/ext/azure-iot/dt?view=azure-cli-latest
+[iot_cli_doc]: https://learn.microsoft.com/cli/azure/ext/azure-iot/dt?view=azure-cli-latest

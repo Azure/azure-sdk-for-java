@@ -13,24 +13,24 @@ public final class GroupUpdateParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupUpdateParametersProperties model = BinaryData.fromString(
-            "{\"displayName\":\"ptkbvcpxtzhi\",\"description\":\"qbtimpk\",\"type\":\"external\",\"externalId\":\"rnsihqhudsmus\"}")
+            "{\"displayName\":\"samonat\",\"description\":\"zexroqsqjgh\",\"type\":\"system\",\"externalId\":\"splwsttxs\"}")
             .toObject(GroupUpdateParametersProperties.class);
-        Assertions.assertEquals("ptkbvcpxtzhi", model.displayName());
-        Assertions.assertEquals("qbtimpk", model.description());
-        Assertions.assertEquals(GroupType.EXTERNAL, model.type());
-        Assertions.assertEquals("rnsihqhudsmus", model.externalId());
+        Assertions.assertEquals("samonat", model.displayName());
+        Assertions.assertEquals("zexroqsqjgh", model.description());
+        Assertions.assertEquals(GroupType.SYSTEM, model.type());
+        Assertions.assertEquals("splwsttxs", model.externalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupUpdateParametersProperties model = new GroupUpdateParametersProperties().withDisplayName("ptkbvcpxtzhi")
-            .withDescription("qbtimpk")
-            .withType(GroupType.EXTERNAL)
-            .withExternalId("rnsihqhudsmus");
+        GroupUpdateParametersProperties model = new GroupUpdateParametersProperties().withDisplayName("samonat")
+            .withDescription("zexroqsqjgh")
+            .withType(GroupType.SYSTEM)
+            .withExternalId("splwsttxs");
         model = BinaryData.fromObject(model).toObject(GroupUpdateParametersProperties.class);
-        Assertions.assertEquals("ptkbvcpxtzhi", model.displayName());
-        Assertions.assertEquals("qbtimpk", model.description());
-        Assertions.assertEquals(GroupType.EXTERNAL, model.type());
-        Assertions.assertEquals("rnsihqhudsmus", model.externalId());
+        Assertions.assertEquals("samonat", model.displayName());
+        Assertions.assertEquals("zexroqsqjgh", model.description());
+        Assertions.assertEquals(GroupType.SYSTEM, model.type());
+        Assertions.assertEquals("splwsttxs", model.externalId());
     }
 }

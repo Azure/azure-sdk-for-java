@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemOperation;
@@ -155,7 +154,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
 
         for (int i = 0; i < operationCount; i++) {
             JsonSerializable jsonSerializable = new JsonSerializable();
-            jsonSerializable.set("abc", StringUtils.repeat("x", docSizeInBytes - 10), CosmosItemSerializer.DEFAULT_SERIALIZER);// {"abc":" + "} = 10
+            jsonSerializable.set("abc", StringUtils.repeat("x", docSizeInBytes - 10));// {"abc":" + "} = 10
 
             ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
                 CosmosItemOperationType.CREATE,

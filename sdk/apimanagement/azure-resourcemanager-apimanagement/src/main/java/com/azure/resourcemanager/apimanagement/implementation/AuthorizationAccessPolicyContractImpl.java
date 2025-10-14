@@ -7,6 +7,8 @@ package com.azure.resourcemanager.apimanagement.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationAccessPolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicyContract;
+import java.util.Collections;
+import java.util.List;
 
 public final class AuthorizationAccessPolicyContractImpl implements AuthorizationAccessPolicyContract,
     AuthorizationAccessPolicyContract.Definition, AuthorizationAccessPolicyContract.Update {
@@ -24,6 +26,15 @@ public final class AuthorizationAccessPolicyContractImpl implements Authorizatio
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public List<String> appIds() {
+        List<String> inner = this.innerModel().appIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String tenantId() {
@@ -146,6 +157,11 @@ public final class AuthorizationAccessPolicyContractImpl implements Authorizatio
             .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
                 authorizationAccessPolicyId, context)
             .getValue();
+        return this;
+    }
+
+    public AuthorizationAccessPolicyContractImpl withAppIds(List<String> appIds) {
+        this.innerModel().withAppIds(appIds);
         return this;
     }
 

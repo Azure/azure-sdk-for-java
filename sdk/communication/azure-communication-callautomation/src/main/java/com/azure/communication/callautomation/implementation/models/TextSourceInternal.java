@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,33 +20,41 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
     /*
      * Text for the cognitive service to be played
      */
+    @Generated
     private String text;
 
     /*
      * Source language locale to be played
-     * Refer to available locales here: <seealso href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
+     * Refer to available locales here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
      */
+    @Generated
     private String sourceLocale;
 
     /*
      * Voice kind type
      */
+    @Generated
     private VoiceKindInternal voiceKind;
 
     /*
      * Voice name to be played
-     * Refer to available Text-to-speech voices here: <seealso href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
+     * Refer to available Text-to-speech voices here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
      */
+    @Generated
     private String voiceName;
 
     /*
      * Endpoint where the custom voice was deployed.
      */
+    @Generated
     private String customVoiceEndpointId;
 
     /**
      * Creates an instance of TextSourceInternal class.
      */
+    @Generated
     public TextSourceInternal() {
     }
 
@@ -54,6 +63,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -64,6 +74,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * @param text the text value to set.
      * @return the TextSourceInternal object itself.
      */
+    @Generated
     public TextSourceInternal setText(String text) {
         this.text = text;
         return this;
@@ -77,6 +88,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * 
      * @return the sourceLocale value.
      */
+    @Generated
     public String getSourceLocale() {
         return this.sourceLocale;
     }
@@ -90,6 +102,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * @param sourceLocale the sourceLocale value to set.
      * @return the TextSourceInternal object itself.
      */
+    @Generated
     public TextSourceInternal setSourceLocale(String sourceLocale) {
         this.sourceLocale = sourceLocale;
         return this;
@@ -100,6 +113,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * 
      * @return the voiceKind value.
      */
+    @Generated
     public VoiceKindInternal getVoiceKind() {
         return this.voiceKind;
     }
@@ -110,6 +124,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * @param voiceKind the voiceKind value to set.
      * @return the TextSourceInternal object itself.
      */
+    @Generated
     public TextSourceInternal setVoiceKind(VoiceKindInternal voiceKind) {
         this.voiceKind = voiceKind;
         return this;
@@ -123,6 +138,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * 
      * @return the voiceName value.
      */
+    @Generated
     public String getVoiceName() {
         return this.voiceName;
     }
@@ -136,6 +152,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * @param voiceName the voiceName value to set.
      * @return the TextSourceInternal object itself.
      */
+    @Generated
     public TextSourceInternal setVoiceName(String voiceName) {
         this.voiceName = voiceName;
         return this;
@@ -146,6 +163,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * 
      * @return the customVoiceEndpointId value.
      */
+    @Generated
     public String getCustomVoiceEndpointId() {
         return this.customVoiceEndpointId;
     }
@@ -156,6 +174,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * @param customVoiceEndpointId the customVoiceEndpointId value to set.
      * @return the TextSourceInternal object itself.
      */
+    @Generated
     public TextSourceInternal setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
@@ -164,6 +183,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -184,6 +204,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextSourceInternal.
      */
+    @Generated
     public static TextSourceInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TextSourceInternal deserializedTextSourceInternal = new TextSourceInternal();

@@ -4,6 +4,8 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,121 +23,151 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     /*
      * Date of the forecast as example, 2019-10-27T00:00:00
      */
+    @Generated
     private OffsetDateTime dateTime;
 
     /*
-     * Date and time of the beginning of the forecast quarter displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
+     * Date and time of the beginning of the forecast quarter displayed in ISO 8601 format, for example,
+     * 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime effectiveDate;
 
     /*
      * Quarter of the day.
      */
+    @Generated
     private DayQuarter quarter;
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /*
      * Phrase description of the icon. Displayed in specified language. For example, 'Sunny'.
      */
+    @Generated
     private String iconPhrase;
 
     /*
      * Short summary phrase summary for quarter.
      */
+    @Generated
     private String phrase;
 
     /*
      * Temperature values for the quarter.
      */
+    @Generated
     private WeatherValueRange temperature;
 
     /*
      * RealFeel™ Temperature values for the quarter.
      */
+    @Generated
     private WeatherValueRange realFeelTemperature;
 
     /*
-     * The dewpoint temperature in specified unit. The dewpoint temperature is the temperature that the air must be cooled to in order to reach saturation.
+     * The dewpoint temperature in specified unit. The dewpoint temperature is the temperature that the air must be
+     * cooled to in order to reach saturation.
      */
+    @Generated
     private WeatherUnitDetails dewPoint;
 
     /*
-     * Relative humidity is the amount of water vapor present in air expressed as a percentage of the amount needed for saturation at the same temperature.
+     * Relative humidity is the amount of water vapor present in air expressed as a percentage of the amount needed for
+     * saturation at the same temperature.
      */
+    @Generated
     private Integer relativeHumidity;
 
     /*
      * Wind details being returned including speed and direction.
      */
+    @Generated
     private WindDetails wind;
 
     /*
      * Wind gust. Wind gust is a sudden, brief increase in speed of the wind.
      */
+    @Generated
     private WindDetails windGust;
 
     /*
      * Visibility in specified unit. A measure of the distance at which an object or light can be clearly discerned.
      */
+    @Generated
     private WeatherUnitDetails visibility;
 
     /*
      * Percent representing cloud cover.
      */
+    @Generated
     private Integer cloudCover;
 
     /*
-     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates the absence of precipitation.
+     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates
+     * the absence of precipitation.
      */
+    @Generated
     private Boolean hasPrecipitation;
 
     /*
-     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not present in the response.
+     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not
+     * present in the response.
      */
+    @Generated
     private PrecipitationType precipitationType;
 
     /*
      * Description of the intensity.
      */
+    @Generated
     private String precipitationIntensity;
 
     /*
      * Percent representing the probability of precipitation. For example, '20'.
      */
+    @Generated
     private Integer precipitationProbability;
 
     /*
      * Percent representing the probability of a thunderstorm. For example, '10'.
      */
+    @Generated
     private Integer thunderstormProbability;
 
     /*
      * Total liquid equivalent of precipitation during the forecast period.
      */
+    @Generated
     private WeatherUnitDetails totalLiquid;
 
     /*
      * Rain
      */
+    @Generated
     private WeatherUnitDetails rain;
 
     /*
      * Snow
      */
+    @Generated
     private WeatherUnitDetails snow;
 
     /*
      * Ice
      */
+    @Generated
     private WeatherUnitDetails ice;
 
     /**
      * Set default QuarterDayForecast constructor to private
      */
+    @Generated
     private QuarterDayForecast() {
     }
 
@@ -144,6 +176,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the dateTime value.
      */
+    @Generated
     public OffsetDateTime getDateTime() {
         return this.dateTime;
     }
@@ -154,6 +187,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the effectiveDate value.
      */
+    @Generated
     public OffsetDateTime getEffectiveDate() {
         return this.effectiveDate;
     }
@@ -163,6 +197,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the quarter value.
      */
+    @Generated
     public DayQuarter getQuarter() {
         return this.quarter;
     }
@@ -173,6 +208,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -183,6 +219,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the iconPhrase value.
      */
+    @Generated
     public String getIconPhrase() {
         return this.iconPhrase;
     }
@@ -192,6 +229,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the phrase value.
      */
+    @Generated
     public String getPhrase() {
         return this.phrase;
     }
@@ -201,6 +239,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the temperature value.
      */
+    @Generated
     public WeatherValueRange getTemperature() {
         return this.temperature;
     }
@@ -210,6 +249,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the realFeelTemperature value.
      */
+    @Generated
     public WeatherValueRange getRealFeelTemperature() {
         return this.realFeelTemperature;
     }
@@ -220,6 +260,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the dewPoint value.
      */
+    @Generated
     public WeatherUnitDetails getDewPoint() {
         return this.dewPoint;
     }
@@ -230,6 +271,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the relativeHumidity value.
      */
+    @Generated
     public Integer getRelativeHumidity() {
         return this.relativeHumidity;
     }
@@ -239,6 +281,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the wind value.
      */
+    @Generated
     public WindDetails getWind() {
         return this.wind;
     }
@@ -248,6 +291,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the windGust value.
      */
+    @Generated
     public WindDetails getWindGust() {
         return this.windGust;
     }
@@ -258,6 +302,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the visibility value.
      */
+    @Generated
     public WeatherUnitDetails getVisibility() {
         return this.visibility;
     }
@@ -267,6 +312,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the cloudCover value.
      */
+    @Generated
     public Integer getCloudCover() {
         return this.cloudCover;
     }
@@ -277,6 +323,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the hasPrecipitation value.
      */
+    @Generated
     public Boolean isHasPrecipitation() {
         return this.hasPrecipitation;
     }
@@ -287,6 +334,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the precipitationType value.
      */
+    @Generated
     public PrecipitationType getPrecipitationType() {
         return this.precipitationType;
     }
@@ -296,6 +344,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the precipitationIntensity value.
      */
+    @Generated
     public String getPrecipitationIntensity() {
         return this.precipitationIntensity;
     }
@@ -306,6 +355,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the precipitationProbability value.
      */
+    @Generated
     public Integer getPrecipitationProbability() {
         return this.precipitationProbability;
     }
@@ -316,6 +366,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the thunderstormProbability value.
      */
+    @Generated
     public Integer getThunderstormProbability() {
         return this.thunderstormProbability;
     }
@@ -325,6 +376,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the totalLiquid value.
      */
+    @Generated
     public WeatherUnitDetails getTotalLiquid() {
         return this.totalLiquid;
     }
@@ -334,6 +386,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the rain value.
      */
+    @Generated
     public WeatherUnitDetails getRain() {
         return this.rain;
     }
@@ -343,6 +396,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the snow value.
      */
+    @Generated
     public WeatherUnitDetails getSnow() {
         return this.snow;
     }
@@ -352,6 +406,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      *
      * @return the ice value.
      */
+    @Generated
     public WeatherUnitDetails getIce() {
         return this.ice;
     }
@@ -359,6 +414,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -366,8 +422,8 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
             this.dateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTime));
         jsonWriter.writeStringField("effectiveDate",
             this.effectiveDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.effectiveDate));
-        jsonWriter.writeNumberField("quarter", this.quarter == null ? null : this.quarter.toInt());
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("quarter", this.quarter == null ? null : this.quarter.getValue());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeStringField("iconPhrase", this.iconPhrase);
         jsonWriter.writeStringField("phrase", this.phrase);
         jsonWriter.writeJsonField("temperature", this.temperature);
@@ -399,6 +455,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the QuarterDayForecast.
      */
+    @Generated
     public static QuarterDayForecast fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QuarterDayForecast deserializedQuarterDayForecast = new QuarterDayForecast();
@@ -406,15 +463,15 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedQuarterDayForecast.dateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedQuarterDayForecast.dateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("effectiveDate".equals(fieldName)) {
-                    deserializedQuarterDayForecast.effectiveDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedQuarterDayForecast.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("quarter".equals(fieldName)) {
-                    deserializedQuarterDayForecast.quarter = DayQuarter.fromInt(reader.getInt());
+                    deserializedQuarterDayForecast.quarter = DayQuarter.fromValue(reader.getInt());
                 } else if ("iconCode".equals(fieldName)) {
-                    deserializedQuarterDayForecast.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedQuarterDayForecast.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("iconPhrase".equals(fieldName)) {
                     deserializedQuarterDayForecast.iconPhrase = reader.getString();
                 } else if ("phrase".equals(fieldName)) {

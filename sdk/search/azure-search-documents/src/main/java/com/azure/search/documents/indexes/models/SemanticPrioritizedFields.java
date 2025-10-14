@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,6 +25,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * Defines the title field to be used for semantic ranking, captions, highlights, and answers. If you don't have a
      * title field in your index, leave this blank.
      */
+    @Generated
     private SemanticField titleField;
 
     /*
@@ -31,6 +33,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * result, the selected fields should contain text in natural language form. The order of the fields in the array
      * represents their priority. Fields with lower priority may get truncated if the content is long.
      */
+    @Generated
     private List<SemanticField> contentFields;
 
     /*
@@ -38,11 +41,13 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * result, the selected fields should contain a list of keywords. The order of the fields in the array represents
      * their priority. Fields with lower priority may get truncated if the content is long.
      */
+    @Generated
     private List<SemanticField> keywordsFields;
 
     /**
      * Creates an instance of SemanticPrioritizedFields class.
      */
+    @Generated
     public SemanticPrioritizedFields() {
     }
 
@@ -52,6 +57,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      *
      * @return the titleField value.
      */
+    @Generated
     public SemanticField getTitleField() {
         return this.titleField;
     }
@@ -63,6 +69,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @param titleField the titleField value to set.
      * @return the SemanticPrioritizedFields object itself.
      */
+    @Generated
     public SemanticPrioritizedFields setTitleField(SemanticField titleField) {
         this.titleField = titleField;
         return this;
@@ -76,6 +83,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      *
      * @return the contentFields value.
      */
+    @Generated
     public List<SemanticField> getContentFields() {
         return this.contentFields;
     }
@@ -89,6 +97,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @param contentFields the contentFields value to set.
      * @return the SemanticPrioritizedFields object itself.
      */
+    @Generated
     public SemanticPrioritizedFields setContentFields(List<SemanticField> contentFields) {
         this.contentFields = contentFields;
         return this;
@@ -102,6 +111,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      *
      * @return the keywordsFields value.
      */
+    @Generated
     public List<SemanticField> getKeywordsFields() {
         return this.keywordsFields;
     }
@@ -115,6 +125,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @param keywordsFields the keywordsFields value to set.
      * @return the SemanticPrioritizedFields object itself.
      */
+    @Generated
     public SemanticPrioritizedFields setKeywordsFields(List<SemanticField> keywordsFields) {
         this.keywordsFields = keywordsFields;
         return this;
@@ -123,6 +134,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -142,6 +154,7 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SemanticPrioritizedFields.
      */
+    @Generated
     public static SemanticPrioritizedFields fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SemanticPrioritizedFields deserializedSemanticPrioritizedFields = new SemanticPrioritizedFields();

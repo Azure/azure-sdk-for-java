@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnectionResource;
@@ -24,29 +24,29 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"zdcduwjoedxng\"},\"groupIds\":[\"AzureBackup_secondary\",\"AzureBackup_secondary\",\"AzureBackup_secondary\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"wgilfjqqac\",\"actionsRequired\":\"kxwxdcvjwcyziake\"}},\"eTag\":\"qchxrtuic\",\"location\":\"siw\",\"tags\":{\"grpxncakiqaondjr\":\"mpzhzzwvywrgyngy\"},\"id\":\"clamgglvlmfejdoq\",\"name\":\"ykglt\",\"type\":\"gxhqfgqkayejs\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"flqqbtnyjpylxd\"},\"groupIds\":[\"AzureBackup_secondary\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"s\",\"actionsRequired\":\"aevwjcnkot\"}},\"eTag\":\"wuhvaj\",\"location\":\"ailfemjjzak\",\"tags\":{\"cm\":\"iqullqxbdmvr\",\"rkadjfynnfmuiiir\":\"erndbrnyeofltfnn\"},\"id\":\"pfoh\",\"name\":\"kfkxbbcbrwjiut\",\"type\":\"njizb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionResource response = manager.privateEndpointConnections()
-            .getWithResponse("nrzorpd", "tbqctqjfgx", "saetgzdgvpyig", com.azure.core.util.Context.NONE)
+            .getWithResponse("vop", "m", "uoqujlyeg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("siw", response.location());
-        Assertions.assertEquals("mpzhzzwvywrgyngy", response.tags().get("grpxncakiqaondjr"));
-        Assertions.assertEquals(ProvisioningState.DELETING, response.properties().provisioningState());
-        Assertions.assertEquals("zdcduwjoedxng", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("ailfemjjzak", response.location());
+        Assertions.assertEquals("iqullqxbdmvr", response.tags().get("cm"));
+        Assertions.assertEquals(ProvisioningState.FAILED, response.properties().provisioningState());
+        Assertions.assertEquals("flqqbtnyjpylxd", response.properties().privateEndpoint().id());
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, response.properties().groupIds().get(0));
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.DISCONNECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("wgilfjqqac", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("kxwxdcvjwcyziake",
+        Assertions.assertEquals("s", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("aevwjcnkot",
             response.properties().privateLinkServiceConnectionState().actionRequired());
-        Assertions.assertEquals("qchxrtuic", response.etag());
+        Assertions.assertEquals("wuhvaj", response.etag());
     }
 }

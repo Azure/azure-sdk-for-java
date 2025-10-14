@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResponseInner model = BinaryData
-            .fromString("{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"szdtmhrkwof\"}")
-            .toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("szdtmhrkwof", model.message());
+        CheckNameAvailabilityResponseInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"pkeqdcvdrhvoo\"}")
+                .toObject(CheckNameAvailabilityResponseInner.class);
+        Assertions.assertTrue(model.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, model.reason());
+        Assertions.assertEquals("pkeqdcvdrhvoo", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withNameAvailable(false)
-            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
-            .withMessage("szdtmhrkwof");
+        CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withNameAvailable(true)
+            .withReason(CheckNameAvailabilityReason.INVALID)
+            .withMessage("pkeqdcvdrhvoo");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("szdtmhrkwof", model.message());
+        Assertions.assertTrue(model.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, model.reason());
+        Assertions.assertEquals("pkeqdcvdrhvoo", model.message());
     }
 }

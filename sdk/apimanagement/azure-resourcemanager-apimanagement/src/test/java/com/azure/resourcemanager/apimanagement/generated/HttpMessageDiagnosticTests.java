@@ -17,36 +17,34 @@ public final class HttpMessageDiagnosticTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpMessageDiagnostic model = BinaryData.fromString(
-            "{\"headers\":[\"eluclvdjj\",\"kyrdnqodx\",\"hhxhq\"],\"body\":{\"bytes\":1091282824},\"dataMasking\":{\"queryParams\":[{\"value\":\"gyipem\",\"mode\":\"Hide\"},{\"value\":\"v\",\"mode\":\"Mask\"},{\"value\":\"ejdtxptl\",\"mode\":\"Hide\"},{\"value\":\"homewjjstliu\",\"mode\":\"Mask\"}],\"headers\":[{\"value\":\"aiancznvodr\",\"mode\":\"Hide\"},{\"value\":\"lxydkxrxv\",\"mode\":\"Hide\"}]}}")
+            "{\"headers\":[\"aderzmw\"],\"body\":{\"bytes\":664347452},\"dataMasking\":{\"queryParams\":[{\"value\":\"mvmmagoaqylkjz\",\"mode\":\"Mask\"},{\"value\":\"azjcgmxitpfin\",\"mode\":\"Mask\"},{\"value\":\"ltkrl\",\"mode\":\"Hide\"},{\"value\":\"bd\",\"mode\":\"Mask\"}],\"headers\":[{\"value\":\"efz\",\"mode\":\"Mask\"},{\"value\":\"heqdurelyujlfyou\",\"mode\":\"Hide\"}]}}")
             .toObject(HttpMessageDiagnostic.class);
-        Assertions.assertEquals("eluclvdjj", model.headers().get(0));
-        Assertions.assertEquals(1091282824, model.body().bytes());
-        Assertions.assertEquals("gyipem", model.dataMasking().queryParams().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.dataMasking().queryParams().get(0).mode());
-        Assertions.assertEquals("aiancznvodr", model.dataMasking().headers().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.dataMasking().headers().get(0).mode());
+        Assertions.assertEquals("aderzmw", model.headers().get(0));
+        Assertions.assertEquals(664347452, model.body().bytes());
+        Assertions.assertEquals("mvmmagoaqylkjz", model.dataMasking().queryParams().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.dataMasking().queryParams().get(0).mode());
+        Assertions.assertEquals("efz", model.dataMasking().headers().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.dataMasking().headers().get(0).mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpMessageDiagnostic model
-            = new HttpMessageDiagnostic().withHeaders(Arrays.asList("eluclvdjj", "kyrdnqodx", "hhxhq"))
-                .withBody(new BodyDiagnosticSettings().withBytes(1091282824))
-                .withDataMasking(new DataMasking()
-                    .withQueryParams(
-                        Arrays.asList(new DataMaskingEntity().withValue("gyipem").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("v").withMode(DataMaskingMode.MASK),
-                            new DataMaskingEntity().withValue("ejdtxptl").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("homewjjstliu").withMode(DataMaskingMode.MASK)))
-                    .withHeaders(
-                        Arrays.asList(new DataMaskingEntity().withValue("aiancznvodr").withMode(DataMaskingMode.HIDE),
-                            new DataMaskingEntity().withValue("lxydkxrxv").withMode(DataMaskingMode.HIDE))));
+        HttpMessageDiagnostic model = new HttpMessageDiagnostic().withHeaders(Arrays.asList("aderzmw"))
+            .withBody(new BodyDiagnosticSettings().withBytes(664347452))
+            .withDataMasking(new DataMasking()
+                .withQueryParams(
+                    Arrays.asList(new DataMaskingEntity().withValue("mvmmagoaqylkjz").withMode(DataMaskingMode.MASK),
+                        new DataMaskingEntity().withValue("azjcgmxitpfin").withMode(DataMaskingMode.MASK),
+                        new DataMaskingEntity().withValue("ltkrl").withMode(DataMaskingMode.HIDE),
+                        new DataMaskingEntity().withValue("bd").withMode(DataMaskingMode.MASK)))
+                .withHeaders(Arrays.asList(new DataMaskingEntity().withValue("efz").withMode(DataMaskingMode.MASK),
+                    new DataMaskingEntity().withValue("heqdurelyujlfyou").withMode(DataMaskingMode.HIDE))));
         model = BinaryData.fromObject(model).toObject(HttpMessageDiagnostic.class);
-        Assertions.assertEquals("eluclvdjj", model.headers().get(0));
-        Assertions.assertEquals(1091282824, model.body().bytes());
-        Assertions.assertEquals("gyipem", model.dataMasking().queryParams().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.dataMasking().queryParams().get(0).mode());
-        Assertions.assertEquals("aiancznvodr", model.dataMasking().headers().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.dataMasking().headers().get(0).mode());
+        Assertions.assertEquals("aderzmw", model.headers().get(0));
+        Assertions.assertEquals(664347452, model.body().bytes());
+        Assertions.assertEquals("mvmmagoaqylkjz", model.dataMasking().queryParams().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.dataMasking().queryParams().get(0).mode());
+        Assertions.assertEquals("efz", model.dataMasking().headers().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.dataMasking().headers().get(0).mode());
     }
 }

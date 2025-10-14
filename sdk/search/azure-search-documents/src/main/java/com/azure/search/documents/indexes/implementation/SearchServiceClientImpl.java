@@ -20,6 +20,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -27,7 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
+import com.azure.search.documents.indexes.implementation.models.ListIndexStatsSummary;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
+import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -95,6 +101,34 @@ public final class SearchServiceClientImpl {
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
+    }
+
+    /**
+     * The KnowledgeAgentsImpl object to access its operations.
+     */
+    private final KnowledgeAgentsImpl knowledgeAgents;
+
+    /**
+     * Gets the KnowledgeAgentsImpl object to access its operations.
+     * 
+     * @return the KnowledgeAgentsImpl object.
+     */
+    public KnowledgeAgentsImpl getKnowledgeAgents() {
+        return this.knowledgeAgents;
+    }
+
+    /**
+     * The KnowledgeSourcesImpl object to access its operations.
+     */
+    private final KnowledgeSourcesImpl knowledgeSources;
+
+    /**
+     * Gets the KnowledgeSourcesImpl object to access its operations.
+     * 
+     * @return the KnowledgeSourcesImpl object.
+     */
+    public KnowledgeSourcesImpl getKnowledgeSources() {
+        return this.knowledgeSources;
     }
 
     /**
@@ -217,6 +251,8 @@ public final class SearchServiceClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
+        this.knowledgeAgents = new KnowledgeAgentsImpl(this);
+        this.knowledgeSources = new KnowledgeSourcesImpl(this);
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);
         this.skillsets = new SkillsetsImpl(this);
@@ -245,6 +281,20 @@ public final class SearchServiceClientImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchServiceStatistics> getServiceStatisticsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/indexstats")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<ListIndexStatsSummary>> getIndexStatsSummary(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/indexstats")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<ListIndexStatsSummary> getIndexStatsSummarySync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
@@ -354,5 +404,167 @@ public final class SearchServiceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceStatistics getServiceStatistics(RequestOptions requestOptions) {
         return getServiceStatisticsWithResponse(requestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IndexStatisticsSummary>>
+        getIndexStatsSummarySinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return FluxUtil
+            .withContext(context -> service.getIndexStatsSummary(this.getEndpoint(), xMsClientRequestId,
+                this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getIndexesStatistics(), null, null));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<IndexStatisticsSummary>>
+        getIndexStatsSummarySinglePageAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        return service
+            .getIndexStatsSummary(this.getEndpoint(), xMsClientRequestId, this.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getIndexesStatistics(), null, null));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> getIndexStatsSummaryAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> getIndexStatsSummarySinglePageAsync(requestOptions));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IndexStatisticsSummary> getIndexStatsSummaryAsync(RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(() -> getIndexStatsSummarySinglePageAsync(requestOptions, context));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<IndexStatisticsSummary> getIndexStatsSummarySinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        Response<ListIndexStatsSummary> res = service.getIndexStatsSummarySync(this.getEndpoint(), xMsClientRequestId,
+            this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getIndexesStatistics(), null, null);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<IndexStatisticsSummary> getIndexStatsSummarySinglePage(RequestOptions requestOptions,
+        Context context) {
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+        UUID xMsClientRequestId = xMsClientRequestIdInternal;
+        Response<ListIndexStatsSummary> res = service.getIndexStatsSummarySync(this.getEndpoint(), xMsClientRequestId,
+            this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getIndexesStatistics(), null, null);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> getIndexStatsSummarySinglePage(requestOptions));
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * 
+     * @param requestOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(() -> getIndexStatsSummarySinglePage(requestOptions, context));
     }
 }

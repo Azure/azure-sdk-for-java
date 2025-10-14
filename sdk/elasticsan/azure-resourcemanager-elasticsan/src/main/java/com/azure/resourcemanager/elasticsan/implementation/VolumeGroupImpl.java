@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.Identity;
@@ -79,6 +80,10 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
 
     public Boolean enforceDataIntegrityCheckForIscsi() {
         return this.innerModel().enforceDataIntegrityCheckForIscsi();
+    }
+
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.innerModel().deleteRetentionPolicy();
     }
 
     public String resourceGroupName() {
@@ -227,6 +232,16 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
             return this;
         } else {
             this.updateParameters.withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+            return this;
+        }
+    }
+
+    public VolumeGroupImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeleteRetentionPolicy(deleteRetentionPolicy);
+            return this;
+        } else {
+            this.updateParameters.withDeleteRetentionPolicy(deleteRetentionPolicy);
             return this;
         }
     }

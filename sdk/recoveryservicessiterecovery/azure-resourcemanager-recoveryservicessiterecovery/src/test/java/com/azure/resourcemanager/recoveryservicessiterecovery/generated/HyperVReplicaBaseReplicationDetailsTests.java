@@ -18,240 +18,232 @@ public final class HyperVReplicaBaseReplicationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaBaseReplicationDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaBaseReplicationDetails\",\"lastReplicatedTime\":\"2021-02-01T01:04:29Z\",\"vmNics\":[{\"nicId\":\"reimseob\",\"replicaNicId\":\"xstcyilbvzm\",\"sourceNicArmId\":\"cjzlquzexokjxebj\",\"vMNetworkName\":\"zinzabwmvogljsvl\",\"recoveryVMNetworkId\":\"idnwceha\",\"ipConfigs\":[{\"name\":\"yzltgiomqo\",\"isPrimary\":true,\"subnetName\":\"iaeapfs\",\"staticIPAddress\":\"gdtpe\",\"ipAddressType\":\"acyh\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"pqqncju\",\"recoveryStaticIPAddress\":\"hjozf\",\"recoveryIPAddressType\":\"cwmbupyvqyvli\",\"recoveryPublicIPAddressId\":\"ipsejbsvsia\",\"recoveryLBBackendAddressPoolIds\":[\"whddzydisnuepyw\",\"jlnldpxottdiiaoc\",\"ibz\",\"ihweeb\"],\"tfoSubnetName\":\"hryvcjwqwoqsra\",\"tfoStaticIPAddress\":\"hdhzybspijhfr\",\"tfoPublicIPAddressId\":\"dkkagvwukhsusmm\",\"tfoLBBackendAddressPoolIds\":[\"mzhwilzzhni\"]}],\"selectionType\":\"riprlkdneytt\",\"recoveryNetworkSecurityGroupId\":\"cxiv\",\"enableAcceleratedNetworkingOnRecovery\":false,\"tfoVMNetworkId\":\"tpumltwjfluxynb\",\"tfoNetworkSecurityGroupId\":\"zlqywauyqn\",\"enableAcceleratedNetworkingOnTfo\":false,\"recoveryNicName\":\"mocgjshg\",\"recoveryNicResourceGroupName\":\"a\",\"reuseExistingNic\":false,\"tfoRecoveryNicName\":\"ixq\",\"tfoRecoveryNicResourceGroupName\":\"gljkybsj\",\"tfoReuseExistingNic\":false,\"targetNicName\":\"vtzqnrbctbhp\"},{\"nicId\":\"xpc\",\"replicaNicId\":\"dnyeita\",\"sourceNicArmId\":\"qady\",\"vMNetworkName\":\"jahwriuomzczf\",\"recoveryVMNetworkId\":\"ceevsa\",\"ipConfigs\":[{\"name\":\"p\",\"isPrimary\":false,\"subnetName\":\"khfjqebglcxkx\",\"staticIPAddress\":\"zromvygys\",\"ipAddressType\":\"tme\",\"isSeletedForFailover\":false,\"recoverySubnetName\":\"vpinkzpatqt\",\"recoveryStaticIPAddress\":\"swxspvckojaz\",\"recoveryIPAddressType\":\"gspftesu\",\"recoveryPublicIPAddressId\":\"pvpvd\",\"recoveryLBBackendAddressPoolIds\":[\"tcovqseusrfjb\",\"xzfxn\"],\"tfoSubnetName\":\"lbmuos\",\"tfoStaticIPAddress\":\"jmdihdcyyyzlw\",\"tfoPublicIPAddressId\":\"wzjnufz\",\"tfoLBBackendAddressPoolIds\":[\"m\"]},{\"name\":\"gnnbzrtf\",\"isPrimary\":true,\"subnetName\":\"uubjtvgjsxmty\",\"staticIPAddress\":\"vavdp\",\"ipAddressType\":\"obt\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"its\",\"recoveryStaticIPAddress\":\"ofw\",\"recoveryIPAddressType\":\"m\",\"recoveryPublicIPAddressId\":\"scauwazcgwdfr\",\"recoveryLBBackendAddressPoolIds\":[\"ybjpozoks\"],\"tfoSubnetName\":\"gllixdgbyfgwew\",\"tfoStaticIPAddress\":\"j\",\"tfoPublicIPAddressId\":\"prwpxsoohu\",\"tfoLBBackendAddressPoolIds\":[\"cskltezuuggg\",\"lfb\"]},{\"name\":\"dc\",\"isPrimary\":false,\"subnetName\":\"rtmdylperpil\",\"staticIPAddress\":\"jzgc\",\"ipAddressType\":\"cmfpfbodet\",\"isSeletedForFailover\":false,\"recoverySubnetName\":\"gvtshu\",\"recoveryStaticIPAddress\":\"t\",\"recoveryIPAddressType\":\"ivmuqkevzgjyp\",\"recoveryPublicIPAddressId\":\"hxmpdxxz\",\"recoveryLBBackendAddressPoolIds\":[\"wzjwotnxlkfhg\",\"h\",\"foxqwecrsn\",\"pcs\"],\"tfoSubnetName\":\"qxovppqibukk\",\"tfoStaticIPAddress\":\"zrlrmlccmetjs\",\"tfoPublicIPAddressId\":\"ivfqbqnasdsy\",\"tfoLBBackendAddressPoolIds\":[\"sieuscpl\",\"yvdgxlyzk\",\"itdshezsvkolru\",\"jovmozsaye\"]},{\"name\":\"azwzlpzbtzuykyki\",\"isPrimary\":false,\"subnetName\":\"yepfn\",\"staticIPAddress\":\"mbezacfpztg\",\"ipAddressType\":\"wyqejgaao\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"kppgkqzkcyzm\",\"recoveryStaticIPAddress\":\"ngdyfcixrhlcq\",\"recoveryIPAddressType\":\"oejgoiutgwrmkah\",\"recoveryPublicIPAddressId\":\"hazyntacihnco\",\"recoveryLBBackendAddressPoolIds\":[\"pnmliq\",\"v\",\"bhikeaqgr\"],\"tfoSubnetName\":\"pomxpu\",\"tfoStaticIPAddress\":\"tsdfjyieso\",\"tfoPublicIPAddressId\":\"iqbuou\",\"tfoLBBackendAddressPoolIds\":[\"yzgleofjs\"]}],\"selectionType\":\"bwwzvdajf\",\"recoveryNetworkSecurityGroupId\":\"n\",\"enableAcceleratedNetworkingOnRecovery\":true,\"tfoVMNetworkId\":\"ciqgjjrlhiqlwixv\",\"tfoNetworkSecurityGroupId\":\"ougu\",\"enableAcceleratedNetworkingOnTfo\":false,\"recoveryNicName\":\"opgjttba\",\"recoveryNicResourceGroupName\":\"alapdlndbe\",\"reuseExistingNic\":true,\"tfoRecoveryNicName\":\"ixv\",\"tfoRecoveryNicResourceGroupName\":\"wy\",\"tfoReuseExistingNic\":false,\"targetNicName\":\"fqvz\"}],\"vmId\":\"msp\",\"vmProtectionState\":\"zfe\",\"vmProtectionStateDescription\":\"jljmphfkyezol\",\"initialReplicationDetails\":{\"initialReplicationType\":\"mi\",\"initialReplicationProgressPercentage\":\"ydoccnxshanzb\"},\"vMDiskDetails\":[{\"maxSizeMB\":8904392733364237803,\"vhdType\":\"tecaa\",\"vhdId\":\"dohzniucbdaombwi\",\"vhdName\":\"jdllwktle\"}]}")
+            "{\"instanceType\":\"HyperVReplicaBaseReplicationDetails\",\"lastReplicatedTime\":\"2021-06-24T20:56:10Z\",\"vmNics\":[{\"nicId\":\"bmyqjog\",\"replicaNicId\":\"saidjan\",\"sourceNicArmId\":\"movdxxurn\",\"vMNetworkName\":\"jmoilunwe\",\"recoveryVMNetworkId\":\"deel\",\"ipConfigs\":[{\"name\":\"yozdsfzjuegrhrht\",\"isPrimary\":false,\"subnetName\":\"tv\",\"staticIPAddress\":\"nxvgjb\",\"ipAddressType\":\"obpnjodf\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"qwm\",\"recoveryStaticIPAddress\":\"smoxsazuxejgwe\",\"recoveryIPAddressType\":\"wnf\",\"recoveryPublicIPAddressId\":\"zzaczsinqbdn\",\"recoveryLBBackendAddressPoolIds\":[\"bozsyvr\",\"kjmyitrchwudlx\"],\"tfoSubnetName\":\"ihtpmnoejhql\",\"tfoStaticIPAddress\":\"sibz\",\"tfoPublicIPAddressId\":\"rfgxkyd\",\"tfoLBBackendAddressPoolIds\":[\"pgfqvmtyw\"]},{\"name\":\"a\",\"isPrimary\":false,\"subnetName\":\"jpewpyjlfx\",\"staticIPAddress\":\"pqcrzgeuqxbpiat\",\"ipAddressType\":\"aujegqdtadra\",\"isSeletedForFailover\":false,\"recoverySubnetName\":\"hjkrukizyhgs\",\"recoveryStaticIPAddress\":\"nqskt\",\"recoveryIPAddressType\":\"fpjbqggwe\",\"recoveryPublicIPAddressId\":\"w\",\"recoveryLBBackendAddressPoolIds\":[\"mnc\",\"bf\"],\"tfoSubnetName\":\"scstunmlhxd\",\"tfoStaticIPAddress\":\"klciichgjsysm\",\"tfoPublicIPAddressId\":\"o\",\"tfoLBBackendAddressPoolIds\":[\"xfkzsifcuv\",\"dujgcwxve\",\"bbwjtrdxrizagb\",\"giarksykpgdqxw\"]},{\"name\":\"zrwiqrxha\",\"isPrimary\":true,\"subnetName\":\"osqkptjqgk\",\"staticIPAddress\":\"mmainwhe\",\"ipAddressType\":\"kp\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"ntobu\",\"recoveryStaticIPAddress\":\"azz\",\"recoveryIPAddressType\":\"wgvydjufb\",\"recoveryPublicIPAddressId\":\"lblaxpegj\",\"recoveryLBBackendAddressPoolIds\":[\"bal\",\"dxagl\",\"f\"],\"tfoSubnetName\":\"lbtlqhopxo\",\"tfoStaticIPAddress\":\"mrsiflikyypzkg\",\"tfoPublicIPAddressId\":\"xfmyrqs\",\"tfoLBBackendAddressPoolIds\":[\"oksz\",\"nm\",\"wgpterdiuw\",\"i\"]}],\"selectionType\":\"skw\",\"recoveryNetworkSecurityGroupId\":\"sdetjygowifcqpol\",\"enableAcceleratedNetworkingOnRecovery\":true,\"tfoVMNetworkId\":\"sdgzyy\",\"tfoNetworkSecurityGroupId\":\"oxlvocptvdxxheig\",\"enableAcceleratedNetworkingOnTfo\":false,\"recoveryNicName\":\"wzghjhjv\",\"recoveryNicResourceGroupName\":\"bzzbwayb\",\"reuseExistingNic\":false,\"tfoRecoveryNicName\":\"fb\",\"tfoRecoveryNicResourceGroupName\":\"mqtnap\",\"tfoReuseExistingNic\":true,\"targetNicName\":\"xrjnbsconxav\"},{\"nicId\":\"neychbjizq\",\"replicaNicId\":\"gnwdxz\",\"sourceNicArmId\":\"p\",\"vMNetworkName\":\"rfbo\",\"recoveryVMNetworkId\":\"ipmlnfyzavf\",\"ipConfigs\":[{\"name\":\"icdbkpdj\",\"isPrimary\":false,\"subnetName\":\"smqaz\",\"staticIPAddress\":\"gonjhxshthmgpczq\",\"ipAddressType\":\"ptkbvcpxtzhi\",\"isSeletedForFailover\":false,\"recoverySubnetName\":\"timpkjblorns\",\"recoveryStaticIPAddress\":\"qhudsmusuaawj\",\"recoveryIPAddressType\":\"xwjnfcz\",\"recoveryPublicIPAddressId\":\"nii\",\"recoveryLBBackendAddressPoolIds\":[\"vqban\"],\"tfoSubnetName\":\"jtgirnb\",\"tfoStaticIPAddress\":\"gm\",\"tfoPublicIPAddressId\":\"orgmynltwmpftm\",\"tfoLBBackendAddressPoolIds\":[\"a\"]}],\"selectionType\":\"gsy\",\"recoveryNetworkSecurityGroupId\":\"etamfddrvlkpzwb\",\"enableAcceleratedNetworkingOnRecovery\":true,\"tfoVMNetworkId\":\"cc\",\"tfoNetworkSecurityGroupId\":\"id\",\"enableAcceleratedNetworkingOnTfo\":false,\"recoveryNicName\":\"kahmjedbiucvkhhw\",\"recoveryNicResourceGroupName\":\"pjbweunxcq\",\"reuseExistingNic\":false,\"tfoRecoveryNicName\":\"ufoihppiybxv\",\"tfoRecoveryNicResourceGroupName\":\"zuzpbgkzcs\",\"tfoReuseExistingNic\":true,\"targetNicName\":\"zvkunhdi\"}],\"vmId\":\"uktirzkaugpu\",\"vmProtectionState\":\"ocf\",\"vmProtectionStateDescription\":\"lwgofm\",\"initialReplicationDetails\":{\"initialReplicationType\":\"rjlvzklkvbgi\",\"initialReplicationProgressPercentage\":\"jtkakvl\"},\"vMDiskDetails\":[{\"maxSizeMB\":7962655555398941339,\"vhdType\":\"zaptuosk\",\"vhdId\":\"izjixwfgcd\",\"vhdName\":\"kkcxwnujvqynvav\"},{\"maxSizeMB\":6961201468214314648,\"vhdType\":\"uqohhi\",\"vhdId\":\"a\",\"vhdName\":\"uddrwjc\"},{\"maxSizeMB\":3187253478458170915,\"vhdType\":\"lhpv\",\"vhdId\":\"dbwen\",\"vhdName\":\"nafhxrzfr\"},{\"maxSizeMB\":1546022163223316974,\"vhdType\":\"ucwviqllukhkrcq\",\"vhdId\":\"cbvzarmqcb\",\"vhdName\":\"kst\"}]}")
             .toObject(HyperVReplicaBaseReplicationDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T01:04:29Z"), model.lastReplicatedTime());
-        Assertions.assertEquals("reimseob", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("xstcyilbvzm", model.vmNics().get(0).replicaNicId());
-        Assertions.assertEquals("cjzlquzexokjxebj", model.vmNics().get(0).sourceNicArmId());
-        Assertions.assertEquals("zinzabwmvogljsvl", model.vmNics().get(0).vMNetworkName());
-        Assertions.assertEquals("idnwceha", model.vmNics().get(0).recoveryVMNetworkId());
-        Assertions.assertEquals("yzltgiomqo", model.vmNics().get(0).ipConfigs().get(0).name());
-        Assertions.assertEquals(true, model.vmNics().get(0).ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals("iaeapfs", model.vmNics().get(0).ipConfigs().get(0).subnetName());
-        Assertions.assertEquals("gdtpe", model.vmNics().get(0).ipConfigs().get(0).staticIpAddress());
-        Assertions.assertEquals("acyh", model.vmNics().get(0).ipConfigs().get(0).ipAddressType());
-        Assertions.assertEquals(true, model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
-        Assertions.assertEquals("pqqncju", model.vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
-        Assertions.assertEquals("hjozf", model.vmNics().get(0).ipConfigs().get(0).recoveryStaticIpAddress());
-        Assertions.assertEquals("cwmbupyvqyvli", model.vmNics().get(0).ipConfigs().get(0).recoveryIpAddressType());
-        Assertions.assertEquals("ipsejbsvsia", model.vmNics().get(0).ipConfigs().get(0).recoveryPublicIpAddressId());
-        Assertions.assertEquals("whddzydisnuepyw",
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T20:56:10Z"), model.lastReplicatedTime());
+        Assertions.assertEquals("bmyqjog", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("saidjan", model.vmNics().get(0).replicaNicId());
+        Assertions.assertEquals("movdxxurn", model.vmNics().get(0).sourceNicArmId());
+        Assertions.assertEquals("jmoilunwe", model.vmNics().get(0).vMNetworkName());
+        Assertions.assertEquals("deel", model.vmNics().get(0).recoveryVMNetworkId());
+        Assertions.assertEquals("yozdsfzjuegrhrht", model.vmNics().get(0).ipConfigs().get(0).name());
+        Assertions.assertFalse(model.vmNics().get(0).ipConfigs().get(0).isPrimary());
+        Assertions.assertEquals("tv", model.vmNics().get(0).ipConfigs().get(0).subnetName());
+        Assertions.assertEquals("nxvgjb", model.vmNics().get(0).ipConfigs().get(0).staticIpAddress());
+        Assertions.assertEquals("obpnjodf", model.vmNics().get(0).ipConfigs().get(0).ipAddressType());
+        Assertions.assertTrue(model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertEquals("qwm", model.vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
+        Assertions.assertEquals("smoxsazuxejgwe", model.vmNics().get(0).ipConfigs().get(0).recoveryStaticIpAddress());
+        Assertions.assertEquals("wnf", model.vmNics().get(0).ipConfigs().get(0).recoveryIpAddressType());
+        Assertions.assertEquals("zzaczsinqbdn", model.vmNics().get(0).ipConfigs().get(0).recoveryPublicIpAddressId());
+        Assertions.assertEquals("bozsyvr",
             model.vmNics().get(0).ipConfigs().get(0).recoveryLBBackendAddressPoolIds().get(0));
-        Assertions.assertEquals("hryvcjwqwoqsra", model.vmNics().get(0).ipConfigs().get(0).tfoSubnetName());
-        Assertions.assertEquals("hdhzybspijhfr", model.vmNics().get(0).ipConfigs().get(0).tfoStaticIpAddress());
-        Assertions.assertEquals("dkkagvwukhsusmm", model.vmNics().get(0).ipConfigs().get(0).tfoPublicIpAddressId());
-        Assertions.assertEquals("mzhwilzzhni",
+        Assertions.assertEquals("ihtpmnoejhql", model.vmNics().get(0).ipConfigs().get(0).tfoSubnetName());
+        Assertions.assertEquals("sibz", model.vmNics().get(0).ipConfigs().get(0).tfoStaticIpAddress());
+        Assertions.assertEquals("rfgxkyd", model.vmNics().get(0).ipConfigs().get(0).tfoPublicIpAddressId());
+        Assertions.assertEquals("pgfqvmtyw",
             model.vmNics().get(0).ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
-        Assertions.assertEquals("riprlkdneytt", model.vmNics().get(0).selectionType());
-        Assertions.assertEquals("cxiv", model.vmNics().get(0).recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
-        Assertions.assertEquals("tpumltwjfluxynb", model.vmNics().get(0).tfoVMNetworkId());
-        Assertions.assertEquals("zlqywauyqn", model.vmNics().get(0).tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
-        Assertions.assertEquals("mocgjshg", model.vmNics().get(0).recoveryNicName());
-        Assertions.assertEquals("a", model.vmNics().get(0).recoveryNicResourceGroupName());
-        Assertions.assertEquals(false, model.vmNics().get(0).reuseExistingNic());
-        Assertions.assertEquals("ixq", model.vmNics().get(0).tfoRecoveryNicName());
-        Assertions.assertEquals("gljkybsj", model.vmNics().get(0).tfoRecoveryNicResourceGroupName());
-        Assertions.assertEquals(false, model.vmNics().get(0).tfoReuseExistingNic());
-        Assertions.assertEquals("vtzqnrbctbhp", model.vmNics().get(0).targetNicName());
-        Assertions.assertEquals("msp", model.vmId());
-        Assertions.assertEquals("zfe", model.vmProtectionState());
-        Assertions.assertEquals("jljmphfkyezol", model.vmProtectionStateDescription());
-        Assertions.assertEquals("mi", model.initialReplicationDetails().initialReplicationType());
-        Assertions.assertEquals("ydoccnxshanzb",
-            model.initialReplicationDetails().initialReplicationProgressPercentage());
-        Assertions.assertEquals(8904392733364237803L, model.vMDiskDetails().get(0).maxSizeMB());
-        Assertions.assertEquals("tecaa", model.vMDiskDetails().get(0).vhdType());
-        Assertions.assertEquals("dohzniucbdaombwi", model.vMDiskDetails().get(0).vhdId());
-        Assertions.assertEquals("jdllwktle", model.vMDiskDetails().get(0).vhdName());
+        Assertions.assertEquals("skw", model.vmNics().get(0).selectionType());
+        Assertions.assertEquals("sdetjygowifcqpol", model.vmNics().get(0).recoveryNetworkSecurityGroupId());
+        Assertions.assertTrue(model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertEquals("sdgzyy", model.vmNics().get(0).tfoVMNetworkId());
+        Assertions.assertEquals("oxlvocptvdxxheig", model.vmNics().get(0).tfoNetworkSecurityGroupId());
+        Assertions.assertFalse(model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
+        Assertions.assertEquals("wzghjhjv", model.vmNics().get(0).recoveryNicName());
+        Assertions.assertEquals("bzzbwayb", model.vmNics().get(0).recoveryNicResourceGroupName());
+        Assertions.assertFalse(model.vmNics().get(0).reuseExistingNic());
+        Assertions.assertEquals("fb", model.vmNics().get(0).tfoRecoveryNicName());
+        Assertions.assertEquals("mqtnap", model.vmNics().get(0).tfoRecoveryNicResourceGroupName());
+        Assertions.assertTrue(model.vmNics().get(0).tfoReuseExistingNic());
+        Assertions.assertEquals("xrjnbsconxav", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals("uktirzkaugpu", model.vmId());
+        Assertions.assertEquals("ocf", model.vmProtectionState());
+        Assertions.assertEquals("lwgofm", model.vmProtectionStateDescription());
+        Assertions.assertEquals("rjlvzklkvbgi", model.initialReplicationDetails().initialReplicationType());
+        Assertions.assertEquals("jtkakvl", model.initialReplicationDetails().initialReplicationProgressPercentage());
+        Assertions.assertEquals(7962655555398941339L, model.vMDiskDetails().get(0).maxSizeMB());
+        Assertions.assertEquals("zaptuosk", model.vMDiskDetails().get(0).vhdType());
+        Assertions.assertEquals("izjixwfgcd", model.vMDiskDetails().get(0).vhdId());
+        Assertions.assertEquals("kkcxwnujvqynvav", model.vMDiskDetails().get(0).vhdName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaBaseReplicationDetails model
             = new HyperVReplicaBaseReplicationDetails()
-                .withLastReplicatedTime(OffsetDateTime.parse("2021-02-01T01:04:29Z"))
+                .withLastReplicatedTime(OffsetDateTime.parse("2021-06-24T20:56:10Z"))
                 .withVmNics(
                     Arrays
                         .asList(
-                            new VMNicDetails().withNicId("reimseob")
-                                .withReplicaNicId("xstcyilbvzm")
-                                .withSourceNicArmId("cjzlquzexokjxebj")
-                                .withVMNetworkName("zinzabwmvogljsvl")
-                                .withRecoveryVMNetworkId("idnwceha")
+                            new VMNicDetails().withNicId("bmyqjog")
+                                .withReplicaNicId("saidjan")
+                                .withSourceNicArmId("movdxxurn")
+                                .withVMNetworkName("jmoilunwe")
+                                .withRecoveryVMNetworkId("deel")
                                 .withIpConfigs(
-                                    Arrays
-                                        .asList(new IpConfigDetails().withName("yzltgiomqo")
-                                            .withIsPrimary(true)
-                                            .withSubnetName("iaeapfs")
-                                            .withStaticIpAddress("gdtpe")
-                                            .withIpAddressType("acyh")
+                                    Arrays.asList(
+                                        new IpConfigDetails().withName("yozdsfzjuegrhrht")
+                                            .withIsPrimary(false)
+                                            .withSubnetName("tv")
+                                            .withStaticIpAddress("nxvgjb")
+                                            .withIpAddressType("obpnjodf")
                                             .withIsSeletedForFailover(true)
-                                            .withRecoverySubnetName("pqqncju")
-                                            .withRecoveryStaticIpAddress("hjozf")
-                                            .withRecoveryIpAddressType("cwmbupyvqyvli")
-                                            .withRecoveryPublicIpAddressId("ipsejbsvsia")
+                                            .withRecoverySubnetName("qwm")
+                                            .withRecoveryStaticIpAddress("smoxsazuxejgwe")
+                                            .withRecoveryIpAddressType("wnf")
+                                            .withRecoveryPublicIpAddressId("zzaczsinqbdn")
                                             .withRecoveryLBBackendAddressPoolIds(
-                                                Arrays.asList("whddzydisnuepyw", "jlnldpxottdiiaoc", "ibz", "ihweeb"))
-                                            .withTfoSubnetName("hryvcjwqwoqsra")
-                                            .withTfoStaticIpAddress("hdhzybspijhfr")
-                                            .withTfoPublicIpAddressId("dkkagvwukhsusmm")
-                                            .withTfoLBBackendAddressPoolIds(Arrays.asList("mzhwilzzhni"))))
-                                .withSelectionType("riprlkdneytt")
-                                .withRecoveryNetworkSecurityGroupId("cxiv")
-                                .withEnableAcceleratedNetworkingOnRecovery(false)
-                                .withTfoVMNetworkId("tpumltwjfluxynb")
-                                .withTfoNetworkSecurityGroupId("zlqywauyqn")
-                                .withEnableAcceleratedNetworkingOnTfo(false)
-                                .withRecoveryNicName("mocgjshg")
-                                .withRecoveryNicResourceGroupName("a")
-                                .withReuseExistingNic(false)
-                                .withTfoRecoveryNicName("ixq")
-                                .withTfoRecoveryNicResourceGroupName("gljkybsj")
-                                .withTfoReuseExistingNic(false)
-                                .withTargetNicName("vtzqnrbctbhp"),
-                            new VMNicDetails().withNicId("xpc")
-                                .withReplicaNicId("dnyeita")
-                                .withSourceNicArmId("qady")
-                                .withVMNetworkName("jahwriuomzczf")
-                                .withRecoveryVMNetworkId("ceevsa")
-                                .withIpConfigs(
-                                    Arrays
-                                        .asList(
-                                            new IpConfigDetails().withName("p")
-                                                .withIsPrimary(false)
-                                                .withSubnetName("khfjqebglcxkx")
-                                                .withStaticIpAddress("zromvygys")
-                                                .withIpAddressType("tme")
-                                                .withIsSeletedForFailover(false)
-                                                .withRecoverySubnetName("vpinkzpatqt")
-                                                .withRecoveryStaticIpAddress("swxspvckojaz")
-                                                .withRecoveryIpAddressType("gspftesu")
-                                                .withRecoveryPublicIpAddressId("pvpvd")
-                                                .withRecoveryLBBackendAddressPoolIds(
-                                                    Arrays.asList("tcovqseusrfjb", "xzfxn"))
-                                                .withTfoSubnetName("lbmuos")
-                                                .withTfoStaticIpAddress("jmdihdcyyyzlw")
-                                                .withTfoPublicIpAddressId("wzjnufz")
-                                                .withTfoLBBackendAddressPoolIds(Arrays.asList("m")),
-                                            new IpConfigDetails().withName("gnnbzrtf")
-                                                .withIsPrimary(true)
-                                                .withSubnetName("uubjtvgjsxmty")
-                                                .withStaticIpAddress("vavdp")
-                                                .withIpAddressType("obt")
-                                                .withIsSeletedForFailover(true)
-                                                .withRecoverySubnetName("its")
-                                                .withRecoveryStaticIpAddress("ofw")
-                                                .withRecoveryIpAddressType("m")
-                                                .withRecoveryPublicIpAddressId("scauwazcgwdfr")
-                                                .withRecoveryLBBackendAddressPoolIds(Arrays.asList("ybjpozoks"))
-                                                .withTfoSubnetName("gllixdgbyfgwew")
-                                                .withTfoStaticIpAddress("j")
-                                                .withTfoPublicIpAddressId("prwpxsoohu")
-                                                .withTfoLBBackendAddressPoolIds(Arrays.asList("cskltezuuggg", "lfb")),
-                                            new IpConfigDetails().withName("dc")
-                                                .withIsPrimary(false)
-                                                .withSubnetName("rtmdylperpil")
-                                                .withStaticIpAddress("jzgc")
-                                                .withIpAddressType("cmfpfbodet")
-                                                .withIsSeletedForFailover(false)
-                                                .withRecoverySubnetName("gvtshu")
-                                                .withRecoveryStaticIpAddress("t")
-                                                .withRecoveryIpAddressType("ivmuqkevzgjyp")
-                                                .withRecoveryPublicIpAddressId("hxmpdxxz")
-                                                .withRecoveryLBBackendAddressPoolIds(
-                                                    Arrays.asList("wzjwotnxlkfhg", "h", "foxqwecrsn", "pcs"))
-                                                .withTfoSubnetName("qxovppqibukk")
-                                                .withTfoStaticIpAddress("zrlrmlccmetjs")
-                                                .withTfoPublicIpAddressId("ivfqbqnasdsy")
-                                                .withTfoLBBackendAddressPoolIds(Arrays.asList("sieuscpl", "yvdgxlyzk",
-                                                    "itdshezsvkolru", "jovmozsaye")),
-                                            new IpConfigDetails().withName("azwzlpzbtzuykyki")
-                                                .withIsPrimary(false)
-                                                .withSubnetName("yepfn")
-                                                .withStaticIpAddress("mbezacfpztg")
-                                                .withIpAddressType("wyqejgaao")
-                                                .withIsSeletedForFailover(true)
-                                                .withRecoverySubnetName("kppgkqzkcyzm")
-                                                .withRecoveryStaticIpAddress("ngdyfcixrhlcq")
-                                                .withRecoveryIpAddressType("oejgoiutgwrmkah")
-                                                .withRecoveryPublicIpAddressId("hazyntacihnco")
-                                                .withRecoveryLBBackendAddressPoolIds(
-                                                    Arrays.asList("pnmliq", "v", "bhikeaqgr"))
-                                                .withTfoSubnetName("pomxpu")
-                                                .withTfoStaticIpAddress("tsdfjyieso")
-                                                .withTfoPublicIpAddressId("iqbuou")
-                                                .withTfoLBBackendAddressPoolIds(Arrays.asList("yzgleofjs"))))
-                                .withSelectionType("bwwzvdajf")
-                                .withRecoveryNetworkSecurityGroupId("n")
+                                                Arrays.asList("bozsyvr", "kjmyitrchwudlx"))
+                                            .withTfoSubnetName("ihtpmnoejhql")
+                                            .withTfoStaticIpAddress("sibz")
+                                            .withTfoPublicIpAddressId("rfgxkyd")
+                                            .withTfoLBBackendAddressPoolIds(Arrays.asList("pgfqvmtyw")),
+                                        new IpConfigDetails().withName("a")
+                                            .withIsPrimary(false)
+                                            .withSubnetName("jpewpyjlfx")
+                                            .withStaticIpAddress("pqcrzgeuqxbpiat")
+                                            .withIpAddressType("aujegqdtadra")
+                                            .withIsSeletedForFailover(false)
+                                            .withRecoverySubnetName("hjkrukizyhgs")
+                                            .withRecoveryStaticIpAddress("nqskt")
+                                            .withRecoveryIpAddressType("fpjbqggwe")
+                                            .withRecoveryPublicIpAddressId("w")
+                                            .withRecoveryLBBackendAddressPoolIds(Arrays.asList("mnc", "bf"))
+                                            .withTfoSubnetName("scstunmlhxd")
+                                            .withTfoStaticIpAddress("klciichgjsysm")
+                                            .withTfoPublicIpAddressId("o")
+                                            .withTfoLBBackendAddressPoolIds(Arrays
+                                                .asList("xfkzsifcuv", "dujgcwxve", "bbwjtrdxrizagb", "giarksykpgdqxw")),
+                                        new IpConfigDetails().withName("zrwiqrxha")
+                                            .withIsPrimary(true)
+                                            .withSubnetName("osqkptjqgk")
+                                            .withStaticIpAddress("mmainwhe")
+                                            .withIpAddressType("kp")
+                                            .withIsSeletedForFailover(true)
+                                            .withRecoverySubnetName("ntobu")
+                                            .withRecoveryStaticIpAddress("azz")
+                                            .withRecoveryIpAddressType("wgvydjufb")
+                                            .withRecoveryPublicIpAddressId("lblaxpegj")
+                                            .withRecoveryLBBackendAddressPoolIds(Arrays.asList("bal", "dxagl", "f"))
+                                            .withTfoSubnetName("lbtlqhopxo")
+                                            .withTfoStaticIpAddress("mrsiflikyypzkg")
+                                            .withTfoPublicIpAddressId("xfmyrqs")
+                                            .withTfoLBBackendAddressPoolIds(
+                                                Arrays.asList("oksz", "nm", "wgpterdiuw", "i"))))
+                                .withSelectionType("skw")
+                                .withRecoveryNetworkSecurityGroupId("sdetjygowifcqpol")
                                 .withEnableAcceleratedNetworkingOnRecovery(true)
-                                .withTfoVMNetworkId("ciqgjjrlhiqlwixv")
-                                .withTfoNetworkSecurityGroupId("ougu")
+                                .withTfoVMNetworkId("sdgzyy")
+                                .withTfoNetworkSecurityGroupId("oxlvocptvdxxheig")
                                 .withEnableAcceleratedNetworkingOnTfo(false)
-                                .withRecoveryNicName("opgjttba")
-                                .withRecoveryNicResourceGroupName("alapdlndbe")
-                                .withReuseExistingNic(true)
-                                .withTfoRecoveryNicName("ixv")
-                                .withTfoRecoveryNicResourceGroupName("wy")
-                                .withTfoReuseExistingNic(false)
-                                .withTargetNicName("fqvz")))
-                .withVmId("msp")
-                .withVmProtectionState("zfe")
-                .withVmProtectionStateDescription("jljmphfkyezol")
-                .withInitialReplicationDetails(new InitialReplicationDetails().withInitialReplicationType("mi")
-                    .withInitialReplicationProgressPercentage("ydoccnxshanzb"))
-                .withVMDiskDetails(Arrays.asList(new DiskDetails().withMaxSizeMB(8904392733364237803L)
-                    .withVhdType("tecaa")
-                    .withVhdId("dohzniucbdaombwi")
-                    .withVhdName("jdllwktle")));
+                                .withRecoveryNicName("wzghjhjv")
+                                .withRecoveryNicResourceGroupName("bzzbwayb")
+                                .withReuseExistingNic(false)
+                                .withTfoRecoveryNicName("fb")
+                                .withTfoRecoveryNicResourceGroupName("mqtnap")
+                                .withTfoReuseExistingNic(true)
+                                .withTargetNicName("xrjnbsconxav"),
+                            new VMNicDetails().withNicId("neychbjizq")
+                                .withReplicaNicId("gnwdxz")
+                                .withSourceNicArmId("p")
+                                .withVMNetworkName("rfbo")
+                                .withRecoveryVMNetworkId("ipmlnfyzavf")
+                                .withIpConfigs(Arrays.asList(new IpConfigDetails().withName("icdbkpdj")
+                                    .withIsPrimary(false)
+                                    .withSubnetName("smqaz")
+                                    .withStaticIpAddress("gonjhxshthmgpczq")
+                                    .withIpAddressType("ptkbvcpxtzhi")
+                                    .withIsSeletedForFailover(false)
+                                    .withRecoverySubnetName("timpkjblorns")
+                                    .withRecoveryStaticIpAddress("qhudsmusuaawj")
+                                    .withRecoveryIpAddressType("xwjnfcz")
+                                    .withRecoveryPublicIpAddressId("nii")
+                                    .withRecoveryLBBackendAddressPoolIds(Arrays.asList("vqban"))
+                                    .withTfoSubnetName("jtgirnb")
+                                    .withTfoStaticIpAddress("gm")
+                                    .withTfoPublicIpAddressId("orgmynltwmpftm")
+                                    .withTfoLBBackendAddressPoolIds(Arrays.asList("a"))))
+                                .withSelectionType("gsy")
+                                .withRecoveryNetworkSecurityGroupId("etamfddrvlkpzwb")
+                                .withEnableAcceleratedNetworkingOnRecovery(true)
+                                .withTfoVMNetworkId("cc")
+                                .withTfoNetworkSecurityGroupId("id")
+                                .withEnableAcceleratedNetworkingOnTfo(false)
+                                .withRecoveryNicName("kahmjedbiucvkhhw")
+                                .withRecoveryNicResourceGroupName("pjbweunxcq")
+                                .withReuseExistingNic(false)
+                                .withTfoRecoveryNicName("ufoihppiybxv")
+                                .withTfoRecoveryNicResourceGroupName("zuzpbgkzcs")
+                                .withTfoReuseExistingNic(true)
+                                .withTargetNicName("zvkunhdi")))
+                .withVmId("uktirzkaugpu")
+                .withVmProtectionState("ocf")
+                .withVmProtectionStateDescription("lwgofm")
+                .withInitialReplicationDetails(
+                    new InitialReplicationDetails().withInitialReplicationType("rjlvzklkvbgi")
+                        .withInitialReplicationProgressPercentage("jtkakvl"))
+                .withVMDiskDetails(Arrays.asList(
+                    new DiskDetails().withMaxSizeMB(7962655555398941339L)
+                        .withVhdType("zaptuosk")
+                        .withVhdId("izjixwfgcd")
+                        .withVhdName("kkcxwnujvqynvav"),
+                    new DiskDetails().withMaxSizeMB(6961201468214314648L)
+                        .withVhdType("uqohhi")
+                        .withVhdId("a")
+                        .withVhdName("uddrwjc"),
+                    new DiskDetails().withMaxSizeMB(3187253478458170915L)
+                        .withVhdType("lhpv")
+                        .withVhdId("dbwen")
+                        .withVhdName("nafhxrzfr"),
+                    new DiskDetails().withMaxSizeMB(1546022163223316974L)
+                        .withVhdType("ucwviqllukhkrcq")
+                        .withVhdId("cbvzarmqcb")
+                        .withVhdName("kst")));
         model = BinaryData.fromObject(model).toObject(HyperVReplicaBaseReplicationDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T01:04:29Z"), model.lastReplicatedTime());
-        Assertions.assertEquals("reimseob", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("xstcyilbvzm", model.vmNics().get(0).replicaNicId());
-        Assertions.assertEquals("cjzlquzexokjxebj", model.vmNics().get(0).sourceNicArmId());
-        Assertions.assertEquals("zinzabwmvogljsvl", model.vmNics().get(0).vMNetworkName());
-        Assertions.assertEquals("idnwceha", model.vmNics().get(0).recoveryVMNetworkId());
-        Assertions.assertEquals("yzltgiomqo", model.vmNics().get(0).ipConfigs().get(0).name());
-        Assertions.assertEquals(true, model.vmNics().get(0).ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals("iaeapfs", model.vmNics().get(0).ipConfigs().get(0).subnetName());
-        Assertions.assertEquals("gdtpe", model.vmNics().get(0).ipConfigs().get(0).staticIpAddress());
-        Assertions.assertEquals("acyh", model.vmNics().get(0).ipConfigs().get(0).ipAddressType());
-        Assertions.assertEquals(true, model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
-        Assertions.assertEquals("pqqncju", model.vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
-        Assertions.assertEquals("hjozf", model.vmNics().get(0).ipConfigs().get(0).recoveryStaticIpAddress());
-        Assertions.assertEquals("cwmbupyvqyvli", model.vmNics().get(0).ipConfigs().get(0).recoveryIpAddressType());
-        Assertions.assertEquals("ipsejbsvsia", model.vmNics().get(0).ipConfigs().get(0).recoveryPublicIpAddressId());
-        Assertions.assertEquals("whddzydisnuepyw",
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T20:56:10Z"), model.lastReplicatedTime());
+        Assertions.assertEquals("bmyqjog", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("saidjan", model.vmNics().get(0).replicaNicId());
+        Assertions.assertEquals("movdxxurn", model.vmNics().get(0).sourceNicArmId());
+        Assertions.assertEquals("jmoilunwe", model.vmNics().get(0).vMNetworkName());
+        Assertions.assertEquals("deel", model.vmNics().get(0).recoveryVMNetworkId());
+        Assertions.assertEquals("yozdsfzjuegrhrht", model.vmNics().get(0).ipConfigs().get(0).name());
+        Assertions.assertFalse(model.vmNics().get(0).ipConfigs().get(0).isPrimary());
+        Assertions.assertEquals("tv", model.vmNics().get(0).ipConfigs().get(0).subnetName());
+        Assertions.assertEquals("nxvgjb", model.vmNics().get(0).ipConfigs().get(0).staticIpAddress());
+        Assertions.assertEquals("obpnjodf", model.vmNics().get(0).ipConfigs().get(0).ipAddressType());
+        Assertions.assertTrue(model.vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertEquals("qwm", model.vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
+        Assertions.assertEquals("smoxsazuxejgwe", model.vmNics().get(0).ipConfigs().get(0).recoveryStaticIpAddress());
+        Assertions.assertEquals("wnf", model.vmNics().get(0).ipConfigs().get(0).recoveryIpAddressType());
+        Assertions.assertEquals("zzaczsinqbdn", model.vmNics().get(0).ipConfigs().get(0).recoveryPublicIpAddressId());
+        Assertions.assertEquals("bozsyvr",
             model.vmNics().get(0).ipConfigs().get(0).recoveryLBBackendAddressPoolIds().get(0));
-        Assertions.assertEquals("hryvcjwqwoqsra", model.vmNics().get(0).ipConfigs().get(0).tfoSubnetName());
-        Assertions.assertEquals("hdhzybspijhfr", model.vmNics().get(0).ipConfigs().get(0).tfoStaticIpAddress());
-        Assertions.assertEquals("dkkagvwukhsusmm", model.vmNics().get(0).ipConfigs().get(0).tfoPublicIpAddressId());
-        Assertions.assertEquals("mzhwilzzhni",
+        Assertions.assertEquals("ihtpmnoejhql", model.vmNics().get(0).ipConfigs().get(0).tfoSubnetName());
+        Assertions.assertEquals("sibz", model.vmNics().get(0).ipConfigs().get(0).tfoStaticIpAddress());
+        Assertions.assertEquals("rfgxkyd", model.vmNics().get(0).ipConfigs().get(0).tfoPublicIpAddressId());
+        Assertions.assertEquals("pgfqvmtyw",
             model.vmNics().get(0).ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
-        Assertions.assertEquals("riprlkdneytt", model.vmNics().get(0).selectionType());
-        Assertions.assertEquals("cxiv", model.vmNics().get(0).recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
-        Assertions.assertEquals("tpumltwjfluxynb", model.vmNics().get(0).tfoVMNetworkId());
-        Assertions.assertEquals("zlqywauyqn", model.vmNics().get(0).tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
-        Assertions.assertEquals("mocgjshg", model.vmNics().get(0).recoveryNicName());
-        Assertions.assertEquals("a", model.vmNics().get(0).recoveryNicResourceGroupName());
-        Assertions.assertEquals(false, model.vmNics().get(0).reuseExistingNic());
-        Assertions.assertEquals("ixq", model.vmNics().get(0).tfoRecoveryNicName());
-        Assertions.assertEquals("gljkybsj", model.vmNics().get(0).tfoRecoveryNicResourceGroupName());
-        Assertions.assertEquals(false, model.vmNics().get(0).tfoReuseExistingNic());
-        Assertions.assertEquals("vtzqnrbctbhp", model.vmNics().get(0).targetNicName());
-        Assertions.assertEquals("msp", model.vmId());
-        Assertions.assertEquals("zfe", model.vmProtectionState());
-        Assertions.assertEquals("jljmphfkyezol", model.vmProtectionStateDescription());
-        Assertions.assertEquals("mi", model.initialReplicationDetails().initialReplicationType());
-        Assertions.assertEquals("ydoccnxshanzb",
-            model.initialReplicationDetails().initialReplicationProgressPercentage());
-        Assertions.assertEquals(8904392733364237803L, model.vMDiskDetails().get(0).maxSizeMB());
-        Assertions.assertEquals("tecaa", model.vMDiskDetails().get(0).vhdType());
-        Assertions.assertEquals("dohzniucbdaombwi", model.vMDiskDetails().get(0).vhdId());
-        Assertions.assertEquals("jdllwktle", model.vMDiskDetails().get(0).vhdName());
+        Assertions.assertEquals("skw", model.vmNics().get(0).selectionType());
+        Assertions.assertEquals("sdetjygowifcqpol", model.vmNics().get(0).recoveryNetworkSecurityGroupId());
+        Assertions.assertTrue(model.vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertEquals("sdgzyy", model.vmNics().get(0).tfoVMNetworkId());
+        Assertions.assertEquals("oxlvocptvdxxheig", model.vmNics().get(0).tfoNetworkSecurityGroupId());
+        Assertions.assertFalse(model.vmNics().get(0).enableAcceleratedNetworkingOnTfo());
+        Assertions.assertEquals("wzghjhjv", model.vmNics().get(0).recoveryNicName());
+        Assertions.assertEquals("bzzbwayb", model.vmNics().get(0).recoveryNicResourceGroupName());
+        Assertions.assertFalse(model.vmNics().get(0).reuseExistingNic());
+        Assertions.assertEquals("fb", model.vmNics().get(0).tfoRecoveryNicName());
+        Assertions.assertEquals("mqtnap", model.vmNics().get(0).tfoRecoveryNicResourceGroupName());
+        Assertions.assertTrue(model.vmNics().get(0).tfoReuseExistingNic());
+        Assertions.assertEquals("xrjnbsconxav", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals("uktirzkaugpu", model.vmId());
+        Assertions.assertEquals("ocf", model.vmProtectionState());
+        Assertions.assertEquals("lwgofm", model.vmProtectionStateDescription());
+        Assertions.assertEquals("rjlvzklkvbgi", model.initialReplicationDetails().initialReplicationType());
+        Assertions.assertEquals("jtkakvl", model.initialReplicationDetails().initialReplicationProgressPercentage());
+        Assertions.assertEquals(7962655555398941339L, model.vMDiskDetails().get(0).maxSizeMB());
+        Assertions.assertEquals("zaptuosk", model.vMDiskDetails().get(0).vhdType());
+        Assertions.assertEquals("izjixwfgcd", model.vMDiskDetails().get(0).vhdId());
+        Assertions.assertEquals("kkcxwnujvqynvav", model.vMDiskDetails().get(0).vhdName());
     }
 }

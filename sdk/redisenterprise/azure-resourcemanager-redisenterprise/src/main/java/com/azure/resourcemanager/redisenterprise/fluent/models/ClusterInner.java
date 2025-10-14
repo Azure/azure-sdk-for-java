@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
+import com.azure.resourcemanager.redisenterprise.models.Kind;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
@@ -27,6 +28,11 @@ import java.util.Map;
  */
 @Fluent
 public final class ClusterInner extends Resource {
+    /*
+     * Distinguishes the kind of cluster. Read-only.
+     */
+    private Kind kind;
+
     /*
      * The SKU to create, which affects price, performance, and features.
      */
@@ -66,6 +72,15 @@ public final class ClusterInner extends Resource {
      * Creates an instance of ClusterInner class.
      */
     public ClusterInner() {
+    }
+
+    /**
+     * Get the kind property: Distinguishes the kind of cluster. Read-only.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
     }
 
     /**
@@ -382,6 +397,8 @@ public final class ClusterInner extends Resource {
                     deserializedClusterInner.withTags(tags);
                 } else if ("sku".equals(fieldName)) {
                     deserializedClusterInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedClusterInner.kind = Kind.fromString(reader.getString());
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedClusterInner.zones = zones;

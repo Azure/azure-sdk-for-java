@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class DailyAirQualityForecastResult implements JsonSerializable<Dai
     /*
      * A list of all daily air quality forecasts for the queried location.
      */
+    @Generated
     private List<DailyAirQuality> airQualityResults;
 
     /*
      * The is the link to the next page of the features returned. If it's the last page, no this field.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Set default DailyAirQualityForecastResult constructor to private
      */
+    @Generated
     private DailyAirQualityForecastResult() {
     }
 
@@ -38,23 +42,15 @@ public final class DailyAirQualityForecastResult implements JsonSerializable<Dai
      *
      * @return the airQualityResults value.
      */
+    @Generated
     public List<DailyAirQuality> getAirQualityResults() {
         return this.airQualityResults;
     }
 
     /**
-     * Get the nextLink property: The is the link to the next page of the features returned. If it's the last page, no
-     * this field.
-     *
-     * @return the nextLink value.
-     */
-    public String getNextLink() {
-        return this.nextLink;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,6 +67,7 @@ public final class DailyAirQualityForecastResult implements JsonSerializable<Dai
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyAirQualityForecastResult.
      */
+    @Generated
     public static DailyAirQualityForecastResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyAirQualityForecastResult deserializedDailyAirQualityForecastResult

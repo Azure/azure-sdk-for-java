@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class MachinesInstallPatchesSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2025-02-19-preview/examples/machine/
      * Machine_InstallPatches.json
      */
     /**
@@ -35,7 +35,9 @@ public final class MachinesInstallPatchesSamples {
                     .withWindowsParameters(new WindowsParameters()
                         .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.CRITICAL,
                             VMGuestPatchClassificationWindows.SECURITY))
-                        .withMaxPatchPublishDate(OffsetDateTime.parse("2021-08-19T02:36:43.0539904+00:00"))),
+                        .withMaxPatchPublishDate(OffsetDateTime.parse("2021-08-19T02:36:43.0539904+00:00"))
+                        .withPatchNameMasksToInclude(Arrays.asList("*SQL*"))
+                        .withPatchNameMasksToExclude(Arrays.asList("*Windows*"))),
                 com.azure.core.util.Context.NONE);
     }
 }

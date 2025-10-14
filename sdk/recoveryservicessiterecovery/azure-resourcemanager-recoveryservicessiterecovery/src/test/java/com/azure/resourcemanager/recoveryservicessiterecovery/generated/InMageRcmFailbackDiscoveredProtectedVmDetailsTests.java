@@ -11,7 +11,7 @@ public final class InMageRcmFailbackDiscoveredProtectedVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmFailbackDiscoveredProtectedVmDetails model = BinaryData.fromString(
-            "{\"vCenterId\":\"zkdolrndwdbvxvza\",\"vCenterFqdn\":\"doyqx\",\"datastores\":[\"kft\",\"mcxqqxmyzklao\",\"n\",\"ohrvmz\"],\"ipAddresses\":[\"azad\",\"vznllaslkskhjqj\",\"vbaihxjt\",\"zgtai\"],\"vmwareToolsStatus\":\"b\",\"powerStatus\":\"roigbsfsgsaenwld\",\"vmFqdn\":\"hljqlxsp\",\"osName\":\"jc\",\"createdTimestamp\":\"2021-06-14T00:46:05Z\",\"updatedTimestamp\":\"2021-03-22T03:50:23Z\",\"isDeleted\":true,\"lastDiscoveryTimeInUtc\":\"2021-08-20T07:36Z\"}")
+            "{\"vCenterId\":\"mnsvujnjktvolefc\",\"vCenterFqdn\":\"se\",\"datastores\":[\"b\",\"otfbjampqoclann\"],\"ipAddresses\":[\"nlsuqbwzstr\",\"tgvpatr\",\"jjktfin\",\"hoksmmculwk\"],\"vmwareToolsStatus\":\"cru\",\"powerStatus\":\"krjflsgaojb\",\"vmFqdn\":\"pqsdoc\",\"osName\":\"zpujzflmcdsg\",\"createdTimestamp\":\"2021-08-30T19:58:24Z\",\"updatedTimestamp\":\"2021-05-08T22:41:33Z\",\"isDeleted\":true,\"lastDiscoveryTimeInUtc\":\"2021-01-05T10:51:28Z\"}")
             .toObject(InMageRcmFailbackDiscoveredProtectedVmDetails.class);
     }
 

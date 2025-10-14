@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
     /*
      * The collection value.
      */
+    @Generated
     private List<Key> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of KeyListResult class.
      */
+    @Generated
     public KeyListResult() {
     }
 
@@ -38,6 +42,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      * 
      * @return the items value.
      */
+    @Generated
     public List<Key> getItems() {
         return this.items;
     }
@@ -48,6 +53,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      * @param items the items value to set.
      * @return the KeyListResult object itself.
      */
+    @Generated
     public KeyListResult setItems(List<Key> items) {
         this.items = items;
         return this;
@@ -58,6 +64,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      * @param nextLink the nextLink value to set.
      * @return the KeyListResult object itself.
      */
+    @Generated
     public KeyListResult setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyListResult.
      */
+    @Generated
     public static KeyListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyListResult deserializedKeyListResult = new KeyListResult();

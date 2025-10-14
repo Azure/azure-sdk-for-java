@@ -27,20 +27,20 @@ public final class ReplicationAlertSettingsImpl implements ReplicationAlertSetti
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Alert> list(String resourceName, String resourceGroupName) {
-        PagedIterable<AlertInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
+    public PagedIterable<Alert> list(String resourceGroupName, String resourceName) {
+        PagedIterable<AlertInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Alert> list(String resourceName, String resourceGroupName, Context context) {
-        PagedIterable<AlertInner> inner = this.serviceClient().list(resourceName, resourceGroupName, context);
+    public PagedIterable<Alert> list(String resourceGroupName, String resourceName, Context context) {
+        PagedIterable<AlertInner> inner = this.serviceClient().list(resourceGroupName, resourceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
-    public Response<Alert> getWithResponse(String resourceName, String resourceGroupName, String alertSettingName,
+    public Response<Alert> getWithResponse(String resourceGroupName, String resourceName, String alertSettingName,
         Context context) {
         Response<AlertInner> inner
-            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, alertSettingName, context);
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, alertSettingName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
@@ -49,8 +49,8 @@ public final class ReplicationAlertSettingsImpl implements ReplicationAlertSetti
         }
     }
 
-    public Alert get(String resourceName, String resourceGroupName, String alertSettingName) {
-        AlertInner inner = this.serviceClient().get(resourceName, resourceGroupName, alertSettingName);
+    public Alert get(String resourceGroupName, String resourceName, String alertSettingName) {
+        AlertInner inner = this.serviceClient().get(resourceGroupName, resourceName, alertSettingName);
         if (inner != null) {
             return new AlertImpl(inner, this.manager());
         } else {
@@ -59,41 +59,41 @@ public final class ReplicationAlertSettingsImpl implements ReplicationAlertSetti
     }
 
     public Alert getById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String alertSettingName = ResourceManagerUtils.getValueFromIdByName(id, "replicationAlertSettings");
         if (alertSettingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationAlertSettings'.", id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, alertSettingName, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, resourceName, alertSettingName, Context.NONE).getValue();
     }
 
     public Response<Alert> getByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String alertSettingName = ResourceManagerUtils.getValueFromIdByName(id, "replicationAlertSettings");
         if (alertSettingName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationAlertSettings'.", id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, alertSettingName, context);
+        return this.getWithResponse(resourceGroupName, resourceName, alertSettingName, context);
     }
 
     private ReplicationAlertSettingsClient serviceClient() {

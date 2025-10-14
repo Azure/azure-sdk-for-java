@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     /*
      * The principal ID of the workspace managed identity
      */
+    @Generated
     private String principalId;
 
     /*
      * The tenant ID of the workspace managed identity
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * The type of managed identity for the workspace
      */
+    @Generated
     private ResourceIdentityType type;
 
     /**
      * Creates an instance of ManagedIdentity class.
      */
+    @Generated
     public ManagedIdentity() {
     }
 
@@ -43,6 +48,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
      * 
      * @return the principalId value.
      */
+    @Generated
     public String getPrincipalId() {
         return this.principalId;
     }
@@ -52,6 +58,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
      * 
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -61,6 +68,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
      * 
      * @return the type value.
      */
+    @Generated
     public ResourceIdentityType getType() {
         return this.type;
     }
@@ -71,6 +79,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
      * @param type the type value to set.
      * @return the ManagedIdentity object itself.
      */
+    @Generated
     public ManagedIdentity setType(ResourceIdentityType type) {
         this.type = type;
         return this;
@@ -79,6 +88,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +104,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedIdentity.
      */
+    @Generated
     public static ManagedIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedIdentity deserializedManagedIdentity = new ManagedIdentity();

@@ -35,6 +35,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.codahale.metrics.ConsoleReporter;
@@ -111,13 +112,23 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
+    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
+            .authorityHost(Configuration.getAadLoginUri())
+            .tenantId(Configuration.getAadTenantId())
+            .build();
+
     AsyncEncryptionBenchmark(Configuration cfg) throws IOException {
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .endpoint(cfg.getServiceEndpoint())
-            .key(cfg.getMasterKey())
-            .consistencyLevel(cfg.getConsistencyLevel())
-            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
-            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+
+        CosmosClientBuilder cosmosClientBuilder = cfg.isManagedIdentityRequired() ?
+                new CosmosClientBuilder().credential(CREDENTIAL) :
+                new CosmosClientBuilder().key(cfg.getMasterKey());
+
+        cosmosClientBuilder
+                .preferredRegions(cfg.getPreferredRegionsList())
+                .endpoint(cfg.getServiceEndpoint())
+                .consistencyLevel(cfg.getConsistencyLevel())
+                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());

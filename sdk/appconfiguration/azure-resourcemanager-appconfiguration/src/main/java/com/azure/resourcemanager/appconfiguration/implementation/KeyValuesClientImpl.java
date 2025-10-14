@@ -23,8 +23,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appconfiguration.fluent.KeyValuesClient;
@@ -76,6 +78,16 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<KeyValueInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -88,10 +100,32 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<KeyValueInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName,
+            @BodyParam("application/json") KeyValueInner keyValueParameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("keyValueName") String keyValueName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/keyValues/{keyValueName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
@@ -151,50 +185,6 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
-        String keyValueName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        if (keyValueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
-    }
-
-    /**
-     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
-     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
-     * instead.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +214,31 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValueInner> getWithResponse(String resourceGroupName, String configStoreName,
         String keyValueName, Context context) {
-        return getWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (keyValueName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
     }
 
     /**
@@ -283,7 +297,10 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         if (keyValueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
         }
-        if (keyValueParameters != null) {
+        if (keyValueParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter keyValueParameters is required and cannot be null."));
+        } else {
             keyValueParameters.validate();
         }
         final String accept = "application/json";
@@ -303,52 +320,6 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
      * @param keyValueParameters The parameters for creating a key-value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the key-value resource along with all resource properties along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KeyValueInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String configStoreName, String keyValueName, KeyValueInner keyValueParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
-        }
-        if (keyValueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
-        }
-        if (keyValueParameters != null) {
-            keyValueParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            configStoreName, this.client.getApiVersion(), keyValueName, keyValueParameters, accept, context);
-    }
-
-    /**
-     * Creates a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,8 +327,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KeyValueInner> createOrUpdateAsync(String resourceGroupName, String configStoreName,
-        String keyValueName) {
-        final KeyValueInner keyValueParameters = null;
+        String keyValueName, KeyValueInner keyValueParameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -380,8 +350,37 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValueInner> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
         String keyValueName, KeyValueInner keyValueParameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (keyValueName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
+        }
+        if (keyValueParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter keyValueParameters is required and cannot be null."));
+        } else {
+            keyValueParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, keyValueParameters, accept, context);
     }
 
     /**
@@ -392,14 +391,15 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
+     * @param keyValueParameters The parameters for creating a key-value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key-value resource along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName) {
-        final KeyValueInner keyValueParameters = null;
+    public KeyValueInner createOrUpdate(String resourceGroupName, String configStoreName, String keyValueName,
+        KeyValueInner keyValueParameters) {
         return createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, keyValueParameters,
             Context.NONE).getValue();
     }
@@ -454,37 +454,82 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
+        String keyValueName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (configStoreName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+        }
+        if (keyValueName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), keyValueName, accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
         String keyValueName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configStoreName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (keyValueName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter keyValueName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             configStoreName, this.client.getApiVersion(), keyValueName, accept, context);
     }
 
@@ -518,30 +563,6 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
-        String keyValueName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, configStoreName, keyValueName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,7 +571,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String keyValueName) {
-        return this.beginDeleteAsync(resourceGroupName, configStoreName, keyValueName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName, keyValueName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -570,7 +592,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String keyValueName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName, keyValueName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -600,34 +623,13 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
      * optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String keyValueName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, keyValueName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
-     * scenarios involving App Configuration key-values the data plane API should be used instead.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String keyValueName) {
-        deleteAsync(resourceGroupName, configStoreName, keyValueName).block();
+        beginDelete(resourceGroupName, configStoreName, keyValueName).getFinalResult();
     }
 
     /**
@@ -645,6 +647,8 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String keyValueName, Context context) {
-        deleteAsync(resourceGroupName, configStoreName, keyValueName, context).block();
+        beginDelete(resourceGroupName, configStoreName, keyValueName, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyValuesClientImpl.class);
 }

@@ -29,7 +29,7 @@ To use the [UsernamePasswordCredential][username_password_credential] provider s
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 
@@ -105,11 +105,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/purview/concept-workflow
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[purview_resource]: https://docs.microsoft.com/azure/purview/create-catalog-portal
+[purview_resource]: https://learn.microsoft.com/azure/purview/create-catalog-portal
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
 [app_registration]:https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app
 [username_password_credential]: https://learn.microsoft.com/java/api/com.azure.identity.usernamepasswordcredential?source=recommendations&view=azure-java-stable
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpurview%2Fazure-analytics-purview-workflow%2FREADME.png)
+
 

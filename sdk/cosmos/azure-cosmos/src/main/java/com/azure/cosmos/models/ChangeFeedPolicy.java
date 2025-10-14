@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.util.Beta;
@@ -239,14 +238,14 @@ public final class ChangeFeedPolicy {
         if (retentionDurationInMinutes == null || retentionDurationInMinutes <= 0) {
             this.jsonSerializable.set(
                 Constants.Properties.LOG_RETENTION_DURATION,
-                0,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                0
+            );
         }
         else {
             this.jsonSerializable.set(
                 Constants.Properties.LOG_RETENTION_DURATION,
-                retentionDurationInMinutes,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                retentionDurationInMinutes
+            );
         }
 
         return this;

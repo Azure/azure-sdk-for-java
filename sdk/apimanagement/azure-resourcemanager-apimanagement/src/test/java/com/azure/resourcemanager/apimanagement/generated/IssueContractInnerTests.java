@@ -14,30 +14,30 @@ public final class IssueContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"eysfaqegplw\",\"description\":\"ysh\",\"userId\":\"ddkvbxgkqu\",\"createdDate\":\"2021-03-15T20:21:34Z\",\"state\":\"removed\",\"apiId\":\"dacarvvlfnty\"},\"id\":\"tpo\",\"name\":\"wenaz\",\"type\":\"r\"}")
+            "{\"properties\":{\"title\":\"ds\",\"description\":\"l\",\"userId\":\"ytoithgygvfl\",\"createdDate\":\"2021-07-25T23:27:42Z\",\"state\":\"open\",\"apiId\":\"oynkrxwetwkdrcyr\"},\"id\":\"cpcunnuzdqum\",\"name\":\"enodna\",\"type\":\"enhqhskndnelq\"}")
             .toObject(IssueContractInner.class);
-        Assertions.assertEquals("eysfaqegplw", model.title());
-        Assertions.assertEquals("ysh", model.description());
-        Assertions.assertEquals("ddkvbxgkqu", model.userId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T20:21:34Z"), model.createdDate());
-        Assertions.assertEquals(State.REMOVED, model.state());
-        Assertions.assertEquals("dacarvvlfnty", model.apiId());
+        Assertions.assertEquals("ds", model.title());
+        Assertions.assertEquals("l", model.description());
+        Assertions.assertEquals("ytoithgygvfl", model.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T23:27:42Z"), model.createdDate());
+        Assertions.assertEquals(State.OPEN, model.state());
+        Assertions.assertEquals("oynkrxwetwkdrcyr", model.apiId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueContractInner model = new IssueContractInner().withTitle("eysfaqegplw")
-            .withDescription("ysh")
-            .withUserId("ddkvbxgkqu")
-            .withCreatedDate(OffsetDateTime.parse("2021-03-15T20:21:34Z"))
-            .withState(State.REMOVED)
-            .withApiId("dacarvvlfnty");
+        IssueContractInner model = new IssueContractInner().withTitle("ds")
+            .withDescription("l")
+            .withUserId("ytoithgygvfl")
+            .withCreatedDate(OffsetDateTime.parse("2021-07-25T23:27:42Z"))
+            .withState(State.OPEN)
+            .withApiId("oynkrxwetwkdrcyr");
         model = BinaryData.fromObject(model).toObject(IssueContractInner.class);
-        Assertions.assertEquals("eysfaqegplw", model.title());
-        Assertions.assertEquals("ysh", model.description());
-        Assertions.assertEquals("ddkvbxgkqu", model.userId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T20:21:34Z"), model.createdDate());
-        Assertions.assertEquals(State.REMOVED, model.state());
-        Assertions.assertEquals("dacarvvlfnty", model.apiId());
+        Assertions.assertEquals("ds", model.title());
+        Assertions.assertEquals("l", model.description());
+        Assertions.assertEquals("ytoithgygvfl", model.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T23:27:42Z"), model.createdDate());
+        Assertions.assertEquals(State.OPEN, model.state());
+        Assertions.assertEquals("oynkrxwetwkdrcyr", model.apiId());
     }
 }

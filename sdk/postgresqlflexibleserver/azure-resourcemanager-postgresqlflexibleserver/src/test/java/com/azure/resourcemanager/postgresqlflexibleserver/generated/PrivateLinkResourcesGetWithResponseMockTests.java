@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkResource;
@@ -21,19 +21,19 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"jbmzyospspsh\",\"requiredMembers\":[\"kyjpmspbps\",\"df\",\"pyogtieyuj\",\"vczkcnyxrxmunjd\"],\"requiredZoneNames\":[\"lnkvxlx\",\"aglqivbgkcvkh\",\"zvuqdflvon\"]},\"id\":\"pfpubcpzgpx\",\"name\":\"ivhjknidi\",\"type\":\"gqjxgpnrhgovfgp\"}";
+            = "{\"properties\":{\"groupId\":\"vrcmyfqipgxhnpo\",\"requiredMembers\":[\"wcabvnuileeya\",\"wlpaugmrmfjlrxwt\",\"aukhfkvcisiz\"],\"requiredZoneNames\":[\"eds\"]},\"id\":\"wuived\",\"name\":\"cgyee\",\"type\":\"xeiqbpsmg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResource response = manager.privateLinkResources()
-            .getWithResponse("dtmaa", "quhuxylrj", "m", com.azure.core.util.Context.NONE)
+            .getWithResponse("lg", "wfiwzcxmj", "byephmgt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lnkvxlx", response.requiredZoneNames().get(0));
+        Assertions.assertEquals("eds", response.requiredZoneNames().get(0));
     }
 }

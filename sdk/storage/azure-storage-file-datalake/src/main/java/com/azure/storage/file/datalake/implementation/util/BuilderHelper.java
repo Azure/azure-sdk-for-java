@@ -253,4 +253,15 @@ public final class BuilderHelper {
         }
 
     }
+
+    public static Context skipResponseValidationForEncryptionKey(Context context) {
+        List<HttpHeaderName> headersToSkip = new ArrayList<>();
+        headersToSkip.add(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME);
+        if (context == null) {
+            return new Context(Constants.SKIP_ECHO_VALIDATION_KEY, headersToSkip);
+        } else {
+            return context.addData(Constants.SKIP_ECHO_VALIDATION_KEY, headersToSkip);
+        }
+
+    }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,26 +22,31 @@ public final class Error implements JsonSerializable<Error> {
     /*
      * Error code.
      */
+    @Generated
     private final String code;
 
     /*
      * A human-readable representation of the error.
      */
+    @Generated
     private final String message;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
+    @Generated
     private List<Error> details;
 
     /*
      * The target of the particular error (e.g., the name of the property in error).
      */
+    @Generated
     private String target;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
+    @Generated
     private Error innerError;
 
     /**
@@ -49,6 +55,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param code the code value to set.
      * @param message the message value to set.
      */
+    @Generated
     public Error(String code, String message) {
         this.code = code;
         this.message = message;
@@ -59,6 +66,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -68,6 +76,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -77,6 +86,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<Error> getDetails() {
         return this.details;
     }
@@ -86,6 +96,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -96,6 +107,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the innerError value.
      */
+    @Generated
     public Error getInnerError() {
         return this.innerError;
     }
@@ -103,6 +115,7 @@ public final class Error implements JsonSerializable<Error> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +133,7 @@ public final class Error implements JsonSerializable<Error> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Error.
      */
+    @Generated
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean codeFound = false;

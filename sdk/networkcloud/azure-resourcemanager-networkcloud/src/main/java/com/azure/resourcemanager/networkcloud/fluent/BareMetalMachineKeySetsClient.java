@@ -115,6 +115,10 @@ public interface BareMetalMachineKeySetsClient {
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +128,8 @@ public interface BareMetalMachineKeySetsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, Context context);
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Create or update the bare metal machine key set of the cluster.
@@ -153,6 +158,10 @@ public interface BareMetalMachineKeySetsClient {
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,8 +170,8 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BareMetalMachineKeySetInner createOrUpdate(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
-        Context context);
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Delete the bare metal machine key set of the cluster.
@@ -189,6 +198,10 @@ public interface BareMetalMachineKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +210,7 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String clusterName, String bareMetalMachineKeySetName, Context context);
+        String clusterName, String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the bare metal machine key set of the cluster.
@@ -223,6 +236,10 @@ public interface BareMetalMachineKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -231,7 +248,7 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner delete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Patch bare metal machine key set of the cluster.
@@ -260,6 +277,10 @@ public interface BareMetalMachineKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,8 +290,9 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context);
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
+        Context context);
 
     /**
      * Patch bare metal machine key set of the cluster.
@@ -298,6 +320,10 @@ public interface BareMetalMachineKeySetsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,5 +333,6 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BareMetalMachineKeySetInner update(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
+        String ifMatch, String ifNoneMatch,
         BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context);
 }

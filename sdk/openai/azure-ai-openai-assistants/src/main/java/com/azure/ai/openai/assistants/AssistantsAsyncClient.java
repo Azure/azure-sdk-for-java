@@ -36,6 +36,7 @@ import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
+import com.azure.ai.openai.assistants.models.RunIncludes;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
@@ -70,6 +71,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1894,6 +1896,33 @@ public final class AssistantsAsyncClient {
     }
 
     /**
+     * Gets a list of run steps from a thread run with additional included fields.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run to list steps from.
+     * @param runInclude A list of additional fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of run steps from a thread run on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PageableList<RunStep>> listRunSteps(String threadId, String runId, List<RunIncludes> runInclude) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null && !runInclude.isEmpty()) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(item -> Objects.toString(item, "")).collect(Collectors.joining(",")), false);
+        }
+        return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
+    }
+
+    /**
      * Gets a list of run steps from a thread run.
      *
      * @param threadId The ID of the thread that was run.
@@ -2476,6 +2505,63 @@ public final class AssistantsAsyncClient {
     }
 
     /**
+     * Creates a new run for an assistant thread with additional included fields.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details used when creating a new run of an assistant thread.
+     * @param runInclude A list of additional fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThreadRun> createRun(String threadId, CreateRunOptions createRunOptions, List<RunIncludes> runInclude) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null && !runInclude.isEmpty()) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
+        }
+        return createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
+    }
+
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates with additional included fields.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for the run to create.
+     * @param runInclude A list of additional fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stream of updates from the assistant thread run on successful completion of {@link Flux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions,
+        List<RunIncludes> runInclude) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null && !runInclude.isEmpty()) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
+        }
+        BinaryData inputJson = BinaryData.fromObject(createRunOptions);
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, adjustedJson, requestOptions)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
+        return openAIServerSentEvents.getEvents();
+    }
+
+    /**
      * Modifies an existing thread run.
      *
      * @param threadId The ID of the thread associated with the specified run.
@@ -2614,7 +2700,7 @@ public final class AssistantsAsyncClient {
      * 
      * <pre>
      * {@code
-     * byte[]
+     * BinaryData
      * }
      * </pre>
      *
@@ -2624,7 +2710,7 @@ public final class AssistantsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2642,15 +2728,14 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represent a byte array on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getFileContent(String fileId) {
+    public Mono<BinaryData> getFileContent(String fileId) {
         // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+        return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3918,5 +4003,36 @@ public final class AssistantsAsyncClient {
         return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFileBatch.class));
+    }
+
+    /**
+     * Gets a single run step from a thread run.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the specific run to retrieve the step from.
+     * @param stepId The ID of the step to retrieve information about.
+     * @param runInclude A list of additional fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single run step from a thread run on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunStep> getRunStep(String threadId, String runId, String stepId, List<RunIncludes> runInclude) {
+        // Generated convenience method for getRunStepWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getRunStepWithResponse(threadId, runId, stepId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RunStep.class));
     }
 }

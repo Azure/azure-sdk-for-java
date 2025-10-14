@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VCenter;
 public final class ReplicationvCentersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationvCenters_Update.json
      */
     /**
@@ -24,7 +24,7 @@ public final class ReplicationvCentersUpdateSamples {
     public static void
         updateVCenterOperation(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         VCenter resource = manager.replicationvCenters()
-            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE)
+            .getWithResponse("MadhaviVRG", "MadhaviVault", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withProperties(new UpdateVCenterRequestProperties().withIpAddress("10.150.109.25")).apply();
     }

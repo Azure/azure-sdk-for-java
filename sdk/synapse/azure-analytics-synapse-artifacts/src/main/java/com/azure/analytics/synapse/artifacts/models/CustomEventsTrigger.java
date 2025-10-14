@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,38 +22,39 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "CustomEventsTrigger";
 
     /*
      * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be
      * provided: subjectBeginsWith, subjectEndsWith.
      */
+    @Generated
     private String subjectBeginsWith;
 
     /*
      * The event subject must end with the pattern provided for trigger to fire. At least one of these must be provided:
      * subjectBeginsWith, subjectEndsWith.
      */
+    @Generated
     private String subjectEndsWith;
 
     /*
      * The list of event types that cause this trigger to fire.
      */
+    @Generated
     private List<Object> events;
 
     /*
      * The ARM resource ID of the Azure Event Grid Topic.
      */
+    @Generated
     private String scope;
-
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of CustomEventsTrigger class.
      */
+    @Generated
     public CustomEventsTrigger() {
     }
 
@@ -61,6 +63,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -72,6 +75,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the subjectBeginsWith value.
      */
+    @Generated
     public String getSubjectBeginsWith() {
         return this.subjectBeginsWith;
     }
@@ -83,6 +87,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * @param subjectBeginsWith the subjectBeginsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
+    @Generated
     public CustomEventsTrigger setSubjectBeginsWith(String subjectBeginsWith) {
         this.subjectBeginsWith = subjectBeginsWith;
         return this;
@@ -94,6 +99,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the subjectEndsWith value.
      */
+    @Generated
     public String getSubjectEndsWith() {
         return this.subjectEndsWith;
     }
@@ -105,6 +111,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * @param subjectEndsWith the subjectEndsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
+    @Generated
     public CustomEventsTrigger setSubjectEndsWith(String subjectEndsWith) {
         this.subjectEndsWith = subjectEndsWith;
         return this;
@@ -115,6 +122,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the events value.
      */
+    @Generated
     public List<Object> getEvents() {
         return this.events;
     }
@@ -125,6 +133,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * @param events the events value to set.
      * @return the CustomEventsTrigger object itself.
      */
+    @Generated
     public CustomEventsTrigger setEvents(List<Object> events) {
         this.events = events;
         return this;
@@ -135,6 +144,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -145,25 +155,16 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * @param scope the scope value to set.
      * @return the CustomEventsTrigger object itself.
      */
+    @Generated
     public CustomEventsTrigger setScope(String scope) {
         this.scope = scope;
         return this;
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEventsTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
@@ -173,6 +174,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEventsTrigger setDescription(String description) {
         super.setDescription(description);
@@ -182,6 +184,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CustomEventsTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -191,6 +194,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -223,6 +227,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEventsTrigger.
      */
+    @Generated
     public static CustomEventsTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomEventsTrigger deserializedCustomEventsTrigger = new CustomEventsTrigger();
@@ -234,7 +239,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedCustomEventsTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedCustomEventsTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedCustomEventsTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedCustomEventsTrigger.setAnnotations(annotations);

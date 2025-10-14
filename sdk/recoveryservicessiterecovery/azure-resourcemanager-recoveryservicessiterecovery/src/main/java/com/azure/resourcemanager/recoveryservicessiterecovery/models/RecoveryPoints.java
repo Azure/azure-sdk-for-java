@@ -17,8 +17,8 @@ public interface RecoveryPoints {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -27,7 +27,7 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recovery point details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceName, String resourceGroupName,
+    PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName);
 
     /**
@@ -35,8 +35,8 @@ public interface RecoveryPoints {
      * 
      * Lists the available recovery points for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -46,7 +46,7 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recovery point details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceName, String resourceGroupName,
+    PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context);
 
     /**
@@ -54,8 +54,8 @@ public interface RecoveryPoints {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -66,7 +66,7 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of specified recovery point along with {@link Response}.
      */
-    Response<RecoveryPoint> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    Response<RecoveryPoint> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName, Context context);
 
     /**
@@ -74,8 +74,8 @@ public interface RecoveryPoints {
      * 
      * Get the details of specified recovery point.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName The fabric name.
      * @param protectionContainerName The protection container name.
      * @param replicatedProtectedItemName The replication protected item name.
@@ -85,6 +85,6 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of specified recovery point.
      */
-    RecoveryPoint get(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    RecoveryPoint get(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, String recoveryPointName);
 }

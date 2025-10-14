@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
     /**
      * Static value Basic for TeradataAuthenticationType.
      */
+    @Generated
     public static final TeradataAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Windows for TeradataAuthenticationType.
      */
+    @Generated
     public static final TeradataAuthenticationType WINDOWS = fromString("Windows");
 
     /**
@@ -26,6 +29,7 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TeradataAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
      * @param name a name to look for.
      * @return the corresponding TeradataAuthenticationType.
      */
+    @Generated
     public static TeradataAuthenticationType fromString(String name) {
         return fromString(name, TeradataAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
      * 
      * @return known TeradataAuthenticationType values.
      */
+    @Generated
     public static Collection<TeradataAuthenticationType> values() {
         return values(TeradataAuthenticationType.class);
     }

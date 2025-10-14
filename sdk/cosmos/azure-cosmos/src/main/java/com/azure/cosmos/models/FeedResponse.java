@@ -20,10 +20,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -606,6 +608,17 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 @Override
                 public <T> FeedResponse<T> createFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls) {
                     return new FeedResponse<>(response.getQueryResponse(itemSerializer, cls), response);
+                }
+
+                @Override
+                public <T> FeedResponse<T> createNonServiceFeedResponse(List<T> items, boolean isChangeFeed, boolean isNoChanges) {
+                    return new FeedResponse<>(
+                        items,
+                        new HashMap<>(),
+                        new ConcurrentHashMap<>(),
+                        isChangeFeed,
+                        isNoChanges
+                    );
                 }
 
                 @Override

@@ -11,6 +11,8 @@ import com.azure.resourcemanager.appcontainers.fluent.models.SessionPoolInner;
 import com.azure.resourcemanager.appcontainers.models.ContainerType;
 import com.azure.resourcemanager.appcontainers.models.CustomContainerTemplate;
 import com.azure.resourcemanager.appcontainers.models.DynamicPoolConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedIdentitySetting;
+import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.PoolManagementType;
 import com.azure.resourcemanager.appcontainers.models.ScaleConfiguration;
 import com.azure.resourcemanager.appcontainers.models.SessionNetworkConfiguration;
@@ -50,6 +52,10 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -103,6 +109,15 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
 
     public SessionPoolProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public List<ManagedIdentitySetting> managedIdentitySettings() {
+        List<ManagedIdentitySetting> inner = this.innerModel().managedIdentitySettings();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -210,8 +225,23 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
     }
 
     public SessionPoolImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateSessionPoolEnvelope.withTags(tags);
+            return this;
+        }
+    }
+
+    public SessionPoolImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateSessionPoolEnvelope.withIdentity(identity);
+            return this;
+        }
     }
 
     public SessionPoolImpl withEnvironmentId(String environmentId) {
@@ -279,7 +309,12 @@ public final class SessionPoolImpl implements SessionPool, SessionPool.Definitio
         }
     }
 
+    public SessionPoolImpl withManagedIdentitySettings(List<ManagedIdentitySetting> managedIdentitySettings) {
+        this.innerModel().withManagedIdentitySettings(managedIdentitySettings);
+        return this;
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

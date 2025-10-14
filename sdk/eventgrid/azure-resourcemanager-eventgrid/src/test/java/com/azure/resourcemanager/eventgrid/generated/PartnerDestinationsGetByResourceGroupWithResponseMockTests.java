@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
@@ -23,28 +23,28 @@ public final class PartnerDestinationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"b051e1a5-4f98-4923-8542-687729421201\",\"endpointServiceContext\":\"tzbpyfao\",\"expirationTimeIfNotActivatedUtc\":\"2021-10-06T17:50:37Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"wmhjobzrfprizdcq\",\"messageForActivation\":\"f\"},\"location\":\"vb\",\"tags\":{\"oorssatfy\":\"whgkgsoa\",\"as\":\"ipufdmxuqbdq\",\"ixhg\":\"tuxvzfqayopbt\"},\"id\":\"bhxmndztgsqjayq\",\"name\":\"arxneibpgbr\",\"type\":\"bjdqkn\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"4a29e904-21ce-4db3-bda3-1691ba3c6921\",\"endpointServiceContext\":\"oxznvgvd\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-25T22:21:04Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"sxmrszbknimxlp\",\"messageForActivation\":\"rxrzutylcur\"},\"location\":\"q\",\"tags\":{\"jmbnvynf\":\"xqaehtd\"},\"id\":\"ooeactedc\",\"name\":\"lsk\",\"type\":\"k\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerDestination response = manager.partnerDestinations()
-            .getByResourceGroupWithResponse("nii", "ncgagdvc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("x", "btplefoi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vb", response.location());
-        Assertions.assertEquals("whgkgsoa", response.tags().get("oorssatfy"));
-        Assertions.assertEquals(UUID.fromString("b051e1a5-4f98-4923-8542-687729421201"),
+        Assertions.assertEquals("q", response.location());
+        Assertions.assertEquals("xqaehtd", response.tags().get("jmbnvynf"));
+        Assertions.assertEquals(UUID.fromString("4a29e904-21ce-4db3-bda3-1691ba3c6921"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("tzbpyfao", response.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T17:50:37Z"),
+        Assertions.assertEquals("oxznvgvd", response.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T22:21:04Z"),
             response.expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, response.activationState());
-        Assertions.assertEquals("wmhjobzrfprizdcq", response.endpointBaseUrl());
-        Assertions.assertEquals("f", response.messageForActivation());
+        Assertions.assertEquals(PartnerDestinationActivationState.ACTIVATED, response.activationState());
+        Assertions.assertEquals("sxmrszbknimxlp", response.endpointBaseUrl());
+        Assertions.assertEquals("rxrzutylcur", response.messageForActivation());
     }
 }

@@ -67,21 +67,19 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalNetworkCollection>> listByReplicationFabrics(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationLogicalNetworks/{logicalNetworkName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogicalNetworkInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("logicalNetworkName") String logicalNetworkName, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("logicalNetworkName") String logicalNetworkName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -97,8 +95,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -106,18 +104,18 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return list of logical networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogicalNetworkInner>> listByReplicationFabricsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName) {
+    private Mono<PagedResponse<LogicalNetworkInner>> listByReplicationFabricsSinglePageAsync(String resourceGroupName,
+        String resourceName, String fabricName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -130,7 +128,7 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
         return FluxUtil
             .withContext(
                 context -> service.listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(),
-                    resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context))
+                    resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, accept, context))
             .<PagedResponse<LogicalNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -141,8 +139,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,18 +149,18 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return list of logical networks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogicalNetworkInner>> listByReplicationFabricsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
+    private Mono<PagedResponse<LogicalNetworkInner>> listByReplicationFabricsSinglePageAsync(String resourceGroupName,
+        String resourceName, String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -174,8 +172,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context)
+            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -185,8 +183,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -194,10 +192,10 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return list of logical networks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogicalNetworkInner> listByReplicationFabricsAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<LogicalNetworkInner> listByReplicationFabricsAsync(String resourceGroupName, String resourceName,
         String fabricName) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink));
     }
 
@@ -206,8 +204,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,10 +214,10 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return list of logical networks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogicalNetworkInner> listByReplicationFabricsAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<LogicalNetworkInner> listByReplicationFabricsAsync(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName, context),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName, context),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink, context));
     }
 
@@ -228,8 +226,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -237,9 +235,9 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LogicalNetworkInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    public PagedIterable<LogicalNetworkInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName));
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName));
     }
 
     /**
@@ -247,8 +245,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Lists all the logical networks of the Azure Site Recovery fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,9 +255,9 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LogicalNetworkInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    public PagedIterable<LogicalNetworkInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName, context));
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -267,8 +265,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,18 +275,18 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return the details of a logical network along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogicalNetworkInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<LogicalNetworkInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String logicalNetworkName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -303,8 +301,9 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, logicalNetworkName, accept, context))
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), fabricName, logicalNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -313,8 +312,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @param context The context to associate with this operation.
@@ -324,18 +323,18 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return the details of a logical network along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogicalNetworkInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<LogicalNetworkInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String logicalNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -350,7 +349,7 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, logicalNetworkName, accept, context);
     }
 
@@ -359,8 +358,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -369,9 +368,9 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return the details of a logical network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogicalNetworkInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<LogicalNetworkInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String logicalNetworkName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, logicalNetworkName)
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, logicalNetworkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -380,8 +379,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @param context The context to associate with this operation.
@@ -391,9 +390,9 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return the details of a logical network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogicalNetworkInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<LogicalNetworkInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String logicalNetworkName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, logicalNetworkName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, logicalNetworkName, context).block();
     }
 
     /**
@@ -401,8 +400,8 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * 
      * Gets the details of a logical network.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Server Id.
      * @param logicalNetworkName Logical network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,9 +410,9 @@ public final class ReplicationLogicalNetworksClientImpl implements ReplicationLo
      * @return the details of a logical network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogicalNetworkInner get(String resourceName, String resourceGroupName, String fabricName,
+    public LogicalNetworkInner get(String resourceGroupName, String resourceName, String fabricName,
         String logicalNetworkName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, logicalNetworkName, Context.NONE)
+        return getWithResponse(resourceGroupName, resourceName, fabricName, logicalNetworkName, Context.NONE)
             .getValue();
     }
 

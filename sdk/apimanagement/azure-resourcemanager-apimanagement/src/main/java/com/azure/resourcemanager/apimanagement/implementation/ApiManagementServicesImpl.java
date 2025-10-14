@@ -22,6 +22,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceGetSso
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceNameAvailabilityResult;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServices;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
 
 public final class ApiManagementServicesImpl implements ApiManagementServices {
     private static final ClientLogger LOGGER = new ClientLogger(ApiManagementServicesImpl.class);
@@ -129,9 +130,10 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
         }
     }
 
-    public ApiManagementServiceResource migrateToStv2(String resourceGroupName, String serviceName, Context context) {
+    public ApiManagementServiceResource migrateToStv2(String resourceGroupName, String serviceName,
+        MigrateToStv2Contract parameters, Context context) {
         ApiManagementServiceResourceInner inner
-            = this.serviceClient().migrateToStv2(resourceGroupName, serviceName, context);
+            = this.serviceClient().migrateToStv2(resourceGroupName, serviceName, parameters, context);
         if (inner != null) {
             return new ApiManagementServiceResourceImpl(inner, this.manager());
         } else {

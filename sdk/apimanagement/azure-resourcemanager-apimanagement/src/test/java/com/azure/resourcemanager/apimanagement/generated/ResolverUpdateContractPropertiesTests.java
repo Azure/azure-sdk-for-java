@@ -12,21 +12,21 @@ public final class ResolverUpdateContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResolverUpdateContractProperties model = BinaryData
-            .fromString("{\"displayName\":\"lbyrru\",\"path\":\"thwmgnmbsc\",\"description\":\"xigdhxiidlope\"}")
+            .fromString("{\"displayName\":\"chillcecf\",\"path\":\"uwaoaguhicqlli\",\"description\":\"tac\"}")
             .toObject(ResolverUpdateContractProperties.class);
-        Assertions.assertEquals("lbyrru", model.displayName());
-        Assertions.assertEquals("thwmgnmbsc", model.path());
-        Assertions.assertEquals("xigdhxiidlope", model.description());
+        Assertions.assertEquals("chillcecf", model.displayName());
+        Assertions.assertEquals("uwaoaguhicqlli", model.path());
+        Assertions.assertEquals("tac", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolverUpdateContractProperties model = new ResolverUpdateContractProperties().withDisplayName("lbyrru")
-            .withPath("thwmgnmbsc")
-            .withDescription("xigdhxiidlope");
+        ResolverUpdateContractProperties model = new ResolverUpdateContractProperties().withDisplayName("chillcecf")
+            .withPath("uwaoaguhicqlli")
+            .withDescription("tac");
         model = BinaryData.fromObject(model).toObject(ResolverUpdateContractProperties.class);
-        Assertions.assertEquals("lbyrru", model.displayName());
-        Assertions.assertEquals("thwmgnmbsc", model.path());
-        Assertions.assertEquals("xigdhxiidlope", model.description());
+        Assertions.assertEquals("chillcecf", model.displayName());
+        Assertions.assertEquals("uwaoaguhicqlli", model.path());
+        Assertions.assertEquals("tac", model.description());
     }
 }

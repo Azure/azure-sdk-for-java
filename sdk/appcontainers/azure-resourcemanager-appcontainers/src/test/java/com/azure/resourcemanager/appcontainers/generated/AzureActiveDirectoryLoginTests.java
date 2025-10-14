@@ -16,7 +16,7 @@ public final class AzureActiveDirectoryLoginTests {
             .fromString("{\"loginParameters\":[\"dzuhtymwi\",\"dkfthwxmnt\",\"i\"],\"disableWWWAuthenticate\":true}")
             .toObject(AzureActiveDirectoryLogin.class);
         Assertions.assertEquals("dzuhtymwi", model.loginParameters().get(0));
-        Assertions.assertEquals(true, model.disableWwwAuthenticate());
+        Assertions.assertTrue(model.disableWwwAuthenticate());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,6 +26,6 @@ public final class AzureActiveDirectoryLoginTests {
                 .withDisableWwwAuthenticate(true);
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectoryLogin.class);
         Assertions.assertEquals("dzuhtymwi", model.loginParameters().get(0));
-        Assertions.assertEquals(true, model.disableWwwAuthenticate());
+        Assertions.assertTrue(model.disableWwwAuthenticate());
     }
 }

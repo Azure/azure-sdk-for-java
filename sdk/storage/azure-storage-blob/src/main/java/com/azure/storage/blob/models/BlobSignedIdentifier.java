@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,16 +21,19 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
     /*
      * a unique id
      */
+    @Generated
     private String id;
 
     /*
      * An Access policy
      */
+    @Generated
     private BlobAccessPolicy accessPolicy;
 
     /**
      * Creates an instance of BlobSignedIdentifier class.
      */
+    @Generated
     public BlobSignedIdentifier() {
     }
 
@@ -39,6 +42,7 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -49,6 +53,7 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
      * @param id the id value to set.
      * @return the BlobSignedIdentifier object itself.
      */
+    @Generated
     public BlobSignedIdentifier setId(String id) {
         this.id = id;
         return this;
@@ -59,6 +64,7 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
      * 
      * @return the accessPolicy value.
      */
+    @Generated
     public BlobAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
@@ -69,19 +75,22 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
      * @param accessPolicy the accessPolicy value to set.
      * @return the BlobSignedIdentifier object itself.
      */
+    @Generated
     public BlobSignedIdentifier setAccessPolicy(BlobAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Id", this.id);
         xmlWriter.writeXml(this.accessPolicy, "AccessPolicy");
@@ -96,6 +105,7 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobSignedIdentifier.
      */
+    @Generated
     public static BlobSignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -110,8 +120,10 @@ public final class BlobSignedIdentifier implements XmlSerializable<BlobSignedIde
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobSignedIdentifier.
      */
+    @Generated
     public static BlobSignedIdentifier fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobSignedIdentifier deserializedBlobSignedIdentifier = new BlobSignedIdentifier();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

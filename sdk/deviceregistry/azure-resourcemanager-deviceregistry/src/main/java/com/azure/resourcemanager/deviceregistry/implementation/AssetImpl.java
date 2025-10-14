@@ -187,6 +187,6 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

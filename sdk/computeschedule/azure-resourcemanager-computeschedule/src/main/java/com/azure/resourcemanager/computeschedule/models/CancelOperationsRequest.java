@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +23,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     private List<String> operationIds;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -55,7 +54,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -64,7 +63,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the CancelOperationsRequest object itself.
@@ -73,26 +72,6 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
         this.correlationid = correlationid;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operationIds() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property operationIds in model CancelOperationsRequest"));
-        }
-        if (correlationid() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property correlationid in model CancelOperationsRequest"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CancelOperationsRequest.class);
 
     /**
      * {@inheritDoc}

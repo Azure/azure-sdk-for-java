@@ -21,7 +21,7 @@ import java.util.Map;
 public final class ElasticSansCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-07-01-preview/examples/
      * ElasticSans_Create_MaximumSet_Gen.json
      */
     /**
@@ -35,10 +35,10 @@ public final class ElasticSansCreateSamples {
             .withRegion("France Central")
             .withExistingResourceGroup("resourcegroupname")
             .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-            .withBaseSizeTiB(1L)
-            .withExtendedCapacitySizeTiB(3L)
-            .withTags(mapOf("key9706", "fakeTokenPlaceholder"))
-            .withAvailabilityZones(Arrays.asList("xoz"))
+            .withBaseSizeTiB(5L)
+            .withExtendedCapacitySizeTiB(25L)
+            .withTags(mapOf("key9316", "fakeTokenPlaceholder"))
+            .withAvailabilityZones(Arrays.asList("1"))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withAutoScaleProperties(
                 new AutoScaleProperties().withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(24L)
@@ -50,7 +50,7 @@ public final class ElasticSansCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-07-01-preview/examples/
      * ElasticSans_Create_MinimumSet_Gen.json
      */
     /**
@@ -64,8 +64,8 @@ public final class ElasticSansCreateSamples {
             .withRegion("France Central")
             .withExistingResourceGroup("resourcegroupname")
             .withSku(new Sku().withName(SkuName.PREMIUM_LRS))
-            .withBaseSizeTiB(1L)
-            .withExtendedCapacitySizeTiB(3L)
+            .withBaseSizeTiB(15L)
+            .withExtendedCapacitySizeTiB(27L)
             .create();
     }
 

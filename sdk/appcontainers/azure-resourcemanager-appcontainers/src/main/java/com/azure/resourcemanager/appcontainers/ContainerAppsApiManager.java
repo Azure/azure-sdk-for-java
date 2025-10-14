@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,9 +20,9 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsApiClient;
 import com.azure.resourcemanager.appcontainers.implementation.AppResilienciesImpl;
@@ -42,6 +43,7 @@ import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsBuild
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsBuildsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsDiagnosticsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsLabelHistoriesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsPatchesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsRevisionReplicasImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsRevisionsImpl;
@@ -52,10 +54,12 @@ import com.azure.resourcemanager.appcontainers.implementation.DaprComponentsImpl
 import com.azure.resourcemanager.appcontainers.implementation.DaprSubscriptionsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.DotNetComponentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.FunctionsExtensionsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.HttpRouteConfigsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JavaComponentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JobsExecutionsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JobsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.LogicAppsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.MaintenanceConfigurationsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedCertificatesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentDiagnosticsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentPrivateEndpointConnectionsImpl;
@@ -85,6 +89,7 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppsAuthConfigs;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsBuilds;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsBuildsByContainerApps;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsDiagnostics;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppsLabelHistories;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsPatches;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsRevisionReplicas;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsRevisions;
@@ -95,10 +100,12 @@ import com.azure.resourcemanager.appcontainers.models.DaprComponents;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscriptions;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponents;
 import com.azure.resourcemanager.appcontainers.models.FunctionsExtensions;
+import com.azure.resourcemanager.appcontainers.models.HttpRouteConfigs;
 import com.azure.resourcemanager.appcontainers.models.JavaComponents;
 import com.azure.resourcemanager.appcontainers.models.Jobs;
 import com.azure.resourcemanager.appcontainers.models.JobsExecutions;
 import com.azure.resourcemanager.appcontainers.models.LogicApps;
+import com.azure.resourcemanager.appcontainers.models.MaintenanceConfigurations;
 import com.azure.resourcemanager.appcontainers.models.ManagedCertificates;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentDiagnostics;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPrivateEndpointConnections;
@@ -115,6 +122,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -154,6 +162,8 @@ public final class ContainerAppsApiManager {
     private ContainerAppsBuildsByContainerApps containerAppsBuildsByContainerApps;
 
     private ContainerAppsBuilds containerAppsBuilds;
+
+    private ContainerAppsLabelHistories containerAppsLabelHistories;
 
     private ContainerAppsPatches containerAppsPatches;
 
@@ -200,6 +210,10 @@ public final class ContainerAppsApiManager {
     private DaprComponents daprComponents;
 
     private DaprSubscriptions daprSubscriptions;
+
+    private HttpRouteConfigs httpRouteConfigs;
+
+    private MaintenanceConfigurations maintenanceConfigurations;
 
     private ManagedEnvironmentsStorages managedEnvironmentsStorages;
 
@@ -263,6 +277,9 @@ public final class ContainerAppsApiManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-appcontainers.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -370,12 +387,14 @@ public final class ContainerAppsApiManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.appcontainers")
                 .append("/")
-                .append("1.1.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -408,7 +427,7 @@ public final class ContainerAppsApiManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -546,7 +565,8 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ConnectedEnvironmentsDaprComponents. It manages DaprComponent.
+     * Gets the resource collection API of ConnectedEnvironmentsDaprComponents. It manages
+     * ConnectedEnvironmentDaprComponent.
      * 
      * @return Resource collection API of ConnectedEnvironmentsDaprComponents.
      */
@@ -606,6 +626,19 @@ public final class ContainerAppsApiManager {
             this.containerAppsBuilds = new ContainerAppsBuildsImpl(clientObject.getContainerAppsBuilds(), this);
         }
         return containerAppsBuilds;
+    }
+
+    /**
+     * Gets the resource collection API of ContainerAppsLabelHistories.
+     * 
+     * @return Resource collection API of ContainerAppsLabelHistories.
+     */
+    public ContainerAppsLabelHistories containerAppsLabelHistories() {
+        if (this.containerAppsLabelHistories == null) {
+            this.containerAppsLabelHistories
+                = new ContainerAppsLabelHistoriesImpl(clientObject.getContainerAppsLabelHistories(), this);
+        }
+        return containerAppsLabelHistories;
     }
 
     /**
@@ -870,7 +903,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of DaprComponents.
+     * Gets the resource collection API of DaprComponents. It manages DaprComponent.
      * 
      * @return Resource collection API of DaprComponents.
      */
@@ -891,6 +924,31 @@ public final class ContainerAppsApiManager {
             this.daprSubscriptions = new DaprSubscriptionsImpl(clientObject.getDaprSubscriptions(), this);
         }
         return daprSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of HttpRouteConfigs. It manages HttpRouteConfig.
+     * 
+     * @return Resource collection API of HttpRouteConfigs.
+     */
+    public HttpRouteConfigs httpRouteConfigs() {
+        if (this.httpRouteConfigs == null) {
+            this.httpRouteConfigs = new HttpRouteConfigsImpl(clientObject.getHttpRouteConfigs(), this);
+        }
+        return httpRouteConfigs;
+    }
+
+    /**
+     * Gets the resource collection API of MaintenanceConfigurations. It manages MaintenanceConfigurationResource.
+     * 
+     * @return Resource collection API of MaintenanceConfigurations.
+     */
+    public MaintenanceConfigurations maintenanceConfigurations() {
+        if (this.maintenanceConfigurations == null) {
+            this.maintenanceConfigurations
+                = new MaintenanceConfigurationsImpl(clientObject.getMaintenanceConfigurations(), this);
+        }
+        return maintenanceConfigurations;
     }
 
     /**

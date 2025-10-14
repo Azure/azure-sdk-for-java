@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,51 +24,61 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
     /*
      * Trigger run id.
      */
+    @Generated
     private String triggerRunId;
 
     /*
      * Trigger name.
      */
+    @Generated
     private String triggerName;
 
     /*
      * Trigger type.
      */
+    @Generated
     private String triggerType;
 
     /*
      * Trigger run start time.
      */
+    @Generated
     private OffsetDateTime triggerRunTimestamp;
 
     /*
      * Trigger run status.
      */
+    @Generated
     private TriggerRunStatus status;
 
     /*
      * Trigger error message.
      */
+    @Generated
     private String message;
 
     /*
      * List of property name and value related to trigger run. Name, value pair depends on type of trigger.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * List of pipeline name and run Id triggered by the trigger run.
      */
+    @Generated
     private Map<String, String> triggeredPipelines;
 
     /*
      * Trigger runs.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of TriggerRun class.
      */
+    @Generated
     public TriggerRun() {
     }
 
@@ -76,6 +87,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the triggerRunId value.
      */
+    @Generated
     public String getTriggerRunId() {
         return this.triggerRunId;
     }
@@ -85,6 +97,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the triggerName value.
      */
+    @Generated
     public String getTriggerName() {
         return this.triggerName;
     }
@@ -94,6 +107,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the triggerType value.
      */
+    @Generated
     public String getTriggerType() {
         return this.triggerType;
     }
@@ -103,6 +117,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the triggerRunTimestamp value.
      */
+    @Generated
     public OffsetDateTime getTriggerRunTimestamp() {
         return this.triggerRunTimestamp;
     }
@@ -112,6 +127,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the status value.
      */
+    @Generated
     public TriggerRunStatus getStatus() {
         return this.status;
     }
@@ -121,6 +137,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -131,6 +148,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -140,6 +158,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the triggeredPipelines value.
      */
+    @Generated
     public Map<String, String> getTriggeredPipelines() {
         return this.triggeredPipelines;
     }
@@ -149,6 +168,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -159,6 +179,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the TriggerRun object itself.
      */
+    @Generated
     public TriggerRun setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -167,6 +188,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -186,6 +208,7 @@ public final class TriggerRun implements JsonSerializable<TriggerRun> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the TriggerRun.
      */
+    @Generated
     public static TriggerRun fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TriggerRun deserializedTriggerRun = new TriggerRun();

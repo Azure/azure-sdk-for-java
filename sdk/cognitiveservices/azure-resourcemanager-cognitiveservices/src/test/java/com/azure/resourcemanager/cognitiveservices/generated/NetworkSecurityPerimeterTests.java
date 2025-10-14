@@ -12,21 +12,20 @@ public final class NetworkSecurityPerimeterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeter model
-            = BinaryData.fromString("{\"id\":\"clj\",\"perimeterGuid\":\"gvkzqkjjeokbze\",\"location\":\"zrxcczurt\"}")
+            = BinaryData.fromString("{\"id\":\"thwtzol\",\"perimeterGuid\":\"emwmdxmebwjs\",\"location\":\"p\"}")
                 .toObject(NetworkSecurityPerimeter.class);
-        Assertions.assertEquals("clj", model.id());
-        Assertions.assertEquals("gvkzqkjjeokbze", model.perimeterGuid());
-        Assertions.assertEquals("zrxcczurt", model.location());
+        Assertions.assertEquals("thwtzol", model.id());
+        Assertions.assertEquals("emwmdxmebwjs", model.perimeterGuid());
+        Assertions.assertEquals("p", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityPerimeter model = new NetworkSecurityPerimeter().withId("clj")
-            .withPerimeterGuid("gvkzqkjjeokbze")
-            .withLocation("zrxcczurt");
+        NetworkSecurityPerimeter model
+            = new NetworkSecurityPerimeter().withId("thwtzol").withPerimeterGuid("emwmdxmebwjs").withLocation("p");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeter.class);
-        Assertions.assertEquals("clj", model.id());
-        Assertions.assertEquals("gvkzqkjjeokbze", model.perimeterGuid());
-        Assertions.assertEquals("zrxcczurt", model.location());
+        Assertions.assertEquals("thwtzol", model.id());
+        Assertions.assertEquals("emwmdxmebwjs", model.perimeterGuid());
+        Assertions.assertEquals("p", model.location());
     }
 }

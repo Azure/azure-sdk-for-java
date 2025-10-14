@@ -6,16 +6,20 @@ package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
 import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
+import com.azure.resourcemanager.confidentialledger.models.ApplicationType;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
+import com.azure.resourcemanager.confidentialledger.models.EnclavePlatform;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
+import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
+import com.azure.resourcemanager.confidentialledger.models.RunningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -29,54 +33,66 @@ public final class LedgersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ledgerName\":\"leyyvx\",\"ledgerUri\":\"jpkcattpng\",\"identityServiceUri\":\"rcczsqpjhvmd\",\"ledgerInternalNamespace\":\"v\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"canoaeupf\",\"tenantId\":\"hltrpmopjmcmatuo\",\"ledgerRoleName\":\"Contributor\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"uaodsfcpk\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"puozmyzydag\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"bezy\",\"ledgerRoleName\":\"Reader\"},{\"cert\":\"ktwh\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"ywqsmbsurexim\",\"tags\":{\"ksymd\":\"ocfs\"},\"id\":\"ys\",\"name\":\"kiiuxhqyudxor\",\"type\":\"qn\"}";
+            = "{\"properties\":{\"ledgerName\":\"htldwk\",\"ledgerUri\":\"xuutkncwscwsv\",\"identityServiceUri\":\"otogtwrupqs\",\"ledgerInternalNamespace\":\"nmic\",\"runningState\":\"Pausing\",\"ledgerType\":\"Private\",\"provisioningState\":\"Succeeded\",\"ledgerSku\":\"Basic\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"notyfjfcnjbkcn\",\"tenantId\":\"hbttkphyw\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"t\",\"tenantId\":\"nermcl\",\"ledgerRoleName\":\"Contributor\"},{\"principalId\":\"hoxus\",\"tenantId\":\"pabgyeps\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"zq\",\"tenantId\":\"xywpmueefjzwfqkq\",\"ledgerRoleName\":\"Contributor\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"yonobgl\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"xtccmg\",\"ledgerRoleName\":\"Administrator\"},{\"cert\":\"ytlmoyrxvwfud\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"txhdzh\",\"ledgerRoleName\":\"Reader\"}],\"hostLevel\":\"bh\",\"maxBodySizeInMb\":1058131952,\"subjectName\":\"lhrxsbkyvpyc\",\"nodeCount\":427278595,\"writeLBAddressPrefix\":\"bpzkafkuwbc\",\"workerThreads\":946722582,\"enclavePlatform\":\"AmdSevSnp\",\"applicationType\":\"ConfidentialLedger\"},\"location\":\"seyvj\",\"tags\":{\"ofmxagkvtmelmqkr\":\"tslhspkdeem\"},\"id\":\"ahvljuaha\",\"name\":\"uhcdhm\",\"type\":\"ualaexqpvfadmw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConfidentialLedgerManager manager = ConfidentialLedgerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfidentialLedger response = manager.ledgers()
-            .define("ebxetqgtzxdp")
-            .withExistingResourceGroup("ccfwnfnbacfion")
-            .withRegion("lhslazjdyggdtj")
-            .withTags(mapOf("uofqwe", "b", "enevfyexfwhybci", "kh", "tynnaamdectehfi", "vyvdcs"))
-            .withProperties(new LedgerProperties().withLedgerType(LedgerType.PRIVATE)
+            .define("uedck")
+            .withRegion("ighxpk")
+            .withExistingResourceGroup("rq")
+            .withTags(mapOf("upedeojnabckhs", "baiuebbaumny"))
+            .withProperties(new LedgerProperties().withRunningState(RunningState.RESUMING)
+                .withLedgerType(LedgerType.UNKNOWN)
+                .withLedgerSku(LedgerSku.STANDARD)
                 .withAadBasedSecurityPrincipals(Arrays.asList(
-                    new AadBasedSecurityPrincipal().withPrincipalId("nqvpkvlrxnje")
-                        .withTenantId("eipheoflokeyy")
-                        .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                    new AadBasedSecurityPrincipal().withPrincipalId("bdlwtgrhpdjpj")
-                        .withTenantId("asxazjpqyegualhb")
+                    new AadBasedSecurityPrincipal().withPrincipalId("swzts")
+                        .withTenantId("pgn")
                         .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                    new AadBasedSecurityPrincipal().withPrincipalId("jj")
-                        .withTenantId("v")
+                    new AadBasedSecurityPrincipal().withPrincipalId("hpzxbzpfzab")
+                        .withTenantId("cuh")
                         .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                    new AadBasedSecurityPrincipal().withPrincipalId("wdslfhotwmcy")
-                        .withTenantId("wlbjnpgacftade")
+                    new AadBasedSecurityPrincipal().withPrincipalId("tyq")
+                        .withTenantId("lbbovplw")
                         .withLedgerRoleName(LedgerRoleName.READER)))
                 .withCertBasedSecurityPrincipals(Arrays.asList(
-                    new CertBasedSecurityPrincipal().withCert("fsoppusuesnzw")
-                        .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR),
-                    new CertBasedSecurityPrincipal().withCert("avo").withLedgerRoleName(LedgerRoleName.READER),
-                    new CertBasedSecurityPrincipal().withCert("mohctb").withLedgerRoleName(LedgerRoleName.CONTRIBUTOR),
-                    new CertBasedSecurityPrincipal().withCert("wxdndnvowgujjug")
-                        .withLedgerRoleName(LedgerRoleName.CONTRIBUTOR))))
+                    new CertBasedSecurityPrincipal().withCert("u").withLedgerRoleName(LedgerRoleName.CONTRIBUTOR)))
+                .withHostLevel("vmkfssxqu")
+                .withMaxBodySizeInMb(571824104)
+                .withSubjectName("l")
+                .withNodeCount(1362242180)
+                .withWriteLBAddressPrefix("xnkjzkdesl")
+                .withWorkerThreads(2042226827)
+                .withEnclavePlatform(EnclavePlatform.INTEL_SGX)
+                .withApplicationType(ApplicationType.CONFIDENTIAL_LEDGER))
             .create();
 
-        Assertions.assertEquals(LedgerType.UNKNOWN, response.properties().ledgerType());
-        Assertions.assertEquals("canoaeupf", response.properties().aadBasedSecurityPrincipals().get(0).principalId());
-        Assertions.assertEquals("hltrpmopjmcmatuo",
-            response.properties().aadBasedSecurityPrincipals().get(0).tenantId());
-        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
+        Assertions.assertEquals("seyvj", response.location());
+        Assertions.assertEquals("tslhspkdeem", response.tags().get("ofmxagkvtmelmqkr"));
+        Assertions.assertEquals(RunningState.PAUSING, response.properties().runningState());
+        Assertions.assertEquals(LedgerType.PRIVATE, response.properties().ledgerType());
+        Assertions.assertEquals(LedgerSku.BASIC, response.properties().ledgerSku());
+        Assertions.assertEquals("notyfjfcnjbkcn",
+            response.properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("hbttkphyw", response.properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
             response.properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("uaodsfcpk", response.properties().certBasedSecurityPrincipals().get(0).cert());
-        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
+        Assertions.assertEquals("yonobgl", response.properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR,
             response.properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
-        Assertions.assertEquals("ywqsmbsurexim", response.location());
-        Assertions.assertEquals("ocfs", response.tags().get("ksymd"));
+        Assertions.assertEquals("bh", response.properties().hostLevel());
+        Assertions.assertEquals(1058131952, response.properties().maxBodySizeInMb());
+        Assertions.assertEquals("lhrxsbkyvpyc", response.properties().subjectName());
+        Assertions.assertEquals(427278595, response.properties().nodeCount());
+        Assertions.assertEquals("bpzkafkuwbc", response.properties().writeLBAddressPrefix());
+        Assertions.assertEquals(946722582, response.properties().workerThreads());
+        Assertions.assertEquals(EnclavePlatform.AMD_SEV_SNP, response.properties().enclavePlatform());
+        Assertions.assertEquals(ApplicationType.CONFIDENTIAL_LEDGER, response.properties().applicationType());
     }
 
     // Use "Map.of" if available

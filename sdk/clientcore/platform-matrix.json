@@ -5,7 +5,7 @@
   },
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
       "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
@@ -15,8 +15,8 @@
       "NotFromSource_TestsOnly": {
         "TestFromSource": false,
         "RunAggregateReports": false,
-        "TestOptions": "",
-        "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+        "TestGoals": "verify"
       }
     }
   },
@@ -29,7 +29,37 @@
   "include": [
     {
       "Agent": {
-          "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.8",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.11",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+          "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
@@ -44,7 +74,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",

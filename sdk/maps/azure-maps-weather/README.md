@@ -2,7 +2,7 @@
 
 Azure Maps SDK Weather client library for Java.
 
-This package contains the Azure Maps SDK Weather client library which contains Azure Maps Weather APIs. For documentation on how to use this package, please see [Azure Maps Weather SDK for Java](https://docs.microsoft.com/rest/api/maps/weather).
+This package contains the Azure Maps SDK Weather client library which contains Azure Maps Weather APIs. For documentation on how to use this package, please see [Azure Maps Weather SDK for Java](https://learn.microsoft.com/rest/api/maps/weather).
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-weather</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,6 +40,9 @@ Azure Maps Libraries require a `TokenCredential` implementation for authenticati
 ### Authentication
 
 There are 3 ways to authenticate the client: Shared key authentication, Microsoft Entra ID authentication, and shared access signature (SAS) authentication.
+
+We recommend using Microsoft Entra ID with [`DefaultAzureCredential`][azure_identity]. This allows you to configure authentication through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 By default, Microsoft Entra ID token authentication depends on correct configuration of the following environment variables.
 
@@ -92,7 +95,7 @@ client.getQuarterDayForecast(new GeoPosition(-122.138874, 47.632346), null, 1, n
 Get Current Conditions
 ```java com.azure.maps.weather.sync.get_current_conditions
 client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
-    null, null, null, null);
+    null, true, null, null);
 ```
 
 Get Daily Forecast
@@ -134,7 +137,7 @@ Get Tropical Storm Search
 ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
-    client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+    client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
 }
 ```
 
@@ -144,8 +147,8 @@ ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
     TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
-        storm.getBasinId(), storm.getGovId())
-        .setIncludeWindowGeometry(true);
+            storm.getBasinId(), storm.getGovernmentId())
+            .setIncludeWindowGeometry(true);
     client.getTropicalStormForecast(forecastOptions);
 }
 ```
@@ -156,7 +159,7 @@ ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
     TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
-        storm.getBasinId(), storm.getGovId());
+            storm.getBasinId(), storm.getGovernmentId());
     client.getTropicalStormLocations(locationOptions);
 }
 ```
@@ -164,19 +167,19 @@ if (result.getActiveStorms().size() > 0) {
 Get Current Air Quality
 ```java com.azure.maps.weather.sync.get_current_air_quality
 client.getCurrentAirQuality(
-    new GeoPosition(-122.138874, 47.632346), "es", false);
+        new GeoPosition(-122.138874, 47.632346), "es", false);
 ```
 
 Get Air Quality Daily Forecasts
 ```java com.azure.maps.weather.sync.get_air_quality_daily_forecasts
-client.getAirQualityDailyForecasts(
-    new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+client.getDailyAirQualityForecast(
+        new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
 ```
 
 Get Air Quality Hourly Forecasts
 ```java com.azure.maps.weather.sync.get_air_quality_daily_forecasts
-client.getAirQualityDailyForecasts(
-    new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+client.getDailyAirQualityForecast(
+        new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
 ```
 
 Get Daily Historical Actuals
@@ -223,14 +226,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-weather/src
 [samples]:  https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-weather/src/samples
-[rest_docs]: https://docs.microsoft.com/rest/api/maps
-[product_docs]: https://docs.microsoft.com/azure/azure-maps/
+[rest_docs]: https://learn.microsoft.com/rest/api/maps
+[product_docs]: https://learn.microsoft.com/azure/azure-maps/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmaps%2Fazure-maps-weather%2FREADME.png)

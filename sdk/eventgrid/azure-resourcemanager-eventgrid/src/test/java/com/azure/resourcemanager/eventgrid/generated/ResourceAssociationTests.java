@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceAssociationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceAssociation model = BinaryData.fromString("{\"name\":\"dyynfsvkhgb\",\"accessMode\":\"Learning\"}")
+        ResourceAssociation model = BinaryData.fromString("{\"name\":\"gxqbawpcb\",\"accessMode\":\"Enforced\"}")
             .toObject(ResourceAssociation.class);
-        Assertions.assertEquals("dyynfsvkhgb", model.name());
-        Assertions.assertEquals(NetworkSecurityPerimeterAssociationAccessMode.LEARNING, model.accessMode());
+        Assertions.assertEquals("gxqbawpcb", model.name());
+        Assertions.assertEquals(NetworkSecurityPerimeterAssociationAccessMode.ENFORCED, model.accessMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceAssociation model = new ResourceAssociation().withName("dyynfsvkhgb")
-            .withAccessMode(NetworkSecurityPerimeterAssociationAccessMode.LEARNING);
+        ResourceAssociation model = new ResourceAssociation().withName("gxqbawpcb")
+            .withAccessMode(NetworkSecurityPerimeterAssociationAccessMode.ENFORCED);
         model = BinaryData.fromObject(model).toObject(ResourceAssociation.class);
-        Assertions.assertEquals("dyynfsvkhgb", model.name());
-        Assertions.assertEquals(NetworkSecurityPerimeterAssociationAccessMode.LEARNING, model.accessMode());
+        Assertions.assertEquals("gxqbawpcb", model.name());
+        Assertions.assertEquals(NetworkSecurityPerimeterAssociationAccessMode.ENFORCED, model.accessMode());
     }
 }

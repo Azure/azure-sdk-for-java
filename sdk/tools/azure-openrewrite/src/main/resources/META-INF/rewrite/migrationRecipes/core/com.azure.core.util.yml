@@ -1,0 +1,762 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.util
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.util
+displayName: Migrate from azure.core.util to next generation stack
+description: This recipe migrates azure.core.util package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AsyncClosable
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AuthenticateChallenge
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.AuthenticateChallenge
+      newFullyQualifiedTypeName: io.clientcore.core.utils.AuthenticationChallenge
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # AuthorizationChallengeHandler
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Base64Url
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Base64Util
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.Base64Util
+      newFullyQualifiedTypeName: io.clientcore.core.utils.Base64Util
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # BinaryData
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.BinaryData
+      newFullyQualifiedTypeName: io.clientcore.core.models.binarydata.BinaryData
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # BufferedFluxByteBuffer
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Configuration
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.Configuration
+      newFullyQualifiedTypeName: io.clientcore.core.utils.configuration.Configuration
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ConfigurationBuilder
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ConfigurationProperty
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ConfigurationPropertyBuilder
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ConfigurationSource
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.ConfigurationSource
+      newFullyQualifiedTypeName: io.clientcore.core.utils.configuration.ConfigurationSource
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # Context
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeStaticFieldToMethod:
+      oldClassName: com.azure.core.util.Context
+      oldFieldName: NONE
+      newClassName: io.clientcore.core.http.models.RequestContext
+      newMethodName: none
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.Context
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestContext
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # Contexts
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # CoreUtils
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.CoreUtils
+      newFullyQualifiedTypeName: io.clientcore.core.utils.CoreUtils
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # DateTimeRfc1123
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.DateTimeRfc1123
+      newFullyQualifiedTypeName: io.clientcore.core.utils.DateTimeRfc1123
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # Etag
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.Etag
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Etag
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ExpandableEnum
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.ExpandableEnum
+      newFullyQualifiedTypeName: io.clientcore.core.utils.ExpandableEnum
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ExpandableStringEnum
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # FluxUtil
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Header
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # IterableStream
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # LibraryTelemetryOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # MetricsOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # NoopConfiguration
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.NoopConfiguration
+      newFullyQualifiedTypeName: io.clientcore.core.utils.configuration.NoopConfiguration
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ProgressListener
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ProgressReporter
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.ProgressReporter
+      newFullyQualifiedTypeName: io.clientcore.core.utils.ProgressReporter
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # QueryParameter
+  # --------------------------------------------------------------------
+
+  # --------------------------------------------------------------------
+  # ReferenceManager
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ServiceVersion
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.ServiceVersion
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.ServiceVersion
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # SharedExecutorService
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.SharedExecutorService
+      newFullyQualifiedTypeName: io.clientcore.core.utils.SharedExecutorService
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # TelemetryAttributes
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # TracingOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UrlBuilder
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UrlToken
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UrlTokenType
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UrlTokenizer
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UrlTokenizerState
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UserAgentProperties
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UserAgentUtil
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # builder
+
+  # --------------------------------------------------------------------
+  # ClientBuilderUtil
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # io
+
+  # --------------------------------------------------------------------
+  # IOUtils
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # logging
+
+  # --------------------------------------------------------------------
+  # ClientLogger
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.logging.ClientLogger
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.logging.ClientLogger
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # LogLevel
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.logging.LogLevel
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.logging.LogLevel
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # LoggingEventBuilder
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # metrics
+
+  # --------------------------------------------------------------------
+  # DefaultMeterProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # DoubleHistogram
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.metrics.DoubleHistogram
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.metrics.DoubleHistogram
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # LongCounter
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.metrics.LongCounter
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.metrics.LongCounter
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # LongGauge
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Meter
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.metrics.Meter
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.metrics.Meter
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # MeterProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # NoopMeter
+  # --------------------------------------------------------------------
+  
+  # paging
+
+  # --------------------------------------------------------------------
+  # ContinuablePage
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuablePagedByItemIterable
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuablePagedByIteratorBase
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuablePagedByIterable
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuablePagedFlux
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuablePagedFluxCore
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuablePagedIterable
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ContinuationState
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PageRetriever
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PageRetrieverSync
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # polling
+
+  # --------------------------------------------------------------------
+  # AsyncPollResponse
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ChainedPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # DefaultPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # LocationPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # LongRunningOperationStatus
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # OperationResourcePollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollOperationDetails
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollResponse
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollerFlux
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollingContext
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollingStrategyOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PollingUtil
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SimpleSyncPoller
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # StatusCheckPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncChainedPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncDefaultPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncLocationPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncOperationResourcePollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncOverAsyncPoller
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncPoller
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SyncStatusCheckPollingStrategy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # serializer
+
+  # --------------------------------------------------------------------
+  # CollectionFormat
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # JacksonAdapter
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # JsonSerializer
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.serializer.JsonSerializer
+      newFullyQualifiedTypeName: io.clientcore.core.serialization.json.JsonSerializer
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # JsonSerializerProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # JsonSerializerProviders
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # MemberNameConverter
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # MemberNameConverterProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # MemberNameConverterProviders
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ObjectSerializer
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.serializer.ObjectSerializer
+      newFullyQualifiedTypeName: io.clientcore.core.serialization.ObjectSerializer
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # SerializerAdapter
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SerializerEncoding
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # TypeReference
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # tracing
+
+  # --------------------------------------------------------------------
+  # DefaultTracerProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # NoopTracer
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ProcessKind
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # SpanKind
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.tracing.SpanKind
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.tracing.SpanKind
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # StartSpanOptions
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Tracer
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.tracing.Tracer
+      newFullyQualifiedTypeName: io.clientcore.core.instrumentation.tracing.Tracer
+
+      # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # TracerProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # TracerProxy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # TracingLink
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Utils
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement

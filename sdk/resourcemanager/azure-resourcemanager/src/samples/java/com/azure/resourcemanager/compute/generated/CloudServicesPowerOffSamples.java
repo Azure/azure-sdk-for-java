@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class CloudServicesPowerOffSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudService_PowerOff.json
      */
     /**

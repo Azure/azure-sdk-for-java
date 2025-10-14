@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: TestPipeline
     type: boolean
     default: false
@@ -104,23 +107,21 @@ jobs:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           CheckoutRecordings: true
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
 
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
-      # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
-      # Java 18), then install the latest Java version and use that to run a full build for validation of the latest
+      # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 21 but we're testing against
+      # Java 24), then install the latest Java version and use that to run a full build for validation of the latest
       # Java version.
       # Otherwise, run a normal test run.
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
-
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
 
       - ${{ parameters.PreBuildSteps }}
 

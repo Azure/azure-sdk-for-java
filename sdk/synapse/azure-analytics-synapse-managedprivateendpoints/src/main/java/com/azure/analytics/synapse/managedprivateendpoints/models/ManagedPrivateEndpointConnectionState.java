@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class ManagedPrivateEndpointConnectionState
     /*
      * The approval status
      */
+    @Generated
     private String status;
 
     /*
      * The managed private endpoint description
      */
+    @Generated
     private String description;
 
     /*
      * The actions required on the managed private endpoint
      */
+    @Generated
     private String actionsRequired;
 
     /**
      * Creates an instance of ManagedPrivateEndpointConnectionState class.
      */
+    @Generated
     public ManagedPrivateEndpointConnectionState() {
     }
 
@@ -43,6 +48,7 @@ public final class ManagedPrivateEndpointConnectionState
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -52,6 +58,7 @@ public final class ManagedPrivateEndpointConnectionState
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -62,6 +69,7 @@ public final class ManagedPrivateEndpointConnectionState
      * @param description the description value to set.
      * @return the ManagedPrivateEndpointConnectionState object itself.
      */
+    @Generated
     public ManagedPrivateEndpointConnectionState setDescription(String description) {
         this.description = description;
         return this;
@@ -72,6 +80,7 @@ public final class ManagedPrivateEndpointConnectionState
      * 
      * @return the actionsRequired value.
      */
+    @Generated
     public String getActionsRequired() {
         return this.actionsRequired;
     }
@@ -82,6 +91,7 @@ public final class ManagedPrivateEndpointConnectionState
      * @param actionsRequired the actionsRequired value to set.
      * @return the ManagedPrivateEndpointConnectionState object itself.
      */
+    @Generated
     public ManagedPrivateEndpointConnectionState setActionsRequired(String actionsRequired) {
         this.actionsRequired = actionsRequired;
         return this;
@@ -90,6 +100,7 @@ public final class ManagedPrivateEndpointConnectionState
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +117,7 @@ public final class ManagedPrivateEndpointConnectionState
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedPrivateEndpointConnectionState.
      */
+    @Generated
     public static ManagedPrivateEndpointConnectionState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedPrivateEndpointConnectionState deserializedManagedPrivateEndpointConnectionState

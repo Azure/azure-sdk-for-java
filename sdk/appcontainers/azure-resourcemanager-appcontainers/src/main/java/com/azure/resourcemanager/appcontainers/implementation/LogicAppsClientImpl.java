@@ -28,6 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.LogicAppsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.LogicAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner;
@@ -67,13 +68,23 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientLogicApps")
     public interface LogicAppsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<LogicAppInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<LogicAppInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
@@ -91,10 +102,31 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<LogicAppInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") LogicAppInner resource,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
@@ -111,10 +143,31 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/workflows")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<WorkflowEnvelopeCollection> listWorkflowsSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/workflows/{workflowName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkflowEnvelopeInner>> getWorkflow(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @PathParam("workflowName") String workflowName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/workflows/{workflowName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<WorkflowEnvelopeInner> getWorkflowSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
@@ -134,10 +187,32 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/deployWorkflowArtifacts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deployWorkflowArtifactsSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") WorkflowArtifacts workflowArtifacts, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/listWorkflowsConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkflowEnvelopeInner>> listWorkflowsConnections(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/listWorkflowsConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<WorkflowEnvelopeInner> listWorkflowsConnectionsSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
@@ -156,10 +231,30 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/providers/Microsoft.App/logicApps/{logicAppName}/invoke")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Object> invokeSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("logicAppName") String logicAppName,
+            @HeaderParam("x-ms-logicApps-proxy-path") String xMsLogicAppsProxyPath,
+            @HeaderParam("x-ms-logicApps-proxy-method") LogicAppsProxyMethod xMsLogicAppsProxyMethod,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkflowEnvelopeCollection>> listWorkflowsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<WorkflowEnvelopeCollection> listWorkflowsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -210,46 +305,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logic app extension resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogicAppInner>> getWithResponseAsync(String resourceGroupName, String containerAppName,
-        String logicAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets a logic app extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,7 +331,31 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogicAppInner> getWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, Context context) {
-        return getWithResponseAsync(resourceGroupName, containerAppName, logicAppName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -349,52 +428,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
      * @param resource Logic app resource properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a logic app extension resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogicAppInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String containerAppName, String logicAppName, LogicAppInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, logicAppName, this.client.getApiVersion(), resource, accept, context);
-    }
-
-    /**
-     * Create or update a Logic App extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param resource Logic app resource properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,8 +456,37 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogicAppInner> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, LogicAppInner resource, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, containerAppName, logicAppName, resource, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, logicAppName, this.client.getApiVersion(), resource, accept, context);
     }
 
     /**
@@ -492,46 +554,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String containerAppName,
-        String logicAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a Logic App extension resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -558,7 +580,31 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String containerAppName, String logicAppName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, containerAppName, logicAppName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -625,50 +671,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of workflow information elements along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowEnvelopeInner>> listWorkflowsSinglePageAsync(String resourceGroupName,
-        String containerAppName, String logicAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listWorkflows(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                containerAppName, logicAppName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List the workflows for a logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -687,18 +689,87 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of workflow information elements along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkflowEnvelopeInner> listWorkflowsSinglePage(String resourceGroupName,
+        String containerAppName, String logicAppName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkflowEnvelopeCollection> res
+            = service.listWorkflowsSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                containerAppName, logicAppName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List the workflows for a logic app.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param logicAppName Name of the Logic App, the extension resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of workflow information elements as paginated response with {@link PagedFlux}.
+     * @return collection of workflow information elements along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkflowEnvelopeInner> listWorkflowsAsync(String resourceGroupName, String containerAppName,
-        String logicAppName, Context context) {
-        return new PagedFlux<>(
-            () -> listWorkflowsSinglePageAsync(resourceGroupName, containerAppName, logicAppName, context),
-            nextLink -> listWorkflowsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkflowEnvelopeInner> listWorkflowsSinglePage(String resourceGroupName,
+        String containerAppName, String logicAppName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkflowEnvelopeCollection> res
+            = service.listWorkflowsSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -715,7 +786,8 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowEnvelopeInner> listWorkflows(String resourceGroupName, String containerAppName,
         String logicAppName) {
-        return new PagedIterable<>(listWorkflowsAsync(resourceGroupName, containerAppName, logicAppName));
+        return new PagedIterable<>(() -> listWorkflowsSinglePage(resourceGroupName, containerAppName, logicAppName),
+            nextLink -> listWorkflowsNextSinglePage(nextLink));
     }
 
     /**
@@ -733,7 +805,9 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowEnvelopeInner> listWorkflows(String resourceGroupName, String containerAppName,
         String logicAppName, Context context) {
-        return new PagedIterable<>(listWorkflowsAsync(resourceGroupName, containerAppName, logicAppName, context));
+        return new PagedIterable<>(
+            () -> listWorkflowsSinglePage(resourceGroupName, containerAppName, logicAppName, context),
+            nextLink -> listWorkflowsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -788,50 +862,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
      * @param workflowName Workflow name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow information by its name along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowEnvelopeInner>> getWorkflowWithResponseAsync(String resourceGroupName,
-        String containerAppName, String logicAppName, String workflowName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getWorkflow(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, logicAppName, workflowName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get workflow information by its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowName Workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,8 +890,35 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowEnvelopeInner> getWorkflowWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, String workflowName, Context context) {
-        return getWorkflowWithResponseAsync(resourceGroupName, containerAppName, logicAppName, workflowName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        if (workflowName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getWorkflowSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, logicAppName, workflowName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -934,51 +991,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowArtifacts Application settings and files of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deployWorkflowArtifactsWithResponseAsync(String resourceGroupName,
-        String containerAppName, String logicAppName, WorkflowArtifacts workflowArtifacts, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (workflowArtifacts != null) {
-            workflowArtifacts.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deployWorkflowArtifacts(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, logicAppName, this.client.getApiVersion(), workflowArtifacts, accept,
-            context);
-    }
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1008,8 +1020,35 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deployWorkflowArtifactsWithResponse(String resourceGroupName, String containerAppName,
         String logicAppName, WorkflowArtifacts workflowArtifacts, Context context) {
-        return deployWorkflowArtifactsWithResponseAsync(resourceGroupName, containerAppName, logicAppName,
-            workflowArtifacts, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        if (workflowArtifacts != null) {
+            workflowArtifacts.validate();
+        }
+        final String accept = "application/json";
+        return service.deployWorkflowArtifactsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, containerAppName, logicAppName, this.client.getApiVersion(), workflowArtifacts, accept,
+            context);
     }
 
     /**
@@ -1076,46 +1115,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param logicAppName Name of the Logic App, the extension resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logic app's connections along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowEnvelopeInner>> listWorkflowsConnectionsWithResponseAsync(String resourceGroupName,
-        String containerAppName, String logicAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listWorkflowsConnections(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets logic app's connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1143,8 +1142,31 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowEnvelopeInner> listWorkflowsConnectionsWithResponse(String resourceGroupName,
         String containerAppName, String logicAppName, Context context) {
-        return listWorkflowsConnectionsWithResponseAsync(resourceGroupName, containerAppName, logicAppName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listWorkflowsConnectionsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, containerAppName, logicAppName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1224,58 +1246,6 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @param logicAppName Name of the LogicApp App, the extension resource.
      * @param xMsLogicAppsProxyPath The proxy path for the API call.
      * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Object>> invokeWithResponseAsync(String resourceGroupName, String containerAppName,
-        String logicAppName, String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (logicAppName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
-        }
-        if (xMsLogicAppsProxyPath == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter xMsLogicAppsProxyPath is required and cannot be null."));
-        }
-        if (xMsLogicAppsProxyMethod == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter xMsLogicAppsProxyMethod is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.invoke(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, logicAppName, xMsLogicAppsProxyPath, xMsLogicAppsProxyMethod, this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1305,8 +1275,40 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> invokeWithResponse(String resourceGroupName, String containerAppName, String logicAppName,
         String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod, Context context) {
-        return invokeWithResponseAsync(resourceGroupName, containerAppName, logicAppName, xMsLogicAppsProxyPath,
-            xMsLogicAppsProxyMethod, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (logicAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter logicAppName is required and cannot be null."));
+        }
+        if (xMsLogicAppsProxyPath == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter xMsLogicAppsProxyPath is required and cannot be null."));
+        }
+        if (xMsLogicAppsProxyMethod == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter xMsLogicAppsProxyMethod is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.invokeSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, logicAppName, xMsLogicAppsProxyPath, xMsLogicAppsProxyMethod, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -1330,6 +1332,8 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     }
 
     /**
+     * List the workflows for a logic app.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1357,6 +1361,37 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
     }
 
     /**
+     * List the workflows for a logic app.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of workflow information elements along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<WorkflowEnvelopeInner> listWorkflowsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<WorkflowEnvelopeCollection> res
+            = service.listWorkflowsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List the workflows for a logic app.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1364,23 +1399,25 @@ public final class LogicAppsClientImpl implements LogicAppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of workflow information elements along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of workflow information elements along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowEnvelopeInner>> listWorkflowsNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<WorkflowEnvelopeInner> listWorkflowsNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listWorkflowsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<WorkflowEnvelopeCollection> res
+            = service.listWorkflowsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogicAppsClientImpl.class);
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -150,26 +149,6 @@ public final class SchemaRegistryProperties implements JsonSerializable<SchemaRe
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (namespace() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property namespace in model SchemaRegistryProperties"));
-        }
-        if (storageAccountContainerUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storageAccountContainerUrl in model SchemaRegistryProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SchemaRegistryProperties.class);
 
     /**
      * {@inheritDoc}

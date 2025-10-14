@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,16 +24,19 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
     /*
      * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.AIServicesByKey";
 
     /*
      * The key used to provision the Azure AI service resource attached to a skillset.
      */
+    @Generated
     private final String key;
 
     /*
      * The subdomain url for the corresponding AI Service.
      */
+    @Generated
     private final String subdomainUrl;
 
     /**
@@ -41,6 +45,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
      * @param key the key value to set.
      * @param subdomainUrl the subdomainUrl value to set.
      */
+    @Generated
     public AIServicesAccountKey(String key, String subdomainUrl) {
         this.key = key;
         this.subdomainUrl = subdomainUrl;
@@ -52,6 +57,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -62,6 +68,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
      * 
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
     }
@@ -71,6 +78,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
      * 
      * @return the subdomainUrl value.
      */
+    @Generated
     public String getSubdomainUrl() {
         return this.subdomainUrl;
     }
@@ -78,6 +86,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AIServicesAccountKey setDescription(String description) {
         super.setDescription(description);
@@ -87,6 +96,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +116,7 @@ public final class AIServicesAccountKey extends CognitiveServicesAccount {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AIServicesAccountKey.
      */
+    @Generated
     public static AIServicesAccountKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String description = null;

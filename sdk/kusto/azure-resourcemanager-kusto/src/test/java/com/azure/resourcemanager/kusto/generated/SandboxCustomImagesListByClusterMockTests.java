@@ -23,7 +23,7 @@ public final class SandboxCustomImagesListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"qwoyxqvapco\",\"requirementsFileContent\":\"oucqpqojx\",\"provisioningState\":\"Creating\"},\"id\":\"rzdcgdzbenribcaw\",\"name\":\"tzqdd\",\"type\":\"jwfljhznamtua\"}]}";
+            = "{\"value\":[{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"zkgofxyf\",\"baseImageName\":\"uc\",\"requirementsFileContent\":\"rrp\",\"provisioningState\":\"Deleting\"},\"id\":\"tbstvjeaqnrmv\",\"name\":\"fkoxmlghktuidvr\",\"type\":\"azlp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,11 @@ public final class SandboxCustomImagesListByClusterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SandboxCustomImage> response
-            = manager.sandboxCustomImages().listByCluster("gnzxojpslsvj", "pli", com.azure.core.util.Context.NONE);
+            = manager.sandboxCustomImages().listByCluster("uuerctatoyi", "tqpbrlcy", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(Language.PYTHON, response.iterator().next().language());
-        Assertions.assertEquals("qwoyxqvapco", response.iterator().next().languageVersion());
-        Assertions.assertEquals("oucqpqojx", response.iterator().next().requirementsFileContent());
+        Assertions.assertEquals("zkgofxyf", response.iterator().next().languageVersion());
+        Assertions.assertEquals("uc", response.iterator().next().baseImageName());
+        Assertions.assertEquals("rrp", response.iterator().next().requirementsFileContent());
     }
 }

@@ -13,18 +13,18 @@ public final class FirewallRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"startIpAddress\":\"keqsrxybzqqedq\",\"endIpAddress\":\"tbciqfouflmm\"},\"id\":\"zsm\",\"name\":\"dmgloug\",\"type\":\"b\"}")
+            "{\"properties\":{\"provisioningState\":\"Dropping\",\"startIpAddress\":\"swjdkirso\",\"endIpAddress\":\"dqxhcrmnohjtckwh\"},\"id\":\"oifiyipjxsqwpgr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"}")
             .toObject(FirewallRuleInner.class);
-        Assertions.assertEquals("keqsrxybzqqedq", model.properties().startIpAddress());
-        Assertions.assertEquals("tbciqfouflmm", model.properties().endIpAddress());
+        Assertions.assertEquals("swjdkirso", model.properties().startIpAddress());
+        Assertions.assertEquals("dqxhcrmnohjtckwh", model.properties().endIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FirewallRuleInner model = new FirewallRuleInner().withProperties(
-            new FirewallRuleProperties().withStartIpAddress("keqsrxybzqqedq").withEndIpAddress("tbciqfouflmm"));
+            new FirewallRuleProperties().withStartIpAddress("swjdkirso").withEndIpAddress("dqxhcrmnohjtckwh"));
         model = BinaryData.fromObject(model).toObject(FirewallRuleInner.class);
-        Assertions.assertEquals("keqsrxybzqqedq", model.properties().startIpAddress());
-        Assertions.assertEquals("tbciqfouflmm", model.properties().endIpAddress());
+        Assertions.assertEquals("swjdkirso", model.properties().startIpAddress());
+        Assertions.assertEquals("dqxhcrmnohjtckwh", model.properties().endIpAddress());
     }
 }

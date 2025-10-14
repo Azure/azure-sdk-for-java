@@ -3,7 +3,7 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 

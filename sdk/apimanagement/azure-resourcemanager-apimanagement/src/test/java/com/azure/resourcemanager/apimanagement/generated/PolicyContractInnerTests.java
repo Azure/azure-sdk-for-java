@@ -13,18 +13,17 @@ public final class PolicyContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"gqcg\",\"format\":\"rawxml-link\"},\"id\":\"gqkctotiowlxte\",\"name\":\"dptjgwdtgukranb\",\"type\":\"wphqlkccuzgygqw\"}")
+            "{\"properties\":{\"value\":\"o\",\"format\":\"xml-link\"},\"id\":\"nlexw\",\"name\":\"cbjpibkephuu\",\"type\":\"erctatoyin\"}")
             .toObject(PolicyContractInner.class);
-        Assertions.assertEquals("gqcg", model.value());
-        Assertions.assertEquals(PolicyContentFormat.RAWXML_LINK, model.format());
+        Assertions.assertEquals("o", model.value());
+        Assertions.assertEquals(PolicyContentFormat.XML_LINK, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyContractInner model
-            = new PolicyContractInner().withValue("gqcg").withFormat(PolicyContentFormat.RAWXML_LINK);
+        PolicyContractInner model = new PolicyContractInner().withValue("o").withFormat(PolicyContentFormat.XML_LINK);
         model = BinaryData.fromObject(model).toObject(PolicyContractInner.class);
-        Assertions.assertEquals("gqcg", model.value());
-        Assertions.assertEquals(PolicyContentFormat.RAWXML_LINK, model.format());
+        Assertions.assertEquals("o", model.value());
+        Assertions.assertEquals(PolicyContentFormat.XML_LINK, model.format());
     }
 }

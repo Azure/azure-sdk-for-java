@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
@@ -22,25 +22,25 @@ public final class SchemaRegistriesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"hhziuief\",\"namespace\":\"zbhd\",\"displayName\":\"mlmz\",\"description\":\"oftrmaequia\",\"storageAccountContainerUrl\":\"xicslfao\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"ylhalnswhcc\",\"tenantId\":\"hka\",\"type\":\"SystemAssigned\"},\"location\":\"itqscywuggwoluhc\",\"tags\":{\"i\":\"emh\"},\"id\":\"sbrgz\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"}";
+            = "{\"properties\":{\"uuid\":\"yejylmbkzudnigrf\",\"namespace\":\"hotj\",\"displayName\":\"lpxuzzjgnrefq\",\"description\":\"qotoihiqakydiwfb\",\"storageAccountContainerUrl\":\"kwpzdqtvh\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"aqa\",\"tenantId\":\"ipietgbe\",\"type\":\"SystemAssigned\"},\"location\":\"ulbmoichdlp\",\"tags\":{\"aaelcattc\":\"ubntnbatzviqsow\",\"gfggcvkyylizrzbj\":\"uhplrvkmjcwmjv\",\"ztlvtmvagbwidqlv\":\"sfxsf\"},\"id\":\"ukoveofi\",\"name\":\"rvjfnmjmvlw\",\"type\":\"z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaRegistry response = manager.schemaRegistries()
-            .getByResourceGroupWithResponse("enuuzkopbm", "nrfdw", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("jk", "mykyujxsglhs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("itqscywuggwoluhc", response.location());
-        Assertions.assertEquals("emh", response.tags().get("i"));
-        Assertions.assertEquals("zbhd", response.properties().namespace());
-        Assertions.assertEquals("mlmz", response.properties().displayName());
-        Assertions.assertEquals("oftrmaequia", response.properties().description());
-        Assertions.assertEquals("xicslfao", response.properties().storageAccountContainerUrl());
+        Assertions.assertEquals("ulbmoichdlp", response.location());
+        Assertions.assertEquals("ubntnbatzviqsow", response.tags().get("aaelcattc"));
+        Assertions.assertEquals("hotj", response.properties().namespace());
+        Assertions.assertEquals("lpxuzzjgnrefq", response.properties().displayName());
+        Assertions.assertEquals("qotoihiqakydiwfb", response.properties().description());
+        Assertions.assertEquals("kwpzdqtvh", response.properties().storageAccountContainerUrl());
         Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 }

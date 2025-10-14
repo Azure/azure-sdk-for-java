@@ -15,17 +15,24 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.dnsresolver.fluent.DnsForwardingRulesetsClient;
+import com.azure.resourcemanager.dnsresolver.fluent.DnsResolverDomainListsClient;
 import com.azure.resourcemanager.dnsresolver.fluent.DnsResolverManagementClient;
+import com.azure.resourcemanager.dnsresolver.fluent.DnsResolverPoliciesClient;
+import com.azure.resourcemanager.dnsresolver.fluent.DnsResolverPolicyVirtualNetworkLinksClient;
 import com.azure.resourcemanager.dnsresolver.fluent.DnsResolversClient;
+import com.azure.resourcemanager.dnsresolver.fluent.DnsSecurityRulesClient;
 import com.azure.resourcemanager.dnsresolver.fluent.ForwardingRulesClient;
 import com.azure.resourcemanager.dnsresolver.fluent.InboundEndpointsClient;
 import com.azure.resourcemanager.dnsresolver.fluent.OutboundEndpointsClient;
@@ -45,12 +52,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = DnsResolverManagementClientBuilder.class)
 public final class DnsResolverManagementClientImpl implements DnsResolverManagementClient {
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -213,13 +220,69 @@ public final class DnsResolverManagementClientImpl implements DnsResolverManagem
     }
 
     /**
+     * The DnsResolverPoliciesClient object to access its operations.
+     */
+    private final DnsResolverPoliciesClient dnsResolverPolicies;
+
+    /**
+     * Gets the DnsResolverPoliciesClient object to access its operations.
+     * 
+     * @return the DnsResolverPoliciesClient object.
+     */
+    public DnsResolverPoliciesClient getDnsResolverPolicies() {
+        return this.dnsResolverPolicies;
+    }
+
+    /**
+     * The DnsSecurityRulesClient object to access its operations.
+     */
+    private final DnsSecurityRulesClient dnsSecurityRules;
+
+    /**
+     * Gets the DnsSecurityRulesClient object to access its operations.
+     * 
+     * @return the DnsSecurityRulesClient object.
+     */
+    public DnsSecurityRulesClient getDnsSecurityRules() {
+        return this.dnsSecurityRules;
+    }
+
+    /**
+     * The DnsResolverPolicyVirtualNetworkLinksClient object to access its operations.
+     */
+    private final DnsResolverPolicyVirtualNetworkLinksClient dnsResolverPolicyVirtualNetworkLinks;
+
+    /**
+     * Gets the DnsResolverPolicyVirtualNetworkLinksClient object to access its operations.
+     * 
+     * @return the DnsResolverPolicyVirtualNetworkLinksClient object.
+     */
+    public DnsResolverPolicyVirtualNetworkLinksClient getDnsResolverPolicyVirtualNetworkLinks() {
+        return this.dnsResolverPolicyVirtualNetworkLinks;
+    }
+
+    /**
+     * The DnsResolverDomainListsClient object to access its operations.
+     */
+    private final DnsResolverDomainListsClient dnsResolverDomainLists;
+
+    /**
+     * Gets the DnsResolverDomainListsClient object to access its operations.
+     * 
+     * @return the DnsResolverDomainListsClient object.
+     */
+    public DnsResolverDomainListsClient getDnsResolverDomainLists() {
+        return this.dnsResolverDomainLists;
+    }
+
+    /**
      * Initializes an instance of DnsResolverManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     DnsResolverManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -229,13 +292,17 @@ public final class DnsResolverManagementClientImpl implements DnsResolverManagem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-07-01";
+        this.apiVersion = "2025-05-01";
         this.dnsResolvers = new DnsResolversClientImpl(this);
         this.inboundEndpoints = new InboundEndpointsClientImpl(this);
         this.outboundEndpoints = new OutboundEndpointsClientImpl(this);
         this.dnsForwardingRulesets = new DnsForwardingRulesetsClientImpl(this);
         this.forwardingRules = new ForwardingRulesClientImpl(this);
         this.virtualNetworkLinks = new VirtualNetworkLinksClientImpl(this);
+        this.dnsResolverPolicies = new DnsResolverPoliciesClientImpl(this);
+        this.dnsSecurityRules = new DnsSecurityRulesClientImpl(this);
+        this.dnsResolverPolicyVirtualNetworkLinks = new DnsResolverPolicyVirtualNetworkLinksClientImpl(this);
+        this.dnsResolverDomainLists = new DnsResolverDomainListsClientImpl(this);
     }
 
     /**
@@ -273,6 +340,23 @@ public final class DnsResolverManagementClientImpl implements DnsResolverManagem
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

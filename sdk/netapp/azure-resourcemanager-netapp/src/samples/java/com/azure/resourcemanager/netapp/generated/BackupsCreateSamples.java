@@ -9,8 +9,9 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_Create.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderBackupVault_Create.
+     * json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Create.
@@ -22,7 +23,7 @@ public final class BackupsCreateSamples {
             .define("backup1")
             .withExistingBackupVault("myRG", "account1", "backupVault1")
             .withVolumeResourceId(
-                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPool/pool1/volumes/volume1")
             .withLabel("myLabel")
             .create();
     }

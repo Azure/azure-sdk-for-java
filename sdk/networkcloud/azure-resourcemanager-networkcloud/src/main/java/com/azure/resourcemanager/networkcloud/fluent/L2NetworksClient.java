@@ -136,6 +136,10 @@ public interface L2NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,7 +149,7 @@ public interface L2NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
-        String l2NetworkName, L2NetworkInner l2NetworkParameters, Context context);
+        String l2NetworkName, L2NetworkInner l2NetworkParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Create or update the layer 2 (L2) network.
@@ -171,6 +175,10 @@ public interface L2NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param l2NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +187,7 @@ public interface L2NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     L2NetworkInner createOrUpdate(String resourceGroupName, String l2NetworkName, L2NetworkInner l2NetworkParameters,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the layer 2 (L2) network.
@@ -204,6 +212,10 @@ public interface L2NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,7 +224,7 @@ public interface L2NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String l2NetworkName, Context context);
+        String l2NetworkName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the layer 2 (L2) network.
@@ -236,6 +248,10 @@ public interface L2NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,7 +259,8 @@ public interface L2NetworksClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String l2NetworkName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String l2NetworkName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the layer 2 (L2) network.
@@ -252,6 +269,10 @@ public interface L2NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param l2NetworkUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,8 +282,8 @@ public interface L2NetworksClient {
      * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L2NetworkInner> updateWithResponse(String resourceGroupName, String l2NetworkName,
-        L2NetworkPatchParameters l2NetworkUpdateParameters, Context context);
+    Response<L2NetworkInner> updateWithResponse(String resourceGroupName, String l2NetworkName, String ifMatch,
+        String ifNoneMatch, L2NetworkPatchParameters l2NetworkUpdateParameters, Context context);
 
     /**
      * Patch the layer 2 (L2) network.

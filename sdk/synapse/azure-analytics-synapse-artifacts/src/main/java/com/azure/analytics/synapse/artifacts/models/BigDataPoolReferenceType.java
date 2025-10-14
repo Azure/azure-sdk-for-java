@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigData
     /**
      * Static value BigDataPoolReference for BigDataPoolReferenceType.
      */
+    @Generated
     public static final BigDataPoolReferenceType BIG_DATA_POOL_REFERENCE = fromString("BigDataPoolReference");
 
     /**
@@ -21,6 +23,7 @@ public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigData
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BigDataPoolReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigData
      * @param name a name to look for.
      * @return the corresponding BigDataPoolReferenceType.
      */
+    @Generated
     public static BigDataPoolReferenceType fromString(String name) {
         return fromString(name, BigDataPoolReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigData
      * 
      * @return known BigDataPoolReferenceType values.
      */
+    @Generated
     public static Collection<BigDataPoolReferenceType> values() {
         return values(BigDataPoolReferenceType.class);
     }

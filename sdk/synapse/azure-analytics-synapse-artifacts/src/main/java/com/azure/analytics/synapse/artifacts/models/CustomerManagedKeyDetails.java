@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
     /*
      * The customer managed key status on the workspace
      */
+    @Generated
     private String status;
 
     /*
      * The key object of the workspace
      */
+    @Generated
     private WorkspaceKeyDetails key;
 
     /**
      * Creates an instance of CustomerManagedKeyDetails class.
      */
+    @Generated
     public CustomerManagedKeyDetails() {
     }
 
@@ -37,6 +41,7 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -46,6 +51,7 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
      * 
      * @return the key value.
      */
+    @Generated
     public WorkspaceKeyDetails getKey() {
         return this.key;
     }
@@ -56,6 +62,7 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
      * @param key the key value to set.
      * @return the CustomerManagedKeyDetails object itself.
      */
+    @Generated
     public CustomerManagedKeyDetails setKey(WorkspaceKeyDetails key) {
         this.key = key;
         return this;
@@ -64,6 +71,7 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,6 +87,7 @@ public final class CustomerManagedKeyDetails implements JsonSerializable<Custome
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomerManagedKeyDetails.
      */
+    @Generated
     public static CustomerManagedKeyDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomerManagedKeyDetails deserializedCustomerManagedKeyDetails = new CustomerManagedKeyDetails();

@@ -31,6 +31,11 @@ public final class RegionConfigurationRequest implements JsonSerializable<Region
      */
     private DatacenterAddressRequest datacenterAddressRequest;
 
+    /*
+     * Request body to get the device capabilities for a given sku.
+     */
+    private DeviceCapabilityRequest deviceCapabilityRequest;
+
     /**
      * Creates an instance of RegionConfigurationRequest class.
      */
@@ -100,6 +105,26 @@ public final class RegionConfigurationRequest implements JsonSerializable<Region
     }
 
     /**
+     * Get the deviceCapabilityRequest property: Request body to get the device capabilities for a given sku.
+     * 
+     * @return the deviceCapabilityRequest value.
+     */
+    public DeviceCapabilityRequest deviceCapabilityRequest() {
+        return this.deviceCapabilityRequest;
+    }
+
+    /**
+     * Set the deviceCapabilityRequest property: Request body to get the device capabilities for a given sku.
+     * 
+     * @param deviceCapabilityRequest the deviceCapabilityRequest value to set.
+     * @return the RegionConfigurationRequest object itself.
+     */
+    public RegionConfigurationRequest withDeviceCapabilityRequest(DeviceCapabilityRequest deviceCapabilityRequest) {
+        this.deviceCapabilityRequest = deviceCapabilityRequest;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -114,6 +139,9 @@ public final class RegionConfigurationRequest implements JsonSerializable<Region
         if (datacenterAddressRequest() != null) {
             datacenterAddressRequest().validate();
         }
+        if (deviceCapabilityRequest() != null) {
+            deviceCapabilityRequest().validate();
+        }
     }
 
     /**
@@ -125,6 +153,7 @@ public final class RegionConfigurationRequest implements JsonSerializable<Region
         jsonWriter.writeJsonField("scheduleAvailabilityRequest", this.scheduleAvailabilityRequest);
         jsonWriter.writeJsonField("transportAvailabilityRequest", this.transportAvailabilityRequest);
         jsonWriter.writeJsonField("datacenterAddressRequest", this.datacenterAddressRequest);
+        jsonWriter.writeJsonField("deviceCapabilityRequest", this.deviceCapabilityRequest);
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +181,9 @@ public final class RegionConfigurationRequest implements JsonSerializable<Region
                 } else if ("datacenterAddressRequest".equals(fieldName)) {
                     deserializedRegionConfigurationRequest.datacenterAddressRequest
                         = DatacenterAddressRequest.fromJson(reader);
+                } else if ("deviceCapabilityRequest".equals(fieldName)) {
+                    deserializedRegionConfigurationRequest.deviceCapabilityRequest
+                        = DeviceCapabilityRequest.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

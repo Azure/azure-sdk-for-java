@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -46,8 +45,8 @@ public final class ClientEncryptionKey extends Resource {
         this.encryptionAlgorithm = encryptionAlgorithm;
         this.set(
             Constants.Properties.ENCRYPTION_ALGORITHM,
-            encryptionAlgorithm,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            encryptionAlgorithm
+        );
     }
 
     public byte[] getWrappedDataEncryptionKey() {
@@ -64,8 +63,8 @@ public final class ClientEncryptionKey extends Resource {
         this.wrappedDataEncryptionKey = wrappedDataEncryptionKey;
         this.set(
             Constants.Properties.WRAPPED_DATA_ENCRYPTION_KEY,
-            this.wrappedDataEncryptionKey,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.wrappedDataEncryptionKey
+        );
     }
 
     public EncryptionKeyWrapMetadata getEncryptionKeyWrapMetadata() {
@@ -82,8 +81,8 @@ public final class ClientEncryptionKey extends Resource {
         this.encryptionKeyWrapMetadata = encryptionKeyWrapMetadata;
         this.set(
             Constants.Properties.KEY_WRAP_METADATA,
-            this.encryptionKeyWrapMetadata,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.encryptionKeyWrapMetadata
+        );
     }
 
     @Override

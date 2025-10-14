@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkResourcesWrapper;
@@ -21,19 +21,19 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"x\",\"requiredMembers\":[\"vodqnenq\",\"clnrctrpun\",\"bhoety\"],\"requiredZoneNames\":[\"cerhhzjhmxyns\"]},\"name\":\"dgvjwoxmlbxqwsec\",\"type\":\"woibqnuhrtiwnbq\",\"etag\":\"saolcebwditccu\",\"id\":\"lcmzghaolfupxh\"},{\"properties\":{\"groupId\":\"tknmp\",\"requiredMembers\":[\"cr\",\"xkvuzpso\",\"jctvu\",\"pjwwv\"],\"requiredZoneNames\":[\"jchizhicxlmym\"]},\"name\":\"uhqetmpqcxrwtyg\",\"type\":\"owrtniymaznmql\",\"etag\":\"tppagvfnryjqboy\",\"id\":\"zwqzvmftxkwicg\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"scnbrwhsq\",\"requiredMembers\":[\"m\"],\"requiredZoneNames\":[\"ryexhdigmgs\",\"zhxvaunuus\",\"tzfvzlqspavxfpbi\"]},\"name\":\"sbzu\",\"type\":\"ranngwldymuehv\",\"etag\":\"rtsnclzyun\",\"id\":\"ogagtjcmlyhp\"},{\"properties\":{\"groupId\":\"ix\",\"requiredMembers\":[\"vkwenlc\",\"toibgvaaz\"],\"requiredZoneNames\":[\"aocfnffjxdcc\",\"uzqwvckewlyrw\"]},\"name\":\"psubawzaf\",\"type\":\"zh\",\"etag\":\"bxcelvaww\",\"id\":\"btkyjvzz\"},{\"properties\":{\"groupId\":\"li\",\"requiredMembers\":[\"chsjuacdq\",\"ryo\",\"kqo\"],\"requiredZoneNames\":[\"epml\",\"kzdwietfxpdzzli\",\"k\"]},\"name\":\"wfkanuqfle\",\"type\":\"mr\",\"etag\":\"xniibcilyg\",\"id\":\"i\"},{\"properties\":{\"groupId\":\"jhqfuqomwhhigy\",\"requiredMembers\":[\"ewcvlj\"],\"requiredZoneNames\":[\"nersgrtjmdepa\",\"nywknucsr\",\"fmcrye\"]},\"name\":\"lx\",\"type\":\"hntsqsphieqgoioe\",\"etag\":\"ott\",\"id\":\"fkwzkwuwgzver\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourcesWrapper response = manager.privateLinkResources()
-            .getWithResponse("btms", "nacgbwmqgyak", com.azure.core.util.Context.NONE)
+            .getWithResponse("hnzsrgiwvzepg", "jtuzqreprn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lcmzghaolfupxh", response.value().get(0).id());
+        Assertions.assertEquals("ogagtjcmlyhp", response.value().get(0).id());
     }
 }

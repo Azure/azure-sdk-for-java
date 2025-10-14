@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.BuilderResource;
@@ -23,25 +23,26 @@ public final class BuildersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"umljcirvpef\",\"containerRegistries\":[{\"containerRegistryServer\":\"veitit\",\"identityResourceId\":\"nsxzajlns\"}]},\"identity\":{\"principalId\":\"82ee0be0-090e-4ccc-818f-81f37399dca8\",\"tenantId\":\"e06e5929-004b-4bc5-85f0-b7255f9c8376\",\"type\":\"None\",\"userAssignedIdentities\":{\"xqvmvuay\":{\"principalId\":\"ebdb161f-384c-40a8-8c97-1ade775ffd9c\",\"clientId\":\"28b5e898-e0fa-4cc9-9d87-8d3f196899ba\"},\"dxk\":{\"principalId\":\"829c9a90-8bc7-479a-899e-a6db4e80e245\",\"clientId\":\"f2bc9f76-b941-4611-9c17-3c102575ee8b\"}}},\"location\":\"qbwpntghyk\",\"tags\":{\"vlzladl\":\"cdrnxsl\",\"pbqhvfdqqjwkr\":\"x\",\"atuztjct\":\"wzdanojisgglmvo\",\"wakwseivmakxhys\":\"bpvbkaehxsmzygd\"},\"id\":\"wljuxlkbectvt\",\"name\":\"j\",\"type\":\"skdchmaiubavl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"environmentId\":\"lwcerwkwb\",\"containerRegistries\":[{\"containerRegistryServer\":\"ljtxbus\",\"identityResourceId\":\"tbxxniuisd\"},{\"containerRegistryServer\":\"hg\",\"identityResourceId\":\"d\"},{\"containerRegistryServer\":\"zpa\",\"identityResourceId\":\"secnadbuwqrgxf\"},{\"containerRegistryServer\":\"lmqiynezoel\",\"identityResourceId\":\"nkkiiwvmtumxpy\"}]},\"identity\":{\"principalId\":\"0d3a132e-8589-4fb5-815b-3c7d1121ec90\",\"tenantId\":\"a3a695e6-ebc6-4d13-a81b-3c02a24289fc\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"qvqpilrg\":{\"principalId\":\"7e2464e0-b2af-4f4e-8102-b83a1eadd61f\",\"clientId\":\"26b69a52-6f3b-4da8-8dc4-9e7c6b4672ea\"}}},\"location\":\"canlduwzorxs\",\"tags\":{\"x\":\"aqklxy\"},\"id\":\"qvfqepdxc\",\"name\":\"tuubwyvpjb\",\"type\":\"wcpjqduqgi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BuilderResource> response
-            = manager.builders().listByResourceGroup("ipowza", com.azure.core.util.Context.NONE);
+            = manager.builders().listByResourceGroup("w", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qbwpntghyk", response.iterator().next().location());
-        Assertions.assertEquals("cdrnxsl", response.iterator().next().tags().get("vlzladl"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
-        Assertions.assertEquals("umljcirvpef", response.iterator().next().environmentId());
-        Assertions.assertEquals("veitit",
+        Assertions.assertEquals("canlduwzorxs", response.iterator().next().location());
+        Assertions.assertEquals("aqklxy", response.iterator().next().tags().get("x"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("lwcerwkwb", response.iterator().next().environmentId());
+        Assertions.assertEquals("ljtxbus",
             response.iterator().next().containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("nsxzajlns",
+        Assertions.assertEquals("tbxxniuisd",
             response.iterator().next().containerRegistries().get(0).identityResourceId());
     }
 }

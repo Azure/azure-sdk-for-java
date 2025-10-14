@@ -81,9 +81,10 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String storageApplianceName, Context context) {
+    public OperationStatusResult delete(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, Context context) {
         OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, storageApplianceName, context);
+            = this.serviceClient().delete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -174,10 +175,13 @@ public final class StorageAppliancesImpl implements StorageAppliances {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
         }
-        return this.delete(resourceGroupName, storageApplianceName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, storageApplianceName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -188,7 +192,7 @@ public final class StorageAppliancesImpl implements StorageAppliances {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
         }
-        return this.delete(resourceGroupName, storageApplianceName, context);
+        return this.delete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context);
     }
 
     private StorageAppliancesClient serviceClient() {

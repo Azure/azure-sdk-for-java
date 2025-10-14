@@ -8,179 +8,187 @@ pr:
     include:
       - eng/pipelines/aggregate-reports.yml
 
+parameters:
+  - name: Artifacts
+    type: object
+    default:
+      - name: aggregate-reports # fake artifact name
+        groupId: reports # fake group Id
+
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
 
-stages:
-  - stage: AggregateReports
-    displayName: Aggregate Reports
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: AggregateReports
+        displayName: Aggregate Reports
 
-    jobs:
-      - job: Reporting
-        displayName: Generate reports (with build)
-        timeoutInMinutes: 180
+        jobs:
+          - job: Reporting
+            displayName: Generate reports (with build)
+            timeoutInMinutes: 180
 
-        pool:
-          name: 'azsdk-pool-mms-ubuntu-2004-general'
-          vmImage: 'MMSUbuntu20.04'
+            variables:
+              - template: /eng/pipelines/templates/variables/image.yml
+              - name: ArtifactsJson
+                value: '${{ convertToJson(parameters.Artifacts) }}'
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+            - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+              parameters:
+                JobType: 'Reporting'
 
-        steps:
-        - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-          parameters:
-            JobType: 'Reporting'
-            Artifacts:
-              - name: aggregate-reports # fake artifact name
-                groupId: reports # fake group Id
+            # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
+            - task: Maven@4
+              displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
+              inputs:
+                mavenPomFile: pom.xml
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,!com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,!com.azure.cosmos.kafka:azure-cosmos-kafka-connect,!com.microsoft.azure:azure-batch,!com.microsoft.azure:azure-media'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: $(JavaBuildVersion)
+                jdkArchitectureOption: 'x64'
+                publishJUnitResults: false
+                goals: 'clean install'
 
-        # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-        # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+            - task: Maven@4
+              displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
+              inputs:
+                mavenPomFile: pom.xml
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dspotless.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,com.azure.cosmos.kafka:azure-cosmos-kafka-connect,com.microsoft.azure:azure-batch,com.microsoft.azure:azure-media'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: $(FallbackJavaBuildVersion)
+                jdkArchitectureOption: 'x64'
+                publishJUnitResults: false
+                goals: 'clean install'
 
-        # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
-        - task: Maven@4
-          displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
-          inputs:
-            mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.microsoft.azure:azure-batch,!com.microsoft.azure:azure-loganalytics,!com.microsoft.azure:azure-media'
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaBuildVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'clean install'
+            - pwsh: |
+                New-Item eng/bomgenerator/inputdir -ItemType directory
+                Copy-Item sdk/boms/azure-sdk-bom/pom.xml eng/bomgenerator/inputdir/
+                Copy-Item eng/versioning/version_client.txt eng/bomgenerator/inputdir/
+              displayName: Copy input files for BOM generation
 
-        - task: Maven@4
-          displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
-          inputs:
-            mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.microsoft.azure:azure-batch,com.microsoft.azure:azure-loganalytics,com.microsoft.azure:azure-media'
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(FallbackJavaBuildVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'clean install'
+            - task: Maven@4
+              condition: succeededOrFailed()
+              displayName: 'Generate BOM Reports'
+              inputs:
+                mavenPomFile: eng/bomgenerator/pom.xml
+                options: '$(DefaultOptions)'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: $(JavaBuildVersion)
+                jdkArchitectureOption: 'x64'
+                publishJUnitResults: false
+                goals: 'clean package'
 
-        - pwsh: |
-            New-Item eng/bomgenerator/inputdir -ItemType directory
-            Copy-Item sdk/boms/azure-sdk-bom/pom.xml eng/bomgenerator/inputdir/
-            Copy-Item eng/versioning/version_client.txt eng/bomgenerator/inputdir/
-          displayName: Copy input files for BOM generation
+            # Generate the pom file with all the modules required for creating an aggregate code coverage report
+            - task: PythonScript@0
+              displayName: 'Generate pom for aggregate JavaDoc report'
+              inputs:
+                scriptPath: 'eng/scripts/generate_aggregate_pom.py'
+                arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
+                workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-        - task: Maven@4
-          condition: succeededOrFailed()
-          displayName: 'Generate BOM Reports'
-          inputs:
-            mavenPomFile: eng/bomgenerator/pom.xml
-            options: '$(DefaultOptions)'
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaBuildVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'clean package'
+            - task: Maven@4
+              displayName: 'Generate Aggregate JavaDocs'
+              inputs:
+                mavenPomFile: aggregate-pom.xml
+                options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: '1.17' # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
+                jdkArchitectureOption: 'x64'
+                publishJUnitResults: false
+                goals: 'javadoc:aggregate'
 
-        # Generate the pom file with all the modules required for creating an aggregate code coverage report
-        - task: PythonScript@0
-          displayName: 'Generate pom for aggregate JavaDoc report'
-          inputs:
-            scriptPath: 'eng/scripts/generate_aggregate_pom.py'
-            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark,com.azure:azure-messaging-servicebus-stress,com.azure:azure-messaging-eventhubs-stress'
-            workingDirectory: '$(System.DefaultWorkingDirectory)'
+            - pwsh: |
+                $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
+              displayName: Generate Interdependency Report Data
 
-        - task: Maven@4
-          displayName: 'Generate Aggregate JavaDocs'
-          inputs:
-            mavenPomFile: aggregate-pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '1.17' # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'javadoc:aggregate'
+            - pwsh: |
+                Copy-Item -Path target/site/apidocs -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
+                Copy-Item eng/code-quality-reports/index.html $(Build.ArtifactStagingDirectory)
+                Copy-Item eng/code-quality-reports/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+                Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+                ls -R $(Build.ArtifactStagingDirectory)/staging
+              displayName: 'Copy reports to artifact staging'
 
-        - pwsh: |
-            $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
-          displayName: Generate Interdependency Report Data
+            - pwsh: |
+                Copy-Item eng/bomgenerator/outputdir/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
+              displayName: 'Copy BOM report to artifact staging'
+              condition: succeededOrFailed()
 
-        - pwsh: |
-            Copy-Item -Path target/site/apidocs -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
-            Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-            Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
-            Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
-            ls -R $(Build.ArtifactStagingDirectory)/staging
-          displayName: 'Copy reports to artifact staging'
+            - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+              parameters:
+                DisplayName: 'Publish Report Artifacts'
+                ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+                ArtifactName: 'reports'
 
-        - pwsh: |
-            Copy-Item eng/bomgenerator/outputdir/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
-          displayName: 'Copy BOM report to artifact staging'
-          condition: succeededOrFailed()
+            - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+              parameters:
+                ArtifactName: 'repository-$(System.JobName)'
+                ArtifactPath: '$(System.DefaultWorkingDirectory)'
+                SbomEnabled: false
+                CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
-        - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-          parameters:
-            DisplayName: 'Publish Report Artifacts'
-            ArtifactPath: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'reports'
+          - job: Compliance
+            displayName: Analyze (no build)
+            timeoutInMinutes: 120
+            variables:
+              - template: /eng/pipelines/templates/variables/globals.yml
+              - template: /eng/pipelines/templates/variables/image.yml
+              - name: DisableDockerDetector
+                value: false
 
-        - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+            pool:
+              # CredScan build task is Windows only (https://aka.ms/credscan).
+              name: $(WINDOWSPOOL)
+              image: $(WINDOWSVMIMAGE)
+              os: windows
+            steps:
+            - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+              # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+              # builds should be sufficient.
+              # Only run if building all libraries succeeded.
+              condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+              displayName: 'Component Detection'
 
-      - job: Compliance
-        displayName: Analyze (no build)
-        timeoutInMinutes: 120
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - name: DisableDockerDetector
-            value: false
+            - task: ms.nuget-security-analysis.nuget-security-analysis.nuget-security-analysis@0
+              # Use the same conditions as the Component Detection
+              condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+              displayName: 'Secure Supply Chain Analysis'
 
-        pool:
-          # CredScan build task is Windows only (https://aka.ms/credscan).
-          name: 'azsdk-pool-mms-win-2022-general'
-          vmImage: 'windows-2022'
-        steps:
-        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-          # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-          # builds should be sufficient.
-          # Only run if building all libraries succeeded.
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          displayName: 'Component Detection'
+            # Run link verification at the end as it will run no matter the pipeline passing or failing.
+            # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
+            - template: /eng/common/pipelines/templates/steps/verify-links.yml
+              parameters:
+                Directory: ""
+                CheckLinkGuidance: $true
+                Condition: succeededOrFailed()
 
-        - task: ms.nuget-security-analysis.nuget-security-analysis.nuget-security-analysis@0
-          # Use the same conditions as the Component Detection
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          displayName: 'Secure Supply Chain Analysis'
+      - stage: ComplianceTools
+        displayName: Compliance Tools
+        dependsOn: []
 
-        # Run link verification at the end as it will run no matter the pipeline passing or failing.
-        # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-        - template: /eng/common/pipelines/templates/steps/verify-links.yml
-          parameters:
-            Directory: ""
-            CheckLinkGuidance: $true
-            Condition: succeededOrFailed()
+        jobs:
+          - job: ComplianceTools
+            timeoutInMinutes: 120
+            variables:
+              - template: /eng/pipelines/templates/variables/image.yml
 
-  - stage: ComplianceTools
-    displayName: Compliance Tools
-    dependsOn: []
+            pool:
+              name: $(WINDOWSPOOL)
+              image: $(WINDOWSVMIMAGE)
+              os: windows
 
-    jobs:
-      - job: ComplianceTools
-        timeoutInMinutes: 120
-
-        pool:
-          name: $(WINDOWSPOOL)
-          vmImage: $(WINDOWSVMIMAGE)
-          os: windows
-
-        steps:
-          - template: /eng/common/pipelines/templates/steps/policheck.yml
-            parameters:
-              ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
-              PublishAnalysisLogs: false
-
-          - template: /eng/common/pipelines/templates/steps/credscan.yml
-            parameters:
-              BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
-
-          - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
-            displayName: 'Publish Security Analysis Logs'
-            condition: succeededOrFailed()
+            steps:
+              - template: /eng/common/pipelines/templates/steps/policheck.yml
+                parameters:
+                  ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
+                  PublishAnalysisLogs: false

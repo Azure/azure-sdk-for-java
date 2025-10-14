@@ -18,11 +18,11 @@ public class WorkflowRunCancel {
             = new WorkflowRunClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowruncancel.workflowruncancel
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflow-run-cancel.workflow-run-cancel
         BinaryData runCancelReply = BinaryData.fromString("{\"comment\":\"Thanks!\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = workflowRunClient.cancelWithResponse("b7aaf54b-59c2-4a0e-a7d0-f431044f2198",
             runCancelReply, requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowruncancel.workflowruncancel
+        // END:com.azure.analytics.purview.workflow.generated.workflow-run-cancel.workflow-run-cancel
     }
 }

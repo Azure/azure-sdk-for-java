@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
@@ -21,17 +21,17 @@ public final class NetAppResourceQuotaLimitsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"current\":1638200879,\"default\":892169795},\"id\":\"etw\",\"name\":\"hhzjhfj\",\"type\":\"hvvmuvgpmun\"}]}";
+            = "{\"value\":[{\"properties\":{\"current\":929790319,\"default\":1718381075},\"id\":\"zvytnrzvuljraaer\",\"name\":\"nok\",\"type\":\"gukkjqnvbroy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SubscriptionQuotaItem> response
-            = manager.netAppResourceQuotaLimits().list("gsjj", com.azure.core.util.Context.NONE);
+            = manager.netAppResourceQuotaLimits().list("lnacgcc", com.azure.core.util.Context.NONE);
 
     }
 }

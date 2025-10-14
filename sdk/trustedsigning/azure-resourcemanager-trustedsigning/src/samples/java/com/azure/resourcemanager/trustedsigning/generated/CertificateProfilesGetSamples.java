@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
  */
 public final class CertificateProfilesGetSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_Get.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_Get.json
      */
     /**
      * Sample code: Get details of a certificate profile.

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.resources.generated;
 public final class TagOperationsDeleteAtScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeleteTagsResource.json
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/DeleteTagsResource.json
      */
     /**
      * Sample code: Update tags on a resource.
@@ -29,7 +29,7 @@ public final class TagOperationsDeleteAtScopeSamples {
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/DeleteTagsSubscription.
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/DeleteTagsSubscription.
      * json
      */
     /**

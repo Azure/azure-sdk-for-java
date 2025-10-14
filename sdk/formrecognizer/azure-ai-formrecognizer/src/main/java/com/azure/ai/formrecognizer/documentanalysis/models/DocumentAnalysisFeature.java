@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
     /**
      * Perform OCR at a higher resolution to handle documents with fine print.
      */
+    @Generated
     public static final DocumentAnalysisFeature OCR_HIGH_RESOLUTION = fromString("ocrHighResolution");
 
     /**
      * Enable the detection of the text content language.
      */
+    @Generated
     public static final DocumentAnalysisFeature LANGUAGES = fromString("languages");
 
     /**
      * Enable the detection of barcodes in the document.
      */
+    @Generated
     public static final DocumentAnalysisFeature BARCODES = fromString("barcodes");
 
     /**
      * Enable the detection of mathematical expressions in the document.
      */
+    @Generated
     public static final DocumentAnalysisFeature FORMULAS = fromString("formulas");
 
     /**
      * Enable the detection of general key value pairs (form fields) in the document.
      */
+    @Generated
     public static final DocumentAnalysisFeature KEY_VALUE_PAIRS = fromString("keyValuePairs");
 
     /**
      * Enable the recognition of various font styles.
      */
+    @Generated
     public static final DocumentAnalysisFeature STYLE_FONT = fromString("styleFont");
 
     /**
@@ -46,6 +53,7 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentAnalysisFeature() {
     }
@@ -56,6 +64,7 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
      * @param name a name to look for.
      * @return the corresponding DocumentAnalysisFeature.
      */
+    @Generated
     public static DocumentAnalysisFeature fromString(String name) {
         return fromString(name, DocumentAnalysisFeature.class);
     }
@@ -65,6 +74,7 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
      * 
      * @return known DocumentAnalysisFeature values.
      */
+    @Generated
     public static Collection<DocumentAnalysisFeature> values() {
         return values(DocumentAnalysisFeature.class);
     }

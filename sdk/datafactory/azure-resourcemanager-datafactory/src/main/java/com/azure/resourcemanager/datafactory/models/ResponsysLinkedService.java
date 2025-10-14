@@ -51,7 +51,7 @@ public final class ResponsysLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ResponsysLinkedServiceTypeProperties innerTypeProperties() {
+    ResponsysLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

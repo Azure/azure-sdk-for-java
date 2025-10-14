@@ -15,33 +15,33 @@ public final class CustomDomainConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDomainConfiguration model = BinaryData.fromString(
-            "{\"fullyQualifiedDomainName\":\"ioilqukrydxtq\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"ggufhyaomtb\"},\"certificateUrl\":\"havgrvk\",\"expectedTxtRecordName\":\"ovjzhpjbibgjmfx\",\"expectedTxtRecordValue\":\"vfcluyovwxnbkfe\"}")
+            "{\"fullyQualifiedDomainName\":\"hjglikk\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"qpvuzlmvfelf\"},\"certificateUrl\":\"gplcrpwjxeznoigb\",\"expectedTxtRecordName\":\"jwmwkpnbs\",\"expectedTxtRecordValue\":\"ejjoqkagfhsxtta\"}")
             .toObject(CustomDomainConfiguration.class);
-        Assertions.assertEquals("ioilqukrydxtq", model.fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD, model.validationState());
-        Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ggufhyaomtb", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("havgrvk", model.certificateUrl());
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.expectedTxtRecordName());
-        Assertions.assertEquals("vfcluyovwxnbkfe", model.expectedTxtRecordValue());
+        Assertions.assertEquals("hjglikk", model.fullyQualifiedDomainName());
+        Assertions.assertEquals(CustomDomainValidationState.APPROVED, model.validationState());
+        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qpvuzlmvfelf", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("gplcrpwjxeznoigb", model.certificateUrl());
+        Assertions.assertEquals("jwmwkpnbs", model.expectedTxtRecordName());
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.expectedTxtRecordValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDomainConfiguration model = new CustomDomainConfiguration().withFullyQualifiedDomainName("ioilqukrydxtq")
-            .withValidationState(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD)
-            .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentity("ggufhyaomtb"))
-            .withCertificateUrl("havgrvk")
-            .withExpectedTxtRecordName("ovjzhpjbibgjmfx")
-            .withExpectedTxtRecordValue("vfcluyovwxnbkfe");
+        CustomDomainConfiguration model = new CustomDomainConfiguration().withFullyQualifiedDomainName("hjglikk")
+            .withValidationState(CustomDomainValidationState.APPROVED)
+            .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("qpvuzlmvfelf"))
+            .withCertificateUrl("gplcrpwjxeznoigb")
+            .withExpectedTxtRecordName("jwmwkpnbs")
+            .withExpectedTxtRecordValue("ejjoqkagfhsxtta");
         model = BinaryData.fromObject(model).toObject(CustomDomainConfiguration.class);
-        Assertions.assertEquals("ioilqukrydxtq", model.fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD, model.validationState());
-        Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ggufhyaomtb", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("havgrvk", model.certificateUrl());
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.expectedTxtRecordName());
-        Assertions.assertEquals("vfcluyovwxnbkfe", model.expectedTxtRecordValue());
+        Assertions.assertEquals("hjglikk", model.fullyQualifiedDomainName());
+        Assertions.assertEquals(CustomDomainValidationState.APPROVED, model.validationState());
+        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qpvuzlmvfelf", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("gplcrpwjxeznoigb", model.certificateUrl());
+        Assertions.assertEquals("jwmwkpnbs", model.expectedTxtRecordName());
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.expectedTxtRecordValue());
     }
 }

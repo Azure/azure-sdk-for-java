@@ -20,8 +20,8 @@ public interface ReplicationProtectableItemsClient {
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,16 +30,16 @@ public interface ReplicationProtectableItemsClient {
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName);
+    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName);
 
     /**
      * Gets the list of protectable items.
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -52,8 +52,8 @@ public interface ReplicationProtectableItemsClient {
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String filter, String take,
+    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String filter, String take,
         String skipToken, Context context);
 
     /**
@@ -61,8 +61,8 @@ public interface ReplicationProtectableItemsClient {
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -73,7 +73,7 @@ public interface ReplicationProtectableItemsClient {
      * @return replication protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectableItemInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    Response<ProtectableItemInner> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName, Context context);
 
     /**
@@ -81,8 +81,8 @@ public interface ReplicationProtectableItemsClient {
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -92,6 +92,6 @@ public interface ReplicationProtectableItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectableItemInner get(String resourceName, String resourceGroupName, String fabricName,
+    ProtectableItemInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName);
 }

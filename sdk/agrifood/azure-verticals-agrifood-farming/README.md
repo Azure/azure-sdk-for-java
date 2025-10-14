@@ -25,7 +25,7 @@ Use FarmBeats client library for Python to do the following.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-verticals-agrifood-farming</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -35,6 +35,10 @@ Use FarmBeats client library for Python to do the following.
 #### Using Azure Active Directory
 
 In order to interact with the Azure FarmBeats service, your client must present an Azure Active Directory bearer token to the service.
+
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use. 
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable. 
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
@@ -47,11 +51,9 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example - Create Parties Client
 
@@ -165,7 +167,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_subscription]: https://azure.microsoft.com/free/
 [product_documentation]: https://aka.ms/FarmBeatsProductDocumentationPaaS
 [azure_portal]: https://portal.azure.com
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://central.sonatype.com/artifact/com.azure/azure-verticals-agrifood-farming
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/README.md
 [farm_hierarchy]: https://aka.ms/FarmBeatsFarmHierarchyDocs
@@ -175,5 +177,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fagrifood%2Fazure-verticals-agrifood-farming%2FREADME.png)
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview

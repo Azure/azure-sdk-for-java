@@ -36,7 +36,12 @@ public class StatsbeatModule {
     private final AzureMetadataService azureMetadataService;
     private final AtomicBoolean started = new AtomicBoolean();
 
-    private final AtomicBoolean shutdown = new AtomicBoolean();
+    private static final AtomicBoolean shutdown = new AtomicBoolean();
+
+    // Only for testing
+    public static AtomicBoolean getShutdown() {
+        return shutdown;
+    }
 
     public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
         customDimensions = new CustomDimensions();

@@ -4,6 +4,7 @@
 
 package com.azure.maps.geolocation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class JsonFormat extends ExpandableStringEnum<JsonFormat> {
     /**
      * [The JavaScript Object Notation Data Interchange Format](https://tools.ietf.org/html/rfc8259).
      */
+    @Generated
     public static final JsonFormat JSON = fromString("json");
 
     /**
@@ -21,6 +23,7 @@ public final class JsonFormat extends ExpandableStringEnum<JsonFormat> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public JsonFormat() {
     }
@@ -31,6 +34,7 @@ public final class JsonFormat extends ExpandableStringEnum<JsonFormat> {
      * @param name a name to look for.
      * @return the corresponding JsonFormat.
      */
+    @Generated
     public static JsonFormat fromString(String name) {
         return fromString(name, JsonFormat.class);
     }
@@ -40,6 +44,7 @@ public final class JsonFormat extends ExpandableStringEnum<JsonFormat> {
      * 
      * @return known JsonFormat values.
      */
+    @Generated
     public static Collection<JsonFormat> values() {
         return values(JsonFormat.class);
     }

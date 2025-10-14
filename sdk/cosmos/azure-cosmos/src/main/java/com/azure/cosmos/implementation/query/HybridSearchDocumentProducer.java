@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class HybridSearchDocumentProducer extends DocumentProducer<Document> {
+    private final SchedulingStopwatch sharedSchedulingStopwatch;
+
     public HybridSearchDocumentProducer(
         IDocumentQueryClient client,
         String collectionResourceId,
@@ -30,9 +33,11 @@ public class HybridSearchDocumentProducer extends DocumentProducer<Document> {
         int initialPageSize,
         String initialContinuationToken,
         int top,
-        Supplier<String> operationContextTextProvider) {
+        Supplier<String> operationContextTextProvider,
+        SchedulingStopwatch sharedSchedulingStopwatch) {
         super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc,
             collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
             initialContinuationToken, top, feedRange, operationContextTextProvider);
+            this.sharedSchedulingStopwatch = sharedSchedulingStopwatch;
     }
 }

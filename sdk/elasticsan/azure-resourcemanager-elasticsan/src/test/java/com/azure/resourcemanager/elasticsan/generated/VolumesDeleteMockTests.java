@@ -6,10 +6,11 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.DeleteType;
 import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
 import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
 import java.nio.charset.StandardCharsets;
@@ -27,11 +28,11 @@ public final class VolumesDeleteMockTests {
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .delete("tor", "dsg", "a", "mkycgra", XMsDeleteSnapshots.TRUE, XMsForceDelete.FALSE,
-                com.azure.core.util.Context.NONE);
+            .delete("ybxarzgszu", "oxciqopidoamcio", "hkh", "zxkhnzbonlwnto", XMsDeleteSnapshots.FALSE,
+                XMsForceDelete.TRUE, DeleteType.PERMANENT, com.azure.core.util.Context.NONE);
 
     }
 }

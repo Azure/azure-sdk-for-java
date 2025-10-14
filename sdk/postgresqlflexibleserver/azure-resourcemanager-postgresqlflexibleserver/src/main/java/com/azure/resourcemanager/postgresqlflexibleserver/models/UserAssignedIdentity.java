@@ -24,7 +24,12 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
-     * the types of identities associated with this resource; currently restricted to 'None and UserAssigned'
+     * the identity principal Id of the server.
+     */
+    private String principalId;
+
+    /*
+     * the types of identities associated with this resource
      */
     private IdentityType type;
 
@@ -60,8 +65,27 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the type property: the types of identities associated with this resource; currently restricted to 'None and
-     * UserAssigned'.
+     * Get the principalId property: the identity principal Id of the server.
+     * 
+     * @return the principalId value.
+     */
+    public String principalId() {
+        return this.principalId;
+    }
+
+    /**
+     * Set the principalId property: the identity principal Id of the server.
+     * 
+     * @param principalId the principalId value to set.
+     * @return the UserAssignedIdentity object itself.
+     */
+    public UserAssignedIdentity withPrincipalId(String principalId) {
+        this.principalId = principalId;
+        return this;
+    }
+
+    /**
+     * Get the type property: the types of identities associated with this resource.
      * 
      * @return the type value.
      */
@@ -70,8 +94,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Set the type property: the types of identities associated with this resource; currently restricted to 'None and
-     * UserAssigned'.
+     * Set the type property: the types of identities associated with this resource.
      * 
      * @param type the type value to set.
      * @return the UserAssignedIdentity object itself.
@@ -120,6 +143,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("principalId", this.principalId);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,6 +169,8 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
                     Map<String, UserIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> UserIdentity.fromJson(reader1));
                     deserializedUserAssignedIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedUserAssignedIdentity.tenantId = reader.getString();
                 } else {

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
     /*
      * Synapse spark job reference type.
      */
+    @Generated
     private SparkJobReferenceType type;
 
     /*
      * Reference spark job name.
      */
+    @Generated
     private String referenceName;
 
     /**
      * Creates an instance of SynapseSparkJobReference class.
      */
+    @Generated
     public SynapseSparkJobReference() {
     }
 
@@ -37,6 +41,7 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
      * 
      * @return the type value.
      */
+    @Generated
     public SparkJobReferenceType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
      * @param type the type value to set.
      * @return the SynapseSparkJobReference object itself.
      */
+    @Generated
     public SynapseSparkJobReference setType(SparkJobReferenceType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -67,6 +74,7 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
      * @param referenceName the referenceName value to set.
      * @return the SynapseSparkJobReference object itself.
      */
+    @Generated
     public SynapseSparkJobReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -75,6 +83,7 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SynapseSparkJobReference implements JsonSerializable<SynapseS
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SynapseSparkJobReference.
      */
+    @Generated
     public static SynapseSparkJobReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SynapseSparkJobReference deserializedSynapseSparkJobReference = new SynapseSparkJobReference();

@@ -309,7 +309,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [dev_feed]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [dev_feed_instructions]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#dev-feed
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

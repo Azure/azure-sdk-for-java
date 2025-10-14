@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.sharing;
 
+import com.azure.analytics.purview.sharing.implementation.SentSharesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -24,16 +25,16 @@ import com.azure.core.util.polling.SyncPoller;
 @ServiceClient(builder = SentSharesClientBuilder.class)
 public final class SentSharesClient {
     @Generated
-    private final SentSharesAsyncClient client;
+    private final SentSharesImpl serviceClient;
 
     /**
      * Initializes an instance of SentSharesClient class.
      * 
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    SentSharesClient(SentSharesAsyncClient client) {
-        this.client = client;
+    SentSharesClient(SentSharesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -71,7 +72,7 @@ public final class SentSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listSentShares(referenceName, requestOptions));
+        return this.serviceClient.listSentShares(referenceName, requestOptions);
     }
 
     /**
@@ -101,7 +102,7 @@ public final class SentSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSentShareWithResponse(String sentShareId, RequestOptions requestOptions) {
-        return this.client.getSentShareWithResponse(sentShareId, requestOptions).block();
+        return this.serviceClient.getSentShareWithResponse(sentShareId, requestOptions);
     }
 
     /**
@@ -145,7 +146,7 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceSentShare(String sentShareId, BinaryData sentShare,
         RequestOptions requestOptions) {
-        return this.client.beginCreateOrReplaceSentShare(sentShareId, sentShare, requestOptions).getSyncPoller();
+        return this.serviceClient.beginCreateOrReplaceSentShare(sentShareId, sentShare, requestOptions);
     }
 
     /**
@@ -184,7 +185,7 @@ public final class SentSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteSentShare(String sentShareId, RequestOptions requestOptions) {
-        return this.client.beginDeleteSentShare(sentShareId, requestOptions).getSyncPoller();
+        return this.serviceClient.beginDeleteSentShare(sentShareId, requestOptions);
     }
 
     /**
@@ -222,7 +223,7 @@ public final class SentSharesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listSentShareInvitations(sentShareId, requestOptions));
+        return this.serviceClient.listSentShareInvitations(sentShareId, requestOptions);
     }
 
     /**
@@ -254,8 +255,8 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSentShareInvitationWithResponse(String sentShareId, String sentShareInvitationId,
         RequestOptions requestOptions) {
-        return this.client.getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
-            .block();
+        return this.serviceClient.getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId,
+            requestOptions);
     }
 
     /**
@@ -300,10 +301,8 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createSentShareInvitationWithResponse(String sentShareId, String sentShareInvitationId,
         BinaryData sentShareInvitation, RequestOptions requestOptions) {
-        return this.client
-            .createSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, sentShareInvitation,
-                requestOptions)
-            .block();
+        return this.serviceClient.createSentShareInvitationWithResponse(sentShareId, sentShareInvitationId,
+            sentShareInvitation, requestOptions);
     }
 
     /**
@@ -344,8 +343,7 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteSentShareInvitation(String sentShareId, String sentShareInvitationId,
         RequestOptions requestOptions) {
-        return this.client.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, requestOptions)
-            .getSyncPoller();
+        return this.serviceClient.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, requestOptions);
     }
 
     /**
@@ -357,6 +355,8 @@ public final class SentSharesClient {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -384,7 +384,7 @@ public final class SentSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> notifyUserSentShareInvitationWithResponse(String sentShareId,
         String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.client.notifyUserSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions)
-            .block();
+        return this.serviceClient.notifyUserSentShareInvitationWithResponse(sentShareId, sentShareInvitationId,
+            requestOptions);
     }
 }

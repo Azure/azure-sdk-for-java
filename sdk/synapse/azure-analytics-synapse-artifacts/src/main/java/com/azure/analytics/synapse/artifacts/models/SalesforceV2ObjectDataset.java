@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SalesforceV2Object";
 
     /*
      * The Salesforce V2 object API name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object objectApiName;
 
     /*
      * The Salesforce V2 report Id. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object reportId;
 
     /**
      * Creates an instance of SalesforceV2ObjectDataset class.
      */
+    @Generated
     public SalesforceV2ObjectDataset() {
     }
 
@@ -44,6 +49,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
      * 
      * @return the objectApiName value.
      */
+    @Generated
     public Object getObjectApiName() {
         return this.objectApiName;
     }
@@ -66,6 +73,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceV2ObjectDataset object itself.
      */
+    @Generated
     public SalesforceV2ObjectDataset setObjectApiName(Object objectApiName) {
         this.objectApiName = objectApiName;
         return this;
@@ -76,6 +84,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
      * 
      * @return the reportId value.
      */
+    @Generated
     public Object getReportId() {
         return this.reportId;
     }
@@ -86,6 +95,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
      * @param reportId the reportId value to set.
      * @return the SalesforceV2ObjectDataset object itself.
      */
+    @Generated
     public SalesforceV2ObjectDataset setReportId(Object reportId) {
         this.reportId = reportId;
         return this;
@@ -94,6 +104,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setDescription(String description) {
         super.setDescription(description);
@@ -103,6 +114,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -112,6 +124,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -121,6 +134,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -130,6 +144,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -139,6 +154,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -148,6 +164,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2ObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -157,21 +174,30 @@ public class SalesforceV2ObjectDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (objectApiName != null || reportId != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
-            jsonWriter.writeUntypedField("reportId", this.reportId);
+            if (this.objectApiName != null) {
+                jsonWriter.writeUntypedField("objectApiName", this.objectApiName);
+            }
+            if (this.reportId != null) {
+                jsonWriter.writeUntypedField("reportId", this.reportId);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -191,6 +217,7 @@ public class SalesforceV2ObjectDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SalesforceV2ObjectDataset.
      */
+    @Generated
     public static SalesforceV2ObjectDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceV2ObjectDataset deserializedSalesforceV2ObjectDataset = new SalesforceV2ObjectDataset();

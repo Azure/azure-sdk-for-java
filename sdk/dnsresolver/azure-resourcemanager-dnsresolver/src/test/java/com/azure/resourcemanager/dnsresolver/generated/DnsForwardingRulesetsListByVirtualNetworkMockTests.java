@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkDnsForwardingRuleset;
@@ -22,19 +22,19 @@ public final class DnsForwardingRulesetsListByVirtualNetworkMockTests {
     @Test
     public void testListByVirtualNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"baaa\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"ayffim\"}}}]}";
+            = "{\"value\":[{\"id\":\"bibgjmfxumv\",\"properties\":{\"virtualNetworkLink\":{\"id\":\"yo\"}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VirtualNetworkDnsForwardingRuleset> response = manager.dnsForwardingRulesets()
-            .listByVirtualNetwork("sofwqmzqalkrmnji", "pxacqqudfn", 1238431927, com.azure.core.util.Context.NONE);
+            .listByVirtualNetwork("ggufhyaomtb", "hhavgrvkffovjz", 894379890, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("baaa", response.iterator().next().id());
-        Assertions.assertEquals("ayffim", response.iterator().next().virtualNetworkLink().id());
+        Assertions.assertEquals("bibgjmfxumv", response.iterator().next().id());
+        Assertions.assertEquals("yo", response.iterator().next().virtualNetworkLink().id());
     }
 }

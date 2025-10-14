@@ -57,7 +57,7 @@ public final class TopicInner extends Resource {
     private ExtendedLocation extendedLocation;
 
     /*
-     * The system metadata relating to Topic resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -172,7 +172,7 @@ public final class TopicInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Topic resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -422,8 +422,8 @@ public final class TopicInner extends Resource {
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @return the disableLocalAuth value.
      */
@@ -433,8 +433,8 @@ public final class TopicInner extends Resource {
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the TopicInner object itself.

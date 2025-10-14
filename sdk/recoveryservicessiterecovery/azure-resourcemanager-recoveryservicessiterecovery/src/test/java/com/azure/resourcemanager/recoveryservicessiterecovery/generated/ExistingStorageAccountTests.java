@@ -12,15 +12,15 @@ public final class ExistingStorageAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExistingStorageAccount model
-            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"azureStorageAccountId\":\"tixmqrudjiz\"}")
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"azureStorageAccountId\":\"jz\"}")
                 .toObject(ExistingStorageAccount.class);
-        Assertions.assertEquals("tixmqrudjiz", model.azureStorageAccountId());
+        Assertions.assertEquals("jz", model.azureStorageAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExistingStorageAccount model = new ExistingStorageAccount().withAzureStorageAccountId("tixmqrudjiz");
+        ExistingStorageAccount model = new ExistingStorageAccount().withAzureStorageAccountId("jz");
         model = BinaryData.fromObject(model).toObject(ExistingStorageAccount.class);
-        Assertions.assertEquals("tixmqrudjiz", model.azureStorageAccountId());
+        Assertions.assertEquals("jz", model.azureStorageAccountId());
     }
 }

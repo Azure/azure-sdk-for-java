@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class HttpServerLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
+    @Generated
     private String type = "HttpServerLocation";
 
     /*
      * Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object relativeUrl;
 
     /**
      * Creates an instance of HttpServerLocation class.
      */
+    @Generated
     public HttpServerLocation() {
     }
 
@@ -38,6 +42,7 @@ public final class HttpServerLocation extends DatasetLocation {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class HttpServerLocation extends DatasetLocation {
      * 
      * @return the relativeUrl value.
      */
+    @Generated
     public Object getRelativeUrl() {
         return this.relativeUrl;
     }
@@ -60,6 +66,7 @@ public final class HttpServerLocation extends DatasetLocation {
      * @param relativeUrl the relativeUrl value to set.
      * @return the HttpServerLocation object itself.
      */
+    @Generated
     public HttpServerLocation setRelativeUrl(Object relativeUrl) {
         this.relativeUrl = relativeUrl;
         return this;
@@ -68,6 +75,7 @@ public final class HttpServerLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpServerLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
@@ -77,6 +85,7 @@ public final class HttpServerLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpServerLocation setFileName(Object fileName) {
         super.setFileName(fileName);
@@ -86,13 +95,20 @@ public final class HttpServerLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", getFolderPath());
-        jsonWriter.writeUntypedField("fileName", getFileName());
+        if (getFolderPath() != null) {
+            jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        }
+        if (getFileName() != null) {
+            jsonWriter.writeUntypedField("fileName", getFileName());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
+        if (this.relativeUrl != null) {
+            jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -109,6 +125,7 @@ public final class HttpServerLocation extends DatasetLocation {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HttpServerLocation.
      */
+    @Generated
     public static HttpServerLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HttpServerLocation deserializedHttpServerLocation = new HttpServerLocation();

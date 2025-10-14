@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
+    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.SENTIMENT_ANALYSIS;
 
     /*
      * Supported parameters for a Sentiment Analysis task.
      */
+    @Generated
     private SentimentAnalysisTaskParameters parameters;
 
     /**
      * Creates an instance of SentimentAnalysisLROTask class.
      */
+    @Generated
     public SentimentAnalysisLROTask() {
     }
 
@@ -36,6 +40,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -46,6 +51,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
      * 
      * @return the parameters value.
      */
+    @Generated
     public SentimentAnalysisTaskParameters getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
      * @param parameters the parameters value to set.
      * @return the SentimentAnalysisLROTask object itself.
      */
+    @Generated
     public SentimentAnalysisLROTask setParameters(SentimentAnalysisTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentAnalysisLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -73,6 +81,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +99,7 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SentimentAnalysisLROTask.
      */
+    @Generated
     public static SentimentAnalysisLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentAnalysisLROTask deserializedSentimentAnalysisLROTask = new SentimentAnalysisLROTask();

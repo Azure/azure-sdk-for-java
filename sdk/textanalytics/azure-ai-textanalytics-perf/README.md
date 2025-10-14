@@ -61,5 +61,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[text_analytics_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=singleservice%2Cwindows
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[text_analytics_account]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=singleservice%2Cwindows

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class StorageClassificationsListByReplicationFabricsS {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationStorageClassifications_ListByReplicationFabrics.json
      */
     /**
@@ -21,7 +21,7 @@ public final class StorageClassificationsListByReplicationFabricsS {
     public static void getsTheListOfStorageClassificationObjectsUnderAFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.storageClassifications()
-            .listByReplicationFabrics("vault1", "resourceGroupPS1",
+            .listByReplicationFabrics("resourceGroupPS1", "vault1",
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0", com.azure.core.util.Context.NONE);
     }
 }

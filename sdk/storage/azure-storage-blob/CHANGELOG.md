@@ -1,6 +1,6 @@
 # Release History
 
-## 12.30.0-beta.1 (Unreleased)
+## 12.32.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,105 @@
 
 ### Bugs Fixed
 
+## 12.31.3 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.16.2` to version `12.17.0-beta.2`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-storage-common` from `12.30.2` to version `12.31.0-beta.2`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 12.31.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-storage-internal-avro` from `12.16.1` to version `12.16.2`.
+- Upgraded `azure-storage-common` from `12.30.1` to version `12.31.0-beta.2`.
+
+## 12.31.1 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
+- Upgraded `azure-storage-internal-avro` from `12.16.0` to version `12.17.0-beta.2`.
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0-beta.2`.
+
+## 12.31.0 (2025-07-16)
+
+### Features Added
+- Added support for the `SourceShareTokenIntent` parameter to `AppendBlobClient.AppendBlockFromUri()`, `.AppendBlockFromUriAsync()`, `BlockBlobClient.StageBlockFromUri()`, `.StageBlockFromUriAsync()`, `BlockBlobClient.SyncUploadFromUri()`, `.SyncUploadFromUriAsync()`, `BlobBaseClient.SyncCopyFromUri()`, `.SyncCopyFromUriAsync()`, `PageBlobClient.UploadPagesFromUri()`, `.UploadPagesFromUriAsync()`,
+- Added `PageBlobCreateOptions.PremiumPageBlobAccessTier` to `PageBlobClient.Create(..)` overloads.
+- Added support for service version 2025-07-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.29.0` to version `12.30.0`.
+- Upgraded `azure-storage-internal-avro` from `12.15.0` to version `12.15.0`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 12.32.0-beta.1 (2025-07-09)
+
+### Features Added
+- AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added support for service version 2025-11-05.
+
+## 12.30.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-storage-common` from `12.29.0` to version `12.30.0-beta.2`.
+- Upgraded `azure-storage-internal-avro` from `12.15.0` to version `12.15.1`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 12.31.0-beta.1 (2025-05-06)
+
+### Features Added
+- Added support for the `SourceShareTokenIntent` parameter to `AppendBlobClient.AppendBlockFromUri()`, `.AppendBlockFromUriAsync()`, `BlockBlobClient.StageBlockFromUri()`, `.StageBlockFromUriAsync()`, `BlockBlobClient.SyncUploadFromUri()`, `.SyncUploadFromUriAsync()`, `BlobBaseClient.SyncCopyFromUri()`, `.SyncCopyFromUriAsync()`, `PageBlobClient.UploadPagesFromUri()`, `.UploadPagesFromUriAsync()`,
+- Added `PageBlobCreateOptions.PremiumPageBlobAccessTier` to `PageBlobClient.Create(..)` overloads.
+- Added support for service version 2025-07-05.
+
+## 12.30.0 (2025-03-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.28.1` to version `12.29.0`.
+- Upgraded `azure-storage-internal-avro` from `12.14.0` to version `12.15.0`.
+
+## 12.29.1 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.28.0` to version `12.29.0-beta.2`.
+- Upgraded `azure-storage-internal-avro` from `12.14.0` to version `12.15.0-beta.2`.
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.0` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.10`.
+
+## 12.30.0-beta.1 (2025-02-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
 
 ## 12.29.0 (2024-11-13)
 
@@ -114,7 +212,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-storage-internal-avro` from `12.11.0-beta.2` to version `12.11.0`.
 
-
 ## 12.25.4 (2024-04-23)
 
 ### Other Changes
@@ -126,7 +223,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-storage-internal-avro` from `12.10.3` to version `12.11.0-beta.2`.
 
-
 ## 12.26.0-beta.1 (2024-04-15)
 
 ### Features Added
@@ -135,10 +231,10 @@
 ### Breaking Changes
 - When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
 `BlobServiceClient.getBlobClient(String blobName)`, the blob name will be stored exactly as passed in and will not be 
-URL-encoded. For example, if blob name is "test%25test" and is created by calling 
-`BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
-`BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
-“https://account.blob.core.windows.net/container/test%25%25test”.
+URL-encoded. For example, if blob name is "directory/blob.txt" and is created by calling 
+`BlobContainerClient.getBlobClient("directory/blob.txt")`, 
+`BlobClient.getBlobName()` will return "directory/blob.txt" and the blob's url will result in 
+“https://account.blob.core.windows.net/container/directory%2Fblob.txt". 
 
 ## 12.25.3 (2024-03-20)
 
@@ -151,7 +247,6 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 - Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
 - Upgraded `azure-storage-internal-avro` from `12.10.2` to version `12.10.3`.
 
-
 ## 12.25.2 (2024-02-22)
 
 ### Other Changes
@@ -162,7 +257,6 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
 - Upgraded `azure-storage-internal-avro` from `12.10.1` to version `12.10.2`.
-
 
 ## 12.25.1 (2023-12-04)
 

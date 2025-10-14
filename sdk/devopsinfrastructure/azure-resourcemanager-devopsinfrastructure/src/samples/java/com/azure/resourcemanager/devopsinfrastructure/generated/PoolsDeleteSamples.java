@@ -9,7 +9,7 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-10-19/DeletePool.json
+     * x-ms-original-file: 2025-01-21/DeletePool.json
      */
     /**
      * Sample code: Pools_Delete.

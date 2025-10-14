@@ -12,14 +12,14 @@ public final class RuntimeDotnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeDotnet model
-            = BinaryData.fromString("{\"autoConfigureDataProtection\":true}").toObject(RuntimeDotnet.class);
-        Assertions.assertEquals(true, model.autoConfigureDataProtection());
+            = BinaryData.fromString("{\"autoConfigureDataProtection\":false}").toObject(RuntimeDotnet.class);
+        Assertions.assertFalse(model.autoConfigureDataProtection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuntimeDotnet model = new RuntimeDotnet().withAutoConfigureDataProtection(true);
+        RuntimeDotnet model = new RuntimeDotnet().withAutoConfigureDataProtection(false);
         model = BinaryData.fromObject(model).toObject(RuntimeDotnet.class);
-        Assertions.assertEquals(true, model.autoConfigureDataProtection());
+        Assertions.assertFalse(model.autoConfigureDataProtection());
     }
 }

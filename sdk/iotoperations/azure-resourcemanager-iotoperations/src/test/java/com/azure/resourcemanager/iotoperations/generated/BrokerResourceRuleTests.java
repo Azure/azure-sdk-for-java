@@ -14,21 +14,21 @@ public final class BrokerResourceRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerResourceRule model = BinaryData.fromString(
-            "{\"method\":\"Connect\",\"clientIds\":[\"qbhsfxobl\",\"tkblmpewww\"],\"topics\":[\"rvrnsvshqjohxc\",\"sbfov\"]}")
+            "{\"method\":\"Publish\",\"clientIds\":[\"rxv\",\"fudwpznt\",\"hdzhlrqj\",\"hckfrlhrx\"],\"topics\":[\"yvpycanuzbpzk\"]}")
             .toObject(BrokerResourceRule.class);
-        Assertions.assertEquals(BrokerResourceDefinitionMethods.CONNECT, model.method());
-        Assertions.assertEquals("qbhsfxobl", model.clientIds().get(0));
-        Assertions.assertEquals("rvrnsvshqjohxc", model.topics().get(0));
+        Assertions.assertEquals(BrokerResourceDefinitionMethods.PUBLISH, model.method());
+        Assertions.assertEquals("rxv", model.clientIds().get(0));
+        Assertions.assertEquals("yvpycanuzbpzk", model.topics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerResourceRule model = new BrokerResourceRule().withMethod(BrokerResourceDefinitionMethods.CONNECT)
-            .withClientIds(Arrays.asList("qbhsfxobl", "tkblmpewww"))
-            .withTopics(Arrays.asList("rvrnsvshqjohxc", "sbfov"));
+        BrokerResourceRule model = new BrokerResourceRule().withMethod(BrokerResourceDefinitionMethods.PUBLISH)
+            .withClientIds(Arrays.asList("rxv", "fudwpznt", "hdzhlrqj", "hckfrlhrx"))
+            .withTopics(Arrays.asList("yvpycanuzbpzk"));
         model = BinaryData.fromObject(model).toObject(BrokerResourceRule.class);
-        Assertions.assertEquals(BrokerResourceDefinitionMethods.CONNECT, model.method());
-        Assertions.assertEquals("qbhsfxobl", model.clientIds().get(0));
-        Assertions.assertEquals("rvrnsvshqjohxc", model.topics().get(0));
+        Assertions.assertEquals(BrokerResourceDefinitionMethods.PUBLISH, model.method());
+        Assertions.assertEquals("rxv", model.clientIds().get(0));
+        Assertions.assertEquals("yvpycanuzbpzk", model.topics().get(0));
     }
 }

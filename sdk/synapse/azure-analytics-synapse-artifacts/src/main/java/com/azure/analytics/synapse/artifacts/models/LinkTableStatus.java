@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,6 +23,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
     /*
      * ID provided by the client
      */
+    @Generated
     private String id;
 
     /*
@@ -29,46 +31,55 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
      * for details.
      */
+    @Generated
     private String status;
 
     /*
      * Link table error message
      */
+    @Generated
     private String errorMessage;
 
     /*
      * Link table start time
      */
+    @Generated
     private Object startTime;
 
     /*
      * Link table stop time
      */
+    @Generated
     private Object stopTime;
 
     /*
      * Link table ID
      */
+    @Generated
     private String linkTableId;
 
     /*
      * Link table error code
      */
+    @Generated
     private String errorCode;
 
     /*
      * Link table last processed data time
      */
+    @Generated
     private OffsetDateTime lastProcessedData;
 
     /*
      * Link table last transaction commit time
      */
+    @Generated
     private OffsetDateTime lastTransactionCommitTime;
 
     /**
      * Creates an instance of LinkTableStatus class.
      */
+    @Generated
     public LinkTableStatus() {
     }
 
@@ -77,6 +88,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -87,6 +99,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param id the id value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setId(String id) {
         this.id = id;
         return this;
@@ -99,6 +112,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -111,6 +125,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param status the status value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setStatus(String status) {
         this.status = status;
         return this;
@@ -121,6 +136,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -131,6 +147,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param errorMessage the errorMessage value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
@@ -141,6 +158,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the startTime value.
      */
+    @Generated
     public Object getStartTime() {
         return this.startTime;
     }
@@ -151,6 +169,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param startTime the startTime value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setStartTime(Object startTime) {
         this.startTime = startTime;
         return this;
@@ -161,6 +180,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the stopTime value.
      */
+    @Generated
     public Object getStopTime() {
         return this.stopTime;
     }
@@ -171,6 +191,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param stopTime the stopTime value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setStopTime(Object stopTime) {
         this.stopTime = stopTime;
         return this;
@@ -181,6 +202,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the linkTableId value.
      */
+    @Generated
     public String getLinkTableId() {
         return this.linkTableId;
     }
@@ -191,6 +213,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param linkTableId the linkTableId value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setLinkTableId(String linkTableId) {
         this.linkTableId = linkTableId;
         return this;
@@ -201,6 +224,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String getErrorCode() {
         return this.errorCode;
     }
@@ -211,6 +235,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param errorCode the errorCode value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
@@ -221,6 +246,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the lastProcessedData value.
      */
+    @Generated
     public OffsetDateTime getLastProcessedData() {
         return this.lastProcessedData;
     }
@@ -231,6 +257,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param lastProcessedData the lastProcessedData value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setLastProcessedData(OffsetDateTime lastProcessedData) {
         this.lastProcessedData = lastProcessedData;
         return this;
@@ -241,6 +268,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * 
      * @return the lastTransactionCommitTime value.
      */
+    @Generated
     public OffsetDateTime getLastTransactionCommitTime() {
         return this.lastTransactionCommitTime;
     }
@@ -251,6 +279,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * @param lastTransactionCommitTime the lastTransactionCommitTime value to set.
      * @return the LinkTableStatus object itself.
      */
+    @Generated
     public LinkTableStatus setLastTransactionCommitTime(OffsetDateTime lastTransactionCommitTime) {
         this.lastTransactionCommitTime = lastTransactionCommitTime;
         return this;
@@ -259,14 +288,19 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("status", this.status);
         jsonWriter.writeStringField("errorMessage", this.errorMessage);
-        jsonWriter.writeUntypedField("startTime", this.startTime);
-        jsonWriter.writeUntypedField("stopTime", this.stopTime);
+        if (this.startTime != null) {
+            jsonWriter.writeUntypedField("startTime", this.startTime);
+        }
+        if (this.stopTime != null) {
+            jsonWriter.writeUntypedField("stopTime", this.stopTime);
+        }
         jsonWriter.writeStringField("linkTableId", this.linkTableId);
         jsonWriter.writeStringField("errorCode", this.errorCode);
         jsonWriter.writeStringField("lastProcessedData",
@@ -288,6 +322,7 @@ public final class LinkTableStatus implements JsonSerializable<LinkTableStatus> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkTableStatus.
      */
+    @Generated
     public static LinkTableStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkTableStatus deserializedLinkTableStatus = new LinkTableStatus();

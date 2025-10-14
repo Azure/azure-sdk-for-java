@@ -267,11 +267,17 @@ public final class ServiceNowV2LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("endpoint", this.endpoint);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("grantType", this.grantType);
+        if (this.grantType != null) {
+            jsonWriter.writeUntypedField("grantType", this.grantType);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

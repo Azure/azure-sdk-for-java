@@ -78,51 +78,47 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policyName") String policyName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
-            @BodyParam("application/json") CreatePolicyInput input, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policyName") String policyName, @BodyParam("application/json") CreatePolicyInput input,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policyName") String policyName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationPolicies/{policyName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
-            @BodyParam("application/json") UpdatePolicyInput input, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("policyName") String policyName, @BodyParam("application/json") UpdatePolicyInput input,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -137,8 +133,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -146,17 +142,17 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(String resourceName, String resourceGroupName) {
+    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -164,8 +160,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<PolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -176,8 +172,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -186,18 +182,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<PolicyInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -206,7 +202,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -217,16 +213,16 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Profile Collection details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+    private PagedFlux<PolicyInner> listAsync(String resourceGroupName, String resourceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -235,8 +231,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,8 +240,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection Profile Collection details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyInner> listAsync(String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
+    private PagedFlux<PolicyInner> listAsync(String resourceGroupName, String resourceName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -254,16 +250,16 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Profile Collection details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyInner> list(String resourceName, String resourceGroupName) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName));
+    public PagedIterable<PolicyInner> list(String resourceGroupName, String resourceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
     /**
@@ -271,8 +267,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,8 +276,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection Profile Collection details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyInner> list(String resourceName, String resourceGroupName, Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
+    public PagedIterable<PolicyInner> list(String resourceGroupName, String resourceName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -289,8 +285,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,18 +294,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the details of a replication policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<PolicyInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -320,8 +316,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), policyName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), policyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -330,8 +326,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,18 +336,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the details of a replication policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<PolicyInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -362,7 +358,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), policyName, accept, context);
     }
 
@@ -371,8 +367,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -380,8 +376,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the details of a replication policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> getAsync(String resourceName, String resourceGroupName, String policyName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, policyName)
+    private Mono<PolicyInner> getAsync(String resourceGroupName, String resourceName, String policyName) {
+        return getWithResponseAsync(resourceGroupName, resourceName, policyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -390,8 +386,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,9 +396,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the details of a replication policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyInner> getWithResponse(String resourceName, String resourceGroupName, String policyName,
+    public Response<PolicyInner> getWithResponse(String resourceGroupName, String resourceName, String policyName,
         Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, policyName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, policyName, context).block();
     }
 
     /**
@@ -410,8 +406,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -419,8 +415,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the details of a replication policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner get(String resourceName, String resourceGroupName, String policyName) {
-        return getWithResponse(resourceName, resourceGroupName, policyName, Context.NONE).getValue();
+    public PolicyInner get(String resourceGroupName, String resourceName, String policyName) {
+        return getWithResponse(resourceGroupName, resourceName, policyName, Context.NONE).getValue();
     }
 
     /**
@@ -428,8 +424,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,18 +434,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -465,8 +461,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), policyName, input, accept, context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), policyName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -475,8 +471,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -486,18 +482,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -513,7 +509,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), policyName, input, accept, context);
     }
 
@@ -522,8 +518,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,10 +528,10 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link PollerFlux} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String policyName, CreatePolicyInput input) {
+    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String policyName, CreatePolicyInput input) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceName, resourceGroupName, policyName, input);
+            = createWithResponseAsync(resourceGroupName, resourceName, policyName, input);
         return this.client.<PolicyInner, PolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
             PolicyInner.class, PolicyInner.class, this.client.getContext());
     }
@@ -545,8 +541,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -556,11 +552,11 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link PollerFlux} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String policyName, CreatePolicyInput input, Context context) {
+    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String policyName, CreatePolicyInput input, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceName, resourceGroupName, policyName, input, context);
+            = createWithResponseAsync(resourceGroupName, resourceName, policyName, input, context);
         return this.client.<PolicyInner, PolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
             PolicyInner.class, PolicyInner.class, context);
     }
@@ -570,8 +566,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,9 +576,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, policyName, input).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, resourceName, policyName, input).getSyncPoller();
     }
 
     /**
@@ -590,8 +586,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -601,9 +597,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, policyName, input, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, resourceName, policyName, input, context).getSyncPoller();
     }
 
     /**
@@ -611,8 +607,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,9 +617,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> createAsync(String resourceName, String resourceGroupName, String policyName,
+    private Mono<PolicyInner> createAsync(String resourceGroupName, String resourceName, String policyName,
         CreatePolicyInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, policyName, input).last()
+        return beginCreateAsync(resourceGroupName, resourceName, policyName, input).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -632,8 +628,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -643,9 +639,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> createAsync(String resourceName, String resourceGroupName, String policyName,
+    private Mono<PolicyInner> createAsync(String resourceGroupName, String resourceName, String policyName,
         CreatePolicyInput input, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, policyName, input, context).last()
+        return beginCreateAsync(resourceGroupName, resourceName, policyName, input, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -654,8 +650,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -664,9 +660,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner create(String resourceName, String resourceGroupName, String policyName,
+    public PolicyInner create(String resourceGroupName, String resourceName, String policyName,
         CreatePolicyInput input) {
-        return createAsync(resourceName, resourceGroupName, policyName, input).block();
+        return createAsync(resourceGroupName, resourceName, policyName, input).block();
     }
 
     /**
@@ -674,8 +670,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -685,9 +681,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner create(String resourceName, String resourceGroupName, String policyName, CreatePolicyInput input,
+    public PolicyInner create(String resourceGroupName, String resourceName, String policyName, CreatePolicyInput input,
         Context context) {
-        return createAsync(resourceName, resourceGroupName, policyName, input, context).block();
+        return createAsync(resourceGroupName, resourceName, policyName, input, context).block();
     }
 
     /**
@@ -695,8 +691,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,18 +700,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -725,8 +721,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), policyName, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), policyName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -735,8 +731,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -745,18 +741,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -766,7 +762,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), policyName, context);
     }
 
@@ -775,8 +771,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -784,9 +780,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String policyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, policyName);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, policyName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -796,8 +792,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,11 +802,11 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String policyName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, policyName, context);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, policyName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -820,8 +816,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -829,9 +825,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String policyName) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, policyName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, policyName).getSyncPoller();
     }
 
     /**
@@ -839,8 +835,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -849,9 +845,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String policyName, Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, policyName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, policyName, context).getSyncPoller();
     }
 
     /**
@@ -859,8 +855,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -868,8 +864,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String policyName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, policyName).last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String policyName) {
+        return beginDeleteAsync(resourceGroupName, resourceName, policyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -878,8 +874,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,8 +884,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String policyName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, policyName, context).last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String policyName, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, policyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -898,16 +894,16 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String policyName) {
-        deleteAsync(resourceName, resourceGroupName, policyName).block();
+    public void delete(String resourceGroupName, String resourceName, String policyName) {
+        deleteAsync(resourceGroupName, resourceName, policyName).block();
     }
 
     /**
@@ -915,8 +911,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -924,8 +920,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String policyName, Context context) {
-        deleteAsync(resourceName, resourceGroupName, policyName, context).block();
+    public void delete(String resourceGroupName, String resourceName, String policyName, Context context) {
+        deleteAsync(resourceGroupName, resourceName, policyName, context).block();
     }
 
     /**
@@ -933,8 +929,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -943,18 +939,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -970,8 +966,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), policyName, input, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), policyName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -980,8 +976,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -991,18 +987,18 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1018,7 +1014,7 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), policyName, input, accept, context);
     }
 
@@ -1027,8 +1023,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1037,10 +1033,10 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link PollerFlux} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginUpdateAsync(String resourceName,
-        String resourceGroupName, String policyName, UpdatePolicyInput input) {
+    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String policyName, UpdatePolicyInput input) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceName, resourceGroupName, policyName, input);
+            = updateWithResponseAsync(resourceGroupName, resourceName, policyName, input);
         return this.client.<PolicyInner, PolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
             PolicyInner.class, PolicyInner.class, this.client.getContext());
     }
@@ -1050,8 +1046,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -1061,11 +1057,11 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link PollerFlux} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginUpdateAsync(String resourceName,
-        String resourceGroupName, String policyName, UpdatePolicyInput input, Context context) {
+    private PollerFlux<PollResult<PolicyInner>, PolicyInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String policyName, UpdatePolicyInput input, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceName, resourceGroupName, policyName, input, context);
+            = updateWithResponseAsync(resourceGroupName, resourceName, policyName, input, context);
         return this.client.<PolicyInner, PolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
             PolicyInner.class, PolicyInner.class, context);
     }
@@ -1075,8 +1071,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1085,9 +1081,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, policyName, input).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, policyName, input).getSyncPoller();
     }
 
     /**
@@ -1095,8 +1091,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -1106,9 +1102,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input, Context context) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, policyName, input, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, policyName, input, context).getSyncPoller();
     }
 
     /**
@@ -1116,8 +1112,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1126,9 +1122,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> updateAsync(String resourceName, String resourceGroupName, String policyName,
+    private Mono<PolicyInner> updateAsync(String resourceGroupName, String resourceName, String policyName,
         UpdatePolicyInput input) {
-        return beginUpdateAsync(resourceName, resourceGroupName, policyName, input).last()
+        return beginUpdateAsync(resourceGroupName, resourceName, policyName, input).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1137,8 +1133,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -1148,9 +1144,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyInner> updateAsync(String resourceName, String resourceGroupName, String policyName,
+    private Mono<PolicyInner> updateAsync(String resourceGroupName, String resourceName, String policyName,
         UpdatePolicyInput input, Context context) {
-        return beginUpdateAsync(resourceName, resourceGroupName, policyName, input, context).last()
+        return beginUpdateAsync(resourceGroupName, resourceName, policyName, input, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1159,8 +1155,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1169,9 +1165,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner update(String resourceName, String resourceGroupName, String policyName,
+    public PolicyInner update(String resourceGroupName, String resourceName, String policyName,
         UpdatePolicyInput input) {
-        return updateAsync(resourceName, resourceGroupName, policyName, input).block();
+        return updateAsync(resourceGroupName, resourceName, policyName, input).block();
     }
 
     /**
@@ -1179,8 +1175,8 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -1190,9 +1186,9 @@ public final class ReplicationPoliciesClientImpl implements ReplicationPoliciesC
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyInner update(String resourceName, String resourceGroupName, String policyName, UpdatePolicyInput input,
+    public PolicyInner update(String resourceGroupName, String resourceName, String policyName, UpdatePolicyInput input,
         Context context) {
-        return updateAsync(resourceName, resourceGroupName, policyName, input, context).block();
+        return updateAsync(resourceGroupName, resourceName, policyName, input, context).block();
     }
 
     /**

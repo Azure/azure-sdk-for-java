@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
@@ -22,8 +23,6 @@ import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
@@ -73,7 +72,6 @@ public class AzureMonitorStatsbeatTest {
     }
 
     @Test
-    @DisabledOnOs(value = { OS.MAC }, disabledReason = "Unstable")
     public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
         String fakeBody
             = "{\"itemsReceived\":4,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":1,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":2,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":3,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
@@ -112,10 +110,7 @@ public class AzureMonitorStatsbeatTest {
             .isEqualTo(new URL("https://westus-0.in.applicationinsights.azure.com/v2.1/track"));
 
         if (shutdown) {
-            assertThat(customValidationPolicy.getActualTelemetryItems()
-                .stream()
-                .filter(item -> item.getName().equals("Statsbeat"))
-                .count()).isEqualTo(0);
+            assertThat(StatsbeatModule.getShutdown()).isTrue();
         } else {
             verifyStatsbeatTelemetry(customValidationPolicy);
         }

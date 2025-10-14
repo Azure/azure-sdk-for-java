@@ -36,7 +36,7 @@ private case class ItemsScanBuilder(session: SparkSession,
 
   private val clientConfiguration = CosmosClientConfiguration.apply(
     configMap,
-    readConfig.forceEventualConsistency,
+    readConfig.readConsistencyStrategy,
     CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   )
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(configMap)

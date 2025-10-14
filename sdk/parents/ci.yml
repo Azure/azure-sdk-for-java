@@ -1,43 +1,57 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 
-trigger:
-  branches:
-    include:
-      - main
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/parents/
+# This is pretty much a release only pipeline as there are no libraries being built
+# or tests being run and because of this, it shouldn't have triggers. Other
+# sdk/<ServiceDirectories> have triggers if particular parents change.
+trigger: none
 
-pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/parents/
+pr: none
+
+# Note: azure-code-customization-parent and azure-perf-test-parent are not shipping parents
+parameters:
+  - name: release_azuresdkparent
+    displayName: 'azure-sdk-parent'
+    type: boolean
+    default: false
+  - name: release_azureclientsdkparent
+    displayName: 'azure-client-sdk-parent'
+    type: boolean
+    default: false
+  - name: release_azureclientsdkparentv2
+    displayName: 'azure-client-sdk-parent-v2'
+    type: boolean
+    default: false
+  - name: release_clientcoreioparent
+    displayName: 'clientcore-parent'
+    type: boolean
+    default: false
+  - name: release_azuredatasdkparent
+    displayName: 'azure-data-sdk-parent'
+    type: boolean
+    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
   parameters:
     ServiceDirectory: parents
     Artifacts:
-      - name: azure-client-sdk-parent
-        groupId: com.azure
-        safeName: azureclientsdkparent
-      - name: azure-data-sdk-parent
-        groupId: com.azure
-        safeName: azuredatasdkparent
       - name: azure-sdk-parent
         groupId: com.azure
         safeName: azuresdkparent
-      - name: azure-perf-test-parent
+        releaseInBatch: ${{ parameters.release_azuresdkparent }}
+      - name: azure-client-sdk-parent
         groupId: com.azure
-        safeName: azureperftestparent
+        safeName: azureclientsdkparent
+        releaseInBatch: ${{ parameters.release_azureclientsdkparent }}
+      - name: azure-client-sdk-parent
+        groupId: com.azure.v2
+        safeName: azureclientsdkparentv2
+        releaseInBatch: ${{ parameters.release_azureclientsdkparentv2 }}
       - name: clientcore-parent
         groupId: io.clientcore
         safeName: clientcoreioparent
+        releaseInBatch: ${{ parameters.release_clientcoreioparent }}
+      - name: azure-data-sdk-parent
+        groupId: com.azure
+        safeName: azuredatasdkparent
+        releaseInBatch: ${{ parameters.release_azuredatasdkparent }}

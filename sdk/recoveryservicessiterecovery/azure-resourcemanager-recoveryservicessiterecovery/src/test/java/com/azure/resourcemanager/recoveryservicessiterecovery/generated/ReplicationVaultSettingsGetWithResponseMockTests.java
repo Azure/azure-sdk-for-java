@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VaultSetting;
@@ -21,21 +21,21 @@ public final class ReplicationVaultSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"migrationSolutionId\":\"z\",\"vmwareToAzureProviderType\":\"jebmuiong\"},\"location\":\"dwohoeashuxf\",\"id\":\"bjimzwynsmmp\",\"name\":\"vkyezwsey\",\"type\":\"oyjmjwqdslqreo\"}";
+            = "{\"properties\":{\"migrationSolutionId\":\"xujzox\",\"vmwareToAzureProviderType\":\"kqtkrjuc\"},\"location\":\"wedmahul\",\"id\":\"gce\",\"name\":\"x\",\"type\":\"anudvqannenxg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VaultSetting response = manager.replicationVaultSettings()
-            .getWithResponse("cidcfwoolkugzow", "mmixfzaupgblna", "jnpahzhpqscuyil", com.azure.core.util.Context.NONE)
+            .getWithResponse("pihtepasjeb", "invfcdsijsinybn", "lx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("z", response.properties().migrationSolutionId());
-        Assertions.assertEquals("jebmuiong", response.properties().vmwareToAzureProviderType());
-        Assertions.assertEquals("dwohoeashuxf", response.location());
+        Assertions.assertEquals("xujzox", response.properties().migrationSolutionId());
+        Assertions.assertEquals("kqtkrjuc", response.properties().vmwareToAzureProviderType());
+        Assertions.assertEquals("wedmahul", response.location());
     }
 }

@@ -12,10 +12,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.Oper
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.ServiceAttributes;
-import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.TELEMETRY_ITEM_EXPORTER_ERROR;
@@ -131,18 +132,9 @@ public class TelemetryItemExporter {
     private static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
         try {
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                try (StringWriter debug = new StringWriter()) {
-                    for (int i = 0; i < telemetryItems.size(); i++) {
-                        JsonWriter jsonWriter = JsonProviders.createWriter(debug);
-                        telemetryItems.get(i).toJson(jsonWriter);
-                        jsonWriter.flush();
-
-                        if (i < telemetryItems.size() - 1) {
-                            debug.write('\n');
-                        }
-                    }
-                    logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), debug);
-                }
+                String json = toJson(telemetryItems);
+                String jsonWithoutIKeys = maskIKeys(telemetryItems, json);
+                logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), jsonWithoutIKeys);
             }
 
             ByteBufferOutputStream out = writeTelemetryItemsAsByteBufferOutputStream(telemetryItems);
@@ -155,6 +147,30 @@ public class TelemetryItemExporter {
         } catch (IOException e) {
             throw new IllegalStateException("Failed to serialize list of TelemetryItems to List<ByteBuffer>", e);
         }
+    }
+
+    private static String toJson(List<TelemetryItem> telemetryItems) throws IOException {
+        try (StringWriter debug = new StringWriter()) {
+            for (int i = 0; i < telemetryItems.size(); i++) {
+                JsonWriter jsonWriter = JsonProviders.createWriter(debug);
+                TelemetryItem telemetryItem = telemetryItems.get(i);
+                telemetryItem.toJson(jsonWriter);
+                jsonWriter.flush();
+                if (i < telemetryItems.size() - 1) {
+                    debug.write('\n');
+                }
+            }
+            return debug.toString();
+        }
+    }
+
+    private static String maskIKeys(List<TelemetryItem> telemetryItems, String json) {
+        Set<String> iKeys
+            = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
+        for (String instrumentationKey : iKeys) {
+            json = json.replace(instrumentationKey, IKeyMasker.mask(instrumentationKey));
+        }
+        return json;
     }
 
     // gzip and add new line delimiter from a list of telemetry items to a byte buffer output stream
@@ -182,13 +198,13 @@ public class TelemetryItemExporter {
         telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
         String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
         if (roleName != null) {
-            builder.addProperty(ServiceAttributes.SERVICE_NAME.getKey(), roleName);
+            builder.addProperty(AttributeKey.stringKey("service.name").getKey(), roleName);
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), roleName);
         }
         String roleInstance
             = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString());
         if (roleInstance != null) {
-            builder.addProperty(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID.getKey(), roleInstance);
+            builder.addProperty(AttributeKey.stringKey("service.instance.id").getKey(), roleInstance);
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), roleInstance);
         }
         String internalSdkVersion

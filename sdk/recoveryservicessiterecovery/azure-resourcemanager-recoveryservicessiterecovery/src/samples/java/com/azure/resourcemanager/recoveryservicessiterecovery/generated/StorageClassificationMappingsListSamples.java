@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class StorageClassificationMappingsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationStorageClassificationMappings_List.json
      */
     /**
@@ -20,6 +20,6 @@ public final class StorageClassificationMappingsListSamples {
      */
     public static void getsTheListOfStorageClassificationMappingsObjectsUnderAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.storageClassificationMappings().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
+        manager.storageClassificationMappings().list("resourceGroupPS1", "vault1", com.azure.core.util.Context.NONE);
     }
 }

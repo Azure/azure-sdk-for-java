@@ -47,7 +47,7 @@ public final class PartnerEventSubscriptionDestination extends EventSubscription
      * 
      * @return the innerProperties value.
      */
-    private PartnerEventSubscriptionDestinationProperties innerProperties() {
+    PartnerEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

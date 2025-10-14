@@ -18,25 +18,25 @@ public final class PoolUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolUpdateProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"maximumConcurrency\":648028383,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"twnpzaoqvuhrhcf\"}")
+            "{\"provisioningState\":\"Accepted\",\"maximumConcurrency\":1867037750,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"vdjwzrlovm\"}")
             .toObject(PoolUpdateProperties.class);
-        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
-        Assertions.assertEquals(648028383, model.maximumConcurrency());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.devCenterProjectResourceId());
+        Assertions.assertEquals(ProvisioningState.ACCEPTED, model.provisioningState());
+        Assertions.assertEquals(1867037750, model.maximumConcurrency());
+        Assertions.assertEquals("vdjwzrlovm", model.devCenterProjectResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolUpdateProperties model = new PoolUpdateProperties().withProvisioningState(ProvisioningState.DELETING)
-            .withMaximumConcurrency(648028383)
+        PoolUpdateProperties model = new PoolUpdateProperties().withProvisioningState(ProvisioningState.ACCEPTED)
+            .withMaximumConcurrency(1867037750)
             .withOrganizationProfile(new OrganizationProfile())
             .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                 .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
             .withFabricProfile(new FabricProfile())
-            .withDevCenterProjectResourceId("twnpzaoqvuhrhcf");
+            .withDevCenterProjectResourceId("vdjwzrlovm");
         model = BinaryData.fromObject(model).toObject(PoolUpdateProperties.class);
-        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
-        Assertions.assertEquals(648028383, model.maximumConcurrency());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.devCenterProjectResourceId());
+        Assertions.assertEquals(ProvisioningState.ACCEPTED, model.provisioningState());
+        Assertions.assertEquals(1867037750, model.maximumConcurrency());
+        Assertions.assertEquals("vdjwzrlovm", model.devCenterProjectResourceId());
     }
 }

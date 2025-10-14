@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
     /*
      * List of pipeline runs.
      */
+    @Generated
     private List<PipelineRun> value;
 
     /*
      * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
+    @Generated
     private String continuationToken;
 
     /**
      * Creates an instance of PipelineRunsQueryResponse class.
      */
+    @Generated
     public PipelineRunsQueryResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
      * 
      * @return the value value.
      */
+    @Generated
     public List<PipelineRun> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
      * @param value the value value to set.
      * @return the PipelineRunsQueryResponse object itself.
      */
+    @Generated
     public PipelineRunsQueryResponse setValue(List<PipelineRun> value) {
         this.value = value;
         return this;
@@ -59,6 +65,7 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
      * 
      * @return the continuationToken value.
      */
+    @Generated
     public String getContinuationToken() {
         return this.continuationToken;
     }
@@ -70,6 +77,7 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
      * @param continuationToken the continuationToken value to set.
      * @return the PipelineRunsQueryResponse object itself.
      */
+    @Generated
     public PipelineRunsQueryResponse setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
@@ -78,6 +86,7 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class PipelineRunsQueryResponse implements JsonSerializable<Pipelin
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PipelineRunsQueryResponse.
      */
+    @Generated
     public static PipelineRunsQueryResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PipelineRunsQueryResponse deserializedPipelineRunsQueryResponse = new PipelineRunsQueryResponse();

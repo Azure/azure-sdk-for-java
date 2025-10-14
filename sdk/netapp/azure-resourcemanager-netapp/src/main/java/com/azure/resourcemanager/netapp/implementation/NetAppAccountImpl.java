@@ -12,7 +12,9 @@ import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
+import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 import java.util.Collections;
@@ -86,8 +88,8 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this.innerModel().nfsV4IdDomain();
     }
 
-    public Boolean isMultiAdEnabled() {
-        return this.innerModel().isMultiAdEnabled();
+    public MultiAdStatus multiAdStatus() {
+        return this.innerModel().multiAdStatus();
     }
 
     public Region region() {
@@ -199,12 +201,12 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         serviceManager.accounts().transitionToCmk(resourceGroupName, accountName, body, context);
     }
 
-    public void getChangeKeyVaultInformation() {
-        serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName);
+    public GetKeyVaultStatusResponse getChangeKeyVaultInformation() {
+        return serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName);
     }
 
-    public void getChangeKeyVaultInformation(Context context) {
-        serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
+    public GetKeyVaultStatusResponse getChangeKeyVaultInformation(Context context) {
+        return serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
     }
 
     public void changeKeyVault() {
@@ -276,6 +278,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

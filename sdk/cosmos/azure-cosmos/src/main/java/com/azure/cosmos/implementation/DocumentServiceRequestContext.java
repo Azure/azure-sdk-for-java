@@ -7,19 +7,25 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
 
-import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
@@ -34,12 +40,14 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile long globalCommittedSelectedLSN;
     public volatile StoreResponse globalStrongWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
+    public volatile ReadConsistencyStrategy readConsistencyStrategy;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
     public volatile PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker;
+    public volatile PartitionKeyRange resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
-    public volatile URI locationEndpointToRoute;
+    public volatile RegionalRoutingContext regionalRoutingContextToRoute;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
@@ -47,7 +55,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile PartitionKeyInternal effectivePartitionKey;
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
-    public volatile String throughputControlCycleId;
+    public ThroughputControlRequestContext throughputControlRequestContext;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
@@ -61,12 +69,15 @@ public class DocumentServiceRequestContext implements Cloneable {
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
-    private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
+    // Track request timelines of HTTP requests which were in transit when RxGatewayStoreModel#invokeAsync pipeline is cancelled
+    public final List<GatewayRequestTimelineContext> cancelledGatewayRequestTimelineContexts = new CopyOnWriteArrayList<>(new ArrayList<>());
 
-    private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
+    private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest;
+
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
-    private volatile Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> regionToLocationSpecificHealthContext
-        = new Utils.ValueHolder<>();
+
+    private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
+    private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
     public DocumentServiceRequestContext() {}
 
@@ -80,17 +91,16 @@ public class DocumentServiceRequestContext implements Cloneable {
     public void routeToLocation(int locationIndex, boolean usePreferredLocations) {
         this.locationIndexToRoute = locationIndex;
         this.usePreferredLocations = usePreferredLocations;
-        this.locationEndpointToRoute = null;
+        this.regionalRoutingContextToRoute = null;
     }
 
     /**
      * Sets location-based routing directive for GlobalEndpointManager to resolve
      * the request to given locationEndpoint.
      *
-     * @param locationEndpoint Location endpoint to which the request should be routed.
      */
-    public void routeToLocation(URI locationEndpoint) {
-        this.locationEndpointToRoute = locationEndpoint;
+    public void routeToLocation(RegionalRoutingContext regionalRoutingContextToRoute) {
+        this.regionalRoutingContextToRoute = regionalRoutingContextToRoute;
         this.locationIndexToRoute = null;
         this.usePreferredLocations = null;
     }
@@ -100,7 +110,7 @@ public class DocumentServiceRequestContext implements Cloneable {
      */
     public void clearRouteToLocation() {
         this.locationIndexToRoute = null;
-        this.locationEndpointToRoute = null;
+        this.regionalRoutingContextToRoute = null;
         this.usePreferredLocations = null;
     }
 
@@ -123,6 +133,10 @@ public class DocumentServiceRequestContext implements Cloneable {
         }
     }
 
+    public void setThroughputControlRequestContext(ThroughputControlRequestContext throughputControlRequestContext) {
+        this.throughputControlRequestContext = throughputControlRequestContext;
+    }
+
     @Override
     public DocumentServiceRequestContext clone() {
         DocumentServiceRequestContext context = new DocumentServiceRequestContext();
@@ -136,23 +150,24 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
         context.globalStrongWriteResponse = this.globalStrongWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
+        context.readConsistencyStrategy = this.readConsistencyStrategy;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
         context.resolvedPartitionKeyRangeForCircuitBreaker = this.resolvedPartitionKeyRangeForCircuitBreaker;
+        context.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = this.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
         context.regionIndex = this.regionIndex;
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
-        context.locationEndpointToRoute = this.locationEndpointToRoute;
+        context.regionalRoutingContextToRoute = this.regionalRoutingContextToRoute;
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
         context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
-        context.throughputControlCycleId = this.throughputControlCycleId;
+        context.throughputControlRequestContext = this.throughputControlRequestContext;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
-        context.feedOperationContextForCircuitBreaker = this.feedOperationContextForCircuitBreaker;
-        context.pointOperationContextForCircuitBreaker = this.pointOperationContextForCircuitBreaker;
+        context.crossRegionAvailabilityContextForRequest = this.crossRegionAvailabilityContextForRequest;
         return context;
     }
 
@@ -184,24 +199,16 @@ public class DocumentServiceRequestContext implements Cloneable {
         return unavailableRegionsForPartition;
     }
 
-    public void setUnavailableRegionsForPartition(List<String> unavailableRegionsForPartition) {
+    public void setUnavailableRegionsForPerPartitionCircuitBreaker(List<String> unavailableRegionsForPartition) {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 
-    public PointOperationContextForCircuitBreaker getPointOperationContextForCircuitBreaker() {
-        return pointOperationContextForCircuitBreaker;
+    public void setCrossRegionAvailabilityContext(CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
+        this.crossRegionAvailabilityContextForRequest = crossRegionAvailabilityContextForRequest;
     }
 
-    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
-        this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
-    }
-
-    public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
-        return feedOperationContextForCircuitBreaker;
-    }
-
-    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
-        this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
+    public CrossRegionAvailabilityContextForRxDocumentServiceRequest getCrossRegionAvailabilityContext() {
+        return this.crossRegionAvailabilityContextForRequest;
     }
 
     public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
@@ -232,12 +239,32 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.clientRetryPolicySupplier = clientRetryPolicySupplier;
     }
 
-    public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
-        return regionToLocationSpecificHealthContext;
+    public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+        return this.perPartitionCircuitBreakerInfoHolder;
     }
 
-    public void setLocationToLocationSpecificHealthContext(Map<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext) {
-        this.regionToLocationSpecificHealthContext.v = regionToLocationSpecificHealthContext;
+    public void setPerPartitionCircuitBreakerInfoHolder(Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext) {
+
+        if (this.perPartitionCircuitBreakerInfoHolder == null) {
+            this.perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
+            this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
+        } else {
+            this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
+        }
+    }
+
+    public PerPartitionFailoverInfoHolder getPerPartitionFailoverContextHolder() {
+        return this.perPartitionFailoverInfoHolder;
+    }
+
+    public void setPerPartitionAutomaticFailoverInfoHolder(PartitionLevelFailoverInfo partitionLevelFailoverInfo) {
+
+        if (this.perPartitionFailoverInfoHolder == null) {
+            this.perPartitionFailoverInfoHolder = new PerPartitionFailoverInfoHolder();
+            this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
+        } else {
+            this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
+        }
     }
 }
 

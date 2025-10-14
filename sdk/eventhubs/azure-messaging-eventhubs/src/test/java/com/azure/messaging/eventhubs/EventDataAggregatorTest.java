@@ -14,8 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
+import reactor.core.publisher.MonoSink;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.LongConsumer;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -201,6 +205,43 @@ public class EventDataAggregatorTest {
     }
 
     /**
+     * Tests that it pushes partial batches downstream when flush signal arrives.
+     */
+    @Test
+    public void pushesBatchesOnFlushSignal() {
+        // Arrange
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1, event2);
+
+        final Duration waitTime = Duration.ofSeconds(30);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+
+        final AtomicBoolean first = new AtomicBoolean();
+        final Supplier<EventDataBatch> supplier = () -> {
+            if (first.compareAndSet(false, true)) {
+                return batch;
+            } else {
+                return batch2;
+            }
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+
+        // Act & Assert
+        StepVerifier.create(aggregator).then(() -> {
+            publisher.next(event1, event2, new FlushSignal(new NoopMonoSink()));
+        }).expectNext(batch).thenCancel().verify(Duration.ofSeconds(10));
+
+        // Verify that exactly two expected events were added to the batch.
+        assertEquals(2, batchEvents.size());
+        assertTrue(batchEvents.contains(event1));
+        assertTrue(batchEvents.contains(event2));
+    }
+
+    /**
      * Verifies that an error is propagated when it is too large for the link.
      */
     @Test
@@ -304,5 +345,40 @@ public class EventDataAggregatorTest {
             return resultSet;
         });
         when(batch.getCount()).thenAnswer(invocation -> resultSet.size());
+    }
+
+    static final class NoopMonoSink implements MonoSink<Void> {
+        @Override
+        public void success() {
+        }
+
+        @Override
+        public void success(Void v) {
+
+        }
+
+        @Override
+        public void error(Throwable e) {
+        }
+
+        @Override
+        public Context currentContext() {
+            return Context.empty();
+        }
+
+        @Override
+        public MonoSink<Void> onRequest(LongConsumer consumer) {
+            return this;
+        }
+
+        @Override
+        public MonoSink<Void> onCancel(Disposable d) {
+            return this;
+        }
+
+        @Override
+        public MonoSink<Void> onDispose(Disposable d) {
+            return this;
+        }
     }
 }

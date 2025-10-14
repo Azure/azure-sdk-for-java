@@ -7,7 +7,6 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -43,36 +42,24 @@ public class MonitorOpenTelemetryExporterCustomizations extends Customization {
                 clazz.addMethod("setConnectionString", Modifier.Keyword.PUBLIC)
                     .setType("TelemetryItem")
                     .addParameter("String", "connectionString")
-                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                        "{",
-                        "this.connectionString = connectionString;",
-                        "this.instrumentationKey = ConnectionString.parse(connectionString).getInstrumentationKey();",
-                        "return this;",
-                        "}"
-                    )));
+                    .setBody(StaticJavaParser.parseBlock("{ this.connectionString = connectionString;"
+                        + "this.instrumentationKey = ConnectionString.parse(connectionString).getInstrumentationKey();"
+                        + "return this; }"));
 
                 clazz.addMethod("setConnectionString", Modifier.Keyword.PUBLIC)
                     .setType("TelemetryItem")
                     .addParameter("ConnectionString", "connectionString")
-                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                        "{",
-                        "this.connectionString = connectionString.getOriginalString();",
-                        "this.instrumentationKey = connectionString.getInstrumentationKey();",
-                        "return this;",
-                        "}"
-                    )));
+                    .setBody(StaticJavaParser.parseBlock("{ this.connectionString = connectionString.getOriginalString();"
+                        + "this.instrumentationKey = connectionString.getInstrumentationKey();"
+                        + "return this; }"));
 
                 clazz.addMethod("setConnectionString", Modifier.Keyword.PUBLIC)
                     .setType("TelemetryItem")
                     .addParameter("StatsbeatConnectionString", "connectionString")
-                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                        "{",
-                        "instrumentationKey = connectionString.getInstrumentationKey();",
-                        "// TODO (heya) turn StatsbeatConnectionString into a real connection string?",
-                        "this.connectionString = \"InstrumentationKey=\" + instrumentationKey + \";IngestionEndpoint=\" + connectionString.getIngestionEndpoint();",
-                        "return this;",
-                        "}"
-                    )));
+                    .setBody(StaticJavaParser.parseBlock("{ instrumentationKey = connectionString.getInstrumentationKey();"
+                        + "// TODO (heya) turn StatsbeatConnectionString into a real connection string?\n"
+                        + "this.connectionString = \"InstrumentationKey=\" + instrumentationKey + \";IngestionEndpoint=\" + connectionString.getIngestionEndpoint();"
+                        + "return this; }"));
 
                 clazz.addMethod("getResource", Modifier.Keyword.PUBLIC)
                     .setType("Resource")
@@ -85,45 +72,31 @@ public class MonitorOpenTelemetryExporterCustomizations extends Customization {
 
                 clazz.addMethod("getResourceFromTags", Modifier.Keyword.PUBLIC)
                     .setType("Map<String, String>")
-                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                        "{",
-                        "if (tags == null) {",
-                        "    // Statsbeat doesn't have tags",
-                        "    return Collections.emptyMap();",
-                        "}",
-                        "Map<String, String> resourceFromTags = new HashMap<>();",
-                        "populateFromTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), resourceFromTags);",
-                        "populateFromTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), resourceFromTags);",
-                        "populateFromTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), resourceFromTags);",
-                        "return resourceFromTags;",
-                        "}"
-                    )));
+                    .setBody(StaticJavaParser.parseBlock(
+                        "{ if (tags == null) { // Statsbeat doesn't have tags\n return Collections.emptyMap(); }"
+                        + "Map<String, String> resourceFromTags = new HashMap<>();"
+                        + "populateFromTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), resourceFromTags);"
+                        + "populateFromTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), resourceFromTags);"
+                        + "populateFromTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), resourceFromTags);"
+                        + "return resourceFromTags; }"));
 
                 clazz.addMethod("populateFromTag", Modifier.Keyword.PRIVATE)
                     .setType("void")
                     .addParameter("String", "contextTagKey")
                     .addParameter("Map<String, String>", "resourceFromTags")
-                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                        "{",
-                        "if (tags == null) {",
-                        "    return;",
-                        "}",
-                        "String roleName = tags.get(contextTagKey);",
-                        "if (roleName != null) {",
-                        "    resourceFromTags.put(contextTagKey, roleName);",
-                        "}",
-                        "}"
-                    )));
+                    .setBody(StaticJavaParser.parseBlock("{ if (tags == null) { return; }"
+                        + "String roleName = tags.get(contextTagKey);"
+                        + "if (roleName != null) { resourceFromTags.put(contextTagKey, roleName); } }"));
 
                 // Move serialization of "ver" back to the beginning.
-                String toJsonStart = "jsonWriter.writeStartObject();";
-                String writeVer = "jsonWriter.writeNumberField(\"ver\", this.version);";
-                MethodDeclaration toJson = clazz.getMethodsByName("toJson").get(0);
-                String toJsonBody = toJson.getBody().get().toString();
-                toJsonBody = toJsonBody.replace(writeVer, "");
-                int index = toJsonBody.indexOf(toJsonStart) + toJsonStart.length();
-                toJsonBody = toJsonBody.substring(0, index) + writeVer + toJsonBody.substring(index);
-                toJson.setBody(StaticJavaParser.parseBlock(toJsonBody));
+                clazz.getMethodsByName("toJson").forEach(method -> method.getBody().ifPresent(body -> {
+                    String toJsonStart = "jsonWriter.writeStartObject();";
+                    String writeVer = "jsonWriter.writeNumberField(\"ver\", this.version);";
+                    String toJsonBody = body.toString().replace(writeVer, "");
+                    int index = toJsonBody.indexOf(toJsonStart) + toJsonStart.length();
+                    toJsonBody = toJsonBody.substring(0, index) + writeVer + toJsonBody.substring(index);
+                    method.setBody(StaticJavaParser.parseBlock(toJsonBody));
+                }));
             });
         });
     }

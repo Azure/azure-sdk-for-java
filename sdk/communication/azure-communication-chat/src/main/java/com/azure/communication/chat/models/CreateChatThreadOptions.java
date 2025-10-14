@@ -6,7 +6,9 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -24,28 +26,38 @@ public final class CreateChatThreadOptions {
      */
     private List<ChatParticipant> participants = new ArrayList<>();
 
+    /**
+    * Property bag of chat thread metadata key - value pairs.
+    */
+    private Map<String, String> metadata = new HashMap<>();
+
+    /**
+    * Thread retention policy
+    */
+    private ChatRetentionPolicy retentionPolicy;
+
     private String idempotencyToken;
 
     /**
-     * Get the topic property: The chat thread topic.
+     * Gets the chat thread topic.
      *
-     * @return the topic value.
+     * @return the topic.
      */
     public String getTopic() {
         return this.topic;
     }
 
     /**
-     * Get the participants property: Participants to be added to the chat thread.
+     * Gets participants to be added to the chat thread.
      *
-     * @return the participants value.
+     * @return the participants.
      */
     public List<ChatParticipant> getParticipants() {
         return this.participants;
     }
 
     /**
-     * Set the participants property: Participants to be added to the chat thread.
+     * Gets participants to be added to the chat thread.
      *
      * @param participants the participants value to set.
      * @return the CreateChatThreadOptions object itself.
@@ -67,7 +79,47 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Get the idempotencyToken property
+     * Gets the metadata key-value pairs associated with the chat thread.
+     *
+     * @return the metadata map.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Sets the metadata key-value pairs associated with the chat thread.
+     *
+     * @param metadata the metadata map to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Gets the thread retention policy.
+     *
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Sets the thread retention policy.
+     *
+     * @param retentionPolicy the retention policy to set.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
+     * Gets the idempotencyToken property
      *
      * @return the idempotencyToken.
      */
@@ -76,7 +128,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Set the idempotencyToken property:
+     * Sets the idempotencyToken property:
      * If specified, the client directs that the request is repeatable; that is, that the
      * client can make the request multiple times with the same idempotencyToken and get back an appropriate
      * response without the server executing the request multiple times. The value of the idempotencyToken
@@ -92,7 +144,7 @@ public final class CreateChatThreadOptions {
     }
 
     /**
-     * Creates a new instance of CreateChatThreadOptions
+     * Creates a new instance of CreateChatThreadOptions.
      * @param topic the topic value to set.
      */
     public CreateChatThreadOptions(String topic) {

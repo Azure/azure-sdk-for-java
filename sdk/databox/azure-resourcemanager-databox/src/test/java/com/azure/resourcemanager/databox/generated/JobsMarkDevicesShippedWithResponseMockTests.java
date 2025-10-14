@@ -6,8 +6,8 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databox.DataBoxManager;
 import com.azure.resourcemanager.databox.models.MarkDevicesShippedRequest;
@@ -27,12 +27,12 @@ public final class JobsMarkDevicesShippedWithResponseMockTests {
         DataBoxManager manager = DataBoxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.jobs()
-            .markDevicesShippedWithResponse("tnvyqiatkzwp", "npwzcjaes",
+            .markDevicesShippedWithResponse("j", "ukndxdigrjgu",
                 new MarkDevicesShippedRequest().withDeliverToDcPackageDetails(
-                    new PackageCarrierInfo().withCarrierName("v").withTrackingId("cyajguqf")),
+                    new PackageCarrierInfo().withCarrierName("zdmsyqtfi").withTrackingId("hbotzingamvppho")),
                 com.azure.core.util.Context.NONE);
 
     }

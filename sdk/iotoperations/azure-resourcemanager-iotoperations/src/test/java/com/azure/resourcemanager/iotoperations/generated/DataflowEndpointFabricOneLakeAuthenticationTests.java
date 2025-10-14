@@ -15,30 +15,30 @@ public final class DataflowEndpointFabricOneLakeAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointFabricOneLakeAuthentication model = BinaryData.fromString(
-            "{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"kfzbeyvpnqicvi\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"kjj\",\"scope\":\"xrbuukzclew\",\"tenantId\":\"hmlwpaztzpo\"}}")
+            "{\"method\":\"UserAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"fovljxyws\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"syrsndsytgadgvra\",\"scope\":\"en\",\"tenantId\":\"qnzarrwl\"}}")
             .toObject(DataflowEndpointFabricOneLakeAuthentication.class);
-        Assertions.assertEquals(FabricOneLakeAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY, model.method());
-        Assertions.assertEquals("kfzbeyvpnqicvi", model.systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("kjj", model.userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("xrbuukzclew", model.userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("hmlwpaztzpo", model.userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals(FabricOneLakeAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY, model.method());
+        Assertions.assertEquals("fovljxyws", model.systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("syrsndsytgadgvra", model.userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("en", model.userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("qnzarrwl", model.userAssignedManagedIdentitySettings().tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointFabricOneLakeAuthentication model = new DataflowEndpointFabricOneLakeAuthentication()
-            .withMethod(FabricOneLakeAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY)
+            .withMethod(FabricOneLakeAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY)
             .withSystemAssignedManagedIdentitySettings(
-                new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("kfzbeyvpnqicvi"))
+                new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("fovljxyws"))
             .withUserAssignedManagedIdentitySettings(
-                new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("kjj")
-                    .withScope("xrbuukzclew")
-                    .withTenantId("hmlwpaztzpo"));
+                new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("syrsndsytgadgvra")
+                    .withScope("en")
+                    .withTenantId("qnzarrwl"));
         model = BinaryData.fromObject(model).toObject(DataflowEndpointFabricOneLakeAuthentication.class);
-        Assertions.assertEquals(FabricOneLakeAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY, model.method());
-        Assertions.assertEquals("kfzbeyvpnqicvi", model.systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("kjj", model.userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("xrbuukzclew", model.userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("hmlwpaztzpo", model.userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals(FabricOneLakeAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY, model.method());
+        Assertions.assertEquals("fovljxyws", model.systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("syrsndsytgadgvra", model.userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("en", model.userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("qnzarrwl", model.userAssignedManagedIdentitySettings().tenantId());
     }
 }

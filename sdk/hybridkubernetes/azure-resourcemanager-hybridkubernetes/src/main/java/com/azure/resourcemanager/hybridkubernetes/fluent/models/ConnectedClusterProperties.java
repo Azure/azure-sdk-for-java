@@ -11,10 +11,20 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hybridkubernetes.models.AadProfile;
+import com.azure.resourcemanager.hybridkubernetes.models.ArcAgentProfile;
+import com.azure.resourcemanager.hybridkubernetes.models.ArcAgentryConfigurations;
+import com.azure.resourcemanager.hybridkubernetes.models.AzureHybridBenefit;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
+import com.azure.resourcemanager.hybridkubernetes.models.Gateway;
+import com.azure.resourcemanager.hybridkubernetes.models.OidcIssuerProfile;
+import com.azure.resourcemanager.hybridkubernetes.models.PrivateLinkState;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
+import com.azure.resourcemanager.hybridkubernetes.models.SecurityProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Properties of the connected cluster.
@@ -57,6 +67,11 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
     private String distribution;
 
     /*
+     * The Kubernetes distribution version on this connected cluster.
+     */
+    private String distributionVersion;
+
+    /*
      * The infrastructure on which the Kubernetes cluster represented by this connected cluster is running on.
      */
     private String infrastructure;
@@ -80,6 +95,57 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
      * Represents the connectivity status of the connected cluster.
      */
     private ConnectivityStatus connectivityStatus;
+
+    /*
+     * Property which describes the state of private link on a connected cluster resource.
+     */
+    private PrivateLinkState privateLinkState;
+
+    /*
+     * This is populated only if privateLinkState is enabled. The resource id of the private link scope this connected
+     * cluster is assigned to, if any.
+     */
+    private String privateLinkScopeResourceId;
+
+    /*
+     * Indicates whether Azure Hybrid Benefit is opted in
+     */
+    private AzureHybridBenefit azureHybridBenefit;
+
+    /*
+     * AAD profile for the connected cluster.
+     */
+    private AadProfile aadProfile;
+
+    /*
+     * Arc agentry configuration for the provisioned cluster.
+     */
+    private ArcAgentProfile arcAgentProfile;
+
+    /*
+     * Security profile for the connected cluster.
+     */
+    private SecurityProfile securityProfile;
+
+    /*
+     * Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+     */
+    private OidcIssuerProfile oidcIssuerProfile;
+
+    /*
+     * Details of the gateway used by the Arc router for connectivity.
+     */
+    private Gateway gateway;
+
+    /*
+     * Configuration settings for customizing the behavior of the connected cluster.
+     */
+    private List<ArcAgentryConfigurations> arcAgentryConfigurations;
+
+    /*
+     * More properties related to the Connected Cluster
+     */
+    private Map<String, String> miscellaneousProperties;
 
     /**
      * Creates an instance of ConnectedClusterProperties class.
@@ -186,6 +252,26 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
     }
 
     /**
+     * Get the distributionVersion property: The Kubernetes distribution version on this connected cluster.
+     * 
+     * @return the distributionVersion value.
+     */
+    public String distributionVersion() {
+        return this.distributionVersion;
+    }
+
+    /**
+     * Set the distributionVersion property: The Kubernetes distribution version on this connected cluster.
+     * 
+     * @param distributionVersion the distributionVersion value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withDistributionVersion(String distributionVersion) {
+        this.distributionVersion = distributionVersion;
+        return this;
+    }
+
+    /**
      * Get the infrastructure property: The infrastructure on which the Kubernetes cluster represented by this connected
      * cluster is running on.
      * 
@@ -245,6 +331,202 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
     }
 
     /**
+     * Get the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     * 
+     * @return the privateLinkState value.
+     */
+    public PrivateLinkState privateLinkState() {
+        return this.privateLinkState;
+    }
+
+    /**
+     * Set the privateLinkState property: Property which describes the state of private link on a connected cluster
+     * resource.
+     * 
+     * @param privateLinkState the privateLinkState value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withPrivateLinkState(PrivateLinkState privateLinkState) {
+        this.privateLinkState = privateLinkState;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: This is populated only if privateLinkState is enabled. The resource
+     * id of the private link scope this connected cluster is assigned to, if any.
+     * 
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.privateLinkScopeResourceId;
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: This is populated only if privateLinkState is enabled. The resource
+     * id of the private link scope this connected cluster is assigned to, if any.
+     * 
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        this.privateLinkScopeResourceId = privateLinkScopeResourceId;
+        return this;
+    }
+
+    /**
+     * Get the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * 
+     * @return the azureHybridBenefit value.
+     */
+    public AzureHybridBenefit azureHybridBenefit() {
+        return this.azureHybridBenefit;
+    }
+
+    /**
+     * Set the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * 
+     * @param azureHybridBenefit the azureHybridBenefit value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withAzureHybridBenefit(AzureHybridBenefit azureHybridBenefit) {
+        this.azureHybridBenefit = azureHybridBenefit;
+        return this;
+    }
+
+    /**
+     * Get the aadProfile property: AAD profile for the connected cluster.
+     * 
+     * @return the aadProfile value.
+     */
+    public AadProfile aadProfile() {
+        return this.aadProfile;
+    }
+
+    /**
+     * Set the aadProfile property: AAD profile for the connected cluster.
+     * 
+     * @param aadProfile the aadProfile value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withAadProfile(AadProfile aadProfile) {
+        this.aadProfile = aadProfile;
+        return this;
+    }
+
+    /**
+     * Get the arcAgentProfile property: Arc agentry configuration for the provisioned cluster.
+     * 
+     * @return the arcAgentProfile value.
+     */
+    public ArcAgentProfile arcAgentProfile() {
+        return this.arcAgentProfile;
+    }
+
+    /**
+     * Set the arcAgentProfile property: Arc agentry configuration for the provisioned cluster.
+     * 
+     * @param arcAgentProfile the arcAgentProfile value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withArcAgentProfile(ArcAgentProfile arcAgentProfile) {
+        this.arcAgentProfile = arcAgentProfile;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: Security profile for the connected cluster.
+     * 
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Security profile for the connected cluster.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
+     * Get the oidcIssuerProfile property: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+     * 
+     * @return the oidcIssuerProfile value.
+     */
+    public OidcIssuerProfile oidcIssuerProfile() {
+        return this.oidcIssuerProfile;
+    }
+
+    /**
+     * Set the oidcIssuerProfile property: Open ID Connect (OIDC) Issuer Profile for the connected cluster.
+     * 
+     * @param oidcIssuerProfile the oidcIssuerProfile value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withOidcIssuerProfile(OidcIssuerProfile oidcIssuerProfile) {
+        this.oidcIssuerProfile = oidcIssuerProfile;
+        return this;
+    }
+
+    /**
+     * Get the gateway property: Details of the gateway used by the Arc router for connectivity.
+     * 
+     * @return the gateway value.
+     */
+    public Gateway gateway() {
+        return this.gateway;
+    }
+
+    /**
+     * Set the gateway property: Details of the gateway used by the Arc router for connectivity.
+     * 
+     * @param gateway the gateway value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties withGateway(Gateway gateway) {
+        this.gateway = gateway;
+        return this;
+    }
+
+    /**
+     * Get the arcAgentryConfigurations property: Configuration settings for customizing the behavior of the connected
+     * cluster.
+     * 
+     * @return the arcAgentryConfigurations value.
+     */
+    public List<ArcAgentryConfigurations> arcAgentryConfigurations() {
+        return this.arcAgentryConfigurations;
+    }
+
+    /**
+     * Set the arcAgentryConfigurations property: Configuration settings for customizing the behavior of the connected
+     * cluster.
+     * 
+     * @param arcAgentryConfigurations the arcAgentryConfigurations value to set.
+     * @return the ConnectedClusterProperties object itself.
+     */
+    public ConnectedClusterProperties
+        withArcAgentryConfigurations(List<ArcAgentryConfigurations> arcAgentryConfigurations) {
+        this.arcAgentryConfigurations = arcAgentryConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the miscellaneousProperties property: More properties related to the Connected Cluster.
+     * 
+     * @return the miscellaneousProperties value.
+     */
+    public Map<String, String> miscellaneousProperties() {
+        return this.miscellaneousProperties;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -254,6 +536,24 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property agentPublicKeyCertificate in model ConnectedClusterProperties"));
+        }
+        if (aadProfile() != null) {
+            aadProfile().validate();
+        }
+        if (arcAgentProfile() != null) {
+            arcAgentProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
+        }
+        if (oidcIssuerProfile() != null) {
+            oidcIssuerProfile().validate();
+        }
+        if (gateway() != null) {
+            gateway().validate();
+        }
+        if (arcAgentryConfigurations() != null) {
+            arcAgentryConfigurations().forEach(e -> e.validate());
         }
     }
 
@@ -269,7 +569,20 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
         jsonWriter.writeStringField("provisioningState",
             this.provisioningState == null ? null : this.provisioningState.toString());
         jsonWriter.writeStringField("distribution", this.distribution);
+        jsonWriter.writeStringField("distributionVersion", this.distributionVersion);
         jsonWriter.writeStringField("infrastructure", this.infrastructure);
+        jsonWriter.writeStringField("privateLinkState",
+            this.privateLinkState == null ? null : this.privateLinkState.toString());
+        jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
+        jsonWriter.writeStringField("azureHybridBenefit",
+            this.azureHybridBenefit == null ? null : this.azureHybridBenefit.toString());
+        jsonWriter.writeJsonField("aadProfile", this.aadProfile);
+        jsonWriter.writeJsonField("arcAgentProfile", this.arcAgentProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("oidcIssuerProfile", this.oidcIssuerProfile);
+        jsonWriter.writeJsonField("gateway", this.gateway);
+        jsonWriter.writeArrayField("arcAgentryConfigurations", this.arcAgentryConfigurations,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -304,6 +617,8 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("distribution".equals(fieldName)) {
                     deserializedConnectedClusterProperties.distribution = reader.getString();
+                } else if ("distributionVersion".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.distributionVersion = reader.getString();
                 } else if ("infrastructure".equals(fieldName)) {
                     deserializedConnectedClusterProperties.infrastructure = reader.getString();
                 } else if ("offering".equals(fieldName)) {
@@ -317,6 +632,31 @@ public final class ConnectedClusterProperties implements JsonSerializable<Connec
                 } else if ("connectivityStatus".equals(fieldName)) {
                     deserializedConnectedClusterProperties.connectivityStatus
                         = ConnectivityStatus.fromString(reader.getString());
+                } else if ("privateLinkState".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.privateLinkState
+                        = PrivateLinkState.fromString(reader.getString());
+                } else if ("privateLinkScopeResourceId".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.privateLinkScopeResourceId = reader.getString();
+                } else if ("azureHybridBenefit".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.azureHybridBenefit
+                        = AzureHybridBenefit.fromString(reader.getString());
+                } else if ("aadProfile".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.aadProfile = AadProfile.fromJson(reader);
+                } else if ("arcAgentProfile".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.arcAgentProfile = ArcAgentProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("oidcIssuerProfile".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.oidcIssuerProfile = OidcIssuerProfile.fromJson(reader);
+                } else if ("gateway".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.gateway = Gateway.fromJson(reader);
+                } else if ("arcAgentryConfigurations".equals(fieldName)) {
+                    List<ArcAgentryConfigurations> arcAgentryConfigurations
+                        = reader.readArray(reader1 -> ArcAgentryConfigurations.fromJson(reader1));
+                    deserializedConnectedClusterProperties.arcAgentryConfigurations = arcAgentryConfigurations;
+                } else if ("miscellaneousProperties".equals(fieldName)) {
+                    Map<String, String> miscellaneousProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConnectedClusterProperties.miscellaneousProperties = miscellaneousProperties;
                 } else {
                     reader.skipChildren();
                 }

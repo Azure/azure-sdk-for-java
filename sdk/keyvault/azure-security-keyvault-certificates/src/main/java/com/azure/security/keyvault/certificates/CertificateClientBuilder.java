@@ -161,7 +161,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildInnerClient(), vaultUrl);
+        return new CertificateClient(buildImplClient(), vaultUrl);
     }
 
     /**
@@ -183,10 +183,10 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        return new CertificateAsyncClient(buildInnerClient(), vaultUrl);
+        return new CertificateAsyncClient(buildImplClient(), vaultUrl);
     }
 
-    private CertificateClientImpl buildInnerClient() {
+    private CertificateClientImpl buildImplClient() {
         Configuration buildConfiguration
             = (configuration != null) ? configuration : Configuration.getGlobalConfiguration().clone();
 
@@ -197,10 +197,12 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
+        if (version == null) {
+            version = CertificateServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
-            return new CertificateClientImpl(pipeline, serviceVersion.getVersion());
+            return new CertificateClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -240,13 +242,13 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
             .build();
 
-        return new CertificateClientImpl(pipeline, serviceVersion.getVersion());
+        return new CertificateClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**

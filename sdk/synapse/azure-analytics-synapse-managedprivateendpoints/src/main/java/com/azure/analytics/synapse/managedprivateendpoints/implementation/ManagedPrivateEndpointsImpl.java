@@ -61,7 +61,7 @@ public final class ManagedPrivateEndpointsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ManagedPrivateEndpoi")
+    @ServiceInterface(name = "ManagedPrivateEndpointsClientManagedPrivateEndpoints")
     public interface ManagedPrivateEndpointsService {
         @Get("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({ 200 })

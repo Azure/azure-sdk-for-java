@@ -14,21 +14,21 @@ public final class DaprSubscriptionRoutesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSubscriptionRoutes model = BinaryData
-            .fromString("{\"rules\":[{\"match\":\"qqa\",\"path\":\"mkxwxdcvjwcyziak\"}],\"default\":\"iqch\"}")
+            .fromString("{\"rules\":[{\"match\":\"jtpusllywpvtiotz\",\"path\":\"d\"}],\"default\":\"llgryfqiuasigr\"}")
             .toObject(DaprSubscriptionRoutes.class);
-        Assertions.assertEquals("qqa", model.rules().get(0).match());
-        Assertions.assertEquals("mkxwxdcvjwcyziak", model.rules().get(0).path());
-        Assertions.assertEquals("iqch", model.defaultProperty());
+        Assertions.assertEquals("jtpusllywpvtiotz", model.rules().get(0).match());
+        Assertions.assertEquals("d", model.rules().get(0).path());
+        Assertions.assertEquals("llgryfqiuasigr", model.defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprSubscriptionRoutes model = new DaprSubscriptionRoutes()
-            .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("qqa").withPath("mkxwxdcvjwcyziak")))
-            .withDefaultProperty("iqch");
+            .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("jtpusllywpvtiotz").withPath("d")))
+            .withDefaultProperty("llgryfqiuasigr");
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionRoutes.class);
-        Assertions.assertEquals("qqa", model.rules().get(0).match());
-        Assertions.assertEquals("mkxwxdcvjwcyziak", model.rules().get(0).path());
-        Assertions.assertEquals("iqch", model.defaultProperty());
+        Assertions.assertEquals("jtpusllywpvtiotz", model.rules().get(0).match());
+        Assertions.assertEquals("d", model.rules().get(0).path());
+        Assertions.assertEquals("llgryfqiuasigr", model.defaultProperty());
     }
 }

@@ -14,30 +14,30 @@ public final class A2AProtectionContainerMappingDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2AProtectionContainerMappingDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"agentAutoUpdateStatus\":\"Enabled\",\"automationAccountArmId\":\"xawoijpodtblxp\",\"automationAccountAuthenticationType\":\"SystemAssignedIdentity\",\"scheduleName\":\"djodqhy\",\"jobScheduleName\":\"ncn\"}")
+            "{\"instanceType\":\"A2A\",\"agentAutoUpdateStatus\":\"Enabled\",\"automationAccountArmId\":\"cdsiwdfmmpzhzzwv\",\"automationAccountAuthenticationType\":\"SystemAssignedIdentity\",\"scheduleName\":\"yngydgrpxncaki\",\"jobScheduleName\":\"ondjrkclam\"}")
             .toObject(A2AProtectionContainerMappingDetails.class);
         Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
-        Assertions.assertEquals("xawoijpodtblxp", model.automationAccountArmId());
+        Assertions.assertEquals("cdsiwdfmmpzhzzwv", model.automationAccountArmId());
         Assertions.assertEquals(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY,
             model.automationAccountAuthenticationType());
-        Assertions.assertEquals("djodqhy", model.scheduleName());
-        Assertions.assertEquals("ncn", model.jobScheduleName());
+        Assertions.assertEquals("yngydgrpxncaki", model.scheduleName());
+        Assertions.assertEquals("ondjrkclam", model.jobScheduleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2AProtectionContainerMappingDetails model
             = new A2AProtectionContainerMappingDetails().withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED)
-                .withAutomationAccountArmId("xawoijpodtblxp")
+                .withAutomationAccountArmId("cdsiwdfmmpzhzzwv")
                 .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY)
-                .withScheduleName("djodqhy")
-                .withJobScheduleName("ncn");
+                .withScheduleName("yngydgrpxncaki")
+                .withJobScheduleName("ondjrkclam");
         model = BinaryData.fromObject(model).toObject(A2AProtectionContainerMappingDetails.class);
         Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
-        Assertions.assertEquals("xawoijpodtblxp", model.automationAccountArmId());
+        Assertions.assertEquals("cdsiwdfmmpzhzzwv", model.automationAccountArmId());
         Assertions.assertEquals(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY,
             model.automationAccountAuthenticationType());
-        Assertions.assertEquals("djodqhy", model.scheduleName());
-        Assertions.assertEquals("ncn", model.jobScheduleName());
+        Assertions.assertEquals("yngydgrpxncaki", model.scheduleName());
+        Assertions.assertEquals("ondjrkclam", model.jobScheduleName());
     }
 }

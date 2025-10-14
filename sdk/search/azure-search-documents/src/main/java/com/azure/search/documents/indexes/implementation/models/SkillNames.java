@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
     /*
      * the names of skills to be reset.
      */
+    @Generated
     private List<String> skillNames;
 
     /**
      * Creates an instance of SkillNames class.
      */
+    @Generated
     public SkillNames() {
     }
 
@@ -35,6 +38,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
      * 
      * @return the skillNames value.
      */
+    @Generated
     public List<String> getSkillNames() {
         return this.skillNames;
     }
@@ -45,6 +49,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
      * @param skillNames the skillNames value to set.
      * @return the SkillNames object itself.
      */
+    @Generated
     public SkillNames setSkillNames(List<String> skillNames) {
         this.skillNames = skillNames;
         return this;
@@ -53,6 +58,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the SkillNames.
      */
+    @Generated
     public static SkillNames fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SkillNames deserializedSkillNames = new SkillNames();

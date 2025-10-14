@@ -17,12 +17,14 @@ public final class SupportedOperatingSystemsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedOperatingSystemsInner model = BinaryData.fromString(
-            "{\"properties\":{\"supportedOsList\":[{\"instanceType\":\"tdacarvvlfn\",\"supportedOs\":[{\"osName\":\"poi\",\"osType\":\"naz\",\"osVersions\":[{},{},{}]}]}]},\"location\":\"zrsq\",\"id\":\"lsxkd\",\"name\":\"wqapfgsdp\",\"type\":\"vessm\"}")
+            "{\"properties\":{\"supportedOsList\":[{\"instanceType\":\"zvyfijdkzuqnwsi\",\"supportedOs\":[{\"osName\":\"olyahluqwqulsut\",\"osType\":\"bhxykfhyqezvqqug\",\"osVersions\":[{},{},{},{}]},{\"osName\":\"bcvex\",\"osType\":\"uquowtljvfwhr\",\"osVersions\":[{},{},{},{}]}]},{\"instanceType\":\"hyxvrqt\",\"supportedOs\":[{\"osName\":\"sulmd\",\"osType\":\"lmepjpf\",\"osVersions\":[{},{},{}]},{\"osName\":\"g\",\"osType\":\"ngpszngafpg\",\"osVersions\":[{}]},{\"osName\":\"ecjujcng\",\"osType\":\"dyedmzrgjfo\",\"osVersions\":[{}]}]}]},\"location\":\"noitpkpztr\",\"id\":\"dgxvco\",\"name\":\"raswugyxpqit\",\"type\":\"eialwvskb\"}")
             .toObject(SupportedOperatingSystemsInner.class);
-        Assertions.assertEquals("tdacarvvlfn", model.properties().supportedOsList().get(0).instanceType());
-        Assertions.assertEquals("poi", model.properties().supportedOsList().get(0).supportedOs().get(0).osName());
-        Assertions.assertEquals("naz", model.properties().supportedOsList().get(0).supportedOs().get(0).osType());
-        Assertions.assertEquals("zrsq", model.location());
+        Assertions.assertEquals("zvyfijdkzuqnwsi", model.properties().supportedOsList().get(0).instanceType());
+        Assertions.assertEquals("olyahluqwqulsut",
+            model.properties().supportedOsList().get(0).supportedOs().get(0).osName());
+        Assertions.assertEquals("bhxykfhyqezvqqug",
+            model.properties().supportedOsList().get(0).supportedOs().get(0).osType());
+        Assertions.assertEquals("noitpkpztr", model.location());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,20 +32,38 @@ public final class SupportedOperatingSystemsInnerTests {
         SupportedOperatingSystemsInner model
             = new SupportedOperatingSystemsInner()
                 .withProperties(
-                    new SupportedOSProperties()
-                        .withSupportedOsList(
-                            Arrays
-                                .asList(
-                                    new SupportedOSProperty().withInstanceType("tdacarvvlfn")
-                                        .withSupportedOs(Arrays.asList(new SupportedOSDetails().withOsName("poi")
-                                            .withOsType("naz")
-                                            .withOsVersions(Arrays.asList(new OSVersionWrapper(),
-                                                new OSVersionWrapper(), new OSVersionWrapper())))))))
-                .withLocation("zrsq");
+                    new SupportedOSProperties().withSupportedOsList(
+                        Arrays.asList(
+                            new SupportedOSProperty().withInstanceType("zvyfijdkzuqnwsi")
+                                .withSupportedOs(Arrays.asList(
+                                    new SupportedOSDetails().withOsName("olyahluqwqulsut")
+                                        .withOsType("bhxykfhyqezvqqug")
+                                        .withOsVersions(
+                                            Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper(),
+                                                new OSVersionWrapper(), new OSVersionWrapper())),
+                                    new SupportedOSDetails().withOsName("bcvex")
+                                        .withOsType("uquowtljvfwhr")
+                                        .withOsVersions(Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper(),
+                                            new OSVersionWrapper(), new OSVersionWrapper())))),
+                            new SupportedOSProperty().withInstanceType("hyxvrqt")
+                                .withSupportedOs(Arrays.asList(
+                                    new SupportedOSDetails().withOsName("sulmd")
+                                        .withOsType("lmepjpf")
+                                        .withOsVersions(Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper(),
+                                            new OSVersionWrapper())),
+                                    new SupportedOSDetails().withOsName("g")
+                                        .withOsType("ngpszngafpg")
+                                        .withOsVersions(Arrays.asList(new OSVersionWrapper())),
+                                    new SupportedOSDetails().withOsName("ecjujcng")
+                                        .withOsType("dyedmzrgjfo")
+                                        .withOsVersions(Arrays.asList(new OSVersionWrapper())))))))
+                .withLocation("noitpkpztr");
         model = BinaryData.fromObject(model).toObject(SupportedOperatingSystemsInner.class);
-        Assertions.assertEquals("tdacarvvlfn", model.properties().supportedOsList().get(0).instanceType());
-        Assertions.assertEquals("poi", model.properties().supportedOsList().get(0).supportedOs().get(0).osName());
-        Assertions.assertEquals("naz", model.properties().supportedOsList().get(0).supportedOs().get(0).osType());
-        Assertions.assertEquals("zrsq", model.location());
+        Assertions.assertEquals("zvyfijdkzuqnwsi", model.properties().supportedOsList().get(0).instanceType());
+        Assertions.assertEquals("olyahluqwqulsut",
+            model.properties().supportedOsList().get(0).supportedOs().get(0).osName());
+        Assertions.assertEquals("bhxykfhyqezvqqug",
+            model.properties().supportedOsList().get(0).supportedOs().get(0).osType());
+        Assertions.assertEquals("noitpkpztr", model.location());
     }
 }

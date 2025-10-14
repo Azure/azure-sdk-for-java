@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,31 +23,37 @@ public class Trigger implements JsonSerializable<Trigger> {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "Trigger";
 
     /*
      * Trigger description.
      */
+    @Generated
     private String description;
 
     /*
      * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
      */
+    @Generated
     private TriggerRuntimeState runtimeState;
 
     /*
      * List of tags that can be used for describing the trigger.
      */
+    @Generated
     private List<Object> annotations;
 
     /*
      * Azure Synapse nested object which contains information about creating pipeline run
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of Trigger class.
      */
+    @Generated
     public Trigger() {
     }
 
@@ -55,6 +62,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -64,6 +72,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -74,6 +83,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * @param description the description value to set.
      * @return the Trigger object itself.
      */
+    @Generated
     public Trigger setDescription(String description) {
         this.description = description;
         return this;
@@ -85,6 +95,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * 
      * @return the runtimeState value.
      */
+    @Generated
     public TriggerRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
@@ -96,6 +107,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * @param runtimeState the runtimeState value to set.
      * @return the Trigger object itself.
      */
+    @Generated
     Trigger setRuntimeState(TriggerRuntimeState runtimeState) {
         this.runtimeState = runtimeState;
         return this;
@@ -106,6 +118,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * 
      * @return the annotations value.
      */
+    @Generated
     public List<Object> getAnnotations() {
         return this.annotations;
     }
@@ -116,6 +129,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * @param annotations the annotations value to set.
      * @return the Trigger object itself.
      */
+    @Generated
     public Trigger setAnnotations(List<Object> annotations) {
         this.annotations = annotations;
         return this;
@@ -127,6 +141,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -138,6 +153,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the Trigger object itself.
      */
+    @Generated
     public Trigger setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -146,6 +162,7 @@ public class Trigger implements JsonSerializable<Trigger> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -168,6 +185,7 @@ public class Trigger implements JsonSerializable<Trigger> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Trigger.
      */
+    @Generated
     public static Trigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -207,6 +225,7 @@ public class Trigger implements JsonSerializable<Trigger> {
         });
     }
 
+    @Generated
     static Trigger fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Trigger deserializedTrigger = new Trigger();

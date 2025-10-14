@@ -12,18 +12,18 @@ public final class PortalConfigTermsOfServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalConfigTermsOfServiceProperties model
-            = BinaryData.fromString("{\"text\":\"pziiz\",\"requireConsent\":false}")
+            = BinaryData.fromString("{\"text\":\"ooq\",\"requireConsent\":false}")
                 .toObject(PortalConfigTermsOfServiceProperties.class);
-        Assertions.assertEquals("pziiz", model.text());
-        Assertions.assertEquals(false, model.requireConsent());
+        Assertions.assertEquals("ooq", model.text());
+        Assertions.assertFalse(model.requireConsent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PortalConfigTermsOfServiceProperties model
-            = new PortalConfigTermsOfServiceProperties().withText("pziiz").withRequireConsent(false);
+            = new PortalConfigTermsOfServiceProperties().withText("ooq").withRequireConsent(false);
         model = BinaryData.fromObject(model).toObject(PortalConfigTermsOfServiceProperties.class);
-        Assertions.assertEquals("pziiz", model.text());
-        Assertions.assertEquals(false, model.requireConsent());
+        Assertions.assertEquals("ooq", model.text());
+        Assertions.assertFalse(model.requireConsent());
     }
 }

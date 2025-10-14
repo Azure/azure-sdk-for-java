@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class BuildsByBuilderResourceListSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Builds_ListByBuilderResource
-     * .json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * Builds_ListByBuilderResource.json
      */
     /**
      * Sample code: Builds_ListByBuilderResource_0.

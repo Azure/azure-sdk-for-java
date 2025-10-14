@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.8 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,855 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.1 (2025-07-25)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2025-04-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PartnerDestinationInfo` was added
+
+* `models.PartnerUpdateDestinationInfo` was added
+
+* `models.Sku` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssueSeverity` was added
+
+* `models.PartnerDestination$Definition` was added
+
+* `models.ResourceSku` was added
+
+* `models.ResourceKind` was added
+
+* `models.PartnerClientAuthentication` was added
+
+* `models.WebhookAuthenticationSettings` was added
+
+* `models.PartnerEndpointType` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssues` was added
+
+* `models.PartnerDestinationProvisioningState` was added
+
+* `models.CustomJwtAuthenticationManagedIdentityType` was added
+
+* `models.PartnerDestinations` was added
+
+* `models.PartnerDestination` was added
+
+* `models.EncodedIssuerCertificateInfo` was added
+
+* `models.CustomJwtAuthenticationSettings` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProfile` was added
+
+* `models.NetworkSecurityPerimeterAssociationAccessMode` was added
+
+* `models.ResourceMoveChangeHistory` was added
+
+* `models.WebhookPartnerDestinationInfo` was added
+
+* `models.PartnerDestination$Update` was added
+
+* `models.NetworkSecurityPerimeterConfigurationList` was added
+
+* `models.CustomJwtAuthenticationManagedIdentity` was added
+
+* `models.CustomWebhookAuthenticationManagedIdentityType` was added
+
+* `models.PartnerEventSubscriptionDestination` was added
+
+* `models.ClientAuthenticationSettings` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.PartnerDestinationUpdateParameters` was added
+
+* `models.NetworkSecurityPerimeterConfigProvisioningState` was added
+
+* `models.PartnerClientAuthenticationType` was added
+
+* `models.PartnerDestinationActivationState` was added
+
+* `models.AlternativeAuthenticationNameSource` was added
+
+* `models.WebhookUpdatePartnerDestinationInfo` was added
+
+* `models.CustomWebhookAuthenticationManagedIdentity` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssueType` was added
+
+* `models.NetworkSecurityPerimeterResourceType` was added
+
+* `models.FederatedIdentityCredentialInfo` was added
+
+* `models.NetworkSecurityPerimeterSubscription` was added
+
+* `models.NetworkSecurityPerimeterProfileAccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurations` was added
+
+* `models.NetworkSecurityPerimeterInfo` was added
+
+* `models.AzureADPartnerClientAuthentication` was added
+
+* `models.IssuerCertificateInfo` was added
+
+* `models.PartnerDestination$UpdateStages` was added
+
+* `models.ExtendedLocation` was added
+
+* `models.PartnerDestination$DefinitionStages` was added
+
+* `models.NetworkSecurityPerimeterProfileAccessRuleDirection` was added
+
+* `models.NetworkSecurityPerimeterConfiguration` was added
+
+* `models.PartnerDestinationsListResult` was added
+
+#### `models.Subscription$Definition` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.Channel` was modified
+
+* `partnerDestinationInfo()` was added
+
+#### `models.UpdateTopicSpacesConfigurationInfo` was modified
+
+* `clientAuthentication()` was added
+* `withClientAuthentication(models.ClientAuthenticationSettings)` was added
+
+#### `models.TopicUpdateParameters` was modified
+
+* `sku()` was added
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Domain$Update` was modified
+
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withKind(models.ResourceKind)` was added
+* `withSku(models.ResourceSku)` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.DomainUpdateParameters` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `sku()` was added
+
+#### `models.Topic$Update` was modified
+
+* `withSku(models.ResourceSku)` was added
+
+#### `models.TopicSpacesConfiguration` was modified
+
+* `withClientAuthentication(models.ClientAuthenticationSettings)` was added
+* `clientAuthentication()` was added
+
+#### `models.Domain` was modified
+
+* `sku()` was added
+
+#### `models.Channel$Update` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was added
+
+#### `EventGridManager` was modified
+
+* `partnerDestinations()` was added
+* `networkSecurityPerimeterConfigurations()` was added
+
+#### `models.Subscription$Update` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.EventSubscriptionIdentity` was modified
+
+* `withFederatedIdentityCredentialInfo(models.FederatedIdentityCredentialInfo)` was added
+* `federatedIdentityCredentialInfo()` was added
+
+#### `models.Topic` was modified
+
+* `kind()` was added
+* `extendedLocation()` was added
+* `sku()` was added
+
+#### `models.Subscription` was modified
+
+* `tags()` was added
+
+#### `models.Channel$Definition` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was added
+
+#### `models.SubscriptionUpdateParameters` was modified
+
+* `tags()` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.ChannelUpdateParameters` was modified
+
+* `partnerDestinationInfo()` was added
+* `withPartnerDestinationInfo(models.PartnerUpdateDestinationInfo)` was added
+
+#### `models.Domain$Definition` was modified
+
+* `withSku(models.ResourceSku)` was added
+
+#### `models.VerifiedPartner` was modified
+
+* `partnerDestinationDetails()` was added
+
+## 1.2.0 (2025-03-24)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2025-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.TopicTypePropertiesSupportedScopesForSourceItem` was removed
+
+### Features Added
+
+* `models.PermissionBinding$DefinitionStages` was added
+
+* `models.CaCertificates` was added
+
+* `models.Subscription$Definition` was added
+
+* `models.Namespace$UpdateStages` was added
+
+* `models.SkuName` was added
+
+* `models.DeliveryMode` was added
+
+* `models.Channels` was added
+
+* `models.PartnerNamespaceSharedAccessKeys` was added
+
+* `models.StringEndsWithFilter` was added
+
+* `models.Namespaces` was added
+
+* `models.InlineEventProperties` was added
+
+* `models.Channel` was added
+
+* `models.PartnerNamespace` was added
+
+* `models.PartnerConfiguration` was added
+
+* `models.Channel$UpdateStages` was added
+
+* `models.PartnerRegistration$UpdateStages` was added
+
+* `models.BoolEqualsFilter` was added
+
+* `models.UpdateTopicSpacesConfigurationInfo` was added
+
+* `models.DeliveryConfiguration` was added
+
+* `models.PartnerConfigurationUpdateParameters` was added
+
+* `models.TopicSpace$Update` was added
+
+* `models.CaCertificateProvisioningState` was added
+
+* `models.MonitorAlertSeverity` was added
+
+* `models.PermissionBinding$UpdateStages` was added
+
+* `models.UpdateTopicsConfigurationInfo` was added
+
+* `models.StringNotEndsWithFilter` was added
+
+* `models.PermissionType` was added
+
+* `models.FilterOperatorType` was added
+
+* `models.PermissionBindingProvisioningState` was added
+
+* `models.NumberLessThanFilter` was added
+
+* `models.StringNotBeginsWithFilter` was added
+
+* `models.PartnerTopic$Definition` was added
+
+* `models.DataResidencyBoundary` was added
+
+* `models.StringContainsFilter` was added
+
+* `models.Filter` was added
+
+* `models.SubscriptionsListResult` was added
+
+* `models.NamespaceTopicsListResult` was added
+
+* `models.NamespaceTopic$Update` was added
+
+* `models.StringNotInFilter` was added
+
+* `models.CaCertificate$Definition` was added
+
+* `models.CaCertificate$DefinitionStages` was added
+
+* `models.TopicSpaces` was added
+
+* `models.Namespace` was added
+
+* `models.ClientCertificateAuthentication` was added
+
+* `models.Client$Update` was added
+
+* `models.RoutingEnrichments` was added
+
+* `models.ClientGroups` was added
+
+* `models.NamespaceTopics` was added
+
+* `models.NamespaceTopicEventSubscriptions` was added
+
+* `models.NumberNotInFilter` was added
+
+* `models.TopicsConfiguration` was added
+
+* `models.PartnerConfigurations` was added
+
+* `models.PartnerRegistration$Definition` was added
+
+* `models.StringBeginsWithFilter` was added
+
+* `models.VerifiedPartners` was added
+
+* `models.TopicSpace` was added
+
+* `models.NamespaceSharedAccessKeys` was added
+
+* `models.PartnerTopicActivationState` was added
+
+* `models.TopicSpacesListResult` was added
+
+* `models.ClientGroup` was added
+
+* `models.PartnerRegistrationProvisioningState` was added
+
+* `models.TopicSpace$Definition` was added
+
+* `models.StringInFilter` was added
+
+* `models.CaCertificate$Update` was added
+
+* `models.TopicSpacesConfiguration` was added
+
+* `models.DomainEventSubscriptions` was added
+
+* `models.PartnerTopics` was added
+
+* `models.ChannelProvisioningState` was added
+
+* `models.NamespaceSku` was added
+
+* `models.ChannelsListResult` was added
+
+* `models.DeliverySchema` was added
+
+* `models.NumberInFilter` was added
+
+* `models.CaCertificate` was added
+
+* `models.PartnerRegistration` was added
+
+* `models.TopicSpaceProvisioningState` was added
+
+* `models.PartnerTopicRoutingMode` was added
+
+* `models.ClientGroupProvisioningState` was added
+
+* `models.TlsVersion` was added
+
+* `models.NumberLessThanOrEqualsFilter` was added
+
+* `models.PartnerTopicInfo` was added
+
+* `models.PartnerNamespace$DefinitionStages` was added
+
+* `models.Channel$Update` was added
+
+* `models.CaCertificatesListResult` was added
+
+* `models.StaticStringRoutingEnrichment` was added
+
+* `models.PartnerTopicProvisioningState` was added
+
+* `models.CustomDomainConfiguration` was added
+
+* `models.StringNotContainsFilter` was added
+
+* `models.PartnerTopic` was added
+
+* `models.EventDefinitionKind` was added
+
+* `models.PartnerNamespace$Definition` was added
+
+* `models.EventInputSchema` was added
+
+* `models.PartnerNamespaceRegenerateKeyRequest` was added
+
+* `models.NamespaceTopicProvisioningState` was added
+
+* `models.PartnerAuthorization` was added
+
+* `models.StaticRoutingEnrichmentType` was added
+
+* `models.VerifiedPartnersListResult` was added
+
+* `models.PartnerConfigurationProvisioningState` was added
+
+* `models.Subscription$Update` was added
+
+* `models.CaCertificate$UpdateStages` was added
+
+* `models.NamespaceTopic$Definition` was added
+
+* `models.NumberGreaterThanOrEqualsFilter` was added
+
+* `models.Clients` was added
+
+* `models.Subscription$DefinitionStages` was added
+
+* `models.CustomDomainValidationState` was added
+
+* `models.NamespacesListResult` was added
+
+* `models.PartnerNamespaces` was added
+
+* `models.TopicEventSubscriptions` was added
+
+* `models.DynamicRoutingEnrichment` was added
+
+* `models.Client` was added
+
+* `models.DomainTopicEventSubscriptions` was added
+
+* `models.TopicSpace$DefinitionStages` was added
+
+* `models.PermissionBindings` was added
+
+* `models.PartnerConfigurationsListResult` was added
+
+* `models.PartnerUpdateTopicInfo` was added
+
+* `models.PermissionBinding` was added
+
+* `models.NamespaceTopic` was added
+
+* `models.IsNotNullFilter` was added
+
+* `models.Namespace$Definition` was added
+
+* `models.ClientState` was added
+
+* `models.QueueInfo` was added
+
+* `models.PartnerRegistration$Update` was added
+
+* `models.PartnerTopicUpdateParameters` was added
+
+* `models.PushInfo` was added
+
+* `models.ClientProvisioningState` was added
+
+* `models.PartnerDetails` was added
+
+* `models.FiltersConfiguration` was added
+
+* `models.ClientGroup$UpdateStages` was added
+
+* `models.PermissionBinding$Update` was added
+
+* `models.RoutingIdentityType` was added
+
+* `models.CustomDomainOwnershipValidationResult` was added
+
+* `models.SubscriptionFullUrl` was added
+
+* `models.Namespace$Update` was added
+
+* `models.PartnerRegistration$DefinitionStages` was added
+
+* `models.Namespace$DefinitionStages` was added
+
+* `models.PublisherType` was added
+
+* `models.SubscriptionProvisioningState` was added
+
+* `models.PartnerTopicEventSubscriptions` was added
+
+* `models.NamespaceUpdateParameters` was added
+
+* `models.PartnerNamespace$Update` was added
+
+* `models.NumberGreaterThanFilter` was added
+
+* `models.NamespaceProvisioningState` was added
+
+* `models.TopicTypeAdditionalEnforcedPermission` was added
+
+* `models.PermissionBindingsListResult` was added
+
+* `models.ClientCertificateValidationScheme` was added
+
+* `models.ClientsListResult` was added
+
+* `models.MonitorAlertEventSubscriptionDestination` was added
+
+* `models.PartnerTopic$Update` was added
+
+* `models.EventTypeInfo` was added
+
+* `models.Subscription` was added
+
+* `models.PartnerNamespacesListResult` was added
+
+* `models.TopicSpace$UpdateStages` was added
+
+* `models.ClientGroupsListResult` was added
+
+* `models.Client$UpdateStages` was added
+
+* `models.NamespaceTopic$DefinitionStages` was added
+
+* `models.Client$DefinitionStages` was added
+
+* `models.Client$Definition` was added
+
+* `models.RoutingIdentityInfo` was added
+
+* `models.PartnerTopic$DefinitionStages` was added
+
+* `models.ReadinessState` was added
+
+* `models.NamespaceTopicEventSubscriptionDestination` was added
+
+* `models.ClientGroup$Update` was added
+
+* `models.PartnerNamespaceUpdateParameters` was added
+
+* `models.Channel$Definition` was added
+
+* `models.TopicSpacesConfigurationState` was added
+
+* `models.PartnerTopic$UpdateStages` was added
+
+* `models.ClientGroup$Definition` was added
+
+* `models.SubscriptionUpdateParameters` was added
+
+* `models.NamespaceTopic$UpdateStages` was added
+
+* `models.NamespaceTopicUpdateParameters` was added
+
+* `models.PartnerRegistrationsListResult` was added
+
+* `models.PartnerRegistrationUpdateParameters` was added
+
+* `models.Channel$DefinitionStages` was added
+
+* `models.VerifiedPartnerProvisioningState` was added
+
+* `models.CustomDomainIdentity` was added
+
+* `models.TopicTypeSourceScope` was added
+
+* `models.StaticRoutingEnrichment` was added
+
+* `models.CustomDomainIdentityType` was added
+
+* `models.NumberInRangeFilter` was added
+
+* `models.IsNullOrUndefinedFilter` was added
+
+* `models.Subscription$UpdateStages` was added
+
+* `models.ChannelType` was added
+
+* `models.ChannelUpdateParameters` was added
+
+* `models.PermissionBinding$Definition` was added
+
+* `models.NamespaceRegenerateKeyRequest` was added
+
+* `models.PartnerNamespaceProvisioningState` was added
+
+* `models.PartnerTopicsListResult` was added
+
+* `models.NumberNotInRangeFilter` was added
+
+* `models.PartnerRegistrations` was added
+
+* `models.VerifiedPartner` was added
+
+* `models.PartnerNamespace$UpdateStages` was added
+
+* `models.Partner` was added
+
+* `models.ClientGroup$DefinitionStages` was added
+
+#### `models.SystemTopic` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.StringNotBeginsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.WebhookEventSubscriptionDestination` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `endpointType()` was added
+* `minimumTlsVersionAllowed()` was added
+
+#### `models.StringEndsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberInRangeAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.IsNotNullAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.ServiceBusQueueEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.TopicUpdateParameters` was modified
+
+* `dataResidencyBoundary()` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `eventTypeInfo()` was added
+* `minimumTlsVersionAllowed()` was added
+
+#### `models.IsNullOrUndefinedAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Domain$Update` was modified
+
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `models.StringBeginsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.DeliveryAttributeMapping` was modified
+
+* `type()` was added
+
+#### `models.DomainUpdateParameters` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `dataResidencyBoundary()` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `eventTypeInfo()` was added
+* `minimumTlsVersionAllowed()` was added
+
+#### `models.StringNotEndsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberGreaterThanAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.BoolEqualsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringNotInAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Topic$Update` was modified
+
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+
+#### `models.NumberLessThanAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StaticDeliveryAttributeMapping` was modified
+
+* `type()` was added
+
+#### `models.EventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.AzureFunctionEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.Domain` was modified
+
+* `minimumTlsVersionAllowed()` was added
+* `resourceGroupName()` was added
+* `dataResidencyBoundary()` was added
+* `eventTypeInfo()` was added
+
+#### `models.DeadLetterDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.DynamicDeliveryAttributeMapping` was modified
+
+* `type()` was added
+
+#### `models.StorageBlobDeadLetterDestination` was modified
+
+* `endpointType()` was added
+
+#### `EventGridManager` was modified
+
+* `domainTopicEventSubscriptions()` was added
+* `namespaces()` was added
+* `topicEventSubscriptions()` was added
+* `partnerNamespaces()` was added
+* `partnerConfigurations()` was added
+* `channels()` was added
+* `topicSpaces()` was added
+* `caCertificates()` was added
+* `clients()` was added
+* `verifiedPartners()` was added
+* `namespaceTopicEventSubscriptions()` was added
+* `namespaceTopics()` was added
+* `partnerRegistrations()` was added
+* `partnerTopics()` was added
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+* `partnerTopicEventSubscriptions()` was added
+* `permissionBindings()` was added
+* `domainEventSubscriptions()` was added
+* `clientGroups()` was added
+
+#### `models.JsonInputSchemaMapping` was modified
+
+* `inputSchemaMappingType()` was added
+
+#### `models.Topic` was modified
+
+* `dataResidencyBoundary()` was added
+* `resourceGroupName()` was added
+* `minimumTlsVersionAllowed()` was added
+* `eventTypeInfo()` was added
+
+#### `models.StorageQueueEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.StringInAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringContainsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberNotInRangeAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberNotInAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.ServiceBusTopicEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.AdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was added
+
+#### `models.NumberGreaterThanOrEqualsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.HybridConnectionEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.InputSchemaMapping` was modified
+
+* `inputSchemaMappingType()` was added
+
+#### `models.TopicTypeInfo` was modified
+
+* `additionalEnforcedPermissions()` was added
+* `areRegionalAndGlobalSourcesSupported()` was added
+
+#### `models.StringNotContainsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.EventHubEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.TopicTypesListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NumberLessThanOrEqualsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Domain$Definition` was modified
+
+* `withEventTypeInfo(models.EventTypeInfo)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `withMinimumTlsVersionAllowed(models.TlsVersion)` was added
+
+#### `EventGridManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.NumberInAdvancedFilter` was modified
+
+* `operatorType()` was added
 
 ## 1.2.0-beta.7 (2024-12-04)
 

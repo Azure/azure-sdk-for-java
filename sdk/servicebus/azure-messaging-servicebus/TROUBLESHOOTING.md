@@ -98,4 +98,4 @@ Error and warning level logs do not provide enough information. The period of at
 [Samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples
 [SUPPORT]: https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FTROUBLESHOOTING.png)
+

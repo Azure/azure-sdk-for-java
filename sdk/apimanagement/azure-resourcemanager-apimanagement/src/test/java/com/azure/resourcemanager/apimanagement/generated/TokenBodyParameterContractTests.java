@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TokenBodyParameterContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TokenBodyParameterContract model = BinaryData.fromString("{\"name\":\"al\",\"value\":\"jrhuzgf\"}")
+        TokenBodyParameterContract model = BinaryData.fromString("{\"name\":\"ttcslojfkqi\",\"value\":\"nqtoqx\"}")
             .toObject(TokenBodyParameterContract.class);
-        Assertions.assertEquals("al", model.name());
-        Assertions.assertEquals("jrhuzgf", model.value());
+        Assertions.assertEquals("ttcslojfkqi", model.name());
+        Assertions.assertEquals("nqtoqx", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TokenBodyParameterContract model = new TokenBodyParameterContract().withName("al").withValue("jrhuzgf");
+        TokenBodyParameterContract model = new TokenBodyParameterContract().withName("ttcslojfkqi").withValue("nqtoqx");
         model = BinaryData.fromObject(model).toObject(TokenBodyParameterContract.class);
-        Assertions.assertEquals("al", model.name());
-        Assertions.assertEquals("jrhuzgf", model.value());
+        Assertions.assertEquals("ttcslojfkqi", model.name());
+        Assertions.assertEquals("nqtoqx", model.value());
     }
 }

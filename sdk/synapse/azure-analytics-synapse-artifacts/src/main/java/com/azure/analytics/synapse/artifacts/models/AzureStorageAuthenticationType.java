@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
     /**
      * Static value Anonymous for AzureStorageAuthenticationType.
      */
+    @Generated
     public static final AzureStorageAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value AccountKey for AzureStorageAuthenticationType.
      */
+    @Generated
     public static final AzureStorageAuthenticationType ACCOUNT_KEY = fromString("AccountKey");
 
     /**
      * Static value SasUri for AzureStorageAuthenticationType.
      */
+    @Generated
     public static final AzureStorageAuthenticationType SAS_URI = fromString("SasUri");
 
     /**
      * Static value ServicePrincipal for AzureStorageAuthenticationType.
      */
+    @Generated
     public static final AzureStorageAuthenticationType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
      * Static value Msi for AzureStorageAuthenticationType.
      */
+    @Generated
     public static final AzureStorageAuthenticationType MSI = fromString("Msi");
 
     /**
@@ -41,6 +47,7 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AzureStorageAuthenticationType() {
     }
@@ -51,6 +58,7 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
      * @param name a name to look for.
      * @return the corresponding AzureStorageAuthenticationType.
      */
+    @Generated
     public static AzureStorageAuthenticationType fromString(String name) {
         return fromString(name, AzureStorageAuthenticationType.class);
     }
@@ -60,6 +68,7 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
      * 
      * @return known AzureStorageAuthenticationType values.
      */
+    @Generated
     public static Collection<AzureStorageAuthenticationType> values() {
         return values(AzureStorageAuthenticationType.class);
     }

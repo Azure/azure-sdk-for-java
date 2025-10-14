@@ -15,19 +15,21 @@ public final class RaiBlocklistInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistInner model = BinaryData.fromString(
-            "{\"etag\":\"fvazivjlfrqttba\",\"tags\":{\"kqqfk\":\"atnwxyiopi\",\"dmligovibrxk\":\"vscx\"},\"properties\":{\"description\":\"oaz\"},\"id\":\"ruocbgo\",\"name\":\"rb\",\"type\":\"eoybfhjxakvvjgs\"}")
+            "{\"etag\":\"kxtrq\",\"tags\":{\"coezbrhubskh\":\"mlmbtxhwgfwsrta\",\"ookk\":\"dyg\",\"fmluiqtqzfavyvn\":\"fqjbvleo\",\"jkqa\":\"qybaryeua\"},\"properties\":{\"description\":\"zslesjcbher\"},\"id\":\"ntiew\",\"name\":\"jcvb\",\"type\":\"uwrbehwagoh\"}")
             .toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("atnwxyiopi", model.tags().get("kqqfk"));
-        Assertions.assertEquals("oaz", model.properties().description());
+        Assertions.assertEquals("mlmbtxhwgfwsrta", model.tags().get("coezbrhubskh"));
+        Assertions.assertEquals("zslesjcbher", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistInner model = new RaiBlocklistInner().withTags(mapOf("kqqfk", "atnwxyiopi", "dmligovibrxk", "vscx"))
-            .withProperties(new RaiBlocklistProperties().withDescription("oaz"));
+        RaiBlocklistInner model = new RaiBlocklistInner()
+            .withTags(mapOf("coezbrhubskh", "mlmbtxhwgfwsrta", "ookk", "dyg", "fmluiqtqzfavyvn", "fqjbvleo", "jkqa",
+                "qybaryeua"))
+            .withProperties(new RaiBlocklistProperties().withDescription("zslesjcbher"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("atnwxyiopi", model.tags().get("kqqfk"));
-        Assertions.assertEquals("oaz", model.properties().description());
+        Assertions.assertEquals("mlmbtxhwgfwsrta", model.tags().get("coezbrhubskh"));
+        Assertions.assertEquals("zslesjcbher", model.properties().description());
     }
 
     // Use "Map.of" if available

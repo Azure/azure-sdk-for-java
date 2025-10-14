@@ -4,9 +4,9 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
@@ -31,7 +31,7 @@ class EntityServiceBusExceptionTestHelperTest {
             = new CreateTopicOptions().setStatus(EntityStatus.RECEIVE_DISABLED).setUserMetadata("Test-topic-Metadata");
 
         // Act
-        final TopicDescriptionImpl actual = EntityHelper.getTopicDescription(expected);
+        final TopicDescription actual = EntityHelper.getTopicDescription(expected);
 
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
@@ -68,7 +68,7 @@ class EntityServiceBusExceptionTestHelperTest {
             .setStatus(EntityStatus.DISABLED);
 
         // Act
-        final QueueDescriptionImpl actual = EntityHelper.getQueueDescription(expected);
+        final QueueDescription actual = EntityHelper.getQueueDescription(expected);
 
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
@@ -92,7 +92,7 @@ class EntityServiceBusExceptionTestHelperTest {
     void setTopicName() {
         // Arrange
         final String newName = "I'm a new name";
-        final TopicProperties properties = EntityHelper.toModel(new TopicDescriptionImpl());
+        final TopicProperties properties = EntityHelper.toModel(new TopicDescription());
 
         // Act
         EntityHelper.setTopicName(properties, newName);
@@ -133,7 +133,7 @@ class EntityServiceBusExceptionTestHelperTest {
                 .setUserMetadata("Test-topic-Metadata");
 
         // Act
-        final SubscriptionDescriptionImpl actual = EntityHelper.getSubscriptionDescription(expected);
+        final SubscriptionDescription actual = EntityHelper.getSubscriptionDescription(expected);
 
         // Assert
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
@@ -156,7 +156,7 @@ class EntityServiceBusExceptionTestHelperTest {
         // Arrange
         final String topicName = "I'm a new topic name";
         final String subscriptionName = "I'm a new subscription name";
-        final SubscriptionProperties properties = EntityHelper.toModel(new SubscriptionDescriptionImpl());
+        final SubscriptionProperties properties = EntityHelper.toModel(new SubscriptionDescription());
 
         // Act
         EntityHelper.setTopicName(properties, topicName);

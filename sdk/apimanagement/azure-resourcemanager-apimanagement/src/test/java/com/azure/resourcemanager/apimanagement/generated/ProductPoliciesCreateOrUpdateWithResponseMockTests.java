@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
@@ -24,22 +24,22 @@ public final class ProductPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"evfdarvjhwgk\",\"format\":\"rawxml-link\"},\"id\":\"lwrjgotdtmcktkal\",\"name\":\"piybfnkylzri\",\"type\":\"nqlwogq\"}";
+            = "{\"properties\":{\"value\":\"zcrt\",\"format\":\"xml\"},\"id\":\"jz\",\"name\":\"vetpdezebvtkg\",\"type\":\"jnadfhheilnh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyContract response = manager.productPolicies()
-            .createOrUpdateWithResponse("rbusnaq", "vruuhyncppmmwh", "erlurgipvnbxle", PolicyIdName.POLICY,
-                new PolicyContractInner().withValue("c").withFormat(PolicyContentFormat.RAWXML), "wifywxjjylaq",
+            .createOrUpdateWithResponse("xuuksvfsukpkieal", "ckpnnenrcez", "or", PolicyIdName.POLICY,
+                new PolicyContractInner().withValue("kcohj").withFormat(PolicyContentFormat.RAWXML), "meyxyp",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("evfdarvjhwgk", response.value());
-        Assertions.assertEquals(PolicyContentFormat.RAWXML_LINK, response.format());
+        Assertions.assertEquals("zcrt", response.value());
+        Assertions.assertEquals(PolicyContentFormat.XML, response.format());
     }
 }

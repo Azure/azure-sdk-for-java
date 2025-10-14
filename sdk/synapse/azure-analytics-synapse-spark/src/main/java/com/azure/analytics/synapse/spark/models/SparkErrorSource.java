@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.spark.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
     /**
      * Static value System for SparkErrorSource.
      */
+    @Generated
     public static final SparkErrorSource SYSTEM = fromString("System");
 
     /**
      * Static value User for SparkErrorSource.
      */
+    @Generated
     public static final SparkErrorSource USER = fromString("User");
 
     /**
      * Static value Unknown for SparkErrorSource.
      */
+    @Generated
     public static final SparkErrorSource UNKNOWN = fromString("Unknown");
 
     /**
      * Static value Dependency for SparkErrorSource.
      */
+    @Generated
     public static final SparkErrorSource DEPENDENCY = fromString("Dependency");
 
     /**
@@ -36,6 +41,7 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkErrorSource() {
     }
@@ -46,6 +52,7 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
      * @param name a name to look for.
      * @return the corresponding SparkErrorSource.
      */
+    @Generated
     public static SparkErrorSource fromString(String name) {
         return fromString(name, SparkErrorSource.class);
     }
@@ -55,6 +62,7 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
      * 
      * @return known SparkErrorSource values.
      */
+    @Generated
     public static Collection<SparkErrorSource> values() {
         return values(SparkErrorSource.class);
     }

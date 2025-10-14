@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     /*
      * Type of expressions supported by the system. Type: string.
      */
+    @Generated
     private ExpressionV2Type type;
 
     /*
-     * Value for Constant/Field Type: string.
+     * Value for Constant/Field Type: object.
      */
-    private String value;
+    @Generated
+    private Object value;
 
     /*
-     * Expression operator value Type: string.
+     * Expression operator value Type: list of strings.
      */
-    private String operator;
+    @Generated
+    private List<String> operators;
 
     /*
      * List of nested expressions.
      */
+    @Generated
     private List<ExpressionV2> operands;
 
     /**
      * Creates an instance of ExpressionV2 class.
      */
+    @Generated
     public ExpressionV2() {
     }
 
@@ -48,6 +54,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * 
      * @return the type value.
      */
+    @Generated
     public ExpressionV2Type getType() {
         return this.type;
     }
@@ -58,48 +65,53 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * @param type the type value to set.
      * @return the ExpressionV2 object itself.
      */
+    @Generated
     public ExpressionV2 setType(ExpressionV2Type type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the value property: Value for Constant/Field Type: string.
+     * Get the value property: Value for Constant/Field Type: object.
      * 
      * @return the value value.
      */
-    public String getValue() {
+    @Generated
+    public Object getValue() {
         return this.value;
     }
 
     /**
-     * Set the value property: Value for Constant/Field Type: string.
+     * Set the value property: Value for Constant/Field Type: object.
      * 
      * @param value the value value to set.
      * @return the ExpressionV2 object itself.
      */
-    public ExpressionV2 setValue(String value) {
+    @Generated
+    public ExpressionV2 setValue(Object value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the operator property: Expression operator value Type: string.
+     * Get the operators property: Expression operator value Type: list of strings.
      * 
-     * @return the operator value.
+     * @return the operators value.
      */
-    public String getOperator() {
-        return this.operator;
+    @Generated
+    public List<String> getOperators() {
+        return this.operators;
     }
 
     /**
-     * Set the operator property: Expression operator value Type: string.
+     * Set the operators property: Expression operator value Type: list of strings.
      * 
-     * @param operator the operator value to set.
+     * @param operators the operators value to set.
      * @return the ExpressionV2 object itself.
      */
-    public ExpressionV2 setOperator(String operator) {
-        this.operator = operator;
+    @Generated
+    public ExpressionV2 setOperators(List<String> operators) {
+        this.operators = operators;
         return this;
     }
 
@@ -108,6 +120,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * 
      * @return the operands value.
      */
+    @Generated
     public List<ExpressionV2> getOperands() {
         return this.operands;
     }
@@ -118,6 +131,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * @param operands the operands value to set.
      * @return the ExpressionV2 object itself.
      */
+    @Generated
     public ExpressionV2 setOperands(List<ExpressionV2> operands) {
         this.operands = operands;
         return this;
@@ -126,12 +140,15 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("operator", this.operator);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
+        jsonWriter.writeArrayField("operators", this.operators, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("operands", this.operands, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -144,6 +161,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExpressionV2.
      */
+    @Generated
     public static ExpressionV2 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExpressionV2 deserializedExpressionV2 = new ExpressionV2();
@@ -154,9 +172,10 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
                 if ("type".equals(fieldName)) {
                     deserializedExpressionV2.type = ExpressionV2Type.fromString(reader.getString());
                 } else if ("value".equals(fieldName)) {
-                    deserializedExpressionV2.value = reader.getString();
-                } else if ("operator".equals(fieldName)) {
-                    deserializedExpressionV2.operator = reader.getString();
+                    deserializedExpressionV2.value = reader.readUntyped();
+                } else if ("operators".equals(fieldName)) {
+                    List<String> operators = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExpressionV2.operators = operators;
                 } else if ("operands".equals(fieldName)) {
                     List<ExpressionV2> operands = reader.readArray(reader1 -> ExpressionV2.fromJson(reader1));
                     deserializedExpressionV2.operands = operands;

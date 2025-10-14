@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Client;
@@ -23,25 +23,25 @@ public final class ClientsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"zqjmueza\",\"authenticationName\":\"vribqlotokht\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"kcqwwxwjyofgwh\",\"kbtlwljssm\",\"tsnld\",\"pwolgisubxb\"]},\"state\":\"Enabled\",\"attributes\":{\"rykwlefk\":\"datagfii\",\"qvzvlu\":\"dataxqceazfpxgn\"},\"provisioningState\":\"Updating\"},\"id\":\"ios\",\"name\":\"scyvaifppuacvf\",\"type\":\"eowpsfxtjdhsoymh\"}";
+            = "{\"properties\":{\"description\":\"wempdcifrhju\",\"authenticationName\":\"sulwzpflusn\",\"clientCertificateAuthentication\":{\"validationScheme\":\"UriMatchesAuthenticationName\",\"allowedThumbprints\":[\"zotfriyrgkoek\",\"zwx\",\"yxhighc\",\"xb\"]},\"state\":\"Disabled\",\"attributes\":{\"vskiczd\":\"datacqydey\",\"qaboohxbms\":\"datarjeizik\",\"d\":\"dataycqsxr\"},\"provisioningState\":\"Deleting\"},\"id\":\"yqaeohpjhgejk\",\"name\":\"vhhdaurgho\",\"type\":\"xaex\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Client response = manager.clients()
-            .getWithResponse("jlf", "ecominxojjluxxd", "ilz", com.azure.core.util.Context.NONE)
+            .getWithResponse("kd", "qnhttwdowrczfj", "nnuxxrkkmhm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zqjmueza", response.description());
-        Assertions.assertEquals("vribqlotokht", response.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("wempdcifrhju", response.description());
+        Assertions.assertEquals("sulwzpflusn", response.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.URI_MATCHES_AUTHENTICATION_NAME,
             response.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("kcqwwxwjyofgwh",
+        Assertions.assertEquals("zotfriyrgkoek",
             response.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, response.state());
+        Assertions.assertEquals(ClientState.DISABLED, response.state());
     }
 }

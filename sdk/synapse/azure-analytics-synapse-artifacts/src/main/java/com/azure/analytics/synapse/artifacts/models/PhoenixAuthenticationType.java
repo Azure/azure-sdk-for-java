@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
     /**
      * Static value Anonymous for PhoenixAuthenticationType.
      */
+    @Generated
     public static final PhoenixAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value UsernameAndPassword for PhoenixAuthenticationType.
      */
+    @Generated
     public static final PhoenixAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
     /**
      * Static value WindowsAzureHDInsightService for PhoenixAuthenticationType.
      */
+    @Generated
     public static final PhoenixAuthenticationType WINDOWS_AZURE_HDINSIGHT_SERVICE
         = fromString("WindowsAzureHDInsightService");
 
@@ -32,6 +36,7 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PhoenixAuthenticationType() {
     }
@@ -42,6 +47,7 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
      * @param name a name to look for.
      * @return the corresponding PhoenixAuthenticationType.
      */
+    @Generated
     public static PhoenixAuthenticationType fromString(String name) {
         return fromString(name, PhoenixAuthenticationType.class);
     }
@@ -51,6 +57,7 @@ public final class PhoenixAuthenticationType extends ExpandableStringEnum<Phoeni
      * 
      * @return known PhoenixAuthenticationType values.
      */
+    @Generated
     public static Collection<PhoenixAuthenticationType> values() {
         return values(PhoenixAuthenticationType.class);
     }

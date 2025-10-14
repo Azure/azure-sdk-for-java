@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DaprSubscription;
@@ -27,45 +27,44 @@ public final class DaprSubscriptionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pubsubName\":\"dlkhczygpm\",\"topic\":\"jculojhhylx\",\"deadLetterTopic\":\"vfiyymot\",\"routes\":{\"rules\":[{\"match\":\"wjmtftcvelniru\",\"path\":\"qnstpaqpibjg\"},{\"match\":\"swmehfxrttxb\",\"path\":\"ennqfabqca\"},{\"match\":\"lectcxsfmb\",\"path\":\"xmsynbkd\"}],\"default\":\"yufxuzmsvzyq\"},\"scopes\":[\"nxhjtlxfikjk\",\"ara\",\"wwuasnjeglht\",\"xbozpcjcnwjz\"],\"metadata\":{\"i\":\"lxrnwvdsvo\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1110084417,\"maxAwaitDurationMs\":1952109965}},\"id\":\"gfhjxsawoo\",\"name\":\"uffhxf\",\"type\":\"kmwzrdqyoy\"}";
+            = "{\"properties\":{\"pubsubName\":\"wmwqoguflte\",\"topic\":\"negefz\",\"deadLetterTopic\":\"njtqbg\",\"routes\":{\"rules\":[{\"match\":\"hnvxwtd\",\"path\":\"cbjdbtqy\"}],\"default\":\"xu\"},\"scopes\":[\"ujqgbbjvo\",\"oawh\",\"js\"],\"metadata\":{\"d\":\"sloygsa\",\"e\":\"d\",\"zvzuat\":\"onsdunr\"},\"bulkSubscribe\":{\"enabled\":true,\"maxMessagesCount\":640916032,\"maxAwaitDurationMs\":1675511910}},\"id\":\"vfdbqskgqjbvitpt\",\"name\":\"vs\",\"type\":\"favdhpiwrm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DaprSubscription response = manager.daprSubscriptions()
-            .define("aoy")
-            .withExistingManagedEnvironment("n", "dv")
-            .withPubsubName("vg")
-            .withTopic("zmxynofxlt")
-            .withDeadLetterTopic("oqxt")
+            .define("fjajvkyxmm")
+            .withExistingManagedEnvironment("owbebsnbwut", "vuwmsumustihtgr")
+            .withPubsubName("vogt")
+            .withTopic("rjenn")
+            .withDeadLetterTopic("vaeuwqdwxhh")
             .withRoutes(new DaprSubscriptionRoutes()
-                .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("sjirkrpskcjhmmof").withPath("ivd"),
-                    new DaprSubscriptionRouteRule().withMatch("kykpaxnls").withPath("nyscaccpt"),
-                    new DaprSubscriptionRouteRule().withMatch("et").withPath("gxxiceecv"),
-                    new DaprSubscriptionRouteRule().withMatch("yuveoxmpz").withPath("ahdr")))
-                .withDefaultProperty("haz"))
-            .withScopes(Arrays.asList("bivzfgxmbry"))
-            .withMetadata(mapOf("iqsykqfdqwdrt", "ibio", "ert", "tfdaglmrcokz"))
-            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
-                .withMaxMessagesCount(1522861626)
-                .withMaxAwaitDurationMs(1174388584))
+                .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("hfxnrpdhewokyqs").withPath("xfsyw"),
+                    new DaprSubscriptionRouteRule().withMatch("hqbtodjfyxbvkv").withPath("dmv"),
+                    new DaprSubscriptionRouteRule().withMatch("qwcrugyo").withPath("za")))
+                .withDefaultProperty("jdvvlrhocr"))
+            .withScopes(Arrays.asList("xundqzbvbpsuvqhx", "ozf", "dkwbkurklpiig"))
+            .withMetadata(mapOf("zqydewuw", "keutuipjclzjwaq", "vtzqw", "yllzzz"))
+            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(true)
+                .withMaxMessagesCount(1422292419)
+                .withMaxAwaitDurationMs(1623414187))
             .create();
 
-        Assertions.assertEquals("dlkhczygpm", response.pubsubName());
-        Assertions.assertEquals("jculojhhylx", response.topic());
-        Assertions.assertEquals("vfiyymot", response.deadLetterTopic());
-        Assertions.assertEquals("wjmtftcvelniru", response.routes().rules().get(0).match());
-        Assertions.assertEquals("qnstpaqpibjg", response.routes().rules().get(0).path());
-        Assertions.assertEquals("yufxuzmsvzyq", response.routes().defaultProperty());
-        Assertions.assertEquals("nxhjtlxfikjk", response.scopes().get(0));
-        Assertions.assertEquals("lxrnwvdsvo", response.metadata().get("i"));
-        Assertions.assertEquals(false, response.bulkSubscribe().enabled());
-        Assertions.assertEquals(1110084417, response.bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(1952109965, response.bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals("wmwqoguflte", response.pubsubName());
+        Assertions.assertEquals("negefz", response.topic());
+        Assertions.assertEquals("njtqbg", response.deadLetterTopic());
+        Assertions.assertEquals("hnvxwtd", response.routes().rules().get(0).match());
+        Assertions.assertEquals("cbjdbtqy", response.routes().rules().get(0).path());
+        Assertions.assertEquals("xu", response.routes().defaultProperty());
+        Assertions.assertEquals("ujqgbbjvo", response.scopes().get(0));
+        Assertions.assertEquals("sloygsa", response.metadata().get("d"));
+        Assertions.assertTrue(response.bulkSubscribe().enabled());
+        Assertions.assertEquals(640916032, response.bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(1675511910, response.bulkSubscribe().maxAwaitDurationMs());
     }
 
     // Use "Map.of" if available

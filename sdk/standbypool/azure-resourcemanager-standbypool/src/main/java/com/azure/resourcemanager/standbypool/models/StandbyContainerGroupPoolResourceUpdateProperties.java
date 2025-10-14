@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The updatable properties of the StandbyContainerGroupPoolResource.
@@ -26,6 +27,11 @@ public final class StandbyContainerGroupPoolResourceUpdateProperties
      * Specifies container group properties of standby container group pools.
      */
     private ContainerGroupProperties containerGroupProperties;
+
+    /*
+     * Specifies zones of standby container group pools.
+     */
+    private List<String> zones;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolResourceUpdateProperties class.
@@ -76,17 +82,23 @@ public final class StandbyContainerGroupPoolResourceUpdateProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the zones property: Specifies zones of standby container group pools.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the zones value.
      */
-    public void validate() {
-        if (elasticityProfile() != null) {
-            elasticityProfile().validate();
-        }
-        if (containerGroupProperties() != null) {
-            containerGroupProperties().validate();
-        }
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Specifies zones of standby container group pools.
+     * 
+     * @param zones the zones value to set.
+     * @return the StandbyContainerGroupPoolResourceUpdateProperties object itself.
+     */
+    public StandbyContainerGroupPoolResourceUpdateProperties withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /**
@@ -97,6 +109,7 @@ public final class StandbyContainerGroupPoolResourceUpdateProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("elasticityProfile", this.elasticityProfile);
         jsonWriter.writeJsonField("containerGroupProperties", this.containerGroupProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -122,6 +135,9 @@ public final class StandbyContainerGroupPoolResourceUpdateProperties
                 } else if ("containerGroupProperties".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolResourceUpdateProperties.containerGroupProperties
                         = ContainerGroupProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStandbyContainerGroupPoolResourceUpdateProperties.zones = zones;
                 } else {
                     reader.skipChildren();
                 }

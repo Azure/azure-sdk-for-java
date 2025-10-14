@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.providerhub.implementation;
 
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceProviderManifestInner;
+import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
+import com.azure.resourcemanager.providerhub.models.FanoutLinkedNotificationRule;
+import com.azure.resourcemanager.providerhub.models.Notification;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderAuthorization;
+import com.azure.resourcemanager.providerhub.models.ResourceProviderAuthorizationRules;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilities;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifest;
@@ -14,6 +18,7 @@ import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestMana
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestProviderAuthentication;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestReRegisterSubscriptionMetadata;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestRequestHeaderOptions;
+import com.azure.resourcemanager.providerhub.models.ResourceProviderService;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderType;
 import com.azure.resourcemanager.providerhub.models.ResourceType;
 import java.util.Collections;
@@ -45,6 +50,19 @@ public final class ResourceProviderManifestImpl implements ResourceProviderManif
 
     public String namespace() {
         return this.innerModel().namespace();
+    }
+
+    public List<ResourceProviderService> services() {
+        List<ResourceProviderService> inner = this.innerModel().services();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String serviceName() {
+        return this.innerModel().serviceName();
     }
 
     public String providerVersion() {
@@ -94,6 +112,10 @@ public final class ResourceProviderManifestImpl implements ResourceProviderManif
         }
     }
 
+    public CrossTenantTokenValidation crossTenantTokenValidation() {
+        return this.innerModel().crossTenantTokenValidation();
+    }
+
     public Object metadata() {
         return this.innerModel().metadata();
     }
@@ -109,6 +131,32 @@ public final class ResourceProviderManifestImpl implements ResourceProviderManif
 
     public ResourceProviderManifestReRegisterSubscriptionMetadata reRegisterSubscriptionMetadata() {
         return this.innerModel().reRegisterSubscriptionMetadata();
+    }
+
+    public Boolean enableTenantLinkedNotification() {
+        return this.innerModel().enableTenantLinkedNotification();
+    }
+
+    public List<Notification> notifications() {
+        List<Notification> inner = this.innerModel().notifications();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<FanoutLinkedNotificationRule> linkedNotificationRules() {
+        List<FanoutLinkedNotificationRule> inner = this.innerModel().linkedNotificationRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ResourceProviderAuthorizationRules resourceProviderAuthorizationRules() {
+        return this.innerModel().resourceProviderAuthorizationRules();
     }
 
     public ResourceProviderManifestInner innerModel() {

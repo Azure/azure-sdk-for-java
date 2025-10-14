@@ -15,24 +15,26 @@ public final class UserEntityBaseParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserEntityBaseParameters model = BinaryData.fromString(
-            "{\"state\":\"deleted\",\"note\":\"zomucmqgisnionet\",\"identities\":[{\"provider\":\"dpuenxkgtlzlmtr\",\"id\":\"cznnhzkbn\"}]}")
+            "{\"state\":\"deleted\",\"note\":\"cmvouujxdiikmoxr\",\"identities\":[{\"provider\":\"a\",\"id\":\"rxikjmoyw\"},{\"provider\":\"npipcwybszfncn\",\"id\":\"tpf\"},{\"provider\":\"aebwfwhxorpwa\",\"id\":\"zwuge\"},{\"provider\":\"jfccylhtrht\",\"id\":\"azjpwexcdrzpro\"}]}")
             .toObject(UserEntityBaseParameters.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
-        Assertions.assertEquals("zomucmqgisnionet", model.note());
-        Assertions.assertEquals("dpuenxkgtlzlmtr", model.identities().get(0).provider());
-        Assertions.assertEquals("cznnhzkbn", model.identities().get(0).id());
+        Assertions.assertEquals("cmvouujxdiikmoxr", model.note());
+        Assertions.assertEquals("a", model.identities().get(0).provider());
+        Assertions.assertEquals("rxikjmoyw", model.identities().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserEntityBaseParameters model = new UserEntityBaseParameters().withState(UserState.DELETED)
-            .withNote("zomucmqgisnionet")
-            .withIdentities(
-                Arrays.asList(new UserIdentityContractInner().withProvider("dpuenxkgtlzlmtr").withId("cznnhzkbn")));
+            .withNote("cmvouujxdiikmoxr")
+            .withIdentities(Arrays.asList(new UserIdentityContractInner().withProvider("a").withId("rxikjmoyw"),
+                new UserIdentityContractInner().withProvider("npipcwybszfncn").withId("tpf"),
+                new UserIdentityContractInner().withProvider("aebwfwhxorpwa").withId("zwuge"),
+                new UserIdentityContractInner().withProvider("jfccylhtrht").withId("azjpwexcdrzpro")));
         model = BinaryData.fromObject(model).toObject(UserEntityBaseParameters.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
-        Assertions.assertEquals("zomucmqgisnionet", model.note());
-        Assertions.assertEquals("dpuenxkgtlzlmtr", model.identities().get(0).provider());
-        Assertions.assertEquals("cznnhzkbn", model.identities().get(0).id());
+        Assertions.assertEquals("cmvouujxdiikmoxr", model.note());
+        Assertions.assertEquals("a", model.identities().get(0).provider());
+        Assertions.assertEquals("rxikjmoyw", model.identities().get(0).id());
     }
 }

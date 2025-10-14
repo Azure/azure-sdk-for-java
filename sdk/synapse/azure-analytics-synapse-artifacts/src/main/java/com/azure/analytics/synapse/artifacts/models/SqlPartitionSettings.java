@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * specified, the primary key of the table is auto-detected and used as the partition column. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object partitionColumnName;
 
     /*
@@ -28,6 +30,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * partition stride, not for filtering the rows in table. All rows in the table or query result will be partitioned
      * and copied. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionUpperBound;
 
     /*
@@ -35,11 +38,13 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * partition stride, not for filtering the rows in table. All rows in the table or query result will be partitioned
      * and copied. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionLowerBound;
 
     /**
      * Creates an instance of SqlPartitionSettings class.
      */
+    @Generated
     public SqlPartitionSettings() {
     }
 
@@ -50,6 +55,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * 
      * @return the partitionColumnName value.
      */
+    @Generated
     public Object getPartitionColumnName() {
         return this.partitionColumnName;
     }
@@ -62,6 +68,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the SqlPartitionSettings object itself.
      */
+    @Generated
     public SqlPartitionSettings setPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
@@ -74,6 +81,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * 
      * @return the partitionUpperBound value.
      */
+    @Generated
     public Object getPartitionUpperBound() {
         return this.partitionUpperBound;
     }
@@ -86,6 +94,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the SqlPartitionSettings object itself.
      */
+    @Generated
     public SqlPartitionSettings setPartitionUpperBound(Object partitionUpperBound) {
         this.partitionUpperBound = partitionUpperBound;
         return this;
@@ -98,6 +107,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * 
      * @return the partitionLowerBound value.
      */
+    @Generated
     public Object getPartitionLowerBound() {
         return this.partitionLowerBound;
     }
@@ -110,6 +120,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the SqlPartitionSettings object itself.
      */
+    @Generated
     public SqlPartitionSettings setPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
@@ -118,12 +129,19 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
-        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
-        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
+        if (this.partitionUpperBound != null) {
+            jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        }
+        if (this.partitionLowerBound != null) {
+            jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -135,6 +153,7 @@ public final class SqlPartitionSettings implements JsonSerializable<SqlPartition
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlPartitionSettings.
      */
+    @Generated
     public static SqlPartitionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlPartitionSettings deserializedSqlPartitionSettings = new SqlPartitionSettings();

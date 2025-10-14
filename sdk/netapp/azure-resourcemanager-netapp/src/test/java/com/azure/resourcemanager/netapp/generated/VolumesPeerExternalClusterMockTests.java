@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
@@ -22,20 +22,20 @@ import reactor.core.publisher.Mono;
 public final class VolumesPeerExternalClusterMockTests {
     @Test
     public void testPeerExternalCluster() throws Exception {
-        String responseStr = "{\"peerAcceptCommand\":\"bkpbzpcpiljh\"}";
+        String responseStr = "{\"peerAcceptCommand\":\"lembnkbwvqvxkdi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterPeerCommandResponse response = manager.volumes()
-            .peerExternalCluster("dlat", "tmzlbiojlv", "hrbbpneqvcwwyy", "r",
-                new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(Arrays.asList("chpp", "prsnmokayzejn")),
+            .peerExternalCluster("xfyqonmpqoxwdo", "dbxiqx", "iiqbi", "htmwwinh",
+                new PeerClusterForVolumeMigrationRequest().withPeerIpAddresses(Arrays.asList("f", "pofvwb")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bkpbzpcpiljh", response.peerAcceptCommand());
+        Assertions.assertEquals("lembnkbwvqvxkdi", response.peerAcceptCommand());
     }
 }

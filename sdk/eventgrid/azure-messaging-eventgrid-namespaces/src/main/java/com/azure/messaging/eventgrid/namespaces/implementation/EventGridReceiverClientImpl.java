@@ -146,7 +146,7 @@ public final class EventGridReceiverClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "EventGridReceiverCli")
+    @ServiceInterface(name = "EventGridReceiverClient")
     public interface EventGridReceiverClientService {
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive")
         @ExpectedResponses({ 200 })
@@ -417,16 +417,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -483,16 +474,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -555,16 +537,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -628,16 +601,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -692,16 +656,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -756,16 +711,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -820,16 +766,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]
@@ -886,16 +823,7 @@ public final class EventGridReceiverClientImpl {
      *          (Required){
      *             lockToken: String (Required)
      *             error (Required): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Optional)
-     *                     innererror (Optional): (recursive schema, see innererror above)
-     *                 }
+     *                 error (Required): (recursive schema, see error above)
      *             }
      *         }
      *     ]

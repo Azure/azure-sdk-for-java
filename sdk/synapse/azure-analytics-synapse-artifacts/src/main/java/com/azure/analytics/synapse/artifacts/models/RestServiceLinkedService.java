@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,54 +22,64 @@ public class RestServiceLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "RestService";
 
     /*
      * The base URL of the REST service.
      */
+    @Generated
     private Object url;
 
     /*
      * Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type:
      * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableServerCertificateValidation;
 
     /*
      * Type of authentication used to connect to the REST service.
      */
+    @Generated
     private RestServiceAuthenticationType authenticationType;
 
     /*
      * The user name used in Basic authentication type.
      */
+    @Generated
     private Object userName;
 
     /*
      * The password used in Basic authentication type.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
      * with resultType object).
      */
+    @Generated
     private Object authHeaders;
 
     /*
      * The application's client ID used in AadServicePrincipal authentication type.
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The application's key used in AadServicePrincipal authentication type.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which
      * your application resides.
      */
+    @Generated
     private Object tenant;
 
     /*
@@ -76,55 +87,86 @@ public class RestServiceLinkedService extends LinkedService {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object azureCloudType;
 
     /*
      * The resource you are requesting authorization to use.
      */
+    @Generated
     private Object aadResourceId;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /*
      * The client ID associated with your application. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret associated with your application.
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * The token endpoint of the authorization server to acquire access token. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object tokenEndpoint;
 
     /*
      * The target service or resource to which the access will be requested. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object resource;
 
     /*
      * The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object scope;
+
+    /*
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Expression with resultType string).
+     */
+    @Generated
+    private SecretBase servicePrincipalEmbeddedCert;
+
+    /*
+     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
+     * authentication. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /**
      * Creates an instance of RestServiceLinkedService class.
      */
+    @Generated
     public RestServiceLinkedService() {
     }
 
@@ -133,6 +175,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -143,6 +186,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -153,6 +197,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -164,6 +209,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the enableServerCertificateValidation value.
      */
+    @Generated
     public Object getEnableServerCertificateValidation() {
         return this.enableServerCertificateValidation;
     }
@@ -175,6 +221,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
         this.enableServerCertificateValidation = enableServerCertificateValidation;
         return this;
@@ -185,6 +232,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public RestServiceAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -195,6 +243,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setAuthenticationType(RestServiceAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -205,6 +254,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -215,6 +265,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -225,6 +276,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -235,6 +287,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -246,6 +299,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the authHeaders value.
      */
+    @Generated
     public Object getAuthHeaders() {
         return this.authHeaders;
     }
@@ -257,6 +311,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param authHeaders the authHeaders value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setAuthHeaders(Object authHeaders) {
         this.authHeaders = authHeaders;
         return this;
@@ -267,6 +322,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -277,6 +333,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -287,6 +344,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -297,6 +355,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -308,6 +367,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -319,6 +379,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -331,6 +392,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the azureCloudType value.
      */
+    @Generated
     public Object getAzureCloudType() {
         return this.azureCloudType;
     }
@@ -343,6 +405,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param azureCloudType the azureCloudType value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setAzureCloudType(Object azureCloudType) {
         this.azureCloudType = azureCloudType;
         return this;
@@ -353,6 +416,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the aadResourceId value.
      */
+    @Generated
     public Object getAadResourceId() {
         return this.aadResourceId;
     }
@@ -363,6 +427,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param aadResourceId the aadResourceId value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setAadResourceId(Object aadResourceId) {
         this.aadResourceId = aadResourceId;
         return this;
@@ -374,6 +439,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -385,6 +451,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -395,6 +462,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -405,6 +473,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -416,6 +485,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -427,6 +497,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -437,6 +508,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -447,6 +519,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param clientSecret the clientSecret value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -458,6 +531,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the tokenEndpoint value.
      */
+    @Generated
     public Object getTokenEndpoint() {
         return this.tokenEndpoint;
     }
@@ -469,6 +543,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param tokenEndpoint the tokenEndpoint value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setTokenEndpoint(Object tokenEndpoint) {
         this.tokenEndpoint = tokenEndpoint;
         return this;
@@ -480,6 +555,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the resource value.
      */
+    @Generated
     public Object getResource() {
         return this.resource;
     }
@@ -491,6 +567,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @param resource the resource value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setResource(Object resource) {
         this.resource = resource;
         return this;
@@ -502,6 +579,7 @@ public class RestServiceLinkedService extends LinkedService {
      * 
      * @return the scope value.
      */
+    @Generated
     public Object getScope() {
         return this.scope;
     }
@@ -513,14 +591,103 @@ public class RestServiceLinkedService extends LinkedService {
      * @param scope the scope value to set.
      * @return the RestServiceLinkedService object itself.
      */
+    @Generated
     public RestServiceLinkedService setScope(Object scope) {
         this.scope = scope;
         return this;
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    @Generated
+    public Object getServicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    @Generated
+    public RestServiceLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalEmbeddedCert() {
+        return this.servicePrincipalEmbeddedCert;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    @Generated
+    public RestServiceLinkedService setServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        this.servicePrincipalEmbeddedCert = servicePrincipalEmbeddedCert;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalEmbeddedCertPassword() {
+        return this.servicePrincipalEmbeddedCertPassword;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    @Generated
+    public RestServiceLinkedService
+        setServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        this.servicePrincipalEmbeddedCertPassword = servicePrincipalEmbeddedCertPassword;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public RestServiceLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public RestServiceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -530,6 +697,7 @@ public class RestServiceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestServiceLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -539,6 +707,7 @@ public class RestServiceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestServiceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -548,6 +717,7 @@ public class RestServiceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestServiceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -557,9 +727,11 @@ public class RestServiceLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -582,27 +754,61 @@ public class RestServiceLinkedService extends LinkedService {
             || clientSecret != null
             || tokenEndpoint != null
             || resource != null
-            || scope != null) {
+            || scope != null
+            || servicePrincipalCredentialType != null
+            || servicePrincipalEmbeddedCert != null
+            || servicePrincipalEmbeddedCertPassword != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("url", this.url);
-            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.authHeaders != null) {
+                jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+            }
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
-            jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
+            if (this.azureCloudType != null) {
+                jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            }
+            if (this.aadResourceId != null) {
+                jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
-            jsonWriter.writeUntypedField("clientId", this.clientId);
+            if (this.clientId != null) {
+                jsonWriter.writeUntypedField("clientId", this.clientId);
+            }
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-            jsonWriter.writeUntypedField("tokenEndpoint", this.tokenEndpoint);
-            jsonWriter.writeUntypedField("resource", this.resource);
-            jsonWriter.writeUntypedField("scope", this.scope);
+            if (this.tokenEndpoint != null) {
+                jsonWriter.writeUntypedField("tokenEndpoint", this.tokenEndpoint);
+            }
+            if (this.resource != null) {
+                jsonWriter.writeUntypedField("resource", this.resource);
+            }
+            if (this.scope != null) {
+                jsonWriter.writeUntypedField("scope", this.scope);
+            }
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
+            jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
+            jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword",
+                this.servicePrincipalEmbeddedCertPassword);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -622,6 +828,7 @@ public class RestServiceLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RestServiceLinkedService.
      */
+    @Generated
     public static RestServiceLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RestServiceLinkedService deserializedRestServiceLinkedService = new RestServiceLinkedService();
@@ -630,7 +837,9 @@ public class RestServiceLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedRestServiceLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedRestServiceLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedRestServiceLinkedService.setDescription(reader.getString());
@@ -686,6 +895,14 @@ public class RestServiceLinkedService extends LinkedService {
                             deserializedRestServiceLinkedService.resource = reader.readUntyped();
                         } else if ("scope".equals(fieldName)) {
                             deserializedRestServiceLinkedService.scope = reader.readUntyped();
+                        } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                            deserializedRestServiceLinkedService.servicePrincipalCredentialType = reader.readUntyped();
+                        } else if ("servicePrincipalEmbeddedCert".equals(fieldName)) {
+                            deserializedRestServiceLinkedService.servicePrincipalEmbeddedCert
+                                = SecretBase.fromJson(reader);
+                        } else if ("servicePrincipalEmbeddedCertPassword".equals(fieldName)) {
+                            deserializedRestServiceLinkedService.servicePrincipalEmbeddedCertPassword
+                                = SecretBase.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

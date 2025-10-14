@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
     /**
      * Static value other for TextStyleName.
      */
+    @Generated
     public static final TextStyleName OTHER = fromString("other");
 
     /**
      * Static value handwriting for TextStyleName.
      */
+    @Generated
     public static final TextStyleName HANDWRITING = fromString("handwriting");
 
     /**
@@ -26,6 +29,7 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TextStyleName() {
     }
@@ -36,6 +40,7 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
      * @param name a name to look for.
      * @return the corresponding TextStyleName.
      */
+    @Generated
     public static TextStyleName fromString(String name) {
         return fromString(name, TextStyleName.class);
     }
@@ -45,6 +50,7 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
      * 
      * @return known TextStyleName values.
      */
+    @Generated
     public static Collection<TextStyleName> values() {
         return values(TextStyleName.class);
     }

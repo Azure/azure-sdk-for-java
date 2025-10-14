@@ -1,0 +1,84 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/keyvault-v2/ci.yml
+      - sdk/keyvault-v2/azure-security-keyvault-administration/
+      - sdk/keyvault-v2/azure-security-keyvault-certificates/
+      - sdk/keyvault-v2/azure-security-keyvault-keys/
+      - sdk/keyvault-v2/azure-security-keyvault-secrets/
+    exclude:
+      - sdk/keyvault-v2/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-administration/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-certificates/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-keys/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-secrets/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/keyvault-v2/ci.yml
+      - sdk/keyvault-v2/azure-security-keyvault-administration/
+      - sdk/keyvault-v2/azure-security-keyvault-certificates/
+      - sdk/keyvault-v2/azure-security-keyvault-keys/
+      - sdk/keyvault-v2/azure-security-keyvault-secrets/
+    exclude:
+      - sdk/keyvault-v2/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-administration/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-certificates/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-keys/pom.xml
+      - sdk/keyvault-v2/azure-security-keyvault-secrets/pom.xml
+
+parameters:
+- name: release_azuresecuritykeyvaultadministration
+  displayName: 'azure-security-keyvault-administration'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultcertificates
+  displayName: 'azure-security-keyvault-certificates'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultkeys
+  displayName: 'azure-security-keyvault-keys'
+  type: boolean
+  default: true
+- name: release_azuresecuritykeyvaultsecrets
+  displayName: 'azure-security-keyvault-secrets'
+  type: boolean
+  default: true
+
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: keyvault-v2
+    AdditionalLintingOptions: '-DcreateSourcesJar=false'
+    Artifacts:
+      - name: azure-security-keyvault-administration
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultadministration
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultadministration }}
+      - name: azure-security-keyvault-certificates
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultcertificates
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultcertificates }}
+      - name: azure-security-keyvault-keys
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultkeys
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultkeys }}
+      - name: azure-security-keyvault-secrets
+        groupId: com.azure.v2
+        safeName: azuresecuritykeyvaultsecrets
+        releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultsecrets }}

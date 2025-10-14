@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>qpid-proton-j-extensions</artifactId>
-      <version>1.2.5</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+      <version>1.2.6</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.17.2</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.23.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -97,13 +97,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -115,7 +115,7 @@
 <!--      <plugin>-->
 <!--        <groupId>org.apache.maven.plugins</groupId>-->
 <!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--        <version>3.5.0</version>--> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+<!--        <version>3.6.0</version>--> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
 <!--        <configuration>-->
 <!--          <failsOnError>true</failsOnError>-->
 <!--          <failOnViolation>true</failOnViolation>-->

@@ -11,7 +11,7 @@ public final class ApplianceResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplianceResourceDetails model = BinaryData.fromString(
-            "{\"capacity\":7882439676090099182,\"processUtilization\":40.0101712180558,\"totalUtilization\":83.56402796641234,\"status\":\"efgybpmfbfununmp\"}")
+            "{\"capacity\":741103772338557496,\"processUtilization\":92.48561452351048,\"totalUtilization\":36.917764036769974,\"status\":\"djchlr\"}")
             .toObject(ApplianceResourceDetails.class);
     }
 

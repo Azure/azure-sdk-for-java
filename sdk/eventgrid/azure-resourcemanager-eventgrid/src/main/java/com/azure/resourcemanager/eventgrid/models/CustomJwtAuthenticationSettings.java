@@ -23,9 +23,15 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
     private String tokenIssuer;
 
     /*
-     * Information about the certificate that is used for token validation. We currently support maximum 2 certificates.
+     * Information about the certificates that are used for token validation. We currently support maximum 2
+     * certificates.
      */
     private List<IssuerCertificateInfo> issuerCertificates;
+
+    /*
+     * Information about the encoded public certificates that are used for custom authentication.
+     */
+    private List<EncodedIssuerCertificateInfo> encodedIssuerCertificates;
 
     /**
      * Creates an instance of CustomJwtAuthenticationSettings class.
@@ -54,7 +60,7 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
     }
 
     /**
-     * Get the issuerCertificates property: Information about the certificate that is used for token validation. We
+     * Get the issuerCertificates property: Information about the certificates that are used for token validation. We
      * currently support maximum 2 certificates.
      * 
      * @return the issuerCertificates value.
@@ -64,7 +70,7 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
     }
 
     /**
-     * Set the issuerCertificates property: Information about the certificate that is used for token validation. We
+     * Set the issuerCertificates property: Information about the certificates that are used for token validation. We
      * currently support maximum 2 certificates.
      * 
      * @param issuerCertificates the issuerCertificates value to set.
@@ -72,6 +78,29 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
      */
     public CustomJwtAuthenticationSettings withIssuerCertificates(List<IssuerCertificateInfo> issuerCertificates) {
         this.issuerCertificates = issuerCertificates;
+        return this;
+    }
+
+    /**
+     * Get the encodedIssuerCertificates property: Information about the encoded public certificates that are used for
+     * custom authentication.
+     * 
+     * @return the encodedIssuerCertificates value.
+     */
+    public List<EncodedIssuerCertificateInfo> encodedIssuerCertificates() {
+        return this.encodedIssuerCertificates;
+    }
+
+    /**
+     * Set the encodedIssuerCertificates property: Information about the encoded public certificates that are used for
+     * custom authentication.
+     * 
+     * @param encodedIssuerCertificates the encodedIssuerCertificates value to set.
+     * @return the CustomJwtAuthenticationSettings object itself.
+     */
+    public CustomJwtAuthenticationSettings
+        withEncodedIssuerCertificates(List<EncodedIssuerCertificateInfo> encodedIssuerCertificates) {
+        this.encodedIssuerCertificates = encodedIssuerCertificates;
         return this;
     }
 
@@ -84,6 +113,9 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
         if (issuerCertificates() != null) {
             issuerCertificates().forEach(e -> e.validate());
         }
+        if (encodedIssuerCertificates() != null) {
+            encodedIssuerCertificates().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -94,6 +126,8 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("tokenIssuer", this.tokenIssuer);
         jsonWriter.writeArrayField("issuerCertificates", this.issuerCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("encodedIssuerCertificates", this.encodedIssuerCertificates,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -120,6 +154,10 @@ public final class CustomJwtAuthenticationSettings implements JsonSerializable<C
                     List<IssuerCertificateInfo> issuerCertificates
                         = reader.readArray(reader1 -> IssuerCertificateInfo.fromJson(reader1));
                     deserializedCustomJwtAuthenticationSettings.issuerCertificates = issuerCertificates;
+                } else if ("encodedIssuerCertificates".equals(fieldName)) {
+                    List<EncodedIssuerCertificateInfo> encodedIssuerCertificates
+                        = reader.readArray(reader1 -> EncodedIssuerCertificateInfo.fromJson(reader1));
+                    deserializedCustomJwtAuthenticationSettings.encodedIssuerCertificates = encodedIssuerCertificates;
                 } else {
                     reader.skipChildren();
                 }

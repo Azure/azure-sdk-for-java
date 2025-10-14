@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,6 +31,11 @@ public final class Organization implements JsonSerializable<Organization> {
      * How many machines can be created at maximum in this organization out of the maximumConcurrency of the pool.
      */
     private Integer parallelism;
+
+    /*
+     * Determines if the pool should have open access to all projects in this organization.
+     */
+    private Boolean openAccess;
 
     /**
      * Creates an instance of Organization class.
@@ -102,18 +106,24 @@ public final class Organization implements JsonSerializable<Organization> {
     }
 
     /**
-     * Validates the instance.
+     * Get the openAccess property: Determines if the pool should have open access to all projects in this organization.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the openAccess value.
      */
-    public void validate() {
-        if (url() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property url in model Organization"));
-        }
+    public Boolean openAccess() {
+        return this.openAccess;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(Organization.class);
+    /**
+     * Set the openAccess property: Determines if the pool should have open access to all projects in this organization.
+     * 
+     * @param openAccess the openAccess value to set.
+     * @return the Organization object itself.
+     */
+    public Organization withOpenAccess(Boolean openAccess) {
+        this.openAccess = openAccess;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -124,6 +134,7 @@ public final class Organization implements JsonSerializable<Organization> {
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeArrayField("projects", this.projects, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("parallelism", this.parallelism);
+        jsonWriter.writeBooleanField("openAccess", this.openAccess);
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +161,8 @@ public final class Organization implements JsonSerializable<Organization> {
                     deserializedOrganization.projects = projects;
                 } else if ("parallelism".equals(fieldName)) {
                     deserializedOrganization.parallelism = reader.getNullable(JsonReader::getInt);
+                } else if ("openAccess".equals(fieldName)) {
+                    deserializedOrganization.openAccess = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

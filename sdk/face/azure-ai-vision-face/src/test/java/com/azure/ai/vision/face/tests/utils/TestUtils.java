@@ -4,7 +4,6 @@
 package com.azure.ai.vision.face.tests.utils;
 
 import com.azure.ai.vision.face.FaceServiceVersion;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.util.function.Tuple3;
 
@@ -12,8 +11,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class TestUtils {
-    public static final String DISPLAY_NAME_WITH_ARGUMENTS
-        = "[" + ParameterizedTest.INDEX_PLACEHOLDER + "] " + ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER;
 
     public static final String EMPTY_UUID = "00000000-0000-0000-0000-000000000000";
     public static final String FAKE_TOKEN = "FAKE_TOKEN";

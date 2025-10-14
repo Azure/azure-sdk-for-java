@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const request = require("request-promise");
+const axios = require("axios");
 const yaml = require("yaml");
 
 // mapping for services with different spec folder names
@@ -11,11 +11,11 @@ const verRegEx = /<version>(.+)<\/version>/g;
 const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
 const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 const data = {};
-const servicesInvalidUrl = ["securitydevops"];
+const servicesInvalidUrl = ["securitydevops", "deploymentmanager"];
 const deprecatedArtifacts = [
-    "azure-resourcemanager-batchai",
     "azure-resourcemanager-loadtestservice",
-    "azure-resourcemanager-machinelearningservices",
+    "azure-resourcemanager-networkanalytics",
+    "azure-resourcemanager-logz"
 ];
 // exclude premium packages
 const excludeArtifacts = [
@@ -41,6 +41,7 @@ const excludeArtifacts = [
     "azure-resourcemanager-sql",
     "azure-resourcemanager-storage"
 ]
+const requestTimeoutInMilli = 10000;
 
 async function autocent() {
     console.log("[INFO] Automation task to update the mapping of services and API version tags.");
@@ -227,27 +228,34 @@ function versionCompare(a, b) {
 }
 
 async function existUrl(url, callback) {
-    var result = await request({
-        url: url,
-        method: "HEAD",
-        headers: {
-            "user-agent": "AutoCent",
-        },
-        simple: false,
-        resolveWithFullResponse: true,
-    });
-    return result.statusCode == 200 || result.statusCode == 429;
+    var result = await axios.head(
+        url,
+        {
+            headers: {
+                "user-agent": "AutoCent",
+            },
+            responseType: "json",
+            validateStatus: (status) => status < 500,
+            timeout: requestTimeoutInMilli
+        }
+    );
+    return result.status == 200 || result.status == 429;
 }
 
 // method to send GET request
 async function sendRequest(url) {
-    return await request({
-        url: url,
-        method: "GET",
-        headers: {
-            "user-agent": "AutoCent",
-        },
-    });
+    var result = await axios.get(
+        url,
+        {
+            headers: {
+                "user-agent": "AutoCent",
+            },
+            responseType: "json",
+            validateStatus: (status) => status === 200,
+            timeout: requestTimeoutInMilli
+        }
+    );
+    return result.data;
 }
 
 function getSpecsMapping() {

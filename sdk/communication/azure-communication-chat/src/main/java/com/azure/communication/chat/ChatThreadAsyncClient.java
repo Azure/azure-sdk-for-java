@@ -166,6 +166,53 @@ public final class ChatThreadAsyncClient {
     }
 
     /**
+     * Updates a thread's properties.
+     *
+     * @param options The thread update options (e.g., topic, metadata).
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateThreadProperties(UpdateChatThreadOptions options) {
+        try {
+            Objects.requireNonNull(options, "'options' cannot be null.");
+            return withContext(
+                context -> updateThreadProperties(options, context).flatMap((Response<Void> res) -> Mono.empty()));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates a thread's properties.
+     *
+     * @param options The thread update options (e.g., topic, metadata).
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response containing the result of the operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateThreadPropertiesWithResponse(UpdateChatThreadOptions options) {
+        try {
+            Objects.requireNonNull(options, "'options' cannot be null.");
+            return withContext(context -> updateThreadProperties(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> updateThreadProperties(UpdateChatThreadOptions options, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            return this.chatThreadClient.updateChatThreadPropertiesWithResponseAsync(chatThreadId, options, context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param participants Collection of participants to add.

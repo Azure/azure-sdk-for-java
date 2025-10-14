@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ManagedHsmsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_Update.json
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/ManagedHsm_Update.json
      */
     /**
      * Sample code: Update an existing managed HSM Pool.

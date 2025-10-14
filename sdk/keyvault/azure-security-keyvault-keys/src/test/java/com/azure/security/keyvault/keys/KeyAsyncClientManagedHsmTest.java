@@ -6,8 +6,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyType;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,6 +18,8 @@ import java.net.HttpURLConnection;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnabledIf("shouldRunHsmTest")
 public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements KeyClientManagedHsmTestBase {
@@ -127,10 +129,36 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // Ignoring test until the service rolls out a fix for an issue with the "version" parameter of a release
-        // policy.
-        Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4);
-
         super.releaseKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key's attestation material can be retrieved.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyAttestation(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        getKeyAttestationRunner((keyToCreate) -> {
+            StepVerifier.create(keyAsyncClient.createKey(keyToCreate))
+                .assertNext(createdKey -> assertKeyEquals(keyToCreate, createdKey))
+                .verifyComplete();
+
+            StepVerifier.create(keyAsyncClient.getKeyAttestation(keyToCreate.getName())).assertNext(retrievedKey -> {
+                assertNotNull(retrievedKey);
+
+                KeyAttestation keyAttestation = retrievedKey.getProperties().getKeyAttestation();
+
+                assertNotNull(keyAttestation);
+                assertNotNull(keyAttestation.getCertificatePemFile());
+                assertTrue(keyAttestation.getCertificatePemFile().length > 0);
+                assertNotNull(keyAttestation.getPrivateKeyAttestation());
+                assertTrue(keyAttestation.getPrivateKeyAttestation().length > 0);
+                assertNotNull(keyAttestation.getPublicKeyAttestation());
+                assertTrue(keyAttestation.getPublicKeyAttestation().length > 0);
+                assertNotNull(keyAttestation.getVersion());
+            }).verifyComplete();
+        });
     }
 }

@@ -4,7 +4,7 @@
 package io.clientcore.core.serialization.xml;
 
 import io.clientcore.core.serialization.xml.implementation.aalto.stax.InputFactoryImpl;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -452,8 +452,9 @@ public final class XmlReader implements AutoCloseable {
             } else if (nextEvent != XMLStreamConstants.PROCESSING_INSTRUCTION
                 && nextEvent != XMLStreamConstants.COMMENT) {
                 // Processing instructions and comments are ignored but anything else is unexpected.
-                throw LOGGER.logThrowableAsError(
-                    new XMLStreamException("Unexpected event type while reading element value " + nextEvent));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("nextEvent", nextEvent)
+                    .log("Unexpected event type while reading element value.", XMLStreamException::new);
             }
 
             nextEvent = reader.next();
@@ -677,16 +678,19 @@ public final class XmlReader implements AutoCloseable {
         }
 
         if (currentToken() != XmlToken.START_ELEMENT) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + currentToken() + "'."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("currentToken", currentToken().name())
+                .log("Illegal start of XML deserialization. " + "Expected 'XmlToken.START_ELEMENT'.",
+                    IllegalStateException::new);
         }
 
         String currentLocalName = reader.getLocalName();
         String currentNamespaceUri = reader.getNamespaceURI();
         if (!qNameEquals(currentNamespaceUri, currentLocalName, namespaceUri, localName)) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("Expected XML element to be '" + qNameToString(namespaceUri, localName)
-                    + "' but it was: " + qNameToString(currentNamespaceUri, currentLocalName) + "'."));
+            throw LOGGER.throwableAtError()
+                .addKeyValue("expectedElement", qNameToString(namespaceUri, localName))
+                .addKeyValue("actualElement", qNameToString(currentNamespaceUri, currentLocalName))
+                .log("Unexpected XML element.", IllegalStateException::new);
         }
 
         return converter.read(this);
@@ -758,8 +762,9 @@ public final class XmlReader implements AutoCloseable {
                 return XmlToken.END_DOCUMENT;
 
             default:
-                throw LOGGER
-                    .logThrowableAsError(new IllegalStateException("Unknown/unsupported XMLStreamConstants: " + event));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("event", event)
+                    .log("Unknown/unsupported XmlToken", IllegalStateException::new);
         }
     }
 }

@@ -4,15 +4,17 @@
 
 package com.azure.ai.documenttranslator.implementation;
 
+import com.azure.ai.documenttranslator.BatchDocumentTranslationServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the BatchDocumentTranslationClient type. */
+/**
+ * Initializes a new instance of the BatchDocumentTranslationClient type.
+ */
 public final class BatchDocumentTranslationClientImpl {
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
@@ -23,43 +25,63 @@ public final class BatchDocumentTranslationClientImpl {
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus.api.cognitive.microsoft.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * Service version.
+     */
+    private final BatchDocumentTranslationServiceVersion serviceVersion;
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public BatchDocumentTranslationServiceVersion getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The DocumentTranslationsImpl object to access its operations. */
+    /**
+     * The DocumentTranslationsImpl object to access its operations.
+     */
     private final DocumentTranslationsImpl documentTranslations;
 
     /**
      * Gets the DocumentTranslationsImpl object to access its operations.
-     *
+     * 
      * @return the DocumentTranslationsImpl object.
      */
     public DocumentTranslationsImpl getDocumentTranslations() {
@@ -68,39 +90,44 @@ public final class BatchDocumentTranslationClientImpl {
 
     /**
      * Initializes an instance of BatchDocumentTranslationClient client.
-     *
+     * 
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://westus.api.cognitive.microsoft.com).
+     * https://westus.api.cognitive.microsoft.com).
+     * @param serviceVersion Service version.
      */
-    public BatchDocumentTranslationClientImpl(String endpoint) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    public BatchDocumentTranslationClientImpl(String endpoint, BatchDocumentTranslationServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of BatchDocumentTranslationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://westus.api.cognitive.microsoft.com).
+     * https://westus.api.cognitive.microsoft.com).
+     * @param serviceVersion Service version.
      */
-    public BatchDocumentTranslationClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    public BatchDocumentTranslationClientImpl(HttpPipeline httpPipeline, String endpoint,
+        BatchDocumentTranslationServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of BatchDocumentTranslationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://westus.api.cognitive.microsoft.com).
+     * https://westus.api.cognitive.microsoft.com).
+     * @param serviceVersion Service version.
      */
     public BatchDocumentTranslationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint) {
+        String endpoint, BatchDocumentTranslationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
         this.documentTranslations = new DocumentTranslationsImpl(this);
     }
 }

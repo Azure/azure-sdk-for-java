@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ConnectedEnvironmentsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ConnectedEnvironments_Delete
-     * .json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * ConnectedEnvironments_Delete.json
      */
     /**
      * Sample code: Delete connected environment by connectedEnvironmentName.

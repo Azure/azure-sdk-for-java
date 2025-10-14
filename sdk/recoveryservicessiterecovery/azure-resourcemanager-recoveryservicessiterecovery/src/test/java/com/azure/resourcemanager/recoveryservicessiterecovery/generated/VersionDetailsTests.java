@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class VersionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VersionDetails model = BinaryData.fromString(
-            "{\"version\":\"avehhrvkbunzo\",\"expiryDate\":\"2021-06-10T11:46:22Z\",\"status\":\"SecurityUpdateRequired\"}")
+        VersionDetails model = BinaryData
+            .fromString("{\"version\":\"kk\",\"expiryDate\":\"2021-08-20T08:34:35Z\",\"status\":\"NotSupported\"}")
             .toObject(VersionDetails.class);
-        Assertions.assertEquals("avehhrvkbunzo", model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T11:46:22Z"), model.expiryDate());
-        Assertions.assertEquals(AgentVersionStatus.SECURITY_UPDATE_REQUIRED, model.status());
+        Assertions.assertEquals("kk", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T08:34:35Z"), model.expiryDate());
+        Assertions.assertEquals(AgentVersionStatus.NOT_SUPPORTED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VersionDetails model = new VersionDetails().withVersion("avehhrvkbunzo")
-            .withExpiryDate(OffsetDateTime.parse("2021-06-10T11:46:22Z"))
-            .withStatus(AgentVersionStatus.SECURITY_UPDATE_REQUIRED);
+        VersionDetails model = new VersionDetails().withVersion("kk")
+            .withExpiryDate(OffsetDateTime.parse("2021-08-20T08:34:35Z"))
+            .withStatus(AgentVersionStatus.NOT_SUPPORTED);
         model = BinaryData.fromObject(model).toObject(VersionDetails.class);
-        Assertions.assertEquals("avehhrvkbunzo", model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T11:46:22Z"), model.expiryDate());
-        Assertions.assertEquals(AgentVersionStatus.SECURITY_UPDATE_REQUIRED, model.status());
+        Assertions.assertEquals("kk", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T08:34:35Z"), model.expiryDate());
+        Assertions.assertEquals(AgentVersionStatus.NOT_SUPPORTED, model.status());
     }
 }

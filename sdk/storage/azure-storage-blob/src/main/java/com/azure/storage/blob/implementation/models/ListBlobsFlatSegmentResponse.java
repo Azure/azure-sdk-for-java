@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,41 +21,49 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
     /*
      * The ServiceEndpoint property.
      */
+    @Generated
     private String serviceEndpoint;
 
     /*
      * The ContainerName property.
      */
+    @Generated
     private String containerName;
 
     /*
      * The Prefix property.
      */
+    @Generated
     private String prefix;
 
     /*
      * The Marker property.
      */
+    @Generated
     private String marker;
 
     /*
      * The MaxResults property.
      */
+    @Generated
     private int maxResults;
 
     /*
      * The Segment property.
      */
+    @Generated
     private BlobFlatListSegment segment;
 
     /*
      * The NextMarker property.
      */
+    @Generated
     private String nextMarker;
 
     /**
      * Creates an instance of ListBlobsFlatSegmentResponse class.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse() {
     }
 
@@ -64,6 +72,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the serviceEndpoint value.
      */
+    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -74,6 +83,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -84,6 +94,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the containerName value.
      */
+    @Generated
     public String getContainerName() {
         return this.containerName;
     }
@@ -94,6 +105,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param containerName the containerName value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setContainerName(String containerName) {
         this.containerName = containerName;
         return this;
@@ -104,6 +116,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the prefix value.
      */
+    @Generated
     public String getPrefix() {
         return this.prefix;
     }
@@ -114,6 +127,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param prefix the prefix value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
@@ -124,6 +138,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the marker value.
      */
+    @Generated
     public String getMarker() {
         return this.marker;
     }
@@ -134,6 +149,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param marker the marker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setMarker(String marker) {
         this.marker = marker;
         return this;
@@ -144,6 +160,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the maxResults value.
      */
+    @Generated
     public int getMaxResults() {
         return this.maxResults;
     }
@@ -154,6 +171,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param maxResults the maxResults value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
@@ -164,6 +182,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the segment value.
      */
+    @Generated
     public BlobFlatListSegment getSegment() {
         return this.segment;
     }
@@ -174,6 +193,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param segment the segment value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setSegment(BlobFlatListSegment segment) {
         this.segment = segment;
         return this;
@@ -184,6 +204,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * 
      * @return the nextMarker value.
      */
+    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -194,19 +215,22 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * @param nextMarker the nextMarker value to set.
      * @return the ListBlobsFlatSegmentResponse object itself.
      */
+    @Generated
     public ListBlobsFlatSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringAttribute("ContainerName", this.containerName);
@@ -226,6 +250,7 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListBlobsFlatSegmentResponse.
      */
+    @Generated
     public static ListBlobsFlatSegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -240,9 +265,11 @@ public final class ListBlobsFlatSegmentResponse implements XmlSerializable<ListB
      * if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ListBlobsFlatSegmentResponse.
      */
+    @Generated
     public static ListBlobsFlatSegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ListBlobsFlatSegmentResponse deserializedListBlobsFlatSegmentResponse = new ListBlobsFlatSegmentResponse();
             deserializedListBlobsFlatSegmentResponse.serviceEndpoint

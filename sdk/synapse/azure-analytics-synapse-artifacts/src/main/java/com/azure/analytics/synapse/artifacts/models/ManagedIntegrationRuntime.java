@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,31 +21,37 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     /*
      * Type of integration runtime.
      */
+    @Generated
     private IntegrationRuntimeType type = IntegrationRuntimeType.MANAGED;
 
     /*
      * Integration runtime state, only valid for managed dedicated integration runtime.
      */
+    @Generated
     private IntegrationRuntimeState state;
 
     /*
      * Managed Virtual Network reference.
      */
+    @Generated
     private ManagedVirtualNetworkReference managedVirtualNetwork;
 
     /*
      * The compute resource for managed integration runtime.
      */
+    @Generated
     private IntegrationRuntimeComputeProperties computeProperties;
 
     /*
      * SSIS properties for managed integration runtime.
      */
+    @Generated
     private IntegrationRuntimeSsisProperties ssisProperties;
 
     /**
      * Creates an instance of ManagedIntegrationRuntime class.
      */
+    @Generated
     public ManagedIntegrationRuntime() {
     }
 
@@ -53,6 +60,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public IntegrationRuntimeType getType() {
         return this.type;
@@ -63,6 +71,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the state value.
      */
+    @Generated
     public IntegrationRuntimeState getState() {
         return this.state;
     }
@@ -72,6 +81,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the managedVirtualNetwork value.
      */
+    @Generated
     public ManagedVirtualNetworkReference getManagedVirtualNetwork() {
         return this.managedVirtualNetwork;
     }
@@ -82,6 +92,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
+    @Generated
     public ManagedIntegrationRuntime setManagedVirtualNetwork(ManagedVirtualNetworkReference managedVirtualNetwork) {
         this.managedVirtualNetwork = managedVirtualNetwork;
         return this;
@@ -92,6 +103,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the computeProperties value.
      */
+    @Generated
     public IntegrationRuntimeComputeProperties getComputeProperties() {
         return this.computeProperties;
     }
@@ -102,6 +114,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
+    @Generated
     public ManagedIntegrationRuntime setComputeProperties(IntegrationRuntimeComputeProperties computeProperties) {
         this.computeProperties = computeProperties;
         return this;
@@ -112,6 +125,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the ssisProperties value.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties getSsisProperties() {
         return this.ssisProperties;
     }
@@ -122,6 +136,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * @param ssisProperties the ssisProperties value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
+    @Generated
     public ManagedIntegrationRuntime setSsisProperties(IntegrationRuntimeSsisProperties ssisProperties) {
         this.ssisProperties = ssisProperties;
         return this;
@@ -130,6 +145,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ManagedIntegrationRuntime setDescription(String description) {
         super.setDescription(description);
@@ -139,6 +155,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -167,6 +184,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedIntegrationRuntime.
      */
+    @Generated
     public static ManagedIntegrationRuntime fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedIntegrationRuntime deserializedManagedIntegrationRuntime = new ManagedIntegrationRuntime();

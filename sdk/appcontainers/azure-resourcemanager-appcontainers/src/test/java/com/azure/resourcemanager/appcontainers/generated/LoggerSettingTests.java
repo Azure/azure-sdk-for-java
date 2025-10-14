@@ -13,16 +13,16 @@ public final class LoggerSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoggerSetting model
-            = BinaryData.fromString("{\"logger\":\"klff\",\"level\":\"debug\"}").toObject(LoggerSetting.class);
-        Assertions.assertEquals("klff", model.logger());
-        Assertions.assertEquals(Level.DEBUG, model.level());
+            = BinaryData.fromString("{\"logger\":\"wyt\",\"level\":\"info\"}").toObject(LoggerSetting.class);
+        Assertions.assertEquals("wyt", model.logger());
+        Assertions.assertEquals(Level.INFO, model.level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoggerSetting model = new LoggerSetting().withLogger("klff").withLevel(Level.DEBUG);
+        LoggerSetting model = new LoggerSetting().withLogger("wyt").withLevel(Level.INFO);
         model = BinaryData.fromObject(model).toObject(LoggerSetting.class);
-        Assertions.assertEquals("klff", model.logger());
-        Assertions.assertEquals(Level.DEBUG, model.level());
+        Assertions.assertEquals("wyt", model.logger());
+        Assertions.assertEquals(Level.INFO, model.level());
     }
 }

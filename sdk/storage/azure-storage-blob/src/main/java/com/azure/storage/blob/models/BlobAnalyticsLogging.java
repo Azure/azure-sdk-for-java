@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,31 +21,37 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
     /*
      * The version of Storage Analytics to configure.
      */
+    @Generated
     private String version;
 
     /*
      * Indicates whether all delete requests should be logged.
      */
+    @Generated
     private boolean delete;
 
     /*
      * Indicates whether all read requests should be logged.
      */
+    @Generated
     private boolean read;
 
     /*
      * Indicates whether all write requests should be logged.
      */
+    @Generated
     private boolean write;
 
     /*
      * the retention policy which determines how long the associated data should persist
      */
+    @Generated
     private BlobRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of BlobAnalyticsLogging class.
      */
+    @Generated
     public BlobAnalyticsLogging() {
     }
 
@@ -54,6 +60,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -64,6 +71,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * @param version the version value to set.
      * @return the BlobAnalyticsLogging object itself.
      */
+    @Generated
     public BlobAnalyticsLogging setVersion(String version) {
         this.version = version;
         return this;
@@ -74,6 +82,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * 
      * @return the delete value.
      */
+    @Generated
     public boolean isDelete() {
         return this.delete;
     }
@@ -84,6 +93,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * @param delete the delete value to set.
      * @return the BlobAnalyticsLogging object itself.
      */
+    @Generated
     public BlobAnalyticsLogging setDelete(boolean delete) {
         this.delete = delete;
         return this;
@@ -94,6 +104,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * 
      * @return the read value.
      */
+    @Generated
     public boolean isRead() {
         return this.read;
     }
@@ -104,6 +115,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * @param read the read value to set.
      * @return the BlobAnalyticsLogging object itself.
      */
+    @Generated
     public BlobAnalyticsLogging setRead(boolean read) {
         this.read = read;
         return this;
@@ -114,6 +126,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * 
      * @return the write value.
      */
+    @Generated
     public boolean isWrite() {
         return this.write;
     }
@@ -124,6 +137,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * @param write the write value to set.
      * @return the BlobAnalyticsLogging object itself.
      */
+    @Generated
     public BlobAnalyticsLogging setWrite(boolean write) {
         this.write = write;
         return this;
@@ -135,6 +149,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * 
      * @return the retentionPolicy value.
      */
+    @Generated
     public BlobRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
@@ -146,19 +161,23 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the BlobAnalyticsLogging object itself.
      */
+    @Generated
     public BlobAnalyticsLogging setRetentionPolicy(BlobRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobAnalyticsLogging" : rootElementName;
+        rootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "BlobAnalyticsLogging" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.version);
         xmlWriter.writeBooleanElement("Delete", this.delete);
@@ -176,6 +195,7 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobAnalyticsLogging.
      */
+    @Generated
     public static BlobAnalyticsLogging fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -190,9 +210,10 @@ public final class BlobAnalyticsLogging implements XmlSerializable<BlobAnalytics
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobAnalyticsLogging.
      */
+    @Generated
     public static BlobAnalyticsLogging fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobAnalyticsLogging" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "BlobAnalyticsLogging" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobAnalyticsLogging deserializedBlobAnalyticsLogging = new BlobAnalyticsLogging();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

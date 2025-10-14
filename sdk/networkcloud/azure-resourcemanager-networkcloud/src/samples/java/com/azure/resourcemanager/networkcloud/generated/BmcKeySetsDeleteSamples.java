@@ -10,8 +10,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class BmcKeySetsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * BmcKeySets_Delete.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BmcKeySets_Delete.
+     * json
      */
     /**
      * Sample code: Delete baseboard management controller key set of cluster.
@@ -21,6 +21,6 @@ public final class BmcKeySetsDeleteSamples {
     public static void deleteBaseboardManagementControllerKeySetOfCluster(
         com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.bmcKeySets()
-            .delete("resourceGroupName", "clusterName", "bmcKeySetName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "clusterName", "bmcKeySetName", null, null, com.azure.core.util.Context.NONE);
     }
 }

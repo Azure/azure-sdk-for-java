@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfi
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionTunnelProperties;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * VirtualNetworkGatewayConnectionCreate.json
      */
     /**
@@ -79,6 +80,11 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                 .withRoutingWeight(0)
                 .withDpdTimeoutSeconds(30)
                 .withConnectionMode(VirtualNetworkGatewayConnectionMode.DEFAULT)
+                .withTunnelProperties(Arrays.asList(
+                    new VirtualNetworkGatewayConnectionTunnelProperties().withTunnelIpAddress("10.78.1.5")
+                        .withBgpPeeringAddress("10.78.1.17"),
+                    new VirtualNetworkGatewayConnectionTunnelProperties().withTunnelIpAddress("10.78.1.7")
+                        .withBgpPeeringAddress("10.78.1.20")))
                 .withSharedKey("fakeTokenPlaceholder")
                 .withEnableBgp(false)
                 .withGatewayCustomBgpIpAddresses(Arrays.asList(

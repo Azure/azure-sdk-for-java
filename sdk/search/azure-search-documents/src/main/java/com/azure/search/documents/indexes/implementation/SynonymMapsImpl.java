@@ -62,7 +62,7 @@ public final class SynonymMapsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientS")
+    @ServiceInterface(name = "SearchServiceClientSynonymMaps")
     public interface SynonymMapsService {
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200, 201 })

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,51 +22,61 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "HDInsightMapReduce";
 
     /*
      * Storage linked service references.
      */
+    @Generated
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
+    @Generated
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
+    @Generated
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Class name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object className;
 
     /*
      * Jar path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object jarFilePath;
 
     /*
      * Jar linked service reference.
      */
+    @Generated
     private LinkedServiceReference jarLinkedService;
 
     /*
      * Jar libs.
      */
+    @Generated
     private List<Object> jarLibs;
 
     /*
      * Allows user to specify defines for the MapReduce job request.
      */
+    @Generated
     private Map<String, Object> defines;
 
     /**
      * Creates an instance of HDInsightMapReduceActivity class.
      */
+    @Generated
     public HDInsightMapReduceActivity() {
     }
 
@@ -74,6 +85,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -84,6 +96,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the storageLinkedServices value.
      */
+    @Generated
     public List<LinkedServiceReference> getStorageLinkedServices() {
         return this.storageLinkedServices;
     }
@@ -94,6 +107,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
@@ -104,6 +118,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<Object> getArguments() {
         return this.arguments;
     }
@@ -114,6 +129,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param arguments the arguments value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setArguments(List<Object> arguments) {
         this.arguments = arguments;
         return this;
@@ -124,6 +140,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the getDebugInfo value.
      */
+    @Generated
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
         return this.getDebugInfo;
     }
@@ -134,6 +151,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
         this.getDebugInfo = getDebugInfo;
         return this;
@@ -144,6 +162,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the className value.
      */
+    @Generated
     public Object getClassName() {
         return this.className;
     }
@@ -154,6 +173,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param className the className value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setClassName(Object className) {
         this.className = className;
         return this;
@@ -164,6 +184,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the jarFilePath value.
      */
+    @Generated
     public Object getJarFilePath() {
         return this.jarFilePath;
     }
@@ -174,6 +195,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param jarFilePath the jarFilePath value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setJarFilePath(Object jarFilePath) {
         this.jarFilePath = jarFilePath;
         return this;
@@ -184,6 +206,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the jarLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getJarLinkedService() {
         return this.jarLinkedService;
     }
@@ -194,6 +217,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param jarLinkedService the jarLinkedService value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setJarLinkedService(LinkedServiceReference jarLinkedService) {
         this.jarLinkedService = jarLinkedService;
         return this;
@@ -204,6 +228,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the jarLibs value.
      */
+    @Generated
     public List<Object> getJarLibs() {
         return this.jarLibs;
     }
@@ -214,6 +239,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param jarLibs the jarLibs value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setJarLibs(List<Object> jarLibs) {
         this.jarLibs = jarLibs;
         return this;
@@ -224,6 +250,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the defines value.
      */
+    @Generated
     public Map<String, Object> getDefines() {
         return this.defines;
     }
@@ -234,6 +261,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @param defines the defines value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
+    @Generated
     public HDInsightMapReduceActivity setDefines(Map<String, Object> defines) {
         this.defines = defines;
         return this;
@@ -242,6 +270,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -251,6 +280,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -260,6 +290,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setName(String name) {
         super.setName(name);
@@ -269,6 +300,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setDescription(String description) {
         super.setDescription(description);
@@ -278,6 +310,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setState(ActivityState state) {
         super.setState(state);
@@ -287,6 +320,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -296,6 +330,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -305,6 +340,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightMapReduceActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -314,6 +350,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -366,6 +403,7 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HDInsightMapReduceActivity.
      */
+    @Generated
     public static HDInsightMapReduceActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HDInsightMapReduceActivity deserializedHDInsightMapReduceActivity = new HDInsightMapReduceActivity();

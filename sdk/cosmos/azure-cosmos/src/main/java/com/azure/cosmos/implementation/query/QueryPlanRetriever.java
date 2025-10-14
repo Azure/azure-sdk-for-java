@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -52,7 +53,8 @@ class QueryPlanRetriever {
                                                                QueryFeature.DCount.name() + ", " +
                                                                QueryFeature.NonValueAggregate.name() + ", " +
                                                                QueryFeature.NonStreamingOrderBy.name() + ", " +
-                                                               QueryFeature.HybridSearch.name();
+                                                               QueryFeature.HybridSearch.name() + ", " +
+                                                               QueryFeature.WeightedRankFusion.name();
 
     private static final String OLD_SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                 QueryFeature.CompositeAggregate.name() + ", " +
@@ -102,24 +104,33 @@ class QueryPlanRetriever {
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
             .getImpl(nonNullRequestOptions)
             .getCosmosEndToEndLatencyPolicyConfig();
+
+        List<String> excludeRegions = qryOptAccessor
+            .getImpl(nonNullRequestOptions)
+            .getExcludedRegions();
+
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
+        }
+
+        if (excludeRegions != null && !excludeRegions.isEmpty()) {
+            queryPlanRequest.requestContext.setExcludeRegions(excludeRegions);
         }
 
         BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<PartitionedQueryExecutionInfo>> executeFunc =
             (retryPolicyFactory, req) -> {
                 DocumentClientRetryPolicy retryPolicyInstance = retryPolicyFactory.get();
-                retryPolicyInstance.onBeforeSendRequest(req);
 
-                return BackoffRetryUtility.executeRetry(() ->
-                    queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
+                return BackoffRetryUtility.executeRetry(() -> {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                    return queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
                         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
                             new PartitionedQueryExecutionInfo(
-                                (ObjectNode)rxDocumentServiceResponse.getResponseBody(),
+                                (ObjectNode) rxDocumentServiceResponse.getResponseBody(),
                                 rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                         return Mono.just(partitionedQueryExecutionInfo);
-
-                    }), retryPolicyInstance);
+                    });
+                }, retryPolicyInstance);
             };
 
         return queryClient.executeFeedOperationWithAvailabilityStrategy(

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
@@ -26,28 +26,27 @@ public final class PartnerNamespacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"ssgwjfkain\",\"muymvec\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"cbgmusaictd\",\"name\":\"cnk\",\"type\":\"zohnrddclzeqozre\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"ixbnj\",\"qvzyuexozonyn\",\"ameudpabcreu\",\"zosgyjxvcvasorm\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"vdubew\",\"name\":\"zygba\",\"type\":\"uvecovsd\"}],\"provisioningState\":\"Updating\",\"partnerRegistrationFullyQualifiedId\":\"tdbakrlimzf\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"eqsifjmclngygnhr\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"tajdopggorwjoqtr\",\"action\":\"Allow\"},{\"ipMask\":\"clpofyrlmwkp\",\"action\":\"Allow\"},{\"ipMask\":\"xjgvh\",\"action\":\"Allow\"},{\"ipMask\":\"mkakmkook\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"partnerTopicRoutingMode\":\"SourceEventAttribute\"},\"location\":\"uyakm\",\"tags\":{\"lzqjimejtgzjxx\":\"tfowzkroyrdurx\",\"ayyzivrmitc\":\"fejlzuqloiw\",\"fibfiplhx\":\"qlhchwhrktjle\",\"jow\":\"nsmy\"},\"id\":\"yeyzm\",\"name\":\"dsqcmhnxl\",\"type\":\"buwodmachbkv\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"imtwuuhau\",\"gnkwm\",\"feu\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"yrkwfugiph\",\"name\":\"rkuumn\",\"type\":\"durhzzfopueoqus\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"opwnib\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"zt\",\"name\":\"dqumqvfm\",\"type\":\"caddtgc\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"vgwy\",\"rbelfnzz\",\"yizwbxgdebxla\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"mirhpfabenq\",\"name\":\"am\",\"type\":\"mgewayxf\"}],\"provisioningState\":\"Succeeded\",\"partnerRegistrationFullyQualifiedId\":\"pjs\",\"minimumTlsVersionAllowed\":\"1.2\",\"endpoint\":\"mhcucsqsnxf\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"pdr\",\"action\":\"Allow\"},{\"ipMask\":\"bsuadulpodkaxp\",\"action\":\"Allow\"},{\"ipMask\":\"zh\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"partnerTopicRoutingMode\":\"ChannelNameHeader\"},\"location\":\"eluqr\",\"tags\":{\"srkgz\":\"dhfztlra\",\"dbkuwpzqxlcwe\":\"yh\",\"qufqizj\":\"kfecjvxf\"},\"id\":\"ppwooaj\",\"name\":\"yyjmjjxiz\",\"type\":\"pxhn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerNamespace> response
-            = manager.partnerNamespaces().list("r", 55620701, com.azure.core.util.Context.NONE);
+            = manager.partnerNamespaces().list("walzyxwhoeamoeo", 847665522, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uyakm", response.iterator().next().location());
-        Assertions.assertEquals("tfowzkroyrdurx", response.iterator().next().tags().get("lzqjimejtgzjxx"));
-        Assertions.assertEquals("tdbakrlimzf", response.iterator().next().partnerRegistrationFullyQualifiedId());
-        Assertions.assertEquals(TlsVersion.ONE_ZERO, response.iterator().next().minimumTlsVersionAllowed());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER,
-            response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals("tajdopggorwjoqtr", response.iterator().next().inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("eluqr", response.iterator().next().location());
+        Assertions.assertEquals("dhfztlra", response.iterator().next().tags().get("srkgz"));
+        Assertions.assertEquals("pjs", response.iterator().next().partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, response.iterator().next().minimumTlsVersionAllowed());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("pdr", response.iterator().next().inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.iterator().next().inboundIpRules().get(0).action());
-        Assertions.assertEquals(false, response.iterator().next().disableLocalAuth());
-        Assertions.assertEquals(PartnerTopicRoutingMode.SOURCE_EVENT_ATTRIBUTE,
+        Assertions.assertFalse(response.iterator().next().disableLocalAuth());
+        Assertions.assertEquals(PartnerTopicRoutingMode.CHANNEL_NAME_HEADER,
             response.iterator().next().partnerTopicRoutingMode());
     }
 }

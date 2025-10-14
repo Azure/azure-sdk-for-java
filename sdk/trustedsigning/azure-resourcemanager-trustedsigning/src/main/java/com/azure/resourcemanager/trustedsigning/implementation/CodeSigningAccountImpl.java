@@ -8,7 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.trustedsigning.fluent.models.CodeSigningAccountInner;
-import com.azure.resourcemanager.trustedsigning.models.AccountSku;
+import com.azure.resourcemanager.trustedsigning.models.AccountSkuPatch;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccount;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccountPatch;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccountProperties;
@@ -173,12 +173,12 @@ public final class CodeSigningAccountImpl
         return this;
     }
 
-    public CodeSigningAccountImpl withSku(AccountSku sku) {
+    public CodeSigningAccountImpl withSku(AccountSkuPatch sku) {
         this.updateProperties.withSku(sku);
         return this;
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,12 +16,14 @@ public final class ODataAadServicePrincipalCredentialType
     /**
      * Static value ServicePrincipalKey for ODataAadServicePrincipalCredentialType.
      */
+    @Generated
     public static final ODataAadServicePrincipalCredentialType SERVICE_PRINCIPAL_KEY
         = fromString("ServicePrincipalKey");
 
     /**
      * Static value ServicePrincipalCert for ODataAadServicePrincipalCredentialType.
      */
+    @Generated
     public static final ODataAadServicePrincipalCredentialType SERVICE_PRINCIPAL_CERT
         = fromString("ServicePrincipalCert");
 
@@ -29,6 +32,7 @@ public final class ODataAadServicePrincipalCredentialType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ODataAadServicePrincipalCredentialType() {
     }
@@ -39,6 +43,7 @@ public final class ODataAadServicePrincipalCredentialType
      * @param name a name to look for.
      * @return the corresponding ODataAadServicePrincipalCredentialType.
      */
+    @Generated
     public static ODataAadServicePrincipalCredentialType fromString(String name) {
         return fromString(name, ODataAadServicePrincipalCredentialType.class);
     }
@@ -48,6 +53,7 @@ public final class ODataAadServicePrincipalCredentialType
      * 
      * @return known ODataAadServicePrincipalCredentialType values.
      */
+    @Generated
     public static Collection<ODataAadServicePrincipalCredentialType> values() {
         return values(ODataAadServicePrincipalCredentialType.class);
     }

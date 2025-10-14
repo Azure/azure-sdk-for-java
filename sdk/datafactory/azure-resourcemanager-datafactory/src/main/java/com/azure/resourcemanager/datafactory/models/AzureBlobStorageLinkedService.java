@@ -52,7 +52,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureBlobStorageLinkedServiceTypeProperties innerTypeProperties() {
+    AzureBlobStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

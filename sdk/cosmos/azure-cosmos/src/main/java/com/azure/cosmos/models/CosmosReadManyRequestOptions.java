@@ -7,13 +7,13 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,6 +52,16 @@ public final class CosmosReadManyRequestOptions {
     }
 
     /**
+     * Gets the read consistency strategy for the request.
+     *
+     * @return the read consistency strategy.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return this.actualRequestOptions.getReadConsistencyStrategy();
+    }
+
+    /**
      * Sets the consistency level required for the request. The effective consistency level
      * can only be reduce for read/query requests. So when the Account's default consistency level
      * is for example Session you can specify on a request-by-request level for individual requests
@@ -63,6 +73,26 @@ public final class CosmosReadManyRequestOptions {
      */
     public CosmosReadManyRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.actualRequestOptions.setConsistencyLevel(consistencyLevel);
+        return this;
+    }
+
+    /**
+     * Sets the read consistency strategy required for the request. This allows specifying the effective consistency
+     * strategy for read/query operations and even request stronger consistency (`LOCAL_COMMITTED` for example) for
+     * accounts with lower default consistency level
+     * NOTE: If the read consistency strategy set on a request level here is `SESSION` and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     * NOTE: The `setConsistencyLevel` value specified is ignored when `setReadConsistencyStrategy` is used unless
+     * `DEFAULT` is specified.
+     *
+     * @param readConsistencyStrategy the consistency level.
+     * @return the CosmosReadManyRequestOptions.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosReadManyRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
     }
 
@@ -138,7 +168,9 @@ public final class CosmosReadManyRequestOptions {
 
     /**
      * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
-     * These regions will be excluded from the preferred regions list
+     * These regions will be excluded from the preferred regions list. If all the regions are excluded,
+     * the request will be sent to the primary region for the account. The primary region is the write region in a
+     * single master account and the hub region in a multi-master account.
      *
      * @param excludeRegions the regions to exclude
      * @return the {@link CosmosReadManyRequestOptions}

@@ -16,9 +16,9 @@ public class ListAnalyzeBatchDocumentsResults {
             = new DocumentIntelligenceClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.listanalyzebatchresults.listanalyzebatchdocumentsresults
+        // BEGIN:com.azure.ai.documentintelligence.generated.list-analyze-batch-results.list-analyze-batch-documents-results
         PagedIterable<AnalyzeBatchOperationDetails> response
             = documentIntelligenceClient.listAnalyzeBatchResults("prebuilt-invoice");
-        // END:com.azure.ai.documentintelligence.generated.listanalyzebatchresults.listanalyzebatchdocumentsresults
+        // END:com.azure.ai.documentintelligence.generated.list-analyze-batch-results.list-analyze-batch-documents-results
     }
 }

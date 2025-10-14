@@ -4,6 +4,7 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
     /**
      * Static value Messaging for NamespaceType.
      */
+    @Generated
     public static final NamespaceType MESSAGING = fromString("Messaging");
 
     /**
      * Static value NotificationHub for NamespaceType.
      */
+    @Generated
     public static final NamespaceType NOTIFICATION_HUB = fromString("NotificationHub");
 
     /**
      * Static value Mixed for NamespaceType.
      */
+    @Generated
     public static final NamespaceType MIXED = fromString("Mixed");
 
     /**
      * Static value EventHub for NamespaceType.
      */
+    @Generated
     public static final NamespaceType EVENT_HUB = fromString("EventHub");
 
     /**
      * Static value Relay for NamespaceType.
      */
+    @Generated
     public static final NamespaceType RELAY = fromString("Relay");
 
     /**
@@ -41,6 +47,7 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NamespaceType() {
     }
@@ -51,6 +58,7 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
      * @param name a name to look for.
      * @return the corresponding NamespaceType.
      */
+    @Generated
     public static NamespaceType fromString(String name) {
         return fromString(name, NamespaceType.class);
     }
@@ -60,6 +68,7 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
      * 
      * @return known NamespaceType values.
      */
+    @Generated
     public static Collection<NamespaceType> values() {
         return values(NamespaceType.class);
     }

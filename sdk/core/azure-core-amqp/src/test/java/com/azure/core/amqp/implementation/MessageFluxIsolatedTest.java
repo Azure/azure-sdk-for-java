@@ -170,6 +170,46 @@ public class MessageFluxIsolatedTest {
     @ParameterizedTest
     @MethodSource("creditFlowModePrefetch")
     @Execution(ExecutionMode.SAME_THREAD)
+    public void shouldGetNextReceiverWhenRetryOnlyOnCompletionSetAndCurrentTerminateWithCompletion(
+        CreditFlowMode creditFlowMode, int prefetch) {
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.RETRY_ONLY_COMPLETION);
+
+        final ReactorReceiver firstReceiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade firstReceiverFacade = new ReactorReceiverFacade(upstream, firstReceiver);
+        when(firstReceiver.getEndpointStates()).thenReturn(firstReceiverFacade.getEndpointStates());
+        when(firstReceiver.receive()).thenReturn(firstReceiverFacade.getMessages());
+        when(firstReceiver.closeAsync()).thenReturn(Mono.empty());
+
+        final ReactorReceiver secondReceiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade secondReceiverFacade = new ReactorReceiverFacade(upstream, secondReceiver);
+        when(secondReceiver.getEndpointStates()).thenReturn(secondReceiverFacade.getEndpointStates());
+        when(secondReceiver.receive()).thenReturn(secondReceiverFacade.getMessages());
+        when(secondReceiver.closeAsync()).thenReturn(Mono.empty());
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> messageFlux)
+                .then(firstReceiverFacade.emit())
+                .then(firstReceiverFacade.completeEndpointStates())
+                .thenAwait(UPSTREAM_DELAY_BEFORE_NEXT)
+                .then(secondReceiverFacade.emit())
+                .then(() -> firstReceiverFacade.assertNoPendingSubscriptionsToMessages())
+                .then(() -> upstream.complete())
+                .verifyComplete();
+        }
+
+        Assertions.assertTrue(firstReceiverFacade.wasSubscribedToMessages());
+        Assertions.assertTrue(secondReceiverFacade.wasSubscribedToMessages());
+        secondReceiverFacade.assertNoPendingSubscriptionsToMessages();
+        verify(firstReceiver).closeAsync();
+        verify(secondReceiver).closeAsync();
+        upstream.assertCancelled();
+    }
+
+    @ParameterizedTest
+    @MethodSource("creditFlowModePrefetch")
+    @Execution(ExecutionMode.SAME_THREAD)
     public void shouldNotGetNextReceiverWhenCurrentTerminateWithNonRetriableError(CreditFlowMode creditFlowMode,
         int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();

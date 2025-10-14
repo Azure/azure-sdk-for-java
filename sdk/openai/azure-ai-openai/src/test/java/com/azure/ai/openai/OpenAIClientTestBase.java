@@ -10,6 +10,7 @@ import com.azure.ai.openai.implementation.Parameters;
 import com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper;
 import com.azure.ai.openai.models.AddUploadPartRequest;
+import com.azure.ai.openai.models.AudioOutputParameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -21,6 +22,7 @@ import com.azure.ai.openai.models.AzureChatExtensionDataSourceResponseCitation;
 import com.azure.ai.openai.models.AzureChatExtensionRetrievedDocument;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletionModality;
 import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -30,6 +32,7 @@ import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormat;
 import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
+import com.azure.ai.openai.models.ChatMessageAudioContentItem;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
 import com.azure.ai.openai.models.ChatMessageImageUrl;
 import com.azure.ai.openai.models.ChatMessageTextContentItem;
@@ -67,7 +70,12 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.InputAudioContent;
+import com.azure.ai.openai.models.InputAudioFormat;
 import com.azure.ai.openai.models.OpenAIFile;
+import com.azure.ai.openai.models.OutputAudioFormat;
+import com.azure.ai.openai.models.PredictionContent;
+import com.azure.ai.openai.models.ReasoningEffortValue;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
@@ -481,6 +489,68 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void textToSpeechRunnerForNonAzure(BiConsumer<String, SpeechGenerationOptions> testRunner) {
         testRunner.accept("tts-1", getSpeechGenerationOptions());
+    }
+
+    void getChatCompletionsWithTextPromptAudioResponse(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")));
+        chatCompletionsOptions.setModalities(Arrays.asList(ChatCompletionModality.TEXT, ChatCompletionModality.AUDIO));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setAudio(new AudioOutputParameters(SpeechVoice.ALLOY, OutputAudioFormat.WAV));
+        testRunner.accept("gpt-4o-audio-preview", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsWithAudioPromptAudioResponse(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        byte[] file
+            = BinaryData.fromFile(openTestResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).toBytes();
+
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage(
+                Arrays.asList(new ChatMessageAudioContentItem(new InputAudioContent(file, InputAudioFormat.WAV))))));
+        chatCompletionsOptions.setModalities(Arrays.asList(ChatCompletionModality.TEXT, ChatCompletionModality.AUDIO));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setAudio(new AudioOutputParameters(SpeechVoice.ALLOY, OutputAudioFormat.WAV));
+        testRunner.accept("gpt-4o-audio-preview", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsWithReasoningEffort(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays
+            .asList(new ChatRequestUserMessage("Write a bash script that takes a matrix represented as a string with "
+                + "format '[1,2],[3,4],[5,6]' and prints the transpose in the same format.")));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setReasoningEffort(ReasoningEffortValue.MEDIUM);
+        testRunner.accept("o3-mini", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsWithReasoningEffortForAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays
+            .asList(new ChatRequestUserMessage("Write a bash script that takes a matrix represented as a string with "
+                + "format '[1,2],[3,4],[5,6]' and prints the transpose in the same format.")));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setReasoningEffort(ReasoningEffortValue.LOW);
+        testRunner.accept("o3-mini-2025-01-31", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsWithPrediction(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        String code = "class User {firstName: string; lastName: string;username: string;}";
+        String prompt = "Replace the \"username\" property with an \"email\" property. Respond only "
+            + "with code, and with no markdown formatting.";
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
+            Arrays.asList(new ChatRequestUserMessage(code), new ChatRequestUserMessage(prompt)));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setPrediction(new PredictionContent(BinaryData.fromString(code)));
+        testRunner.accept("gpt-4o", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsWithPredictionForAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        String code = "class User {firstName: string; lastName: string;username: string;}";
+        String prompt = "Replace the \"username\" property with an \"email\" property. Respond only "
+            + "with code, and with no markdown formatting.";
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
+            Arrays.asList(new ChatRequestUserMessage(code), new ChatRequestUserMessage(prompt)));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setPrediction(new PredictionContent(BinaryData.fromString(code)));
+        testRunner.accept("gpt-4o-0806", chatCompletionsOptions);
     }
 
     // Files

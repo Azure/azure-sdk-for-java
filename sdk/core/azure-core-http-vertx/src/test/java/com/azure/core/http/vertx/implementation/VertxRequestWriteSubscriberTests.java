@@ -4,12 +4,10 @@ package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.SharedExecutorService;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClientRequest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.util.context.Context;
@@ -19,7 +17,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +34,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class VertxRequestWriteSubscriberTests {
     private static final byte[] DATA = "Hello, world!".getBytes(StandardCharsets.UTF_8);
+    private static final Consumer<Handler<Throwable>> IGNORED_EXCEPTION_HANDLER = ignored -> {
+    };
+    private static final Consumer<Handler<Void>> IGNORED_DRAIN_HANDLER = ignore -> {
+    };
+    private static final BiConsumer<Long, Throwable> IGNORED_RESET = (ignoredLong, ignoredThrowable) -> {
+    };
 
     /**
      * Tests that request writing operates as expected when the reactive stream has onNext followed by onError.
@@ -52,17 +59,13 @@ public class VertxRequestWriteSubscriberTests {
 
         Promise<HttpResponse> promise = Promise.promise();
         Buffer writtenContent = Buffer.buffer();
-        HttpClientRequest httpClientRequest = new MockHttpClientRequest() {
-            @Override
-            public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-                writtenContent.appendBuffer(data);
-                Promise<Void> promise = Promise.promise();
-                promise.future().onComplete(handler);
-                promise.complete();
-            }
+        Function<Buffer, Future<Void>> writeHandler = buffer -> {
+            writtenContent.appendBuffer(buffer);
+            return Future.succeededFuture();
         };
 
-        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(httpClientRequest, promise, null,
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, writeHandler, () -> false, IGNORED_RESET, Future::succeededFuture, promise, null,
             Context.of("reactor.onErrorDropped.local", onErrorDroppedConsumer));
 
         data.subscribe(subscriber);
@@ -93,16 +96,10 @@ public class VertxRequestWriteSubscriberTests {
         });
 
         Promise<HttpResponse> promise = Promise.promise();
-        HttpClientRequest httpClientRequest = new MockHttpClientRequest() {
-            @Override
-            public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-                Promise<Void> promise = Promise.promise();
-                promise.future().onComplete(handler);
-                promise.fail(writeError);
-            }
-        };
+        Function<Buffer, Future<Void>> writeHandler = ignored -> Future.failedFuture(writeError);
 
-        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(httpClientRequest, promise, null,
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, writeHandler, () -> false, IGNORED_RESET, Future::succeededFuture, promise, null,
             Context.of("reactor.onErrorDropped.local", onErrorDroppedConsumer));
 
         data.subscribe(subscriber);
@@ -127,24 +124,17 @@ public class VertxRequestWriteSubscriberTests {
             sink.complete();
         });
         Buffer writtenContent = Buffer.buffer();
-        HttpClientRequest httpClientRequest = new MockHttpClientRequest() {
-            @Override
-            public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-                writtenContent.appendBuffer(data);
-                Promise<Void> promise = Promise.promise();
-                promise.future().onComplete(handler);
-                promise.complete();
-            }
-
-            @Override
-            public Future<Void> end() {
-                promise.complete();
-                return super.end();
-            }
+        Function<Buffer, Future<Void>> writeHandler = buffer -> {
+            writtenContent.appendBuffer(buffer);
+            return Future.succeededFuture();
+        };
+        Supplier<Future<Void>> end = () -> {
+            promise.complete();
+            return Future.succeededFuture();
         };
 
-        VertxRequestWriteSubscriber subscriber
-            = new VertxRequestWriteSubscriber(httpClientRequest, promise, null, Context.empty());
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, writeHandler, () -> false, IGNORED_RESET, end, promise, null, Context.empty());
 
         data.subscribe(subscriber);
 
@@ -169,16 +159,10 @@ public class VertxRequestWriteSubscriberTests {
             sink.next(ByteBuffer.wrap(DATA));
             sink.complete();
         });
-        HttpClientRequest httpClientRequest = new MockHttpClientRequest() {
-            @Override
-            public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-                Promise<Void> promise = Promise.promise();
-                promise.future().onComplete(handler);
-                promise.fail(writeError);
-            }
-        };
+        Function<Buffer, Future<Void>> writeHandler = ignored -> Future.failedFuture(writeError);
 
-        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(httpClientRequest, promise, null,
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, writeHandler, () -> false, IGNORED_RESET, Future::succeededFuture, promise, null,
             Context.of("reactor.onErrorDropped.local", onErrorDroppedConsumer));
 
         data.subscribe(subscriber);
@@ -207,19 +191,18 @@ public class VertxRequestWriteSubscriberTests {
             sink.next(ByteBuffer.wrap(DATA));
             sink.error(reactiveError);
         });
-        HttpClientRequest httpClientRequest = new MockHttpClientRequest() {
-            @Override
-            public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-                SharedExecutorService.getInstance().schedule(() -> {
-                    Promise<Void> promise = Promise.promise();
-                    promise.future().onComplete(handler);
-                    promise.fail(writeError);
-                    latch.countDown();
-                }, 1000, TimeUnit.MILLISECONDS);
-            }
+        Function<Buffer, Future<Void>> writeHandler = ignored -> {
+            Promise<Void> writePromise = Promise.promise();
+            SharedExecutorService.getInstance().schedule(() -> {
+                writePromise.fail(writeError);
+                latch.countDown();
+            }, 1000, TimeUnit.MILLISECONDS);
+
+            return writePromise.future();
         };
 
-        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(httpClientRequest, promise, null,
+        VertxRequestWriteSubscriber subscriber = new VertxRequestWriteSubscriber(IGNORED_EXCEPTION_HANDLER,
+            IGNORED_DRAIN_HANDLER, writeHandler, () -> false, IGNORED_RESET, Future::succeededFuture, promise, null,
             Context.of("reactor.onErrorDropped.local", onErrorDroppedConsumer));
 
         data.subscribe(subscriber);

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.OnlineResizeSup
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestrictedEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersionCapability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrowthSupportedEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SupportedFeature;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ZoneRedundantHaAndGeoBackupSupportedEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ZoneRedundantHaSupportedEnum;
 import java.io.IOException;
@@ -44,8 +45,14 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     private List<ServerVersionCapability> supportedServerVersions;
 
     /*
+     * The supported features.
+     */
+    private List<SupportedFeature> supportedFeatures;
+
+    /*
      * Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported.
-     * "Disabled" stands for fast provisioning is not supported.
+     * "Disabled" stands for fast provisioning is not supported. Will be deprecated in future, please look to Supported
+     * Features for "FastProvisioning".
      */
     private FastProvisioningSupportedEnum fastProvisioningSupported;
 
@@ -56,38 +63,41 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /*
      * Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands
-     * for geo-back is not supported.
+     * for geo-back is not supported. Will be deprecated in future, please look to Supported Features for "GeoBackup".
      */
     private GeoBackupSupportedEnum geoBackupSupported;
 
     /*
      * A value indicating whether Zone Redundant HA is supported in this region. "Enabled" means zone redundant HA is
-     * supported. "Disabled" stands for zone redundant HA is not supported.
+     * supported. "Disabled" stands for zone redundant HA is not supported. Will be deprecated in future, please look to
+     * Supported Features for "ZoneRedundantHa".
      */
     private ZoneRedundantHaSupportedEnum zoneRedundantHaSupported;
 
     /*
      * A value indicating whether Zone Redundant HA and Geo-backup is supported in this region. "Enabled" means zone
      * redundant HA and geo-backup is supported. "Disabled" stands for zone redundant HA and geo-backup is not
-     * supported.
+     * supported. Will be deprecated in future, please look to Supported Features for "ZoneRedundantHaAndGeoBackup".
      */
     private ZoneRedundantHaAndGeoBackupSupportedEnum zoneRedundantHaAndGeoBackupSupported;
 
     /*
      * A value indicating whether storage auto-grow is supported in this region. "Enabled" means storage auto-grow is
-     * supported. "Disabled" stands for storage auto-grow is not supported.
+     * supported. "Disabled" stands for storage auto-grow is not supported. Will be deprecated in future, please look to
+     * Supported Features for "StorageAutoGrowth".
      */
     private StorageAutoGrowthSupportedEnum storageAutoGrowthSupported;
 
     /*
      * A value indicating whether online resize is supported in this region for the given subscription. "Enabled" means
-     * storage online resize is supported. "Disabled" means storage online resize is not supported.
+     * storage online resize is supported. "Disabled" means storage online resize is not supported. Will be deprecated
+     * in future, please look to Supported Features for "OnlineResize".
      */
     private OnlineResizeSupportedEnum onlineResizeSupported;
 
     /*
      * A value indicating whether this region is restricted. "Enabled" means region is restricted. "Disabled" stands for
-     * region is not restricted.
+     * region is not restricted. Will be deprecated in future, please look to Supported Features for "Restricted".
      */
     private RestrictedEnum restricted;
 
@@ -146,8 +156,18 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     }
 
     /**
+     * Get the supportedFeatures property: The supported features.
+     * 
+     * @return the supportedFeatures value.
+     */
+    public List<SupportedFeature> supportedFeatures() {
+        return this.supportedFeatures;
+    }
+
+    /**
      * Get the fastProvisioningSupported property: Gets a value indicating whether fast provisioning is supported.
-     * "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported.
+     * "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported. Will be
+     * deprecated in future, please look to Supported Features for "FastProvisioning".
      * 
      * @return the fastProvisioningSupported value.
      */
@@ -166,7 +186,8 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the geoBackupSupported property: Determines if geo-backup is supported in this region. "Enabled" means
-     * geo-backup is supported. "Disabled" stands for geo-back is not supported.
+     * geo-backup is supported. "Disabled" stands for geo-back is not supported. Will be deprecated in future, please
+     * look to Supported Features for "GeoBackup".
      * 
      * @return the geoBackupSupported value.
      */
@@ -177,6 +198,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the zoneRedundantHaSupported property: A value indicating whether Zone Redundant HA is supported in this
      * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
+     * Will be deprecated in future, please look to Supported Features for "ZoneRedundantHa".
      * 
      * @return the zoneRedundantHaSupported value.
      */
@@ -187,7 +209,8 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the zoneRedundantHaAndGeoBackupSupported property: A value indicating whether Zone Redundant HA and
      * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled"
-     * stands for zone redundant HA and geo-backup is not supported.
+     * stands for zone redundant HA and geo-backup is not supported. Will be deprecated in future, please look to
+     * Supported Features for "ZoneRedundantHaAndGeoBackup".
      * 
      * @return the zoneRedundantHaAndGeoBackupSupported value.
      */
@@ -198,6 +221,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the storageAutoGrowthSupported property: A value indicating whether storage auto-grow is supported in this
      * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
+     * Will be deprecated in future, please look to Supported Features for "StorageAutoGrowth".
      * 
      * @return the storageAutoGrowthSupported value.
      */
@@ -208,7 +232,7 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
     /**
      * Get the onlineResizeSupported property: A value indicating whether online resize is supported in this region for
      * the given subscription. "Enabled" means storage online resize is supported. "Disabled" means storage online
-     * resize is not supported.
+     * resize is not supported. Will be deprecated in future, please look to Supported Features for "OnlineResize".
      * 
      * @return the onlineResizeSupported value.
      */
@@ -218,7 +242,8 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
 
     /**
      * Get the restricted property: A value indicating whether this region is restricted. "Enabled" means region is
-     * restricted. "Disabled" stands for region is not restricted.
+     * restricted. "Disabled" stands for region is not restricted. Will be deprecated in future, please look to
+     * Supported Features for "Restricted".
      * 
      * @return the restricted value.
      */
@@ -258,6 +283,9 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
         }
         if (supportedServerVersions() != null) {
             supportedServerVersions().forEach(e -> e.validate());
+        }
+        if (supportedFeatures() != null) {
+            supportedFeatures().forEach(e -> e.validate());
         }
         if (supportedFastProvisioningEditions() != null) {
             supportedFastProvisioningEditions().forEach(e -> e.validate());
@@ -304,6 +332,10 @@ public final class FlexibleServerCapabilityInner extends CapabilityBase {
                     List<ServerVersionCapability> supportedServerVersions
                         = reader.readArray(reader1 -> ServerVersionCapability.fromJson(reader1));
                     deserializedFlexibleServerCapabilityInner.supportedServerVersions = supportedServerVersions;
+                } else if ("supportedFeatures".equals(fieldName)) {
+                    List<SupportedFeature> supportedFeatures
+                        = reader.readArray(reader1 -> SupportedFeature.fromJson(reader1));
+                    deserializedFlexibleServerCapabilityInner.supportedFeatures = supportedFeatures;
                 } else if ("fastProvisioningSupported".equals(fieldName)) {
                     deserializedFlexibleServerCapabilityInner.fastProvisioningSupported
                         = FastProvisioningSupportedEnum.fromString(reader.getString());

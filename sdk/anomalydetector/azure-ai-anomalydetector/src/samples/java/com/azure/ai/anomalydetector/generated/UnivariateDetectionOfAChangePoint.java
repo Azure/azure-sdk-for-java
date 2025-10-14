@@ -21,7 +21,7 @@ public class UnivariateDetectionOfAChangePoint {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildUnivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.univariatedetectunivariatechangepoint.univariatedetectionofachangepoint
+        // BEGIN:com.azure.ai.anomalydetector.generated.univariate-detect-univariate-change-point.univariate-detection-of-a-change-point
         UnivariateChangePointDetectionResult response
             = univariateClient.detectUnivariateChangePoint(new UnivariateChangePointDetectionOptions(
                 Arrays.asList(new TimeSeriesPoint(1639196.0).setTimestamp(OffsetDateTime.parse("2017-01-01T06:45:00Z")),
@@ -285,6 +285,6 @@ public class UnivariateDetectionOfAChangePoint {
                     .setPeriod(0)
                     .setStableTrendWindow(10)
                     .setThreshold(0.99D));
-        // END:com.azure.ai.anomalydetector.generated.univariatedetectunivariatechangepoint.univariatedetectionofachangepoint
+        // END:com.azure.ai.anomalydetector.generated.univariate-detect-univariate-change-point.univariate-detection-of-a-change-point
     }
 }

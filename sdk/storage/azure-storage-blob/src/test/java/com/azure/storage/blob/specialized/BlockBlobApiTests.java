@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
@@ -12,10 +13,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
@@ -38,6 +42,7 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -368,19 +373,23 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
+
         String blockID = getBlockID();
-    
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID, blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-    
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID,
+            blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+
+    }
 
     @Test
     public void stageBlockFromUrlMin() {
@@ -1301,42 +1310,6 @@ public class BlockBlobApiTests extends BlobTestBase {
         return Stream.of(Arguments.of(11110, 0), Arguments.of(2 * Constants.MB + 11, 2));
     }
 
-    /*
-    def "Upload NRF progress"() {
-        setup:
-        def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
-        def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
-        long prevCount = 0
-        def mockReceiver = Mock(IProgressReceiver)
-    
-    
-        when:
-        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, 10,
-            new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
-        data.position(0)
-    
-        then:
-        // We should receive exactly one notification of the completed progress.
-        1 * mockReceiver.reportProgress(data.remaining()) */
-
-    /*
-    We should receive at least one notification reporting an intermediary value per block, but possibly more
-    notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
-    will be the total size as above. Finally, we assert that the number reported monotonically increases.
-     */
-    /*(numBlocks - 1.._) * mockReceiver.reportProgress(!data.remaining()) >> { long bytesTransferred ->
-        if (!(bytesTransferred > prevCount)) {
-            throw new IllegalArgumentException("Reported progress should monotonically increase")
-        } else {
-            prevCount = bytesTransferred
-        }
-    }
-    
-    // We should receive no notifications that report more progress than the size of the file.
-    0 * mockReceiver.reportProgress({ it > data.remaining() })
-    notThrown(IllegalArgumentException)
-    }*/
-
     @LiveOnly
     @Test
     public void bufferedUploadOverwrite() throws IOException {
@@ -1444,17 +1417,20 @@ public class BlockBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
-    
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+    }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
@@ -1576,7 +1552,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     private static Stream<Arguments> uploadFromUrlSourceRequestConditionsSupplier() {
         return Stream.of(
             Arguments.of(new BlobRequestConditions().setIfMatch("dummy"), BlobErrorCode.SOURCE_CONDITION_NOT_MET),
-            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(20)),
+            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE),
             Arguments.of(new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE));
@@ -1728,5 +1704,77 @@ public class BlockBlobApiTests extends BlobTestBase {
                 .buildBlockBlobClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void stageBlockFromUriSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Create destination block blob
+        BlockBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        String blockId = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions stageBlockFromUrlOptions
+            = new BlockBlobStageBlockFromUrlOptions(blockId, sourceUrl);
+        stageBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        stageBlockFromUrlOptions.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // Stage block from URL with bearer token
+        destBlob.stageBlockFromUrlWithResponse(stageBlockFromUrlOptions, null, Context.NONE);
+
+        // Commit the staged block
+        destBlob.commitBlockList(Collections.singletonList(blockId));
+
+        // Validate data was staged and committed correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void uploadFromUriAsyncSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Set up destination block blob
+        BlockBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // upload block from URL with bearer token
+        destBlob.uploadFromUrlWithResponse(options, null, Context.NONE);
+
+        // Validate data was appended correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 }

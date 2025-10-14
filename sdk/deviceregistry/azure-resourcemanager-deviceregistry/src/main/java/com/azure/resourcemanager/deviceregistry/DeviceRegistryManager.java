@@ -22,14 +22,18 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProfilesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryManagementClientBuilder;
-import com.azure.resourcemanager.deviceregistry.implementation.DiscoveredAssetEndpointProfilesImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.DiscoveredAssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceAssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDevicesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDiscoveredAssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDiscoveredDevicesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.NamespacesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.SchemaRegistriesImpl;
@@ -38,8 +42,11 @@ import com.azure.resourcemanager.deviceregistry.implementation.SchemasImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
 import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
-import com.azure.resourcemanager.deviceregistry.models.DiscoveredAssetEndpointProfiles;
-import com.azure.resourcemanager.deviceregistry.models.DiscoveredAssets;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceAssets;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDevices;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssets;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDevices;
+import com.azure.resourcemanager.deviceregistry.models.Namespaces;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.Operations;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistries;
@@ -49,6 +56,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -67,9 +75,15 @@ public final class DeviceRegistryManager {
 
     private BillingContainers billingContainers;
 
-    private DiscoveredAssets discoveredAssets;
+    private Namespaces namespaces;
 
-    private DiscoveredAssetEndpointProfiles discoveredAssetEndpointProfiles;
+    private NamespaceAssets namespaceAssets;
+
+    private NamespaceDevices namespaceDevices;
+
+    private NamespaceDiscoveredAssets namespaceDiscoveredAssets;
+
+    private NamespaceDiscoveredDevices namespaceDiscoveredDevices;
 
     private SchemaRegistries schemaRegistries;
 
@@ -129,6 +143,9 @@ public final class DeviceRegistryManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-deviceregistry.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -236,12 +253,14 @@ public final class DeviceRegistryManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.deviceregistry")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -348,28 +367,65 @@ public final class DeviceRegistryManager {
     }
 
     /**
-     * Gets the resource collection API of DiscoveredAssets. It manages DiscoveredAsset.
+     * Gets the resource collection API of Namespaces. It manages Namespace.
      * 
-     * @return Resource collection API of DiscoveredAssets.
+     * @return Resource collection API of Namespaces.
      */
-    public DiscoveredAssets discoveredAssets() {
-        if (this.discoveredAssets == null) {
-            this.discoveredAssets = new DiscoveredAssetsImpl(clientObject.getDiscoveredAssets(), this);
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
         }
-        return discoveredAssets;
+        return namespaces;
     }
 
     /**
-     * Gets the resource collection API of DiscoveredAssetEndpointProfiles. It manages DiscoveredAssetEndpointProfile.
+     * Gets the resource collection API of NamespaceAssets. It manages NamespaceAsset.
      * 
-     * @return Resource collection API of DiscoveredAssetEndpointProfiles.
+     * @return Resource collection API of NamespaceAssets.
      */
-    public DiscoveredAssetEndpointProfiles discoveredAssetEndpointProfiles() {
-        if (this.discoveredAssetEndpointProfiles == null) {
-            this.discoveredAssetEndpointProfiles
-                = new DiscoveredAssetEndpointProfilesImpl(clientObject.getDiscoveredAssetEndpointProfiles(), this);
+    public NamespaceAssets namespaceAssets() {
+        if (this.namespaceAssets == null) {
+            this.namespaceAssets = new NamespaceAssetsImpl(clientObject.getNamespaceAssets(), this);
         }
-        return discoveredAssetEndpointProfiles;
+        return namespaceAssets;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceDevices. It manages NamespaceDevice.
+     * 
+     * @return Resource collection API of NamespaceDevices.
+     */
+    public NamespaceDevices namespaceDevices() {
+        if (this.namespaceDevices == null) {
+            this.namespaceDevices = new NamespaceDevicesImpl(clientObject.getNamespaceDevices(), this);
+        }
+        return namespaceDevices;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceDiscoveredAssets. It manages NamespaceDiscoveredAsset.
+     * 
+     * @return Resource collection API of NamespaceDiscoveredAssets.
+     */
+    public NamespaceDiscoveredAssets namespaceDiscoveredAssets() {
+        if (this.namespaceDiscoveredAssets == null) {
+            this.namespaceDiscoveredAssets
+                = new NamespaceDiscoveredAssetsImpl(clientObject.getNamespaceDiscoveredAssets(), this);
+        }
+        return namespaceDiscoveredAssets;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceDiscoveredDevices. It manages NamespaceDiscoveredDevice.
+     * 
+     * @return Resource collection API of NamespaceDiscoveredDevices.
+     */
+    public NamespaceDiscoveredDevices namespaceDiscoveredDevices() {
+        if (this.namespaceDiscoveredDevices == null) {
+            this.namespaceDiscoveredDevices
+                = new NamespaceDiscoveredDevicesImpl(clientObject.getNamespaceDiscoveredDevices(), this);
+        }
+        return namespaceDiscoveredDevices;
     }
 
     /**

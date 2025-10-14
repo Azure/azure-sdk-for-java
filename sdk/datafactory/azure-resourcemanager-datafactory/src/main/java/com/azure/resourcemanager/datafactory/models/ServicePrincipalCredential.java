@@ -52,7 +52,7 @@ public final class ServicePrincipalCredential extends Credential {
      * 
      * @return the innerTypeProperties value.
      */
-    private ServicePrincipalCredentialTypeProperties innerTypeProperties() {
+    ServicePrincipalCredentialTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

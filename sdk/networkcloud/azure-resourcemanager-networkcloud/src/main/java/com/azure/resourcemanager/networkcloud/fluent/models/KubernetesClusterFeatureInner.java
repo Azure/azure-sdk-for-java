@@ -25,6 +25,11 @@ import java.util.Map;
 @Fluent
 public final class KubernetesClusterFeatureInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The list of the resource properties.
      */
     private KubernetesClusterFeatureProperties innerProperties;
@@ -53,6 +58,15 @@ public final class KubernetesClusterFeatureInner extends Resource {
      * Creates an instance of KubernetesClusterFeatureInner class.
      */
     public KubernetesClusterFeatureInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -250,6 +264,8 @@ public final class KubernetesClusterFeatureInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedKubernetesClusterFeatureInner.withTags(tags);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedKubernetesClusterFeatureInner.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedKubernetesClusterFeatureInner.innerProperties
                         = KubernetesClusterFeatureProperties.fromJson(reader);

@@ -51,7 +51,7 @@ public final class HttpLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HttpLinkedServiceTypeProperties innerTypeProperties() {
+    HttpLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

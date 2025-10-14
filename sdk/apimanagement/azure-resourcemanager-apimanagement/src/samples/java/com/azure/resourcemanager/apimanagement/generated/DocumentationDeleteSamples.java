@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class DocumentationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteDocumentation.json
      */
     /**
@@ -21,7 +21,7 @@ public final class DocumentationDeleteSamples {
     public static void
         apiManagementDeleteDocumentation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.documentations()
-            .deleteWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "*",
+            .deleteWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", null,
                 com.azure.core.util.Context.NONE);
     }
 }

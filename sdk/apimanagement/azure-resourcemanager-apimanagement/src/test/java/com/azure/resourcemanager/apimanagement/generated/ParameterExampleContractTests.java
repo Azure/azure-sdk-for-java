@@ -12,22 +12,22 @@ public final class ParameterExampleContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterExampleContract model = BinaryData.fromString(
-            "{\"summary\":\"sjcswsmystuluqyp\",\"description\":\"vlerchpqbmfpjba\",\"value\":\"dataidfcxsspuunnoxyh\",\"externalValue\":\"g\"}")
+            "{\"summary\":\"xg\",\"description\":\"oyxcdyuib\",\"value\":\"datafdn\",\"externalValue\":\"ydvfvfcjnae\"}")
             .toObject(ParameterExampleContract.class);
-        Assertions.assertEquals("sjcswsmystuluqyp", model.summary());
-        Assertions.assertEquals("vlerchpqbmfpjba", model.description());
-        Assertions.assertEquals("g", model.externalValue());
+        Assertions.assertEquals("xg", model.summary());
+        Assertions.assertEquals("oyxcdyuib", model.description());
+        Assertions.assertEquals("ydvfvfcjnae", model.externalValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterExampleContract model = new ParameterExampleContract().withSummary("sjcswsmystuluqyp")
-            .withDescription("vlerchpqbmfpjba")
-            .withValue("dataidfcxsspuunnoxyh")
-            .withExternalValue("g");
+        ParameterExampleContract model = new ParameterExampleContract().withSummary("xg")
+            .withDescription("oyxcdyuib")
+            .withValue("datafdn")
+            .withExternalValue("ydvfvfcjnae");
         model = BinaryData.fromObject(model).toObject(ParameterExampleContract.class);
-        Assertions.assertEquals("sjcswsmystuluqyp", model.summary());
-        Assertions.assertEquals("vlerchpqbmfpjba", model.description());
-        Assertions.assertEquals("g", model.externalValue());
+        Assertions.assertEquals("xg", model.summary());
+        Assertions.assertEquals("oyxcdyuib", model.description());
+        Assertions.assertEquals("ydvfvfcjnae", model.externalValue());
     }
 }

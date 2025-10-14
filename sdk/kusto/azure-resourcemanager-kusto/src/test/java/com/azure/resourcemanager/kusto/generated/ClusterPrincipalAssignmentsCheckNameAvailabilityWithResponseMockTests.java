@@ -23,7 +23,7 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilityWithResponseM
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":true,\"name\":\"v\",\"message\":\"yasflvgsgzwy\",\"reason\":\"Invalid\"}";
+            = "{\"nameAvailable\":true,\"name\":\"kfkimrtixok\",\"message\":\"qyinl\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,14 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilityWithResponseM
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.clusterPrincipalAssignments()
-            .checkNameAvailabilityWithResponse("z", "puamwabzxr",
-                new ClusterPrincipalAssignmentCheckNameRequest().withName("xcushs"), com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("gaao", "pttaqutd",
+                new ClusterPrincipalAssignmentCheckNameRequest().withName("wemxswvruunzz"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("v", response.name());
-        Assertions.assertEquals("yasflvgsgzwy", response.message());
+        Assertions.assertEquals("kfkimrtixok", response.name());
+        Assertions.assertEquals("qyinl", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

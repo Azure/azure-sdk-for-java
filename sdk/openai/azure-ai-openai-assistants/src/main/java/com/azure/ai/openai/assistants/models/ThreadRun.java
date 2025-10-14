@@ -344,6 +344,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         jsonWriter.writeJsonField("truncation_strategy", this.truncationStrategy);
         jsonWriter.writeFieldName("tool_choice");
         this.toolChoice.writeTo(jsonWriter);
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeFieldName("response_format");
         this.responseFormat.writeTo(jsonWriter);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
@@ -385,6 +386,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
             Integer maxCompletionTokens = null;
             TruncationObject truncationStrategy = null;
             BinaryData toolChoice = null;
+            boolean parallelToolCalls = false;
             BinaryData responseFormat = null;
             Map<String, String> metadata = null;
             RequiredAction requiredAction = null;
@@ -451,6 +453,8 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
                 } else if ("tool_choice".equals(fieldName)) {
                     toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("parallel_tool_calls".equals(fieldName)) {
+                    parallelToolCalls = reader.getBoolean();
                 } else if ("response_format".equals(fieldName)) {
                     responseFormat
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -469,7 +473,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
             ThreadRun deserializedThreadRun
                 = new ThreadRun(id, threadId, assistantId, status, lastError, model, instructions, tools, createdAt,
                     expiresAt, startedAt, completedAt, cancelledAt, failedAt, incompleteDetails, usage, maxPromptTokens,
-                    maxCompletionTokens, truncationStrategy, toolChoice, responseFormat, metadata);
+                    maxCompletionTokens, truncationStrategy, toolChoice, parallelToolCalls, responseFormat, metadata);
             deserializedThreadRun.requiredAction = requiredAction;
             deserializedThreadRun.temperature = temperature;
             deserializedThreadRun.topP = topP;
@@ -555,87 +559,6 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     private final BinaryData responseFormat;
 
     /**
-     * Creates an instance of ThreadRun class.
-     *
-     * @param id the id value to set.
-     * @param threadId the threadId value to set.
-     * @param assistantId the assistantId value to set.
-     * @param status the status value to set.
-     * @param lastError the lastError value to set.
-     * @param model the model value to set.
-     * @param instructions the instructions value to set.
-     * @param tools the tools value to set.
-     * @param createdAt the createdAt value to set.
-     * @param expiresAt the expiresAt value to set.
-     * @param startedAt the startedAt value to set.
-     * @param completedAt the completedAt value to set.
-     * @param cancelledAt the cancelledAt value to set.
-     * @param failedAt the failedAt value to set.
-     * @param incompleteDetails the incompleteDetails value to set.
-     * @param usage the usage value to set.
-     * @param maxPromptTokens the maxPromptTokens value to set.
-     * @param maxCompletionTokens the maxCompletionTokens value to set.
-     * @param truncationStrategy the truncationStrategy value to set.
-     * @param toolChoice the toolChoice value to set.
-     * @param responseFormat the responseFormat value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
-        String model, String instructions, List<ToolDefinition> tools, OffsetDateTime createdAt,
-        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
-        OffsetDateTime failedAt, IncompleteRunDetails incompleteDetails, RunCompletionUsage usage,
-        Integer maxPromptTokens, Integer maxCompletionTokens, TruncationObject truncationStrategy,
-        BinaryData toolChoice, BinaryData responseFormat, Map<String, String> metadata) {
-        this.id = id;
-        this.threadId = threadId;
-        this.assistantId = assistantId;
-        this.status = status;
-        this.lastError = lastError;
-        this.model = model;
-        this.instructions = instructions;
-        this.tools = tools;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        if (expiresAt == null) {
-            this.expiresAt = null;
-        } else {
-            this.expiresAt = expiresAt.toEpochSecond();
-        }
-        if (startedAt == null) {
-            this.startedAt = null;
-        } else {
-            this.startedAt = startedAt.toEpochSecond();
-        }
-        if (completedAt == null) {
-            this.completedAt = null;
-        } else {
-            this.completedAt = completedAt.toEpochSecond();
-        }
-        if (cancelledAt == null) {
-            this.cancelledAt = null;
-        } else {
-            this.cancelledAt = cancelledAt.toEpochSecond();
-        }
-        if (failedAt == null) {
-            this.failedAt = null;
-        } else {
-            this.failedAt = failedAt.toEpochSecond();
-        }
-        this.incompleteDetails = incompleteDetails;
-        this.usage = usage;
-        this.maxPromptTokens = maxPromptTokens;
-        this.maxCompletionTokens = maxCompletionTokens;
-        this.truncationStrategy = truncationStrategy;
-        this.toolChoice = toolChoice;
-        this.responseFormat = responseFormat;
-        this.metadata = metadata;
-    }
-
-    /**
      * Get the temperature property: The sampling temperature used for this run. If not set, defaults to 1.
      *
      * @return the temperature value.
@@ -704,5 +627,104 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      */
     public AssistantsApiResponseFormatOption getResponseFormat() {
         return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
+    }
+
+    /*
+     * Whether to enable parallel function calling during tool use.
+     */
+    @Generated
+    private final boolean parallelToolCalls;
+
+    /**
+     * Creates an instance of ThreadRun class.
+     *
+     * @param id the id value to set.
+     * @param threadId the threadId value to set.
+     * @param assistantId the assistantId value to set.
+     * @param status the status value to set.
+     * @param lastError the lastError value to set.
+     * @param model the model value to set.
+     * @param instructions the instructions value to set.
+     * @param tools the tools value to set.
+     * @param createdAt the createdAt value to set.
+     * @param expiresAt the expiresAt value to set.
+     * @param startedAt the startedAt value to set.
+     * @param completedAt the completedAt value to set.
+     * @param cancelledAt the cancelledAt value to set.
+     * @param failedAt the failedAt value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param usage the usage value to set.
+     * @param maxPromptTokens the maxPromptTokens value to set.
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     * @param truncationStrategy the truncationStrategy value to set.
+     * @param toolChoice the toolChoice value to set.
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @param responseFormat the responseFormat value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
+        String model, String instructions, List<ToolDefinition> tools, OffsetDateTime createdAt,
+        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
+        OffsetDateTime failedAt, IncompleteRunDetails incompleteDetails, RunCompletionUsage usage,
+        Integer maxPromptTokens, Integer maxCompletionTokens, TruncationObject truncationStrategy,
+        BinaryData toolChoice, boolean parallelToolCalls, BinaryData responseFormat, Map<String, String> metadata) {
+        this.id = id;
+        this.threadId = threadId;
+        this.assistantId = assistantId;
+        this.status = status;
+        this.lastError = lastError;
+        this.model = model;
+        this.instructions = instructions;
+        this.tools = tools;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (expiresAt == null) {
+            this.expiresAt = null;
+        } else {
+            this.expiresAt = expiresAt.toEpochSecond();
+        }
+        if (startedAt == null) {
+            this.startedAt = null;
+        } else {
+            this.startedAt = startedAt.toEpochSecond();
+        }
+        if (completedAt == null) {
+            this.completedAt = null;
+        } else {
+            this.completedAt = completedAt.toEpochSecond();
+        }
+        if (cancelledAt == null) {
+            this.cancelledAt = null;
+        } else {
+            this.cancelledAt = cancelledAt.toEpochSecond();
+        }
+        if (failedAt == null) {
+            this.failedAt = null;
+        } else {
+            this.failedAt = failedAt.toEpochSecond();
+        }
+        this.incompleteDetails = incompleteDetails;
+        this.usage = usage;
+        this.maxPromptTokens = maxPromptTokens;
+        this.maxCompletionTokens = maxCompletionTokens;
+        this.truncationStrategy = truncationStrategy;
+        this.toolChoice = toolChoice;
+        this.parallelToolCalls = parallelToolCalls;
+        this.responseFormat = responseFormat;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
     }
 }

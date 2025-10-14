@@ -5,8 +5,9 @@ package com.azure.resourcemanager.cdn.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
@@ -16,7 +17,6 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -135,7 +135,7 @@ public class ManageCdn {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_CHINA_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
             AzureResourceManager azureResourceManager = AzureResourceManager.configure()

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,41 +25,49 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
     /*
      * The frequency.
      */
+    @Generated
     private RecurrenceFrequency frequency;
 
     /*
      * The interval.
      */
+    @Generated
     private Integer interval;
 
     /*
      * The start time.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The time zone.
      */
+    @Generated
     private String timeZone;
 
     /*
      * The recurrence schedule.
      */
+    @Generated
     private RecurrenceSchedule schedule;
 
     /*
      * The workflow trigger recurrence.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of ScheduleTriggerRecurrence class.
      */
+    @Generated
     public ScheduleTriggerRecurrence() {
     }
 
@@ -67,6 +76,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the frequency value.
      */
+    @Generated
     public RecurrenceFrequency getFrequency() {
         return this.frequency;
     }
@@ -77,6 +87,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param frequency the frequency value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setFrequency(RecurrenceFrequency frequency) {
         this.frequency = frequency;
         return this;
@@ -87,6 +98,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the interval value.
      */
+    @Generated
     public Integer getInterval() {
         return this.interval;
     }
@@ -97,6 +109,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param interval the interval value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setInterval(Integer interval) {
         this.interval = interval;
         return this;
@@ -107,6 +120,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -117,6 +131,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param startTime the startTime value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -127,6 +142,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -137,6 +153,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param endTime the endTime value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -147,6 +164,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the timeZone value.
      */
+    @Generated
     public String getTimeZone() {
         return this.timeZone;
     }
@@ -157,6 +175,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param timeZone the timeZone value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
@@ -167,6 +186,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the schedule value.
      */
+    @Generated
     public RecurrenceSchedule getSchedule() {
         return this.schedule;
     }
@@ -177,6 +197,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param schedule the schedule value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setSchedule(RecurrenceSchedule schedule) {
         this.schedule = schedule;
         return this;
@@ -187,6 +208,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -197,6 +219,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * @param additionalProperties the additionalProperties value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
+    @Generated
     public ScheduleTriggerRecurrence setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -205,6 +228,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -232,6 +256,7 @@ public final class ScheduleTriggerRecurrence implements JsonSerializable<Schedul
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ScheduleTriggerRecurrence.
      */
+    @Generated
     public static ScheduleTriggerRecurrence fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScheduleTriggerRecurrence deserializedScheduleTriggerRecurrence = new ScheduleTriggerRecurrence();

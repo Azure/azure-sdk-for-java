@@ -76,9 +76,9 @@ public final class KubernetesClusterFeaturesImpl implements KubernetesClusterFea
     }
 
     public OperationStatusResult delete(String resourceGroupName, String kubernetesClusterName, String featureName,
-        Context context) {
-        OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, kubernetesClusterName, featureName, context);
+        String ifMatch, String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .delete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -140,10 +140,14 @@ public final class KubernetesClusterFeaturesImpl implements KubernetesClusterFea
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'features'.", id)));
         }
-        return this.delete(resourceGroupName, kubernetesClusterName, featureName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, kubernetesClusterName, featureName, localIfMatch, localIfNoneMatch,
+            Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -159,7 +163,7 @@ public final class KubernetesClusterFeaturesImpl implements KubernetesClusterFea
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'features'.", id)));
         }
-        return this.delete(resourceGroupName, kubernetesClusterName, featureName, context);
+        return this.delete(resourceGroupName, kubernetesClusterName, featureName, ifMatch, ifNoneMatch, context);
     }
 
     private KubernetesClusterFeaturesClient serviceClient() {

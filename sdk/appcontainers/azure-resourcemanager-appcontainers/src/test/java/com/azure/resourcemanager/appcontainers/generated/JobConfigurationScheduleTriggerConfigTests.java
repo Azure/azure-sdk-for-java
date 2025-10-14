@@ -11,24 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class JobConfigurationScheduleTriggerConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobConfigurationScheduleTriggerConfig model = BinaryData
-            .fromString(
-                "{\"replicaCompletionCount\":718100150,\"cronExpression\":\"mlwywaeeczg\",\"parallelism\":2069370787}")
+        JobConfigurationScheduleTriggerConfig model = BinaryData.fromString(
+            "{\"replicaCompletionCount\":1862630746,\"cronExpression\":\"nbldxeaclgschori\",\"parallelism\":1496521360}")
             .toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(718100150, model.replicaCompletionCount());
-        Assertions.assertEquals("mlwywaeeczg", model.cronExpression());
-        Assertions.assertEquals(2069370787, model.parallelism());
+        Assertions.assertEquals(1862630746, model.replicaCompletionCount());
+        Assertions.assertEquals("nbldxeaclgschori", model.cronExpression());
+        Assertions.assertEquals(1496521360, model.parallelism());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobConfigurationScheduleTriggerConfig model
-            = new JobConfigurationScheduleTriggerConfig().withReplicaCompletionCount(718100150)
-                .withCronExpression("mlwywaeeczg")
-                .withParallelism(2069370787);
+            = new JobConfigurationScheduleTriggerConfig().withReplicaCompletionCount(1862630746)
+                .withCronExpression("nbldxeaclgschori")
+                .withParallelism(1496521360);
         model = BinaryData.fromObject(model).toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(718100150, model.replicaCompletionCount());
-        Assertions.assertEquals("mlwywaeeczg", model.cronExpression());
-        Assertions.assertEquals(2069370787, model.parallelism());
+        Assertions.assertEquals(1862630746, model.replicaCompletionCount());
+        Assertions.assertEquals("nbldxeaclgschori", model.cronExpression());
+        Assertions.assertEquals(1496521360, model.parallelism());
     }
 }

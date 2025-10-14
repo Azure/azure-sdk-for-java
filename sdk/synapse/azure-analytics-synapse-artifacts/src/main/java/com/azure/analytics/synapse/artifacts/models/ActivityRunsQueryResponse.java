@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
     /*
      * List of activity runs.
      */
+    @Generated
     private List<ActivityRun> value;
 
     /*
      * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
+    @Generated
     private String continuationToken;
 
     /**
      * Creates an instance of ActivityRunsQueryResponse class.
      */
+    @Generated
     public ActivityRunsQueryResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
      * 
      * @return the value value.
      */
+    @Generated
     public List<ActivityRun> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
      * @param value the value value to set.
      * @return the ActivityRunsQueryResponse object itself.
      */
+    @Generated
     public ActivityRunsQueryResponse setValue(List<ActivityRun> value) {
         this.value = value;
         return this;
@@ -59,6 +65,7 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
      * 
      * @return the continuationToken value.
      */
+    @Generated
     public String getContinuationToken() {
         return this.continuationToken;
     }
@@ -70,6 +77,7 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
      * @param continuationToken the continuationToken value to set.
      * @return the ActivityRunsQueryResponse object itself.
      */
+    @Generated
     public ActivityRunsQueryResponse setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
@@ -78,6 +86,7 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -95,6 +104,7 @@ public final class ActivityRunsQueryResponse implements JsonSerializable<Activit
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ActivityRunsQueryResponse.
      */
+    @Generated
     public static ActivityRunsQueryResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ActivityRunsQueryResponse deserializedActivityRunsQueryResponse = new ActivityRunsQueryResponse();

@@ -36,7 +36,7 @@ public interface Channel {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to Channel resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

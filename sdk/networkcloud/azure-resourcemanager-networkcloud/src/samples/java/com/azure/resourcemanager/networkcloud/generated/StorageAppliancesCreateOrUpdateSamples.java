@@ -15,7 +15,7 @@ import java.util.Map;
 public final class StorageAppliancesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * StorageAppliances_Create.json
      */
     /**

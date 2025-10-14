@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateContract;
@@ -24,34 +24,44 @@ public final class EmailTemplatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"fqeaxd\",\"body\":\"eluvmsa\",\"title\":\"viawg\",\"description\":\"wu\",\"isDefault\":true,\"parameters\":[{\"name\":\"nfgpbcbkcpympdj\",\"title\":\"asklkqclnf\",\"description\":\"rgnoskkhbmjphlyy\"},{\"name\":\"h\",\"title\":\"eikbvqzr\",\"description\":\"gbqaucpckx\"}]},\"id\":\"nohafwm\",\"name\":\"pgjl\",\"type\":\"xtugpeamet\"}";
+            = "{\"properties\":{\"subject\":\"xgtu\",\"body\":\"bvfquzihirqvv\",\"title\":\"tydgaqoktssg\",\"description\":\"xerxrmhrraqgbb\",\"isDefault\":true,\"parameters\":[{\"name\":\"l\",\"title\":\"s\",\"description\":\"zsyiumtitlq\"},{\"name\":\"fvernnk\",\"title\":\"kayqivbigdrqgzet\",\"description\":\"yztg\"}]},\"id\":\"muxppwpcfmgrmt\",\"name\":\"whzbbdwrjencof\",\"type\":\"ii\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EmailTemplateContract response = manager.emailTemplates()
-            .define(TemplateName.NEW_DEVELOPER_NOTIFICATION_MESSAGE)
-            .withExistingService("lzuwtbdzqajxkmp", "bfhlgeehbd")
-            .withSubject("nlx")
-            .withTitle("eszunb")
-            .withDescription("fmoubukqm")
-            .withBody("rzrnobvvequz")
-            .withParameters(Arrays.asList(new EmailTemplateParametersContractProperties().withName("gzdhzbjec")
-                .withTitle("ysxnku")
-                .withDescription("hnlse")))
-            .withIfMatch("zcrrwnkkgdwqym")
+            .define(TemplateName.PASSWORD_RESET_IDENTITY_DEFAULT)
+            .withExistingService("ykduumwbc", "mjvegpdxtsa")
+            .withSubject("oojybo")
+            .withTitle("oxupt")
+            .withDescription("iivmlkwkzlinvam")
+            .withBody("kxszd")
+            .withParameters(Arrays.asList(
+                new EmailTemplateParametersContractProperties().withName("csqmzdozktkd")
+                    .withTitle("zeohplrgcnb")
+                    .withDescription("hvqpkedaxku"),
+                new EmailTemplateParametersContractProperties().withName("rfjid")
+                    .withTitle("dawe")
+                    .withDescription("avfyihuzsbpw"),
+                new EmailTemplateParametersContractProperties().withName("fjcypazwiimd")
+                    .withTitle("gkooagr")
+                    .withDescription("pamesi"),
+                new EmailTemplateParametersContractProperties().withName("qadewhuwxk")
+                    .withTitle("iatfamrnaifllxcc")
+                    .withDescription("kiyfo")))
+            .withIfMatch("whom")
             .create();
 
-        Assertions.assertEquals("fqeaxd", response.subject());
-        Assertions.assertEquals("eluvmsa", response.body());
-        Assertions.assertEquals("viawg", response.title());
-        Assertions.assertEquals("wu", response.description());
-        Assertions.assertEquals("nfgpbcbkcpympdj", response.parameters().get(0).name());
-        Assertions.assertEquals("asklkqclnf", response.parameters().get(0).title());
-        Assertions.assertEquals("rgnoskkhbmjphlyy", response.parameters().get(0).description());
+        Assertions.assertEquals("xgtu", response.subject());
+        Assertions.assertEquals("bvfquzihirqvv", response.body());
+        Assertions.assertEquals("tydgaqoktssg", response.title());
+        Assertions.assertEquals("xerxrmhrraqgbb", response.description());
+        Assertions.assertEquals("l", response.parameters().get(0).name());
+        Assertions.assertEquals("s", response.parameters().get(0).title());
+        Assertions.assertEquals("zsyiumtitlq", response.parameters().get(0).description());
     }
 }

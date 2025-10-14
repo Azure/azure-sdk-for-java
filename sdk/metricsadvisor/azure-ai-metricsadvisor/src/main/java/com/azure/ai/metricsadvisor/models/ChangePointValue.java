@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ChangePointValue extends ExpandableStringEnum<ChangePointValu
     /**
      * Static value AutoDetect for ChangePointValue.
      */
+    @Generated
     public static final ChangePointValue AUTO_DETECT = fromString("AutoDetect");
 
     /**
      * Static value ChangePoint for ChangePointValue.
      */
+    @Generated
     public static final ChangePointValue CHANGE_POINT = fromString("ChangePoint");
 
     /**
      * Static value NotChangePoint for ChangePointValue.
      */
+    @Generated
     public static final ChangePointValue NOT_CHANGE_POINT = fromString("NotChangePoint");
 
     /**
@@ -31,6 +35,7 @@ public final class ChangePointValue extends ExpandableStringEnum<ChangePointValu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ChangePointValue() {
     }
@@ -41,6 +46,7 @@ public final class ChangePointValue extends ExpandableStringEnum<ChangePointValu
      * @param name a name to look for.
      * @return the corresponding ChangePointValue.
      */
+    @Generated
     public static ChangePointValue fromString(String name) {
         return fromString(name, ChangePointValue.class);
     }
@@ -50,6 +56,7 @@ public final class ChangePointValue extends ExpandableStringEnum<ChangePointValu
      * 
      * @return known ChangePointValue values.
      */
+    @Generated
     public static Collection<ChangePointValue> values() {
         return values(ChangePointValue.class);
     }

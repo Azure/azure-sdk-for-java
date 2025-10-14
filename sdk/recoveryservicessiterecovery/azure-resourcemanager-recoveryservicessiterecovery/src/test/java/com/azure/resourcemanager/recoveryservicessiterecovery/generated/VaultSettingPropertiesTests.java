@@ -12,18 +12,18 @@ public final class VaultSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultSettingProperties model = BinaryData
-            .fromString("{\"migrationSolutionId\":\"yedmzrgj\",\"vmwareToAzureProviderType\":\"knubnoitp\"}")
+            .fromString("{\"migrationSolutionId\":\"fytoi\",\"vmwareToAzureProviderType\":\"gygvfltgvdiho\"}")
             .toObject(VaultSettingProperties.class);
-        Assertions.assertEquals("yedmzrgj", model.migrationSolutionId());
-        Assertions.assertEquals("knubnoitp", model.vmwareToAzureProviderType());
+        Assertions.assertEquals("fytoi", model.migrationSolutionId());
+        Assertions.assertEquals("gygvfltgvdiho", model.vmwareToAzureProviderType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultSettingProperties model = new VaultSettingProperties().withMigrationSolutionId("yedmzrgj")
-            .withVmwareToAzureProviderType("knubnoitp");
+        VaultSettingProperties model = new VaultSettingProperties().withMigrationSolutionId("fytoi")
+            .withVmwareToAzureProviderType("gygvfltgvdiho");
         model = BinaryData.fromObject(model).toObject(VaultSettingProperties.class);
-        Assertions.assertEquals("yedmzrgj", model.migrationSolutionId());
-        Assertions.assertEquals("knubnoitp", model.vmwareToAzureProviderType());
+        Assertions.assertEquals("fytoi", model.migrationSolutionId());
+        Assertions.assertEquals("gygvfltgvdiho", model.vmwareToAzureProviderType());
     }
 }

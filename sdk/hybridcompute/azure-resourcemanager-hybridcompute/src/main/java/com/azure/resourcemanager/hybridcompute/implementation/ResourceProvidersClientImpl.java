@@ -21,11 +21,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.hybridcompute.fluent.models.SetupExtensionRequestInner;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpgrade;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -61,7 +64,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "HybridComputeManagem")
+    @ServiceInterface(name = "HybridComputeManagementClientResourceProviders")
     public interface ResourceProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/upgradeExtensions")
@@ -72,6 +75,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
             @BodyParam("application/json") MachineExtensionUpgrade extensionUpgradeParameters,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/upgradeExtensions")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> upgradeExtensionsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
+            @BodyParam("application/json") MachineExtensionUpgrade extensionUpgradeParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/addExtensions")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> setupExtensions(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
+            @BodyParam("application/json") SetupExtensionRequestInner extensions, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/addExtensions")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> setupExtensionsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
+            @BodyParam("application/json") SetupExtensionRequestInner extensions, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -123,39 +156,87 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeExtensionsWithResponseAsync(String resourceGroupName,
-        String machineName, MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
+    private Response<BinaryData> upgradeExtensionsWithResponse(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (machineName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
         if (extensionUpgradeParameters == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter extensionUpgradeParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter extensionUpgradeParameters is required and cannot be null."));
         } else {
             extensionUpgradeParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.upgradeExtensions(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.upgradeExtensionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, machineName, extensionUpgradeParameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * The operation to Upgrade Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> upgradeExtensionsWithResponse(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (machineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+        }
+        if (extensionUpgradeParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter extensionUpgradeParameters is required and cannot be null."));
+        } else {
+            extensionUpgradeParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.upgradeExtensionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, machineName, extensionUpgradeParameters, accept,
             context);
     }
@@ -186,28 +267,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpgradeExtensionsAsync(String resourceGroupName, String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = upgradeExtensionsWithResponseAsync(resourceGroupName, machineName, extensionUpgradeParameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * The operation to Upgrade Machine Extensions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -216,8 +275,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters) {
-        return this.beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = upgradeExtensionsWithResponse(resourceGroupName, machineName, extensionUpgradeParameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -235,8 +295,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
-        return this.beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = upgradeExtensionsWithResponse(resourceGroupName, machineName, extensionUpgradeParameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -263,25 +324,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> upgradeExtensionsAsync(String resourceGroupName, String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
-        return beginUpgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The operation to Upgrade Machine Extensions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,7 +331,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters) {
-        upgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters).block();
+        beginUpgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters).getFinalResult();
     }
 
     /**
@@ -306,6 +348,250 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
-        upgradeExtensionsAsync(resourceGroupName, machineName, extensionUpgradeParameters, context).block();
+        beginUpgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters, context).getFinalResult();
     }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> setupExtensionsWithResponseAsync(String resourceGroupName,
+        String machineName, SetupExtensionRequestInner extensions) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (machineName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+        }
+        if (extensions == null) {
+            return Mono.error(new IllegalArgumentException("Parameter extensions is required and cannot be null."));
+        } else {
+            extensions.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.setupExtensions(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, machineName, extensions, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> setupExtensionsWithResponse(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (machineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+        }
+        if (extensions == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensions is required and cannot be null."));
+        } else {
+            extensions.validate();
+        }
+        final String accept = "application/json";
+        return service.setupExtensionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, machineName, extensions, accept, Context.NONE);
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> setupExtensionsWithResponse(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (machineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+        }
+        if (extensions == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensions is required and cannot be null."));
+        } else {
+            extensions.validate();
+        }
+        final String accept = "application/json";
+        return service.setupExtensionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, machineName, extensions, accept, context);
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SetupExtensionRequestInner>, SetupExtensionRequestInner>
+        beginSetupExtensionsAsync(String resourceGroupName, String machineName, SetupExtensionRequestInner extensions) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = setupExtensionsWithResponseAsync(resourceGroupName, machineName, extensions);
+        return this.client.<SetupExtensionRequestInner, SetupExtensionRequestInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SetupExtensionRequestInner.class, SetupExtensionRequestInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SetupExtensionRequestInner>, SetupExtensionRequestInner>
+        beginSetupExtensions(String resourceGroupName, String machineName, SetupExtensionRequestInner extensions) {
+        Response<BinaryData> response = setupExtensionsWithResponse(resourceGroupName, machineName, extensions);
+        return this.client.<SetupExtensionRequestInner, SetupExtensionRequestInner>getLroResult(response,
+            SetupExtensionRequestInner.class, SetupExtensionRequestInner.class, Context.NONE);
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SetupExtensionRequestInner>, SetupExtensionRequestInner> beginSetupExtensions(
+        String resourceGroupName, String machineName, SetupExtensionRequestInner extensions, Context context) {
+        Response<BinaryData> response
+            = setupExtensionsWithResponse(resourceGroupName, machineName, extensions, context);
+        return this.client.<SetupExtensionRequestInner, SetupExtensionRequestInner>getLroResult(response,
+            SetupExtensionRequestInner.class, SetupExtensionRequestInner.class, context);
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SetupExtensionRequestInner> setupExtensionsAsync(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions) {
+        return beginSetupExtensionsAsync(resourceGroupName, machineName, extensions).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SetupExtensionRequestInner setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions) {
+        return beginSetupExtensions(resourceGroupName, machineName, extensions).getFinalResult();
+    }
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SetupExtensionRequestInner setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions, Context context) {
+        return beginSetupExtensions(resourceGroupName, machineName, extensions, context).getFinalResult();
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersClientImpl.class);
 }

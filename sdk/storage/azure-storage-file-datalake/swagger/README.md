@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.42'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/688a906172823628e75b19ea8964d998cb7560fd/specification/storage/data-plane/Azure.Storage.Files.DataLake/preview/2023-05-03/DataLakeStorage.json
+use: '@autorest/java@4.1.52'
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/storage/data-plane/Azure.Storage.Files.DataLake/stable/2025-05-05/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -112,5 +112,5 @@ directive:
 ```
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
+
 

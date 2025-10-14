@@ -17,8 +17,8 @@ public class ListMultivariateModels {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariatelistmultivariatemodels.listmultivariatemodels
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-list-multivariate-models.list-multivariate-models
         PagedIterable<AnomalyDetectionModel> response = multivariateClient.listMultivariateModels(0, 10);
-        // END:com.azure.ai.anomalydetector.generated.multivariatelistmultivariatemodels.listmultivariatemodels
+        // END:com.azure.ai.anomalydetector.generated.multivariate-list-multivariate-models.list-multivariate-models
     }
 }

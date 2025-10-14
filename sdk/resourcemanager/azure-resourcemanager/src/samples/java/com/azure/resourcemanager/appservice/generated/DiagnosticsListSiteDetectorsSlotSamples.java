@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DiagnosticsListSiteDetectorsSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectors.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectors.json
      */
     /**
      * Sample code: List App Detectors.
@@ -28,7 +28,7 @@ public final class DiagnosticsListSiteDetectorsSlotSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectorsSlot.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorsSlot.
      * json
      */
     /**

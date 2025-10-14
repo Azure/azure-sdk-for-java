@@ -9,14 +9,15 @@ package com.azure.resourcemanager.neonpostgres.generated;
  */
 public final class OrganizationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/Organizations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-06-23-preview/Organizations_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Organizations_Delete.
+     * Sample code: Organizations_Delete_MaximumSet.
      * 
      * @param manager Entry point to NeonPostgresManager.
      */
-    public static void organizationsDelete(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
-        manager.organizations().delete("rgneon", "2_3", com.azure.core.util.Context.NONE);
+    public static void
+        organizationsDeleteMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+        manager.organizations().delete("rgneon", "myOrganization", com.azure.core.util.Context.NONE);
     }
 }

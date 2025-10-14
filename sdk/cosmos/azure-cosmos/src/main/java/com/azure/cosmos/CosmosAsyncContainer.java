@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -36,9 +37,10 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -69,6 +71,7 @@ import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import org.slf4j.Logger;
@@ -80,7 +83,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -145,6 +147,10 @@ public class CosmosAsyncContainer {
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
     private IFaultInjectorProvider faultInjectorProvider;
+
+    protected CosmosAsyncContainer(CosmosAsyncContainer toBeWrappedContainer) {
+        this(toBeWrappedContainer.getId(), toBeWrappedContainer.getDatabase());
+    }
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
@@ -543,7 +549,7 @@ public class CosmosAsyncContainer {
         effectiveOptions.setEffectiveItemSerializer(this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getEffectiveItemSerializer()));
 
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
-            trackingId = UUID.randomUUID().toString();
+            trackingId = UUIDs.nonBlockingRandomUUID().toString();
             responseMono = createItemWithTrackingId(item, effectiveOptions, trackingId);
         } else {
             responseMono = createItemInternalCore(item, effectiveOptions, null);
@@ -581,6 +587,7 @@ public class CosmosAsyncContainer {
             operationType,
             null,
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, requestOptions.getConsistencyLevel()),
+            clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestOptions.getReadConsistencyStrategy()),
             null,
             thresholds,
             null,
@@ -1159,21 +1166,8 @@ public class CosmosAsyncContainer {
 
             final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
             return clientWrapper
-                .getCollectionCache()
-                .resolveByNameAsync(
-                    null,
-                    this.getLinkWithoutTrailingSlash(),
-                    null)
-                .flatMapMany(
-                    collection -> {
-                        if (collection == null) {
-                            throw new IllegalStateException("Collection cannot be null");
-                        }
-
-                        return clientWrapper
-                            .queryDocumentChangeFeedFromPagedFlux(collection, state, classType)
-                            .map(response -> prepareFeedResponse(response, true));
-                    });
+                .queryDocumentChangeFeedFromPagedFlux(this.getLinkWithoutTrailingSlash(), state, classType)
+                .map(response -> prepareFeedResponse(response, true));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -2277,7 +2271,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono;
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
-            trackingId = UUID.randomUUID().toString();
+            trackingId = UUIDs.nonBlockingRandomUUID().toString();
             responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, requestOptions, trackingId);
         } else {
             responseMono = this.replaceItemInternalCore(itemType, itemId, doc, requestOptions, null);
@@ -2777,7 +2771,7 @@ public class CosmosAsyncContainer {
 
         LocalThroughputControlGroup localControlGroup =
             ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
-        this.database.getClient().enableThroughputControlGroup(localControlGroup, throughputQueryMono);
+        this.database.getClient().enableSDKThroughputControlGroup(localControlGroup, throughputQueryMono);
     }
 
     /**
@@ -2802,7 +2796,7 @@ public class CosmosAsyncContainer {
      * </pre>
      * <!-- end com.azure.cosmos.throughputControl.globalControl -->
      *
-     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link ThroughputControlGroupConfig}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     public void enableGlobalThroughputControlGroup(
@@ -2815,7 +2809,7 @@ public class CosmosAsyncContainer {
     /***
      * Only used internally.
      * <br/>
-     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link ThroughputControlGroupConfig}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      * @param throughputQueryMono The throughput query mono.
      */
@@ -2827,7 +2821,36 @@ public class CosmosAsyncContainer {
         GlobalThroughputControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-        this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
+        this.database.getClient().enableSDKThroughputControlGroup(globalControlGroup, throughputQueryMono);
+    }
+
+    /***
+     * Enable the server throughput bucket control group.
+     *
+     * <!-- src_embed com.azure.cosmos.throughputControl.serverControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .throughputBucket&#40;2&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableServerThroughputControlGroup&#40;groupConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.serverControl -->
+     *
+     * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        if (groupConfig.getPriorityLevel() == null && groupConfig.getThroughputBucket() == null) {
+            throw new IllegalArgumentException("Config 'priorityLevel' and 'throughputBucket' can not be null for both.");
+        }
+
+        ServerThroughputControlGroup serverThroughputControlGroup =
+            ThroughputControlGroupFactory.createServerThroughputControlGroup(groupConfig, this);
+
+        this.database.getClient().enableServerThroughputControlGroup(serverThroughputControlGroup);
     }
 
     void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {

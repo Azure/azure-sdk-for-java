@@ -25,189 +25,122 @@ public final class ModelListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ModelListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"wozuhkf\",\"value\":[{\"model\":{\"baseModel\":{\"publisher\":\"f\",\"format\":\"luu\",\"name\":\"ttouwaboekqvkel\",\"version\":\"mvb\",\"source\":\"yjsflhhcaalnji\",\"sourceAccount\":\"sxyawjoyaqcs\",\"callRateLimit\":{\"count\":24.450993,\"renewalPeriod\":58.93525,\"rules\":[{},{},{}]}},\"isDefaultVersion\":false,\"skus\":[{\"name\":\"nelixhnrztfo\",\"usageName\":\"bnxknalaulppg\",\"deprecationDate\":\"2021-03-08T22:58:09Z\",\"capacity\":{},\"rateLimits\":[{},{},{},{}],\"cost\":[{},{},{}]},{\"name\":\"iropuhpigvpgylg\",\"usageName\":\"itxmedjvcslynqww\",\"deprecationDate\":\"2021-09-17T17:00:46Z\",\"capacity\":{},\"rateLimits\":[{}],\"cost\":[{},{},{},{}]},{\"name\":\"trmgucnapkte\",\"usageName\":\"llwptfdy\",\"deprecationDate\":\"2020-12-31T02:22:45Z\",\"capacity\":{},\"rateLimits\":[{},{},{},{}],\"cost\":[{},{},{},{}]},{\"name\":\"op\",\"usageName\":\"qrhhu\",\"deprecationDate\":\"2021-05-07T00:48:34Z\",\"capacity\":{},\"rateLimits\":[{}],\"cost\":[{}]}],\"maxCapacity\":108593741,\"capabilities\":{\"ahzxctobgbk\":\"z\",\"mgrcfbu\":\"moizpos\",\"mjh\":\"rmfqjhhkxbpvj\",\"tswb\":\"xjyngudivk\"},\"finetuneCapabilities\":{\"e\":\"vszjfauvjfdxxi\",\"mcbxvwvxysl\":\"vtcqaqtdo\"},\"deprecation\":{\"fineTune\":\"sfxobl\",\"inference\":\"k\"},\"lifecycleStatus\":\"GenerallyAvailable\",\"publisher\":\"wwwfbkr\",\"format\":\"nsvs\",\"name\":\"johxcrsb\",\"version\":\"vasrruvwb\",\"source\":\"qfsubcgjbirx\",\"sourceAccount\":\"ybsrfbjfdtwss\",\"callRateLimit\":{\"count\":98.93621,\"renewalPeriod\":17.965126,\"rules\":[{},{},{},{}]}},\"kind\":\"exilzznfqqnvwpmq\",\"skuName\":\"ruoujmk\",\"description\":\"hwqytj\"},{\"model\":{\"baseModel\":{\"publisher\":\"wj\",\"format\":\"gdrjervnaenqpe\",\"name\":\"ndoygmifthnzdnd\",\"version\":\"gnayqigynduh\",\"source\":\"hqlkthumaqo\",\"sourceAccount\":\"gycdu\",\"callRateLimit\":{\"count\":75.81883,\"renewalPeriod\":82.43766,\"rules\":[{}]}},\"isDefaultVersion\":true,\"skus\":[{\"name\":\"psslqlfmm\",\"usageName\":\"bbglzpswiydmc\",\"deprecationDate\":\"2021-03-06T05:36:52Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{}]},{\"name\":\"dbzm\",\"usageName\":\"dfznudaodv\",\"deprecationDate\":\"2021-05-29T13:49:41Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{},{},{}]},{\"name\":\"pstdbhhxsrzd\",\"usageName\":\"cers\",\"deprecationDate\":\"2021-04-29T11:57:05Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{},{},{}]}],\"maxCapacity\":931979220,\"capabilities\":{\"weriofzpyqsem\":\"ygtdsslswt\",\"zhedplvwiw\":\"abnetshh\",\"tppjflcx\":\"bmwmbesldnkw\"},\"finetuneCapabilities\":{\"qqkdltfzxmhhvhgu\":\"okonzmnsikvmkqz\",\"xtibqdxbxwakbog\":\"eodkwobda\",\"iplbpodxunkbebxm\":\"xndlkzgxhu\"},\"deprecation\":{\"fineTune\":\"yntwlrbq\",\"inference\":\"oievseotgqrlltm\"},\"lifecycleStatus\":\"Deprecated\",\"publisher\":\"wzizxbmpgcjefuzm\",\"format\":\"pbttdum\",\"name\":\"p\",\"version\":\"ebmnzbtbhjpglk\",\"source\":\"ohdneuel\",\"sourceAccount\":\"hsd\",\"callRateLimit\":{\"count\":59.737354,\"renewalPeriod\":55.207397,\"rules\":[{}]}},\"kind\":\"owwquuvxz\",\"skuName\":\"lvithhqzonosgg\",\"description\":\"c\"}]}")
+            "{\"nextLink\":\"wmdyvxqtay\",\"value\":[{\"model\":{\"baseModel\":{\"publisher\":\"yqbexrmcqibycno\",\"format\":\"knme\",\"name\":\"sgzvahapjyzhpv\",\"version\":\"zcjrvxdjzlmwlx\",\"source\":\"ug\",\"sourceAccount\":\"zovawjvz\",\"callRateLimit\":{\"count\":99.287285,\"renewalPeriod\":27.584808,\"rules\":[{}]}},\"isDefaultVersion\":false,\"skus\":[{\"name\":\"peilpjzuaejxdu\",\"usageName\":\"skzbb\",\"deprecationDate\":\"2021-08-12T02:58:19Z\",\"capacity\":{},\"rateLimits\":[{},{},{},{}],\"cost\":[{}]},{\"name\":\"gpw\",\"usageName\":\"uh\",\"deprecationDate\":\"2021-08-14T18:03:09Z\",\"capacity\":{},\"rateLimits\":[{},{},{},{}],\"cost\":[{}]},{\"name\":\"dxluu\",\"usageName\":\"ttouwaboekqvkel\",\"deprecationDate\":\"2021-10-11T10:00:24Z\",\"capacity\":{},\"rateLimits\":[{},{},{}],\"cost\":[{},{},{},{}]},{\"name\":\"sflhhca\",\"usageName\":\"n\",\"deprecationDate\":\"2021-03-25T19:19:56Z\",\"capacity\":{},\"rateLimits\":[{},{}],\"cost\":[{},{},{},{}]}],\"maxCapacity\":939698337,\"capabilities\":{\"slyjpkiid\":\"aq\",\"eli\":\"yexz\",\"bnxknalaulppg\":\"hnrztfol\",\"gvpgy\":\"dtpnapnyiropuhp\"},\"finetuneCapabilities\":{\"medjvcslynqwwncw\":\"git\",\"pkteo\":\"zhxgktrmgucn\"},\"deprecation\":{\"fineTune\":\"wptfdy\",\"inference\":\"fqbuaceopzf\"},\"lifecycleStatus\":\"Deprecating\",\"publisher\":\"ao\",\"format\":\"pcqeqx\",\"name\":\"z\",\"version\":\"hzxct\",\"source\":\"gbkdmoizpos\",\"sourceAccount\":\"grcfb\",\"callRateLimit\":{\"count\":62.275116,\"renewalPeriod\":50.984173,\"rules\":[{},{}]}},\"kind\":\"kxbpvj\",\"skuName\":\"jhxxjyn\",\"description\":\"divkrt\"}]}")
             .toObject(ModelListResult.class);
-        Assertions.assertEquals("wozuhkf", model.nextLink());
-        Assertions.assertEquals("wwwfbkr", model.value().get(0).model().publisher());
-        Assertions.assertEquals("nsvs", model.value().get(0).model().format());
-        Assertions.assertEquals("johxcrsb", model.value().get(0).model().name());
-        Assertions.assertEquals("vasrruvwb", model.value().get(0).model().version());
-        Assertions.assertEquals("qfsubcgjbirx", model.value().get(0).model().source());
-        Assertions.assertEquals("ybsrfbjfdtwss", model.value().get(0).model().sourceAccount());
-        Assertions.assertEquals("f", model.value().get(0).model().baseModel().publisher());
-        Assertions.assertEquals("luu", model.value().get(0).model().baseModel().format());
-        Assertions.assertEquals("ttouwaboekqvkel", model.value().get(0).model().baseModel().name());
-        Assertions.assertEquals("mvb", model.value().get(0).model().baseModel().version());
-        Assertions.assertEquals("yjsflhhcaalnji", model.value().get(0).model().baseModel().source());
-        Assertions.assertEquals("sxyawjoyaqcs", model.value().get(0).model().baseModel().sourceAccount());
-        Assertions.assertEquals(false, model.value().get(0).model().isDefaultVersion());
-        Assertions.assertEquals("nelixhnrztfo", model.value().get(0).model().skus().get(0).name());
-        Assertions.assertEquals("bnxknalaulppg", model.value().get(0).model().skus().get(0).usageName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T22:58:09Z"),
+        Assertions.assertEquals("wmdyvxqtay", model.nextLink());
+        Assertions.assertEquals("ao", model.value().get(0).model().publisher());
+        Assertions.assertEquals("pcqeqx", model.value().get(0).model().format());
+        Assertions.assertEquals("z", model.value().get(0).model().name());
+        Assertions.assertEquals("hzxct", model.value().get(0).model().version());
+        Assertions.assertEquals("gbkdmoizpos", model.value().get(0).model().source());
+        Assertions.assertEquals("grcfb", model.value().get(0).model().sourceAccount());
+        Assertions.assertEquals("yqbexrmcqibycno", model.value().get(0).model().baseModel().publisher());
+        Assertions.assertEquals("knme", model.value().get(0).model().baseModel().format());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.value().get(0).model().baseModel().name());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.value().get(0).model().baseModel().version());
+        Assertions.assertEquals("ug", model.value().get(0).model().baseModel().source());
+        Assertions.assertEquals("zovawjvz", model.value().get(0).model().baseModel().sourceAccount());
+        Assertions.assertFalse(model.value().get(0).model().isDefaultVersion());
+        Assertions.assertEquals("peilpjzuaejxdu", model.value().get(0).model().skus().get(0).name());
+        Assertions.assertEquals("skzbb", model.value().get(0).model().skus().get(0).usageName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T02:58:19Z"),
             model.value().get(0).model().skus().get(0).deprecationDate());
-        Assertions.assertEquals(108593741, model.value().get(0).model().maxCapacity());
-        Assertions.assertEquals("z", model.value().get(0).model().capabilities().get("ahzxctobgbk"));
-        Assertions.assertEquals("vszjfauvjfdxxi", model.value().get(0).model().finetuneCapabilities().get("e"));
-        Assertions.assertEquals("sfxobl", model.value().get(0).model().deprecation().fineTune());
-        Assertions.assertEquals("k", model.value().get(0).model().deprecation().inference());
-        Assertions.assertEquals(ModelLifecycleStatus.GENERALLY_AVAILABLE,
-            model.value().get(0).model().lifecycleStatus());
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.value().get(0).kind());
-        Assertions.assertEquals("ruoujmk", model.value().get(0).skuName());
-        Assertions.assertEquals("hwqytj", model.value().get(0).description());
+        Assertions.assertEquals(939698337, model.value().get(0).model().maxCapacity());
+        Assertions.assertEquals("aq", model.value().get(0).model().capabilities().get("slyjpkiid"));
+        Assertions.assertEquals("git", model.value().get(0).model().finetuneCapabilities().get("medjvcslynqwwncw"));
+        Assertions.assertEquals("wptfdy", model.value().get(0).model().deprecation().fineTune());
+        Assertions.assertEquals("fqbuaceopzf", model.value().get(0).model().deprecation().inference());
+        Assertions.assertEquals(ModelLifecycleStatus.DEPRECATING, model.value().get(0).model().lifecycleStatus());
+        Assertions.assertEquals("kxbpvj", model.value().get(0).kind());
+        Assertions.assertEquals("jhxxjyn", model.value().get(0).skuName());
+        Assertions.assertEquals("divkrt", model.value().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ModelListResult model
-            = new ModelListResult().withNextLink("wozuhkf")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ModelInner()
-                                .withModel(
-                                    new AccountModelInner().withPublisher("wwwfbkr")
-                                        .withFormat("nsvs")
-                                        .withName("johxcrsb")
-                                        .withVersion("vasrruvwb")
-                                        .withSource("qfsubcgjbirx")
-                                        .withSourceAccount("ybsrfbjfdtwss")
-                                        .withBaseModel(new DeploymentModel().withPublisher("f")
-                                            .withFormat("luu")
-                                            .withName("ttouwaboekqvkel")
-                                            .withVersion("mvb")
-                                            .withSource("yjsflhhcaalnji")
-                                            .withSourceAccount("sxyawjoyaqcs"))
-                                        .withIsDefaultVersion(false)
-                                        .withSkus(Arrays.asList(
-                                            new ModelSku().withName("nelixhnrztfo")
-                                                .withUsageName("bnxknalaulppg")
-                                                .withDeprecationDate(OffsetDateTime.parse("2021-03-08T22:58:09Z"))
-                                                .withCapacity(new CapacityConfig())
-                                                .withRateLimits(Arrays.asList(new CallRateLimit(), new CallRateLimit(),
-                                                    new CallRateLimit(), new CallRateLimit()))
-                                                .withCost(Arrays.asList(new BillingMeterInfo(), new BillingMeterInfo(),
-                                                    new BillingMeterInfo())),
-                                            new ModelSku().withName("iropuhpigvpgylg")
-                                                .withUsageName("itxmedjvcslynqww")
-                                                .withDeprecationDate(OffsetDateTime.parse("2021-09-17T17:00:46Z"))
-                                                .withCapacity(new CapacityConfig())
-                                                .withRateLimits(Arrays.asList(new CallRateLimit()))
-                                                .withCost(Arrays.asList(new BillingMeterInfo(), new BillingMeterInfo(),
-                                                    new BillingMeterInfo(), new BillingMeterInfo())),
-                                            new ModelSku().withName("trmgucnapkte")
-                                                .withUsageName("llwptfdy")
-                                                .withDeprecationDate(OffsetDateTime.parse("2020-12-31T02:22:45Z"))
-                                                .withCapacity(new CapacityConfig())
-                                                .withRateLimits(Arrays.asList(new CallRateLimit(), new CallRateLimit(),
-                                                    new CallRateLimit(), new CallRateLimit()))
-                                                .withCost(Arrays.asList(new BillingMeterInfo(), new BillingMeterInfo(),
-                                                    new BillingMeterInfo(), new BillingMeterInfo())),
-                                            new ModelSku().withName("op")
-                                                .withUsageName("qrhhu")
-                                                .withDeprecationDate(OffsetDateTime.parse("2021-05-07T00:48:34Z"))
-                                                .withCapacity(new CapacityConfig())
-                                                .withRateLimits(Arrays.asList(new CallRateLimit()))
-                                                .withCost(Arrays.asList(new BillingMeterInfo()))))
-                                        .withMaxCapacity(108593741)
-                                        .withCapabilities(mapOf("ahzxctobgbk", "z", "mgrcfbu", "moizpos", "mjh",
-                                            "rmfqjhhkxbpvj", "tswb", "xjyngudivk"))
-                                        .withFinetuneCapabilities(
-                                            mapOf("e", "vszjfauvjfdxxi", "mcbxvwvxysl", "vtcqaqtdo"))
-                                        .withDeprecation(
-                                            new ModelDeprecationInfo().withFineTune("sfxobl").withInference("k"))
-                                        .withLifecycleStatus(ModelLifecycleStatus.GENERALLY_AVAILABLE))
-                                .withKind("exilzznfqqnvwpmq")
-                                .withSkuName("ruoujmk")
-                                .withDescription("hwqytj"),
-                            new ModelInner()
-                                .withModel(
-                                    new AccountModelInner().withPublisher("wzizxbmpgcjefuzm")
-                                        .withFormat("pbttdum")
-                                        .withName("p")
-                                        .withVersion("ebmnzbtbhjpglk")
-                                        .withSource("ohdneuel")
-                                        .withSourceAccount("hsd")
-                                        .withBaseModel(new DeploymentModel().withPublisher("wj")
-                                            .withFormat("gdrjervnaenqpe")
-                                            .withName("ndoygmifthnzdnd")
-                                            .withVersion("gnayqigynduh")
-                                            .withSource("hqlkthumaqo")
-                                            .withSourceAccount("gycdu"))
-                                        .withIsDefaultVersion(true)
-                                        .withSkus(
-                                            Arrays
-                                                .asList(
-                                                    new ModelSku().withName("psslqlfmm")
-                                                        .withUsageName("bbglzpswiydmc")
-                                                        .withDeprecationDate(
-                                                            OffsetDateTime.parse("2021-03-06T05:36:52Z"))
-                                                        .withCapacity(new CapacityConfig())
-                                                        .withRateLimits(Arrays.asList(new CallRateLimit(),
-                                                            new CallRateLimit(), new CallRateLimit()))
-                                                        .withCost(Arrays.asList(new BillingMeterInfo(),
-                                                            new BillingMeterInfo())),
-                                                    new ModelSku().withName("dbzm")
-                                                        .withUsageName("dfznudaodv")
-                                                        .withDeprecationDate(
-                                                            OffsetDateTime.parse("2021-05-29T13:49:41Z"))
-                                                        .withCapacity(new CapacityConfig())
-                                                        .withRateLimits(Arrays.asList(new CallRateLimit(),
-                                                            new CallRateLimit(), new CallRateLimit()))
-                                                        .withCost(
-                                                            Arrays.asList(
-                                                                new BillingMeterInfo(), new BillingMeterInfo(),
-                                                                new BillingMeterInfo(), new BillingMeterInfo())),
-                                                    new ModelSku().withName("pstdbhhxsrzd")
-                                                        .withUsageName("cers")
-                                                        .withDeprecationDate(
-                                                            OffsetDateTime.parse("2021-04-29T11:57:05Z"))
-                                                        .withCapacity(new CapacityConfig())
-                                                        .withRateLimits(Arrays.asList(new CallRateLimit(),
-                                                            new CallRateLimit(), new CallRateLimit()))
-                                                        .withCost(Arrays.asList(new BillingMeterInfo(),
-                                                            new BillingMeterInfo(), new BillingMeterInfo(),
-                                                            new BillingMeterInfo()))))
-                                        .withMaxCapacity(931979220)
-                                        .withCapabilities(mapOf("weriofzpyqsem", "ygtdsslswt", "zhedplvwiw", "abnetshh",
-                                            "tppjflcx", "bmwmbesldnkw"))
-                                        .withFinetuneCapabilities(mapOf("qqkdltfzxmhhvhgu", "okonzmnsikvmkqz",
-                                            "xtibqdxbxwakbog", "eodkwobda", "iplbpodxunkbebxm", "xndlkzgxhu"))
-                                        .withDeprecation(new ModelDeprecationInfo().withFineTune("yntwlrbq")
-                                            .withInference("oievseotgqrlltm"))
-                                        .withLifecycleStatus(ModelLifecycleStatus.DEPRECATED))
-                                .withKind("owwquuvxz")
-                                .withSkuName("lvithhqzonosgg")
-                                .withDescription("c")));
+        ModelListResult model = new ModelListResult().withNextLink("wmdyvxqtay")
+            .withValue(Arrays.asList(new ModelInner()
+                .withModel(new AccountModelInner().withPublisher("ao")
+                    .withFormat("pcqeqx")
+                    .withName("z")
+                    .withVersion("hzxct")
+                    .withSource("gbkdmoizpos")
+                    .withSourceAccount("grcfb")
+                    .withBaseModel(new DeploymentModel()
+                        .withPublisher("yqbexrmcqibycno")
+                        .withFormat("knme")
+                        .withName("sgzvahapjyzhpv")
+                        .withVersion("zcjrvxdjzlmwlx")
+                        .withSource("ug")
+                        .withSourceAccount("zovawjvz"))
+                    .withIsDefaultVersion(false)
+                    .withSkus(Arrays.asList(
+                        new ModelSku().withName("peilpjzuaejxdu")
+                            .withUsageName("skzbb")
+                            .withDeprecationDate(OffsetDateTime.parse("2021-08-12T02:58:19Z"))
+                            .withCapacity(new CapacityConfig())
+                            .withRateLimits(Arrays.asList(new CallRateLimit(), new CallRateLimit(), new CallRateLimit(),
+                                new CallRateLimit()))
+                            .withCost(Arrays.asList(new BillingMeterInfo())),
+                        new ModelSku().withName("gpw")
+                            .withUsageName("uh")
+                            .withDeprecationDate(OffsetDateTime.parse("2021-08-14T18:03:09Z"))
+                            .withCapacity(new CapacityConfig())
+                            .withRateLimits(Arrays.asList(new CallRateLimit(), new CallRateLimit(), new CallRateLimit(),
+                                new CallRateLimit()))
+                            .withCost(Arrays.asList(new BillingMeterInfo())),
+                        new ModelSku().withName("dxluu")
+                            .withUsageName("ttouwaboekqvkel")
+                            .withDeprecationDate(OffsetDateTime.parse("2021-10-11T10:00:24Z"))
+                            .withCapacity(new CapacityConfig())
+                            .withRateLimits(
+                                Arrays.asList(new CallRateLimit(), new CallRateLimit(), new CallRateLimit()))
+                            .withCost(Arrays.asList(new BillingMeterInfo(), new BillingMeterInfo(),
+                                new BillingMeterInfo(), new BillingMeterInfo())),
+                        new ModelSku().withName("sflhhca")
+                            .withUsageName("n")
+                            .withDeprecationDate(OffsetDateTime.parse("2021-03-25T19:19:56Z"))
+                            .withCapacity(new CapacityConfig())
+                            .withRateLimits(Arrays.asList(new CallRateLimit(), new CallRateLimit()))
+                            .withCost(Arrays.asList(new BillingMeterInfo(), new BillingMeterInfo(),
+                                new BillingMeterInfo(), new BillingMeterInfo()))))
+                    .withMaxCapacity(939698337)
+                    .withCapabilities(mapOf("slyjpkiid", "aq", "eli", "yexz", "bnxknalaulppg", "hnrztfol", "gvpgy",
+                        "dtpnapnyiropuhp"))
+                    .withFinetuneCapabilities(mapOf("medjvcslynqwwncw", "git", "pkteo", "zhxgktrmgucn"))
+                    .withDeprecation(new ModelDeprecationInfo().withFineTune("wptfdy").withInference("fqbuaceopzf"))
+                    .withLifecycleStatus(ModelLifecycleStatus.DEPRECATING))
+                .withKind("kxbpvj")
+                .withSkuName("jhxxjyn")
+                .withDescription("divkrt")));
         model = BinaryData.fromObject(model).toObject(ModelListResult.class);
-        Assertions.assertEquals("wozuhkf", model.nextLink());
-        Assertions.assertEquals("wwwfbkr", model.value().get(0).model().publisher());
-        Assertions.assertEquals("nsvs", model.value().get(0).model().format());
-        Assertions.assertEquals("johxcrsb", model.value().get(0).model().name());
-        Assertions.assertEquals("vasrruvwb", model.value().get(0).model().version());
-        Assertions.assertEquals("qfsubcgjbirx", model.value().get(0).model().source());
-        Assertions.assertEquals("ybsrfbjfdtwss", model.value().get(0).model().sourceAccount());
-        Assertions.assertEquals("f", model.value().get(0).model().baseModel().publisher());
-        Assertions.assertEquals("luu", model.value().get(0).model().baseModel().format());
-        Assertions.assertEquals("ttouwaboekqvkel", model.value().get(0).model().baseModel().name());
-        Assertions.assertEquals("mvb", model.value().get(0).model().baseModel().version());
-        Assertions.assertEquals("yjsflhhcaalnji", model.value().get(0).model().baseModel().source());
-        Assertions.assertEquals("sxyawjoyaqcs", model.value().get(0).model().baseModel().sourceAccount());
-        Assertions.assertEquals(false, model.value().get(0).model().isDefaultVersion());
-        Assertions.assertEquals("nelixhnrztfo", model.value().get(0).model().skus().get(0).name());
-        Assertions.assertEquals("bnxknalaulppg", model.value().get(0).model().skus().get(0).usageName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T22:58:09Z"),
+        Assertions.assertEquals("wmdyvxqtay", model.nextLink());
+        Assertions.assertEquals("ao", model.value().get(0).model().publisher());
+        Assertions.assertEquals("pcqeqx", model.value().get(0).model().format());
+        Assertions.assertEquals("z", model.value().get(0).model().name());
+        Assertions.assertEquals("hzxct", model.value().get(0).model().version());
+        Assertions.assertEquals("gbkdmoizpos", model.value().get(0).model().source());
+        Assertions.assertEquals("grcfb", model.value().get(0).model().sourceAccount());
+        Assertions.assertEquals("yqbexrmcqibycno", model.value().get(0).model().baseModel().publisher());
+        Assertions.assertEquals("knme", model.value().get(0).model().baseModel().format());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.value().get(0).model().baseModel().name());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.value().get(0).model().baseModel().version());
+        Assertions.assertEquals("ug", model.value().get(0).model().baseModel().source());
+        Assertions.assertEquals("zovawjvz", model.value().get(0).model().baseModel().sourceAccount());
+        Assertions.assertFalse(model.value().get(0).model().isDefaultVersion());
+        Assertions.assertEquals("peilpjzuaejxdu", model.value().get(0).model().skus().get(0).name());
+        Assertions.assertEquals("skzbb", model.value().get(0).model().skus().get(0).usageName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T02:58:19Z"),
             model.value().get(0).model().skus().get(0).deprecationDate());
-        Assertions.assertEquals(108593741, model.value().get(0).model().maxCapacity());
-        Assertions.assertEquals("z", model.value().get(0).model().capabilities().get("ahzxctobgbk"));
-        Assertions.assertEquals("vszjfauvjfdxxi", model.value().get(0).model().finetuneCapabilities().get("e"));
-        Assertions.assertEquals("sfxobl", model.value().get(0).model().deprecation().fineTune());
-        Assertions.assertEquals("k", model.value().get(0).model().deprecation().inference());
-        Assertions.assertEquals(ModelLifecycleStatus.GENERALLY_AVAILABLE,
-            model.value().get(0).model().lifecycleStatus());
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.value().get(0).kind());
-        Assertions.assertEquals("ruoujmk", model.value().get(0).skuName());
-        Assertions.assertEquals("hwqytj", model.value().get(0).description());
+        Assertions.assertEquals(939698337, model.value().get(0).model().maxCapacity());
+        Assertions.assertEquals("aq", model.value().get(0).model().capabilities().get("slyjpkiid"));
+        Assertions.assertEquals("git", model.value().get(0).model().finetuneCapabilities().get("medjvcslynqwwncw"));
+        Assertions.assertEquals("wptfdy", model.value().get(0).model().deprecation().fineTune());
+        Assertions.assertEquals("fqbuaceopzf", model.value().get(0).model().deprecation().inference());
+        Assertions.assertEquals(ModelLifecycleStatus.DEPRECATING, model.value().get(0).model().lifecycleStatus());
+        Assertions.assertEquals("kxbpvj", model.value().get(0).kind());
+        Assertions.assertEquals("jhxxjyn", model.value().get(0).skuName());
+        Assertions.assertEquals("divkrt", model.value().get(0).description());
     }
 
     // Use "Map.of" if available

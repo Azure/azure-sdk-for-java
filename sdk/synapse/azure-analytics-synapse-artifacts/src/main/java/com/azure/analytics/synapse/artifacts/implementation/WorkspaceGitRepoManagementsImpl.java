@@ -54,7 +54,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientWorks")
+    @ServiceInterface(name = "ArtifactsClientWorkspaceGitRepoManagements")
     public interface WorkspaceGitRepoManagementsService {
         @Post("/getGitHubAccessToken")
         @ExpectedResponses({ 200 })

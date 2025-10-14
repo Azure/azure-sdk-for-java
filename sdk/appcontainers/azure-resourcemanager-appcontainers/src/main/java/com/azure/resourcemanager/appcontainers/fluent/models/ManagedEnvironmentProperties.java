@@ -13,7 +13,9 @@ import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
+import com.azure.resourcemanager.appcontainers.models.DiskEncryptionConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
@@ -60,14 +62,17 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     private String defaultDomain;
 
     /*
+     * Private Link Default Domain Name for the environment
+     */
+    private String privateLinkDefaultDomain;
+
+    /*
      * Static IP of the Environment
      */
     private String staticIp;
 
     /*
-     * Cluster configuration which enables the log daemon to export
-     * app logs to a destination. Currently only "log-analytics" is
-     * supported
+     * Cluster configuration which enables the log daemon to export app logs to configured destination
      */
     private AppLogsConfiguration appLogsConfiguration;
 
@@ -85,6 +90,11 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
      * Whether or not this Managed Environment is zone-redundant.
      */
     private Boolean zoneRedundant;
+
+    /*
+     * The list of availability zones to use for managed environment
+     */
+    private List<String> availabilityZones;
 
     /*
      * Custom domain configuration for the environment
@@ -128,6 +138,11 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     private ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration;
 
     /*
+     * Ingress configuration for the Managed Environment.
+     */
+    private IngressConfiguration ingressConfiguration;
+
+    /*
      * Private endpoint connections to the resource.
      */
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -136,6 +151,11 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
      * Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled'.
      */
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Disk encryption configuration for the Managed Environment.
+     */
+    private DiskEncryptionConfiguration diskEncryptionConfiguration;
 
     /**
      * Creates an instance of ManagedEnvironmentProperties class.
@@ -235,6 +255,15 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     }
 
     /**
+     * Get the privateLinkDefaultDomain property: Private Link Default Domain Name for the environment.
+     * 
+     * @return the privateLinkDefaultDomain value.
+     */
+    public String privateLinkDefaultDomain() {
+        return this.privateLinkDefaultDomain;
+    }
+
+    /**
      * Get the staticIp property: Static IP of the Environment.
      * 
      * @return the staticIp value.
@@ -244,9 +273,8 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     }
 
     /**
-     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-     * app logs to a destination. Currently only "log-analytics" is
-     * supported.
+     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to
+     * configured destination.
      * 
      * @return the appLogsConfiguration value.
      */
@@ -255,9 +283,8 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     }
 
     /**
-     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-     * app logs to a destination. Currently only "log-analytics" is
-     * supported.
+     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to
+     * configured destination.
      * 
      * @param appLogsConfiguration the appLogsConfiguration value to set.
      * @return the ManagedEnvironmentProperties object itself.
@@ -326,6 +353,26 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
      */
     public ManagedEnvironmentProperties withZoneRedundant(Boolean zoneRedundant) {
         this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get the availabilityZones property: The list of availability zones to use for managed environment.
+     * 
+     * @return the availabilityZones value.
+     */
+    public List<String> availabilityZones() {
+        return this.availabilityZones;
+    }
+
+    /**
+     * Set the availabilityZones property: The list of availability zones to use for managed environment.
+     * 
+     * @param availabilityZones the availabilityZones value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withAvailabilityZones(List<String> availabilityZones) {
+        this.availabilityZones = availabilityZones;
         return this;
     }
 
@@ -486,6 +533,26 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
     }
 
     /**
+     * Get the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @return the ingressConfiguration value.
+     */
+    public IngressConfiguration ingressConfiguration() {
+        return this.ingressConfiguration;
+    }
+
+    /**
+     * Set the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @param ingressConfiguration the ingressConfiguration value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withIngressConfiguration(IngressConfiguration ingressConfiguration) {
+        this.ingressConfiguration = ingressConfiguration;
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: Private endpoint connections to the resource.
      * 
      * @return the privateEndpointConnections value.
@@ -513,6 +580,27 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
      */
     public ManagedEnvironmentProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionConfiguration property: Disk encryption configuration for the Managed Environment.
+     * 
+     * @return the diskEncryptionConfiguration value.
+     */
+    public DiskEncryptionConfiguration diskEncryptionConfiguration() {
+        return this.diskEncryptionConfiguration;
+    }
+
+    /**
+     * Set the diskEncryptionConfiguration property: Disk encryption configuration for the Managed Environment.
+     * 
+     * @param diskEncryptionConfiguration the diskEncryptionConfiguration value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties
+        withDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration) {
+        this.diskEncryptionConfiguration = diskEncryptionConfiguration;
         return this;
     }
 
@@ -552,8 +640,14 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
         if (peerTrafficConfiguration() != null) {
             peerTrafficConfiguration().validate();
         }
+        if (ingressConfiguration() != null) {
+            ingressConfiguration().validate();
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (diskEncryptionConfiguration() != null) {
+            diskEncryptionConfiguration().validate();
         }
     }
 
@@ -570,6 +664,8 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
         jsonWriter.writeJsonField("appInsightsConfiguration", this.appInsightsConfiguration);
         jsonWriter.writeJsonField("openTelemetryConfiguration", this.openTelemetryConfiguration);
         jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("customDomainConfiguration", this.customDomainConfiguration);
         jsonWriter.writeArrayField("workloadProfiles", this.workloadProfiles,
             (writer, element) -> writer.writeJson(element));
@@ -578,8 +674,10 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
         jsonWriter.writeStringField("infrastructureResourceGroup", this.infrastructureResourceGroup);
         jsonWriter.writeJsonField("peerAuthentication", this.peerAuthentication);
         jsonWriter.writeJsonField("peerTrafficConfiguration", this.peerTrafficConfiguration);
+        jsonWriter.writeJsonField("ingressConfiguration", this.ingressConfiguration);
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("diskEncryptionConfiguration", this.diskEncryptionConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -611,6 +709,8 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
                     deserializedManagedEnvironmentProperties.deploymentErrors = reader.getString();
                 } else if ("defaultDomain".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.defaultDomain = reader.getString();
+                } else if ("privateLinkDefaultDomain".equals(fieldName)) {
+                    deserializedManagedEnvironmentProperties.privateLinkDefaultDomain = reader.getString();
                 } else if ("staticIp".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.staticIp = reader.getString();
                 } else if ("appLogsConfiguration".equals(fieldName)) {
@@ -624,6 +724,9 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
                         = OpenTelemetryConfiguration.fromJson(reader);
                 } else if ("zoneRedundant".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedEnvironmentProperties.availabilityZones = availabilityZones;
                 } else if ("customDomainConfiguration".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.customDomainConfiguration
                         = CustomDomainConfiguration.fromJson(reader);
@@ -645,6 +748,9 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
                 } else if ("peerTrafficConfiguration".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.peerTrafficConfiguration
                         = ManagedEnvironmentPropertiesPeerTrafficConfiguration.fromJson(reader);
+                } else if ("ingressConfiguration".equals(fieldName)) {
+                    deserializedManagedEnvironmentProperties.ingressConfiguration
+                        = IngressConfiguration.fromJson(reader);
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
@@ -652,6 +758,9 @@ public final class ManagedEnvironmentProperties implements JsonSerializable<Mana
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedManagedEnvironmentProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("diskEncryptionConfiguration".equals(fieldName)) {
+                    deserializedManagedEnvironmentProperties.diskEncryptionConfiguration
+                        = DiskEncryptionConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

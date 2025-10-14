@@ -10,7 +10,7 @@ package com.azure.resourcemanager.resources.generated;
 public final class PolicyAssignmentsListSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/listPolicyAssignments
+     * specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicyAssignments
      * .json
      */
     /**
@@ -24,6 +24,7 @@ public final class PolicyAssignmentsListSamples {
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .list("atScope()", null, com.azure.core.util.Context.NONE);
+            .list("atScope()", "LatestDefinitionVersion, EffectiveDefinitionVersion", null,
+                com.azure.core.util.Context.NONE);
     }
 }

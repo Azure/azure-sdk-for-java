@@ -5,6 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,12 +23,14 @@ public final class SearchScoreThreshold extends VectorThreshold {
     /*
      * The kind of threshold used to filter vector queries
      */
+    @Generated
     private VectorThresholdKind kind = VectorThresholdKind.SEARCH_SCORE;
 
     /*
      * The threshold will filter based on the '@search.score' value. Note this is the @search.score returned as part of
      * the search response. The threshold direction will be chosen for higher @search.score.
      */
+    @Generated
     private final double value;
 
     /**
@@ -35,6 +38,7 @@ public final class SearchScoreThreshold extends VectorThreshold {
      *
      * @param value the value value to set.
      */
+    @Generated
     public SearchScoreThreshold(double value) {
         this.value = value;
     }
@@ -44,21 +48,20 @@ public final class SearchScoreThreshold extends VectorThreshold {
      *
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorThresholdKind getKind() {
         return this.kind;
     }
 
     /**
-     * /**
      * Get the value property: The threshold will filter based on the '@search.score' value. Note this is the
-     *
      * `@search.score` returned as part of the search response. The threshold direction will be chosen for higher
      * `@search.score`.
      *
      * @return the value.
-     * /
      */
+    @Generated
     public double getValue() {
         return this.value;
     }
@@ -66,6 +69,7 @@ public final class SearchScoreThreshold extends VectorThreshold {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +87,7 @@ public final class SearchScoreThreshold extends VectorThreshold {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchScoreThreshold.
      */
+    @Generated
     public static SearchScoreThreshold fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

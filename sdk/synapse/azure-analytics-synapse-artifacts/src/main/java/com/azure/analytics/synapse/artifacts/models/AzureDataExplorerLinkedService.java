@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,44 +22,52 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureDataExplorer";
 
     /*
      * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
      * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object endpoint;
 
     /*
      * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Kusto.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * Database name for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object database;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureDataExplorerLinkedService class.
      */
+    @Generated
     public AzureDataExplorerLinkedService() {
     }
 
@@ -67,6 +76,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -79,6 +89,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the endpoint value.
      */
+    @Generated
     public Object getEndpoint() {
         return this.endpoint;
     }
@@ -91,6 +102,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @param endpoint the endpoint value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
+    @Generated
     public AzureDataExplorerLinkedService setEndpoint(Object endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -102,6 +114,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -113,6 +126,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
+    @Generated
     public AzureDataExplorerLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -123,6 +137,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -133,6 +148,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
+    @Generated
     public AzureDataExplorerLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -143,6 +159,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -153,6 +170,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
+    @Generated
     public AzureDataExplorerLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -164,6 +182,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -175,6 +194,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
+    @Generated
     public AzureDataExplorerLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -185,6 +205,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -195,6 +216,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
+    @Generated
     public AzureDataExplorerLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -203,6 +225,17 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureDataExplorerLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureDataExplorerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -212,6 +245,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -221,6 +255,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -230,6 +265,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -239,9 +275,11 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -255,10 +293,14 @@ public class AzureDataExplorerLinkedService extends LinkedService {
             || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("endpoint", this.endpoint);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
             jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -279,6 +321,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataExplorerLinkedService.
      */
+    @Generated
     public static AzureDataExplorerLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataExplorerLinkedService deserializedAzureDataExplorerLinkedService
@@ -288,7 +331,9 @@ public class AzureDataExplorerLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureDataExplorerLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

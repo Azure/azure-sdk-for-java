@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,27 +22,32 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
     /*
      * The name of the column
      */
+    @Generated
     private final String name;
 
     /*
      * The description of the column
      */
+    @Generated
     private String description;
 
     /*
      * The data type of the column
      */
+    @Generated
     private final MetadataColumnDataType type;
 
     /*
      * A flag indicating this column is a preferred facet
      */
+    @Generated
     private Boolean isPreferredFacet;
 
     /*
      * an indication of the source of the column, used only when multiple workspaces have conflicting definition for the
      * column
      */
+    @Generated
     private Object source;
 
     /**
@@ -50,6 +56,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * @param name the name value to set.
      * @param type the type value to set.
      */
+    @Generated
     public MetadataTableColumnsItem(String name, MetadataColumnDataType type) {
         this.name = name;
         this.type = type;
@@ -60,6 +67,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -69,6 +77,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -79,6 +88,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * @param description the description value to set.
      * @return the MetadataTableColumnsItem object itself.
      */
+    @Generated
     public MetadataTableColumnsItem setDescription(String description) {
         this.description = description;
         return this;
@@ -89,6 +99,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * 
      * @return the type value.
      */
+    @Generated
     public MetadataColumnDataType getType() {
         return this.type;
     }
@@ -98,6 +109,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * 
      * @return the isPreferredFacet value.
      */
+    @Generated
     public Boolean isPreferredFacet() {
         return this.isPreferredFacet;
     }
@@ -108,6 +120,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * @param isPreferredFacet the isPreferredFacet value to set.
      * @return the MetadataTableColumnsItem object itself.
      */
+    @Generated
     public MetadataTableColumnsItem setIsPreferredFacet(Boolean isPreferredFacet) {
         this.isPreferredFacet = isPreferredFacet;
         return this;
@@ -119,6 +132,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * 
      * @return the source value.
      */
+    @Generated
     public Object getSource() {
         return this.source;
     }
@@ -130,6 +144,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * @param source the source value to set.
      * @return the MetadataTableColumnsItem object itself.
      */
+    @Generated
     public MetadataTableColumnsItem setSource(Object source) {
         this.source = source;
         return this;
@@ -138,6 +153,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,7 +161,9 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeBooleanField("isPreferredFacet", this.isPreferredFacet);
-        jsonWriter.writeUntypedField("source", this.source);
+        if (this.source != null) {
+            jsonWriter.writeUntypedField("source", this.source);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -158,6 +176,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataTableColumnsItem.
      */
+    @Generated
     public static MetadataTableColumnsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

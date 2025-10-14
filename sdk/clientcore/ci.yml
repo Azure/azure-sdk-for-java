@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/clientcore/
+    exclude:
+      - sdk/clientcore/annotation-processor/
 
 pr:
   branches:
@@ -20,13 +22,19 @@ pr:
   paths:
     include:
       - sdk/clientcore/
+    exclude:
+      - sdk/clientcore/annotation-processor/
 
 parameters:
   - name: release_core
     displayName: 'core'
     type: boolean
     default: true
-  - name: release_clientcorehttpokhttp3
+  - name: release_httpnetty4
+    displayName: 'http-netty4'
+    type: boolean
+    default: false
+  - name: release_httpokhttp3
     displayName: 'http-okhttp3'
     type: boolean
     default: false
@@ -45,11 +53,20 @@ extends:
       - name: core
         groupId: io.clientcore
         safeName: core
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_core }}
+        triggeringPaths:
+        - /sdk/parents/clientcore-parent
+      - name: http-netty4
+        groupId: io.clientcore
+        safeName: httpnetty4
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_httpnetty4 }}
       - name: http-okhttp3
         groupId: io.clientcore
         safeName: httpokhttp3
-        releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_httpokhttp3 }}
     AdditionalModules:
       - name: optional-dependency-tests
         groupId: io.clientcore

@@ -1,0 +1,140 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure.v2</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
+  </parent>
+
+  <groupId>com.azure.v2</groupId>
+  <artifactId>azure-core-test</artifactId>
+  <packaging>jar</packaging>
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core-test;current} -->
+
+  <name>Microsoft Azure Java Core Test V2 Library</name>
+  <description>This package contains core test types for Azure Java V2 clients.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+
+      --add-reads com.azure.v2.core.test=ALL-UNNAMED
+      --add-opens com.azure.v2.core.test/com.azure.v2.core.test.http=org.junit.platform.commons
+      --add-opens com.azure.v2.core.test/com.azure.v2.core.test.models=ALL-UNNAMED
+      --add-opens com.azure.v2.core.test/com.azure.v2.core.test.policy=org.junit.platform.commons
+      --add-opens com.azure.v2.core.test/com.azure.v2.core.test.implementation=org.junit.platform.commons
+    </javaModulesSurefireArgLine>
+
+    <!-- This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <revapi.skip>true</revapi.skip>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+
+    <javadoc.excludePackageNames>com.azure.v2.core.implementation*,com.azure.core.util,com.azure.core.util*,
+      com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
+      com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
+    </javadoc.excludePackageNames>
+    <surefireXmx>4g</surefireXmx>
+
+    <!-- skipping test coverage requirements for azure-core-test as this is a utility library for testing -->
+    <jacoco.skip>true</jacoco.skip>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <animal.sniffer.skip>false</animal.sniffer.skip>
+    <animal.sniffer.ignores>java.lang.management.ThreadMXBean,java.lang.management.ThreadInfo,java.lang.management.ManagementFactory</animal.sniffer.ignores>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.v2</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+    </dependency>
+
+    <!-- Used to unpack the tar.gz files of Test Proxy server -->
+    <!-- This used to be org.apache.commons:commons-compress but it was replaced with org.apache.ant:ant -->
+    <!-- This was done as ant has fewer transitive dependencies, meaning there is less chance of conflicts with other libraries. -->
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.10.15</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <!-- special allowance for azure-core-test as it is not a shipping library: -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-engine:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-params:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+                <include>org.apache.ant:ant:[1.10.15]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

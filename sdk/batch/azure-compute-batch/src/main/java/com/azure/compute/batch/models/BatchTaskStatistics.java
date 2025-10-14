@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Resource usage statistics for a Task.
@@ -41,6 +42,18 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final OffsetDateTime lastUpdateTime;
 
     /*
+     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     */
+    @Generated
+    private final Duration userCpuTime;
+
+    /*
+     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
+     */
+    @Generated
+    private final Duration kernelCpuTime;
+
+    /*
      * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running
      * on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not
      * finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
@@ -49,36 +62,44 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final Duration wallClockTime;
 
     /*
-     * The total number of disk read operations made by the Task.
-     */
-    @Generated
-    private final long readIOps;
-
-    /*
-     * The total number of disk write operations made by the Task.
-     */
-    @Generated
-    private final long writeIOps;
-
-    /*
-     * The total gibibytes read from disk by the Task.
-     */
-    @Generated
-    private final double readIOGiB;
-
-    /*
-     * The total gibibytes written to disk by the Task.
-     */
-    @Generated
-    private final double writeIOGiB;
-
-    /*
      * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of
      * the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to
      * the most recent Task execution.).
      */
     @Generated
     private final Duration waitTime;
+
+    /**
+     * Creates an instance of BatchTaskStatistics class.
+     *
+     * @param url the url value to set.
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
+     * @param wallClockTime the wallClockTime value to set.
+     * @param readIops the readIops value to set.
+     * @param writeIops the writeIops value to set.
+     * @param readIoGiB the readIoGiB value to set.
+     * @param writeIoGiB the writeIoGiB value to set.
+     * @param waitTime the waitTime value to set.
+     */
+    @Generated
+    private BatchTaskStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
+        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIops, long writeIops,
+        double readIoGiB, double writeIoGiB, Duration waitTime) {
+        this.url = url;
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.userCpuTime = userCpuTime;
+        this.kernelCpuTime = kernelCpuTime;
+        this.wallClockTime = wallClockTime;
+        this.readIops = readIops;
+        this.writeIops = writeIops;
+        this.readIoGiB = readIoGiB;
+        this.writeIoGiB = writeIoGiB;
+        this.waitTime = waitTime;
+    }
 
     /**
      * Get the url property: The URL of the statistics.
@@ -112,6 +133,28 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     }
 
     /**
+     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by the Task.
+     *
+     * @return the userCpuTime value.
+     */
+    @Generated
+    public Duration getUserCpuTime() {
+        return this.userCpuTime;
+    }
+
+    /**
+     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
+     * consumed by the Task.
+     *
+     * @return the kernelCpuTime value.
+     */
+    @Generated
+    public Duration getKernelCpuTime() {
+        return this.kernelCpuTime;
+    }
+
+    /**
      * Get the wallClockTime property: The total wall clock time of the Task. The wall clock time is the elapsed time
      * from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were
      * updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all
@@ -125,46 +168,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     }
 
     /**
-     * Get the readIOps property: The total number of disk read operations made by the Task.
-     *
-     * @return the readIOps value.
-     */
-    @Generated
-    public long getReadIOps() {
-        return this.readIOps;
-    }
-
-    /**
-     * Get the writeIOps property: The total number of disk write operations made by the Task.
-     *
-     * @return the writeIOps value.
-     */
-    @Generated
-    public long getWriteIOps() {
-        return this.writeIOps;
-    }
-
-    /**
-     * Get the readIOGiB property: The total gibibytes read from disk by the Task.
-     *
-     * @return the readIOGiB value.
-     */
-    @Generated
-    public double getReadIOGiB() {
-        return this.readIOGiB;
-    }
-
-    /**
-     * Get the writeIOGiB property: The total gibibytes written to disk by the Task.
-     *
-     * @return the writeIOGiB value.
-     */
-    @Generated
-    public double getWriteIOGiB() {
-        return this.writeIOGiB;
-    }
-
-    /**
      * Get the waitTime property: The total wait time of the Task. The wait time for a Task is defined as the elapsed
      * time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures,
      * the wait time is the time to the most recent Task execution.).
@@ -174,72 +177,6 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     @Generated
     public Duration getWaitTime() {
         return this.waitTime;
-    }
-
-    /*
-     * The total kernel mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
-     */
-    @Generated
-    private final Duration kernelCpuTime;
-
-    /**
-     * Get the kernelCpuTime property: The total kernel mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
-     *
-     * @return the kernelCpuTime value.
-     */
-    @Generated
-    public Duration getKernelCpuTime() {
-        return this.kernelCpuTime;
-    }
-
-    /*
-     * The total user mode CPU time (summed across all cores and all Compute Nodes) consumed by the Task.
-     */
-    @Generated
-    private final Duration userCpuTime;
-
-    /**
-     * Get the userCpuTime property: The total user mode CPU time (summed across all cores and all Compute Nodes)
-     * consumed by the Task.
-     *
-     * @return the userCpuTime value.
-     */
-    @Generated
-    public Duration getUserCpuTime() {
-        return this.userCpuTime;
-    }
-
-    /**
-     * Creates an instance of BatchTaskStatistics class.
-     *
-     * @param url the url value to set.
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCpuTime the userCpuTime value to set.
-     * @param kernelCpuTime the kernelCpuTime value to set.
-     * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
-     * @param waitTime the waitTime value to set.
-     */
-    @Generated
-    private BatchTaskStatistics(String url, OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
-        Duration userCpuTime, Duration kernelCpuTime, Duration wallClockTime, long readIOps, long writeIOps,
-        double readIOGiB, double writeIOGiB, Duration waitTime) {
-        this.url = url;
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.userCpuTime = userCpuTime;
-        this.kernelCpuTime = kernelCpuTime;
-        this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
-        this.waitTime = waitTime;
     }
 
     /**
@@ -257,10 +194,10 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
         jsonWriter.writeStringField("userCPUTime", CoreUtils.durationToStringWithDays(this.userCpuTime));
         jsonWriter.writeStringField("kernelCPUTime", CoreUtils.durationToStringWithDays(this.kernelCpuTime));
         jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
-        jsonWriter.writeLongField("readIOps", this.readIOps);
-        jsonWriter.writeLongField("writeIOps", this.writeIOps);
-        jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
-        jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
+        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIops, null));
+        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIops, null));
+        jsonWriter.writeDoubleField("readIOGiB", this.readIoGiB);
+        jsonWriter.writeDoubleField("writeIOGiB", this.writeIoGiB);
         jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
         return jsonWriter.writeEndObject();
     }
@@ -274,8 +211,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchTaskStatistics.
      */
+    @Generated
     public static BatchTaskStatistics fromJson(JsonReader jsonReader) throws IOException {
-        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             String url = null;
             OffsetDateTime startTime = null;
@@ -283,10 +220,10 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
             Duration userCpuTime = null;
             Duration kernelCpuTime = null;
             Duration wallClockTime = null;
-            long readIOps = 0L;
-            long writeIOps = 0L;
-            double readIOGiB = 0.0;
-            double writeIOGiB = 0.0;
+            long readIops = Long.parseLong("0");
+            long writeIops = Long.parseLong("0");
+            double readIoGiB = 0.0;
+            double writeIoGiB = 0.0;
             Duration waitTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -306,35 +243,13 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String readIOpsStr = reader.getString();
-                        try {
-                            readIOps = Long.parseLong(readIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric readIOps, but found: " + readIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        readIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected readIOps to be a number or string, but found other type");
-                    }
+                    readIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("writeIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String writeIOpsStr = reader.getString();
-                        try {
-                            writeIOps = Long.parseLong(writeIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric writeIOps, but found: " + writeIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        writeIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected writeIOps to be a number or string, but found other type");
-                    }
+                    writeIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("readIOGiB".equals(fieldName)) {
-                    readIOGiB = reader.getDouble();
+                    readIoGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
-                    writeIOGiB = reader.getDouble();
+                    writeIoGiB = reader.getDouble();
                 } else if ("waitTime".equals(fieldName)) {
                     waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {
@@ -342,7 +257,71 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 }
             }
             return new BatchTaskStatistics(url, startTime, lastUpdateTime, userCpuTime, kernelCpuTime, wallClockTime,
-                readIOps, writeIOps, readIOGiB, writeIOGiB, waitTime);
+                readIops, writeIops, readIoGiB, writeIoGiB, waitTime);
         });
+    }
+
+    /*
+     * The total number of disk read operations made by the Task.
+     */
+    @Generated
+    private final long readIops;
+
+    /*
+     * The total number of disk write operations made by the Task.
+     */
+    @Generated
+    private final long writeIops;
+
+    /**
+     * Get the readIops property: The total number of disk read operations made by the Task.
+     *
+     * @return the readIops value.
+     */
+    @Generated
+    public long getReadIops() {
+        return this.readIops;
+    }
+
+    /**
+     * Get the writeIops property: The total number of disk write operations made by the Task.
+     *
+     * @return the writeIops value.
+     */
+    @Generated
+    public long getWriteIops() {
+        return this.writeIops;
+    }
+
+    /*
+     * The total gibibytes read from disk by the Task.
+     */
+    @Generated
+    private final double readIoGiB;
+
+    /*
+     * The total gibibytes written to disk by the Task.
+     */
+    @Generated
+    private final double writeIoGiB;
+
+    /**
+     * Get the readIoGiB property: The total gibibytes read from disk by the Task.
+     *
+     * @return the readIoGiB value.
+     */
+    @Generated
+    public double getReadIoGiB() {
+        return this.readIoGiB;
+    }
+
+    /**
+     * Get the writeIoGiB property: The total gibibytes written to disk by the Task.
+     *
+     * @return the writeIoGiB value.
+     */
+    @Generated
+    public double getWriteIoGiB() {
+        return this.writeIoGiB;
     }
 }

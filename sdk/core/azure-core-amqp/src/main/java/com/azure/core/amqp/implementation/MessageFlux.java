@@ -53,6 +53,11 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      * (i.e., disables the retry action to obtain next receiver from the upstream).
      **/
     public static final AmqpRetryPolicy NULL_RETRY_POLICY = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
+    /** An AmqpRetryPolicy const indicates that MessageFlux should retry to obtain next receiver from the upstream
+     * only when the current receiver terminates with completion, any error from the current receiver will terminate
+     * the MessageFlux.
+     **/
+    public static final AmqpRetryPolicy RETRY_ONLY_COMPLETION = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
     private static final String MESSAGE_FLUX_KEY = "messageFlux";
     private final ClientLogger logger;
     /**
@@ -648,6 +653,13 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     onError(error);
                 }
                 return;
+            }
+
+            if (retryPolicy == RETRY_ONLY_COMPLETION) {
+                if (error != null) {
+                    onError(error);
+                    return;
+                }
             }
 
             final Duration delay;

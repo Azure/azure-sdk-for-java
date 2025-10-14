@@ -16,29 +16,28 @@ public final class SchemaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaProperties model = BinaryData.fromString(
-            "{\"uuid\":\"lmwlxkvugfhzo\",\"displayName\":\"wjvzunluthnn\",\"description\":\"nxipeil\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"kzbbtd\":\"xdult\",\"bsjyofdx\":\"umveekgpwozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"}}")
+            "{\"uuid\":\"m\",\"displayName\":\"nysuxmprafwgckh\",\"description\":\"xvd\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"spave\":\"roud\",\"bunzozudh\":\"hrv\"}}")
             .toObject(SchemaProperties.class);
-        Assertions.assertEquals("wjvzunluthnn", model.displayName());
-        Assertions.assertEquals("nxipeil", model.description());
-        Assertions.assertEquals(Format.DELTA_1_0, model.format());
+        Assertions.assertEquals("nysuxmprafwgckh", model.displayName());
+        Assertions.assertEquals("xvd", model.description());
+        Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, model.format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, model.schemaType());
-        Assertions.assertEquals("xdult", model.tags().get("kzbbtd"));
+        Assertions.assertEquals("roud", model.tags().get("spave"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaProperties model = new SchemaProperties().withDisplayName("wjvzunluthnn")
-            .withDescription("nxipeil")
-            .withFormat(Format.DELTA_1_0)
+        SchemaProperties model = new SchemaProperties().withDisplayName("nysuxmprafwgckh")
+            .withDescription("xvd")
+            .withFormat(Format.JSON_SCHEMA_DRAFT7)
             .withSchemaType(SchemaType.MESSAGE_SCHEMA)
-            .withTags(
-                mapOf("kzbbtd", "xdult", "bsjyofdx", "umveekgpwozuhkf", "oekqvk", "uusdttouwa", "vbxwyjsflhh", "lns"));
+            .withTags(mapOf("spave", "roud", "bunzozudh", "hrv"));
         model = BinaryData.fromObject(model).toObject(SchemaProperties.class);
-        Assertions.assertEquals("wjvzunluthnn", model.displayName());
-        Assertions.assertEquals("nxipeil", model.description());
-        Assertions.assertEquals(Format.DELTA_1_0, model.format());
+        Assertions.assertEquals("nysuxmprafwgckh", model.displayName());
+        Assertions.assertEquals("xvd", model.description());
+        Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, model.format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, model.schemaType());
-        Assertions.assertEquals("xdult", model.tags().get("kzbbtd"));
+        Assertions.assertEquals("roud", model.tags().get("spave"));
     }
 
     // Use "Map.of" if available

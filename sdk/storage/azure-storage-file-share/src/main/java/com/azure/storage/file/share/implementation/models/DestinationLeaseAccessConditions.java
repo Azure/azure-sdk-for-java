@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -17,11 +18,13 @@ public final class DestinationLeaseAccessConditions {
      * operation fails with status code 412 (Precondition Failed). If this header is specified and the destination file
      * does not currently have an active lease, the operation will also fail with status code 412 (Precondition Failed).
      */
+    @Generated
     private String destinationLeaseId;
 
     /**
      * Creates an instance of DestinationLeaseAccessConditions class.
      */
+    @Generated
     public DestinationLeaseAccessConditions() {
     }
 
@@ -34,6 +37,7 @@ public final class DestinationLeaseAccessConditions {
      * 
      * @return the destinationLeaseId value.
      */
+    @Generated
     public String getDestinationLeaseId() {
         return this.destinationLeaseId;
     }
@@ -48,6 +52,7 @@ public final class DestinationLeaseAccessConditions {
      * @param destinationLeaseId the destinationLeaseId value to set.
      * @return the DestinationLeaseAccessConditions object itself.
      */
+    @Generated
     public DestinationLeaseAccessConditions setDestinationLeaseId(String destinationLeaseId) {
         this.destinationLeaseId = destinationLeaseId;
         return this;

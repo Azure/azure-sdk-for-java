@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
     /**
      * Static value Basic for ODataAuthenticationType.
      */
+    @Generated
     public static final ODataAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Anonymous for ODataAuthenticationType.
      */
+    @Generated
     public static final ODataAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value Windows for ODataAuthenticationType.
      */
+    @Generated
     public static final ODataAuthenticationType WINDOWS = fromString("Windows");
 
     /**
      * Static value AadServicePrincipal for ODataAuthenticationType.
      */
+    @Generated
     public static final ODataAuthenticationType AAD_SERVICE_PRINCIPAL = fromString("AadServicePrincipal");
 
     /**
      * Static value ManagedServiceIdentity for ODataAuthenticationType.
      */
+    @Generated
     public static final ODataAuthenticationType MANAGED_SERVICE_IDENTITY = fromString("ManagedServiceIdentity");
 
     /**
@@ -41,6 +47,7 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ODataAuthenticationType() {
     }
@@ -51,6 +58,7 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
      * @param name a name to look for.
      * @return the corresponding ODataAuthenticationType.
      */
+    @Generated
     public static ODataAuthenticationType fromString(String name) {
         return fromString(name, ODataAuthenticationType.class);
     }
@@ -60,6 +68,7 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
      * 
      * @return known ODataAuthenticationType values.
      */
+    @Generated
     public static Collection<ODataAuthenticationType> values() {
         return values(ODataAuthenticationType.class);
     }

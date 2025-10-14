@@ -15,7 +15,7 @@ import java.util.Map;
 public final class AuthorizationProviderCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderOOBGoogle.json
      */
     /**
@@ -33,15 +33,15 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withOauth2(new AuthorizationProviderOAuth2Settings()
                 .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
                 .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(mapOf("clientId",
-                    "99999999-xxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com", "clientSecret", "fakeTokenPlaceholder",
-                    "scopes",
+                    "99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com", "clientSecret",
+                    "fakeTokenPlaceholder", "scopes",
                     "openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"))))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderGenericOAuth2.json
      */
     /**
@@ -59,15 +59,15 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withOauth2(new AuthorizationProviderOAuth2Settings()
                 .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
                 .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes()
-                    .withAuthorizationCode(mapOf("authorizationUrl", "fakeTokenPlaceholder", "clientId",
-                        "genericClientId", "clientSecret", "fakeTokenPlaceholder", "refreshUrl",
-                        "https://www.eventbrite.com/oauth/token", "scopes", "", "tokenUrl", "fakeTokenPlaceholder"))))
+                    .withAuthorizationCode(mapOf("authorizationUrl", "fakeTokenPlaceholder", "clientId", "clientid",
+                        "clientSecret", "fakeTokenPlaceholder", "refreshUrl", "https://www.eventbrite.com/oauth/token",
+                        "scopes", null, "tokenUrl", "fakeTokenPlaceholder"))))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderAADAuthCode.json
      */
     /**
@@ -82,18 +82,17 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withExistingService("rg1", "apimService1")
             .withDisplayName("aadwithauthcode")
             .withIdentityProvider("aad")
-            .withOauth2(
-                new AuthorizationProviderOAuth2Settings()
-                    .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
-                    .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(mapOf("clientId",
-                        "59790825-fdd3-4b10-bc7a-4c3aaf25801d", "clientSecret", "fakeTokenPlaceholder", "resourceUri",
-                        "https://graph.microsoft.com", "scopes", "User.Read.All Group.Read.All"))))
+            .withOauth2(new AuthorizationProviderOAuth2Settings()
+                .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
+                .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes()
+                    .withAuthorizationCode(mapOf("clientId", "clientsecretid", "clientSecret", "fakeTokenPlaceholder",
+                        "resourceUri", "https://graph.microsoft.com", "scopes", "User.Read.All Group.Read.All"))))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderAADClientCred.json
      */
     /**

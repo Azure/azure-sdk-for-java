@@ -17,52 +17,51 @@ public final class GenericContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericContainer model = BinaryData.fromString(
-            "{\"containerType\":\"GenericContainer\",\"fabricName\":\"fkmbtsuahxsgxj\",\"extendedInformation\":{\"rawCertData\":\"zrrscub\",\"containerIdentityInfo\":{\"uniqueName\":\"drnpxqwodiff\",\"aadTenantId\":\"cjrmmua\",\"servicePrincipalClientId\":\"ibvjogjonmcy\",\"audience\":\"oyzbamwineofvf\"},\"serviceEndpoints\":{\"t\":\"pol\",\"ttxpnrupza\":\"evboclzhzjknyuxg\",\"swyskbruffg\":\"mrdixtreki\"}},\"friendlyName\":\"ukkutvl\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"qhvmblcouqe\",\"healthStatus\":\"hbcdsziry\",\"protectableObjectType\":\"ndo\"}")
+            "{\"containerType\":\"GenericContainer\",\"fabricName\":\"nlzijiufe\",\"extendedInformation\":{\"rawCertData\":\"vflnwyvqkxrerln\",\"containerIdentityInfo\":{\"uniqueName\":\"yl\",\"aadTenantId\":\"wxzut\",\"servicePrincipalClientId\":\"ztwhghmupg\",\"audience\":\"jtcdxabbujftaben\"},\"serviceEndpoints\":{\"ucafedd\":\"lqpx\",\"gnhgook\":\"wnlzafwxu\"}},\"friendlyName\":\"alvnbwgpb\",\"backupManagementType\":\"DefaultBackup\",\"registrationStatus\":\"uclvdjj\",\"healthStatus\":\"yrdnqod\",\"protectableObjectType\":\"hhxhq\"}")
             .toObject(GenericContainer.class);
-        Assertions.assertEquals("ukkutvl", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("qhvmblcouqe", model.registrationStatus());
-        Assertions.assertEquals("hbcdsziry", model.healthStatus());
-        Assertions.assertEquals("ndo", model.protectableObjectType());
-        Assertions.assertEquals("fkmbtsuahxsgxj", model.fabricName());
-        Assertions.assertEquals("zrrscub", model.extendedInformation().rawCertData());
-        Assertions.assertEquals("drnpxqwodiff", model.extendedInformation().containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("cjrmmua", model.extendedInformation().containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("ibvjogjonmcy",
+        Assertions.assertEquals("alvnbwgpb", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("uclvdjj", model.registrationStatus());
+        Assertions.assertEquals("yrdnqod", model.healthStatus());
+        Assertions.assertEquals("hhxhq", model.protectableObjectType());
+        Assertions.assertEquals("nlzijiufe", model.fabricName());
+        Assertions.assertEquals("vflnwyvqkxrerln", model.extendedInformation().rawCertData());
+        Assertions.assertEquals("yl", model.extendedInformation().containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("wxzut", model.extendedInformation().containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("ztwhghmupg",
             model.extendedInformation().containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("oyzbamwineofvf", model.extendedInformation().containerIdentityInfo().audience());
-        Assertions.assertEquals("pol", model.extendedInformation().serviceEndpoints().get("t"));
+        Assertions.assertEquals("jtcdxabbujftaben", model.extendedInformation().containerIdentityInfo().audience());
+        Assertions.assertEquals("lqpx", model.extendedInformation().serviceEndpoints().get("ucafedd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericContainer model = new GenericContainer().withFriendlyName("ukkutvl")
-            .withBackupManagementType(BackupManagementType.DPM)
-            .withRegistrationStatus("qhvmblcouqe")
-            .withHealthStatus("hbcdsziry")
-            .withProtectableObjectType("ndo")
-            .withFabricName("fkmbtsuahxsgxj")
-            .withExtendedInformation(new GenericContainerExtendedInfo().withRawCertData("zrrscub")
-                .withContainerIdentityInfo(new ContainerIdentityInfo().withUniqueName("drnpxqwodiff")
-                    .withAadTenantId("cjrmmua")
-                    .withServicePrincipalClientId("ibvjogjonmcy")
-                    .withAudience("oyzbamwineofvf"))
-                .withServiceEndpoints(
-                    mapOf("t", "pol", "ttxpnrupza", "evboclzhzjknyuxg", "swyskbruffg", "mrdixtreki")));
+        GenericContainer model = new GenericContainer().withFriendlyName("alvnbwgpb")
+            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
+            .withRegistrationStatus("uclvdjj")
+            .withHealthStatus("yrdnqod")
+            .withProtectableObjectType("hhxhq")
+            .withFabricName("nlzijiufe")
+            .withExtendedInformation(new GenericContainerExtendedInfo().withRawCertData("vflnwyvqkxrerln")
+                .withContainerIdentityInfo(new ContainerIdentityInfo().withUniqueName("yl")
+                    .withAadTenantId("wxzut")
+                    .withServicePrincipalClientId("ztwhghmupg")
+                    .withAudience("jtcdxabbujftaben"))
+                .withServiceEndpoints(mapOf("ucafedd", "lqpx", "gnhgook", "wnlzafwxu")));
         model = BinaryData.fromObject(model).toObject(GenericContainer.class);
-        Assertions.assertEquals("ukkutvl", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("qhvmblcouqe", model.registrationStatus());
-        Assertions.assertEquals("hbcdsziry", model.healthStatus());
-        Assertions.assertEquals("ndo", model.protectableObjectType());
-        Assertions.assertEquals("fkmbtsuahxsgxj", model.fabricName());
-        Assertions.assertEquals("zrrscub", model.extendedInformation().rawCertData());
-        Assertions.assertEquals("drnpxqwodiff", model.extendedInformation().containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("cjrmmua", model.extendedInformation().containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("ibvjogjonmcy",
+        Assertions.assertEquals("alvnbwgpb", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("uclvdjj", model.registrationStatus());
+        Assertions.assertEquals("yrdnqod", model.healthStatus());
+        Assertions.assertEquals("hhxhq", model.protectableObjectType());
+        Assertions.assertEquals("nlzijiufe", model.fabricName());
+        Assertions.assertEquals("vflnwyvqkxrerln", model.extendedInformation().rawCertData());
+        Assertions.assertEquals("yl", model.extendedInformation().containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("wxzut", model.extendedInformation().containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("ztwhghmupg",
             model.extendedInformation().containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("oyzbamwineofvf", model.extendedInformation().containerIdentityInfo().audience());
-        Assertions.assertEquals("pol", model.extendedInformation().serviceEndpoints().get("t"));
+        Assertions.assertEquals("jtcdxabbujftaben", model.extendedInformation().containerIdentityInfo().audience());
+        Assertions.assertEquals("lqpx", model.extendedInformation().serviceEndpoints().get("ucafedd"));
     }
 
     // Use "Map.of" if available

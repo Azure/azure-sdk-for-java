@@ -7,6 +7,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -56,6 +57,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
+    private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
@@ -69,6 +71,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.settings = settings;
         this.checkpointer = checkPointer;
         this.lease = lease;
+        this.lastServerContinuationToken = this.lease.getContinuationToken();
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
@@ -86,6 +89,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     public Mono<Void> run(CancellationToken cancellationToken) {
         logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
         this.hasMoreResults = true;
+        this.hasServerContinuationTokenChange = false;
         this.checkpointer.setCancellationToken(cancellationToken);
 
         // We only calculate/get the throughput control group config for the feed range at the beginning
@@ -121,7 +125,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 return this.documentClient.createDocumentChangeFeedQuery(
                     this.settings.getCollectionSelfLink(),
                     this.options,
-                    JsonNode.class).limitRequest(1);
+                    JsonNode.class);
             })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
@@ -134,16 +138,22 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         .getContinuation()
                         .getContinuationTokenCount() == 1,
                     "For ChangeFeedProcessor the continuation state should always have one range/continuation");
-                this.lastServerContinuationToken = continuationState
+                String currentServerContinuationToken = continuationState
                     .getContinuation()
                     .getCurrentContinuationToken()
                     .getToken();
+
+                this.hasServerContinuationTokenChange =
+                    !StringUtils.equals(this.lastServerContinuationToken, currentServerContinuationToken)
+                        && StringUtils.isNotEmpty(currentServerContinuationToken);
+
+                this.lastServerContinuationToken = currentServerContinuationToken;
 
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
-                        .doOnError(throwable -> logger.debug(
+                        .doOnError(throwable -> logger.warn(
                             "Exception was thrown from thread {}",
                             Thread.currentThread().getId(), throwable))
                         .doOnSuccess((Void) -> {
@@ -154,25 +164,29 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 } else {
-                    // still need to checkpoint with the new continuation token
-                    return this.checkpointer.checkpointPartition(continuationState)
-                        .doOnError(throwable -> {
-                            logger.debug(
-                                "Failed to checkpoint partition {} from thread {}",
-                                this.lease.getLeaseToken(),
-                                Thread.currentThread().getId(),
-                                throwable);
+                    // only update when server returned continuationToken change
+                    boolean shouldSkipCheckpoint = !hasServerContinuationTokenChange && !hasMoreResults;
+                    return Mono.just(shouldSkipCheckpoint)
+                        .flatMap(skipCheckpoint -> {
+                            if (skipCheckpoint) {
+                                return Mono.empty();
+                            } else {
+                                return this.checkpointer.checkpointPartition(continuationState)
+                                    .doOnError(throwable -> {
+                                        logger.warn(
+                                            "Failed to checkpoint partition {} from thread {}",
+                                            this.lease.getLeaseToken(),
+                                            Thread.currentThread().getId(),
+                                            throwable);
+                                    });
+                            }
                         })
-                        .flatMap(lease -> {
+                        .doOnSuccess((Void) -> {
                             this.options =
                                 CosmosChangeFeedRequestOptions
                                     .createForProcessingFromContinuation(continuationToken);
 
-                            if (cancellationToken.isCancellationRequested()) {
-                                return Mono.error(new TaskCancelledException());
-                            }
-
-                            return Mono.empty();
+                            if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
             })

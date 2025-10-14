@@ -51,7 +51,7 @@ public final class AzureSearchLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSearchLinkedServiceTypeProperties innerTypeProperties() {
+    AzureSearchLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

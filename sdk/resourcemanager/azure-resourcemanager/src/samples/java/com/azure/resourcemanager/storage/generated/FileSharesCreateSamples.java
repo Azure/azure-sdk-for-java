@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.fluent.models.FileShareInner;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
+import com.azure.resourcemanager.storage.models.FileSharePropertiesFileSharePaidBursting;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
 
 /**
@@ -14,7 +15,27 @@ import com.azure.resourcemanager.storage.models.ShareAccessTier;
 public final class FileSharesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPut_AccessTier.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_ProvisionedV2.
+     * json
+     */
+    /**
+     * Sample code: PutSharesProvisionedV2.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void putSharesProvisionedV2(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getFileShares()
+            .createWithResponse("res346", "sto666", "share1235",
+                new FileShareInner().withShareQuota(100).withProvisionedIops(5000).withProvisionedBandwidthMibps(200),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_AccessTier.json
      */
     /**
      * Sample code: PutShares with Access Tier.
@@ -32,7 +53,7 @@ public final class FileSharesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPut_NFS.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_NFS.json
      */
     /**
      * Sample code: Create NFS Shares.
@@ -51,7 +72,30 @@ public final class FileSharesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPut.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut_PaidBursting.
+     * json
+     */
+    /**
+     * Sample code: PutShares with Paid Bursting.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void putSharesWithPaidBursting(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getFileShares()
+            .createWithResponse("res346", "sto666", "share1235",
+                new FileShareInner().withFileSharePaidBursting(
+                    new FileSharePropertiesFileSharePaidBursting().withPaidBurstingEnabled(true)
+                        .withPaidBurstingMaxIops(102400)
+                        .withPaidBurstingMaxBandwidthMibps(10340)),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPut.json
      */
     /**
      * Sample code: PutShares.

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,56 +21,67 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
     /*
      * The SSIS package path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object packagePath;
 
     /*
      * The type of SSIS package location.
      */
+    @Generated
     private SsisPackageLocationType type;
 
     /*
      * Password of the package.
      */
+    @Generated
     private SecretBase packagePassword;
 
     /*
      * The package access credential.
      */
+    @Generated
     private SsisAccessCredential accessCredential;
 
     /*
      * The configuration file of the package execution. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object configurationPath;
 
     /*
      * The configuration file access credential.
      */
+    @Generated
     private SsisAccessCredential configurationAccessCredential;
 
     /*
      * The package name.
      */
+    @Generated
     private String packageName;
 
     /*
      * The embedded package content. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object packageContent;
 
     /*
      * The embedded package last modified date.
      */
+    @Generated
     private String packageLastModifiedDate;
 
     /*
      * The embedded child package list.
      */
+    @Generated
     private List<SsisChildPackage> childPackages;
 
     /**
      * Creates an instance of SsisPackageLocation class.
      */
+    @Generated
     public SsisPackageLocation() {
     }
 
@@ -78,6 +90,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the packagePath value.
      */
+    @Generated
     public Object getPackagePath() {
         return this.packagePath;
     }
@@ -88,6 +101,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param packagePath the packagePath value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setPackagePath(Object packagePath) {
         this.packagePath = packagePath;
         return this;
@@ -98,6 +112,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the type value.
      */
+    @Generated
     public SsisPackageLocationType getType() {
         return this.type;
     }
@@ -108,6 +123,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param type the type value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setType(SsisPackageLocationType type) {
         this.type = type;
         return this;
@@ -118,6 +134,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the packagePassword value.
      */
+    @Generated
     public SecretBase getPackagePassword() {
         return this.packagePassword;
     }
@@ -128,6 +145,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param packagePassword the packagePassword value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setPackagePassword(SecretBase packagePassword) {
         this.packagePassword = packagePassword;
         return this;
@@ -138,6 +156,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the accessCredential value.
      */
+    @Generated
     public SsisAccessCredential getAccessCredential() {
         return this.accessCredential;
     }
@@ -148,6 +167,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param accessCredential the accessCredential value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setAccessCredential(SsisAccessCredential accessCredential) {
         this.accessCredential = accessCredential;
         return this;
@@ -159,6 +179,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the configurationPath value.
      */
+    @Generated
     public Object getConfigurationPath() {
         return this.configurationPath;
     }
@@ -170,6 +191,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param configurationPath the configurationPath value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setConfigurationPath(Object configurationPath) {
         this.configurationPath = configurationPath;
         return this;
@@ -180,6 +202,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the configurationAccessCredential value.
      */
+    @Generated
     public SsisAccessCredential getConfigurationAccessCredential() {
         return this.configurationAccessCredential;
     }
@@ -190,6 +213,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param configurationAccessCredential the configurationAccessCredential value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setConfigurationAccessCredential(SsisAccessCredential configurationAccessCredential) {
         this.configurationAccessCredential = configurationAccessCredential;
         return this;
@@ -200,6 +224,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the packageName value.
      */
+    @Generated
     public String getPackageName() {
         return this.packageName;
     }
@@ -210,6 +235,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param packageName the packageName value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setPackageName(String packageName) {
         this.packageName = packageName;
         return this;
@@ -221,6 +247,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the packageContent value.
      */
+    @Generated
     public Object getPackageContent() {
         return this.packageContent;
     }
@@ -232,6 +259,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param packageContent the packageContent value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setPackageContent(Object packageContent) {
         this.packageContent = packageContent;
         return this;
@@ -242,6 +270,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the packageLastModifiedDate value.
      */
+    @Generated
     public String getPackageLastModifiedDate() {
         return this.packageLastModifiedDate;
     }
@@ -252,6 +281,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setPackageLastModifiedDate(String packageLastModifiedDate) {
         this.packageLastModifiedDate = packageLastModifiedDate;
         return this;
@@ -262,6 +292,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * 
      * @return the childPackages value.
      */
+    @Generated
     public List<SsisChildPackage> getChildPackages() {
         return this.childPackages;
     }
@@ -272,6 +303,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * @param childPackages the childPackages value to set.
      * @return the SsisPackageLocation object itself.
      */
+    @Generated
     public SsisPackageLocation setChildPackages(List<SsisChildPackage> childPackages) {
         this.childPackages = childPackages;
         return this;
@@ -280,10 +312,13 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("packagePath", this.packagePath);
+        if (this.packagePath != null) {
+            jsonWriter.writeUntypedField("packagePath", this.packagePath);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         if (packagePassword != null
             || accessCredential != null
@@ -296,10 +331,14 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("packagePassword", this.packagePassword);
             jsonWriter.writeJsonField("accessCredential", this.accessCredential);
-            jsonWriter.writeUntypedField("configurationPath", this.configurationPath);
+            if (this.configurationPath != null) {
+                jsonWriter.writeUntypedField("configurationPath", this.configurationPath);
+            }
             jsonWriter.writeJsonField("configurationAccessCredential", this.configurationAccessCredential);
             jsonWriter.writeStringField("packageName", this.packageName);
-            jsonWriter.writeUntypedField("packageContent", this.packageContent);
+            if (this.packageContent != null) {
+                jsonWriter.writeUntypedField("packageContent", this.packageContent);
+            }
             jsonWriter.writeStringField("packageLastModifiedDate", this.packageLastModifiedDate);
             jsonWriter.writeArrayField("childPackages", this.childPackages,
                 (writer, element) -> writer.writeJson(element));
@@ -316,6 +355,7 @@ public class SsisPackageLocation implements JsonSerializable<SsisPackageLocation
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SsisPackageLocation.
      */
+    @Generated
     public static SsisPackageLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisPackageLocation deserializedSsisPackageLocation = new SsisPackageLocation();

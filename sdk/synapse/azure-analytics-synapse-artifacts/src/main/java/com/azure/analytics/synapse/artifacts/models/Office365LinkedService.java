@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,38 +22,67 @@ public class Office365LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Office365";
 
     /*
      * Azure tenant ID to which the Office 365 account belongs. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object office365TenantId;
 
     /*
      * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object servicePrincipalTenantId;
 
     /*
      * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * Specify the application's key.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
+
+    /*
+     * The service principal credential type for authentication.'ServicePrincipalKey' for key/secret,
+     * 'ServicePrincipalCert' for certificate. If not specified, 'ServicePrincipalKey' is in use. Type: string (or
+     * Expression with resultType string).
+     */
+    @Generated
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Expression with resultType string).
+     */
+    @Generated
+    private SecretBase servicePrincipalEmbeddedCert;
+
+    /*
+     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
+     * authentication. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of Office365LinkedService class.
      */
+    @Generated
     public Office365LinkedService() {
     }
 
@@ -61,6 +91,7 @@ public class Office365LinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -72,6 +103,7 @@ public class Office365LinkedService extends LinkedService {
      * 
      * @return the office365TenantId value.
      */
+    @Generated
     public Object getOffice365TenantId() {
         return this.office365TenantId;
     }
@@ -83,6 +115,7 @@ public class Office365LinkedService extends LinkedService {
      * @param office365TenantId the office365TenantId value to set.
      * @return the Office365LinkedService object itself.
      */
+    @Generated
     public Office365LinkedService setOffice365TenantId(Object office365TenantId) {
         this.office365TenantId = office365TenantId;
         return this;
@@ -94,6 +127,7 @@ public class Office365LinkedService extends LinkedService {
      * 
      * @return the servicePrincipalTenantId value.
      */
+    @Generated
     public Object getServicePrincipalTenantId() {
         return this.servicePrincipalTenantId;
     }
@@ -105,6 +139,7 @@ public class Office365LinkedService extends LinkedService {
      * @param servicePrincipalTenantId the servicePrincipalTenantId value to set.
      * @return the Office365LinkedService object itself.
      */
+    @Generated
     public Office365LinkedService setServicePrincipalTenantId(Object servicePrincipalTenantId) {
         this.servicePrincipalTenantId = servicePrincipalTenantId;
         return this;
@@ -116,6 +151,7 @@ public class Office365LinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -127,6 +163,7 @@ public class Office365LinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the Office365LinkedService object itself.
      */
+    @Generated
     public Office365LinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -137,6 +174,7 @@ public class Office365LinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -147,8 +185,86 @@ public class Office365LinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the Office365LinkedService object itself.
      */
+    @Generated
     public Office365LinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type for
+     * authentication.'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. If not specified,
+     * 'ServicePrincipalKey' is in use. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    @Generated
+    public Object getServicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type for
+     * authentication.'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. If not specified,
+     * 'ServicePrincipalKey' is in use. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the Office365LinkedService object itself.
+     */
+    @Generated
+    public Office365LinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalEmbeddedCert() {
+        return this.servicePrincipalEmbeddedCert;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the Office365LinkedService object itself.
+     */
+    @Generated
+    public Office365LinkedService setServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        this.servicePrincipalEmbeddedCert = servicePrincipalEmbeddedCert;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalEmbeddedCertPassword() {
+        return this.servicePrincipalEmbeddedCertPassword;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the Office365LinkedService object itself.
+     */
+    @Generated
+    public Office365LinkedService
+        setServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        this.servicePrincipalEmbeddedCertPassword = servicePrincipalEmbeddedCertPassword;
         return this;
     }
 
@@ -158,6 +274,7 @@ public class Office365LinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -169,6 +286,7 @@ public class Office365LinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Office365LinkedService object itself.
      */
+    @Generated
     public Office365LinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -177,6 +295,17 @@ public class Office365LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public Office365LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public Office365LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -186,6 +315,7 @@ public class Office365LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365LinkedService setDescription(String description) {
         super.setDescription(description);
@@ -195,6 +325,7 @@ public class Office365LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -204,6 +335,7 @@ public class Office365LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -213,9 +345,11 @@ public class Office365LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -225,13 +359,24 @@ public class Office365LinkedService extends LinkedService {
             || servicePrincipalTenantId != null
             || servicePrincipalId != null
             || servicePrincipalKey != null
+            || servicePrincipalCredentialType != null
+            || servicePrincipalEmbeddedCert != null
+            || servicePrincipalEmbeddedCertPassword != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("office365TenantId", this.office365TenantId);
             jsonWriter.writeUntypedField("servicePrincipalTenantId", this.servicePrincipalTenantId);
             jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
+            jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
+            jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword",
+                this.servicePrincipalEmbeddedCertPassword);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -251,6 +396,7 @@ public class Office365LinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Office365LinkedService.
      */
+    @Generated
     public static Office365LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Office365LinkedService deserializedOffice365LinkedService = new Office365LinkedService();
@@ -259,7 +405,9 @@ public class Office365LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedOffice365LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedOffice365LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedOffice365LinkedService.setDescription(reader.getString());
@@ -285,6 +433,14 @@ public class Office365LinkedService extends LinkedService {
                             deserializedOffice365LinkedService.servicePrincipalId = reader.readUntyped();
                         } else if ("servicePrincipalKey".equals(fieldName)) {
                             deserializedOffice365LinkedService.servicePrincipalKey = SecretBase.fromJson(reader);
+                        } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                            deserializedOffice365LinkedService.servicePrincipalCredentialType = reader.readUntyped();
+                        } else if ("servicePrincipalEmbeddedCert".equals(fieldName)) {
+                            deserializedOffice365LinkedService.servicePrincipalEmbeddedCert
+                                = SecretBase.fromJson(reader);
+                        } else if ("servicePrincipalEmbeddedCertPassword".equals(fieldName)) {
+                            deserializedOffice365LinkedService.servicePrincipalEmbeddedCertPassword
+                                = SecretBase.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedOffice365LinkedService.encryptedCredential = reader.readUntyped();
                         } else {

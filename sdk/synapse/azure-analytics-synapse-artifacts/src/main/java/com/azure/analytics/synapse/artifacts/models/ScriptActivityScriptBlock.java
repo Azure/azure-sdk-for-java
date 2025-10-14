@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,22 +21,26 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
     /*
      * The query text. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object text;
 
     /*
      * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object type;
 
     /*
      * Array of script parameters. Type: array.
      */
+    @Generated
     private List<ScriptActivityParameter> parameters;
 
     /**
      * Creates an instance of ScriptActivityScriptBlock class.
      */
+    @Generated
     public ScriptActivityScriptBlock() {
     }
 
@@ -44,6 +49,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * 
      * @return the text value.
      */
+    @Generated
     public Object getText() {
         return this.text;
     }
@@ -54,6 +60,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * @param text the text value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
+    @Generated
     public ScriptActivityScriptBlock setText(Object text) {
         this.text = text;
         return this;
@@ -65,6 +72,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * 
      * @return the type value.
      */
+    @Generated
     public Object getType() {
         return this.type;
     }
@@ -76,6 +84,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * @param type the type value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
+    @Generated
     public ScriptActivityScriptBlock setType(Object type) {
         this.type = type;
         return this;
@@ -86,6 +95,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * 
      * @return the parameters value.
      */
+    @Generated
     public List<ScriptActivityParameter> getParameters() {
         return this.parameters;
     }
@@ -96,6 +106,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * @param parameters the parameters value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
+    @Generated
     public ScriptActivityScriptBlock setParameters(List<ScriptActivityParameter> parameters) {
         this.parameters = parameters;
         return this;
@@ -104,6 +115,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -122,6 +134,7 @@ public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptA
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScriptActivityScriptBlock.
      */
+    @Generated
     public static ScriptActivityScriptBlock fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScriptActivityScriptBlock deserializedScriptActivityScriptBlock = new ScriptActivityScriptBlock();

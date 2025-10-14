@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - pwsh: |
-          Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
+          Write-Host "##vso[task.setvariable variable=VERSION_OVERRIDE_TESTS]true"
           Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
         displayName: "Set version override variables"
 
@@ -85,10 +85,6 @@ jobs:
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
-
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
 
       - ${{ parameters.PreBuildSteps }}
 

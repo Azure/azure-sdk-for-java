@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -133,7 +132,7 @@ public class Offer extends Resource {
      * @param resourceLink the resource link.
      */
     void setResourceLink(String resourceLink) {
-        this.set(Constants.Properties.RESOURCE_LINK, resourceLink, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.RESOURCE_LINK, resourceLink);
     }
 
     /**
@@ -151,7 +150,7 @@ public class Offer extends Resource {
      * @param resourceId the resource id.
      */
     void setOfferResourceId(String resourceId) {
-        this.set(Constants.Properties.OFFER_RESOURCE_ID, resourceId, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.OFFER_RESOURCE_ID, resourceId);
     }
 
     /**
@@ -169,7 +168,7 @@ public class Offer extends Resource {
      * @param offerType the offer type.
      */
     public void setOfferType(String offerType) {
-        this.set(Constants.Properties.OFFER_TYPE, offerType, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.OFFER_TYPE, offerType);
     }
 
     /**
@@ -187,7 +186,7 @@ public class Offer extends Resource {
      * @param offerVersion the version of the offer.
      */
     public void setOfferVersion(String offerVersion) {
-        this.set(Constants.Properties.OFFER_VERSION, offerVersion, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.OFFER_VERSION, offerVersion);
     }
 
     /**
@@ -222,7 +221,7 @@ public class Offer extends Resource {
     }
 
     private void setContent(ObjectNode offerContent) {
-        this.set(Constants.Properties.OFFER_CONTENT, offerContent, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.OFFER_CONTENT, offerContent);
     }
 
     @Override

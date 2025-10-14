@@ -1,14 +1,99 @@
 # Release History
 
-## 1.55.0-beta.1 (Unreleased)
+## 1.58.0-beta.1 (Unreleased)
 
 ### Features Added
 
-- Added `azure.core.models.AzureCloud` expandable enum to represent different Azure clouds.
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.57.0 (2025-10-06)
+
+### Features Added
+
+- Adds `RetryStrategy.calculateRetryDelay(RequestRetryCondition)` to allow for richer inspection of the reason the
+  request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+
+### Bugs Fixed
+
+- Fixed a bug where `SharedExecutorService` didn't allow core threads to time out, even when a time out was set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+
+## 1.56.1 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.8` to `3.7.9`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
+
+## 1.56.0 (2025-08-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.41` to `3.7.8`. ([#46207](https://github.com/Azure/azure-sdk-for-java/pull/46207))
+
+## 1.55.5 (2025-06-26)
+
+### Other Changes
+
+- Upgraded Jackson Core from `2.18.3` to `2.18.4.1` to resolve multi-release JAR issues with Android projects.
+
+## 1.55.4 (2025-06-05)
+
+### Other Changes
+
+- Updated Jackson dependencies from `2.17.2` to `2.18.3`.
+
+## 1.55.3 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.4.0` to `1.5.0`.
+
+## 1.55.2 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.55.1` release as Netty dependencies weren't updated.
+
+## 1.55.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.115.Final` to `4.1.118.Final` to resolve a CVE.
+- Upgraded Netty TcNative dependencies from `2.0.69.Final` to `2.0.70.Final` to resolve a CVE.
+
+## 1.55.0 (2025-02-06)
+
+### Features Added
+
+- Added `azure.core.models.AzureCloud` expandable enum to represent different Azure clouds. ([#43099](https://github.com/Azure/azure-sdk-for-java/pull/43099))
+- Added `CoreUtils.parseAuthenticateHeader` and `AuthenticateChallenge` class for parsing and consuming
+  `WWW-Authenticate` and `Proxy-Authenticate` headers. ([#43714](https://github.com/Azure/azure-sdk-for-java/pull/43714))
 
 ### Other Changes
 
 - Removed length restriction on application id in `ClientOptions`. ([#42937](https://github.com/Azure/azure-sdk-for-java/pull/42937))
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.3.0` to `1.4.0`.
+- Updated `azure-xml` from `1.1.0` to `1.2.0`.
 
 ## 1.54.1 (2024-11-14)
 

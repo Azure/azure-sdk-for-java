@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,47 +15,54 @@ public final class RouteDelayReason extends ExpandableStringEnum<RouteDelayReaso
     /**
      * Traffic jam.
      */
+    @Generated
     public static final RouteDelayReason JAM = fromString("JAM");
 
     /**
      * Road work.
      */
+    @Generated
     public static final RouteDelayReason ROAD_WORK = fromString("ROAD_WORK");
 
     /**
      * Road closure.
      */
+    @Generated
     public static final RouteDelayReason ROAD_CLOSURE = fromString("ROAD_CLOSURE");
 
     /**
      * Other.
      */
+    @Generated
     public static final RouteDelayReason OTHER = fromString("OTHER");
 
     /**
-     * Creates a new instance of SimpleCategory value.
+     * Creates a new instance of RouteDelayReason value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteDelayReason() {
     }
 
     /**
-     * Creates or finds a SimpleCategory from its string representation.
+     * Creates or finds a RouteDelayReason from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding SimpleCategory.
+     * @return the corresponding RouteDelayReason.
      */
+    @Generated
     public static RouteDelayReason fromString(String name) {
         return fromString(name, RouteDelayReason.class);
     }
 
     /**
-     * Gets known SimpleCategory values.
+     * Gets known RouteDelayReason values.
      * 
-     * @return known SimpleCategory values.
+     * @return known RouteDelayReason values.
      */
+    @Generated
     public static Collection<RouteDelayReason> values() {
         return values(RouteDelayReason.class);
     }

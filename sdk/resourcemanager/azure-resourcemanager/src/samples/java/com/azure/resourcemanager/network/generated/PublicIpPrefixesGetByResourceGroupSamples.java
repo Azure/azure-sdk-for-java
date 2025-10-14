@@ -9,8 +9,25 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpPrefixesGetByResourceGroupSamples {
     /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * PublicIpPrefixGetStandardV2Sku.json
+     */
+    /**
+     * Sample code: Get public IP prefix with StandardV2 sku.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getPublicIPPrefixWithStandardV2Sku(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpPrefixes()
+            .getByResourceGroupWithResponse("rg1", "test-ipprefix", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/PublicIpPrefixGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpPrefixGet.json
      */
     /**
      * Sample code: Get public IP prefix.

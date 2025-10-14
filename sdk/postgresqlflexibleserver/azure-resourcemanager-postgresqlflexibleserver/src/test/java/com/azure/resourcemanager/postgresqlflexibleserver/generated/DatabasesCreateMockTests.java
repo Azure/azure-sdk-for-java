@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Database;
@@ -21,23 +21,23 @@ public final class DatabasesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"charset\":\"d\",\"collation\":\"nsiru\"},\"id\":\"z\",\"name\":\"mes\",\"type\":\"kdlpa\"}";
+            = "{\"properties\":{\"charset\":\"nwjfu\",\"collation\":\"lafcbahh\"},\"id\":\"pofoi\",\"name\":\"jwpfilkm\",\"type\":\"kholvd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Database response = manager.databases()
-            .define("tvtzeexavoxtfg")
-            .withExistingFlexibleServer("awddjibab", "vit")
-            .withCharset("dmdqb")
-            .withCollation("ypq")
+            .define("oxgjiuqhibt")
+            .withExistingFlexibleServer("dkvgfabuiyjibuzp", "dugneiknp")
+            .withCharset("pqwjedm")
+            .withCollation("r")
             .create();
 
-        Assertions.assertEquals("d", response.charset());
-        Assertions.assertEquals("nsiru", response.collation());
+        Assertions.assertEquals("nwjfu", response.charset());
+        Assertions.assertEquals("lafcbahh", response.collation());
     }
 }

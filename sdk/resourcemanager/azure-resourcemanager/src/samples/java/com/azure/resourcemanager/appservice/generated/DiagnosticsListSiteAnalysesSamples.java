@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DiagnosticsListSiteAnalysesSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteAnalyses.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalyses.json
      */
     /**
      * Sample code: List App Analyses.
@@ -28,7 +28,7 @@ public final class DiagnosticsListSiteAnalysesSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalysesSlot.json
      */
     /**
      * Sample code: List App Slot Analyses.

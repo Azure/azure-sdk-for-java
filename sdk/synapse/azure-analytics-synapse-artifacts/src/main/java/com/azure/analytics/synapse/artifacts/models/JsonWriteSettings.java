@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,17 +21,20 @@ public final class JsonWriteSettings extends FormatWriteSettings {
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "JsonWriteSettings";
 
     /*
      * File pattern of JSON. This setting controls the way a collection of JSON objects will be treated. The default
      * value is 'setOfObjects'. It is case-sensitive.
      */
+    @Generated
     private Object filePattern;
 
     /**
      * Creates an instance of JsonWriteSettings class.
      */
+    @Generated
     public JsonWriteSettings() {
     }
 
@@ -39,6 +43,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      * 
      * @return the filePattern value.
      */
+    @Generated
     public Object getFilePattern() {
         return this.filePattern;
     }
@@ -61,6 +67,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      * @param filePattern the filePattern value to set.
      * @return the JsonWriteSettings object itself.
      */
+    @Generated
     public JsonWriteSettings setFilePattern(Object filePattern) {
         this.filePattern = filePattern;
         return this;
@@ -69,11 +76,14 @@ public final class JsonWriteSettings extends FormatWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("filePattern", this.filePattern);
+        if (this.filePattern != null) {
+            jsonWriter.writeUntypedField("filePattern", this.filePattern);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -90,6 +100,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the JsonWriteSettings.
      */
+    @Generated
     public static JsonWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonWriteSettings deserializedJsonWriteSettings = new JsonWriteSettings();

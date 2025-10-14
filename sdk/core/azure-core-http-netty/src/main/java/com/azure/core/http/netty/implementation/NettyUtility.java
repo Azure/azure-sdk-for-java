@@ -76,10 +76,14 @@ public final class NettyUtility {
             // From there the only thing that needs to be checked is whether the inbound has been disposed (completed),
             // and if not dispose it (aka drain it).
             if (!channelOperations.isInboundDisposed()) {
-                channelOperations.channel().eventLoop().execute(channelOperations::discard);
+                channelOperations.discard();
             }
         } else if (!reactorNettyConnection.isDisposed()) {
-            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+            if (reactorNettyConnection.channel().isRegistered()) {
+                reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+            } else {
+                reactorNettyConnection.dispose();
+            }
         }
     }
 

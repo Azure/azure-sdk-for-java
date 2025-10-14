@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WorkflowTriggersRunSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/WorkflowTriggers_Run.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/WorkflowTriggers_Run.json
      */
     /**
      * Sample code: Run a workflow trigger.

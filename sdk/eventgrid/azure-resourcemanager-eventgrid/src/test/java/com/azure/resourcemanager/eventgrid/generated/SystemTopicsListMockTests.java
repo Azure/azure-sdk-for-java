@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.IdentityType;
@@ -23,28 +23,28 @@ public final class SystemTopicsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"source\":\"qccddcbny\",\"topicType\":\"jccxwbp\",\"metricResourceId\":\"ykdigqzlrznda\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"jqmvytgkiq\",\"tenantId\":\"rhqtwvcazekdzd\",\"userAssignedIdentities\":{\"gfrrkdknczgoryw\":{\"principalId\":\"jwztsmpchggry\",\"clientId\":\"gfyatig\"}}},\"location\":\"vojtvmdevdlhqv\",\"tags\":{\"kpkpkocmacc\":\"rbpyhssrl\"},\"id\":\"bxxo\",\"name\":\"yicyvspeslhwy\",\"type\":\"kgv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"source\":\"wlctmwp\",\"topicType\":\"xkrkqgvxrktj\",\"metricResourceId\":\"igcwtspanbqxase\"},\"identity\":{\"type\":\"None\",\"principalId\":\"geedyy\",\"tenantId\":\"uholaemwcgimmri\",\"userAssignedIdentities\":{\"sj\":{\"principalId\":\"sqqlonbzaow\",\"clientId\":\"hdkmbjsmihrijezb\"},\"lxa\":{\"principalId\":\"czglkvbgukbsvb\",\"clientId\":\"otygnbknhjg\"}}},\"location\":\"wcffaspsdzkuc\",\"tags\":{\"lfrsbzrnmuv\":\"hdoaqipmnx\",\"ofddtbfmek\":\"vp\",\"oyqxfvgyxz\":\"cnginxdvm\",\"zujsjirkrp\":\"xynofxlttxoqxtd\"},\"id\":\"kcjhmmofbnivd\",\"name\":\"tkykpaxnlsfgnys\",\"type\":\"accptbzetxy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SystemTopic> response
-            = manager.systemTopics().list("dxljzvdovbrble", 2092784834, com.azure.core.util.Context.NONE);
+            = manager.systemTopics().list("kb", 1640013792, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vojtvmdevdlhqv", response.iterator().next().location());
-        Assertions.assertEquals("rbpyhssrl", response.iterator().next().tags().get("kpkpkocmacc"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("jqmvytgkiq", response.iterator().next().identity().principalId());
-        Assertions.assertEquals("rhqtwvcazekdzd", response.iterator().next().identity().tenantId());
-        Assertions.assertEquals("jwztsmpchggry",
-            response.iterator().next().identity().userAssignedIdentities().get("gfrrkdknczgoryw").principalId());
-        Assertions.assertEquals("gfyatig",
-            response.iterator().next().identity().userAssignedIdentities().get("gfrrkdknczgoryw").clientId());
-        Assertions.assertEquals("qccddcbny", response.iterator().next().source());
-        Assertions.assertEquals("jccxwbp", response.iterator().next().topicType());
+        Assertions.assertEquals("wcffaspsdzkuc", response.iterator().next().location());
+        Assertions.assertEquals("hdoaqipmnx", response.iterator().next().tags().get("lfrsbzrnmuv"));
+        Assertions.assertEquals(IdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("geedyy", response.iterator().next().identity().principalId());
+        Assertions.assertEquals("uholaemwcgimmri", response.iterator().next().identity().tenantId());
+        Assertions.assertEquals("sqqlonbzaow",
+            response.iterator().next().identity().userAssignedIdentities().get("sj").principalId());
+        Assertions.assertEquals("hdkmbjsmihrijezb",
+            response.iterator().next().identity().userAssignedIdentities().get("sj").clientId());
+        Assertions.assertEquals("wlctmwp", response.iterator().next().source());
+        Assertions.assertEquals("xkrkqgvxrktj", response.iterator().next().topicType());
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,68 +19,83 @@ import java.util.List;
 public final class WaypointForecast implements JsonSerializable<WaypointForecast> {
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
+    @Generated
     private IconCode iconCode;
 
     /*
      * A displayable short phrase describing the forecasted conditions and precipitation intensity/type.
      */
+    @Generated
     private String shortDescription;
 
     /*
      * Indicates the time of the day. True indicates 'day',', false indicates 'night.
      */
+    @Generated
     private Boolean isDaytime;
 
     /*
      * Percent representing cloud cover.
      */
+    @Generated
     private Integer cloudCover;
 
     /*
      * Specific value of a given unit related to weather.
      */
+    @Generated
     private WeatherUnitDetails temperature;
 
     /*
      * Wind details being returned including speed and direction.
      */
+    @Generated
     private WindDetails wind;
 
     /*
      * Wind details being returned including speed and direction.
      */
+    @Generated
     private WindDetails windGust;
 
     /*
      * Precipitation forecast of the weather along the route.
      */
+    @Generated
     private WeatherAlongRoutePrecipitation precipitation;
 
     /*
-     * Estimation of thunderstorm intensity on an open scale. A value of 0 means there is no thunderstorm; values of 1 and higher mean there is a thunderstorm in increasing intensity.
+     * Estimation of thunderstorm intensity on an open scale. A value of 0 means there is no thunderstorm; values of 1
+     * and higher mean there is a thunderstorm in increasing intensity.
      */
+    @Generated
     private Integer lightningCount;
 
     /*
      * A rating that indicates how blinding the sun is for the driver.
      */
+    @Generated
     private SunGlare sunGlare;
 
     /*
      * Description of the weather hazard affecting the trip.
      */
+    @Generated
     private WeatherHazards hazards;
 
     /*
      * List of weather hazard notifications.
      */
+    @Generated
     private List<WeatherNotification> notifications;
 
     /**
      * Set default WaypointForecast constructor to private
      */
+    @Generated
     private WaypointForecast() {
     }
 
@@ -89,6 +105,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the iconCode value.
      */
+    @Generated
     public IconCode getIconCode() {
         return this.iconCode;
     }
@@ -99,6 +116,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the shortDescription value.
      */
+    @Generated
     public String getShortDescription() {
         return this.shortDescription;
     }
@@ -110,6 +128,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      * @param shortDescription the shortDescription value to set.
      * @return the WaypointForecast object itself.
      */
+    @Generated
     public WaypointForecast setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
         return this;
@@ -120,6 +139,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the isDaytime value.
      */
+    @Generated
     public Boolean isDaytime() {
         return this.isDaytime;
     }
@@ -129,6 +149,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the cloudCover value.
      */
+    @Generated
     public Integer getCloudCover() {
         return this.cloudCover;
     }
@@ -138,6 +159,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the temperature value.
      */
+    @Generated
     public WeatherUnitDetails getTemperature() {
         return this.temperature;
     }
@@ -147,6 +169,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the wind value.
      */
+    @Generated
     public WindDetails getWind() {
         return this.wind;
     }
@@ -156,6 +179,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the windGust value.
      */
+    @Generated
     public WindDetails getWindGust() {
         return this.windGust;
     }
@@ -165,6 +189,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the precipitation value.
      */
+    @Generated
     public WeatherAlongRoutePrecipitation getPrecipitation() {
         return this.precipitation;
     }
@@ -175,6 +200,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the lightningCount value.
      */
+    @Generated
     public Integer getLightningCount() {
         return this.lightningCount;
     }
@@ -184,6 +210,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the sunGlare value.
      */
+    @Generated
     public SunGlare getSunGlare() {
         return this.sunGlare;
     }
@@ -193,6 +220,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the hazards value.
      */
+    @Generated
     public WeatherHazards getHazards() {
         return this.hazards;
     }
@@ -202,6 +230,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      *
      * @return the notifications value.
      */
+    @Generated
     public List<WeatherNotification> getNotifications() {
         return this.notifications;
     }
@@ -209,10 +238,11 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeStringField("shortPhrase", this.shortDescription);
         jsonWriter.writeBooleanField("isDayTime", this.isDaytime);
         jsonWriter.writeNumberField("cloudCover", this.cloudCover);
@@ -235,6 +265,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WaypointForecast.
      */
+    @Generated
     public static WaypointForecast fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WaypointForecast deserializedWaypointForecast = new WaypointForecast();
@@ -242,7 +273,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("iconCode".equals(fieldName)) {
-                    deserializedWaypointForecast.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedWaypointForecast.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("shortPhrase".equals(fieldName)) {
                     deserializedWaypointForecast.shortDescription = reader.getString();
                 } else if ("isDayTime".equals(fieldName)) {

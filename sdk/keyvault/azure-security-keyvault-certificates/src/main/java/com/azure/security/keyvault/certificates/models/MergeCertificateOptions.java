@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents Merge Certificate Configuration to merge certificates in key vault.
+ * Represents the configuration used to merge a certificate in the key vault.
  */
 public final class MergeCertificateOptions {
-
     /**
      * The name of the certificate.
      */
@@ -22,7 +21,7 @@ public final class MergeCertificateOptions {
     private final List<byte[]> x509Certificates;
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the certificate is enabled.
      */
     private boolean enabled;
 
@@ -32,7 +31,7 @@ public final class MergeCertificateOptions {
     private Map<String, String> tags;
 
     /**
-     * Creates a new MergeCertificationOptions instance.
+     * Creates a instance of {@link MergeCertificateOptions}.
      *
      * @param name The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
@@ -43,13 +42,41 @@ public final class MergeCertificateOptions {
     }
 
     /**
-     * Set the tags to be associated with the secret.
+     * Get the name of the certificate.
      *
-     * @param tags The tags to set
-     * @return the MergeCertificateOptions object itself.
+     * @return The name of the certificate.
      */
-    public MergeCertificateOptions setTags(Map<String, String> tags) {
-        this.tags = tags;
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the certificate or certificate chain to merge.
+     *
+     * @return The certificate or certificate chain to merge.
+     */
+    public List<byte[]> getX509Certificates() {
+        return this.x509Certificates;
+    }
+
+    /**
+     * Get a value indicating whether the certificate is enabled.
+     *
+     * @return The enabled status.
+     */
+    public Boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set the enabled status.
+     *
+     * @param enabled The enabled status to set.
+     * @return The updated {@link MergeCertificateOptions} object.
+     */
+    public MergeCertificateOptions setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+
         return this;
     }
 
@@ -63,39 +90,14 @@ public final class MergeCertificateOptions {
     }
 
     /**
-     * Set the enabled status.
-     * @param enabled The enabled status to set.
-     * @return the MergeCertificateOptions object itself.
+     * Set the tags to be associated with the secret.
+     *
+     * @param tags The tags to set
+     * @return The updated {@link MergeCertificateOptions} object.
      */
-    public MergeCertificateOptions setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public MergeCertificateOptions setTags(Map<String, String> tags) {
+        this.tags = tags;
+
         return this;
-    }
-
-    /**
-     * Get the enabled status.
-     *
-     * @return the enabled status
-     */
-    public Boolean isEnabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Get the certificate name.
-     *
-     * @return the certificate name.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the certificate or certificate chain to merge.
-     *
-     * @return the x509 certificates.
-     */
-    public List<byte[]> getX509Certificates() {
-        return this.x509Certificates;
     }
 }

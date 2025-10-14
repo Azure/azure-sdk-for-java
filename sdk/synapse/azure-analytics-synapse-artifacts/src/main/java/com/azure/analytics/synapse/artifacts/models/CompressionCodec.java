@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,51 +15,61 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
     /**
      * Static value none for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec NONE = fromString("none");
 
     /**
      * Static value lzo for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec LZO = fromString("lzo");
 
     /**
      * Static value bzip2 for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec BZIP2 = fromString("bzip2");
 
     /**
      * Static value gzip for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec GZIP = fromString("gzip");
 
     /**
      * Static value deflate for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec DEFLATE = fromString("deflate");
 
     /**
      * Static value zipDeflate for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec ZIP_DEFLATE = fromString("zipDeflate");
 
     /**
      * Static value snappy for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec SNAPPY = fromString("snappy");
 
     /**
      * Static value lz4 for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec LZ4 = fromString("lz4");
 
     /**
      * Static value tar for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec TAR = fromString("tar");
 
     /**
      * Static value tarGZip for CompressionCodec.
      */
+    @Generated
     public static final CompressionCodec TAR_GZIP = fromString("tarGZip");
 
     /**
@@ -66,6 +77,7 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CompressionCodec() {
     }
@@ -76,6 +88,7 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
      * @param name a name to look for.
      * @return the corresponding CompressionCodec.
      */
+    @Generated
     public static CompressionCodec fromString(String name) {
         return fromString(name, CompressionCodec.class);
     }
@@ -85,6 +98,7 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
      * 
      * @return known CompressionCodec values.
      */
+    @Generated
     public static Collection<CompressionCodec> values() {
         return values(CompressionCodec.class);
     }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationProtectionContainersListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectionContainers_List.json
      */
     /**
@@ -20,6 +20,6 @@ public final class ReplicationProtectionContainersListSamples {
      */
     public static void getsTheListOfAllProtectionContainersInAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainers().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
+        manager.replicationProtectionContainers().list("resourceGroupPS1", "vault1", com.azure.core.util.Context.NONE);
     }
 }

@@ -28,8 +28,6 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
@@ -62,14 +60,108 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DCOSMOS.HTTP2_ENABLED=true'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Cosmos_Live_Test_ThinClient'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_thinclient
+              Path: sdk/cosmos/live-thinclient-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.21/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.THINCLIENT_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Cosmos_Live_Test_ThinClient_MultiRegion'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_thinclient_multiregion
+              Path: sdk/cosmos/live-thinclient-multi-region-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.21/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thin-client-canary-multi-region-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-region-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Cosmos_Live_Test_ThinClient_MultiMaster'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_thinclient_multimaster
+              Path: sdk/cosmos/live-thinclient-multi-master-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.21/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account) -DACCOUNT_HOST=$(thin-client-canary-multi-writer-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-writer-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
@@ -90,8 +182,6 @@ extends:
               groupId: com.azure
               safeName: azurespringdatacosmos
           TimeoutInMinutes: 90
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           AdditionalVariables:
@@ -118,8 +208,6 @@ extends:
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
           TimeoutInMinutes: 120
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:

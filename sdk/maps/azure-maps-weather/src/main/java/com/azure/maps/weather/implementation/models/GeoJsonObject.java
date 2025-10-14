@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -17,15 +18,17 @@ import java.io.IOException;
 @Immutable
 public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type;
 
     /**
      * Creates an instance of GeoJsonObject class.
      */
+    @Generated
     public GeoJsonObject() {
-        this.type = GeoJsonObjectType.fromString("GeoJsonObject");
     }
 
     /**
@@ -35,6 +38,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      * 
      * @return the type value.
      */
+    @Generated
     public GeoJsonObjectType getType() {
         return this.type;
     }
@@ -42,6 +46,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,6 +62,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeoJsonObject.
      */
+    @Generated
     public static GeoJsonObject fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -100,6 +106,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
         });
     }
 
+    @Generated
     static GeoJsonObject fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonObject deserializedGeoJsonObject = new GeoJsonObject();

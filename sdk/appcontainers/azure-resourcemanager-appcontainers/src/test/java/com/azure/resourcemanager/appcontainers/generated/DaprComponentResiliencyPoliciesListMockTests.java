@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DaprComponentResiliencyPolicy;
@@ -22,43 +22,43 @@ public final class DaprComponentResiliencyPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":493987363,\"retryBackOff\":{\"initialDelayInMilliseconds\":1346081832,\"maxIntervalInMilliseconds\":154728040}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":250538513},\"circuitBreakerPolicy\":{\"consecutiveErrors\":385419072,\"timeoutInSeconds\":1897243806,\"intervalInSeconds\":837292963}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":1771574336,\"retryBackOff\":{\"initialDelayInMilliseconds\":944136407,\"maxIntervalInMilliseconds\":1918010429}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":534856605},\"circuitBreakerPolicy\":{\"consecutiveErrors\":1442218085,\"timeoutInSeconds\":729154649,\"intervalInSeconds\":1444493325}}},\"id\":\"juf\",\"name\":\"ekiooanduewfhv\",\"type\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"inboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":210409056,\"retryBackOff\":{\"initialDelayInMilliseconds\":115677310,\"maxIntervalInMilliseconds\":316898126}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":716267367},\"circuitBreakerPolicy\":{\"consecutiveErrors\":1116306565,\"timeoutInSeconds\":1807295181,\"intervalInSeconds\":1622954760}},\"outboundPolicy\":{\"httpRetryPolicy\":{\"maxRetries\":353529228,\"retryBackOff\":{\"initialDelayInMilliseconds\":603734439,\"maxIntervalInMilliseconds\":203578881}},\"timeoutPolicy\":{\"responseTimeoutInSeconds\":2050591523},\"circuitBreakerPolicy\":{\"consecutiveErrors\":380185510,\"timeoutInSeconds\":490867132,\"intervalInSeconds\":787891741}}},\"id\":\"kvhyejth\",\"name\":\"eecbpergwlc\",\"type\":\"ihba\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DaprComponentResiliencyPolicy> response = manager.daprComponentResiliencyPolicies()
-            .list("pgayiawohfmhnnzm", "cjjkmqenh", "idzr", com.azure.core.util.Context.NONE);
+            .list("iib", "kcj", "tqdcizeqqfop", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(493987363, response.iterator().next().inboundPolicy().httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(1346081832,
+        Assertions.assertEquals(210409056, response.iterator().next().inboundPolicy().httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(115677310,
             response.iterator().next().inboundPolicy().httpRetryPolicy().retryBackOff().initialDelayInMilliseconds());
-        Assertions.assertEquals(154728040,
+        Assertions.assertEquals(316898126,
             response.iterator().next().inboundPolicy().httpRetryPolicy().retryBackOff().maxIntervalInMilliseconds());
-        Assertions.assertEquals(250538513,
+        Assertions.assertEquals(716267367,
             response.iterator().next().inboundPolicy().timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(385419072,
+        Assertions.assertEquals(1116306565,
             response.iterator().next().inboundPolicy().circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(1897243806,
+        Assertions.assertEquals(1807295181,
             response.iterator().next().inboundPolicy().circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(837292963,
+        Assertions.assertEquals(1622954760,
             response.iterator().next().inboundPolicy().circuitBreakerPolicy().intervalInSeconds());
-        Assertions.assertEquals(1771574336, response.iterator().next().outboundPolicy().httpRetryPolicy().maxRetries());
-        Assertions.assertEquals(944136407,
+        Assertions.assertEquals(353529228, response.iterator().next().outboundPolicy().httpRetryPolicy().maxRetries());
+        Assertions.assertEquals(603734439,
             response.iterator().next().outboundPolicy().httpRetryPolicy().retryBackOff().initialDelayInMilliseconds());
-        Assertions.assertEquals(1918010429,
+        Assertions.assertEquals(203578881,
             response.iterator().next().outboundPolicy().httpRetryPolicy().retryBackOff().maxIntervalInMilliseconds());
-        Assertions.assertEquals(534856605,
+        Assertions.assertEquals(2050591523,
             response.iterator().next().outboundPolicy().timeoutPolicy().responseTimeoutInSeconds());
-        Assertions.assertEquals(1442218085,
+        Assertions.assertEquals(380185510,
             response.iterator().next().outboundPolicy().circuitBreakerPolicy().consecutiveErrors());
-        Assertions.assertEquals(729154649,
+        Assertions.assertEquals(490867132,
             response.iterator().next().outboundPolicy().circuitBreakerPolicy().timeoutInSeconds());
-        Assertions.assertEquals(1444493325,
+        Assertions.assertEquals(787891741,
             response.iterator().next().outboundPolicy().circuitBreakerPolicy().intervalInSeconds());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,7 @@ public class ValidationActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Validation";
 
     /*
@@ -28,34 +30,40 @@ public class ValidationActivity extends ControlActivity {
      * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object timeout;
 
     /*
      * A delay in seconds between validation attempts. If no value is specified, 10 seconds will be used as the default.
      * Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object sleep;
 
     /*
      * Can be used if dataset points to a file. The file must be greater than or equal in size to the value specified.
      * Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object minimumSize;
 
     /*
      * Can be used if dataset points to a folder. If set to true, the folder must have at least one file. If set to
      * false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object childItems;
 
     /*
      * Validation activity dataset reference.
      */
+    @Generated
     private DatasetReference dataset;
 
     /**
      * Creates an instance of ValidationActivity class.
      */
+    @Generated
     public ValidationActivity() {
     }
 
@@ -64,6 +72,7 @@ public class ValidationActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -76,6 +85,7 @@ public class ValidationActivity extends ControlActivity {
      * 
      * @return the timeout value.
      */
+    @Generated
     public Object getTimeout() {
         return this.timeout;
     }
@@ -88,6 +98,7 @@ public class ValidationActivity extends ControlActivity {
      * @param timeout the timeout value to set.
      * @return the ValidationActivity object itself.
      */
+    @Generated
     public ValidationActivity setTimeout(Object timeout) {
         this.timeout = timeout;
         return this;
@@ -99,6 +110,7 @@ public class ValidationActivity extends ControlActivity {
      * 
      * @return the sleep value.
      */
+    @Generated
     public Object getSleep() {
         return this.sleep;
     }
@@ -110,6 +122,7 @@ public class ValidationActivity extends ControlActivity {
      * @param sleep the sleep value to set.
      * @return the ValidationActivity object itself.
      */
+    @Generated
     public ValidationActivity setSleep(Object sleep) {
         this.sleep = sleep;
         return this;
@@ -121,6 +134,7 @@ public class ValidationActivity extends ControlActivity {
      * 
      * @return the minimumSize value.
      */
+    @Generated
     public Object getMinimumSize() {
         return this.minimumSize;
     }
@@ -132,6 +146,7 @@ public class ValidationActivity extends ControlActivity {
      * @param minimumSize the minimumSize value to set.
      * @return the ValidationActivity object itself.
      */
+    @Generated
     public ValidationActivity setMinimumSize(Object minimumSize) {
         this.minimumSize = minimumSize;
         return this;
@@ -143,6 +158,7 @@ public class ValidationActivity extends ControlActivity {
      * 
      * @return the childItems value.
      */
+    @Generated
     public Object getChildItems() {
         return this.childItems;
     }
@@ -154,6 +170,7 @@ public class ValidationActivity extends ControlActivity {
      * @param childItems the childItems value to set.
      * @return the ValidationActivity object itself.
      */
+    @Generated
     public ValidationActivity setChildItems(Object childItems) {
         this.childItems = childItems;
         return this;
@@ -164,6 +181,7 @@ public class ValidationActivity extends ControlActivity {
      * 
      * @return the dataset value.
      */
+    @Generated
     public DatasetReference getDataset() {
         return this.dataset;
     }
@@ -174,6 +192,7 @@ public class ValidationActivity extends ControlActivity {
      * @param dataset the dataset value to set.
      * @return the ValidationActivity object itself.
      */
+    @Generated
     public ValidationActivity setDataset(DatasetReference dataset) {
         this.dataset = dataset;
         return this;
@@ -182,6 +201,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ValidationActivity setName(String name) {
         super.setName(name);
@@ -191,6 +211,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ValidationActivity setDescription(String description) {
         super.setDescription(description);
@@ -200,6 +221,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ValidationActivity setState(ActivityState state) {
         super.setState(state);
@@ -209,6 +231,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ValidationActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -218,6 +241,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ValidationActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -227,6 +251,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ValidationActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -236,6 +261,7 @@ public class ValidationActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -250,10 +276,18 @@ public class ValidationActivity extends ControlActivity {
         jsonWriter.writeStringField("type", this.type);
         if (timeout != null || sleep != null || minimumSize != null || childItems != null || dataset != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("timeout", this.timeout);
-            jsonWriter.writeUntypedField("sleep", this.sleep);
-            jsonWriter.writeUntypedField("minimumSize", this.minimumSize);
-            jsonWriter.writeUntypedField("childItems", this.childItems);
+            if (this.timeout != null) {
+                jsonWriter.writeUntypedField("timeout", this.timeout);
+            }
+            if (this.sleep != null) {
+                jsonWriter.writeUntypedField("sleep", this.sleep);
+            }
+            if (this.minimumSize != null) {
+                jsonWriter.writeUntypedField("minimumSize", this.minimumSize);
+            }
+            if (this.childItems != null) {
+                jsonWriter.writeUntypedField("childItems", this.childItems);
+            }
             jsonWriter.writeJsonField("dataset", this.dataset);
             jsonWriter.writeEndObject();
         }
@@ -274,6 +308,7 @@ public class ValidationActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ValidationActivity.
      */
+    @Generated
     public static ValidationActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ValidationActivity deserializedValidationActivity = new ValidationActivity();

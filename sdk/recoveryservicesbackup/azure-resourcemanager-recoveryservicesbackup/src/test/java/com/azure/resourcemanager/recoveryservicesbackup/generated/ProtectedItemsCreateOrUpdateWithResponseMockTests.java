@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.CreateMode;
@@ -26,59 +26,58 @@ public final class ProtectedItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureStorage\",\"workloadType\":\"Sharepoint\",\"containerName\":\"xricctkwmuqq\",\"sourceResourceId\":\"jxeiy\",\"policyId\":\"esrw\",\"lastRecoveryPoint\":\"2021-09-23T00:22:38Z\",\"backupSetName\":\"hdctrceqn\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-01-22T20:14:34Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"hdmljz\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"jpbi\",\"nzpphepife\",\"leqirccjclykcgxv\"],\"isArchiveEnabled\":false,\"policyName\":\"vczuodacpune\",\"softDeleteRetentionPeriodInDays\":1031387254,\"vaultId\":\"djxqeskoynuiylpc\"},\"eTag\":\"ewsedveskwxe\",\"location\":\"qphr\",\"tags\":{\"tsghpbcbcp\":\"zhctm\",\"ypefcpczshnuqnda\":\"arpzeqacdldtzm\",\"vtvegwqiukvzw\":\"zupfkhuytuszxhm\"},\"id\":\"dwttha\",\"name\":\"kgkskjivbsshaj\",\"type\":\"fukpeexpgeu\"}";
+            = "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureStorage\",\"workloadType\":\"SQLDB\",\"containerName\":\"g\",\"sourceResourceId\":\"quv\",\"policyId\":\"gglpmcrdcuelj\",\"lastRecoveryPoint\":\"2021-09-29T07:33:04Z\",\"backupSetName\":\"xmfqryarvsxzqbg\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-03-31T05:28:16Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"thzodubtlmjtgbl\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"kmfd\",\"xyxgbkkqv\",\"cteoedlrslsk\",\"zpxvjnzdpvoc\"],\"isArchiveEnabled\":true,\"policyName\":\"cnabxzf\",\"softDeleteRetentionPeriodInDays\":1683245202,\"vaultId\":\"ytexvzilmhivzk\"},\"eTag\":\"wncknr\",\"location\":\"dajlskzpt\",\"tags\":{\"cyrthxqlehm\":\"lwe\",\"inue\":\"gcj\",\"vfejvqnttmbqda\":\"oka\"},\"id\":\"zfivfokpysthhzag\",\"name\":\"fwy\",\"type\":\"rlhgenuze\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectedItemResource response = manager.protectedItems()
-            .define("gcwn")
-            .withRegion("phm")
-            .withExistingProtectionContainer("gybpmfb", "ununm", "zkrvfyi", "kdschlzvfictnkjj")
-            .withTags(mapOf("nmwynefxexl", "kcgsuthhl", "mdskjhhxdlajfoxc", "ciatxtjrrl", "lxlhuavkrm", "scv",
-                "slojfkqidnqt", "kmyjmkxett"))
-            .withProperties(new ProtectedItem().withContainerName("rtogmhmj")
-                .withSourceResourceId("scdfpdqw")
-                .withPolicyId("gevgwmse")
-                .withLastRecoveryPoint(OffsetDateTime.parse("2021-06-22T21:43:44Z"))
-                .withBackupSetName("ifvqnr")
+            .define("xegqphr")
+            .withRegion("dbzsx")
+            .withExistingProtectionContainer("punettepdjxq", "skoynuiylpc", "aewse", "vesk")
+            .withTags(mapOf("pcbbprtugav", "qrs", "fogdrtbfcm", "zbcyksiv", "mb", "rftsjcwjjxs", "xkecifhocj", "wvif"))
+            .withProperties(new ProtectedItem().withContainerName("mjtsgh")
+                .withSourceResourceId("c")
+                .withPolicyId("pzarpzeqacdld")
+                .withLastRecoveryPoint(OffsetDateTime.parse("2021-02-18T13:35:29Z"))
+                .withBackupSetName("ypefcpczshnuqnda")
                 .withCreateMode(CreateMode.DEFAULT)
-                .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-10-28T06:45:39Z"))
+                .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-05-16T16:02:29Z"))
                 .withIsScheduledForDeferredDelete(false)
-                .withDeferredDeleteTimeRemaining("nvwjhrsidqpxl")
-                .withIsDeferredDeleteScheduleUpcoming(true)
+                .withDeferredDeleteTimeRemaining("ytus")
+                .withIsDeferredDeleteScheduleUpcoming(false)
                 .withIsRehydrate(false)
-                .withResourceGuardOperationRequests(Arrays.asList("ngatwmy", "yutrymd", "mfjhpycvjqdvdwkq"))
+                .withResourceGuardOperationRequests(Arrays.asList("vegwqiukvz", "ydwtthao", "gkskjivbss", "ajq"))
                 .withIsArchiveEnabled(true)
-                .withPolicyName("lefgnaavuagnte")
-                .withSoftDeleteRetentionPeriod(2121929864))
-            .withEtag("duyeuyl")
+                .withPolicyName("eexpgeumi")
+                .withSoftDeleteRetentionPeriod(926167439))
+            .withEtag("nofnin")
             .create();
 
-        Assertions.assertEquals("qphr", response.location());
-        Assertions.assertEquals("zhctm", response.tags().get("tsghpbcbcp"));
-        Assertions.assertEquals("xricctkwmuqq", response.properties().containerName());
-        Assertions.assertEquals("jxeiy", response.properties().sourceResourceId());
-        Assertions.assertEquals("esrw", response.properties().policyId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T00:22:38Z"),
+        Assertions.assertEquals("dajlskzpt", response.location());
+        Assertions.assertEquals("lwe", response.tags().get("cyrthxqlehm"));
+        Assertions.assertEquals("g", response.properties().containerName());
+        Assertions.assertEquals("quv", response.properties().sourceResourceId());
+        Assertions.assertEquals("gglpmcrdcuelj", response.properties().policyId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T07:33:04Z"),
             response.properties().lastRecoveryPoint());
-        Assertions.assertEquals("hdctrceqn", response.properties().backupSetName());
-        Assertions.assertEquals(CreateMode.DEFAULT, response.properties().createMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T20:14:34Z"),
+        Assertions.assertEquals("xmfqryarvsxzqbg", response.properties().backupSetName());
+        Assertions.assertEquals(CreateMode.INVALID, response.properties().createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T05:28:16Z"),
             response.properties().deferredDeleteTimeInUtc());
         Assertions.assertEquals(true, response.properties().isScheduledForDeferredDelete());
-        Assertions.assertEquals("hdmljz", response.properties().deferredDeleteTimeRemaining());
+        Assertions.assertEquals("thzodubtlmjtgbl", response.properties().deferredDeleteTimeRemaining());
         Assertions.assertEquals(false, response.properties().isDeferredDeleteScheduleUpcoming());
-        Assertions.assertEquals(false, response.properties().isRehydrate());
-        Assertions.assertEquals("jpbi", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(false, response.properties().isArchiveEnabled());
-        Assertions.assertEquals("vczuodacpune", response.properties().policyName());
-        Assertions.assertEquals(1031387254, response.properties().softDeleteRetentionPeriod());
-        Assertions.assertEquals("ewsedveskwxe", response.etag());
+        Assertions.assertEquals(true, response.properties().isRehydrate());
+        Assertions.assertEquals("kmfd", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, response.properties().isArchiveEnabled());
+        Assertions.assertEquals("cnabxzf", response.properties().policyName());
+        Assertions.assertEquals(1683245202, response.properties().softDeleteRetentionPeriod());
+        Assertions.assertEquals("wncknr", response.etag());
     }
 
     // Use "Map.of" if available

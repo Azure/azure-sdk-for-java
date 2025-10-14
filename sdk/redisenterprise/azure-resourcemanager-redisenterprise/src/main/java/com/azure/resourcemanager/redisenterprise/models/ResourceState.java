@@ -82,6 +82,11 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     public static final ResourceState SCALING_FAILED = fromString("ScalingFailed");
 
     /**
+     * Static value Moving for ResourceState.
+     */
+    public static final ResourceState MOVING = fromString("Moving");
+
+    /**
      * Creates a new instance of ResourceState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

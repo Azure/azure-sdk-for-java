@@ -21,18 +21,12 @@ There is one swagger for Sms management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.1
-```
-
-## Update generated files for Sms service
-To update generated files for Sms service, run the following command
-
-> autorest README.md --java --v4 --use=@autorest/java@4.0.1
+autorest README.md --java
 
 ### Code generation settings
 ``` yaml
 tag: package-sms-2021-03-07
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.52'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/896d05e37dbb00712726620b8d679cc3c3be09fb/specification/communication/data-plane/Sms/readme.md
 java: true
 output-folder: ..\

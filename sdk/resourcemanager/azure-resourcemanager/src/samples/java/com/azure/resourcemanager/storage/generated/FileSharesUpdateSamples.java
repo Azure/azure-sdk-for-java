@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.fluent.models.FileShareInner;
 import com.azure.resourcemanager.storage.models.AccessPolicy;
+import com.azure.resourcemanager.storage.models.FileSharePropertiesFileSharePaidBursting;
 import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -18,7 +19,7 @@ import java.util.Map;
 public final class FileSharesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesPatch.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPatch.json
      */
     /**
      * Sample code: UpdateShares.
@@ -36,7 +37,7 @@ public final class FileSharesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileShareAclsPatch.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileShareAclsPatch.json
      */
     /**
      * Sample code: UpdateShareAcls.
@@ -57,6 +58,49 @@ public final class FileSharesUpdateSamples {
                                     .withStartTime(OffsetDateTime.parse("2021-04-01T08:49:37.0000000Z"))
                                     .withExpiryTime(OffsetDateTime.parse("2021-05-01T08:49:37.0000000Z"))
                                     .withPermission("rwd")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPatch_PaidBursting.
+     * json
+     */
+    /**
+     * Sample code: UpdateSharePaidBursting.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateSharePaidBursting(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getFileShares()
+            .updateWithResponse("res3376", "sto328", "share6185",
+                new FileShareInner().withFileSharePaidBursting(
+                    new FileSharePropertiesFileSharePaidBursting().withPaidBurstingEnabled(true)
+                        .withPaidBurstingMaxIops(102400)
+                        .withPaidBurstingMaxBandwidthMibps(10340)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/FileSharesPatch_ProvisionedV2
+     * .json
+     */
+    /**
+     * Sample code: UpdateShareProvisionedV2.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateShareProvisionedV2(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getFileShares()
+            .updateWithResponse("res3376", "sto328", "share6185",
+                new FileShareInner().withShareQuota(100).withProvisionedIops(5000).withProvisionedBandwidthMibps(200),
                 com.azure.core.util.Context.NONE);
     }
 

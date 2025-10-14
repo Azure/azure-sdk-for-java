@@ -97,15 +97,15 @@ public interface NetworkMapping {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceName, resourceGroupName, fabricName, networkName.
+             * Specifies resourceGroupName, resourceName, fabricName, networkName.
              * 
-             * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceName The name of the recovery services vault.
              * @param fabricName Primary fabric name.
              * @param networkName Primary network name.
              * @return the next definition stage.
              */
-            WithProperties withExistingReplicationNetwork(String resourceName, String resourceGroupName,
+            WithProperties withExistingReplicationNetwork(String resourceGroupName, String resourceName,
                 String fabricName, String networkName);
         }
 

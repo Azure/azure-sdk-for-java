@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.ExtensionMetadatasClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.ExtensionValueInner;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionValueListResult;
@@ -60,7 +61,7 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "HybridComputeManagem")
+    @ServiceInterface(name = "HybridComputeManagementClientExtensionMetadatas")
     public interface ExtensionMetadatasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions/{version}")
@@ -73,10 +74,29 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions/{version}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ExtensionValueInner> getSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("publisher") String publisher,
+            @PathParam("extensionType") String extensionType, @PathParam("version") String version,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtensionValueListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("publisher") String publisher,
+            @PathParam("extensionType") String extensionType, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/locations/{location}/publishers/{publisher}/extensionTypes/{extensionType}/versions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ExtensionValueListResult> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("publisher") String publisher,
             @PathParam("extensionType") String extensionType, @HeaderParam("Accept") String accept, Context context);
@@ -132,49 +152,6 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
      * @param publisher The publisher of the Extension being received.
      * @param extensionType The extensionType of the Extension being received.
      * @param version The version of the Extension being received.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Extension Metadata based on location, publisher, extensionType and version along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionValueInner>> getWithResponseAsync(String location, String publisher,
-        String extensionType, String version, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (publisher == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisher is required and cannot be null."));
-        }
-        if (extensionType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionType is required and cannot be null."));
-        }
-        if (version == null) {
-            return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            location, publisher, extensionType, version, accept, context);
-    }
-
-    /**
-     * Gets an Extension Metadata based on location, publisher, extensionType and version.
-     * 
-     * @param location The location of the Extension being received.
-     * @param publisher The publisher of the Extension being received.
-     * @param extensionType The extensionType of the Extension being received.
-     * @param version The version of the Extension being received.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,7 +182,35 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionValueInner> getWithResponse(String location, String publisher, String extensionType,
         String version, Context context) {
-        return getWithResponseAsync(location, publisher, extensionType, version, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publisher == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter publisher is required and cannot be null."));
+        }
+        if (extensionType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionType is required and cannot be null."));
+        }
+        if (version == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            location, publisher, extensionType, version, accept, context);
     }
 
     /**
@@ -272,48 +277,6 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
      * @param location The location of the Extension being received.
      * @param publisher The publisher of the Extension being received.
      * @param extensionType The extensionType of the Extension being received.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Extension versions based on location, publisher, extensionType along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExtensionValueInner>> listSinglePageAsync(String location, String publisher,
-        String extensionType, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (publisher == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisher is required and cannot be null."));
-        }
-        if (extensionType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionType is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
-                publisher, extensionType, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Gets all Extension versions based on location, publisher, extensionType.
-     * 
-     * @param location The location of the Extension being received.
-     * @param publisher The publisher of the Extension being received.
-     * @param extensionType The extensionType of the Extension being received.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -331,17 +294,86 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
      * @param location The location of the Extension being received.
      * @param publisher The publisher of the Extension being received.
      * @param extensionType The extensionType of the Extension being received.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Extension versions based on location, publisher, extensionType along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ExtensionValueInner> listSinglePage(String location, String publisher, String extensionType) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publisher == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter publisher is required and cannot be null."));
+        }
+        if (extensionType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionType is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ExtensionValueListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                location, publisher, extensionType, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * Gets all Extension versions based on location, publisher, extensionType.
+     * 
+     * @param location The location of the Extension being received.
+     * @param publisher The publisher of the Extension being received.
+     * @param extensionType The extensionType of the Extension being received.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Extension versions based on location, publisher, extensionType as paginated response with
-     * {@link PagedFlux}.
+     * @return all Extension versions based on location, publisher, extensionType along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExtensionValueInner> listAsync(String location, String publisher, String extensionType,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ExtensionValueInner> listSinglePage(String location, String publisher, String extensionType,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(location, publisher, extensionType, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publisher == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter publisher is required and cannot be null."));
+        }
+        if (extensionType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter extensionType is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ExtensionValueListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                location, publisher, extensionType, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -358,7 +390,7 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionValueInner> list(String location, String publisher, String extensionType) {
-        return new PagedIterable<>(listAsync(location, publisher, extensionType));
+        return new PagedIterable<>(() -> listSinglePage(location, publisher, extensionType));
     }
 
     /**
@@ -377,6 +409,8 @@ public final class ExtensionMetadatasClientImpl implements ExtensionMetadatasCli
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtensionValueInner> list(String location, String publisher, String extensionType,
         Context context) {
-        return new PagedIterable<>(listAsync(location, publisher, extensionType, context));
+        return new PagedIterable<>(() -> listSinglePage(location, publisher, extensionType, context));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExtensionMetadatasClientImpl.class);
 }

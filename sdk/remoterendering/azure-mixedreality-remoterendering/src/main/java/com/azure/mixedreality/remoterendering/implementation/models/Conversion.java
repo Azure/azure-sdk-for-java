@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -24,32 +25,38 @@ public final class Conversion implements JsonSerializable<Conversion> {
     /*
      * The ID of the conversion supplied when the conversion was created.
      */
+    @Generated
     private final String id;
 
     /*
      * Conversion settings describe the origin of input files and destination of output files.
      */
+    @Generated
     private final ConversionSettings settings;
 
     /*
      * Information about the output of a successful conversion. Only present when the status of the conversion is
      * 'Succeeded'.
      */
+    @Generated
     private ConversionOutput output;
 
     /*
      * The error object containing details about the conversion failure.
      */
+    @Generated
     private final Error error;
 
     /*
      * The status of the conversion. Terminal states are 'Cancelled', 'Failed', and 'Succeeded'.
      */
+    @Generated
     private final ConversionStatus status;
 
     /*
      * The time when the conversion was created. Date and time in ISO 8601 format.
      */
+    @Generated
     private final OffsetDateTime creationTime;
 
     /**
@@ -61,6 +68,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * @param status the status value to set.
      * @param creationTime the creationTime value to set.
      */
+    @Generated
     public Conversion(String id, ConversionSettings settings, Error error, ConversionStatus status,
         OffsetDateTime creationTime) {
         this.id = id;
@@ -75,6 +83,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -85,6 +94,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * 
      * @return the settings value.
      */
+    @Generated
     public ConversionSettings getSettings() {
         return this.settings;
     }
@@ -95,6 +105,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * 
      * @return the output value.
      */
+    @Generated
     public ConversionOutput getOutput() {
         return this.output;
     }
@@ -104,6 +115,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * 
      * @return the error value.
      */
+    @Generated
     public Error getError() {
         return this.error;
     }
@@ -114,6 +126,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * 
      * @return the status value.
      */
+    @Generated
     public ConversionStatus getStatus() {
         return this.status;
     }
@@ -123,6 +136,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -130,6 +144,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -151,6 +166,7 @@ public final class Conversion implements JsonSerializable<Conversion> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Conversion.
      */
+    @Generated
     public static Conversion fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

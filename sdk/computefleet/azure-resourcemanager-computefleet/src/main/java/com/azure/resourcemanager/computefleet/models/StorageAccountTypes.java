@@ -16,9 +16,9 @@ import java.util.Collection;
  * zone redundant storage. StandardSSD_ZRS uses Standard SSD zone redundant
  * storage. For more information regarding disks supported for Windows Virtual
  * Machines, refer to
- * https://docs.microsoft.com/azure/virtual-machines/windows/disks-types and, for
+ * https://learn.microsoft.com/azure/virtual-machines/windows/disks-types and, for
  * Linux Virtual Machines, refer to
- * https://docs.microsoft.com/azure/virtual-machines/linux/disks-types.
+ * https://learn.microsoft.com/azure/virtual-machines/linux/disks-types.
  */
 public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccountTypes> {
     /**

@@ -12,15 +12,15 @@ public final class ExistingProtectionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExistingProtectionProfile model
-            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"protectionProfileId\":\"zi\"}")
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"protectionProfileId\":\"ztraud\"}")
                 .toObject(ExistingProtectionProfile.class);
-        Assertions.assertEquals("zi", model.protectionProfileId());
+        Assertions.assertEquals("ztraud", model.protectionProfileId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExistingProtectionProfile model = new ExistingProtectionProfile().withProtectionProfileId("zi");
+        ExistingProtectionProfile model = new ExistingProtectionProfile().withProtectionProfileId("ztraud");
         model = BinaryData.fromObject(model).toObject(ExistingProtectionProfile.class);
-        Assertions.assertEquals("zi", model.protectionProfileId());
+        Assertions.assertEquals("ztraud", model.protectionProfileId());
     }
 }

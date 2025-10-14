@@ -153,7 +153,7 @@ public final class MessageTemplateClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MessageTemplateClien")
+    @ServiceInterface(name = "MessageTemplateClient")
     public interface MessageTemplateClientService {
         @Get("/messages/channels/{channelId}/templates")
         @ExpectedResponses({ 200 })

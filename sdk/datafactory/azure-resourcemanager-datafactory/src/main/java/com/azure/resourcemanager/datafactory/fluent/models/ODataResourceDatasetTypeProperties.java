@@ -61,7 +61,9 @@ public final class ODataResourceDatasetTypeProperties implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("path", this.path);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
         return jsonWriter.writeEndObject();
     }
 

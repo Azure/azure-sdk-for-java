@@ -12,21 +12,21 @@ public final class TagDescriptionCreateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagDescriptionCreateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"ujlfyoumpcky\",\"externalDocsUrl\":\"lcdi\",\"externalDocsDescription\":\"tajbrz\"}}")
+            "{\"properties\":{\"description\":\"xmbjroum\",\"externalDocsUrl\":\"n\",\"externalDocsDescription\":\"l\"}}")
             .toObject(TagDescriptionCreateParameters.class);
-        Assertions.assertEquals("ujlfyoumpcky", model.description());
-        Assertions.assertEquals("lcdi", model.externalDocsUrl());
-        Assertions.assertEquals("tajbrz", model.externalDocsDescription());
+        Assertions.assertEquals("xmbjroum", model.description());
+        Assertions.assertEquals("n", model.externalDocsUrl());
+        Assertions.assertEquals("l", model.externalDocsDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionCreateParameters model = new TagDescriptionCreateParameters().withDescription("ujlfyoumpcky")
-            .withExternalDocsUrl("lcdi")
-            .withExternalDocsDescription("tajbrz");
+        TagDescriptionCreateParameters model = new TagDescriptionCreateParameters().withDescription("xmbjroum")
+            .withExternalDocsUrl("n")
+            .withExternalDocsDescription("l");
         model = BinaryData.fromObject(model).toObject(TagDescriptionCreateParameters.class);
-        Assertions.assertEquals("ujlfyoumpcky", model.description());
-        Assertions.assertEquals("lcdi", model.externalDocsUrl());
-        Assertions.assertEquals("tajbrz", model.externalDocsDescription());
+        Assertions.assertEquals("xmbjroum", model.description());
+        Assertions.assertEquals("n", model.externalDocsUrl());
+        Assertions.assertEquals("l", model.externalDocsDescription());
     }
 }

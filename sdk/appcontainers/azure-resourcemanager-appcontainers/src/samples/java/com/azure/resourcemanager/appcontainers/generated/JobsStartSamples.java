@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class JobsStartSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Job_Start.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Job_Start.json
      */
     /**
      * Sample code: Run a Container Apps Job.

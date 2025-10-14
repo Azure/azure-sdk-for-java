@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -17,18 +18,22 @@ import java.io.IOException;
 public final class WindDirection implements JsonSerializable<WindDirection> {
 
     /*
-     * Wind direction in Azimuth degrees,  starting at true North and continuing in clockwise direction. North is 0 degrees, east is 90 degrees, south is 180 degrees, west is 270 degrees. Possible values 0-359.
+     * Wind direction in Azimuth degrees, starting at true North and continuing in clockwise direction. North is 0
+     * degrees, east is 90 degrees, south is 180 degrees, west is 270 degrees. Possible values 0-359.
      */
+    @Generated
     private Integer degrees;
 
     /*
      * Direction abbreviation in the specified language.
      */
+    @Generated
     private String description;
 
     /**
      * Set default WindDirection constructor to private
      */
+    @Generated
     private WindDirection() {
     }
 
@@ -39,6 +44,7 @@ public final class WindDirection implements JsonSerializable<WindDirection> {
      *
      * @return the degrees value.
      */
+    @Generated
     public Integer getDegrees() {
         return this.degrees;
     }
@@ -48,6 +54,7 @@ public final class WindDirection implements JsonSerializable<WindDirection> {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -55,6 +62,7 @@ public final class WindDirection implements JsonSerializable<WindDirection> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,6 +79,7 @@ public final class WindDirection implements JsonSerializable<WindDirection> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WindDirection.
      */
+    @Generated
     public static WindDirection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WindDirection deserializedWindDirection = new WindDirection();

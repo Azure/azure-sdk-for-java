@@ -12,19 +12,19 @@ public final class AzureADPartnerClientAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureADPartnerClientAuthentication model = BinaryData.fromString(
-            "{\"clientAuthenticationType\":\"AzureAD\",\"properties\":{\"azureActiveDirectoryTenantId\":\"lfemjj\",\"azureActiveDirectoryApplicationIdOrUri\":\"kzwjiqullq\"}}")
+            "{\"clientAuthenticationType\":\"AzureAD\",\"properties\":{\"azureActiveDirectoryTenantId\":\"agynoi\",\"azureActiveDirectoryApplicationIdOrUri\":\"n\"}}")
             .toObject(AzureADPartnerClientAuthentication.class);
-        Assertions.assertEquals("lfemjj", model.azureActiveDirectoryTenantId());
-        Assertions.assertEquals("kzwjiqullq", model.azureActiveDirectoryApplicationIdOrUri());
+        Assertions.assertEquals("agynoi", model.azureActiveDirectoryTenantId());
+        Assertions.assertEquals("n", model.azureActiveDirectoryApplicationIdOrUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureADPartnerClientAuthentication model
-            = new AzureADPartnerClientAuthentication().withAzureActiveDirectoryTenantId("lfemjj")
-                .withAzureActiveDirectoryApplicationIdOrUri("kzwjiqullq");
+            = new AzureADPartnerClientAuthentication().withAzureActiveDirectoryTenantId("agynoi")
+                .withAzureActiveDirectoryApplicationIdOrUri("n");
         model = BinaryData.fromObject(model).toObject(AzureADPartnerClientAuthentication.class);
-        Assertions.assertEquals("lfemjj", model.azureActiveDirectoryTenantId());
-        Assertions.assertEquals("kzwjiqullq", model.azureActiveDirectoryApplicationIdOrUri());
+        Assertions.assertEquals("agynoi", model.azureActiveDirectoryTenantId());
+        Assertions.assertEquals("n", model.azureActiveDirectoryApplicationIdOrUri());
     }
 }

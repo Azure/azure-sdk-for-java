@@ -34,6 +34,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -71,7 +72,7 @@ public final class AppendBlobsImpl {
      * perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageAppe")
+    @ServiceInterface(name = "AzureBlobStorageAppendBlobs")
     public interface AppendBlobsService {
 
         @Put("/{containerName}/{blob}")
@@ -359,6 +360,7 @@ public final class AppendBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -388,6 +390,7 @@ public final class AppendBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -417,6 +420,7 @@ public final class AppendBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -446,6 +450,7 @@ public final class AppendBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -512,7 +517,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -564,7 +569,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -676,7 +681,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -726,7 +731,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -777,7 +782,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -829,7 +834,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -943,7 +948,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -1059,7 +1064,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -1106,7 +1111,7 @@ public final class AppendBlobsImpl {
      * @param blob The blob name.
      * @param contentLength The length of the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
      * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
@@ -1225,7 +1230,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1283,7 +1288,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1371,7 +1376,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1427,7 +1432,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1484,7 +1489,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1542,7 +1547,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1630,7 +1635,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1688,7 +1693,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1776,7 +1781,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1832,7 +1837,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1889,7 +1894,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -1947,7 +1952,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -2035,7 +2040,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -2125,7 +2130,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -2179,7 +2184,7 @@ public final class AppendBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -2274,7 +2279,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2303,6 +2308,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2317,14 +2323,14 @@ public final class AppendBlobsImpl {
         String leaseId, Long maxSize, Long appendPosition, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> appendBlockFromUrlWithResponseAsync(containerName, blob, sourceUrl, contentLength,
                 sourceRange, sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize,
                 appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
-                sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-                encryptionScopeParam, context))
+                sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization,
+                fileRequestIntent, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2342,7 +2348,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2371,6 +2377,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2386,8 +2393,9 @@ public final class AppendBlobsImpl {
         String leaseId, Long maxSize, Long appendPosition, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         final String comp = "appendblock";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -2421,12 +2429,14 @@ public final class AppendBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrl(this.client.getUrl(), containerName, blob, comp, sourceUrl, sourceRange,
-            sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
-            transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, context)
+        return service
+            .appendBlockFromUrl(this.client.getUrl(), containerName, blob, comp, sourceUrl, sourceRange,
+                sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
+                transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization,
+                fileRequestIntent, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2444,7 +2454,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2473,6 +2483,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2487,79 +2498,12 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return appendBlockFromUrlWithResponseAsync(containerName, blob, sourceUrl, contentLength, sourceRange,
             sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
-            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob where the contents
-     * are read from a source url. The Append Block operation is permitted only if the blob was created with
-     * x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @param contentLength The length of the request.
-     * @param sourceRange Bytes of source data in the specified range.
-     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
-     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
-     * source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param maxSize Optional conditional header. The max length in bytes permitted for the append blob. If the Append
-     * Block operation would cause the blob to exceed that limit or if the blob size is already greater than the value
-     * specified in this header, the request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 -
-     * Precondition Failed).
-     * @param appendPosition Optional conditional header, used only for the Append Block operation. A number indicating
-     * the byte offset to compare. Append Block will succeed only if the append position is equal to this number. If it
-     * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
-     * Failed).
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
-     * the specified date/time.
-     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
-     * since the specified date/time.
-     * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
-     * copy source.
-     * @param cpkInfo Parameter group.
-     * @param encryptionScopeParam Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendBlockFromUrlAsync(String containerName, String blob, String sourceUrl, long contentLength,
-        String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
-        byte[] transactionalContentMD5, String leaseId, Long maxSize, Long appendPosition,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-        String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        return appendBlockFromUrlWithResponseAsync(containerName, blob, sourceUrl, contentLength, sourceRange,
-            sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
-            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam, context)
+            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization,
+            fileRequestIntent, cpkInfo, encryptionScopeParam)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -2578,7 +2522,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2607,6 +2551,77 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScopeParam Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> appendBlockFromUrlAsync(String containerName, String blob, String sourceUrl, long contentLength,
+        String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
+        byte[] transactionalContentMD5, String leaseId, Long maxSize, Long appendPosition,
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
+        String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
+        return appendBlockFromUrlWithResponseAsync(containerName, blob, sourceUrl, contentLength, sourceRange,
+            sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition,
+            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
+            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization,
+            fileRequestIntent, cpkInfo, encryptionScopeParam, context)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * The Append Block operation commits a new block of data to the end of an existing append blob where the contents
+     * are read from a source url. The Append Block operation is permitted only if the blob was created with
+     * x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param sourceUrl Specify a URL to the copy source.
+     * @param contentLength The length of the request.
+     * @param sourceRange Bytes of source data in the specified range.
+     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
+     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
+     * source.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param maxSize Optional conditional header. The max length in bytes permitted for the append blob. If the Append
+     * Block operation would cause the blob to exceed that limit or if the blob size is already greater than the value
+     * specified in this header, the request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 -
+     * Precondition Failed).
+     * @param appendPosition Optional conditional header, used only for the Append Block operation. A number indicating
+     * the byte offset to compare. Append Block will succeed only if the append position is equal to this number. If it
+     * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
+     * Failed).
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
+     * the specified date/time.
+     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
+     * since the specified date/time.
+     * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2621,13 +2636,13 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> appendBlockFromUrlNoCustomHeadersWithResponseAsync(containerName, blob, sourceUrl,
                 contentLength, sourceRange, sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5,
                 leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
                 sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
-                copySourceAuthorization, cpkInfo, encryptionScopeParam, context))
+                copySourceAuthorization, fileRequestIntent, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2645,7 +2660,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2674,6 +2689,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2689,7 +2705,8 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         final String comp = "appendblock";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -2723,12 +2740,14 @@ public final class AppendBlobsImpl {
             = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
             = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrlNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, sourceUrl,
-            sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
-            transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, context)
+        return service
+            .appendBlockFromUrlNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, sourceUrl, sourceRange,
+                sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
+                transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization,
+                fileRequestIntent, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2746,7 +2765,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2775,6 +2794,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2790,7 +2810,8 @@ public final class AppendBlobsImpl {
         Long appendPosition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         try {
             final String comp = "appendblock";
             final String accept = "application/xml";
@@ -2830,8 +2851,8 @@ public final class AppendBlobsImpl {
                 transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
-                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
-                context);
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization,
+                fileRequestIntent, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2851,7 +2872,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2880,6 +2901,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2893,12 +2915,12 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         appendBlockFromUrlWithResponse(containerName, blob, sourceUrl, contentLength, sourceRange, sourceContentMD5,
             sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
-            Context.NONE);
+            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, fileRequestIntent, cpkInfo,
+            encryptionScopeParam, Context.NONE);
     }
 
     /**
@@ -2915,7 +2937,7 @@ public final class AppendBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -2944,6 +2966,7 @@ public final class AppendBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -2959,7 +2982,8 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         try {
             final String comp = "appendblock";
             final String accept = "application/xml";
@@ -2999,8 +3023,8 @@ public final class AppendBlobsImpl {
                 transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
-                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
-                context);
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization,
+                fileRequestIntent, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -3013,7 +3037,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3050,7 +3074,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3095,7 +3119,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3132,7 +3156,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3170,7 +3194,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3207,7 +3231,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3252,7 +3276,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3299,7 +3323,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -3333,7 +3357,7 @@ public final class AppendBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.

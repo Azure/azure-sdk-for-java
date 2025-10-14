@@ -107,6 +107,10 @@ public final class ConfigurationStoreImpl
         return this.innerModel().softDeleteRetentionInDays();
     }
 
+    public Long defaultKeyValueRevisionRetentionPeriodInSeconds() {
+        return this.innerModel().defaultKeyValueRevisionRetentionPeriodInSeconds();
+    }
+
     public Boolean enablePurgeProtection() {
         return this.innerModel().enablePurgeProtection();
     }
@@ -306,6 +310,19 @@ public final class ConfigurationStoreImpl
     public ConfigurationStoreImpl withSoftDeleteRetentionInDays(Integer softDeleteRetentionInDays) {
         this.innerModel().withSoftDeleteRetentionInDays(softDeleteRetentionInDays);
         return this;
+    }
+
+    public ConfigurationStoreImpl
+        withDefaultKeyValueRevisionRetentionPeriodInSeconds(Long defaultKeyValueRevisionRetentionPeriodInSeconds) {
+        if (isInCreateMode()) {
+            this.innerModel()
+                .withDefaultKeyValueRevisionRetentionPeriodInSeconds(defaultKeyValueRevisionRetentionPeriodInSeconds);
+            return this;
+        } else {
+            this.updateConfigStoreUpdateParameters
+                .withDefaultKeyValueRevisionRetentionPeriodInSeconds(defaultKeyValueRevisionRetentionPeriodInSeconds);
+            return this;
+        }
     }
 
     public ConfigurationStoreImpl withEnablePurgeProtection(Boolean enablePurgeProtection) {

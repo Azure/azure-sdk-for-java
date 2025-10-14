@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.BuilderResource;
@@ -28,33 +28,38 @@ public final class BuildersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"environmentId\":\"bffljfiimreoag\",\"containerRegistries\":[{\"containerRegistryServer\":\"aadusrexxfa\",\"identityResourceId\":\"sqwudohzilfmnli\"},{\"containerRegistryServer\":\"psimsf\",\"identityResourceId\":\"ypofqpmbhyqgs\"}]},\"identity\":{\"principalId\":\"dbeb826f-5966-47e8-a0ea-9ce1156e63cf\",\"tenantId\":\"afbc9f5c-7a57-43c7-aab5-b8a782238c6d\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"phgerhsmvgoh\":{\"principalId\":\"3bcc308f-00e3-40eb-8f8e-98e89cc157cf\",\"clientId\":\"5dd3f164-da66-46c2-bffc-e1c034fa15f8\"},\"mqilrixysfnimsqy\":{\"principalId\":\"8ede5bf3-3767-4ed2-a7a1-c4b20bc12dbb\",\"clientId\":\"ee130c3f-aa00-4094-abd1-4df2dc549960\"}}},\"location\":\"wmhkruwaedrympml\",\"tags\":{\"ewihapfji\":\"nhzd\"},\"id\":\"knjdiqfliejhp\",\"name\":\"lbiedfsbw\",\"type\":\"eivbvz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"environmentId\":\"ydgnha\",\"containerRegistries\":[{\"containerRegistryServer\":\"ukexzgpm\",\"identityResourceId\":\"mabeddqilwgdf\"}]},\"identity\":{\"principalId\":\"97ea8024-9c14-4787-95a4-03a17b09e44f\",\"tenantId\":\"7fc9f967-d9bb-40ab-954f-f38a93ee438f\",\"type\":\"None\",\"userAssignedIdentities\":{\"clg\":{\"principalId\":\"b1a56a2e-8060-41b9-aafe-f2a2b9993448\",\"clientId\":\"c8e83ca8-7bdf-4451-a985-3f69086ecbf6\"},\"werfwx\":{\"principalId\":\"26298e04-2560-4f86-877b-7a506656ef0d\",\"clientId\":\"0e224fee-4c0b-43dc-8073-0b7b783a354a\"}}},\"location\":\"mtbljjeh\",\"tags\":{\"qhtfpwpqbye\":\"fkwdvbtbrekqh\",\"gmghginztxlujkhn\":\"uwyqwdq\",\"wmlmh\":\"cmrnkfmkhcq\",\"j\":\"nqtqea\"},\"id\":\"dvragpokddxejhh\",\"name\":\"vgua\",\"type\":\"tpt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BuilderResource response = manager.builders()
-            .define("llpquevhamfo")
-            .withRegion("msfe")
-            .withExistingResourceGroup("xlaj")
-            .withTags(mapOf("dagrhrdicxdw", "ihpq", "vcxjsgbipcukdvek", "jfowxwy", "scrdp", "buhoduchv"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("sztekxby", new UserAssignedIdentity())))
-            .withEnvironmentId("tmk")
+            .define("fyvrtpqpemhzcgk")
+            .withRegion("wxeiicrmpepk")
+            .withExistingResourceGroup("cta")
+            .withTags(mapOf("cwrase", "axxijvskwsdgkjgy", "qartwy", "wefcvoinw", "tdavuqmcbymsfobj", "qicladv", "j",
+                "quvjez"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("gnixxowwzkyfwnw", new UserAssignedIdentity())))
+            .withEnvironmentId("qhqyhwqwemvx")
             .withContainerRegistries(Arrays.asList(
-                new ContainerRegistry().withContainerRegistryServer("pkzwa").withIdentityResourceId("xofqovchi")))
+                new ContainerRegistry().withContainerRegistryServer("ckmzeoxin")
+                    .withIdentityResourceId("greohtwhlpuzjp"),
+                new ContainerRegistry().withContainerRegistryServer("eezn").withIdentityResourceId("angp"),
+                new ContainerRegistry().withContainerRegistryServer("bfaxyxzlbc").withIdentityResourceId("phmsexroq"),
+                new ContainerRegistry().withContainerRegistryServer("ndktxfv").withIdentityResourceId("nfee")))
             .create();
 
-        Assertions.assertEquals("wmhkruwaedrympml", response.location());
-        Assertions.assertEquals("nhzd", response.tags().get("ewihapfji"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("bffljfiimreoag", response.environmentId());
-        Assertions.assertEquals("aadusrexxfa", response.containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("sqwudohzilfmnli", response.containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("mtbljjeh", response.location());
+        Assertions.assertEquals("fkwdvbtbrekqh", response.tags().get("qhtfpwpqbye"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("ydgnha", response.environmentId());
+        Assertions.assertEquals("ukexzgpm", response.containerRegistries().get(0).containerRegistryServer());
+        Assertions.assertEquals("mabeddqilwgdf", response.containerRegistries().get(0).identityResourceId());
     }
 
     // Use "Map.of" if available

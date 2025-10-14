@@ -7,8 +7,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.SchemaVersion;
@@ -22,19 +22,19 @@ public final class SchemaVersionsListBySchemaMockTests {
     @Test
     public void testListBySchema() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"yzhftwesgogczh\",\"description\":\"nxkrlgnyhmossxkk\",\"schemaContent\":\"thrrgh\",\"hash\":\"bdhqxvcxgf\",\"provisioningState\":\"Canceled\"},\"id\":\"ofbshr\",\"name\":\"svbuswdvzyy\",\"type\":\"ycnunvjsrtk\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"bvqvwzkjopwbeo\",\"description\":\"lkwzdqybxceakxcp\",\"schemaContent\":\"soqfyiaseqchkrt\",\"hash\":\"razisg\",\"provisioningState\":\"Succeeded\"},\"id\":\"emv\",\"name\":\"nbwzohmnrxxbso\",\"type\":\"klinhmdptysprq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SchemaVersion> response = manager.schemaVersions()
-            .listBySchema("mqnrojlpijnkr", "frddhcrati", "zronasxift", com.azure.core.util.Context.NONE);
+            .listBySchema("opedbwdpyqyybxub", "dnafcbqwre", "jelaqacigele", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nxkrlgnyhmossxkk", response.iterator().next().properties().description());
-        Assertions.assertEquals("thrrgh", response.iterator().next().properties().schemaContent());
+        Assertions.assertEquals("lkwzdqybxceakxcp", response.iterator().next().properties().description());
+        Assertions.assertEquals("soqfyiaseqchkrt", response.iterator().next().properties().schemaContent());
     }
 }

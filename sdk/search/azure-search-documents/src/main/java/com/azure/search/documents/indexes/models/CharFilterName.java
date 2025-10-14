@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,6 +18,7 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
      * A character filter that attempts to strip out HTML constructs. See
      * https://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/charfilter/HTMLStripCharFilter.html.
      */
+    @Generated
     public static final CharFilterName HTML_STRIP = fromString("html_strip");
 
     /**
@@ -24,6 +26,7 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CharFilterName() {
     }
@@ -34,6 +37,7 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
      * @param name a name to look for.
      * @return the corresponding CharFilterName.
      */
+    @Generated
     public static CharFilterName fromString(String name) {
         return fromString(name, CharFilterName.class);
     }
@@ -43,6 +47,7 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
      * 
      * @return known CharFilterName values.
      */
+    @Generated
     public static Collection<CharFilterName> values() {
         return values(CharFilterName.class);
     }

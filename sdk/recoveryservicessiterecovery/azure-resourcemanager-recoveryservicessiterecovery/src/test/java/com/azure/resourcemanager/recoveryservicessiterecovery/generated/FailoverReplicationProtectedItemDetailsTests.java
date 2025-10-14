@@ -13,40 +13,40 @@ public final class FailoverReplicationProtectedItemDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FailoverReplicationProtectedItemDetails model = BinaryData.fromString(
-            "{\"name\":\"xpzruzythqkk\",\"friendlyName\":\"bg\",\"testVmName\":\"ellv\",\"testVmFriendlyName\":\"nxdmnitmujdtv\",\"networkConnectionStatus\":\"lyymffhmjpddny\",\"networkFriendlyName\":\"zuvrzmzqmz\",\"subnet\":\"rb\",\"recoveryPointId\":\"vnmdyfoeboj\",\"recoveryPointTime\":\"2021-06-09T22:38:27Z\"}")
+            "{\"name\":\"pbwxgoooxz\",\"friendlyName\":\"admskx\",\"testVmName\":\"pdgzigjsugswhg\",\"testVmFriendlyName\":\"odkwwnbafocto\",\"networkConnectionStatus\":\"haquvwsxbgnvk\",\"networkFriendlyName\":\"vqchoadhrs\",\"subnet\":\"vzvsp\",\"recoveryPointId\":\"dsrgfajg\",\"recoveryPointTime\":\"2021-10-09T22:42:19Z\"}")
             .toObject(FailoverReplicationProtectedItemDetails.class);
-        Assertions.assertEquals("xpzruzythqkk", model.name());
-        Assertions.assertEquals("bg", model.friendlyName());
-        Assertions.assertEquals("ellv", model.testVmName());
-        Assertions.assertEquals("nxdmnitmujdtv", model.testVmFriendlyName());
-        Assertions.assertEquals("lyymffhmjpddny", model.networkConnectionStatus());
-        Assertions.assertEquals("zuvrzmzqmz", model.networkFriendlyName());
-        Assertions.assertEquals("rb", model.subnet());
-        Assertions.assertEquals("vnmdyfoeboj", model.recoveryPointId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T22:38:27Z"), model.recoveryPointTime());
+        Assertions.assertEquals("pbwxgoooxz", model.name());
+        Assertions.assertEquals("admskx", model.friendlyName());
+        Assertions.assertEquals("pdgzigjsugswhg", model.testVmName());
+        Assertions.assertEquals("odkwwnbafocto", model.testVmFriendlyName());
+        Assertions.assertEquals("haquvwsxbgnvk", model.networkConnectionStatus());
+        Assertions.assertEquals("vqchoadhrs", model.networkFriendlyName());
+        Assertions.assertEquals("vzvsp", model.subnet());
+        Assertions.assertEquals("dsrgfajg", model.recoveryPointId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T22:42:19Z"), model.recoveryPointTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FailoverReplicationProtectedItemDetails model
-            = new FailoverReplicationProtectedItemDetails().withName("xpzruzythqkk")
-                .withFriendlyName("bg")
-                .withTestVmName("ellv")
-                .withTestVmFriendlyName("nxdmnitmujdtv")
-                .withNetworkConnectionStatus("lyymffhmjpddny")
-                .withNetworkFriendlyName("zuvrzmzqmz")
-                .withSubnet("rb")
-                .withRecoveryPointId("vnmdyfoeboj")
-                .withRecoveryPointTime(OffsetDateTime.parse("2021-06-09T22:38:27Z"));
+            = new FailoverReplicationProtectedItemDetails().withName("pbwxgoooxz")
+                .withFriendlyName("admskx")
+                .withTestVmName("pdgzigjsugswhg")
+                .withTestVmFriendlyName("odkwwnbafocto")
+                .withNetworkConnectionStatus("haquvwsxbgnvk")
+                .withNetworkFriendlyName("vqchoadhrs")
+                .withSubnet("vzvsp")
+                .withRecoveryPointId("dsrgfajg")
+                .withRecoveryPointTime(OffsetDateTime.parse("2021-10-09T22:42:19Z"));
         model = BinaryData.fromObject(model).toObject(FailoverReplicationProtectedItemDetails.class);
-        Assertions.assertEquals("xpzruzythqkk", model.name());
-        Assertions.assertEquals("bg", model.friendlyName());
-        Assertions.assertEquals("ellv", model.testVmName());
-        Assertions.assertEquals("nxdmnitmujdtv", model.testVmFriendlyName());
-        Assertions.assertEquals("lyymffhmjpddny", model.networkConnectionStatus());
-        Assertions.assertEquals("zuvrzmzqmz", model.networkFriendlyName());
-        Assertions.assertEquals("rb", model.subnet());
-        Assertions.assertEquals("vnmdyfoeboj", model.recoveryPointId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T22:38:27Z"), model.recoveryPointTime());
+        Assertions.assertEquals("pbwxgoooxz", model.name());
+        Assertions.assertEquals("admskx", model.friendlyName());
+        Assertions.assertEquals("pdgzigjsugswhg", model.testVmName());
+        Assertions.assertEquals("odkwwnbafocto", model.testVmFriendlyName());
+        Assertions.assertEquals("haquvwsxbgnvk", model.networkConnectionStatus());
+        Assertions.assertEquals("vqchoadhrs", model.networkFriendlyName());
+        Assertions.assertEquals("vzvsp", model.subnet());
+        Assertions.assertEquals("dsrgfajg", model.recoveryPointId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T22:42:19Z"), model.recoveryPointTime());
     }
 }

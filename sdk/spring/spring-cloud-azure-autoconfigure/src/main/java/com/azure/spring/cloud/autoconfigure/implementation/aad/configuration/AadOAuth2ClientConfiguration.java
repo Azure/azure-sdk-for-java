@@ -102,7 +102,7 @@ class AadOAuth2ClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     JwtBearerOAuth2AuthorizedClientProvider azureAdJwtBearerProvider(
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         JwtBearerOAuth2AuthorizedClientProvider provider = new JwtBearerOAuth2AuthorizedClientProvider();
@@ -120,7 +120,7 @@ class AadOAuth2ClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
@@ -145,7 +145,7 @@ class AadOAuth2ClientConfiguration {
         return new AadOidcIdTokenDecoderFactory(endpoints.getJwkSetEndpoint(), createRestTemplate(restTemplateBuilder));
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     private void clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(
             OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder,
             OAuth2ClientAuthenticationJwkResolver resolver) {

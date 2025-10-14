@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
     /**
      * Static value Succeeded for ActivityOnInactiveMarkAs.
      */
+    @Generated
     public static final ActivityOnInactiveMarkAs SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for ActivityOnInactiveMarkAs.
      */
+    @Generated
     public static final ActivityOnInactiveMarkAs FAILED = fromString("Failed");
 
     /**
      * Static value Skipped for ActivityOnInactiveMarkAs.
      */
+    @Generated
     public static final ActivityOnInactiveMarkAs SKIPPED = fromString("Skipped");
 
     /**
@@ -32,6 +36,7 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ActivityOnInactiveMarkAs() {
     }
@@ -42,6 +47,7 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
      * @param name a name to look for.
      * @return the corresponding ActivityOnInactiveMarkAs.
      */
+    @Generated
     public static ActivityOnInactiveMarkAs fromString(String name) {
         return fromString(name, ActivityOnInactiveMarkAs.class);
     }
@@ -51,6 +57,7 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
      * 
      * @return known ActivityOnInactiveMarkAs values.
      */
+    @Generated
     public static Collection<ActivityOnInactiveMarkAs> values() {
         return values(ActivityOnInactiveMarkAs.class);
     }

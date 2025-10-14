@@ -4,6 +4,7 @@
 
 package com.azure.security.attestation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AttestationType extends ExpandableStringEnum<AttestationType>
     /**
      * Intel Software Guard eXtensions.
      */
+    @Generated
     public static final AttestationType SGX_ENCLAVE = fromString("SgxEnclave");
 
     /**
      * OpenEnclave extensions to SGX.
      */
+    @Generated
     public static final AttestationType OPEN_ENCLAVE = fromString("OpenEnclave");
 
     /**
      * Edge TPM Virtualization Based Security.
      */
+    @Generated
     public static final AttestationType TPM = fromString("Tpm");
 
     /**
@@ -31,6 +35,7 @@ public final class AttestationType extends ExpandableStringEnum<AttestationType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AttestationType() {
     }
@@ -41,6 +46,7 @@ public final class AttestationType extends ExpandableStringEnum<AttestationType>
      * @param name a name to look for.
      * @return the corresponding AttestationType.
      */
+    @Generated
     public static AttestationType fromString(String name) {
         return fromString(name, AttestationType.class);
     }
@@ -50,6 +56,7 @@ public final class AttestationType extends ExpandableStringEnum<AttestationType>
      * 
      * @return known AttestationType values.
      */
+    @Generated
     public static Collection<AttestationType> values() {
         return values(AttestationType.class);
     }

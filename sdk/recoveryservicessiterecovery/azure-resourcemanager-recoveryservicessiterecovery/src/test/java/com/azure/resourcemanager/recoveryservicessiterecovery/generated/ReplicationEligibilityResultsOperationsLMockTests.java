@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationEligibilityResultsCollection;
@@ -20,17 +20,17 @@ public final class ReplicationEligibilityResultsOperationsLMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"bek\",\"type\":\"ynfpkyvnhiysdho\",\"id\":\"slhraqkiwlwkff\",\"properties\":{\"clientRequestId\":\"wmwqoguflte\",\"errors\":[{},{}]}},{\"name\":\"gefzj\",\"type\":\"jtqbgysi\",\"id\":\"hnvxwtd\",\"properties\":{\"clientRequestId\":\"bjdbtqyhkxu\",\"errors\":[{},{},{}]}},{\"name\":\"jqgbbjvov\",\"type\":\"whgjsmbcsl\",\"id\":\"gsabdgdheronsdu\",\"properties\":{\"clientRequestId\":\"zvzuat\",\"errors\":[{},{}]}}]}";
+            = "{\"value\":[{\"name\":\"h\",\"type\":\"ixmlwkfe\",\"id\":\"cyjrtalqe\",\"properties\":{\"clientRequestId\":\"dfyimooaezk\",\"errors\":[{}]}},{\"name\":\"go\",\"type\":\"lqwbywaazba\",\"id\":\"ekfz\",\"properties\":{\"clientRequestId\":\"ab\",\"errors\":[{},{},{}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicationEligibilityResultsCollection response = manager.replicationEligibilityResultsOperations()
-            .listWithResponse("evt", "qwcz", com.azure.core.util.Context.NONE)
+            .listWithResponse("vul", "evvjncpmyhtxg", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

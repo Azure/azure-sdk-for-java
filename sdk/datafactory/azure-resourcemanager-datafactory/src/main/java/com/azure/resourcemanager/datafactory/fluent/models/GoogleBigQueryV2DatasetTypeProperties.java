@@ -91,8 +91,12 @@ public final class GoogleBigQueryV2DatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("table", this.table);
-        jsonWriter.writeUntypedField("dataset", this.dataset);
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
+        if (this.dataset != null) {
+            jsonWriter.writeUntypedField("dataset", this.dataset);
+        }
         return jsonWriter.writeEndObject();
     }
 

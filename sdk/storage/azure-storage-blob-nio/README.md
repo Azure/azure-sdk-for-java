@@ -20,7 +20,7 @@ This package allows you to interact with Azure Blob Storage through the standard
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-beta.28</version>
+    <version>12.0.0-beta.31</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -311,17 +311,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-nio/src
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-nio/src/samples/README.md
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[shared_key]: https://docs.microsoft.com/rest/api/storageservices/authorize-with-shared-key
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[shared_key]: https://learn.microsoft.com/rest/api/storageservices/authorize-with-shared-key
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: https://docs.oracle.com/javase/tutorial/essential/io/fileio.html
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -331,4 +331,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [file_system]: https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystem.html
 [file_systems]: https://docs.oracle.com/javase/7/docs/api/java/nio/file/FileSystems.html
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2FREADME.png)
+

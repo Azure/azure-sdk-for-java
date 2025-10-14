@@ -61,14 +61,14 @@ steps:
       publishJUnitResults: false
       goals: 'install'
     env:
-      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type external_dependency --build-type client --sr --vo ${{ parameters.VersionOverride }}'
+      arguments: '--skip-readme --version-override ${{ parameters.VersionOverride }}'
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@4
@@ -83,7 +83,7 @@ steps:
       publishJUnitResults: false
       goals: 'clean install'
     env:
-      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - ${{ parameters.PreTestRunSteps }}
@@ -267,6 +267,7 @@ steps:
           $xml.Save($_.FullName)
       }
     displayName: 'Update test case names for reporting'
+    condition: always()
     workingDirectory: $(System.DefaultWorkingDirectory)/sdk
 
   - task: PublishTestResults@2

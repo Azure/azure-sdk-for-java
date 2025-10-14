@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,32 +23,38 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /*
      * Exception chain - list of inner exceptions.
      */
+    @Generated
     private List<TelemetryExceptionDetails> exceptions;
 
     /*
      * Severity level. Mostly used to indicate exception severity level when it is reported by logging library.
      */
+    @Generated
     private SeverityLevel severityLevel;
 
     /*
      * Identifier of where the exception was thrown in code. Used for exceptions grouping. Typically a combination of
      * exception type and a function from the call stack.
      */
+    @Generated
     private String problemId;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of TelemetryExceptionData class.
      */
+    @Generated
     public TelemetryExceptionData() {
     }
 
@@ -56,6 +63,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * 
      * @return the exceptions value.
      */
+    @Generated
     public List<TelemetryExceptionDetails> getExceptions() {
         return this.exceptions;
     }
@@ -66,6 +74,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * @param exceptions the exceptions value to set.
      * @return the TelemetryExceptionData object itself.
      */
+    @Generated
     public TelemetryExceptionData setExceptions(List<TelemetryExceptionDetails> exceptions) {
         this.exceptions = exceptions;
         return this;
@@ -77,6 +86,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * 
      * @return the severityLevel value.
      */
+    @Generated
     public SeverityLevel getSeverityLevel() {
         return this.severityLevel;
     }
@@ -88,6 +98,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * @param severityLevel the severityLevel value to set.
      * @return the TelemetryExceptionData object itself.
      */
+    @Generated
     public TelemetryExceptionData setSeverityLevel(SeverityLevel severityLevel) {
         this.severityLevel = severityLevel;
         return this;
@@ -99,6 +110,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * 
      * @return the problemId value.
      */
+    @Generated
     public String getProblemId() {
         return this.problemId;
     }
@@ -110,6 +122,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * @param problemId the problemId value to set.
      * @return the TelemetryExceptionData object itself.
      */
+    @Generated
     public TelemetryExceptionData setProblemId(String problemId) {
         this.problemId = problemId;
         return this;
@@ -120,6 +133,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -130,6 +144,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the TelemetryExceptionData object itself.
      */
+    @Generated
     public TelemetryExceptionData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -140,6 +155,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -150,6 +166,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the TelemetryExceptionData object itself.
      */
+    @Generated
     public TelemetryExceptionData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -158,6 +175,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TelemetryExceptionData setVersion(int version) {
         super.setVersion(version);
@@ -167,6 +185,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -193,6 +212,7 @@ public final class TelemetryExceptionData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TelemetryExceptionData.
      */
+    @Generated
     public static TelemetryExceptionData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelemetryExceptionData deserializedTelemetryExceptionData = new TelemetryExceptionData();

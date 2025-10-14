@@ -12,30 +12,30 @@ public final class OfferDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OfferDetails model = BinaryData.fromString(
-            "{\"publisherId\":\"ckbasyypndd\",\"offerId\":\"sgcbac\",\"planId\":\"hejkotynqgou\",\"planName\":\"ndlik\",\"termUnit\":\"qkgfgibma\",\"termId\":\"akeqs\"}")
+            "{\"publisherId\":\"xsdszuempsb\",\"offerId\":\"kfzbeyvpnqicvi\",\"planId\":\"v\",\"planName\":\"jxdxrbuukz\",\"termUnit\":\"ewyhml\",\"termId\":\"aztz\"}")
             .toObject(OfferDetails.class);
-        Assertions.assertEquals("ckbasyypndd", model.publisherId());
-        Assertions.assertEquals("sgcbac", model.offerId());
-        Assertions.assertEquals("hejkotynqgou", model.planId());
-        Assertions.assertEquals("ndlik", model.planName());
-        Assertions.assertEquals("qkgfgibma", model.termUnit());
-        Assertions.assertEquals("akeqs", model.termId());
+        Assertions.assertEquals("xsdszuempsb", model.publisherId());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.offerId());
+        Assertions.assertEquals("v", model.planId());
+        Assertions.assertEquals("jxdxrbuukz", model.planName());
+        Assertions.assertEquals("ewyhml", model.termUnit());
+        Assertions.assertEquals("aztz", model.termId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OfferDetails model = new OfferDetails().withPublisherId("ckbasyypndd")
-            .withOfferId("sgcbac")
-            .withPlanId("hejkotynqgou")
-            .withPlanName("ndlik")
-            .withTermUnit("qkgfgibma")
-            .withTermId("akeqs");
+        OfferDetails model = new OfferDetails().withPublisherId("xsdszuempsb")
+            .withOfferId("kfzbeyvpnqicvi")
+            .withPlanId("v")
+            .withPlanName("jxdxrbuukz")
+            .withTermUnit("ewyhml")
+            .withTermId("aztz");
         model = BinaryData.fromObject(model).toObject(OfferDetails.class);
-        Assertions.assertEquals("ckbasyypndd", model.publisherId());
-        Assertions.assertEquals("sgcbac", model.offerId());
-        Assertions.assertEquals("hejkotynqgou", model.planId());
-        Assertions.assertEquals("ndlik", model.planName());
-        Assertions.assertEquals("qkgfgibma", model.termUnit());
-        Assertions.assertEquals("akeqs", model.termId());
+        Assertions.assertEquals("xsdszuempsb", model.publisherId());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.offerId());
+        Assertions.assertEquals("v", model.planId());
+        Assertions.assertEquals("jxdxrbuukz", model.planName());
+        Assertions.assertEquals("ewyhml", model.termUnit());
+        Assertions.assertEquals("aztz", model.termId());
     }
 }

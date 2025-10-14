@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
@@ -22,28 +22,28 @@ public final class JobDetailsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"whlwy\",\"backupManagementType\":\"AzureBackupServer\",\"operation\":\"zocrdzgczeu\",\"status\":\"g\",\"startTime\":\"2021-08-10T05:32:33Z\",\"endTime\":\"2021-11-23T04:41:38Z\",\"activityId\":\"ttie\"},\"eTag\":\"i\",\"location\":\"uvny\",\"tags\":{\"yri\":\"gix\",\"lqtxnrflkndrn\":\"lgmgbe\",\"hdaqotwfhipxwg\":\"pgfjo\",\"zuu\":\"abvcipowzaf\"},\"id\":\"ljcirvpefycdvei\",\"name\":\"itjn\",\"type\":\"xzajlnsjhwjuyxxb\"}";
+            = "{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"mkekxpkzwaqxo\",\"backupManagementType\":\"AzureWorkload\",\"operation\":\"chiqbplvfid\",\"status\":\"ztekxbyjgmsfep\",\"startTime\":\"2021-07-22T21:48:32Z\",\"endTime\":\"2021-06-14T04:53:05Z\",\"activityId\":\"a\"},\"eTag\":\"grhrdic\",\"location\":\"dw\",\"tags\":{\"ukdveksbuhoduc\":\"owxwyovcxjsgbip\",\"scrdp\":\"v\",\"yszekbhwlka\":\"bfdyjduss\",\"n\":\"ggkrehbf\"},\"id\":\"ybff\",\"name\":\"jfiimreoa\",\"type\":\"sqtaadusrexxfa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobResource response = manager.jobDetails()
-            .getWithResponse("ilm", "xdqaolfylnkkb", "pjvlywltmfwo", com.azure.core.util.Context.NONE)
+            .getWithResponse("toyrplixlajml", "pq", "evhamfowg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uvny", response.location());
-        Assertions.assertEquals("gix", response.tags().get("yri"));
-        Assertions.assertEquals("whlwy", response.properties().entityFriendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, response.properties().backupManagementType());
-        Assertions.assertEquals("zocrdzgczeu", response.properties().operation());
-        Assertions.assertEquals("g", response.properties().status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T05:32:33Z"), response.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-23T04:41:38Z"), response.properties().endTime());
-        Assertions.assertEquals("ttie", response.properties().activityId());
-        Assertions.assertEquals("i", response.etag());
+        Assertions.assertEquals("dw", response.location());
+        Assertions.assertEquals("owxwyovcxjsgbip", response.tags().get("ukdveksbuhoduc"));
+        Assertions.assertEquals("mkekxpkzwaqxo", response.properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, response.properties().backupManagementType());
+        Assertions.assertEquals("chiqbplvfid", response.properties().operation());
+        Assertions.assertEquals("ztekxbyjgmsfep", response.properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T21:48:32Z"), response.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-14T04:53:05Z"), response.properties().endTime());
+        Assertions.assertEquals("a", response.properties().activityId());
+        Assertions.assertEquals("grhrdic", response.etag());
     }
 }

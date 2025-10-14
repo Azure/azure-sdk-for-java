@@ -15,27 +15,24 @@ public final class RegionInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionInfoInner model = BinaryData.fromString(
-            "{\"storageToNetworkProximity\":\"T1AndT2AndAcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"c\",\"isAvailable\":true},{\"availabilityZone\":\"sdpydnfyhxdeoejz\",\"isAvailable\":false},{\"availabilityZone\":\"fsj\",\"isAvailable\":true}]}")
+            "{\"storageToNetworkProximity\":\"AcrossT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"mflbv\",\"isAvailable\":true},{\"availabilityZone\":\"rkcciwwzjuqk\",\"isAvailable\":false}]}")
             .toObject(RegionInfoInner.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
-            model.storageToNetworkProximity());
-        Assertions.assertEquals("c", model.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, model.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2, model.storageToNetworkProximity());
+        Assertions.assertEquals("mflbv", model.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertTrue(model.availabilityZoneMappings().get(0).isAvailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegionInfoInner model
-            = new RegionInfoInner().withStorageToNetworkProximity(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2)
+            = new RegionInfoInner().withStorageToNetworkProximity(RegionStorageToNetworkProximity.ACROSS_T2)
                 .withAvailabilityZoneMappings(Arrays.asList(
-                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("c").withIsAvailable(true),
-                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("sdpydnfyhxdeoejz")
-                        .withIsAvailable(false),
-                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("fsj").withIsAvailable(true)));
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("mflbv").withIsAvailable(true),
+                    new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("rkcciwwzjuqk")
+                        .withIsAvailable(false)));
         model = BinaryData.fromObject(model).toObject(RegionInfoInner.class);
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2AND_ACROSS_T2,
-            model.storageToNetworkProximity());
-        Assertions.assertEquals("c", model.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, model.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.ACROSS_T2, model.storageToNetworkProximity());
+        Assertions.assertEquals("mflbv", model.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertTrue(model.availabilityZoneMappings().get(0).isAvailable());
     }
 }

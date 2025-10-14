@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationMigrationItemsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationMigrationItems_Get.json
      */
     /**
@@ -21,7 +21,7 @@ public final class ReplicationMigrationItemsGetSamples {
     public static void getsTheDetailsOfAMigrationItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationMigrationItems()
-            .getWithResponse("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+            .getWithResponse("resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
                 com.azure.core.util.Context.NONE);
     }
 }

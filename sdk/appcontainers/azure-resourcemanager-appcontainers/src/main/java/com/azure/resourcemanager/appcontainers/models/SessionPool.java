@@ -51,6 +51,14 @@ public interface SessionPool {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Managed identities needed by a session pool to interact with other Azure services to
+     * not maintain any secrets or credentials in code.
+     * 
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -136,6 +144,14 @@ public interface SessionPool {
     SessionPoolProvisioningState provisioningState();
 
     /**
+     * Gets the managedIdentitySettings property: Optional settings for a Managed Identity that is assigned to the
+     * Session pool.
+     * 
+     * @return the managedIdentitySettings value.
+     */
+    List<ManagedIdentitySetting> managedIdentitySettings();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -219,10 +235,11 @@ public interface SessionPool {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithEnvironmentId, DefinitionStages.WithContainerType,
-            DefinitionStages.WithPoolManagementType, DefinitionStages.WithScaleConfiguration,
-            DefinitionStages.WithSecrets, DefinitionStages.WithDynamicPoolConfiguration,
-            DefinitionStages.WithCustomContainerTemplate, DefinitionStages.WithSessionNetworkConfiguration {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithEnvironmentId,
+            DefinitionStages.WithContainerType, DefinitionStages.WithPoolManagementType,
+            DefinitionStages.WithScaleConfiguration, DefinitionStages.WithSecrets,
+            DefinitionStages.WithDynamicPoolConfiguration, DefinitionStages.WithCustomContainerTemplate,
+            DefinitionStages.WithSessionNetworkConfiguration, DefinitionStages.WithManagedIdentitySettings {
             /**
              * Executes the create request.
              * 
@@ -250,6 +267,21 @@ public interface SessionPool {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the SessionPool definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed identities needed by a session pool to interact with other Azure
+             * services to not maintain any secrets or credentials in code..
+             * 
+             * @param identity Managed identities needed by a session pool to interact with other Azure services to not
+             * maintain any secrets or credentials in code.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
         /**
@@ -359,6 +391,21 @@ public interface SessionPool {
              */
             WithCreate withSessionNetworkConfiguration(SessionNetworkConfiguration sessionNetworkConfiguration);
         }
+
+        /**
+         * The stage of the SessionPool definition allowing to specify managedIdentitySettings.
+         */
+        interface WithManagedIdentitySettings {
+            /**
+             * Specifies the managedIdentitySettings property: Optional settings for a Managed Identity that is assigned
+             * to the Session pool..
+             * 
+             * @param managedIdentitySettings Optional settings for a Managed Identity that is assigned to the Session
+             * pool.
+             * @return the next definition stage.
+             */
+            WithCreate withManagedIdentitySettings(List<ManagedIdentitySetting> managedIdentitySettings);
+        }
     }
 
     /**
@@ -371,8 +418,8 @@ public interface SessionPool {
     /**
      * The template for SessionPool update.
      */
-    interface Update extends UpdateStages.WithScaleConfiguration, UpdateStages.WithSecrets,
-        UpdateStages.WithDynamicPoolConfiguration, UpdateStages.WithCustomContainerTemplate,
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithScaleConfiguration,
+        UpdateStages.WithSecrets, UpdateStages.WithDynamicPoolConfiguration, UpdateStages.WithCustomContainerTemplate,
         UpdateStages.WithSessionNetworkConfiguration {
         /**
          * Executes the update request.
@@ -394,6 +441,34 @@ public interface SessionPool {
      * The SessionPool update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the SessionPool update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the SessionPool update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed identities needed by a session pool to interact with other Azure
+             * services to not maintain any secrets or credentials in code..
+             * 
+             * @param identity Managed identities needed by a session pool to interact with other Azure services to not
+             * maintain any secrets or credentials in code.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
         /**
          * The stage of the SessionPool update allowing to specify scaleConfiguration.
          */

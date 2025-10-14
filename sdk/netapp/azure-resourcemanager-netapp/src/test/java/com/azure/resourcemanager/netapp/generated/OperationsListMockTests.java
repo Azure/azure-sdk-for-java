@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.MetricAggregationType;
@@ -23,30 +23,30 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"kvylauyavl\",\"display\":{\"provider\":\"ncstt\",\"resource\":\"fybvpoek\",\"operation\":\"gsgbdhuzq\",\"description\":\"j\"},\"origin\":\"kynscliqhzv\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"tkubotppn\",\"displayName\":\"xz\",\"displayDescription\":\"ihfrbbcevqa\",\"unit\":\"ltd\",\"supportedAggregationTypes\":[\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"py\",\"vgtrdcnifmzzs\",\"ymbrnysuxmpraf\",\"g\"],\"internalMetricName\":\"hocxvdfffwafqrou\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"avehhrvkbunzo\",\"sourceMdmNamespace\":\"dhcxgkmoy\",\"dimensions\":[{},{}],\"aggregationType\":\"uibhmfdnbzydvfv\",\"fillGapWithZero\":false,\"category\":\"aeoisrvh\",\"resourceIdDimensionNameOverride\":\"orffukiscv\",\"isInternal\":true},{\"name\":\"wplefaxvxil\",\"displayName\":\"tg\",\"displayDescription\":\"nzeyqxtjj\",\"unit\":\"qlqhycavodg\",\"supportedAggregationTypes\":[\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"mieknlraria\",\"wiuagydwqf\",\"ylyrfgiagtco\"],\"internalMetricName\":\"cqwogfnzjvusfzl\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"uxylfsbtkadpy\",\"sourceMdmNamespace\":\"wn\",\"dimensions\":[{},{},{}],\"aggregationType\":\"bugrj\",\"fillGapWithZero\":false,\"category\":\"jc\",\"resourceIdDimensionNameOverride\":\"sofieypefojyqd\",\"isInternal\":false}],\"logSpecifications\":[{\"name\":\"plcwkhi\",\"displayName\":\"hlhzdsqtzbsrgno\"},{\"name\":\"jhf\",\"displayName\":\"vecactx\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"qxihhrmooi\",\"display\":{\"provider\":\"eypxiutcxapzhyr\",\"resource\":\"togebjoxsl\",\"operation\":\"nhl\",\"description\":\"rqnkkzjcjbtr\"},\"origin\":\"ehvvib\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"oqbeitpkxzt\",\"displayName\":\"ob\",\"displayDescription\":\"ft\",\"unit\":\"gfcwqmpimaqxzhem\",\"supportedAggregationTypes\":[\"Average\"],\"supportedTimeGrainTypes\":[\"jswtwkozzwc\"],\"internalMetricName\":\"kb\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"ajnjwltlwtjj\",\"sourceMdmNamespace\":\"ktalhsnvkcdmxz\",\"dimensions\":[{},{}],\"aggregationType\":\"imlnwiaaomylw\",\"fillGapWithZero\":false,\"category\":\"lcsethwwnpj\",\"resourceIdDimensionNameOverride\":\"fz\",\"isInternal\":false}],\"logSpecifications\":[{\"name\":\"ahfbous\",\"displayName\":\"epgfew\"},{\"name\":\"wlyxgncxyk\",\"displayName\":\"djhlimm\"},{\"name\":\"x\",\"displayName\":\"bcporxvxcjzhqizx\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kvylauyavl", response.iterator().next().name());
-        Assertions.assertEquals("ncstt", response.iterator().next().display().provider());
-        Assertions.assertEquals("fybvpoek", response.iterator().next().display().resource());
-        Assertions.assertEquals("gsgbdhuzq", response.iterator().next().display().operation());
-        Assertions.assertEquals("j", response.iterator().next().display().description());
-        Assertions.assertEquals("kynscliqhzv", response.iterator().next().origin());
-        Assertions.assertEquals("tkubotppn",
+        Assertions.assertEquals("qxihhrmooi", response.iterator().next().name());
+        Assertions.assertEquals("eypxiutcxapzhyr", response.iterator().next().display().provider());
+        Assertions.assertEquals("togebjoxsl", response.iterator().next().display().resource());
+        Assertions.assertEquals("nhl", response.iterator().next().display().operation());
+        Assertions.assertEquals("rqnkkzjcjbtr", response.iterator().next().display().description());
+        Assertions.assertEquals("ehvvib", response.iterator().next().origin());
+        Assertions.assertEquals("oqbeitpkxzt",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("xz",
+        Assertions.assertEquals("ob",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("ihfrbbcevqa",
+        Assertions.assertEquals("ft",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("ltd",
+        Assertions.assertEquals("gfcwqmpimaqxzhem",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
         Assertions.assertEquals(MetricAggregationType.AVERAGE,
             response.iterator()
@@ -56,7 +56,7 @@ public final class OperationsListMockTests {
                 .get(0)
                 .supportedAggregationTypes()
                 .get(0));
-        Assertions.assertEquals("py",
+        Assertions.assertEquals("jswtwkozzwc",
             response.iterator()
                 .next()
                 .serviceSpecification()
@@ -64,32 +64,32 @@ public final class OperationsListMockTests {
                 .get(0)
                 .supportedTimeGrainTypes()
                 .get(0));
-        Assertions.assertEquals("hocxvdfffwafqrou",
+        Assertions.assertEquals("kb",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).internalMetricName());
-        Assertions.assertEquals(false,
+        Assertions.assertTrue(
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions.assertEquals("avehhrvkbunzo",
+        Assertions.assertEquals("ajnjwltlwtjj",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
-        Assertions.assertEquals("dhcxgkmoy",
+        Assertions.assertEquals("ktalhsnvkcdmxz",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
-        Assertions.assertEquals("uibhmfdnbzydvfv",
+        Assertions.assertEquals("imlnwiaaomylw",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals(false,
+        Assertions.assertFalse(
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
-        Assertions.assertEquals("aeoisrvh",
+        Assertions.assertEquals("lcsethwwnpj",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).category());
-        Assertions.assertEquals("orffukiscv",
+        Assertions.assertEquals("fz",
             response.iterator()
                 .next()
                 .serviceSpecification()
                 .metricSpecifications()
                 .get(0)
                 .resourceIdDimensionNameOverride());
-        Assertions.assertEquals(true,
-            response.iterator().next().serviceSpecification().metricSpecifications().get(0).isInternal());
-        Assertions.assertEquals("plcwkhi",
+        Assertions
+            .assertFalse(response.iterator().next().serviceSpecification().metricSpecifications().get(0).isInternal());
+        Assertions.assertEquals("ahfbous",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("hlhzdsqtzbsrgno",
+        Assertions.assertEquals("epgfew",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

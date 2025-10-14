@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class IpamPoolsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Create.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Create.json
      */
     /**
      * Sample code: IpamPools_Create.
@@ -31,6 +31,6 @@ public final class IpamPoolsCreateSamples {
                     .withProperties(new IpamPoolProperties().withDescription("Test description.")
                         .withParentPoolName("")
                         .withAddressPrefixes(Arrays.asList("10.0.0.0/24"))),
-                com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 }

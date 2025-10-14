@@ -5,6 +5,7 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class MapAttribution implements JsonSerializable<MapAttribution> {
     /*
      * A list of copyright strings.
      */
+    @Generated
     private List<String> copyrights;
 
     /**
      * Creates an instance of MapAttribution class.
      */
+    @Generated
     public MapAttribution() {
     }
 
@@ -33,6 +36,7 @@ public final class MapAttribution implements JsonSerializable<MapAttribution> {
      * 
      * @return the copyrights value.
      */
+    @Generated
     public List<String> getCopyrights() {
         return this.copyrights;
     }
@@ -43,6 +47,7 @@ public final class MapAttribution implements JsonSerializable<MapAttribution> {
      * @param copyrights the copyrights value to set.
      * @return the MapAttribution object itself.
      */
+    @Generated
     public MapAttribution setCopyrights(List<String> copyrights) {
         this.copyrights = copyrights;
         return this;
@@ -51,6 +56,7 @@ public final class MapAttribution implements JsonSerializable<MapAttribution> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class MapAttribution implements JsonSerializable<MapAttribution> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MapAttribution.
      */
+    @Generated
     public static MapAttribution fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapAttribution deserializedMapAttribution = new MapAttribution();

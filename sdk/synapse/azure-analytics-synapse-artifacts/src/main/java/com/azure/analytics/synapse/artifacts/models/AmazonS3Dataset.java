@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,51 +22,61 @@ public class AmazonS3Dataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "AmazonS3Object";
 
     /*
      * The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object bucketName;
 
     /*
      * The key of the Amazon S3 object. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object key;
 
     /*
      * The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object prefix;
 
     /*
      * The version for the S3 object. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object version;
 
     /*
      * The start of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeStart;
 
     /*
      * The end of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of files.
      */
+    @Generated
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the Amazon S3 object.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of AmazonS3Dataset class.
      */
+    @Generated
     public AmazonS3Dataset() {
     }
 
@@ -74,6 +85,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -85,6 +97,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the bucketName value.
      */
+    @Generated
     public Object getBucketName() {
         return this.bucketName;
     }
@@ -96,6 +109,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param bucketName the bucketName value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setBucketName(Object bucketName) {
         this.bucketName = bucketName;
         return this;
@@ -106,6 +120,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the key value.
      */
+    @Generated
     public Object getKey() {
         return this.key;
     }
@@ -116,6 +131,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param key the key value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setKey(Object key) {
         this.key = key;
         return this;
@@ -127,6 +143,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the prefix value.
      */
+    @Generated
     public Object getPrefix() {
         return this.prefix;
     }
@@ -138,6 +155,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param prefix the prefix value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setPrefix(Object prefix) {
         this.prefix = prefix;
         return this;
@@ -148,6 +166,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the version value.
      */
+    @Generated
     public Object getVersion() {
         return this.version;
     }
@@ -158,6 +177,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param version the version value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setVersion(Object version) {
         this.version = version;
         return this;
@@ -169,6 +189,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the modifiedDatetimeStart value.
      */
+    @Generated
     public Object getModifiedDatetimeStart() {
         return this.modifiedDatetimeStart;
     }
@@ -180,6 +201,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setModifiedDatetimeStart(Object modifiedDatetimeStart) {
         this.modifiedDatetimeStart = modifiedDatetimeStart;
         return this;
@@ -191,6 +213,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the modifiedDatetimeEnd value.
      */
+    @Generated
     public Object getModifiedDatetimeEnd() {
         return this.modifiedDatetimeEnd;
     }
@@ -202,6 +225,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
@@ -212,6 +236,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the format value.
      */
+    @Generated
     public DatasetStorageFormat getFormat() {
         return this.format;
     }
@@ -222,6 +247,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param format the format value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setFormat(DatasetStorageFormat format) {
         this.format = format;
         return this;
@@ -232,6 +258,7 @@ public class AmazonS3Dataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -242,6 +269,7 @@ public class AmazonS3Dataset extends Dataset {
      * @param compression the compression value to set.
      * @return the AmazonS3Dataset object itself.
      */
+    @Generated
     public AmazonS3Dataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -250,6 +278,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setDescription(String description) {
         super.setDescription(description);
@@ -259,6 +288,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -268,6 +298,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -277,6 +308,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -286,6 +318,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -295,6 +328,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -304,6 +338,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Dataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -313,13 +348,18 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -334,11 +374,21 @@ public class AmazonS3Dataset extends Dataset {
             || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("bucketName", this.bucketName);
-            jsonWriter.writeUntypedField("key", this.key);
-            jsonWriter.writeUntypedField("prefix", this.prefix);
-            jsonWriter.writeUntypedField("version", this.version);
-            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            if (this.key != null) {
+                jsonWriter.writeUntypedField("key", this.key);
+            }
+            if (this.prefix != null) {
+                jsonWriter.writeUntypedField("prefix", this.prefix);
+            }
+            if (this.version != null) {
+                jsonWriter.writeUntypedField("version", this.version);
+            }
+            if (this.modifiedDatetimeStart != null) {
+                jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+            }
+            if (this.modifiedDatetimeEnd != null) {
+                jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            }
             jsonWriter.writeJsonField("format", this.format);
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
@@ -360,6 +410,7 @@ public class AmazonS3Dataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AmazonS3Dataset.
      */
+    @Generated
     public static AmazonS3Dataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AmazonS3Dataset deserializedAmazonS3Dataset = new AmazonS3Dataset();

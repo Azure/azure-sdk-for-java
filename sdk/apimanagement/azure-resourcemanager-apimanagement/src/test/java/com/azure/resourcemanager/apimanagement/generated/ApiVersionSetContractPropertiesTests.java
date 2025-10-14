@@ -13,27 +13,27 @@ public final class ApiVersionSetContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiVersionSetContractProperties model = BinaryData.fromString(
-            "{\"displayName\":\"guqigijiitns\",\"versioningScheme\":\"Segment\",\"description\":\"zdesygr\",\"versionQueryName\":\"waiufanra\",\"versionHeaderName\":\"fueqfrojs\"}")
+            "{\"displayName\":\"lxdbfvabmvms\",\"versioningScheme\":\"Header\",\"description\":\"evwjcnkottlwuhv\",\"versionQueryName\":\"mailfemjj\",\"versionHeaderName\":\"kzwjiqullq\"}")
             .toObject(ApiVersionSetContractProperties.class);
-        Assertions.assertEquals("zdesygr", model.description());
-        Assertions.assertEquals("waiufanra", model.versionQueryName());
-        Assertions.assertEquals("fueqfrojs", model.versionHeaderName());
-        Assertions.assertEquals("guqigijiitns", model.displayName());
-        Assertions.assertEquals(VersioningScheme.SEGMENT, model.versioningScheme());
+        Assertions.assertEquals("evwjcnkottlwuhv", model.description());
+        Assertions.assertEquals("mailfemjj", model.versionQueryName());
+        Assertions.assertEquals("kzwjiqullq", model.versionHeaderName());
+        Assertions.assertEquals("lxdbfvabmvms", model.displayName());
+        Assertions.assertEquals(VersioningScheme.HEADER, model.versioningScheme());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetContractProperties model = new ApiVersionSetContractProperties().withDescription("zdesygr")
-            .withVersionQueryName("waiufanra")
-            .withVersionHeaderName("fueqfrojs")
-            .withDisplayName("guqigijiitns")
-            .withVersioningScheme(VersioningScheme.SEGMENT);
+        ApiVersionSetContractProperties model = new ApiVersionSetContractProperties().withDescription("evwjcnkottlwuhv")
+            .withVersionQueryName("mailfemjj")
+            .withVersionHeaderName("kzwjiqullq")
+            .withDisplayName("lxdbfvabmvms")
+            .withVersioningScheme(VersioningScheme.HEADER);
         model = BinaryData.fromObject(model).toObject(ApiVersionSetContractProperties.class);
-        Assertions.assertEquals("zdesygr", model.description());
-        Assertions.assertEquals("waiufanra", model.versionQueryName());
-        Assertions.assertEquals("fueqfrojs", model.versionHeaderName());
-        Assertions.assertEquals("guqigijiitns", model.displayName());
-        Assertions.assertEquals(VersioningScheme.SEGMENT, model.versioningScheme());
+        Assertions.assertEquals("evwjcnkottlwuhv", model.description());
+        Assertions.assertEquals("mailfemjj", model.versionQueryName());
+        Assertions.assertEquals("kzwjiqullq", model.versionHeaderName());
+        Assertions.assertEquals("lxdbfvabmvms", model.displayName());
+        Assertions.assertEquals(VersioningScheme.HEADER, model.versioningScheme());
     }
 }

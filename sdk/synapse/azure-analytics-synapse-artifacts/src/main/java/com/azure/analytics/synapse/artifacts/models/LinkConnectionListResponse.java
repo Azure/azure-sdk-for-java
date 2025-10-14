@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
     /*
      * List link connection value
      */
+    @Generated
     private List<LinkConnectionResource> value;
 
     /*
      * List link connections next link
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of LinkConnectionListResponse class.
      */
+    @Generated
     public LinkConnectionListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
      * 
      * @return the value value.
      */
+    @Generated
     public List<LinkConnectionResource> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
      * @param value the value value to set.
      * @return the LinkConnectionListResponse object itself.
      */
+    @Generated
     public LinkConnectionListResponse setValue(List<LinkConnectionResource> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
      * @param nextLink the nextLink value to set.
      * @return the LinkConnectionListResponse object itself.
      */
+    @Generated
     public LinkConnectionListResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class LinkConnectionListResponse implements JsonSerializable<LinkCo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkConnectionListResponse.
      */
+    @Generated
     public static LinkConnectionListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionListResponse deserializedLinkConnectionListResponse = new LinkConnectionListResponse();

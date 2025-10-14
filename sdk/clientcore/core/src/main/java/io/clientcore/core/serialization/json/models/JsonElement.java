@@ -42,7 +42,7 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
      * @throws IOException If an error occurs while deserializing the JSON element.
      * @throws IllegalStateException If the current token is not a valid JSON token.
      */
-    static JsonElement fromJson(JsonReader jsonReader) throws IOException {
+    public static JsonElement fromJson(JsonReader jsonReader) throws IOException {
         JsonToken token = jsonReader.currentToken();
         if (token == null) {
             token = jsonReader.nextToken();

@@ -21,6 +21,7 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -28,7 +29,9 @@ import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -1248,5 +1251,66 @@ public class ShareFileJavaDocCodeSamples {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#createHardLink(String)},
+     * {@link ShareFileClient#createHardLinkWithResponse(ShareFileCreateHardLinkOptions, Duration, Context)}
+     */
+    public void createHardLink() {
+        ShareFileClient sourceClient = createClientWithSASToken();
+        ShareFileClient hardLinkClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#String
+        ShareFileInfo response = hardLinkClient.createHardLink(sourceClient.getFilePath());
+
+        System.out.printf("Link count is is %s.", response.getPosixProperties().getLinkCount());
+        // END: com.azure.storage.file.share.ShareFileClient.createHardLink#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
+        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath());
+        ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse(options, null, null).getValue();
+
+        System.out.printf("Link count is is %s.", response2.getPosixProperties().getLinkCount());
+        // END: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#createSymbolicLink(String)},
+     * {@link ShareFileClient#createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions, Duration, Context)}
+     */
+    public void createSymbolicLink() {
+        ShareFileClient sourceClient = createClientWithSASToken();
+        ShareFileClient symbolicLinkClient = createClientWithSASToken();
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createSymbolicLink#String
+        ShareFileInfo response = symbolicLinkClient.createSymbolicLink(sourceClient.getFilePath());
+
+        System.out.printf("Link count is %s.", response.getPosixProperties().getLinkCount());
+        // END: com.azure.storage.file.share.ShareFileClient.createSymbolicLink#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions-Duration-Context
+        ShareFileCreateSymbolicLinkOptions options = new ShareFileCreateSymbolicLinkOptions(sourceClient.getFilePath());
+        ShareFileInfo response2 = symbolicLinkClient.createSymbolicLinkWithResponse(options, null, null).getValue();
+
+        System.out.printf("Link count is %s.", response2.getPosixProperties().getLinkCount());
+        // END: com.azure.storage.file.share.ShareFileClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions-Duration-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#getSymbolicLink()},
+     * {@link ShareFileClient#getSymbolicLinkWithResponse(Duration, Context)}
+     */
+    public void getSymbolicLink() {
+        ShareFileClient symbolicLinkClient = createClientWithSASToken();
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.getSymbolicLink
+        ShareFileSymbolicLinkInfo response = symbolicLinkClient.getSymbolicLink();
+        System.out.printf("Link text is %s.", response.getLinkText());
+        // END: com.azure.storage.file.share.ShareFileClient.getSymbolicLink
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.getSymbolicLinkWithResponse#Duration-Context
+        ShareFileSymbolicLinkInfo response2 = symbolicLinkClient.getSymbolicLinkWithResponse(null, null).getValue();
+        System.out.printf("Link text is %s.", response2.getLinkText());
+        // END: com.azure.storage.file.share.ShareFileClient.getSymbolicLinkWithResponse#Duration-Context
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.StaticMemberInner;
 public final class StaticMembersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerStaticMemberPut
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerStaticMemberPut
      * .json
      */
     /**

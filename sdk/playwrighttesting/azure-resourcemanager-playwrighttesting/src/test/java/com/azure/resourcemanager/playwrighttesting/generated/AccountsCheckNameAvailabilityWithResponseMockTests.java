@@ -6,8 +6,8 @@ package com.azure.resourcemanager.playwrighttesting.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager;
 import com.azure.resourcemanager.playwrighttesting.models.CheckNameAvailabilityReason;
@@ -29,7 +29,7 @@ public final class AccountsCheckNameAvailabilityWithResponseMockTests {
         PlaywrightTestingManager manager = PlaywrightTestingManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.accounts()
             .checkNameAvailabilityWithResponse(
@@ -37,7 +37,7 @@ public final class AccountsCheckNameAvailabilityWithResponseMockTests {
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertFalse(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
         Assertions.assertEquals("guhmuouqfpr", response.message());
     }

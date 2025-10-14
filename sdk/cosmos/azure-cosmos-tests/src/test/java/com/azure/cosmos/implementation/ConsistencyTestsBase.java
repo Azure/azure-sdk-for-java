@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
@@ -222,7 +221,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 Document document2 = new Document();
                 document2.setId("test" + UUID.randomUUID().toString());
-                document2.set("customerid", 2, CosmosItemSerializer.DEFAULT_SERIALIZER);
+                document2.set("customerid", 2);
                 // name link
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
@@ -236,7 +235,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 Document document2 = new Document();
                 document2.setId("test" + UUID.randomUUID().toString());
-                document2.set("customerid", 3, CosmosItemSerializer.DEFAULT_SERIALIZER);
+                document2.set("customerid", 3);
                 // name link
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
@@ -747,7 +746,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // Document to lock pause/resume clients
             Document document1 = new Document();
             document1.setId("test" + UUID.randomUUID().toString());
-            document1.set("mypk", 1, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            document1.set("mypk", 1);
             ResourceResponse<Document> childResource1 = writeClient.createDocument(createdCollection.getSelfLink(), document1, null, true).block();
             logger.info("Created {} child resource", childResource1.getResource().getResourceId());
             assertThat(childResource1.getSessionToken()).isNotNull();
@@ -758,7 +757,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // Document to lock pause/resume clients
             Document document2 = new Document();
             document2.setId("test" + UUID.randomUUID().toString());
-            document2.set("mypk", 2, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            document2.set("mypk", 2);
             ResourceResponse<Document> childResource2 = writeClient.createDocument(createdCollection.getSelfLink(), document2, null, true).block();
             assertThat(childResource2).isNotNull();
             assertThat(childResource2.getSessionToken()).isNotNull();

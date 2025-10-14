@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
@@ -62,7 +61,7 @@ public final class Permission extends Resource {
      * @param resourceLink the resource link.
      */
     public void setResourceLink(String resourceLink) {
-        this.set(Constants.Properties.RESOURCE_LINK, resourceLink, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.RESOURCE_LINK, resourceLink);
     }
 
     /**
@@ -83,8 +82,8 @@ public final class Permission extends Resource {
     public void setPermissionMode(PermissionMode permissionMode) {
         this.set(
             Constants.Properties.PERMISSION_MODE,
-            permissionMode.toString().toLowerCase(Locale.ROOT),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            permissionMode.toString().toLowerCase(Locale.ROOT)
+        );
     }
 
     /**
@@ -122,7 +121,7 @@ public final class Permission extends Resource {
 
         this.set(
             Constants.Properties.RESOURCE_PARTITION_KEY,
-            ModelBridgeInternal.getPartitionKeyInternal(partitionkey).toObjectArray(),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            ModelBridgeInternal.getPartitionKeyInternal(partitionkey).toObjectArray()
+        );
     }
 }

@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Index;
@@ -402,7 +403,12 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
         sqlQuerySpec.populatePropertyBag();
-        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
+        return sqlQuerySpec
+            .getJsonSerializable()
+            .serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -559,15 +565,6 @@ public final class ModelBridgeInternal {
         }
 
         return options.getProperties();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Map<String, Object> getPropertiesFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        if (options == null) {
-            return null;
-        }
-
-        return options.getImpl().getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

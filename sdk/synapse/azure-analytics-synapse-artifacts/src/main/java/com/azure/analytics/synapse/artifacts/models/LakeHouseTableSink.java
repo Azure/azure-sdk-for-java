@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,35 +14,40 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A copy activity for Microsoft Fabric LakeHouse Table sink.
+ * A copy activity for Microsoft Fabric Lakehouse Table sink.
  */
 @Fluent
 public final class LakeHouseTableSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "LakeHouseTableSink";
 
     /*
-     * The type of table action for LakeHouse Table sink. Possible values include: "None", "Append", "Overwrite".
+     * The type of table action for Lakehouse Table sink. Possible values include: "None", "Append", "Overwrite".
      */
+    @Generated
     private Object tableActionOption;
 
     /*
      * Create partitions in folder structure based on one or multiple columns. Each distinct column value (pair) will be
      * a new partition. Possible values include: "None", "PartitionByKey".
      */
+    @Generated
     private Object partitionOption;
 
     /*
      * Specify the partition column names from sink columns. Type: array of objects (or Expression with resultType array
      * of objects).
      */
+    @Generated
     private Object partitionNameList;
 
     /**
      * Creates an instance of LakeHouseTableSink class.
      */
+    @Generated
     public LakeHouseTableSink() {
     }
 
@@ -50,28 +56,31 @@ public final class LakeHouseTableSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
     }
 
     /**
-     * Get the tableActionOption property: The type of table action for LakeHouse Table sink. Possible values include:
+     * Get the tableActionOption property: The type of table action for Lakehouse Table sink. Possible values include:
      * "None", "Append", "Overwrite".
      * 
      * @return the tableActionOption value.
      */
+    @Generated
     public Object getTableActionOption() {
         return this.tableActionOption;
     }
 
     /**
-     * Set the tableActionOption property: The type of table action for LakeHouse Table sink. Possible values include:
+     * Set the tableActionOption property: The type of table action for Lakehouse Table sink. Possible values include:
      * "None", "Append", "Overwrite".
      * 
      * @param tableActionOption the tableActionOption value to set.
      * @return the LakeHouseTableSink object itself.
      */
+    @Generated
     public LakeHouseTableSink setTableActionOption(Object tableActionOption) {
         this.tableActionOption = tableActionOption;
         return this;
@@ -83,6 +92,7 @@ public final class LakeHouseTableSink extends CopySink {
      * 
      * @return the partitionOption value.
      */
+    @Generated
     public Object getPartitionOption() {
         return this.partitionOption;
     }
@@ -94,6 +104,7 @@ public final class LakeHouseTableSink extends CopySink {
      * @param partitionOption the partitionOption value to set.
      * @return the LakeHouseTableSink object itself.
      */
+    @Generated
     public LakeHouseTableSink setPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
@@ -105,6 +116,7 @@ public final class LakeHouseTableSink extends CopySink {
      * 
      * @return the partitionNameList value.
      */
+    @Generated
     public Object getPartitionNameList() {
         return this.partitionNameList;
     }
@@ -116,6 +128,7 @@ public final class LakeHouseTableSink extends CopySink {
      * @param partitionNameList the partitionNameList value to set.
      * @return the LakeHouseTableSink object itself.
      */
+    @Generated
     public LakeHouseTableSink setPartitionNameList(Object partitionNameList) {
         this.partitionNameList = partitionNameList;
         return this;
@@ -124,6 +137,7 @@ public final class LakeHouseTableSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseTableSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -133,6 +147,7 @@ public final class LakeHouseTableSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseTableSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -142,6 +157,7 @@ public final class LakeHouseTableSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseTableSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -151,6 +167,7 @@ public final class LakeHouseTableSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseTableSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -160,6 +177,7 @@ public final class LakeHouseTableSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LakeHouseTableSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -169,18 +187,35 @@ public final class LakeHouseTableSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("tableActionOption", this.tableActionOption);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
-        jsonWriter.writeUntypedField("partitionNameList", this.partitionNameList);
+        if (this.tableActionOption != null) {
+            jsonWriter.writeUntypedField("tableActionOption", this.tableActionOption);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
+        if (this.partitionNameList != null) {
+            jsonWriter.writeUntypedField("partitionNameList", this.partitionNameList);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -197,6 +232,7 @@ public final class LakeHouseTableSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LakeHouseTableSink.
      */
+    @Generated
     public static LakeHouseTableSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LakeHouseTableSink deserializedLakeHouseTableSink = new LakeHouseTableSink();

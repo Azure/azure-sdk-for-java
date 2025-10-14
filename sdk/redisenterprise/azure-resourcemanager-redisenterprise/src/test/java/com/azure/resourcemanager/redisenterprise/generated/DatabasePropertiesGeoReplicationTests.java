@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePropertiesGeoReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePropertiesGeoReplication model = BinaryData
-            .fromString(
-                "{\"groupNickname\":\"c\",\"linkedDatabases\":[{\"id\":\"cufufsrpymz\",\"state\":\"Unlinking\"}]}")
+        DatabasePropertiesGeoReplication model = BinaryData.fromString(
+            "{\"groupNickname\":\"idf\",\"linkedDatabases\":[{\"id\":\"zuhtymwisdkfthwx\",\"state\":\"Linking\"},{\"id\":\"i\",\"state\":\"LinkFailed\"},{\"id\":\"vkmijcmmxdcuf\",\"state\":\"Unlinking\"}]}")
             .toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("c", model.groupNickname());
-        Assertions.assertEquals("cufufsrpymz", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("idf", model.groupNickname());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePropertiesGeoReplication model = new DatabasePropertiesGeoReplication().withGroupNickname("c")
-            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("cufufsrpymz")));
+        DatabasePropertiesGeoReplication model = new DatabasePropertiesGeoReplication().withGroupNickname("idf")
+            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("zuhtymwisdkfthwx"),
+                new LinkedDatabase().withId("i"), new LinkedDatabase().withId("vkmijcmmxdcuf")));
         model = BinaryData.fromObject(model).toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("c", model.groupNickname());
-        Assertions.assertEquals("cufufsrpymz", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("idf", model.groupNickname());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.linkedDatabases().get(0).id());
     }
 }

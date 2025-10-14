@@ -267,10 +267,8 @@
  * username and password to authenticate with Azure resources. In Azure, user credential authentication can be used to
  * authenticate with <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.</p>
  *
- * <p>The Azure Identity library supports user credentials based authentication via
- * {@link com.azure.identity.InteractiveBrowserCredential}, {@link com.azure.identity.DeviceCodeCredential} and
- * {@link com.azure.identity.UsernamePasswordCredential}. For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/usercredential/docs">user credential authentication documentation</a>.
+ * <p>The Azure Identity library supports user credentials-based authentication via
+ * several credentials. For more information, see <a href="https://aka.ms/azsdk/java/identity/usercredential/docs">user credential authentication documentation</a>.
  * </p>
  *
  * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
@@ -323,14 +321,6 @@
  *       {@link com.azure.identity.AuthorizationCodeCredential AuthorizationCodeCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
- *     <tr>
- *       <td>{@link com.azure.identity.UsernamePasswordCredential}</td>
- *       <td>This credential authenticates a user with a username and password without multi-factored auth.
- *       This credential can be used on developer environment for user principals which do not require
- *       2FA/MFA (multi-facotred) authentication. Further, it is recommended to read
- *       {@link com.azure.identity.UsernamePasswordCredential UsernamePasswordCredential JavaDocs} for more
- *       information about the credential usage.</td>
- *     </tr>
  *   </tbody>
  * </table>
  *
@@ -343,7 +333,6 @@
  * @see com.azure.identity.ClientCertificateCredential
  * @see com.azure.identity.InteractiveBrowserCredential
  * @see com.azure.identity.DeviceCodeCredential
- * @see com.azure.identity.UsernamePasswordCredential
  * @see com.azure.identity.AzureCliCredential
  * @see com.azure.identity.IntelliJCredential
  */

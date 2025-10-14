@@ -51,7 +51,7 @@ public final class HiveLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HiveLinkedServiceTypeProperties innerTypeProperties() {
+    HiveLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -379,6 +379,33 @@ public final class HiveLinkedService extends LinkedService {
             this.innerTypeProperties = new HiveLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withEnableSsl(enableSsl);
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().enableServerCertificateValidation();
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the HiveLinkedService object itself.
+     */
+    public HiveLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new HiveLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableServerCertificateValidation(enableServerCertificateValidation);
         return this;
     }
 

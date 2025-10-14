@@ -17,9 +17,9 @@ public class SystemScanRulesetsGet {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildSystemScanRulesetsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetsget.systemscanrulesetsget
+        // BEGIN:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-get.system-scan-rulesets-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = systemScanRulesetsClient.getWithResponse("AzureStorage", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.systemscanrulesetsget.systemscanrulesetsget
+        // END:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-get.system-scan-rulesets-get
     }
 }

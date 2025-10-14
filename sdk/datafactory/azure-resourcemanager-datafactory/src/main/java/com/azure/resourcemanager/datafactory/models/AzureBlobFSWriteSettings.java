@@ -120,12 +120,20 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (copyBehavior() != null) {
+            jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        }
         jsonWriter.writeArrayField("metadata", metadata(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("blockSizeInMB", this.blockSizeInMB);
+        if (this.blockSizeInMB != null) {
+            jsonWriter.writeUntypedField("blockSizeInMB", this.blockSizeInMB);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

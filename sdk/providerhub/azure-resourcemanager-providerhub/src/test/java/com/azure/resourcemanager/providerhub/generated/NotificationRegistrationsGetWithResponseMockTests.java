@@ -6,14 +6,13 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
 import com.azure.resourcemanager.providerhub.models.MessageScope;
 import com.azure.resourcemanager.providerhub.models.NotificationMode;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistration;
-import com.azure.resourcemanager.providerhub.models.ProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,25 +23,24 @@ public final class NotificationRegistrationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"notificationMode\":\"EventHub\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"ojuidjpuuyjucej\",\"kzoeovvtzejetj\",\"ln\"],\"notificationEndpoints\":[{\"notificationDestination\":\"juzkdbqz\",\"locations\":[\"rzvh\",\"jwtrhtgvgzp\",\"rrkolawjmjs\",\"wro\"]}],\"provisioningState\":\"Running\"},\"id\":\"xfzzzwyjafitlhgu\",\"name\":\"nuchlgmltxdwhmo\",\"type\":\"us\"}";
+            = "{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"ipcukdveks\"],\"notificationEndpoints\":[{\"notificationDestination\":\"duchvls\",\"locations\":[\"pibfdy\"]},{\"notificationDestination\":\"usspyszekbh\",\"locations\":[\"aaggkre\",\"bfrnuybffljfii\",\"reoagsqtaadus\"]},{\"notificationDestination\":\"xxfavsqwudohzilf\",\"locations\":[\"ikpsimsfeypof\"]}],\"provisioningState\":\"Running\"},\"id\":\"hyqgsdrmmttjx\",\"name\":\"phgerhsmvgoh\",\"type\":\"wzm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NotificationRegistration response = manager.notificationRegistrations()
-            .getWithResponse("jmvl", "yzgib", com.azure.core.util.Context.NONE)
+            .getWithResponse("dicxdw", "jfowxwy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(NotificationMode.EVENT_HUB, response.properties().notificationMode());
+        Assertions.assertEquals(NotificationMode.WEB_HOOK, response.properties().notificationMode());
         Assertions.assertEquals(MessageScope.REGISTERED_SUBSCRIPTIONS, response.properties().messageScope());
-        Assertions.assertEquals("ojuidjpuuyjucej", response.properties().includedEvents().get(0));
-        Assertions.assertEquals("juzkdbqz",
+        Assertions.assertEquals("ipcukdveks", response.properties().includedEvents().get(0));
+        Assertions.assertEquals("duchvls",
             response.properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("rzvh", response.properties().notificationEndpoints().get(0).locations().get(0));
-        Assertions.assertEquals(ProvisioningState.RUNNING, response.properties().provisioningState());
+        Assertions.assertEquals("pibfdy", response.properties().notificationEndpoints().get(0).locations().get(0));
     }
 }

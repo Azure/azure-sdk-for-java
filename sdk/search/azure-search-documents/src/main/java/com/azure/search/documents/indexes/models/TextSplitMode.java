@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
     /**
      * Split the text into individual pages.
      */
+    @Generated
     public static final TextSplitMode PAGES = fromString("pages");
 
     /**
      * Split the text into individual sentences.
      */
+    @Generated
     public static final TextSplitMode SENTENCES = fromString("sentences");
 
     /**
@@ -28,6 +31,7 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TextSplitMode() {
     }
@@ -38,6 +42,7 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
      * @param name a name to look for.
      * @return the corresponding TextSplitMode.
      */
+    @Generated
     public static TextSplitMode fromString(String name) {
         return fromString(name, TextSplitMode.class);
     }
@@ -47,6 +52,7 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
      * 
      * @return known TextSplitMode values.
      */
+    @Generated
     public static Collection<TextSplitMode> values() {
         return values(TextSplitMode.class);
     }

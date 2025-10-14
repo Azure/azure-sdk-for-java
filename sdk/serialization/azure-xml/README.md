@@ -22,7 +22,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-xml</artifactId>
-  <version>1.1.0</version>
+  <version>1.3.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -167,6 +167,13 @@ Get started with Azure libraries that are [built using Azure Core](https://azure
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
+### Android Support
+
+While the Azure SDKs for Java do not explicitly support Android, `azure-xml` is capable of being used in an Android
+application. However, for `azure-xml` to work on Android the Android application needs to add a dependency on
+[javax.xml.stream:stax-api](https://central.sonatype.com/artifact/javax.xml.stream/stax-api) which provides 
+`javax.xml.stream` to environments that don't have them (such as Android).
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
@@ -178,6 +185,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 5. Create new Pull Request
 
 <!-- links -->
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fserialization%2Fazure-xml%2FREADME.png)
+

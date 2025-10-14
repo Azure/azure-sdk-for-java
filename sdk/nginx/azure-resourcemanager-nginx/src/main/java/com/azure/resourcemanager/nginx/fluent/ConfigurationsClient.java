@@ -12,8 +12,9 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.nginx.fluent.models.AnalysisResultInner;
-import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationResponseInner;
 import com.azure.resourcemanager.nginx.models.AnalysisCreate;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationRequest;
 
 /**
  * An instance of this class provides access to all the operations defined in ConfigurationsClient.
@@ -30,7 +31,7 @@ public interface ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NginxConfigurationInner> list(String resourceGroupName, String deploymentName);
+    PagedIterable<NginxConfigurationResponseInner> list(String resourceGroupName, String deploymentName);
 
     /**
      * List the NGINX configuration of given NGINX deployment.
@@ -44,7 +45,8 @@ public interface ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NginxConfigurationInner> list(String resourceGroupName, String deploymentName, Context context);
+    PagedIterable<NginxConfigurationResponseInner> list(String resourceGroupName, String deploymentName,
+        Context context);
 
     /**
      * Get the NGINX configuration of given NGINX deployment.
@@ -60,7 +62,7 @@ public interface ConfigurationsClient {
      * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NginxConfigurationInner> getWithResponse(String resourceGroupName, String deploymentName,
+    Response<NginxConfigurationResponseInner> getWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, Context context);
 
     /**
@@ -76,7 +78,7 @@ public interface ConfigurationsClient {
      * @return the NGINX configuration of given NGINX deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxConfigurationInner get(String resourceGroupName, String deploymentName, String configurationName);
+    NginxConfigurationResponseInner get(String resourceGroupName, String deploymentName, String configurationName);
 
     /**
      * Create or update the NGINX configuration for given NGINX deployment.
@@ -91,7 +93,7 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner>
+    SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, String configurationName);
 
     /**
@@ -109,8 +111,8 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body,
+    SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationRequest body,
         Context context);
 
     /**
@@ -126,7 +128,8 @@ public interface ConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxConfigurationInner createOrUpdate(String resourceGroupName, String deploymentName, String configurationName);
+    NginxConfigurationResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
+        String configurationName);
 
     /**
      * Create or update the NGINX configuration for given NGINX deployment.
@@ -143,8 +146,8 @@ public interface ConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NginxConfigurationInner createOrUpdate(String resourceGroupName, String deploymentName, String configurationName,
-        NginxConfigurationInner body, Context context);
+    NginxConfigurationResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationRequest body, Context context);
 
     /**
      * Reset the NGINX configuration of given NGINX deployment to default.

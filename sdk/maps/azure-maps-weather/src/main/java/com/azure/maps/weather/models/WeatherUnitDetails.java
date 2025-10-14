@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,26 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
     /*
      * Rounded value.
      */
+    @Generated
     private Float value;
 
     /*
      * Type of unit for the returned value.
      */
+    @Generated
     private String unitLabel;
 
     /*
-     * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unittype) for details.
+     * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer
+     * to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unit-types) for details.
      */
+    @Generated
     private UnitType unitType;
 
     /**
      * Set default WeatherUnitDetails constructor to private
      */
+    @Generated
     private WeatherUnitDetails() {
     }
 
@@ -42,6 +48,7 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
      *
      * @return the value value.
      */
+    @Generated
     public Float getValue() {
         return this.value;
     }
@@ -51,6 +58,7 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
      *
      * @return the unitLabel value.
      */
+    @Generated
     public String getUnitLabel() {
         return this.unitLabel;
     }
@@ -58,10 +66,11 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
     /**
      * Get the unitType property: Numeric ID value associated with the type of unit being displayed. Can be used for
      * unit translation. Please refer to [Weather services in Azure
-     * Maps](/azure/azure-maps/weather-services-concepts#unittype) for details.
+     * Maps](/azure/azure-maps/weather-services-concepts#unit-types) for details.
      *
      * @return the unitType value.
      */
+    @Generated
     public UnitType getUnitType() {
         return this.unitType;
     }
@@ -69,40 +78,42 @@ public final class WeatherUnitDetails implements JsonSerializable<WeatherUnitDet
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("value", this.value);
         jsonWriter.writeStringField("unit", this.unitLabel);
-        jsonWriter.writeNumberField("unitType", this.unitType == null ? null : this.unitType.toInt());
+        jsonWriter.writeNumberField("unitType", this.unitType == null ? null : this.unitType.getValue());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of WeatherValue from the JsonReader.
+     * Reads an instance of WeatherUnitDetails from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of WeatherValue if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of WeatherUnitDetails if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WeatherValue.
+     * @throws IOException If an error occurs while reading the WeatherUnitDetails.
      */
+    @Generated
     public static WeatherUnitDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            WeatherUnitDetails deserializedWeatherValue = new WeatherUnitDetails();
+            WeatherUnitDetails deserializedWeatherUnitDetails = new WeatherUnitDetails();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
-                    deserializedWeatherValue.value = reader.getNullable(JsonReader::getFloat);
+                    deserializedWeatherUnitDetails.value = reader.getNullable(JsonReader::getFloat);
                 } else if ("unit".equals(fieldName)) {
-                    deserializedWeatherValue.unitLabel = reader.getString();
+                    deserializedWeatherUnitDetails.unitLabel = reader.getString();
                 } else if ("unitType".equals(fieldName)) {
-                    deserializedWeatherValue.unitType = UnitType.fromInt(reader.getInt());
+                    deserializedWeatherUnitDetails.unitType = UnitType.fromValue(reader.getInt());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedWeatherValue;
+            return deserializedWeatherUnitDetails;
         });
     }
 }

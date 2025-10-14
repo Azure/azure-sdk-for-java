@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class IpamPoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpamPools_Update.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/IpamPools_Update.json
      */
     /**
      * Sample code: IpamPools_Update.
@@ -22,6 +22,6 @@ public final class IpamPoolsUpdateSamples {
             .manager()
             .serviceClient()
             .getIpamPools()
-            .updateWithResponse("rg1", "TestNetworkManager", "TestPool", null, com.azure.core.util.Context.NONE);
+            .updateWithResponse("rg1", "TestNetworkManager", "TestPool", null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -26,6 +26,7 @@
 import argparse
 from datetime import timedelta
 import os
+import glob
 import time
 import json
 from typing import Dict, Iterable, Set
@@ -36,10 +37,10 @@ default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'io.clientcore:clientcore-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -51,6 +52,15 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
 sdk_string = "/sdk/"
+
+# Normally, this wouldn't be necessary but because sdk/core/ci.v2.yml exists it's necessary
+def proj_path_has_yml(proj_path):
+  file_pattern = "ci*.yml"
+  matching_paths = glob.glob(file_pattern, root_dir=proj_path)
+  if matching_paths:
+    return True
+  else:
+    return False
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
@@ -113,12 +123,18 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
         # the directory path needs to be added to the sparse checkout, otherwise it's one
         # directory up.
         proj_path = os.path.normpath(root_path + p.directory_path )
-        proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
-        if os.path.exists(proj_path_with_yml):
-            sparse_checkout_directory = p.directory_path
+        if proj_path_has_yml(proj_path):
+            yml_directory = p.directory_path
         else:
-            sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+            yml_directory = '/'.join(p.directory_path.split('/')[0:-1])
 
+        # This is temporary, the sparse checkout directories should be the same directory where the yml
+        # file lives but needs to be the sdk/<serviceDirectory>. The reason being that there are directories
+        # whose ci.yml is in the library directory but there are dependencies on other directories in the
+        # service directory, outside of their library directory. ex. several communication libraries
+        # use sdk/communication/test-resources or sdk/clientcore/annotation-processor's ci.yml file
+        # needs sdk/clientcore/annotation-processor-test
+        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
         sparse_checkout_directories.add(sparse_checkout_directory)
 
         # The ServiceDirectories list should only ever contain the list of service
@@ -127,8 +143,8 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
             # Sparse checkout directories can contain directories that aren't service directories.
             # (aka. /common). Any service directory will start with "/sdk/", everything else is
             # would be attributed to supporting libraries (ex. perf-test-core).
-            if sdk_string in sparse_checkout_directory:
-                service_directory = sparse_checkout_directory.replace(sdk_string, "")
+            if sdk_string in yml_directory:
+                service_directory = yml_directory.replace(sdk_string, "")
                 service_directories.add(service_directory)
 
     # output the SparseCheckoutDirectories environment variable
@@ -170,6 +186,9 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     if set_skip_linting_projects:
         skip_linting_projects = []
         for maven_identifier in sorted([p.identifier for p in source_projects]):
+            # Don't skip linting for parent POMs or linting-extensions.
+            if maven_identifier in parent_pom_identifiers or maven_identifier == 'io.clientcore:linting-extensions':
+                continue
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
         print('setting env variable {} = {}'.format(set_skip_linting_projects, skip_linting_projects))
@@ -240,12 +259,11 @@ def create_project_for_pom(pom_path: str, artifacts_list_identifiers: list, arti
     directory_path = module_path[:module_path.rindex('/')]
     parent_pom = get_parent_pom(tree_root)
 
-    # If this is one of the parent POMs, retain it as a project.
-    if project_identifier in parent_pom_identifiers:
-        return Project(project_identifier, directory_path, module_path, parent_pom)
-
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in artifacts_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
+    if not project_identifier in artifacts_list_identifiers \
+        and not is_spring_child_pom(tree_root) \
+        and not (parent_pom in valid_parents or project_identifier in parent_pom_identifiers) \
+        and not project_identifier == 'io.clientcore:linting-extensions': # Spring pom's parent can be empty.
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
@@ -284,11 +302,24 @@ def resolve_dependent_project(pom_identifier: str, dependent_modules: Set[str], 
 # Function which resolves the dependencies of the project.
 def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[str], projects: Dict[str, Project]):
     if pom_identifier in projects:
-        for dependency in projects[pom_identifier].dependencies:
+        project = projects[pom_identifier]
+
+        # Add the dependencies for the project.
+        for dependency in project.dependencies:
             # Only continue if the project's dependencies haven't already been resolved.
             if not dependency in dependency_modules:
                 dependency_modules.add(dependency)
                 dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
+
+        # Add the dependencies of the parent POM.
+        # These are added since From Source the parent POMs are also built.
+        if project.parent_pom is not None and project.parent_pom in projects:
+            parent_project = projects[project.parent_pom]
+            for dependency in parent_project.dependencies:
+                # Only continue if the parent's dependencies haven't already been resolved.
+                if not dependency in dependency_modules:
+                    dependency_modules.add(dependency)
+                    dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
 
     return dependency_modules
 
@@ -314,6 +345,10 @@ def add_source_projects(source_projects: Set[Project], project_identifiers: Iter
 def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -> bool:
     while project.parent_pom is not None:
         if project.parent_pom == 'com.azure:azure-client-sdk-parent':
+            return True
+        if project.parent_pom == 'com.azure.v2:azure-client-sdk-parent':
+            return True
+        if project.parent_pom == 'io.clientcore:clientcore-parent':
             return True
         project = projects.get(project.parent_pom, default_project)
 

@@ -47,7 +47,7 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
      * 
      * @return the innerProperties value.
      */
-    private StaticDeliveryAttributeMappingProperties innerProperties() {
+    StaticDeliveryAttributeMappingProperties innerProperties() {
         return this.innerProperties;
     }
 

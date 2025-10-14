@@ -65,9 +65,9 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
             .doOnError(e -> System.out.printf("Pre-backup check failed with error: %s.%n", e.getMessage()))
             .doOnNext(pollResponse ->
                 System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
-            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .flatMap(AsyncPollResponse::getFinalResult)
-            .subscribe(unused -> System.out.printf("Pre-backup check completed successfully.%n"));
+            .last()
+            .subscribe(pollResponse ->
+                System.out.printf("Pre-backup check completed with status: %s.%n", pollResponse.getStatus()));
         // END: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreBackup#String-String
     }
 

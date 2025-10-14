@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
     /*
      * The calculated ranking for the current request.
      */
+    @Generated
     private List<PersonalizerRankedAction> ranking;
 
     /*
      * The eventId for the round trip from request to response.
      */
+    @Generated
     private String eventId;
 
     /*
@@ -33,11 +36,13 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
      * This is the action your application should display, and for which to report the reward.
      * This might not be the first found in 'ranking'.
      */
+    @Generated
     private String rewardActionId;
 
     /**
      * Creates an instance of PersonalizerRankResult class.
      */
+    @Generated
     public PersonalizerRankResult() {
     }
 
@@ -46,6 +51,7 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
      * 
      * @return the ranking value.
      */
+    @Generated
     public List<PersonalizerRankedAction> getRanking() {
         return this.ranking;
     }
@@ -55,6 +61,7 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
      * 
      * @return the eventId value.
      */
+    @Generated
     public String getEventId() {
         return this.eventId;
     }
@@ -66,6 +73,7 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
      * 
      * @return the rewardActionId value.
      */
+    @Generated
     public String getRewardActionId() {
         return this.rewardActionId;
     }
@@ -73,6 +81,7 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,6 +96,7 @@ public final class PersonalizerRankResult implements JsonSerializable<Personaliz
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerRankResult.
      */
+    @Generated
     public static PersonalizerRankResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRankResult deserializedPersonalizerRankResult = new PersonalizerRankResult();

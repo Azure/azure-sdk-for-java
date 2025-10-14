@@ -6,25 +6,30 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DynamicPoolConfiguration;
-import com.azure.resourcemanager.appcontainers.models.ExecutionType;
+import com.azure.resourcemanager.appcontainers.models.LifecycleConfiguration;
+import com.azure.resourcemanager.appcontainers.models.LifecycleType;
 import org.junit.jupiter.api.Assertions;
 
 public final class DynamicPoolConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicPoolConfiguration model
-            = BinaryData.fromString("{\"executionType\":\"Timed\",\"cooldownPeriodInSeconds\":746023712}")
-                .toObject(DynamicPoolConfiguration.class);
-        Assertions.assertEquals(ExecutionType.TIMED, model.executionType());
-        Assertions.assertEquals(746023712, model.cooldownPeriodInSeconds());
+        DynamicPoolConfiguration model = BinaryData.fromString(
+            "{\"lifecycleConfiguration\":{\"lifecycleType\":\"Timed\",\"cooldownPeriodInSeconds\":1020609518,\"maxAlivePeriodInSeconds\":1222898954}}")
+            .toObject(DynamicPoolConfiguration.class);
+        Assertions.assertEquals(LifecycleType.TIMED, model.lifecycleConfiguration().lifecycleType());
+        Assertions.assertEquals(1020609518, model.lifecycleConfiguration().cooldownPeriodInSeconds());
+        Assertions.assertEquals(1222898954, model.lifecycleConfiguration().maxAlivePeriodInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicPoolConfiguration model = new DynamicPoolConfiguration().withExecutionType(ExecutionType.TIMED)
-            .withCooldownPeriodInSeconds(746023712);
+        DynamicPoolConfiguration model = new DynamicPoolConfiguration()
+            .withLifecycleConfiguration(new LifecycleConfiguration().withLifecycleType(LifecycleType.TIMED)
+                .withCooldownPeriodInSeconds(1020609518)
+                .withMaxAlivePeriodInSeconds(1222898954));
         model = BinaryData.fromObject(model).toObject(DynamicPoolConfiguration.class);
-        Assertions.assertEquals(ExecutionType.TIMED, model.executionType());
-        Assertions.assertEquals(746023712, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(LifecycleType.TIMED, model.lifecycleConfiguration().lifecycleType());
+        Assertions.assertEquals(1020609518, model.lifecycleConfiguration().cooldownPeriodInSeconds());
+        Assertions.assertEquals(1222898954, model.lifecycleConfiguration().maxAlivePeriodInSeconds());
     }
 }

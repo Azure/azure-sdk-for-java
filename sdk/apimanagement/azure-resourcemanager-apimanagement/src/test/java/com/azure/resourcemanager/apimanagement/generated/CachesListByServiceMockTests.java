@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.CacheContract;
@@ -22,21 +22,21 @@ public final class CachesListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"ajlwmqcycab\",\"connectionString\":\"amkkhdhpmkxdujk\",\"useFromLocation\":\"puqzdy\",\"resourceId\":\"yws\"},\"id\":\"arpzhry\",\"name\":\"ezxiz\",\"type\":\"syxbfjilb\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"kaxgbi\",\"connectionString\":\"pgo\",\"useFromLocation\":\"qlktthbmrrmtrx\",\"resourceId\":\"mpdvrjzwa\"},\"id\":\"pe\",\"name\":\"ajccs\",\"type\":\"juzmu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CacheContract> response = manager.caches()
-            .listByService("gsbfeiirpnjy", "llfkchhgs", 848675846, 1457997048, com.azure.core.util.Context.NONE);
+            .listByService("fkxfmuwdbv", "tqavouymkdeuqxl", 202201835, 1942143919, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ajlwmqcycab", response.iterator().next().description());
-        Assertions.assertEquals("amkkhdhpmkxdujk", response.iterator().next().connectionString());
-        Assertions.assertEquals("puqzdy", response.iterator().next().useFromLocation());
-        Assertions.assertEquals("yws", response.iterator().next().resourceId());
+        Assertions.assertEquals("kaxgbi", response.iterator().next().description());
+        Assertions.assertEquals("pgo", response.iterator().next().connectionString());
+        Assertions.assertEquals("qlktthbmrrmtrx", response.iterator().next().useFromLocation());
+        Assertions.assertEquals("mpdvrjzwa", response.iterator().next().resourceId());
     }
 }

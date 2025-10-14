@@ -14,21 +14,20 @@ public final class ResourceCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"jrholuqw\",\"name\":\"usxxhdodpjwybl\",\"type\":\"tbdmvsbyidae\"},{\"id\":\"q\",\"name\":\"vekmkwjfbotloggd\",\"type\":\"s\"},{\"id\":\"ursuivuxcjk\",\"name\":\"oqwczsyi\",\"type\":\"rizfwihvaang\"}],\"count\":546647798811557790,\"nextLink\":\"rfdmfdvbbaexx\"}")
+            "{\"value\":[{\"id\":\"uvjhxmnrqstjc\",\"name\":\"etwmlgicvnp\",\"type\":\"vdhgjnaqyqip\"}],\"count\":4289262165384382383,\"nextLink\":\"cdsvmwbitek\"}")
             .toObject(ResourceCollectionInner.class);
-        Assertions.assertEquals(546647798811557790L, model.count());
-        Assertions.assertEquals("rfdmfdvbbaexx", model.nextLink());
+        Assertions.assertEquals(4289262165384382383L, model.count());
+        Assertions.assertEquals("cdsvmwbitek", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCollectionInner model = new ResourceCollectionInner()
-            .withValue(Arrays.asList(new ResourceCollectionValueItem(), new ResourceCollectionValueItem(),
-                new ResourceCollectionValueItem()))
-            .withCount(546647798811557790L)
-            .withNextLink("rfdmfdvbbaexx");
+        ResourceCollectionInner model
+            = new ResourceCollectionInner().withValue(Arrays.asList(new ResourceCollectionValueItem()))
+                .withCount(4289262165384382383L)
+                .withNextLink("cdsvmwbitek");
         model = BinaryData.fromObject(model).toObject(ResourceCollectionInner.class);
-        Assertions.assertEquals(546647798811557790L, model.count());
-        Assertions.assertEquals("rfdmfdvbbaexx", model.nextLink());
+        Assertions.assertEquals(4289262165384382383L, model.count());
+        Assertions.assertEquals("cdsvmwbitek", model.nextLink());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     /*
      * Integration runtime properties.
      */
+    @Generated
     private IntegrationRuntime properties;
 
     /**
      * Creates an instance of IntegrationRuntimeDebugResource class.
      */
+    @Generated
     public IntegrationRuntimeDebugResource() {
     }
 
@@ -31,6 +34,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
      * 
      * @return the properties value.
      */
+    @Generated
     public IntegrationRuntime getProperties() {
         return this.properties;
     }
@@ -41,6 +45,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeDebugResource object itself.
      */
+    @Generated
     public IntegrationRuntimeDebugResource setProperties(IntegrationRuntime properties) {
         this.properties = properties;
         return this;
@@ -49,6 +54,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IntegrationRuntimeDebugResource setName(String name) {
         super.setName(name);
@@ -58,6 +64,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeDebugResource.
      */
+    @Generated
     public static IntegrationRuntimeDebugResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeDebugResource deserializedIntegrationRuntimeDebugResource

@@ -28,8 +28,8 @@ import java.util.Map;
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * AgentPools_Create.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/AgentPools_Create.
+     * json
      */
     /**
      * Sample code: Create or update Kubernetes cluster agent pool.
@@ -44,7 +44,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
             .withExistingKubernetesCluster("resourceGroupName", "kubernetesClusterName")
             .withCount(3L)
             .withMode(AgentPoolMode.SYSTEM)
-            .withVmSkuName("NC_XXXX")
+            .withVmSkuName("NC_P46_224_v1")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withExtendedLocation(new ExtendedLocation().withName(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
@@ -66,7 +66,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withPluginType(KubernetesPluginType.MACVLAN))))
             .withAvailabilityZones(Arrays.asList("1", "2", "3"))
             .withLabels(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
-            .withTaints(Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true")))
+            .withTaints(
+                Arrays.asList(new KubernetesLabel().withKey("fakeTokenPlaceholder").withValue("true:NoSchedule")))
             .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("1"))
             .create();
     }

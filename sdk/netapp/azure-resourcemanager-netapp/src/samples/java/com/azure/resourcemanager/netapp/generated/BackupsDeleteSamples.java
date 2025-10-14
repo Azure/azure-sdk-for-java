@@ -9,8 +9,9 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * BackupsUnderBackupVault_Delete.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderBackupVault_Delete.
+     * json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Delete.

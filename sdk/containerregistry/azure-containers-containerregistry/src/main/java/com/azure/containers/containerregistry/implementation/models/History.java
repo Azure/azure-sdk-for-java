@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class History implements JsonSerializable<History> {
     /*
      * The raw v1 compatibility information
      */
+    @Generated
     private String v1Compatibility;
 
     /**
      * Creates an instance of History class.
      */
+    @Generated
     public History() {
     }
 
@@ -32,6 +35,7 @@ public final class History implements JsonSerializable<History> {
      * 
      * @return the v1Compatibility value.
      */
+    @Generated
     public String getV1Compatibility() {
         return this.v1Compatibility;
     }
@@ -42,6 +46,7 @@ public final class History implements JsonSerializable<History> {
      * @param v1Compatibility the v1Compatibility value to set.
      * @return the History object itself.
      */
+    @Generated
     public History setV1Compatibility(String v1Compatibility) {
         this.v1Compatibility = v1Compatibility;
         return this;
@@ -50,6 +55,7 @@ public final class History implements JsonSerializable<History> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class History implements JsonSerializable<History> {
      * JSON null.
      * @throws IOException If an error occurs while reading the History.
      */
+    @Generated
     public static History fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             History deserializedHistory = new History();

@@ -30,7 +30,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * Specifies information about the operating system disk used by the virtual
      * machines in the scale set. For more information about disks, see [About disks
      * and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+     * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     private VirtualMachineScaleSetOSDisk osDisk;
 
@@ -38,7 +38,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * Specifies the parameters that are used to add data disks to the virtual
      * machines in the scale set. For more information about disks, see [About disks
      * and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+     * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
@@ -84,7 +84,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * Get the osDisk property: Specifies information about the operating system disk used by the virtual
      * machines in the scale set. For more information about disks, see [About disks
      * and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+     * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      * 
      * @return the osDisk value.
      */
@@ -96,7 +96,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * Set the osDisk property: Specifies information about the operating system disk used by the virtual
      * machines in the scale set. For more information about disks, see [About disks
      * and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+     * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      * 
      * @param osDisk the osDisk value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
@@ -110,7 +110,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * Get the dataDisks property: Specifies the parameters that are used to add data disks to the virtual
      * machines in the scale set. For more information about disks, see [About disks
      * and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+     * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      * 
      * @return the dataDisks value.
      */
@@ -122,7 +122,7 @@ public final class VirtualMachineScaleSetStorageProfile
      * Set the dataDisks property: Specifies the parameters that are used to add data disks to the virtual
      * machines in the scale set. For more information about disks, see [About disks
      * and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
+     * machines](https://learn.microsoft.com/azure/virtual-machines/managed-disks-overview).
      * 
      * @param dataDisks the dataDisks value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
@@ -152,23 +152,6 @@ public final class VirtualMachineScaleSetStorageProfile
     public VirtualMachineScaleSetStorageProfile withDiskControllerType(DiskControllerTypes diskControllerType) {
         this.diskControllerType = diskControllerType;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (imageReference() != null) {
-            imageReference().validate();
-        }
-        if (osDisk() != null) {
-            osDisk().validate();
-        }
-        if (dataDisks() != null) {
-            dataDisks().forEach(e -> e.validate());
-        }
     }
 
     /**

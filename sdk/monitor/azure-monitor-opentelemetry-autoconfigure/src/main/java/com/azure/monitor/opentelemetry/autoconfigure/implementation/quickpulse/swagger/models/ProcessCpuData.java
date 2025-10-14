@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
     /*
      * Process name.
      */
+    @Generated
     private String processName;
 
     /*
      * CPU consumption percentage.
      */
+    @Generated
     private int cpuPercentage;
 
     /**
      * Creates an instance of ProcessCpuData class.
      */
+    @Generated
     public ProcessCpuData() {
     }
 
@@ -37,6 +41,7 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
      * 
      * @return the processName value.
      */
+    @Generated
     public String getProcessName() {
         return this.processName;
     }
@@ -47,6 +52,7 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
      * @param processName the processName value to set.
      * @return the ProcessCpuData object itself.
      */
+    @Generated
     public ProcessCpuData setProcessName(String processName) {
         this.processName = processName;
         return this;
@@ -57,6 +63,7 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
      * 
      * @return the cpuPercentage value.
      */
+    @Generated
     public int getCpuPercentage() {
         return this.cpuPercentage;
     }
@@ -67,6 +74,7 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
      * @param cpuPercentage the cpuPercentage value to set.
      * @return the ProcessCpuData object itself.
      */
+    @Generated
     public ProcessCpuData setCpuPercentage(int cpuPercentage) {
         this.cpuPercentage = cpuPercentage;
         return this;
@@ -75,6 +83,7 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class ProcessCpuData implements JsonSerializable<ProcessCpuData> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ProcessCpuData.
      */
+    @Generated
     public static ProcessCpuData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProcessCpuData deserializedProcessCpuData = new ProcessCpuData();

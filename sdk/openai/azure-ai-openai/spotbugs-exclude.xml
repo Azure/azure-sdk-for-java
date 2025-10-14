@@ -3,99 +3,11 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.openai.implementation.MultipartFormDataHelper" />
-      <Class name="com.azure.ai.openai.implementation.models.FileListResponse" />
-      <Class name="com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch" />
-      <Class name="com.azure.ai.openai.models.AudioTranscription" />
-      <Class name="com.azure.ai.openai.models.AudioTranscriptionOptions" />
-      <Class name="com.azure.ai.openai.models.AudioTranscriptionSegment" />
-      <Class name="com.azure.ai.openai.models.AudioTranslation" />
-      <Class name="com.azure.ai.openai.models.AudioTranslationSegment" />
-      <Class name="com.azure.ai.openai.models.AzureChatExtensionRetrievedDocument" />
-      <Class name="com.azure.ai.openai.models.AzureChatExtensionsMessageContext" />
-      <Class name="com.azure.ai.openai.models.AzureCosmosDBChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.AzureCosmosDBFieldMappingOptions" />
-      <Class name="com.azure.ai.openai.models.AzureGroundingEnhancement" />
-      <Class name="com.azure.ai.openai.models.AzureGroundingEnhancementLine" />
-      <Class name="com.azure.ai.openai.models.AzureGroundingEnhancementLineSpan" />
-      <Class name="com.azure.ai.openai.models.AzureSearchChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.AzureSearchIndexFieldMappingOptions" />
-      <Class name="com.azure.ai.openai.models.Batch" />
-      <Class name="com.azure.ai.openai.models.BatchCreateRequest" />
-      <Class name="com.azure.ai.openai.models.BatchErrorList" />
-      <Class name="com.azure.ai.openai.models.ChatChoiceLogProbabilityInfo" />
-      <Class name="com.azure.ai.openai.models.ChatCompletions" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsOptions" />
-      <Class name="com.azure.ai.openai.models.ChatRequestAssistantMessage" />
-      <Class name="com.azure.ai.openai.models.ChatRequestSystemMessage" />
-      <Class name="com.azure.ai.openai.models.ChatRequestToolMessage" />
-      <Class name="com.azure.ai.openai.models.ChatRequestUserMessage" />
-      <Class name="com.azure.ai.openai.models.ChatResponseMessage" />
-      <Class name="com.azure.ai.openai.models.ChatTokenLogProbabilityInfo" />
-      <Class name="com.azure.ai.openai.models.ChatTokenLogProbabilityResult" />
-      <Class name="com.azure.ai.openai.models.CompleteUploadRequest" />
-      <Class name="com.azure.ai.openai.models.Completions" />
-      <Class name="com.azure.ai.openai.models.CompletionsLogProbabilityModel" />
-      <Class name="com.azure.ai.openai.models.CompletionsOptions" />
-      <Class name="com.azure.ai.openai.models.ContentFilterCompletionTextSpanResult" />
-      <Class name="com.azure.ai.openai.models.ContentFilterDetailedResults" />
-      <Class name="com.azure.ai.openai.models.DataFileDetails" />
-      <Class name="com.azure.ai.openai.models.ElasticsearchChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.ElasticsearchIndexFieldMappingOptions" />
-      <Class name="com.azure.ai.openai.models.EmbeddingItem" />
-      <Class name="com.azure.ai.openai.models.Embeddings" />
-      <Class name="com.azure.ai.openai.models.EmbeddingsOptions" />
-      <Class name="com.azure.ai.openai.models.FileDetails" />
-      <Class name="com.azure.ai.openai.models.FunctionDefinition" />
-      <Class name="com.azure.ai.openai.models.ImageGenerations" />
-      <Class name="com.azure.ai.openai.models.MongoDBChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.MongoDBChatExtensionParametersFieldsMapping" />
-      <Class name="com.azure.ai.openai.models.PageableList" />
-      <Class name="com.azure.ai.openai.models.PineconeChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.PineconeFieldMappingOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.openai.OpenAIClientBuilder" />
-      <Class name="com.azure.ai.openai.models.AudioTranscriptionOptions" />
-      <Class name="com.azure.ai.openai.models.AudioTranslationOptions" />
-      <Class name="com.azure.ai.openai.models.AzureCosmosDBChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.AzureCosmosDBFieldMappingOptions" />
-      <Class name="com.azure.ai.openai.models.AzureSearchChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.AzureSearchIndexFieldMappingOptions" />
-      <Class name="com.azure.ai.openai.models.BatchCreateRequest" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsOptions" />
-      <Class name="com.azure.ai.openai.models.ChatRequestAssistantMessage" />
-      <Class name="com.azure.ai.openai.models.ChatRequestSystemMessage" />
-      <Class name="com.azure.ai.openai.models.ChatRequestToolMessage" />
-      <Class name="com.azure.ai.openai.models.ChatRequestUserMessage" />
-      <Class name="com.azure.ai.openai.models.CompleteUploadRequest" />
-      <Class name="com.azure.ai.openai.models.CompletionsOptions" />
-      <Class name="com.azure.ai.openai.models.DataFileDetails" />
-      <Class name="com.azure.ai.openai.models.ElasticsearchChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.ElasticsearchIndexFieldMappingOptions" />
-      <Class name="com.azure.ai.openai.models.EmbeddingsOptions" />
-      <Class name="com.azure.ai.openai.models.FileDetails" />
-      <Class name="com.azure.ai.openai.models.FunctionDefinition" />
-      <Class name="com.azure.ai.openai.models.MongoDBChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.MongoDBChatExtensionParametersFieldsMapping" />
-      <Class name="com.azure.ai.openai.models.PineconeChatExtensionParameters" />
-      <Class name="com.azure.ai.openai.models.PineconeFieldMappingOptions" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Or>
       <Class name="com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper" />
       <Class name="com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper" />
+      <Class name="com.azure.ai.openai.responses.implementation.accesshelpers.CreateResponsesRequestAccessHelper" />
     </Or>
   </Match>
   <Match>
@@ -110,25 +22,13 @@
       <Class name="com.azure.ai.openai.models.OpenAIFile" />
       <Class name="com.azure.ai.openai.models.PageableList" />
       <Class name="com.azure.ai.openai.models.UploadPart" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
-    <Or>
-      <Class name="com.azure.ai.openai.OpenAIAsyncClient" />
-      <Class name="com.azure.ai.openai.OpenAIClient" />
+      <Class name="com.azure.ai.openai.responses.models.DeleteResponseResponse" />
+      <Class name="com.azure.ai.openai.responses.models.ResponsesInputItemList" />
+      <Class name="com.azure.ai.openai.responses.models.ResponsesResponse" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="UUF_UNUSED_FIELD" />
     <Class name="com.azure.ai.openai.models.EmbeddingItem" />
-  </Match>
-  <Match>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Or>
-      <Class name="com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction" />
-      <Class name="com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema" />
-      <Class name="com.azure.ai.openai.models.FunctionDefinition" />
-    </Or>
   </Match>
 </FindBugsFilter>

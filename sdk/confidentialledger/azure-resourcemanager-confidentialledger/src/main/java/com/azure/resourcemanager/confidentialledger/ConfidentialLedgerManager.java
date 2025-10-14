@@ -22,19 +22,23 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confidentialledger.fluent.ConfidentialLedgerManagementClient;
 import com.azure.resourcemanager.confidentialledger.implementation.ConfidentialLedgerManagementClientBuilder;
 import com.azure.resourcemanager.confidentialledger.implementation.LedgersImpl;
+import com.azure.resourcemanager.confidentialledger.implementation.ManagedCcfsImpl;
 import com.azure.resourcemanager.confidentialledger.implementation.OperationsImpl;
 import com.azure.resourcemanager.confidentialledger.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.confidentialledger.models.Ledgers;
+import com.azure.resourcemanager.confidentialledger.models.ManagedCcfs;
 import com.azure.resourcemanager.confidentialledger.models.Operations;
 import com.azure.resourcemanager.confidentialledger.models.ResourceProviders;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -48,6 +52,8 @@ public final class ConfidentialLedgerManager {
     private ResourceProviders resourceProviders;
 
     private Ledgers ledgers;
+
+    private ManagedCcfs managedCcfs;
 
     private final ConfidentialLedgerManagementClient clientObject;
 
@@ -101,6 +107,9 @@ public final class ConfidentialLedgerManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-confidentialledger.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -208,12 +217,14 @@ public final class ConfidentialLedgerManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.confidentialledger")
                 .append("/")
-                .append("1.0.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -293,6 +304,18 @@ public final class ConfidentialLedgerManager {
             this.ledgers = new LedgersImpl(clientObject.getLedgers(), this);
         }
         return ledgers;
+    }
+
+    /**
+     * Gets the resource collection API of ManagedCcfs. It manages ManagedCcf.
+     * 
+     * @return Resource collection API of ManagedCcfs.
+     */
+    public ManagedCcfs managedCcfs() {
+        if (this.managedCcfs == null) {
+            this.managedCcfs = new ManagedCcfsImpl(clientObject.getManagedCcfs(), this);
+        }
+        return managedCcfs;
     }
 
     /**

@@ -13,15 +13,15 @@ public final class IscsiTargetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiTargetInfo model = BinaryData.fromString(
-            "{\"targetIqn\":\"avxbniwdjswztsdb\",\"targetPortalHostname\":\"nxytxh\",\"targetPortalPort\":2031325450,\"provisioningState\":\"Pending\",\"status\":\"Unknown\"}")
+            "{\"targetIqn\":\"ocmnyyazttbtwwrq\",\"targetPortalHostname\":\"edckzywbiexzfey\",\"targetPortalPort\":2061798656,\"provisioningState\":\"Deleting\",\"status\":\"Stopped (deallocated)\"}")
             .toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.UNKNOWN, model.status());
+        Assertions.assertEquals(OperationalStatus.STOPPED_DEALLOCATED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.UNKNOWN);
+        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.STOPPED_DEALLOCATED);
         model = BinaryData.fromObject(model).toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.UNKNOWN, model.status());
+        Assertions.assertEquals(OperationalStatus.STOPPED_DEALLOCATED, model.status());
     }
 }

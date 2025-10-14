@@ -13,16 +13,20 @@ import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +43,16 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 import static org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule.OAUTHBEARER_MECHANISM;
 import static org.springframework.util.StringUtils.delimitedListToStringArray;
 
-abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor {
+abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostProcessor, ApplicationContextAware {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractKafkaPropertiesBeanPostProcessor.class);
     static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
     static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
     static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
+    protected ApplicationContext applicationContext;
     protected static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
     private static final Map<String, String> KAFKA_OAUTH_CONFIGS;
     private static final String LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE = "OAUTHBEARER authentication property {} will be configured as {} to support Azure Identity credentials.";
@@ -56,25 +62,25 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         + " And configure Kafka bootstrap servers instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.";
 
     static {
-        Map<String, String> configs = new HashMap<>();
-        configs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
-        configs.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        configs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
-        KAFKA_OAUTH_CONFIGS = Collections.unmodifiableMap(configs);
+        KAFKA_OAUTH_CONFIGS = Map.of(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL, SASL_MECHANISM,
+            SASL_MECHANISM_OAUTH, SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
     }
 
-    private final AzureGlobalProperties azureGlobalProperties;
-
-    AbstractKafkaPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        this.azureGlobalProperties = azureGlobalProperties;
-    }
+    private AzureGlobalProperties azureGlobalProperties;
 
     @SuppressWarnings("unchecked")
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (needsPostProcess(bean)) {
-            T properties = (T) bean;
+            ObjectProvider<AzureGlobalProperties> beanProvider = applicationContext.getBeanProvider(AzureGlobalProperties.class);
+            azureGlobalProperties = beanProvider.getIfAvailable();
+            if (azureGlobalProperties == null) {
+                LOGGER.debug("Cannot find a bean of type AzureGlobalProperties, "
+                    + "Spring Cloud Azure will skip performing JAAS enhancements on the {} bean.", beanName);
+                return bean;
+            }
 
+            T properties = (T) bean;
             replaceAzurePropertiesWithJaas(getMergedProducerProperties(properties), getRawProducerProperties(properties));
             replaceAzurePropertiesWithJaas(getMergedConsumerProperties(properties), getRawConsumerProperties(properties));
             replaceAzurePropertiesWithJaas(getMergedAdminProperties(properties), getRawAdminProperties(properties));
@@ -128,6 +134,11 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     protected abstract boolean needsPostProcess(Object bean);
 
     protected abstract Logger getLogger();
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     /**
      * Process Kafka Spring properties for any customized operations.
@@ -242,17 +253,29 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
      * Configure Spring Cloud Azure user-agent for Kafka client. This method is idempotent to avoid configuring UA repeatedly.
      */
     static synchronized void configureKafkaUserAgent() {
-        Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
-        if (dataMethod != null) {
-            ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-            ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
-            if (apiVersionsRequestData != null) {
-                String clientSoftwareName = apiVersionsRequestData.clientSoftwareName();
-                if (clientSoftwareName != null && !clientSoftwareName.contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH)) {
-                    apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
-                        + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
-                    apiVersionsRequestData.setClientSoftwareVersion(VERSION);
-                }
+        ApiVersionsRequestData apiVersionsRequestData = null;
+        // In kafka-clients 3.9.1 and later the ApiVersionsRequestData is duplicated for each new ApiVersionsRequest.
+        // Need to mutate the shared field that gets duplicated.
+        Field defaultDataField = ReflectionUtils.findField(ApiVersionsRequest.Builder.class, "DEFAULT_DATA");
+        if (defaultDataField != null) {
+            ReflectionUtils.makeAccessible(defaultDataField);
+            apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.getField(defaultDataField, null);
+        } else {
+            Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
+            if (dataMethod != null) {
+                ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+                apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod,
+                    apiVersionsRequest);
+            }
+        }
+
+        if (apiVersionsRequestData != null) {
+            String clientSoftwareName = apiVersionsRequestData.clientSoftwareName();
+            if (clientSoftwareName != null && !clientSoftwareName.contains(
+                AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH)) {
+                apiVersionsRequestData.setClientSoftwareName(
+                    apiVersionsRequestData.clientSoftwareName() + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
+                apiVersionsRequestData.setClientSoftwareVersion(VERSION);
             }
         }
     }

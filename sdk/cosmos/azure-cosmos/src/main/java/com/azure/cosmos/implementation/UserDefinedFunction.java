@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -45,7 +44,7 @@ public class UserDefinedFunction extends Resource {
      * @param body the body.
      */
     public void setBody(String body) {
-        this.set(Constants.Properties.BODY, body, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.BODY, body);
     }
 }
 

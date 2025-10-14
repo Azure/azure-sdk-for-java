@@ -29,7 +29,10 @@ class AzureServiceBusMessagingAutoConfigurationTests {
                 "spring.cloud.azure.servicebus.enabled=false",
                 "spring.cloud.azure.servicebus.namespace=test-namespace"
             )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ConsumerContainerConfiguration.class);
+            });
     }
 
     @Test
@@ -39,18 +42,24 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.namespace=test-namespace"
             )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ConsumerContainerConfiguration.class);
+            });
     }
 
     @Test
     void withoutServiceBusConnectionShouldNotConfigure() {
         this.contextRunner
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ConsumerContainerConfiguration.class);
+            });
     }
 
     @Test
-    void connectionInfoAndCheckpointStoreProvidedShouldConfigure() {
+    void connectionInfoProvidedShouldConfigure() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
@@ -59,6 +68,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusProcessorFactory.class);
                 assertThat(context).hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
+                assertThat(context).hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ConsumerContainerConfiguration.class);
             });
     }
 

@@ -226,7 +226,7 @@ public class TraceStreamingChatCompletionsToolCallSample {
                     } else {
                         functionResponse = "{\"error\": \"No flights found between the cities\"}";
                     }
-                    return Optional.of(new ChatRequestToolMessage(functionResponse, toolCallId));
+                    return Optional.of(new ChatRequestToolMessage(toolCallId).setContent(functionResponse));
                 }
                 return Optional.empty();
             }

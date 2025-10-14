@@ -12,14 +12,14 @@ public final class AutoUpgradeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoUpgradeProfile model
-            = BinaryData.fromString("{\"upgradeChannel\":\"kktwhrdxw\"}").toObject(AutoUpgradeProfile.class);
-        Assertions.assertEquals("kktwhrdxw", model.upgradeChannel());
+            = BinaryData.fromString("{\"upgradeChannel\":\"c\"}").toObject(AutoUpgradeProfile.class);
+        Assertions.assertEquals("c", model.upgradeChannel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoUpgradeProfile model = new AutoUpgradeProfile().withUpgradeChannel("kktwhrdxw");
+        AutoUpgradeProfile model = new AutoUpgradeProfile().withUpgradeChannel("c");
         model = BinaryData.fromObject(model).toObject(AutoUpgradeProfile.class);
-        Assertions.assertEquals("kktwhrdxw", model.upgradeChannel());
+        Assertions.assertEquals("c", model.upgradeChannel());
     }
 }

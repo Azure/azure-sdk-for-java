@@ -12,16 +12,16 @@ public final class AzureToAzureCreateNetworkMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureToAzureCreateNetworkMappingInput model
-            = BinaryData.fromString("{\"instanceType\":\"AzureToAzure\",\"primaryNetworkId\":\"vq\"}")
+            = BinaryData.fromString("{\"instanceType\":\"AzureToAzure\",\"primaryNetworkId\":\"avlzwpvgmfalkz\"}")
                 .toObject(AzureToAzureCreateNetworkMappingInput.class);
-        Assertions.assertEquals("vq", model.primaryNetworkId());
+        Assertions.assertEquals("avlzwpvgmfalkz", model.primaryNetworkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureToAzureCreateNetworkMappingInput model
-            = new AzureToAzureCreateNetworkMappingInput().withPrimaryNetworkId("vq");
+            = new AzureToAzureCreateNetworkMappingInput().withPrimaryNetworkId("avlzwpvgmfalkz");
         model = BinaryData.fromObject(model).toObject(AzureToAzureCreateNetworkMappingInput.class);
-        Assertions.assertEquals("vq", model.primaryNetworkId());
+        Assertions.assertEquals("avlzwpvgmfalkz", model.primaryNetworkId());
     }
 }

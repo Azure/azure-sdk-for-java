@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
@@ -24,25 +24,25 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"awpcbbnzqcykn\",\"localizedValue\":\"qofyuicdhzbdy\"},\"quotaPeriod\":\"wgbdvibidmhmwffp\",\"limit\":33.43817000854751,\"currentValue\":59.58054394314235,\"nextResetTime\":\"kccrrvwey\",\"status\":\"Included\"}]}";
+            = "{\"value\":[{\"unit\":\"Seconds\",\"name\":{\"value\":\"ttefjoknssq\",\"localizedValue\":\"qedikdfrd\"},\"quotaPeriod\":\"qmrjg\",\"limit\":32.934006077983334,\"currentValue\":10.442339519053135,\"nextResetTime\":\"wfiwzcxmj\",\"status\":\"Unknown\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Usage> response
-            = manager.usages().list("xzopjhbzxl", "ohrdddt", com.azure.core.util.Context.NONE);
+            = manager.usages().list("ifoxxkubvphav", "mhbrbqgvg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UnitType.MILLISECONDS, response.iterator().next().unit());
-        Assertions.assertEquals("awpcbbnzqcykn", response.iterator().next().name().value());
-        Assertions.assertEquals("qofyuicdhzbdy", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("wgbdvibidmhmwffp", response.iterator().next().quotaPeriod());
-        Assertions.assertEquals(33.43817000854751D, response.iterator().next().limit());
-        Assertions.assertEquals(59.58054394314235D, response.iterator().next().currentValue());
-        Assertions.assertEquals("kccrrvwey", response.iterator().next().nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.iterator().next().status());
+        Assertions.assertEquals(UnitType.SECONDS, response.iterator().next().unit());
+        Assertions.assertEquals("ttefjoknssq", response.iterator().next().name().value());
+        Assertions.assertEquals("qedikdfrd", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("qmrjg", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(32.934006077983334D, response.iterator().next().limit());
+        Assertions.assertEquals(10.442339519053135D, response.iterator().next().currentValue());
+        Assertions.assertEquals("wfiwzcxmj", response.iterator().next().nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, response.iterator().next().status());
     }
 }

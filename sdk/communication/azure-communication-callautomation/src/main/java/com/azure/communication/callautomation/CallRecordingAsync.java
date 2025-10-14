@@ -3,6 +3,22 @@
 
 package com.azure.communication.callautomation;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.security.InvalidParameterException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
@@ -24,8 +40,8 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
-import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.RoomCallLocator;
+import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -38,28 +54,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.security.InvalidParameterException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * CallRecordingAsync.
@@ -126,22 +126,23 @@ public final class CallRecordingAsync {
     }
 
     private StartCallRecordingRequestInternal getStartCallRecordingRequest(StartRecordingOptions options) {
-        CallLocator callLocator = options.getCallLocator();
-        CallLocatorInternal callLocatorInternal
-            = new CallLocatorInternal().setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+        StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal();
+        if (options.getCallLocator() != null) {
+            CallLocator callLocator = options.getCallLocator();
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+                .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
-        if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
-            callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
-            callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
-            callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
-        } else {
-            throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
+                callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
+                callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+                callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
+            } else {
+                throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            }
+            request.setCallLocator(callLocatorInternal);
         }
-
-        StartCallRecordingRequestInternal request
-            = new StartCallRecordingRequestInternal().setCallLocator(callLocatorInternal);
 
         if (options.getRecordingContent() != null) {
             request
@@ -185,7 +186,9 @@ public final class CallRecordingAsync {
         if (options.isPauseOnStart() != null) {
             request.setPauseOnStart(options.isPauseOnStart());
         }
-
+        if (options.getCallConnectionId() != null) {
+            request.setCallConnectionId(options.getCallConnectionId());
+        }
         return request;
     }
 

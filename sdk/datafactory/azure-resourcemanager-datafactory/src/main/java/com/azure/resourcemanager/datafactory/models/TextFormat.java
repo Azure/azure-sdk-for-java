@@ -316,18 +316,40 @@ public final class TextFormat extends DatasetStorageFormat {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("serializer", serializer());
-        jsonWriter.writeUntypedField("deserializer", deserializer());
+        if (serializer() != null) {
+            jsonWriter.writeUntypedField("serializer", serializer());
+        }
+        if (deserializer() != null) {
+            jsonWriter.writeUntypedField("deserializer", deserializer());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
-        jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
-        jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
-        jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
-        jsonWriter.writeUntypedField("nullValue", this.nullValue);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
-        jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
-        jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
-        jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        if (this.columnDelimiter != null) {
+            jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
+        }
+        if (this.rowDelimiter != null) {
+            jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
+        }
+        if (this.escapeChar != null) {
+            jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
+        }
+        if (this.quoteChar != null) {
+            jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
+        }
+        if (this.nullValue != null) {
+            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        }
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
+        if (this.treatEmptyAsNull != null) {
+            jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
+        }
+        if (this.skipLineCount != null) {
+            jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        }
+        if (this.firstRowAsHeader != null) {
+            jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -197,7 +197,7 @@ public final class RealtimeAsyncClient implements Closeable {
             .flatMap(authenticationHeader -> Mono.<Void>fromRunnable(() -> {
                 this.webSocketSession
                     .set(webSocketClient.connectToServer(this.clientEndpointConfiguration, () -> authenticationHeader,
-                        loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose));
+                        this::handleMessage, this::handleSessionOpen, this::handleSessionClose));
             }))
             .subscribeOn(Schedulers.boundedElastic())
             .doOnError(error -> {

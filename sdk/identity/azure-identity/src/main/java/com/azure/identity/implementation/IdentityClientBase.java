@@ -37,6 +37,7 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -55,7 +56,6 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -112,12 +112,8 @@ public abstract class IdentityClientBase {
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-    static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
-    static final String MSI_ENDPOINT_VERSION = "2017-09-01";
-    static final String ARC_MANAGED_IDENTITY_ENDPOINT_API_VERSION = "2019-11-01";
     static final String ADFS_TENANT = "adfs";
     static final String HTTP_LOCALHOST = "http://localhost";
-    static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
     static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
     static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
@@ -396,66 +392,6 @@ public abstract class IdentityClientBase {
             tokenCache.registerCache();
         }
         return publicClientApplication;
-    }
-
-    ConfidentialClientApplication getManagedIdentityConfidentialClient() {
-        String authorityUrl
-            = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/" + tenantId;
-
-        // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
-        IClientCredential credential
-            = ClientCredentialFactory.createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
-        ConfidentialClientApplication.Builder applicationBuilder = ConfidentialClientApplication
-            .builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY" : clientId, credential);
-
-        applicationBuilder.instanceDiscovery(false)
-            .validateAuthority(false)
-            .logPii(options.isUnsafeSupportLoggingEnabled());
-
-        try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl);
-        } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
-        }
-
-        if (options.getManagedIdentityType() == null) {
-            throw LOGGER.logExceptionAsError(new CredentialUnavailableException(
-                "Managed Identity type not configured, authentication not available."));
-        }
-        applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
-            TokenRequestContext trc
-                = new TokenRequestContext().setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
-                    .setClaims(appTokenProviderParameters.claims)
-                    .setTenantId(appTokenProviderParameters.tenantId);
-
-            Mono<AccessToken> accessTokenAsync = getTokenFromTargetManagedIdentity(trc);
-
-            return accessTokenAsync.map(accessToken -> {
-                TokenProviderResult result = new TokenProviderResult();
-                result.setAccessToken(accessToken.getToken());
-                result.setTenantId(trc.getTenantId());
-                result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                if (accessToken.getRefreshAt() != null) {
-                    result.setRefreshInSeconds(accessToken.getRefreshAt().toEpochSecond());
-                }
-                return result;
-            }).toFuture();
-        });
-
-        initializeHttpPipelineAdapter();
-        if (httpPipelineAdapter != null) {
-            applicationBuilder.httpClient(httpPipelineAdapter);
-        } else {
-            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        if (options.getExecutorService() != null) {
-            applicationBuilder.executorService(options.getExecutorService());
-        } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
-        }
-
-        return applicationBuilder.build();
     }
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
@@ -799,7 +735,23 @@ public abstract class IdentityClientBase {
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
+
+                    if (redactedOutput.contains("unknown flag: --claims")
+                        || redactedOutput.contains("flag provided but not defined: -claims")) {
+                        throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                            new CredentialUnavailableException("Claims challenges are not supported by the "
+                                + "currently installed Azure Developer CLI. Please update to azd CLI version 1.18.1 or higher "
+                                + "to support claims challenges."));
+                    }
+
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
+                        if (azdCommand.toString().contains("claims")) {
+                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
+                            if (userFriendlyError != null) {
+                                throw LOGGER
+                                    .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
+                            }
+                        }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
                                 + " Please run 'azd auth login' to set up account."));
@@ -835,6 +787,88 @@ public abstract class IdentityClientBase {
         }
 
         return token;
+    }
+
+    /**
+     * Extract a single, user-friendly message from azd consoleMessage JSON output.
+     *
+     * @param output The output from the Azure Developer CLI command.
+     * @return A user-friendly error message if found, otherwise null.
+     *
+     * Preference order:
+     * 1) A message containing "Suggestion" (case-insensitive)
+     * 2) The second message if multiple are present
+     * 3) The first message if only one exists
+     * Returns null if no messages can be parsed.
+     */
+    String extractUserFriendlyErrorFromAzdOutput(String output) {
+        if (output == null || output.isEmpty()) {
+            return null;
+        }
+
+        List<String> messages = new ArrayList<>();
+
+        for (String line : output.split("\\R")) { // split on any line break
+            String trimmed = line.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+
+            // Handle multiple JSON objects in a single line
+            try (JsonReader reader = JsonProviders.createReader(trimmed)) {
+                while (reader.nextToken() != null) {
+                    if (reader.currentToken() == JsonToken.START_OBJECT) {
+                        Map<String, Object> obj = reader.readMap(JsonReader::readUntyped);
+
+                        // check "data.message"
+                        Object data = obj.get("data");
+                        if (data instanceof Map) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> dataMap = (Map<String, Object>) data;
+                            Object message = dataMap.get("message");
+                            if (message instanceof String) {
+                                String msg = ((String) message).trim();
+                                if (!msg.isEmpty()) {
+                                    messages.add(msg);
+                                    continue;
+                                }
+                            }
+                        }
+
+                        // check "message"
+                        Object message = obj.get("message");
+                        if (message instanceof String) {
+                            String msg = ((String) message).trim();
+                            if (!msg.isEmpty()) {
+                                messages.add(msg);
+                            }
+                        }
+                    } else {
+                        break; // Not a JSON object, stop processing this line
+                    }
+                }
+            } catch (IOException e) {
+                // not JSON -> ignore
+            }
+        }
+
+        if (messages.isEmpty()) {
+            return null;
+        }
+
+        // Prefer the suggestion line if present
+        for (String msg : messages) {
+            if (msg.toLowerCase().contains("suggestion")) {
+                return redactInfo(msg);
+            }
+        }
+
+        // If more than one message exists, return the last one
+        if (messages.size() > 1) {
+            return redactInfo(messages.get(messages.size() - 1));
+        }
+
+        return redactInfo(messages.get(0));
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)
@@ -915,8 +949,6 @@ public abstract class IdentityClientBase {
         return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
     }
 
-    abstract Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext);
-
     HttpPipeline setupPipeline() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -983,6 +1015,53 @@ public abstract class IdentityClientBase {
         // otherwise it will use defaults.
         this.httpPipeline = setupPipeline();
         return this.httpPipeline;
+    }
+
+    String buildClaimsChallengeErrorMessage(TokenRequestContext request) {
+        StringBuilder azLoginCommand = new StringBuilder("az login --claims-challenge ");
+
+        // Use IdentityUtil.ensureBase64Encoded and then escape for shell safety
+        String encodedClaims = IdentityUtil.ensureBase64Encoded(request.getClaims());
+        String escapedClaims = shellEscape(encodedClaims);
+        azLoginCommand.append("\"").append(escapedClaims).append("\"");
+
+        // Add tenant if available
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
+            azLoginCommand.append(" --tenant ").append(shellEscape(tenant));
+        }
+
+        // Add scopes if available
+        if (request.getScopes() != null && !request.getScopes().isEmpty()) {
+            azLoginCommand.append(" --scope");
+            for (String scope : request.getScopes()) {
+                azLoginCommand.append(" ").append(shellEscape(scope));
+            }
+        }
+
+        return String.format(
+            "Failed to get token. Claims challenges are not supported by AzureCliCredential. Run %s to handle the claims challenge.",
+            azLoginCommand.toString());
+    }
+
+    /**
+     * Properly escape a string for shell command usage.
+     */
+    String shellEscape(String input) {
+        if (input == null) {
+            return "";
+        }
+
+        return input.replace("\\", "\\\\")    // Escape backslashes first
+            .replace("\"", "\\\"")     // Escape double quotes
+            .replace("'", "\\'")       // Escape single quotes
+            .replace("`", "\\`")       // Escape backticks
+            .replace("$", "\\$")       // Escape dollar signs
+            .replace(";", "\\;")       // Escape semicolons
+            .replace("&", "\\&")       // Escape ampersands
+            .replace("|", "\\|")       // Escape pipes
+            .replace("<", "\\<")       // Escape input redirection
+            .replace(">", "\\>");      // Escape output redirection
     }
 
     private byte[] getCertificateBytes() throws IOException {

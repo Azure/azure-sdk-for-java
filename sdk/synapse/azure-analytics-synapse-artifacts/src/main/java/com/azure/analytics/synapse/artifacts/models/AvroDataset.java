@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,31 @@ public class AvroDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Avro";
 
     /*
      * The location of the avro storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
      * A string from AvroCompressionCodecEnum or an expression
      */
+    @Generated
     private Object avroCompressionCodec;
 
     /*
      * The avroCompressionLevel property.
      */
+    @Generated
     private Integer avroCompressionLevel;
 
     /**
      * Creates an instance of AvroDataset class.
      */
+    @Generated
     public AvroDataset() {
     }
 
@@ -49,6 +55,7 @@ public class AvroDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +66,7 @@ public class AvroDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -69,6 +77,7 @@ public class AvroDataset extends Dataset {
      * @param location the location value to set.
      * @return the AvroDataset object itself.
      */
+    @Generated
     public AvroDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -79,6 +88,7 @@ public class AvroDataset extends Dataset {
      * 
      * @return the avroCompressionCodec value.
      */
+    @Generated
     public Object getAvroCompressionCodec() {
         return this.avroCompressionCodec;
     }
@@ -89,6 +99,7 @@ public class AvroDataset extends Dataset {
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDataset object itself.
      */
+    @Generated
     public AvroDataset setAvroCompressionCodec(Object avroCompressionCodec) {
         this.avroCompressionCodec = avroCompressionCodec;
         return this;
@@ -99,6 +110,7 @@ public class AvroDataset extends Dataset {
      * 
      * @return the avroCompressionLevel value.
      */
+    @Generated
     public Integer getAvroCompressionLevel() {
         return this.avroCompressionLevel;
     }
@@ -109,6 +121,7 @@ public class AvroDataset extends Dataset {
      * @param avroCompressionLevel the avroCompressionLevel value to set.
      * @return the AvroDataset object itself.
      */
+    @Generated
     public AvroDataset setAvroCompressionLevel(Integer avroCompressionLevel) {
         this.avroCompressionLevel = avroCompressionLevel;
         return this;
@@ -117,6 +130,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setDescription(String description) {
         super.setDescription(description);
@@ -126,6 +140,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -135,6 +150,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -144,6 +160,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -153,6 +170,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -162,6 +180,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -171,6 +190,7 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AvroDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -180,13 +200,18 @@ public class AvroDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -194,7 +219,9 @@ public class AvroDataset extends Dataset {
         if (location != null || avroCompressionCodec != null || avroCompressionLevel != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("avroCompressionCodec", this.avroCompressionCodec);
+            if (this.avroCompressionCodec != null) {
+                jsonWriter.writeUntypedField("avroCompressionCodec", this.avroCompressionCodec);
+            }
             jsonWriter.writeNumberField("avroCompressionLevel", this.avroCompressionLevel);
             jsonWriter.writeEndObject();
         }
@@ -215,6 +242,7 @@ public class AvroDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AvroDataset.
      */
+    @Generated
     public static AvroDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AvroDataset deserializedAvroDataset = new AvroDataset();

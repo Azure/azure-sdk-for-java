@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
     /*
      * 1-based page number of page containing the bounding region.
      */
+    @Generated
     private final int pageNumber;
 
     /*
      * Bounding polygon on the page, or the entire page if not specified.
      */
+    @Generated
     private final List<Float> polygon;
 
     /**
@@ -34,6 +37,7 @@ public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
      * @param pageNumber the pageNumber value to set.
      * @param polygon the polygon value to set.
      */
+    @Generated
     public BoundingRegion(int pageNumber, List<Float> polygon) {
         this.pageNumber = pageNumber;
         this.polygon = polygon;
@@ -44,6 +48,7 @@ public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
      * 
      * @return the pageNumber value.
      */
+    @Generated
     public int getPageNumber() {
         return this.pageNumber;
     }
@@ -53,6 +58,7 @@ public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
      * 
      * @return the polygon value.
      */
+    @Generated
     public List<Float> getPolygon() {
         return this.polygon;
     }
@@ -60,6 +66,7 @@ public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,6 +84,7 @@ public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BoundingRegion.
      */
+    @Generated
     public static BoundingRegion fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean pageNumberFound = false;

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSignupSettingsInner;
@@ -27,14 +27,13 @@ public final class SignUpSettingsUpdateWithResponseMockTests {
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.signUpSettings()
-            .updateWithResponse("tniwfcu", "whxm", "ibxkcegc",
-                new PortalSignupSettingsInner().withEnabled(true)
-                    .withTermsOfService(new TermsOfServiceProperties().withText("tcxbbjbeyqo")
-                        .withEnabled(true)
-                        .withConsentRequired(false)),
+            .updateWithResponse("lj", "ki", "magfyinmajj",
+                new PortalSignupSettingsInner().withEnabled(false)
+                    .withTermsOfService(
+                        new TermsOfServiceProperties().withText("f").withEnabled(false).withConsentRequired(false)),
                 com.azure.core.util.Context.NONE);
 
     }

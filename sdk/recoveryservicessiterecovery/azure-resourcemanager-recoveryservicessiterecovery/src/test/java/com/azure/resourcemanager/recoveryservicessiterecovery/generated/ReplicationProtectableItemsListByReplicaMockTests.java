@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectableItem;
@@ -22,26 +22,26 @@ public final class ReplicationProtectableItemsListByReplicaMockTests {
     @Test
     public void testListByReplicationProtectionContainers() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"friendlyName\":\"mmij\",\"protectionStatus\":\"qfkwnaeikczscymq\",\"replicationProtectedItemId\":\"xgwpq\",\"recoveryServicesProviderId\":\"umz\",\"protectionReadinessErrors\":[\"okez\",\"pe\"],\"supportedReplicationProviders\":[\"fzqnzbflbqmhbiyx\",\"vwe\",\"hag\",\"bbsesea\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}},\"location\":\"lmsy\",\"id\":\"zdcrolrzesbomphz\",\"name\":\"ymunwjivt\",\"type\":\"uszbdjrdfeuj\"}]}";
+            = "{\"value\":[{\"properties\":{\"friendlyName\":\"ccouhwivkdf\",\"protectionStatus\":\"sknrbxzepirt\",\"replicationProtectedItemId\":\"piqdqbvxqto\",\"recoveryServicesProviderId\":\"wbopvhcbtza\",\"protectionReadinessErrors\":[\"xcontickfkith\",\"eoc\",\"gvuqzgbjwvrudmp\"],\"supportedReplicationProviders\":[\"pmi\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}},\"location\":\"aj\",\"id\":\"b\",\"name\":\"sgyzwph\",\"type\":\"jkscecmbaajdfw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectableItem> response = manager.replicationProtectableItems()
-            .listByReplicationProtectionContainers("qwwuhyqkaaptbs", "vkbcbptwyb", "oc", "u", "plxzbnsshvqnpszb",
-                "uybutcdzjfjt", "peyxdyuxurxr", com.azure.core.util.Context.NONE);
+            .listByReplicationProtectionContainers("uzzc", "jlwmqc", "cabaam", "khdhpmkxdujkxpuq", "dyoqywsuarpzhry",
+                "ezxiz", "syxbfjilb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mmij", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals("qfkwnaeikczscymq", response.iterator().next().properties().protectionStatus());
-        Assertions.assertEquals("xgwpq", response.iterator().next().properties().replicationProtectedItemId());
-        Assertions.assertEquals("umz", response.iterator().next().properties().recoveryServicesProviderId());
-        Assertions.assertEquals("okez", response.iterator().next().properties().protectionReadinessErrors().get(0));
-        Assertions.assertEquals("fzqnzbflbqmhbiyx",
-            response.iterator().next().properties().supportedReplicationProviders().get(0));
-        Assertions.assertEquals("lmsy", response.iterator().next().location());
+        Assertions.assertEquals("ccouhwivkdf", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("sknrbxzepirt", response.iterator().next().properties().protectionStatus());
+        Assertions.assertEquals("piqdqbvxqto", response.iterator().next().properties().replicationProtectedItemId());
+        Assertions.assertEquals("wbopvhcbtza", response.iterator().next().properties().recoveryServicesProviderId());
+        Assertions.assertEquals("xcontickfkith",
+            response.iterator().next().properties().protectionReadinessErrors().get(0));
+        Assertions.assertEquals("pmi", response.iterator().next().properties().supportedReplicationProviders().get(0));
+        Assertions.assertEquals("aj", response.iterator().next().location());
     }
 }

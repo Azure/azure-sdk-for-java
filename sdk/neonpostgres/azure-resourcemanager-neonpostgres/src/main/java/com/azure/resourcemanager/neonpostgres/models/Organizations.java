@@ -105,6 +105,31 @@ public interface Organizations {
     PagedIterable<OrganizationResource> list(Context context);
 
     /**
+     * Action to retrieve the PostgreSQL versions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters Post Action to retrieve the PostgreSQL versions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for PostgreSQL versions along with {@link Response}.
+     */
+    Response<PgVersionsResult> getPostgresVersionsWithResponse(String resourceGroupName, PgVersion parameters,
+        Context context);
+
+    /**
+     * Action to retrieve the PostgreSQL versions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response model for PostgreSQL versions.
+     */
+    PgVersionsResult getPostgresVersions(String resourceGroupName);
+
+    /**
      * Get a OrganizationResource.
      * 
      * @param id the resource ID.

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GatewayContract;
@@ -22,22 +22,23 @@ public final class GatewaysListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"locationData\":{\"name\":\"cvka\",\"city\":\"hooimazkmqfwbgd\",\"district\":\"vybfmpotal\",\"countryOrRegion\":\"figrxxtrco\"},\"description\":\"qe\"},\"id\":\"gldmx\",\"name\":\"bjhspvamsxrwql\",\"type\":\"dflg\"}]}";
+            = "{\"value\":[{\"properties\":{\"locationData\":{\"name\":\"xhuqfvpanloqov\",\"city\":\"xgqtquirgopg\",\"district\":\"tucujtjuzvyjxu\",\"countryOrRegion\":\"hquoqhqrcsksx\"},\"description\":\"hlrvu\"},\"id\":\"dagvyjcdpncvf\",\"name\":\"eqyodii\",\"type\":\"csapqh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GatewayContract> response = manager.gateways()
-            .listByService("dwxf", "m", "xccfegsav", 2057208819, 689877772, com.azure.core.util.Context.NONE);
+            .listByService("barxknfvbsy", "agbahdbtjmku", "onrk", 2016664230, 1566539343,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cvka", response.iterator().next().locationData().name());
-        Assertions.assertEquals("hooimazkmqfwbgd", response.iterator().next().locationData().city());
-        Assertions.assertEquals("vybfmpotal", response.iterator().next().locationData().district());
-        Assertions.assertEquals("figrxxtrco", response.iterator().next().locationData().countryOrRegion());
-        Assertions.assertEquals("qe", response.iterator().next().description());
+        Assertions.assertEquals("xhuqfvpanloqov", response.iterator().next().locationData().name());
+        Assertions.assertEquals("xgqtquirgopg", response.iterator().next().locationData().city());
+        Assertions.assertEquals("tucujtjuzvyjxu", response.iterator().next().locationData().district());
+        Assertions.assertEquals("hquoqhqrcsksx", response.iterator().next().locationData().countryOrRegion());
+        Assertions.assertEquals("hlrvu", response.iterator().next().description());
     }
 }

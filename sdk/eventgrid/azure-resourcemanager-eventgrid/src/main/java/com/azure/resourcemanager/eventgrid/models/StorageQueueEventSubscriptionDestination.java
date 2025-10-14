@@ -47,7 +47,7 @@ public final class StorageQueueEventSubscriptionDestination extends EventSubscri
      * 
      * @return the innerProperties value.
      */
-    private StorageQueueEventSubscriptionDestinationProperties innerProperties() {
+    StorageQueueEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
+import com.azure.resourcemanager.datafactory.models.GreenplumAuthenticationType;
 import java.io.IOException;
 
 /**
@@ -33,6 +34,49 @@ public final class GreenplumLinkedServiceTypeProperties
      * credential manager. Type: string.
      */
     private String encryptedCredential;
+
+    /*
+     * The authentication type to use. Type: string. Only used for V2.
+     */
+    private GreenplumAuthenticationType authenticationType;
+
+    /*
+     * Host name for connection. Type: string. Only used for V2.
+     */
+    private Object host;
+
+    /*
+     * The port for the connection. Type: integer. Only used for V2.
+     */
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string. Only used for V2.
+     */
+    private Object username;
+
+    /*
+     * Database name for connection. Type: string. Only used for V2.
+     */
+    private Object database;
+
+    /*
+     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
+     * Type: integer. Only used for V2.
+     */
+    private Object sslMode;
+
+    /*
+     * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
+     * generating an error. Type: integer. Only used for V2.
+     */
+    private Object connectionTimeout;
+
+    /*
+     * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
+     * error. Set to zero for infinity. Type: integer. Only used for V2.
+     */
+    private Object commandTimeout;
 
     /**
      * Creates an instance of GreenplumLinkedServiceTypeProperties class.
@@ -105,6 +149,172 @@ public final class GreenplumLinkedServiceTypeProperties
     }
 
     /**
+     * Get the authenticationType property: The authentication type to use. Type: string. Only used for V2.
+     * 
+     * @return the authenticationType value.
+     */
+    public GreenplumAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string. Only used for V2.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withAuthenticationType(GreenplumAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the host property: Host name for connection. Type: string. Only used for V2.
+     * 
+     * @return the host value.
+     */
+    public Object host() {
+        return this.host;
+    }
+
+    /**
+     * Set the host property: Host name for connection. Type: string. Only used for V2.
+     * 
+     * @param host the host value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withHost(Object host) {
+        this.host = host;
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer. Only used for V2.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer. Only used for V2.
+     * 
+     * @param port the port value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string. Only used for V2.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string. Only used for V2.
+     * 
+     * @param username the username value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withUsername(Object username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string. Only used for V2.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string. Only used for V2.
+     * 
+     * @param database the database value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer. Only used for V2.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer. Only used for V2.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
+     * terminating the attempt and generating an error. Type: integer. Only used for V2.
+     * 
+     * @return the connectionTimeout value.
+     */
+    public Object connectionTimeout() {
+        return this.connectionTimeout;
+    }
+
+    /**
+     * Set the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
+     * terminating the attempt and generating an error. Type: integer. Only used for V2.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withConnectionTimeout(Object connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Get the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer. Only used for V2.
+     * 
+     * @return the commandTimeout value.
+     */
+    public Object commandTimeout() {
+        return this.commandTimeout;
+    }
+
+    /**
+     * Set the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer. Only used for V2.
+     * 
+     * @param commandTimeout the commandTimeout value to set.
+     * @return the GreenplumLinkedServiceTypeProperties object itself.
+     */
+    public GreenplumLinkedServiceTypeProperties withCommandTimeout(Object commandTimeout) {
+        this.commandTimeout = commandTimeout;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -121,9 +331,34 @@ public final class GreenplumLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeJsonField("pwd", this.pwd);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
+        if (this.sslMode != null) {
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        }
+        if (this.connectionTimeout != null) {
+            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+        }
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +385,23 @@ public final class GreenplumLinkedServiceTypeProperties
                         = AzureKeyVaultSecretReference.fromJson(reader);
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedGreenplumLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.authenticationType
+                        = GreenplumAuthenticationType.fromString(reader.getString());
+                } else if ("host".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("sslMode".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.sslMode = reader.readUntyped();
+                } else if ("connectionTimeout".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.connectionTimeout = reader.readUntyped();
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedGreenplumLinkedServiceTypeProperties.commandTimeout = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
@@ -30,52 +30,52 @@ public final class RaiPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"gl\",\"tags\":{\"ryc\":\"ahvmywhsbrc\"},\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Asynchronous_filter\",\"basePolicyName\":\"aqaj\",\"contentFilters\":[{\"name\":\"zptdmkrrbh\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\"},{\"name\":\"ybpmf\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Prompt\"}],\"customBlocklists\":[{\"source\":\"Prompt\",\"blocklistName\":\"ifkdschlzvf\",\"blocking\":true},{\"source\":\"Prompt\",\"blocklistName\":\"jwg\",\"blocking\":true},{\"source\":\"Prompt\",\"blocklistName\":\"kgf\",\"blocking\":true}]},\"id\":\"ogmhmjpj\",\"name\":\"cdf\",\"type\":\"dqwty\"}";
+            = "{\"etag\":\"lwcjsqggjhffb\",\"tags\":{\"vxwmwwmjs\":\"rkijpeuqlsdxeqz\",\"wwa\":\"en\",\"ojhtollhs\":\"ecleqioulndhzyo\"},\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Blocking\",\"basePolicyName\":\"l\",\"contentFilters\":[{\"name\":\"pnovyoanfbcs\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\"},{\"name\":\"gvjrktpgaeuky\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"Prompt\"},{\"name\":\"u\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"Prompt\"}],\"customBlocklists\":[{\"source\":\"Prompt\",\"blocklistName\":\"bninjgazlsvbzfc\",\"blocking\":false},{\"source\":\"Prompt\",\"blocklistName\":\"wjcciklhsy\",\"blocking\":false}]},\"id\":\"drenxol\",\"name\":\"i\",\"type\":\"ehqbeivdlhydwbdb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiPolicy response = manager.raiPolicies()
-            .define("ajsvk")
-            .withExistingAccount("rexkxbhxvucn", "lgmnhjevdyzn")
-            .withTags(mapOf("onqqlmgn", "qfhefkwabsol", "exhvuqbozoolz", "qxsjxte", "nx", "ocarkuzlbcnndt"))
-            .withProperties(new RaiPolicyProperties().withMode(RaiPolicyMode.DEFERRED)
-                .withBasePolicyName("hd")
-                .withContentFilters(Arrays.asList(new RaiPolicyContentFilter().withName("ckze")
-                    .withEnabled(false)
-                    .withSeverityThreshold(ContentLevel.LOW)
-                    .withBlocking(true)
-                    .withSource(RaiPolicyContentSource.COMPLETION)))
-                .withCustomBlocklists(Arrays.asList(
-                    new CustomBlocklistConfig().withBlocklistName("abjkdtfohfao")
-                        .withBlocking(true)
-                        .withSource(RaiPolicyContentSource.COMPLETION),
-                    new CustomBlocklistConfig().withBlocklistName("rsiwdyjqur")
+            .define("lkrdpqgfhy")
+            .withExistingAccount("bhjxwxqweuipmpv", "smitnsqxtlt")
+            .withTags(mapOf("xxgfbbmtlpqagyn", "jqmatxjtielnzq", "xzxaqzibmqimiym", "iprnzcalincry"))
+            .withProperties(new RaiPolicyProperties().withMode(RaiPolicyMode.DEFAULT)
+                .withBasePolicyName("fupetasvv")
+                .withContentFilters(Arrays.asList(
+                    new RaiPolicyContentFilter().withName("pkflanfkgxsyao")
+                        .withEnabled(true)
+                        .withSeverityThreshold(ContentLevel.HIGH)
                         .withBlocking(true)
                         .withSource(RaiPolicyContentSource.PROMPT),
-                    new CustomBlocklistConfig().withBlocklistName("ueekcsue")
+                    new RaiPolicyContentFilter().withName("kc")
+                        .withEnabled(true)
+                        .withSeverityThreshold(ContentLevel.LOW)
+                        .withBlocking(true)
+                        .withSource(RaiPolicyContentSource.COMPLETION)))
+                .withCustomBlocklists(Arrays.asList(
+                    new CustomBlocklistConfig().withBlocklistName("utixmqrudjiz")
                         .withBlocking(false)
                         .withSource(RaiPolicyContentSource.COMPLETION),
-                    new CustomBlocklistConfig().withBlocklistName("cbcbgydlqidy")
+                    new CustomBlocklistConfig().withBlocklistName("runfhiucnmfb")
                         .withBlocking(true)
-                        .withSource(RaiPolicyContentSource.PROMPT))))
+                        .withSource(RaiPolicyContentSource.COMPLETION))))
             .create();
 
-        Assertions.assertEquals("ahvmywhsbrc", response.tags().get("ryc"));
-        Assertions.assertEquals(RaiPolicyMode.ASYNCHRONOUS_FILTER, response.properties().mode());
-        Assertions.assertEquals("aqaj", response.properties().basePolicyName());
-        Assertions.assertEquals("zptdmkrrbh", response.properties().contentFilters().get(0).name());
-        Assertions.assertEquals(false, response.properties().contentFilters().get(0).enabled());
+        Assertions.assertEquals("rkijpeuqlsdxeqz", response.tags().get("vxwmwwmjs"));
+        Assertions.assertEquals(RaiPolicyMode.BLOCKING, response.properties().mode());
+        Assertions.assertEquals("l", response.properties().basePolicyName());
+        Assertions.assertEquals("pnovyoanfbcs", response.properties().contentFilters().get(0).name());
+        Assertions.assertFalse(response.properties().contentFilters().get(0).enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, response.properties().contentFilters().get(0).severityThreshold());
-        Assertions.assertEquals(false, response.properties().contentFilters().get(0).blocking());
+        Assertions.assertFalse(response.properties().contentFilters().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
             response.properties().contentFilters().get(0).source());
-        Assertions.assertEquals("ifkdschlzvf", response.properties().customBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(true, response.properties().customBlocklists().get(0).blocking());
+        Assertions.assertEquals("bninjgazlsvbzfc", response.properties().customBlocklists().get(0).blocklistName());
+        Assertions.assertFalse(response.properties().customBlocklists().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT,
             response.properties().customBlocklists().get(0).source());
     }

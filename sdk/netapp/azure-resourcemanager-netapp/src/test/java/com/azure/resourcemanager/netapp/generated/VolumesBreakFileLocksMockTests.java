@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
@@ -26,11 +26,11 @@ public final class VolumesBreakFileLocksMockTests {
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.volumes()
-            .breakFileLocks("jrcg", "gydcw", "oxjumvqqo", "ihrraiouaub",
-                new BreakFileLocksRequest().withClientIp("tloqxfuojrn").withConfirmRunningDisruptiveOperation(false),
+            .breakFileLocks("chndbnwie", "olewjwi", "ubwefqs", "ap",
+                new BreakFileLocksRequest().withClientIp("tf").withConfirmRunningDisruptiveOperation(true),
                 com.azure.core.util.Context.NONE);
 
     }

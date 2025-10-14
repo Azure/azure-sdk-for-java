@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyFragmentContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyFragmentContractProperties model
-            = BinaryData.fromString("{\"value\":\"udyhbrj\",\"description\":\"a\",\"format\":\"xml\"}")
-                .toObject(PolicyFragmentContractProperties.class);
-        Assertions.assertEquals("udyhbrj", model.value());
-        Assertions.assertEquals("a", model.description());
-        Assertions.assertEquals(PolicyFragmentContentFormat.XML, model.format());
+        PolicyFragmentContractProperties model = BinaryData
+            .fromString(
+                "{\"value\":\"lei\",\"description\":\"cbgvsbt\",\"format\":\"rawxml\",\"provisioningState\":\"oxa\"}")
+            .toObject(PolicyFragmentContractProperties.class);
+        Assertions.assertEquals("lei", model.value());
+        Assertions.assertEquals("cbgvsbt", model.description());
+        Assertions.assertEquals(PolicyFragmentContentFormat.RAWXML, model.format());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyFragmentContractProperties model = new PolicyFragmentContractProperties().withValue("udyhbrj")
-            .withDescription("a")
-            .withFormat(PolicyFragmentContentFormat.XML);
+        PolicyFragmentContractProperties model = new PolicyFragmentContractProperties().withValue("lei")
+            .withDescription("cbgvsbt")
+            .withFormat(PolicyFragmentContentFormat.RAWXML);
         model = BinaryData.fromObject(model).toObject(PolicyFragmentContractProperties.class);
-        Assertions.assertEquals("udyhbrj", model.value());
-        Assertions.assertEquals("a", model.description());
-        Assertions.assertEquals(PolicyFragmentContentFormat.XML, model.format());
+        Assertions.assertEquals("lei", model.value());
+        Assertions.assertEquals("cbgvsbt", model.description());
+        Assertions.assertEquals(PolicyFragmentContentFormat.RAWXML, model.format());
     }
 }

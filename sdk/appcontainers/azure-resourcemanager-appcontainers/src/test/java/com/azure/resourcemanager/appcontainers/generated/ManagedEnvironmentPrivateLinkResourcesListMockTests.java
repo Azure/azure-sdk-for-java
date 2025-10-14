@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.PrivateLinkResource;
@@ -22,18 +22,18 @@ public final class ManagedEnvironmentPrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"jiswllu\",\"requiredMembers\":[\"hfwlfxzfwugeup\",\"knecexkgrv\",\"psjdmng\",\"yt\"],\"requiredZoneNames\":[\"zfyxcnwawoxcg\",\"bejqfbifopfjx\",\"wdrpa\",\"q\"]},\"id\":\"rfm\",\"name\":\"wotfcuu\",\"type\":\"gtji\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"vdifkiikg\",\"requiredMembers\":[\"ccwmecbtxsytrtex\",\"gwmrqjywiwhvy\"],\"requiredZoneNames\":[\"ncindilo\",\"kajwj\",\"riarsbcl\",\"anhz\"]},\"id\":\"njxizbax\",\"name\":\"ygzkztxfexwacyy\",\"type\":\"mlxppdndzkfevuii\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response = manager.managedEnvironmentPrivateLinkResources()
-            .list("qpqsdoctpzpuj", "flmcdsgxc", com.azure.core.util.Context.NONE);
+            .list("ugeerclbltbhpwac", "yeurjwmv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zfyxcnwawoxcg", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("ncindilo", response.iterator().next().requiredZoneNames().get(0));
     }
 }

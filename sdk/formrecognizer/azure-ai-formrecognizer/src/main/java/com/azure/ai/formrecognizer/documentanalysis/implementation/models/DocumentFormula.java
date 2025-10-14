@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,26 +23,31 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
     /*
      * Formula kind.
      */
+    @Generated
     private final DocumentFormulaKind kind;
 
     /*
      * LaTex expression describing the formula.
      */
+    @Generated
     private final String value;
 
     /*
      * Bounding polygon of the formula.
      */
+    @Generated
     private List<Float> polygon;
 
     /*
      * Location of the formula in the reading order concatenated content.
      */
+    @Generated
     private final DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the formula.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -52,6 +58,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentFormula(DocumentFormulaKind kind, String value, DocumentSpan span, float confidence) {
         this.kind = kind;
         this.value = value;
@@ -64,6 +71,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * 
      * @return the kind value.
      */
+    @Generated
     public DocumentFormulaKind getKind() {
         return this.kind;
     }
@@ -73,6 +81,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -82,6 +91,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * 
      * @return the polygon value.
      */
+    @Generated
     public List<Float> getPolygon() {
         return this.polygon;
     }
@@ -92,6 +102,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * @param polygon the polygon value to set.
      * @return the DocumentFormula object itself.
      */
+    @Generated
     public DocumentFormula setPolygon(List<Float> polygon) {
         this.polygon = polygon;
         return this;
@@ -102,6 +113,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * 
      * @return the span value.
      */
+    @Generated
     public DocumentSpan getSpan() {
         return this.span;
     }
@@ -111,6 +123,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -118,6 +131,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +152,7 @@ public final class DocumentFormula implements JsonSerializable<DocumentFormula> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentFormula.
      */
+    @Generated
     public static DocumentFormula fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean kindFound = false;

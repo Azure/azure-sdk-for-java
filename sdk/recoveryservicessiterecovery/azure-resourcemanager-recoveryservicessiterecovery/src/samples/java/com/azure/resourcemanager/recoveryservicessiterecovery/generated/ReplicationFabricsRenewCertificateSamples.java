@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RenewCertif
 public final class ReplicationFabricsRenewCertificateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationFabrics_RenewCertificate.json
      */
     /**
@@ -24,7 +24,7 @@ public final class ReplicationFabricsRenewCertificateSamples {
     public static void renewsCertificateForTheFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationFabrics()
-            .renewCertificate("vault1", "resourceGroupPS1", "cloud1",
+            .renewCertificate("resourceGroupPS1", "vault1", "cloud1",
                 new RenewCertificateInput()
                     .withProperties(new RenewCertificateInputProperties().withRenewCertificateType("Cloud")),
                 com.azure.core.util.Context.NONE);

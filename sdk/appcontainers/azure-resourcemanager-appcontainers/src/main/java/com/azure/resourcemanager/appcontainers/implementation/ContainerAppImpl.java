@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appcontainers.models.ContainerApp;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppAuthToken;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.azure.resourcemanager.appcontainers.models.Kind;
@@ -76,6 +77,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public ContainerAppProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public ContainerAppRunningStatus runningStatus() {
+        return this.innerModel().runningStatus();
     }
 
     public String deploymentErrors() {

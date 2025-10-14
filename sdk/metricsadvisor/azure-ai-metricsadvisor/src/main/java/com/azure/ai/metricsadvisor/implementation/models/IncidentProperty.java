@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,6 +20,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
     /*
      * max severity of latest anomalies in the incident
      */
+    @Generated
     private Severity maxSeverity;
 
     /*
@@ -26,21 +28,25 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * 
      * only return for alerting incident result
      */
+    @Generated
     private IncidentStatus incidentStatus;
 
     /*
      * value of the root node
      */
+    @Generated
     private Double valueOfRootNode;
 
     /*
      * expected value of the root node given by smart detector
      */
+    @Generated
     private Double expectedValueOfRootNode;
 
     /**
      * Creates an instance of IncidentProperty class.
      */
+    @Generated
     public IncidentProperty() {
     }
 
@@ -49,6 +55,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * 
      * @return the maxSeverity value.
      */
+    @Generated
     public Severity getMaxSeverity() {
         return this.maxSeverity;
     }
@@ -59,6 +66,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * @param maxSeverity the maxSeverity value to set.
      * @return the IncidentProperty object itself.
      */
+    @Generated
     public IncidentProperty setMaxSeverity(Severity maxSeverity) {
         this.maxSeverity = maxSeverity;
         return this;
@@ -71,6 +79,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * 
      * @return the incidentStatus value.
      */
+    @Generated
     public IncidentStatus getIncidentStatus() {
         return this.incidentStatus;
     }
@@ -80,6 +89,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * 
      * @return the valueOfRootNode value.
      */
+    @Generated
     public Double getValueOfRootNode() {
         return this.valueOfRootNode;
     }
@@ -89,6 +99,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * 
      * @return the expectedValueOfRootNode value.
      */
+    @Generated
     public Double getExpectedValueOfRootNode() {
         return this.expectedValueOfRootNode;
     }
@@ -96,6 +107,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +124,7 @@ public final class IncidentProperty implements JsonSerializable<IncidentProperty
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IncidentProperty.
      */
+    @Generated
     public static IncidentProperty fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IncidentProperty deserializedIncidentProperty = new IncidentProperty();

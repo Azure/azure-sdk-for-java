@@ -6,8 +6,8 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fabric.FabricManager;
 import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityReason;
@@ -22,23 +22,23 @@ import reactor.core.publisher.Mono;
 public final class FabricCapacitiesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"uhrzayvvt\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"lnwsubisn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         FabricManager manager = FabricManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.fabricCapacities()
-            .checkNameAvailabilityWithResponse("wpyeicxmqciwqvh",
-                new CheckNameAvailabilityRequest().withName("ixuigdtopbobj").withType("hm"),
+            .checkNameAvailabilityWithResponse("ccfwnfnbacfion",
+                new CheckNameAvailabilityRequest().withName("bxetqgtzxdpn").withType("qqwx"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("uhrzayvvt", response.message());
+        Assertions.assertEquals("lnwsubisn", response.message());
     }
 }

@@ -60,7 +60,7 @@ public final class AnalyzeTextsImpl {
      * by the proxy service to perform REST calls.
      */
     @Host("{Endpoint}/language")
-    @ServiceInterface(name = "MicrosoftCognitiveLa")
+    @ServiceInterface(name = "MicrosoftCognitiveLanguageServiceTextAnalysisAnalyzeTexts")
     public interface AnalyzeTextsService {
         @Post("/analyze-text/jobs")
         @ExpectedResponses({ 202 })

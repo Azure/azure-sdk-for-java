@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
     /*
      * Bounding box of the selection mark.
      */
+    @Generated
     private List<Float> boundingBox;
 
     /*
      * Confidence value.
      */
+    @Generated
     private float confidence;
 
     /*
      * State of the selection mark.
      */
+    @Generated
     private SelectionMarkState state;
 
     /**
      * Creates an instance of SelectionMark class.
      */
+    @Generated
     public SelectionMark() {
     }
 
@@ -43,6 +48,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * 
      * @return the boundingBox value.
      */
+    @Generated
     public List<Float> getBoundingBox() {
         return this.boundingBox;
     }
@@ -53,6 +59,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * @param boundingBox the boundingBox value to set.
      * @return the SelectionMark object itself.
      */
+    @Generated
     public SelectionMark setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
@@ -63,6 +70,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -73,6 +81,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * @param confidence the confidence value to set.
      * @return the SelectionMark object itself.
      */
+    @Generated
     public SelectionMark setConfidence(float confidence) {
         this.confidence = confidence;
         return this;
@@ -83,6 +92,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * 
      * @return the state value.
      */
+    @Generated
     public SelectionMarkState getState() {
         return this.state;
     }
@@ -93,6 +103,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * @param state the state value to set.
      * @return the SelectionMark object itself.
      */
+    @Generated
     public SelectionMark setState(SelectionMarkState state) {
         this.state = state;
         return this;
@@ -101,6 +112,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class SelectionMark implements JsonSerializable<SelectionMark> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SelectionMark.
      */
+    @Generated
     public static SelectionMark fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SelectionMark deserializedSelectionMark = new SelectionMark();

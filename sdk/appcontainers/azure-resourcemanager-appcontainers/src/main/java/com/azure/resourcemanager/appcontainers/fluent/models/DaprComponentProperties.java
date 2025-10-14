@@ -19,7 +19,7 @@ import java.util.List;
  * Dapr Component resource specific properties.
  */
 @Fluent
-public final class DaprComponentProperties implements JsonSerializable<DaprComponentProperties> {
+public class DaprComponentProperties implements JsonSerializable<DaprComponentProperties> {
     /*
      * Component type
      */

@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class Direction extends ExpandableStringEnum<Direction> {
     /**
      * Static value Both for Direction.
      */
+    @Generated
     public static final Direction BOTH = fromString("Both");
 
     /**
      * Static value Down for Direction.
      */
+    @Generated
     public static final Direction DOWN = fromString("Down");
 
     /**
      * Static value Up for Direction.
      */
+    @Generated
     public static final Direction UP = fromString("Up");
 
     /**
@@ -31,6 +35,7 @@ public final class Direction extends ExpandableStringEnum<Direction> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Direction() {
     }
@@ -41,6 +46,7 @@ public final class Direction extends ExpandableStringEnum<Direction> {
      * @param name a name to look for.
      * @return the corresponding Direction.
      */
+    @Generated
     public static Direction fromString(String name) {
         return fromString(name, Direction.class);
     }
@@ -50,6 +56,7 @@ public final class Direction extends ExpandableStringEnum<Direction> {
      * 
      * @return known Direction values.
      */
+    @Generated
     public static Collection<Direction> values() {
         return values(Direction.class);
     }

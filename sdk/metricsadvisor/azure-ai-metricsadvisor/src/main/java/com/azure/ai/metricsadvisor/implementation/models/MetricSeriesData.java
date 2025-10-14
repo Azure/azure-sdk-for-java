@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,21 +23,25 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
     /*
      * The id property.
      */
+    @Generated
     private MetricSeriesItem id;
 
     /*
      * timestamps of the data related to this time series
      */
+    @Generated
     private List<OffsetDateTime> timestampList;
 
     /*
      * values of the data related to this time series
      */
+    @Generated
     private List<Double> valueList;
 
     /**
      * Creates an instance of MetricSeriesData class.
      */
+    @Generated
     public MetricSeriesData() {
     }
 
@@ -45,6 +50,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
      * 
      * @return the id value.
      */
+    @Generated
     public MetricSeriesItem getId() {
         return this.id;
     }
@@ -55,6 +61,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
      * @param id the id value to set.
      * @return the MetricSeriesData object itself.
      */
+    @Generated
     public MetricSeriesData setId(MetricSeriesItem id) {
         this.id = id;
         return this;
@@ -65,6 +72,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
      * 
      * @return the timestampList value.
      */
+    @Generated
     public List<OffsetDateTime> getTimestampList() {
         return this.timestampList;
     }
@@ -74,6 +82,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
      * 
      * @return the valueList value.
      */
+    @Generated
     public List<Double> getValueList() {
         return this.valueList;
     }
@@ -81,6 +90,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +106,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricSeriesData.
      */
+    @Generated
     public static MetricSeriesData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricSeriesData deserializedMetricSeriesData = new MetricSeriesData();

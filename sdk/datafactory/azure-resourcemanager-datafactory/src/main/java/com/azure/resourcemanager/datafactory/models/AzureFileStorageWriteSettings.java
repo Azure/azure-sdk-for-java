@@ -93,9 +93,15 @@ public final class AzureFileStorageWriteSettings extends StoreWriteSettings {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (copyBehavior() != null) {
+            jsonWriter.writeUntypedField("copyBehavior", copyBehavior());
+        }
         jsonWriter.writeArrayField("metadata", metadata(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type);
         if (additionalProperties() != null) {

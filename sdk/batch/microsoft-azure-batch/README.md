@@ -19,7 +19,7 @@ BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(batchUri, batchAc
 BatchClient client = BatchClient.open(cred);
 ```
 
-* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://docs.microsoft.com/azure/batch/batch-aad-auth) for detail.
+* The other way is using AAD (Azure Active Directory) authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for detail.
 
 ```java
 BatchApplicationTokenCredentials cred = new BatchApplicationTokenCredentials(batchEndpoint, clientId, applicationSecret, applicationDomain, null, null);
@@ -69,9 +69,9 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 # Pre-requisites
 
-- [A Java Developer Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable), v 1.7 or later
+- [A Java Developer Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable), v 1.7 or later
 - [Maven](https://central.sonatype.com/artifact/com.microsoft.azure/azure-batch)
-- Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
+- Azure Service Principal - see [how to create authentication info](https://learn.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
 
 
 ## Help
@@ -134,7 +134,7 @@ All tests are run from the `sdk/batch` directory. They can be run either on the 
 
 # More Information
 
-* [Javadoc](https://docs.microsoft.com/java/api/overview/azure/batch?view=azure-java-stable)
+* [Javadoc](https://learn.microsoft.com/java/api/overview/azure/batch?view=azure-java-stable)
 * [https://azure.com/java](https://azure.com/java)
 * If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
@@ -142,4 +142,4 @@ All tests are run from the `sdk/batch` directory. They can be run either on the 
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fbatch%2Fmicrosoft-azure-batch%2FREADME.png)
+

@@ -4,7 +4,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,26 +21,31 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
     /*
      * Required. The type of the provided query expression.
      */
+    @Generated
     private String queryType = "SQL";
 
     /*
      * The query expression in SQL. The maximum size of the query expression is 256KiB.
      */
+    @Generated
     private String expression;
 
     /*
      * The InputSerialization property.
      */
+    @Generated
     private QuerySerialization inputSerialization;
 
     /*
      * The OutputSerialization property.
      */
+    @Generated
     private QuerySerialization outputSerialization;
 
     /**
      * Creates an instance of QueryRequest class.
      */
+    @Generated
     public QueryRequest() {
     }
 
@@ -49,6 +54,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      *
      * @return the queryType value.
      */
+    @Generated
     public String getQueryType() {
         return this.queryType;
     }
@@ -58,6 +64,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      *
      * @return the expression value.
      */
+    @Generated
     public String getExpression() {
         return this.expression;
     }
@@ -68,6 +75,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      * @param expression the expression value to set.
      * @return the QueryRequest object itself.
      */
+    @Generated
     public QueryRequest setExpression(String expression) {
         this.expression = expression;
         return this;
@@ -78,6 +86,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      *
      * @return the inputSerialization value.
      */
+    @Generated
     public QuerySerialization getInputSerialization() {
         return this.inputSerialization;
     }
@@ -88,6 +97,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      * @param inputSerialization the inputSerialization value to set.
      * @return the QueryRequest object itself.
      */
+    @Generated
     public QueryRequest setInputSerialization(QuerySerialization inputSerialization) {
         this.inputSerialization = inputSerialization;
         return this;
@@ -98,6 +108,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      *
      * @return the outputSerialization value.
      */
+    @Generated
     public QuerySerialization getOutputSerialization() {
         return this.outputSerialization;
     }
@@ -108,19 +119,22 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      * @param outputSerialization the outputSerialization value to set.
      * @return the QueryRequest object itself.
      */
+    @Generated
     public QueryRequest setOutputSerialization(QuerySerialization outputSerialization) {
         this.outputSerialization = outputSerialization;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueryRequest" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "QueryRequest" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("QueryType", this.queryType);
         xmlWriter.writeStringElement("Expression", this.expression);
@@ -137,6 +151,7 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueryRequest.
      */
+    @Generated
     public static QueryRequest fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -151,15 +166,15 @@ public final class QueryRequest implements XmlSerializable<QueryRequest> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueryRequest.
      */
+    @Generated
     public static QueryRequest fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueryRequest" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "QueryRequest" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueryRequest deserializedQueryRequest = new QueryRequest();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
-                if ("QueryType".equals(elementName.getLocalPart())) {
-                    deserializedQueryRequest.queryType = reader.getStringElement();
-                } else if ("Expression".equals(elementName.getLocalPart())) {
+                if ("Expression".equals(elementName.getLocalPart())) {
                     deserializedQueryRequest.expression = reader.getStringElement();
                 } else if ("InputSerialization".equals(elementName.getLocalPart())) {
                     deserializedQueryRequest.inputSerialization

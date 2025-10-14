@@ -13,23 +13,23 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"currentValue\":89.70679,\"limit\":84.81147,\"name\":{\"value\":\"ycs\",\"localizedValue\":\"zyvoaqa\"}}")
+            "{\"currentValue\":43.46673,\"limit\":52.71724,\"name\":{\"value\":\"zocrdzgczeu\",\"localizedValue\":\"g\"}}")
             .toObject(UsageInner.class);
-        Assertions.assertEquals(89.70679f, model.currentValue());
-        Assertions.assertEquals(84.81147f, model.limit());
-        Assertions.assertEquals("ycs", model.name().value());
-        Assertions.assertEquals("zyvoaqa", model.name().localizedValue());
+        Assertions.assertEquals(43.46673f, model.currentValue());
+        Assertions.assertEquals(52.71724f, model.limit());
+        Assertions.assertEquals("zocrdzgczeu", model.name().value());
+        Assertions.assertEquals("g", model.name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageInner model = new UsageInner().withCurrentValue(89.70679f)
-            .withLimit(84.81147f)
-            .withName(new UsageName().withValue("ycs").withLocalizedValue("zyvoaqa"));
+        UsageInner model = new UsageInner().withCurrentValue(43.46673f)
+            .withLimit(52.71724f)
+            .withName(new UsageName().withValue("zocrdzgczeu").withLocalizedValue("g"));
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
-        Assertions.assertEquals(89.70679f, model.currentValue());
-        Assertions.assertEquals(84.81147f, model.limit());
-        Assertions.assertEquals("ycs", model.name().value());
-        Assertions.assertEquals("zyvoaqa", model.name().localizedValue());
+        Assertions.assertEquals(43.46673f, model.currentValue());
+        Assertions.assertEquals(52.71724f, model.limit());
+        Assertions.assertEquals("zocrdzgczeu", model.name().value());
+        Assertions.assertEquals("g", model.name().localizedValue());
     }
 }

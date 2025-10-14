@@ -10,6 +10,38 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   - Here are details about [Java 8 client compatibility with Azure Certificate Authority][java8_client_compatibility].
 
 ### Include the package
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core-http-vertx</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-core-http-vertx;current})
 ```xml
@@ -17,7 +49,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.0.0-beta.24</version>
+    <version>1.1.2</version>
   </dependency>
 </dependencies>
 ```
@@ -56,6 +88,25 @@ HttpClient client = new VertxHttpClientBuilder()
     .build();
 ```
 
+### Create an HttpClient with custom maxHeaderSize
+
+Create a Vert.x HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
+
+```
+io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
+```
+
+(This is a Netty exception as maxHeaderSize is flowed through to Netty.)
+
+```java readme-sample-customMaxHeaderSize
+// Constructs an HttpClient with a modified max header size.
+// This creates a Vert.x HttpClient with a max headers size of 256 KB.
+// NOTE: If httpClientOptions is set, all other options set in the VertxHttpClientBuilder will be ignored.
+HttpClient httpClient = new VertxHttpClientBuilder()
+    .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
+    .build();
+```
+
 ## Next steps
 
 Get started with Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).
@@ -83,7 +134,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- Links -->
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-vertx%2FREADME.png)
+

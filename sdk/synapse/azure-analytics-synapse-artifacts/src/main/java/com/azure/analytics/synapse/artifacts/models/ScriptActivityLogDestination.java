@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
     /**
      * Static value ActivityOutput for ScriptActivityLogDestination.
      */
+    @Generated
     public static final ScriptActivityLogDestination ACTIVITY_OUTPUT = fromString("ActivityOutput");
 
     /**
      * Static value ExternalStore for ScriptActivityLogDestination.
      */
+    @Generated
     public static final ScriptActivityLogDestination EXTERNAL_STORE = fromString("ExternalStore");
 
     /**
@@ -26,6 +29,7 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ScriptActivityLogDestination() {
     }
@@ -36,6 +40,7 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
      * @param name a name to look for.
      * @return the corresponding ScriptActivityLogDestination.
      */
+    @Generated
     public static ScriptActivityLogDestination fromString(String name) {
         return fromString(name, ScriptActivityLogDestination.class);
     }
@@ -45,6 +50,7 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
      * 
      * @return known ScriptActivityLogDestination values.
      */
+    @Generated
     public static Collection<ScriptActivityLogDestination> values() {
         return values(ScriptActivityLogDestination.class);
     }

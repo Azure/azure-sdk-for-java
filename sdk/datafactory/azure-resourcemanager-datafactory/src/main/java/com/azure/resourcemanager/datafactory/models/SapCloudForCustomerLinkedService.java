@@ -52,7 +52,7 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapCloudForCustomerLinkedServiceTypeProperties innerTypeProperties() {
+    SapCloudForCustomerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

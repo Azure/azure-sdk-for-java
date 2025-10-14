@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkManagerRoutingConf
  */
 public final class NetworkManagerRoutingConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * NetworkManagerRoutingConfigurationPut.json
      */
     /**

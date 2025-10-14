@@ -24,6 +24,11 @@ import java.util.Map;
 @Fluent
 public final class VolumeInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -57,6 +62,15 @@ public final class VolumeInner extends Resource {
      * Creates an instance of VolumeInner class.
      */
     public VolumeInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -280,6 +294,8 @@ public final class VolumeInner extends Resource {
                     deserializedVolumeInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedVolumeInner.innerProperties = VolumeProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVolumeInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedVolumeInner.systemData = SystemData.fromJson(reader);
                 } else {

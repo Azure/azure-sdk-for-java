@@ -67,7 +67,7 @@ public final class DiscoveriesImpl {
      * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientDiscove")
+    @ServiceInterface(name = "DataMapClientDiscoveries")
     public interface DiscoveriesService {
         @Post("/search/query")
         @ExpectedResponses({ 200 })
@@ -241,7 +241,9 @@ public final class DiscoveriesImpl {
      *             qualifiedName: String (Optional)
      *             entityType: String (Optional)
      *             description: String (Optional)
-     *             endorsement: String (Optional)
+     *             endorsement (Optional): [
+     *                 String (Optional)
+     *             ]
      *             owner: String (Optional)
      *             classification (Optional): [
      *                 String (Optional)
@@ -400,7 +402,9 @@ public final class DiscoveriesImpl {
      *             qualifiedName: String (Optional)
      *             entityType: String (Optional)
      *             description: String (Optional)
-     *             endorsement: String (Optional)
+     *             endorsement (Optional): [
+     *                 String (Optional)
+     *             ]
      *             owner: String (Optional)
      *             classification (Optional): [
      *                 String (Optional)
@@ -485,7 +489,9 @@ public final class DiscoveriesImpl {
      *             qualifiedName: String (Optional)
      *             entityType: String (Optional)
      *             description: String (Optional)
-     *             endorsement: String (Optional)
+     *             endorsement (Optional): [
+     *                 String (Optional)
+     *             ]
      *             owner: String (Optional)
      *             classification (Optional): [
      *                 String (Optional)
@@ -571,7 +577,9 @@ public final class DiscoveriesImpl {
      *             qualifiedName: String (Optional)
      *             entityType: String (Optional)
      *             description: String (Optional)
-     *             endorsement: String (Optional)
+     *             endorsement (Optional): [
+     *                 String (Optional)
+     *             ]
      *             owner: String (Optional)
      *             classification (Optional): [
      *                 String (Optional)

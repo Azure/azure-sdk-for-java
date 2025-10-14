@@ -360,21 +360,49 @@ public final class SapTableSource extends TabularSource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
-        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        if (sourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        }
+        if (sourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
+        if (queryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        }
+        if (additionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("rowCount", this.rowCount);
-        jsonWriter.writeUntypedField("rowSkips", this.rowSkips);
-        jsonWriter.writeUntypedField("rfcTableFields", this.rfcTableFields);
-        jsonWriter.writeUntypedField("rfcTableOptions", this.rfcTableOptions);
-        jsonWriter.writeUntypedField("batchSize", this.batchSize);
-        jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
-        jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        if (this.rowCount != null) {
+            jsonWriter.writeUntypedField("rowCount", this.rowCount);
+        }
+        if (this.rowSkips != null) {
+            jsonWriter.writeUntypedField("rowSkips", this.rowSkips);
+        }
+        if (this.rfcTableFields != null) {
+            jsonWriter.writeUntypedField("rfcTableFields", this.rfcTableFields);
+        }
+        if (this.rfcTableOptions != null) {
+            jsonWriter.writeUntypedField("rfcTableOptions", this.rfcTableOptions);
+        }
+        if (this.batchSize != null) {
+            jsonWriter.writeUntypedField("batchSize", this.batchSize);
+        }
+        if (this.customRfcReadTableFunctionModule != null) {
+            jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
+        }
+        if (this.sapDataColumnDelimiter != null) {
+            jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
         jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

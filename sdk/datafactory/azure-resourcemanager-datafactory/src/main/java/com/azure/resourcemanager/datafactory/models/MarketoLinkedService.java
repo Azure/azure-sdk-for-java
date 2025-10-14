@@ -51,7 +51,7 @@ public final class MarketoLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MarketoLinkedServiceTypeProperties innerTypeProperties() {
+    MarketoLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

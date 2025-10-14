@@ -163,6 +163,11 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     private String sqlServerLicenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
      * The last recovery point received time.
      */
     private OffsetDateTime lastRecoveryPointReceived;
@@ -196,6 +201,11 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
      * A value indicating all available inplace OS Upgrade configurations.
      */
     private List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations;
+
+    /*
+     * The target VM security profile.
+     */
+    private SecurityProfileProperties targetVmSecurityProfile;
 
     /**
      * Creates an instance of HyperVReplicaAzureReplicationDetails class.
@@ -764,6 +774,26 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     }
 
     /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the HyperVReplicaAzureReplicationDetails object itself.
+     */
+    public HyperVReplicaAzureReplicationDetails withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
+        return this;
+    }
+
+    /**
      * Get the lastRecoveryPointReceived property: The last recovery point received time.
      * 
      * @return the lastRecoveryPointReceived value.
@@ -897,6 +927,27 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     }
 
     /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @return the targetVmSecurityProfile value.
+     */
+    public SecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the HyperVReplicaAzureReplicationDetails object itself.
+     */
+    public HyperVReplicaAzureReplicationDetails
+        withTargetVmSecurityProfile(SecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -920,6 +971,9 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
         }
         if (allAvailableOSUpgradeConfigurations() != null) {
             allAvailableOSUpgradeConfigurations().forEach(e -> e.validate());
+        }
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
         }
     }
 
@@ -964,6 +1018,8 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
         jsonWriter.writeStringField("useManagedDisks", this.useManagedDisks);
         jsonWriter.writeStringField("licenseType", this.licenseType);
         jsonWriter.writeStringField("sqlServerLicenseType", this.sqlServerLicenseType);
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
         jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("seedManagedDiskTags", this.seedManagedDiskTags,
             (writer, element) -> writer.writeString(element));
@@ -974,6 +1030,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("allAvailableOSUpgradeConfigurations", this.allAvailableOSUpgradeConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("targetVmSecurityProfile", this.targetVmSecurityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1061,6 +1118,9 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
                     deserializedHyperVReplicaAzureReplicationDetails.licenseType = reader.getString();
                 } else if ("sqlServerLicenseType".equals(fieldName)) {
                     deserializedHyperVReplicaAzureReplicationDetails.sqlServerLicenseType = reader.getString();
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
                 } else if ("lastRecoveryPointReceived".equals(fieldName)) {
                     deserializedHyperVReplicaAzureReplicationDetails.lastRecoveryPointReceived = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -1085,6 +1145,9 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
                         = reader.readArray(reader1 -> OSUpgradeSupportedVersions.fromJson(reader1));
                     deserializedHyperVReplicaAzureReplicationDetails.allAvailableOSUpgradeConfigurations
                         = allAvailableOSUpgradeConfigurations;
+                } else if ("targetVmSecurityProfile".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.targetVmSecurityProfile
+                        = SecurityProfileProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

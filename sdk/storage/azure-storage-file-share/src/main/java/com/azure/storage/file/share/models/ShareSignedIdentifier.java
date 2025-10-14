@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,16 +21,19 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
     /*
      * A unique id.
      */
+    @Generated
     private String id;
 
     /*
      * The access policy.
      */
+    @Generated
     private ShareAccessPolicy accessPolicy;
 
     /**
      * Creates an instance of ShareSignedIdentifier class.
      */
+    @Generated
     public ShareSignedIdentifier() {
     }
 
@@ -39,6 +42,7 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -49,6 +53,7 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * @param id the id value to set.
      * @return the ShareSignedIdentifier object itself.
      */
+    @Generated
     public ShareSignedIdentifier setId(String id) {
         this.id = id;
         return this;
@@ -59,6 +64,7 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * 
      * @return the accessPolicy value.
      */
+    @Generated
     public ShareAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
@@ -69,19 +75,22 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * @param accessPolicy the accessPolicy value to set.
      * @return the ShareSignedIdentifier object itself.
      */
+    @Generated
     public ShareSignedIdentifier setAccessPolicy(ShareAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Id", this.id);
         xmlWriter.writeXml(this.accessPolicy, "AccessPolicy");
@@ -96,6 +105,7 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareSignedIdentifier.
      */
+    @Generated
     public static ShareSignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -110,8 +120,10 @@ public final class ShareSignedIdentifier implements XmlSerializable<ShareSignedI
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareSignedIdentifier.
      */
+    @Generated
     public static ShareSignedIdentifier fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareSignedIdentifier deserializedShareSignedIdentifier = new ShareSignedIdentifier();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

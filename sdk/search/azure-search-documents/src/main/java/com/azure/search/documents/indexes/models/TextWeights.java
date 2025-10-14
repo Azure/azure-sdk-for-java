@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,6 +24,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
      * The dictionary of per-field weights to boost document scoring. The keys are field names and the values are the
      * weights for each field.
      */
+    @Generated
     private final Map<String, Double> weights;
 
     /**
@@ -30,6 +32,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
      * 
      * @param weights the weights value to set.
      */
+    @Generated
     public TextWeights(Map<String, Double> weights) {
         this.weights = weights;
     }
@@ -40,6 +43,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
      * 
      * @return the weights value.
      */
+    @Generated
     public Map<String, Double> getWeights() {
         return this.weights;
     }
@@ -47,6 +51,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -63,6 +68,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextWeights.
      */
+    @Generated
     public static TextWeights fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean weightsFound = false;

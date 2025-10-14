@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,11 +25,13 @@ public final class JsonWebKeySet implements JsonSerializable<JsonWebKeySet> {
      * can choose to assign a meaning to the order for their purposes, if
      * desired.
      */
+    @Generated
     private List<JsonWebKey> keys;
 
     /**
      * Creates an instance of JsonWebKeySet class.
      */
+    @Generated
     public JsonWebKeySet() {
     }
 
@@ -41,6 +44,7 @@ public final class JsonWebKeySet implements JsonSerializable<JsonWebKeySet> {
      * 
      * @return the keys value.
      */
+    @Generated
     public List<JsonWebKey> getKeys() {
         return this.keys;
     }
@@ -55,6 +59,7 @@ public final class JsonWebKeySet implements JsonSerializable<JsonWebKeySet> {
      * @param keys the keys value to set.
      * @return the JsonWebKeySet object itself.
      */
+    @Generated
     public JsonWebKeySet setKeys(List<JsonWebKey> keys) {
         this.keys = keys;
         return this;
@@ -74,6 +79,7 @@ public final class JsonWebKeySet implements JsonSerializable<JsonWebKeySet> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,6 +95,7 @@ public final class JsonWebKeySet implements JsonSerializable<JsonWebKeySet> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the JsonWebKeySet.
      */
+    @Generated
     public static JsonWebKeySet fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonWebKeySet deserializedJsonWebKeySet = new JsonWebKeySet();

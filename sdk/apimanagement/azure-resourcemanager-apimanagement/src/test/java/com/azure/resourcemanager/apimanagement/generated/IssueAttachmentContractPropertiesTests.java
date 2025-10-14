@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueAttachmentContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueAttachmentContractProperties model = BinaryData
-            .fromString(
-                "{\"title\":\"qnwsithuqolyah\",\"contentFormat\":\"uqwqulsutrjbhxyk\",\"content\":\"hyqezvqq\"}")
-            .toObject(IssueAttachmentContractProperties.class);
-        Assertions.assertEquals("qnwsithuqolyah", model.title());
-        Assertions.assertEquals("uqwqulsutrjbhxyk", model.contentFormat());
-        Assertions.assertEquals("hyqezvqq", model.content());
+        IssueAttachmentContractProperties model
+            = BinaryData.fromString("{\"title\":\"ktg\",\"contentFormat\":\"styoua\",\"content\":\"bewreswmowegmmut\"}")
+                .toObject(IssueAttachmentContractProperties.class);
+        Assertions.assertEquals("ktg", model.title());
+        Assertions.assertEquals("styoua", model.contentFormat());
+        Assertions.assertEquals("bewreswmowegmmut", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueAttachmentContractProperties model = new IssueAttachmentContractProperties().withTitle("qnwsithuqolyah")
-            .withContentFormat("uqwqulsutrjbhxyk")
-            .withContent("hyqezvqq");
+        IssueAttachmentContractProperties model = new IssueAttachmentContractProperties().withTitle("ktg")
+            .withContentFormat("styoua")
+            .withContent("bewreswmowegmmut");
         model = BinaryData.fromObject(model).toObject(IssueAttachmentContractProperties.class);
-        Assertions.assertEquals("qnwsithuqolyah", model.title());
-        Assertions.assertEquals("uqwqulsutrjbhxyk", model.contentFormat());
-        Assertions.assertEquals("hyqezvqq", model.content());
+        Assertions.assertEquals("ktg", model.title());
+        Assertions.assertEquals("styoua", model.contentFormat());
+        Assertions.assertEquals("bewreswmowegmmut", model.content());
     }
 }

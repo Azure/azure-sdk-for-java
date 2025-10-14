@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.IssueAttachmentContract;
@@ -21,22 +21,22 @@ public final class ApiIssueAttachmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"wpq\",\"contentFormat\":\"y\",\"content\":\"mzapdokez\"},\"id\":\"pe\",\"name\":\"knfzqnzbflbqmhb\",\"type\":\"yxxvwedhagqbbse\"}";
+            = "{\"properties\":{\"title\":\"uyhbceev\",\"contentFormat\":\"girrpwnqtvuxeuj\",\"content\":\"dssijuaxxf\"},\"id\":\"lypkcpwsrqnnmjun\",\"name\":\"tl\",\"type\":\"cltjhbcycgqa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IssueAttachmentContract response = manager.apiIssueAttachments()
-            .getWithResponse("plxzbnsshvqnpszb", "uybutcdzjfjt", "peyxdyuxurxr", "tqmmijgpqfkwna", "ikczscymqfv",
+            .getWithResponse("fiekkiskyyy", "ek", "fffyshdawjlmlcuf", "bjiutfofhoajjyl", "yqyjnufzvl",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wpq", response.title());
-        Assertions.assertEquals("y", response.contentFormat());
-        Assertions.assertEquals("mzapdokez", response.content());
+        Assertions.assertEquals("uyhbceev", response.title());
+        Assertions.assertEquals("girrpwnqtvuxeuj", response.contentFormat());
+        Assertions.assertEquals("dssijuaxxf", response.content());
     }
 }

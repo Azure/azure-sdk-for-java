@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
     /**
      * Kilometers Per Hour.
      */
+    @Generated
     public static final SpeedUnit KMPH = fromString("KMPH");
 
     /**
      * Miles Per Hour.
      */
+    @Generated
     public static final SpeedUnit MPH = fromString("MPH");
 
     /**
@@ -26,6 +29,7 @@ public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SpeedUnit() {
     }
@@ -36,6 +40,7 @@ public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
      * @param name a name to look for.
      * @return the corresponding SpeedUnit.
      */
+    @Generated
     public static SpeedUnit fromString(String name) {
         return fromString(name, SpeedUnit.class);
     }
@@ -45,6 +50,7 @@ public final class SpeedUnit extends ExpandableStringEnum<SpeedUnit> {
      * 
      * @return known SpeedUnit values.
      */
+    @Generated
     public static Collection<SpeedUnit> values() {
         return values(SpeedUnit.class);
     }

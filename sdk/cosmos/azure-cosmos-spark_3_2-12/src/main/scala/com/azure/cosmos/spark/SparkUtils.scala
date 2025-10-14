@@ -3,13 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosAsyncContainer
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, SqlParameter, SqlQuerySpec}
-import com.azure.cosmos.spark.diagnostics.ILogger
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
-import java.util.UUID
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicInteger
 

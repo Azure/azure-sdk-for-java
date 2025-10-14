@@ -51,7 +51,7 @@ public final class AmazonS3LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonS3LinkedServiceTypeProperties innerTypeProperties() {
+    AmazonS3LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

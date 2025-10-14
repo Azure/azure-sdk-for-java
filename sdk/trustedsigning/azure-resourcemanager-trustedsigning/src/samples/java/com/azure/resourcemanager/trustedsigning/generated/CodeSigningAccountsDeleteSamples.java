@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
  */
 public final class CodeSigningAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_Delete.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Delete.json
      */
     /**
      * Sample code: Delete a trusted signing account.

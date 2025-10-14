@@ -28,7 +28,7 @@ import java.util.UUID;
 public final class VaultsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/createVaultWithNetworkAcls.
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/createVaultWithNetworkAcls.
      * json
      */
     /**
@@ -60,7 +60,7 @@ public final class VaultsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/createVault.json
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/createVault.json
      */
     /**
      * Sample code: Create a new vault or update an existing vault.

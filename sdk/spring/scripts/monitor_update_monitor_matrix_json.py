@@ -11,7 +11,6 @@ import time
 from log import log
 import os
 import json
-import requests
 
 
 def change_to_repo_root_dir():
@@ -34,7 +33,10 @@ def update_monitor_matrix_json_file(filepath, test_spring_boot_version):
 def get_supported_spring_boot_version(filepath):
     version3 = []
     version2 = []
-    data = requests.get(filepath).json()
+    scripts_dir = os.path.dirname(__file__)
+    filepath = os.path.join(scripts_dir, '..', 'pipeline', 'spring-cloud-azure-supported-spring.json')
+    with open(filepath, 'r', encoding='utf-8') as file:
+        data = json.load(file)
     for entry in data:
         for key in entry:
             if entry[key] == "SUPPORTED" and entry["spring-boot-version"].startswith("3."):
@@ -49,7 +51,8 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    test_spring_boot_version = get_supported_spring_boot_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/pipeline/spring-cloud-azure-supported-spring.json")
+    scripts_dir = os.path.dirname(__file__)
+    test_spring_boot_version = get_supported_spring_boot_version(os.path.join(scripts_dir, '..', 'pipeline', 'spring-cloud-azure-supported-spring.json'))
     update_monitor_matrix_json_file("./sdk/spring/pipeline/monitor-supported-version-matrix.json", test_spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))

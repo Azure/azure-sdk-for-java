@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * Azure Blob Storage location containing the training data for a classifier document type. Either azureBlobSource
      * or azureBlobFileListSource must be specified.
      */
+    @Generated
     private AzureBlobContentSource azureBlobSource;
 
     /*
      * Azure Blob Storage file list specifying the training data for a classifier document type. Either azureBlobSource
      * or azureBlobFileListSource must be specified.
      */
+    @Generated
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
     /**
      * Creates an instance of ClassifierDocumentTypeDetails class.
      */
+    @Generated
     public ClassifierDocumentTypeDetails() {
     }
 
@@ -40,6 +44,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * 
      * @return the azureBlobSource value.
      */
+    @Generated
     public AzureBlobContentSource getAzureBlobSource() {
         return this.azureBlobSource;
     }
@@ -51,6 +56,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * @param azureBlobSource the azureBlobSource value to set.
      * @return the ClassifierDocumentTypeDetails object itself.
      */
+    @Generated
     public ClassifierDocumentTypeDetails setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
         this.azureBlobSource = azureBlobSource;
         return this;
@@ -62,6 +68,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * 
      * @return the azureBlobFileListSource value.
      */
+    @Generated
     public AzureBlobFileListContentSource getAzureBlobFileListSource() {
         return this.azureBlobFileListSource;
     }
@@ -73,6 +80,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * @param azureBlobFileListSource the azureBlobFileListSource value to set.
      * @return the ClassifierDocumentTypeDetails object itself.
      */
+    @Generated
     public ClassifierDocumentTypeDetails
         setAzureBlobFileListSource(AzureBlobFileListContentSource azureBlobFileListSource) {
         this.azureBlobFileListSource = azureBlobFileListSource;
@@ -82,6 +90,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,6 +107,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ClassifierDocumentTypeDetails.
      */
+    @Generated
     public static ClassifierDocumentTypeDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ClassifierDocumentTypeDetails deserializedClassifierDocumentTypeDetails

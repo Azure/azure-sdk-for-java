@@ -15,7 +15,7 @@ import java.util.Map;
 public final class WebAppsCreateOrUpdateSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CloneWebAppSlot.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CloneWebAppSlot.json
      */
     /**
      * Sample code: Clone web app slot.
@@ -44,7 +44,7 @@ public final class WebAppsCreateOrUpdateSlotSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/CreateOrUpdateWebAppSlot.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateWebAppSlot.json
      */
     /**
      * Sample code: Create or Update Web App Slot.

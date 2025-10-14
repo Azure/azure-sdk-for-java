@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
@@ -23,7 +24,6 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -230,7 +230,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -242,7 +242,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
@@ -481,7 +481,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -491,7 +491,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeInner object itself.
@@ -570,20 +570,6 @@ public final class VolumeInner extends Resource {
      */
     public Boolean isRestoring() {
         return this.innerProperties() == null ? null : this.innerProperties().isRestoring();
-    }
-
-    /**
-     * Set the isRestoring property: Restoring.
-     * 
-     * @param isRestoring the isRestoring value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withIsRestoring(Boolean isRestoring) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withIsRestoring(isRestoring);
-        return this;
     }
 
     /**
@@ -955,14 +941,40 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccessTieringPolicy();
+    }
+
+    /**
+     * Set the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @param coolAccessTieringPolicy the coolAccessTieringPolicy value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withCoolAccessTieringPolicy(coolAccessTieringPolicy);
+        return this;
+    }
+
+    /**
      * Get the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @return the unixPermissions value.
      */
@@ -975,10 +987,7 @@ public final class VolumeInner extends Resource {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumeInner object itself.
@@ -1323,29 +1332,6 @@ public final class VolumeInner extends Resource {
      */
     public Long inheritedSizeInBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.innerProperties() == null ? null : this.innerProperties().language();
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withLanguage(VolumeLanguage language) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withLanguage(language);
-        return this;
     }
 
     /**

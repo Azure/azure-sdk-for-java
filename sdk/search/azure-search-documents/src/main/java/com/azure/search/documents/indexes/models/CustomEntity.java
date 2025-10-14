@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,41 +24,48 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * The top-level entity descriptor. Matches in the skill output will be grouped by this name, and it should
      * represent the "normalized" form of the text being found.
      */
+    @Generated
     private final String name;
 
     /*
      * This field can be used as a passthrough for custom metadata about the matched text(s). The value of this field
      * will appear with every match of its entity in the skill output.
      */
+    @Generated
     private String description;
 
     /*
      * This field can be used as a passthrough for custom metadata about the matched text(s). The value of this field
      * will appear with every match of its entity in the skill output.
      */
+    @Generated
     private String type;
 
     /*
      * This field can be used as a passthrough for custom metadata about the matched text(s). The value of this field
      * will appear with every match of its entity in the skill output.
      */
+    @Generated
     private String subtype;
 
     /*
      * This field can be used as a passthrough for custom metadata about the matched text(s). The value of this field
      * will appear with every match of its entity in the skill output.
      */
+    @Generated
     private String id;
 
     /*
      * Defaults to false. Boolean value denoting whether comparisons with the entity name should be sensitive to
      * character casing. Sample case insensitive matches of "Microsoft" could be: microsoft, microSoft, MICROSOFT.
      */
+    @Generated
     private Boolean caseSensitive;
 
     /*
      * Defaults to false. Boolean value denoting whether comparisons with the entity name should be sensitive to accent.
      */
+    @Generated
     private Boolean accentSensitive;
 
     /*
@@ -67,30 +75,35 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * When case sensitivity is set to false, case differences do NOT count towards fuzziness tolerance, but otherwise
      * do.
      */
+    @Generated
     private Integer fuzzyEditDistance;
 
     /*
      * Changes the default case sensitivity value for this entity. It be used to change the default value of all aliases
      * caseSensitive values.
      */
+    @Generated
     private Boolean defaultCaseSensitive;
 
     /*
      * Changes the default accent sensitivity value for this entity. It be used to change the default value of all
      * aliases accentSensitive values.
      */
+    @Generated
     private Boolean defaultAccentSensitive;
 
     /*
      * Changes the default fuzzy edit distance value for this entity. It can be used to change the default value of all
      * aliases fuzzyEditDistance values.
      */
+    @Generated
     private Integer defaultFuzzyEditDistance;
 
     /*
      * An array of complex objects that can be used to specify alternative spellings or synonyms to the root entity
      * name.
      */
+    @Generated
     private List<CustomEntityAlias> aliases;
 
     /**
@@ -98,6 +111,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public CustomEntity(String name) {
         this.name = name;
     }
@@ -108,6 +122,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -118,6 +133,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -129,6 +145,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param description the description value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setDescription(String description) {
         this.description = description;
         return this;
@@ -140,6 +157,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -151,6 +169,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param type the type value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setType(String type) {
         this.type = type;
         return this;
@@ -162,6 +181,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the subtype value.
      */
+    @Generated
     public String getSubtype() {
         return this.subtype;
     }
@@ -173,6 +193,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param subtype the subtype value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setSubtype(String subtype) {
         this.subtype = subtype;
         return this;
@@ -184,6 +205,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -195,6 +217,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param id the id value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setId(String id) {
         this.id = id;
         return this;
@@ -207,6 +230,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the caseSensitive value.
      */
+    @Generated
     public Boolean isCaseSensitive() {
         return this.caseSensitive;
     }
@@ -219,6 +243,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param caseSensitive the caseSensitive value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setCaseSensitive(Boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
         return this;
@@ -230,6 +255,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the accentSensitive value.
      */
+    @Generated
     public Boolean isAccentSensitive() {
         return this.accentSensitive;
     }
@@ -241,6 +267,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param accentSensitive the accentSensitive value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setAccentSensitive(Boolean accentSensitive) {
         this.accentSensitive = accentSensitive;
         return this;
@@ -255,6 +282,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the fuzzyEditDistance value.
      */
+    @Generated
     public Integer getFuzzyEditDistance() {
         return this.fuzzyEditDistance;
     }
@@ -269,6 +297,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param fuzzyEditDistance the fuzzyEditDistance value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setFuzzyEditDistance(Integer fuzzyEditDistance) {
         this.fuzzyEditDistance = fuzzyEditDistance;
         return this;
@@ -280,6 +309,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the defaultCaseSensitive value.
      */
+    @Generated
     public Boolean isDefaultCaseSensitive() {
         return this.defaultCaseSensitive;
     }
@@ -291,6 +321,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param defaultCaseSensitive the defaultCaseSensitive value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setDefaultCaseSensitive(Boolean defaultCaseSensitive) {
         this.defaultCaseSensitive = defaultCaseSensitive;
         return this;
@@ -302,6 +333,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the defaultAccentSensitive value.
      */
+    @Generated
     public Boolean isDefaultAccentSensitive() {
         return this.defaultAccentSensitive;
     }
@@ -313,6 +345,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param defaultAccentSensitive the defaultAccentSensitive value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setDefaultAccentSensitive(Boolean defaultAccentSensitive) {
         this.defaultAccentSensitive = defaultAccentSensitive;
         return this;
@@ -324,6 +357,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the defaultFuzzyEditDistance value.
      */
+    @Generated
     public Integer getDefaultFuzzyEditDistance() {
         return this.defaultFuzzyEditDistance;
     }
@@ -335,6 +369,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param defaultFuzzyEditDistance the defaultFuzzyEditDistance value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setDefaultFuzzyEditDistance(Integer defaultFuzzyEditDistance) {
         this.defaultFuzzyEditDistance = defaultFuzzyEditDistance;
         return this;
@@ -346,6 +381,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * 
      * @return the aliases value.
      */
+    @Generated
     public List<CustomEntityAlias> getAliases() {
         return this.aliases;
     }
@@ -357,6 +393,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @param aliases the aliases value to set.
      * @return the CustomEntity object itself.
      */
+    @Generated
     public CustomEntity setAliases(List<CustomEntityAlias> aliases) {
         this.aliases = aliases;
         return this;
@@ -365,6 +402,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -392,6 +430,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntity.
      */
+    @Generated
     public static CustomEntity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

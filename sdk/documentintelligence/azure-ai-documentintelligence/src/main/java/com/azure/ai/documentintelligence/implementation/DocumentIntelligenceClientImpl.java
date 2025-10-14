@@ -164,7 +164,7 @@ public final class DocumentIntelligenceClientImpl {
      * REST calls.
      */
     @Host("{endpoint}/documentintelligence")
-    @ServiceInterface(name = "DocumentIntelligence")
+    @ServiceInterface(name = "DocumentIntelligenceClient")
     public interface DocumentIntelligenceClientService {
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })
@@ -531,122 +531,6 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, BinaryData analyzeRequest,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, analyzeRequest, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "analyzeResult"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Analyzes document with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     urlSource: String (Optional)
-     *     base64Source: byte[] (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param analyzeRequest Analyze request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, BinaryData analyzeRequest,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, analyzeRequest, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "analyzeResult"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Analyzes document with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     urlSource: String (Optional)
-     *     base64Source: byte[] (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param analyzeRequest Analyze request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginAnalyzeDocumentWithModelAsync(String modelId,
         BinaryData analyzeRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -720,6 +604,122 @@ public final class DocumentIntelligenceClientImpl {
                 "analyzeResult"),
             TypeReference.createInstance(AnalyzeOperationDetails.class),
             TypeReference.createInstance(AnalyzeResult.class));
+    }
+
+    /**
+     * Analyzes document with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     urlSource: String (Optional)
+     *     base64Source: byte[] (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.analyzeDocumentWithResponseAsync(modelId, analyzeRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyzes document with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     urlSource: String (Optional)
+     *     base64Source: byte[] (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeRequest Analyze request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, BinaryData analyzeRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.analyzeDocumentWithResponse(modelId, analyzeRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1047,140 +1047,6 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocumentsAsync(String modelId,
-        BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, analyzeBatchRequest, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param analyzeBatchRequest Analyze batch request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId, BinaryData analyzeBatchRequest,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeBatchDocumentsWithResponse(modelId, analyzeBatchRequest, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Analyzes batch documents with document model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
-     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
-     * may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
-     * "," separated string.</td></tr>
-     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
-     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
-     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
-     * Allowed values: "text", "markdown".</td></tr>
-     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
-     * the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     azureBlobSource (Optional): {
-     *         containerUrl: String (Required)
-     *         prefix: String (Optional)
-     *     }
-     *     azureBlobFileListSource (Optional): {
-     *         containerUrl: String (Required)
-     *         fileList: String (Required)
-     *     }
-     *     resultContainerUrl: String (Required)
-     *     resultPrefix: String (Optional)
-     *     overwriteExisting: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param modelId Unique document model name.
-     * @param analyzeBatchRequest Analyze batch request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeBatchOperationDetails, AnalyzeBatchResult> beginAnalyzeBatchDocumentsWithModelAsync(
         String modelId, BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -1263,6 +1129,140 @@ public final class DocumentIntelligenceClientImpl {
                 "result"),
             TypeReference.createInstance(AnalyzeBatchOperationDetails.class),
             TypeReference.createInstance(AnalyzeBatchResult.class));
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeBatchDocumentsAsync(String modelId,
+        BinaryData analyzeBatchRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.analyzeBatchDocumentsWithResponseAsync(modelId, analyzeBatchRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Analyzes batch documents with document model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
+     * <tr><td>output</td><td>List&lt;String&gt;</td><td>No</td><td>Additional outputs to generate during analysis. In
+     * the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     azureBlobSource (Optional): {
+     *         containerUrl: String (Required)
+     *         prefix: String (Optional)
+     *     }
+     *     azureBlobFileListSource (Optional): {
+     *         containerUrl: String (Required)
+     *         fileList: String (Required)
+     *     }
+     *     resultContainerUrl: String (Required)
+     *     resultPrefix: String (Optional)
+     *     overwriteExisting: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param modelId Unique document model name.
+     * @param analyzeBatchRequest Analyze batch request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeBatchDocuments(String modelId, BinaryData analyzeBatchRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.analyzeBatchDocumentsWithResponse(modelId, analyzeBatchRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1782,104 +1782,6 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
-        BinaryData classifyRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "analyzeResult"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Classifies document with document classifier.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
-     * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     urlSource: String (Optional)
-     *     base64Source: byte[] (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param classifierId Unique document classifier name.
-     * @param classifyRequest Classify request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "analyzeResult"),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Classifies document with document classifier.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
-     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
-     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
-     * "perPage".</td></tr>
-     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     urlSource: String (Optional)
-     *     base64Source: byte[] (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param classifierId Unique document classifier name.
-     * @param classifyRequest Classify request parameters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeOperationDetails, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -1944,6 +1846,104 @@ public final class DocumentIntelligenceClientImpl {
                 "analyzeResult"),
             TypeReference.createInstance(AnalyzeOperationDetails.class),
             TypeReference.createInstance(AnalyzeResult.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     urlSource: String (Optional)
+     *     base64Source: byte[] (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param classifyRequest Classify request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginClassifyDocumentAsync(String classifierId,
+        BinaryData classifyRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Classifies document with document classifier.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>1-based page numbers to analyze. Ex. "1-3,5,7-9"</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     urlSource: String (Optional)
+     *     base64Source: byte[] (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param classifyRequest Classify request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginClassifyDocument(String classifierId, BinaryData classifyRequest,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**

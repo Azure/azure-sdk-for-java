@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
@@ -22,22 +22,23 @@ public final class ProductGroupsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"tqzqnbseujcmtci\",\"description\":\"abnnxhcxctshxo\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"ylx\"},\"id\":\"k\",\"name\":\"wkjzvqpsymt\",\"type\":\"pyjtrxxzwd\"}";
+            = "{\"properties\":{\"displayName\":\"useimuipg\",\"description\":\"ahxbfhbipldzi\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"fz\"},\"id\":\"xcleyamvritjjh\",\"name\":\"vypqgncgwpvb\",\"type\":\"kafcnf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupContract response = manager.productGroups()
-            .createOrUpdateWithResponse("sytue", "mgukyw", "puowlc", "xkr", com.azure.core.util.Context.NONE)
+            .createOrUpdateWithResponse("gmx", "jkuqbngromlxsqdz", "yal", "xtgqpqfwuplfjkba",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tqzqnbseujcmtci", response.displayName());
-        Assertions.assertEquals("abnnxhcxctshxo", response.description());
-        Assertions.assertEquals(GroupType.EXTERNAL, response.typePropertiesType());
-        Assertions.assertEquals("ylx", response.externalId());
+        Assertions.assertEquals("useimuipg", response.displayName());
+        Assertions.assertEquals("ahxbfhbipldzi", response.description());
+        Assertions.assertEquals(GroupType.CUSTOM, response.typePropertiesType());
+        Assertions.assertEquals("fz", response.externalId());
     }
 }

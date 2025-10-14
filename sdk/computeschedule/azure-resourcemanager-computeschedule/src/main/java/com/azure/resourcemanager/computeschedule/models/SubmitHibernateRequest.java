@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -33,7 +32,7 @@ public final class SubmitHibernateRequest implements JsonSerializable<SubmitHibe
     private Resources resources;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -104,7 +103,7 @@ public final class SubmitHibernateRequest implements JsonSerializable<SubmitHibe
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -113,7 +112,7 @@ public final class SubmitHibernateRequest implements JsonSerializable<SubmitHibe
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the SubmitHibernateRequest object itself.
@@ -122,42 +121,6 @@ public final class SubmitHibernateRequest implements JsonSerializable<SubmitHibe
         this.correlationid = correlationid;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (schedule() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property schedule in model SubmitHibernateRequest"));
-        } else {
-            schedule().validate();
-        }
-        if (executionParameters() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property executionParameters in model SubmitHibernateRequest"));
-        } else {
-            executionParameters().validate();
-        }
-        if (resources() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resources in model SubmitHibernateRequest"));
-        } else {
-            resources().validate();
-        }
-        if (correlationid() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property correlationid in model SubmitHibernateRequest"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SubmitHibernateRequest.class);
 
     /**
      * {@inheritDoc}

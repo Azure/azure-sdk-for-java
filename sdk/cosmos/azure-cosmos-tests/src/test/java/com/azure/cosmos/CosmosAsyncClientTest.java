@@ -5,11 +5,16 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.guava27.Strings;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class CosmosAsyncClientTest implements ITest {
 
@@ -30,8 +35,64 @@ public abstract class CosmosAsyncClientTest implements ITest {
         return this.clientBuilder;
     }
 
+    public final String getEndpoint() {
+        return this.clientBuilder.getEndpoint();
+    }
+
     public final ConnectionPolicy getConnectionPolicy() {
         return this.clientBuilder.getConnectionPolicy();
+    }
+
+    public final <T> CosmosItemResponse verifyExists(CosmosContainer container, String id, PartitionKey pk, Class<T> clazz) {
+        return verifyExists(container, id, pk, null, clazz);
+    }
+
+    public final <T> CosmosItemResponse verifyExists(CosmosContainer container, String id, PartitionKey pk, CosmosItemRequestOptions requestOptions, Class<T> clazz) {
+        CosmosItemResponse<T> response = null;
+        while (response == null) {
+            try {
+                CosmosItemRequestOptions effectiveRequestOptions = requestOptions;
+
+                if (effectiveRequestOptions == null) {
+                    effectiveRequestOptions = new CosmosItemRequestOptions();
+                    if (getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
+                        effectiveRequestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+                    }
+                }
+
+                response = container.readItem(
+                    id,
+                    pk,
+                    effectiveRequestOptions,
+                    clazz);
+
+                assertThat(response.getDiagnostics()).isNotNull();
+                assertThat(response.getDiagnostics().getDiagnosticsContext()).isNotNull();
+                if (effectiveRequestOptions != null
+                    && effectiveRequestOptions.getReadConsistencyStrategy() != null) {
+
+                    assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+                        .isEqualTo(effectiveRequestOptions.getReadConsistencyStrategy());
+                } else {
+                    assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+                        .isEqualTo(ReadConsistencyStrategy.DEFAULT);
+                }
+
+                break;
+            } catch (CosmosException cosmosError) {
+                if (cosmosError.getStatusCode() != 404 || cosmosError.getSubStatusCode() != 0) {
+                    throw cosmosError;
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return response;
     }
 
     @Override

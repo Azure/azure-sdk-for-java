@@ -51,7 +51,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
      * 
      * @return the innerTypeProperties value.
      */
-    private CustomEventsTriggerTypeProperties innerTypeProperties() {
+    CustomEventsTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

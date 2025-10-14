@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class TrafficFlowTileStyle extends ExpandableStringEnum<TrafficFlow
     /**
      * Colors will reflect the absolute speed measured. Absolute speed is the capability to access the full speed.
      */
+    @Generated
     public static final TrafficFlowTileStyle ABSOLUTE = fromString("absolute");
 
     /**
@@ -21,18 +23,21 @@ public final class TrafficFlowTileStyle extends ExpandableStringEnum<TrafficFlow
      * refers to conditions where there is no congestion and traffic can follow the speed limits. The most used option
      * to visualize traffic flow on a map.
      */
+    @Generated
     public static final TrafficFlowTileStyle RELATIVE = fromString("relative");
 
     /**
      * Displays relative colors only where they are different from the free-flow speeds. This option will only
      * highlights areas of congestion.
      */
+    @Generated
     public static final TrafficFlowTileStyle RELATIVE_DELAY = fromString("relative-delay");
 
     /**
      * Displays relative colors but a larger difference from freeflow is required for segments to change the color. This
      * mode only valid when format is png.
      */
+    @Generated
     public static final TrafficFlowTileStyle REDUCED_SENSITIVITY = fromString("reduced-sensitivity");
 
     /**
@@ -40,6 +45,7 @@ public final class TrafficFlowTileStyle extends ExpandableStringEnum<TrafficFlow
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TrafficFlowTileStyle() {
     }
@@ -50,6 +56,7 @@ public final class TrafficFlowTileStyle extends ExpandableStringEnum<TrafficFlow
      * @param name a name to look for.
      * @return the corresponding TrafficFlowTileStyle.
      */
+    @Generated
     public static TrafficFlowTileStyle fromString(String name) {
         return fromString(name, TrafficFlowTileStyle.class);
     }
@@ -59,6 +66,7 @@ public final class TrafficFlowTileStyle extends ExpandableStringEnum<TrafficFlow
      * 
      * @return known TrafficFlowTileStyle values.
      */
+    @Generated
     public static Collection<TrafficFlowTileStyle> values() {
         return values(TrafficFlowTileStyle.class);
     }

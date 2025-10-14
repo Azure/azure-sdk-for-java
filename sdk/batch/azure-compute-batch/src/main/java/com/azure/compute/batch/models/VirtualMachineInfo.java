@@ -21,7 +21,14 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
      * The reference to the Azure Virtual Machine's Marketplace Image.
      */
     @Generated
-    private ImageReference imageReference;
+    private BatchVmImageReference imageReference;
+
+    /*
+     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account was
+     * created with its poolAllocationMode property set to 'UserSubscription'.
+     */
+    @Generated
+    private String scaleSetVmResourceId;
 
     /**
      * Creates an instance of VirtualMachineInfo class.
@@ -36,16 +43,9 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
      * @return the imageReference value.
      */
     @Generated
-    public ImageReference getImageReference() {
+    public BatchVmImageReference getImageReference() {
         return this.imageReference;
     }
-
-    /*
-     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account was
-     * created with its poolAllocationMode property set to 'UserSubscription'.
-     */
-    @Generated
-    private String scaleSetVmResourceId;
 
     /**
      * Get the scaleSetVmResourceId property: The resource ID of the Compute Node's current Virtual Machine Scale Set
@@ -86,7 +86,7 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("imageReference".equals(fieldName)) {
-                    deserializedVirtualMachineInfo.imageReference = ImageReference.fromJson(reader);
+                    deserializedVirtualMachineInfo.imageReference = BatchVmImageReference.fromJson(reader);
                 } else if ("scaleSetVmResourceId".equals(fieldName)) {
                     deserializedVirtualMachineInfo.scaleSetVmResourceId = reader.getString();
                 } else {

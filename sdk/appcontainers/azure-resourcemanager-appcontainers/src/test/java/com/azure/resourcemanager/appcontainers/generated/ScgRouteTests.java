@@ -13,27 +13,27 @@ public final class ScgRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScgRoute model = BinaryData.fromString(
-            "{\"id\":\"rbhmpfulubef\",\"uri\":\"ybpmf\",\"predicates\":[\"nunmpzkrv\",\"yifkdschlzvf\"],\"filters\":[\"nkjjwgcwnphbkgf\",\"rtogmhmj\",\"jsc\",\"fp\"],\"order\":4170299053453455281}")
+            "{\"id\":\"gm\",\"uri\":\"behlqtxnr\",\"predicates\":[\"ndrndpgf\",\"odhda\",\"otwfhipxwgsab\"],\"filters\":[\"powzafcz\",\"umljcirvpef\"],\"order\":4118280760943725731}")
             .toObject(ScgRoute.class);
-        Assertions.assertEquals("rbhmpfulubef", model.id());
-        Assertions.assertEquals("ybpmf", model.uri());
-        Assertions.assertEquals("nunmpzkrv", model.predicates().get(0));
-        Assertions.assertEquals("nkjjwgcwnphbkgf", model.filters().get(0));
-        Assertions.assertEquals(4170299053453455281L, model.order());
+        Assertions.assertEquals("gm", model.id());
+        Assertions.assertEquals("behlqtxnr", model.uri());
+        Assertions.assertEquals("ndrndpgf", model.predicates().get(0));
+        Assertions.assertEquals("powzafcz", model.filters().get(0));
+        Assertions.assertEquals(4118280760943725731L, model.order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScgRoute model = new ScgRoute().withId("rbhmpfulubef")
-            .withUri("ybpmf")
-            .withPredicates(Arrays.asList("nunmpzkrv", "yifkdschlzvf"))
-            .withFilters(Arrays.asList("nkjjwgcwnphbkgf", "rtogmhmj", "jsc", "fp"))
-            .withOrder(4170299053453455281L);
+        ScgRoute model = new ScgRoute().withId("gm")
+            .withUri("behlqtxnr")
+            .withPredicates(Arrays.asList("ndrndpgf", "odhda", "otwfhipxwgsab"))
+            .withFilters(Arrays.asList("powzafcz", "umljcirvpef"))
+            .withOrder(4118280760943725731L);
         model = BinaryData.fromObject(model).toObject(ScgRoute.class);
-        Assertions.assertEquals("rbhmpfulubef", model.id());
-        Assertions.assertEquals("ybpmf", model.uri());
-        Assertions.assertEquals("nunmpzkrv", model.predicates().get(0));
-        Assertions.assertEquals("nkjjwgcwnphbkgf", model.filters().get(0));
-        Assertions.assertEquals(4170299053453455281L, model.order());
+        Assertions.assertEquals("gm", model.id());
+        Assertions.assertEquals("behlqtxnr", model.uri());
+        Assertions.assertEquals("ndrndpgf", model.predicates().get(0));
+        Assertions.assertEquals("powzafcz", model.filters().get(0));
+        Assertions.assertEquals(4118280760943725731L, model.order());
     }
 }

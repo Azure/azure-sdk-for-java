@@ -11,7 +11,7 @@ public final class PatchDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchDetails model = BinaryData.fromString(
-            "{\"targetContainerName\":\"kknhxkizvytnrzv\",\"targetImage\":\"lj\",\"lastDetectionTime\":\"2021-02-20T05:38:09Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"rano\",\"newLayer\":{\"name\":\"ukkjqnvbroyla\",\"frameworkAndVersion\":\"ulcdisdosf\",\"osAndVersion\":\"jsvg\"},\"oldLayer\":{\"name\":\"hryvy\",\"frameworkAndVersion\":\"t\",\"osAndVersion\":\"lxgccknfnwmbtm\"},\"patchType\":\"FrameworkAndOSSecurity\"}")
+            "{\"targetContainerName\":\"vgpmun\",\"targetImage\":\"qsxvmhf\",\"lastDetectionTime\":\"2021-05-18T03:55:23Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"yihsasbhudypohyu\",\"newLayer\":{\"name\":\"lynsqyrpf\",\"frameworkAndVersion\":\"brlttymsjnygq\",\"osAndVersion\":\"fwqzdz\"},\"oldLayer\":{\"name\":\"la\",\"frameworkAndVersion\":\"nfhqlyvijouwivk\",\"osAndVersion\":\"yzunbixxrtikv\"},\"patchType\":\"FrameworkAndOSSecurity\"}")
             .toObject(PatchDetails.class);
     }
 

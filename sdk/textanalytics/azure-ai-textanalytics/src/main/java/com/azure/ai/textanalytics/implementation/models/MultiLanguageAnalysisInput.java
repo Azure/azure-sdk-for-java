@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
     /*
      * The documents property.
      */
+    @Generated
     private List<MultiLanguageInput> documents;
 
     /**
      * Creates an instance of MultiLanguageAnalysisInput class.
      */
+    @Generated
     public MultiLanguageAnalysisInput() {
     }
 
@@ -33,6 +36,7 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
      * 
      * @return the documents value.
      */
+    @Generated
     public List<MultiLanguageInput> getDocuments() {
         return this.documents;
     }
@@ -43,6 +47,7 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
      * @param documents the documents value to set.
      * @return the MultiLanguageAnalysisInput object itself.
      */
+    @Generated
     public MultiLanguageAnalysisInput setDocuments(List<MultiLanguageInput> documents) {
         this.documents = documents;
         return this;
@@ -51,6 +56,7 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class MultiLanguageAnalysisInput implements JsonSerializable<MultiL
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MultiLanguageAnalysisInput.
      */
+    @Generated
     public static MultiLanguageAnalysisInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MultiLanguageAnalysisInput deserializedMultiLanguageAnalysisInput = new MultiLanguageAnalysisInput();

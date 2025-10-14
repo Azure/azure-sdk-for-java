@@ -3,106 +3,151 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
 
   <properties>
-    <jdk.version>8</jdk.version>
-    <jdk-test.version>8</jdk-test.version>
-
-    <maven.compiler.source>${jdk.version}</maven.compiler.source>
-    <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    <maven.compiler.testSource>${jdk-test.version}</maven.compiler.testSource>
-    <maven.compiler.testTarget>${jdk-test.version}</maven.compiler.testTarget>
-    <jacoco.skip>true</jacoco.skip> <!--Most of the tests are done in the spring-cloud-azure-starter-monitor-test module-->
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <jacoco.skip>true</jacoco.skip> <!-- Most of the tests are done in the spring-cloud-azure-starter-monitor-test module. -->
     <spotless.skip>true</spotless.skip>
   </properties>
 
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+      <layout>default</layout>
+    </snapshotRepository>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/</url>
+    </site>
+  </distributionManagement>
+
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
 
   <name>Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application</name>
   <description>Spring Boot starter providing telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.</description>
 
-  <distributionManagement>
-    <site>
-      <id>azure-java-build-docs</id>
-      <url>${site.url}/site/${project.artifactId}</url>
-    </site>
-  </distributionManagement>
-
-  <scm>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
-  </scm>
-
   <dependencies>
-
-    <!-- OTel dependencies -->
-    <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-spring-boot-starter</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
-    </dependency>
-    <!-- End of OTel dependencies -->
-
-    <!-- Redeclaration of the OpenTelemetry exporter dependencies if Spring Monitor is released
-     and the OpenTelemetry exporter on Maven has older OpenTelemetry versions -->
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-api</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk-metrics</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk-logs</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
-    </dependency>
-    <!-- End of redeclaration of the OpenTelemetry exporter dependencies -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-spring-boot-starter</artifactId>
+      <version>2.14.0</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+    </dependency>
+
+    <!-- Redeclaration of the OpenTelemetry Autoconfigure dependencies if Spring Monitor is released
+     and the OpenTelemetry Autoconfigure on Maven has older OpenTelemetry versions -->
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-metrics</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-logs</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+      <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+    </dependency>
+    <!-- End of redeclaration of the OpenTelemetry exporter dependencies -->
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -111,13 +156,19 @@
       <version>3.22.0</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!--To allow Jacoco to work with Spring Boot 3:-->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>2.0.17</version> <!-- {x-version-update;springboot3_org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
     <!-- End of test dependencies -->
 
   </dependencies>
@@ -126,21 +177,52 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+          <execution>
+            <id>base-modules-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile without module-info for Java 8 -->
+          <execution>
+            <id>base-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile with Java 8 -->
+          <execution>
+            <id>base-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- Ensure we compile with Java 17 -->
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[2.9.0]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.9.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-api:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.43.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[2.14.0]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[3.5.5]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -159,7 +241,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>

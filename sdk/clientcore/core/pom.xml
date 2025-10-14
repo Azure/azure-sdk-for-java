@@ -8,14 +8,14 @@
   <parent>
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
     <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
   <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
@@ -37,33 +37,33 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.63</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
-      --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.credential=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.annotations=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.credentials=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.annotation=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http.annotations=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.client=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.exception=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.util=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.util.configuration=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.util.serializer=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.utils=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.utils.configuration=ALL-UNNAMED
 
       --add-reads io.clientcore.core=ALL-UNNAMED
 
       --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.instrumentation.fallback=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
@@ -88,25 +88,37 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.http2</groupId>
+      <artifactId>http2-server</artifactId>
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty.http2:http2-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-alpn-conscrypt-server</artifactId>
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-alpn-conscrypt-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -125,7 +137,7 @@
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in http-okhttp3 -->
+      <!-- HttpClientTests is inherited by tests in http-okhttp3 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
@@ -137,6 +149,18 @@
             <goals>
               <goal>test-jar</goal>
             </goals>
+          </execution>
+
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -160,13 +184,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
       </plugin>
 
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>
@@ -197,6 +221,38 @@
 
   <profiles>
     <profile>
+      <id>java12-plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>java12-plus-mr</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>12</release>
+                  <compileSourceRoots>
+                    <compileSourceRoot>${project.basedir}/src/main/java12</compileSourceRoot>
+                  </compileSourceRoots>
+                  <multiReleaseOutput>true</multiReleaseOutput>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>jmh-benchmark</id>
       <activation>
         <property>
@@ -212,7 +268,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <!-- Add the JMH annotation processor to the classpath. -->
               <annotationProcessorPaths>

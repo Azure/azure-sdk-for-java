@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationResultContractInner;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -76,7 +75,7 @@ public interface OperationResultContract {
      * 
      * @return the error value.
      */
-    ManagementError error();
+    ErrorResponseBody error();
 
     /**
      * Gets the actionLog property: This property if only provided as part of the TenantConfiguration_Validate

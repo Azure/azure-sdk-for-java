@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,72 +26,86 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6)
      */
+    @Generated
     private OffsetDateTime createdOn;
 
     /*
      * Contact details of the people or organization responsible for the image.
      */
+    @Generated
     private String authors;
 
     /*
      * URL to find more information on the image.
      */
+    @Generated
     private String url;
 
     /*
      * URL to get documentation on the image.
      */
+    @Generated
     private String documentation;
 
     /*
      * URL to get source code for building the image.
      */
+    @Generated
     private String source;
 
     /*
      * Version of the packaged software. The version MAY match a label or tag in the source code repository, may also be
      * Semantic versioning-compatible
      */
+    @Generated
     private String version;
 
     /*
      * Source control revision identifier for the packaged software.
      */
+    @Generated
     private String revision;
 
     /*
      * Name of the distributing entity, organization or individual.
      */
+    @Generated
     private String vendor;
 
     /*
      * License(s) under which contained software is distributed as an SPDX License Expression.
      */
+    @Generated
     private String licenses;
 
     /*
      * Name of the reference for a target.
      */
+    @Generated
     private String name;
 
     /*
      * Human-readable title of the image
      */
+    @Generated
     private String title;
 
     /*
      * Human-readable description of the software packaged in the image
      */
+    @Generated
     private String description;
 
     /*
      * Additional information provided through arbitrary metadata.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of OciAnnotations class.
      */
+    @Generated
     public OciAnnotations() {
     }
 
@@ -100,6 +115,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the createdOn value.
      */
+    @Generated
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
@@ -111,6 +127,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param createdOn the createdOn value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
@@ -121,6 +138,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the authors value.
      */
+    @Generated
     public String getAuthors() {
         return this.authors;
     }
@@ -131,6 +149,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param authors the authors value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setAuthors(String authors) {
         this.authors = authors;
         return this;
@@ -141,6 +160,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -151,6 +171,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param url the url value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setUrl(String url) {
         this.url = url;
         return this;
@@ -161,6 +182,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the documentation value.
      */
+    @Generated
     public String getDocumentation() {
         return this.documentation;
     }
@@ -171,6 +193,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param documentation the documentation value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setDocumentation(String documentation) {
         this.documentation = documentation;
         return this;
@@ -181,6 +204,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the source value.
      */
+    @Generated
     public String getSource() {
         return this.source;
     }
@@ -191,6 +215,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param source the source value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setSource(String source) {
         this.source = source;
         return this;
@@ -202,6 +227,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -213,6 +239,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param version the version value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setVersion(String version) {
         this.version = version;
         return this;
@@ -223,6 +250,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the revision value.
      */
+    @Generated
     public String getRevision() {
         return this.revision;
     }
@@ -233,6 +261,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param revision the revision value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setRevision(String revision) {
         this.revision = revision;
         return this;
@@ -243,6 +272,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the vendor value.
      */
+    @Generated
     public String getVendor() {
         return this.vendor;
     }
@@ -253,6 +283,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param vendor the vendor value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setVendor(String vendor) {
         this.vendor = vendor;
         return this;
@@ -264,6 +295,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the licenses value.
      */
+    @Generated
     public String getLicenses() {
         return this.licenses;
     }
@@ -275,6 +307,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param licenses the licenses value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setLicenses(String licenses) {
         this.licenses = licenses;
         return this;
@@ -285,6 +318,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -295,6 +329,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param name the name value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setName(String name) {
         this.name = name;
         return this;
@@ -305,6 +340,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the title value.
      */
+    @Generated
     public String getTitle() {
         return this.title;
     }
@@ -315,6 +351,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param title the title value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setTitle(String title) {
         this.title = title;
         return this;
@@ -325,6 +362,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -335,6 +373,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param description the description value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setDescription(String description) {
         this.description = description;
         return this;
@@ -345,6 +384,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -355,6 +395,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the OciAnnotations object itself.
      */
+    @Generated
     public OciAnnotations setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -363,6 +404,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -395,6 +437,7 @@ public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the OciAnnotations.
      */
+    @Generated
     public static OciAnnotations fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OciAnnotations deserializedOciAnnotations = new OciAnnotations();

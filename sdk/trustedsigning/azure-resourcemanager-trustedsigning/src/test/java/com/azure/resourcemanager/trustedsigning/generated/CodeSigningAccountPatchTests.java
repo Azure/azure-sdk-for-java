@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.trustedsigning.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.trustedsigning.models.AccountSku;
+import com.azure.resourcemanager.trustedsigning.models.AccountSkuPatch;
 import com.azure.resourcemanager.trustedsigning.models.CodeSigningAccountPatch;
 import com.azure.resourcemanager.trustedsigning.models.SkuName;
 import java.util.HashMap;
@@ -16,20 +16,20 @@ public final class CodeSigningAccountPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CodeSigningAccountPatch model = BinaryData.fromString(
-            "{\"tags\":{\"o\":\"gejspodmailzyde\",\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\"},\"properties\":{\"sku\":{\"name\":\"Premium\"}}}")
+            "{\"tags\":{\"o\":\"gejspodmailzyde\",\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\"},\"properties\":{\"sku\":{\"name\":\"Basic\"}}}")
             .toObject(CodeSigningAccountPatch.class);
         Assertions.assertEquals("gejspodmailzyde", model.tags().get("o"));
-        Assertions.assertEquals(SkuName.PREMIUM, model.sku().name());
+        Assertions.assertEquals(SkuName.BASIC, model.sku().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CodeSigningAccountPatch model = new CodeSigningAccountPatch()
             .withTags(mapOf("o", "gejspodmailzyde", "wixjsprozvcp", "wyahuxinpmqnja", "atscmd", "tegjvwmf"))
-            .withSku(new AccountSku().withName(SkuName.PREMIUM));
+            .withSku(new AccountSkuPatch().withName(SkuName.BASIC));
         model = BinaryData.fromObject(model).toObject(CodeSigningAccountPatch.class);
         Assertions.assertEquals("gejspodmailzyde", model.tags().get("o"));
-        Assertions.assertEquals(SkuName.PREMIUM, model.sku().name());
+        Assertions.assertEquals(SkuName.BASIC, model.sku().name());
     }
 
     // Use "Map.of" if available

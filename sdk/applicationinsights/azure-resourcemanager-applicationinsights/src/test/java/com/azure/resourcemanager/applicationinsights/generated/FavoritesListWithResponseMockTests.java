@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentFavorite;
@@ -25,27 +25,27 @@ public final class FavoritesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "[{\"Name\":\"cxkjibnxmysuxswq\",\"Config\":\"tvlwijpsttexoq\",\"Version\":\"wcyyufmhruncu\",\"FavoriteId\":\"qspkcdqzhlctd\",\"FavoriteType\":\"user\",\"SourceType\":\"ndy\",\"TimeModified\":\"chrqb\",\"Tags\":[\"rcgegydcwboxjum\"],\"Category\":\"qoli\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"iouaubrjt\"},{\"Name\":\"qxfuojrngif\",\"Config\":\"z\",\"Version\":\"sccbiuimzd\",\"FavoriteId\":\"jdfqwmkyoqufdvr\",\"FavoriteType\":\"shared\",\"SourceType\":\"zojhpctfnmd\",\"TimeModified\":\"tngfdgugeyzihgr\",\"Tags\":[\"i\"],\"Category\":\"bsnmfpph\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"vyhyhsgzfc\"}]";
+            = "[{\"Name\":\"g\",\"Config\":\"whryvycytdcl\",\"Version\":\"ccknfnwmbtmvp\",\"FavoriteId\":\"jdhttzaefedxi\",\"FavoriteType\":\"user\",\"SourceType\":\"phkmcrjdqnsdfz\",\"TimeModified\":\"gtgkylkdghr\",\"Tags\":[\"utlwxezwzhok\",\"bwnhhtql\",\"ehgpp\",\"pifhpfeoajvgcxtx\"],\"Category\":\"sheafid\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"sr\"},{\"Name\":\"mks\",\"Config\":\"h\",\"Version\":\"ftxfkf\",\"FavoriteId\":\"gpr\",\"FavoriteType\":\"user\",\"SourceType\":\"llu\",\"TimeModified\":\"iqtgdqoh\",\"Tags\":[\"sldrizetpwbral\",\"libph\",\"qzmiza\",\"a\"],\"Category\":\"nkjpdnjzha\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"hjlmu\"},{\"Name\":\"xprimrsop\",\"Config\":\"ecj\",\"Version\":\"islstv\",\"FavoriteId\":\"ylw\",\"FavoriteType\":\"shared\",\"SourceType\":\"umweoohguufuzboy\",\"TimeModified\":\"thwtzol\",\"Tags\":[\"mwmdxmebwjscjpa\",\"lxveabfqx\",\"mwmqtibx\"],\"Category\":\"jddtvqct\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"jaeukmrsieekpn\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<ApplicationInsightsComponentFavorite> response = manager.favorites()
-            .listWithResponse("xzsrzpge", "q", FavoriteType.SHARED, FavoriteSourceType.RETENTION, true,
-                Arrays.asList("wwpgdakchzyvlixq"), com.azure.core.util.Context.NONE)
+            .listWithResponse("roylaxxu", "cdisd", FavoriteType.SHARED, FavoriteSourceType.RETENTION, true,
+                Arrays.asList("b"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cxkjibnxmysuxswq", response.get(0).name());
-        Assertions.assertEquals("tvlwijpsttexoq", response.get(0).config());
-        Assertions.assertEquals("wcyyufmhruncu", response.get(0).version());
+        Assertions.assertEquals("g", response.get(0).name());
+        Assertions.assertEquals("whryvycytdcl", response.get(0).config());
+        Assertions.assertEquals("ccknfnwmbtmvp", response.get(0).version());
         Assertions.assertEquals(FavoriteType.USER, response.get(0).favoriteType());
-        Assertions.assertEquals("ndy", response.get(0).sourceType());
-        Assertions.assertEquals("rcgegydcwboxjum", response.get(0).tags().get(0));
-        Assertions.assertEquals("qoli", response.get(0).category());
+        Assertions.assertEquals("phkmcrjdqnsdfz", response.get(0).sourceType());
+        Assertions.assertEquals("utlwxezwzhok", response.get(0).tags().get(0));
+        Assertions.assertEquals("sheafid", response.get(0).category());
         Assertions.assertEquals(true, response.get(0).isGeneratedFromTemplate());
     }
 }

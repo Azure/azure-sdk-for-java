@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
     /*
      * Schema version
      */
+    @Generated
     private int version;
 
     /*
      * The abstract common base of all domains.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of MonitorDomain class.
      */
+    @Generated
     public MonitorDomain() {
     }
 
@@ -39,6 +43,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
      * 
      * @return the version value.
      */
+    @Generated
     public int getVersion() {
         return this.version;
     }
@@ -49,6 +54,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
      * @param version the version value to set.
      * @return the MonitorDomain object itself.
      */
+    @Generated
     public MonitorDomain setVersion(int version) {
         this.version = version;
         return this;
@@ -59,6 +65,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -69,6 +76,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the MonitorDomain object itself.
      */
+    @Generated
     public MonitorDomain setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -77,6 +85,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,6 +107,7 @@ public class MonitorDomain implements JsonSerializable<MonitorDomain> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MonitorDomain.
      */
+    @Generated
     public static MonitorDomain fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MonitorDomain deserializedMonitorDomain = new MonitorDomain();

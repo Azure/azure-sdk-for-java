@@ -6,23 +6,27 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databox.models.CreateOrderLimitForSubscriptionValidationRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.SkuName;
 import org.junit.jupiter.api.Assertions;
 
 public final class CreateOrderLimitForSubscriptionValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateOrderLimitForSubscriptionValidationRequest model = BinaryData
-            .fromString("{\"validationType\":\"ValidateCreateOrderLimit\",\"deviceType\":\"DataBoxCustomerDisk\"}")
+        CreateOrderLimitForSubscriptionValidationRequest model = BinaryData.fromString(
+            "{\"validationType\":\"ValidateCreateOrderLimit\",\"deviceType\":\"DataBoxDisk\",\"model\":\"AzureDataBox525\"}")
             .toObject(CreateOrderLimitForSubscriptionValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceType());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX525, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateOrderLimitForSubscriptionValidationRequest model
-            = new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX_CUSTOMER_DISK);
+            = new CreateOrderLimitForSubscriptionValidationRequest().withDeviceType(SkuName.DATA_BOX_DISK)
+                .withModel(ModelName.AZURE_DATA_BOX525);
         model = BinaryData.fromObject(model).toObject(CreateOrderLimitForSubscriptionValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceType());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX525, model.model());
     }
 }

@@ -28,6 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.AppResilienciesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.AppResiliencyInner;
 import com.azure.resourcemanager.appcontainers.models.AppResiliencyCollection;
@@ -64,13 +65,24 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientAppResiliencies")
     public interface AppResilienciesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies/{name}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppResiliencyInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AppResiliencyInner resiliencyEnvelope, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AppResiliencyInner> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
@@ -89,10 +101,31 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AppResiliencyInner> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AppResiliencyInner resiliencyEnvelope, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies/{name}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
             @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
@@ -109,6 +142,16 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AppResiliencyInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -118,10 +161,26 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AppResiliencyCollection> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("appName") String appName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppResiliencyCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AppResiliencyCollection> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -183,55 +242,6 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * @param appName Name of the Container App.
      * @param name Name of the resiliency policy.
      * @param resiliencyEnvelope The resiliency policy to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration to setup App Resiliency along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppResiliencyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String appName,
-        String name, AppResiliencyInner resiliencyEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (resiliencyEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resiliencyEnvelope is required and cannot be null."));
-        } else {
-            resiliencyEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            appName, name, this.client.getApiVersion(), resiliencyEnvelope, accept, context);
-    }
-
-    /**
-     * Create or update an application's resiliency policy.
-     * 
-     * Create or update container app resiliency policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Container App.
-     * @param name Name of the resiliency policy.
-     * @param resiliencyEnvelope The resiliency policy to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -262,7 +272,36 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppResiliencyInner> createOrUpdateWithResponse(String resourceGroupName, String appName,
         String name, AppResiliencyInner resiliencyEnvelope, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, appName, name, resiliencyEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (appName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (resiliencyEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resiliencyEnvelope is required and cannot be null."));
+        } else {
+            resiliencyEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            appName, name, this.client.getApiVersion(), resiliencyEnvelope, accept, context);
     }
 
     /**
@@ -344,55 +383,6 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * @param appName Name of the Container App.
      * @param name Name of the resiliency policy.
      * @param resiliencyEnvelope The resiliency policy to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration to setup App Resiliency along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppResiliencyInner>> updateWithResponseAsync(String resourceGroupName, String appName,
-        String name, AppResiliencyInner resiliencyEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (resiliencyEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resiliencyEnvelope is required and cannot be null."));
-        } else {
-            resiliencyEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, appName,
-            name, this.client.getApiVersion(), resiliencyEnvelope, accept, context);
-    }
-
-    /**
-     * Update an application's resiliency policy.
-     * 
-     * Update container app resiliency policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Container App.
-     * @param name Name of the resiliency policy.
-     * @param resiliencyEnvelope The resiliency policy to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,7 +413,36 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppResiliencyInner> updateWithResponse(String resourceGroupName, String appName, String name,
         AppResiliencyInner resiliencyEnvelope, Context context) {
-        return updateWithResponseAsync(resourceGroupName, appName, name, resiliencyEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (appName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (resiliencyEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resiliencyEnvelope is required and cannot be null."));
+        } else {
+            resiliencyEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            appName, name, this.client.getApiVersion(), resiliencyEnvelope, accept, context);
     }
 
     /**
@@ -494,47 +513,6 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Container App.
      * @param name Name of the resiliency policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String appName, String name,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, appName,
-            name, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete an application's resiliency policy.
-     * 
-     * Delete container app resiliency policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Container App.
-     * @param name Name of the resiliency policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,7 +539,30 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String appName, String name, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, appName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (appName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            appName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -630,47 +631,6 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Container App.
      * @param name Name of the resiliency policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container app resiliency policy along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppResiliencyInner>> getWithResponseAsync(String resourceGroupName, String appName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, appName, name,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get an application's resiliency policy.
-     * 
-     * Get container app resiliency policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Container App.
-     * @param name Name of the resiliency policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -698,7 +658,30 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppResiliencyInner> getWithResponse(String resourceGroupName, String appName, String name,
         Context context) {
-        return getWithResponseAsync(resourceGroupName, appName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (appName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, appName,
+            name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -765,47 +748,6 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of AppResiliency policies along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppResiliencyInner>> listSinglePageAsync(String resourceGroupName, String appName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (appName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, appName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List an application's resiliency policies.
-     * 
-     * List container app resiliency policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param appName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -824,16 +766,78 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appName Name of the Container App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of AppResiliency policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AppResiliencyInner> listSinglePage(String resourceGroupName, String appName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (appName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AppResiliencyCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, appName,
+                this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List an application's resiliency policies.
+     * 
+     * List container app resiliency policies.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param appName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of AppResiliency policies as paginated response with {@link PagedFlux}.
+     * @return collection of AppResiliency policies along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AppResiliencyInner> listAsync(String resourceGroupName, String appName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, appName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AppResiliencyInner> listSinglePage(String resourceGroupName, String appName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (appName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AppResiliencyCollection> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, appName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -850,7 +854,8 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppResiliencyInner> list(String resourceGroupName, String appName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, appName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, appName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -868,10 +873,13 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppResiliencyInner> list(String resourceGroupName, String appName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, appName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, appName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
+     * List an application's resiliency policies.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -898,6 +906,37 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
     }
 
     /**
+     * List an application's resiliency policies.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of AppResiliency policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AppResiliencyInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AppResiliencyCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List an application's resiliency policies.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -905,22 +944,25 @@ public final class AppResilienciesClientImpl implements AppResilienciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of AppResiliency policies along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of AppResiliency policies along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AppResiliencyInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AppResiliencyInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AppResiliencyCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppResilienciesClientImpl.class);
 }

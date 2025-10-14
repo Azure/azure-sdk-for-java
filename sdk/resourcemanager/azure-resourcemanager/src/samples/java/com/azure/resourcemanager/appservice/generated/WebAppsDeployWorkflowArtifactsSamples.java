@@ -18,7 +18,7 @@ import java.util.Map;
 public final class WebAppsDeployWorkflowArtifactsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/PostDeployWorkflowArtifacts.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PostDeployWorkflowArtifacts.json
      */
     /**
      * Sample code: Deploys workflow artifacts.
@@ -50,7 +50,7 @@ public final class WebAppsDeployWorkflowArtifactsSamples {
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/DeleteDeployWorkflowArtifacts.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/DeleteDeployWorkflowArtifacts.json
      */
     /**
      * Sample code: Delete workflow artifacts.

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SparkThriftTransportProtocol extends ExpandableStringEnum<Spa
     /**
      * Static value Binary for SparkThriftTransportProtocol.
      */
+    @Generated
     public static final SparkThriftTransportProtocol BINARY = fromString("Binary");
 
     /**
      * Static value SASL for SparkThriftTransportProtocol.
      */
+    @Generated
     public static final SparkThriftTransportProtocol SASL = fromString("SASL");
 
     /**
      * Static value HTTP for SparkThriftTransportProtocol.
      */
+    @Generated
     public static final SparkThriftTransportProtocol HTTP = fromString("HTTP ");
 
     /**
@@ -31,6 +35,7 @@ public final class SparkThriftTransportProtocol extends ExpandableStringEnum<Spa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkThriftTransportProtocol() {
     }
@@ -41,6 +46,7 @@ public final class SparkThriftTransportProtocol extends ExpandableStringEnum<Spa
      * @param name a name to look for.
      * @return the corresponding SparkThriftTransportProtocol.
      */
+    @Generated
     public static SparkThriftTransportProtocol fromString(String name) {
         return fromString(name, SparkThriftTransportProtocol.class);
     }
@@ -50,6 +56,7 @@ public final class SparkThriftTransportProtocol extends ExpandableStringEnum<Spa
      * 
      * @return known SparkThriftTransportProtocol values.
      */
+    @Generated
     public static Collection<SparkThriftTransportProtocol> values() {
         return values(SparkThriftTransportProtocol.class);
     }

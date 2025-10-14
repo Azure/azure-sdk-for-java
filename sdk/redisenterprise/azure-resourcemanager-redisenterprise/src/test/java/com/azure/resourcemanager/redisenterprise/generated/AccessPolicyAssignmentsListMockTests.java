@@ -7,8 +7,8 @@ package com.azure.resourcemanager.redisenterprise.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignment;
@@ -22,19 +22,19 @@ public final class AccessPolicyAssignmentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"accessPolicyName\":\"yqbexrmcqibycno\",\"user\":{\"objectId\":\"knme\"}},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"xzvlvqhjkbegib\",\"user\":{\"objectId\":\"mxiebw\"}},\"id\":\"aloayqcgwrtzju\",\"name\":\"gwyzm\",\"type\":\"txon\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AccessPolicyAssignment> response = manager.accessPolicyAssignments()
-            .list("wxqpsrknftguvri", "hprwmdyv", "qtayri", com.azure.core.util.Context.NONE);
+            .list("xobbcswsrt", "riplrbpbewtg", "fgb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yqbexrmcqibycno", response.iterator().next().accessPolicyName());
-        Assertions.assertEquals("knme", response.iterator().next().user().objectId());
+        Assertions.assertEquals("xzvlvqhjkbegib", response.iterator().next().accessPolicyName());
+        Assertions.assertEquals("mxiebw", response.iterator().next().user().objectId());
     }
 }

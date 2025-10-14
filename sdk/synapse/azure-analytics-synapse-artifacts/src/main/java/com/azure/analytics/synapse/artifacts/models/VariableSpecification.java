@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
     /*
      * Variable type.
      */
+    @Generated
     private VariableType type;
 
     /*
      * Default value of variable.
      */
+    @Generated
     private Object defaultValue;
 
     /**
      * Creates an instance of VariableSpecification class.
      */
+    @Generated
     public VariableSpecification() {
     }
 
@@ -37,6 +41,7 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
      * 
      * @return the type value.
      */
+    @Generated
     public VariableType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
      * @param type the type value to set.
      * @return the VariableSpecification object itself.
      */
+    @Generated
     public VariableSpecification setType(VariableType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
      * 
      * @return the defaultValue value.
      */
+    @Generated
     public Object getDefaultValue() {
         return this.defaultValue;
     }
@@ -67,6 +74,7 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
      * @param defaultValue the defaultValue value to set.
      * @return the VariableSpecification object itself.
      */
+    @Generated
     public VariableSpecification setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
         return this;
@@ -75,11 +83,14 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -92,6 +103,7 @@ public final class VariableSpecification implements JsonSerializable<VariableSpe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VariableSpecification.
      */
+    @Generated
     public static VariableSpecification fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VariableSpecification deserializedVariableSpecification = new VariableSpecification();

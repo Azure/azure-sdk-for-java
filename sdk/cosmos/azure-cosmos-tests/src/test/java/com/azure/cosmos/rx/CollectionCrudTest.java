@@ -3,7 +3,6 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
@@ -21,7 +20,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SpatialSpec;
@@ -314,8 +312,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             InternalObjectNode document = new InternalObjectNode();
             document.setId("doc");
-            document.set("name", "New Document", CosmosItemSerializer.DEFAULT_SERIALIZER);
-            document.set("mypk", "mypkValue", CosmosItemSerializer.DEFAULT_SERIALIZER);
+            document.set("name", "New Document");
+            document.set("mypk", "mypkValue");
             createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosItemResponse<InternalObjectNode> readDocumentResponse =
@@ -323,7 +321,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
-            document.set("name", "New Updated Document", CosmosItemSerializer.DEFAULT_SERIALIZER);
+            document.set("name", "New Updated Document");
             CosmosItemResponse<InternalObjectNode> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
@@ -335,8 +333,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             InternalObjectNode newDocument = new InternalObjectNode();
             newDocument.setId("doc");
-            newDocument.set("name", "New Created Document", CosmosItemSerializer.DEFAULT_SERIALIZER);
-            newDocument.set("mypk", "mypk", CosmosItemSerializer.DEFAULT_SERIALIZER);
+            newDocument.set("name", "New Created Document");
+            newDocument.set("mypk", "mypk");
             createDocument(collection2, newDocument);
 
             readDocumentResponse = client1.getDatabase(dbId)

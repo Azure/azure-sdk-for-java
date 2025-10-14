@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobil
 public final class ReplicationProtectedItemsUpdateMobilityServiceS {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectedItems_UpdateMobilityService.json
      */
     /**
@@ -24,7 +24,7 @@ public final class ReplicationProtectedItemsUpdateMobilityServiceS {
     public static void updateTheMobilityServiceOnAProtectedItem(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectedItems()
-            .updateMobilityService("WCUSVault", "wcusValidations", "WIN-JKKJ31QI8U2",
+            .updateMobilityService("wcusValidations", "WCUSVault", "WIN-JKKJ31QI8U2",
                 "cloud_c6780228-83bd-4f3e-a70e-cb46b7da33a0", "79dd20ab-2b40-11e7-9791-0050568f387e",
                 new UpdateMobilityServiceRequest()
                     .withProperties(new UpdateMobilityServiceRequestProperties().withRunAsAccountId("2")),

@@ -4,7 +4,9 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.Script;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
 
 /**
  * Samples for Scripts Update.
@@ -12,7 +14,7 @@ import com.azure.resourcemanager.kusto.models.Script;
 public final class ScriptsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsUpdate.json
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoScriptsUpdate.json
      */
     /**
      * Sample code: KustoScriptsUpdate.
@@ -28,6 +30,8 @@ public final class ScriptsUpdateSamples {
             .withScriptUrl("https://mysa.blob.core.windows.net/container/script.txt")
             .withForceUpdateTag("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe")
             .withContinueOnErrors(true)
+            .withScriptLevel(ScriptLevel.DATABASE)
+            .withPrincipalPermissionsAction(PrincipalPermissionsAction.REMOVE_PERMISSION_ON_SCRIPT_COMPLETION)
             .apply();
     }
 }

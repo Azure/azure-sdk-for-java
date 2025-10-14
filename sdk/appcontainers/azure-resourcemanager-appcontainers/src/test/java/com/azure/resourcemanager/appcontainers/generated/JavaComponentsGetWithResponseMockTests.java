@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JavaComponent;
@@ -21,24 +21,24 @@ public final class JavaComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"joxtdahne\",\"value\":\"ovt\"},{\"propertyName\":\"ztivfwjl\",\"value\":\"zekfsrmauklajv\"}],\"scale\":{\"minReplicas\":630907604,\"maxReplicas\":1874917407},\"serviceBinds\":[{\"name\":\"jovtkwxnhwhhn\",\"serviceId\":\"rzaaoee\"},{\"name\":\"mjenvjeatea\",\"serviceId\":\"crxoxdj\"}]},\"id\":\"dnaryyinzk\",\"name\":\"olrndwdb\",\"type\":\"xvzaledoy\"}";
+            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"llbsupubdxc\",\"value\":\"lhzwh\"},{\"propertyName\":\"kvbos\",\"value\":\"fdizhrjq\"},{\"propertyName\":\"aytvsl\",\"value\":\"kcgn\"},{\"propertyName\":\"arlcjiwgsxfaiocw\",\"value\":\"ujjgnfgrzxbarc\"}],\"scale\":{\"minReplicas\":871647713,\"maxReplicas\":1219246298},\"serviceBinds\":[{\"name\":\"mjw\",\"serviceId\":\"jcytesmfucrtfo\"}]},\"id\":\"hua\",\"name\":\"zmzivrtrfzhhez\",\"type\":\"hjud\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JavaComponent response = manager.javaComponents()
-            .getWithResponse("soy", "yxyj", "cbqp", com.azure.core.util.Context.NONE)
+            .getWithResponse("tfnressfepgck", "cjmgvsnvbtqdxfm", "ym", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("joxtdahne", response.properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("ovt", response.properties().configurations().get(0).value());
-        Assertions.assertEquals(630907604, response.properties().scale().minReplicas());
-        Assertions.assertEquals(1874917407, response.properties().scale().maxReplicas());
-        Assertions.assertEquals("jovtkwxnhwhhn", response.properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("rzaaoee", response.properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("llbsupubdxc", response.properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("lhzwh", response.properties().configurations().get(0).value());
+        Assertions.assertEquals(871647713, response.properties().scale().minReplicas());
+        Assertions.assertEquals(1219246298, response.properties().scale().maxReplicas());
+        Assertions.assertEquals("mjw", response.properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("jcytesmfucrtfo", response.properties().serviceBinds().get(0).serviceId());
     }
 }

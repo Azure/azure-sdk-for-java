@@ -83,8 +83,10 @@ public final class ClustersImpl implements Clusters {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String clusterName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, clusterName, context);
+    public OperationStatusResult delete(String resourceGroupName, String clusterName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, clusterName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -215,10 +217,13 @@ public final class ClustersImpl implements Clusters {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        return this.delete(resourceGroupName, clusterName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, clusterName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -229,7 +234,7 @@ public final class ClustersImpl implements Clusters {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        return this.delete(resourceGroupName, clusterName, context);
+        return this.delete(resourceGroupName, clusterName, ifMatch, ifNoneMatch, context);
     }
 
     private ClustersClient serviceClient() {

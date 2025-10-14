@@ -51,7 +51,7 @@ public final class GetMetadataActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private GetMetadataActivityTypeProperties innerTypeProperties() {
+    GetMetadataActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

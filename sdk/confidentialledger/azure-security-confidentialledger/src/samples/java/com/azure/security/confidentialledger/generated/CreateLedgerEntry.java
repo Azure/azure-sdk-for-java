@@ -19,8 +19,10 @@ public class CreateLedgerEntry {
                 .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.createledgerentry.createledgerentry
-        BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
-        RequestOptions requestOptions = new RequestOptions();
+        BinaryData entry = BinaryData.fromString(
+            "{\"contents\":\"New ledger entry contents.\",\"postHooks\":[{\"functionId\":\"myFunction2\",\"properties\":{\"arguments\":[\"arg3\",\"arg4\"],\"exportedFunctionName\":\"main\",\"runtimeOptions\":{\"log_exception_details\":true,\"max_cached_interpreters\":0,\"max_execution_time_ms\":0,\"max_heap_bytes\":0,\"max_stack_bytes\":0,\"return_exception_details\":true}}}],\"preHooks\":[{\"functionId\":\"myFunction1\",\"properties\":{\"arguments\":[\"arg1\",\"arg2\"],\"exportedFunctionName\":\"main\",\"runtimeOptions\":{\"log_exception_details\":true,\"max_cached_interpreters\":0,\"max_execution_time_ms\":0,\"max_heap_bytes\":0,\"max_stack_bytes\":0,\"return_exception_details\":true}}}]}");
+        RequestOptions requestOptions
+            = new RequestOptions().addQueryParam("collectionId", "Collection1").addQueryParam("tags", "tag1,tag2,tag3");
         Response<BinaryData> response = confidentialLedgerClient.createLedgerEntryWithResponse(entry, requestOptions);
         // END:com.azure.security.confidentialledger.generated.createledgerentry.createledgerentry
     }

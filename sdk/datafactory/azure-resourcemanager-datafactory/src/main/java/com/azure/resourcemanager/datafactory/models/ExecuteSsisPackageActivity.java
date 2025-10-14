@@ -52,7 +52,7 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ExecuteSsisPackageActivityTypeProperties innerTypeProperties() {
+    ExecuteSsisPackageActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

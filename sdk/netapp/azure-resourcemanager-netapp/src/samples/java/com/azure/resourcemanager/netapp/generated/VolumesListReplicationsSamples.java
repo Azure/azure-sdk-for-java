@@ -9,8 +9,8 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesListReplicationsSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
-     * Volumes_ListReplications.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_ListReplications.json
      */
     /**
      * Sample code: Volumes_ListReplications.

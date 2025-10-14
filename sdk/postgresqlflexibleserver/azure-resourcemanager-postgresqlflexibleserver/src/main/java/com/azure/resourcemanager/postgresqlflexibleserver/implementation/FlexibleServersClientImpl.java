@@ -21,8 +21,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FlexibleServersClient;
@@ -78,10 +80,30 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/ltrPreBackup")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        FlexibleServersTriggerLtrPreBackupResponse triggerLtrPreBackupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @BodyParam("application/json") LtrPreBackupRequest parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/startLtrBackup")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startLtrBackup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @BodyParam("application/json") LtrBackupRequest parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/startLtrBackup")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startLtrBackupSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @BodyParam("application/json") LtrBackupRequest parameters, @HeaderParam("Accept") String accept,
@@ -137,48 +159,6 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR pre-backup API call on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FlexibleServersTriggerLtrPreBackupResponse> triggerLtrPreBackupWithResponseAsync(
-        String resourceGroupName, String serverName, LtrPreBackupRequest parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.triggerLtrPreBackup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, context);
-    }
-
-    /**
-     * PreBackup operation performs all the checks that are needed for the subsequent long term retention backup
-     * operation to succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -207,7 +187,33 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlexibleServersTriggerLtrPreBackupResponse triggerLtrPreBackupWithResponse(String resourceGroupName,
         String serverName, LtrPreBackupRequest parameters, Context context) {
-        return triggerLtrPreBackupWithResponseAsync(resourceGroupName, serverName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.triggerLtrPreBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, context);
     }
 
     /**
@@ -276,39 +282,84 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR backup API call along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return response for the LTR backup API call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startLtrBackupWithResponseAsync(String resourceGroupName,
-        String serverName, LtrBackupRequest parameters, Context context) {
+    private Response<BinaryData> startLtrBackupWithResponse(String resourceGroupName, String serverName,
+        LtrBackupRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.startLtrBackup(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.startLtrBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Start the Long Term Retention Backup operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the LTR backup API call along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startLtrBackupWithResponse(String resourceGroupName, String serverName,
+        LtrBackupRequest parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.startLtrBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, context);
     }
 
@@ -339,28 +390,6 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for the LTR backup API call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LtrBackupResponseInner>, LtrBackupResponseInner> beginStartLtrBackupAsync(
-        String resourceGroupName, String serverName, LtrBackupRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = startLtrBackupWithResponseAsync(resourceGroupName, serverName, parameters, context);
-        return this.client.<LtrBackupResponseInner, LtrBackupResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), LtrBackupResponseInner.class, LtrBackupResponseInner.class, context);
-    }
-
-    /**
-     * Start the Long Term Retention Backup operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -369,7 +398,9 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LtrBackupResponseInner>, LtrBackupResponseInner>
         beginStartLtrBackup(String resourceGroupName, String serverName, LtrBackupRequest parameters) {
-        return this.beginStartLtrBackupAsync(resourceGroupName, serverName, parameters).getSyncPoller();
+        Response<BinaryData> response = startLtrBackupWithResponse(resourceGroupName, serverName, parameters);
+        return this.client.<LtrBackupResponseInner, LtrBackupResponseInner>getLroResult(response,
+            LtrBackupResponseInner.class, LtrBackupResponseInner.class, Context.NONE);
     }
 
     /**
@@ -387,7 +418,9 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LtrBackupResponseInner>, LtrBackupResponseInner>
         beginStartLtrBackup(String resourceGroupName, String serverName, LtrBackupRequest parameters, Context context) {
-        return this.beginStartLtrBackupAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
+        Response<BinaryData> response = startLtrBackupWithResponse(resourceGroupName, serverName, parameters, context);
+        return this.client.<LtrBackupResponseInner, LtrBackupResponseInner>getLroResult(response,
+            LtrBackupResponseInner.class, LtrBackupResponseInner.class, context);
     }
 
     /**
@@ -414,25 +447,6 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR backup API call on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LtrBackupResponseInner> startLtrBackupAsync(String resourceGroupName, String serverName,
-        LtrBackupRequest parameters, Context context) {
-        return beginStartLtrBackupAsync(resourceGroupName, serverName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Start the Long Term Retention Backup operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,7 +455,7 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LtrBackupResponseInner startLtrBackup(String resourceGroupName, String serverName,
         LtrBackupRequest parameters) {
-        return startLtrBackupAsync(resourceGroupName, serverName, parameters).block();
+        return beginStartLtrBackup(resourceGroupName, serverName, parameters).getFinalResult();
     }
 
     /**
@@ -459,6 +473,8 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LtrBackupResponseInner startLtrBackup(String resourceGroupName, String serverName,
         LtrBackupRequest parameters, Context context) {
-        return startLtrBackupAsync(resourceGroupName, serverName, parameters, context).block();
+        return beginStartLtrBackup(resourceGroupName, serverName, parameters, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FlexibleServersClientImpl.class);
 }

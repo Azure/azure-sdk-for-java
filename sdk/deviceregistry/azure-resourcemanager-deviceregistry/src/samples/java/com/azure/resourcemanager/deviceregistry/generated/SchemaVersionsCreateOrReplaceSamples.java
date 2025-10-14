@@ -11,14 +11,15 @@ import com.azure.resourcemanager.deviceregistry.models.SchemaVersionProperties;
  */
 public final class SchemaVersionsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2024-09-01-preview/Create_SchemaVersion.json
+     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_SchemaVersion.json
      */
     /**
-     * Sample code: Create_SchemaVersion.
+     * Sample code: CreateOrReplace_SchemaVersion.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void createSchemaVersion(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void
+        createOrReplaceSchemaVersion(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.schemaVersions()
             .define("1")
             .withExistingSchema("myResourceGroup", "my-schema-registry", "my-schema")

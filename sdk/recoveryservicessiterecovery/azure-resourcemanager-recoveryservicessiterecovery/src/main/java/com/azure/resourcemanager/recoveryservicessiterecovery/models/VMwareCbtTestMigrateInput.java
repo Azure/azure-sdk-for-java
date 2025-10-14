@@ -42,6 +42,11 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
      */
     private String osUpgradeVersion;
 
+    /*
+     * The managed run command script input.
+     */
+    private List<ManagedRunCommandScriptInput> postMigrationSteps;
+
     /**
      * Creates an instance of VMwareCbtTestMigrateInput class.
      */
@@ -139,6 +144,26 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
     }
 
     /**
+     * Get the postMigrationSteps property: The managed run command script input.
+     * 
+     * @return the postMigrationSteps value.
+     */
+    public List<ManagedRunCommandScriptInput> postMigrationSteps() {
+        return this.postMigrationSteps;
+    }
+
+    /**
+     * Set the postMigrationSteps property: The managed run command script input.
+     * 
+     * @param postMigrationSteps the postMigrationSteps value to set.
+     * @return the VMwareCbtTestMigrateInput object itself.
+     */
+    public VMwareCbtTestMigrateInput withPostMigrationSteps(List<ManagedRunCommandScriptInput> postMigrationSteps) {
+        this.postMigrationSteps = postMigrationSteps;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -158,6 +183,9 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
         }
+        if (postMigrationSteps() != null) {
+            postMigrationSteps().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtTestMigrateInput.class);
@@ -173,6 +201,8 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
+        jsonWriter.writeArrayField("postMigrationSteps", this.postMigrationSteps,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -203,6 +233,10 @@ public final class VMwareCbtTestMigrateInput extends TestMigrateProviderSpecific
                     deserializedVMwareCbtTestMigrateInput.vmNics = vmNics;
                 } else if ("osUpgradeVersion".equals(fieldName)) {
                     deserializedVMwareCbtTestMigrateInput.osUpgradeVersion = reader.getString();
+                } else if ("postMigrationSteps".equals(fieldName)) {
+                    List<ManagedRunCommandScriptInput> postMigrationSteps
+                        = reader.readArray(reader1 -> ManagedRunCommandScriptInput.fromJson(reader1));
+                    deserializedVMwareCbtTestMigrateInput.postMigrationSteps = postMigrationSteps;
                 } else {
                     reader.skipChildren();
                 }

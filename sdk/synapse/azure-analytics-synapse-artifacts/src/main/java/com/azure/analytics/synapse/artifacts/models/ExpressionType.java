@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
     /**
      * Static value Expression for ExpressionType.
      */
+    @Generated
     public static final ExpressionType EXPRESSION = fromString("Expression");
 
     /**
@@ -21,6 +23,7 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ExpressionType() {
     }
@@ -31,6 +34,7 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
      * @param name a name to look for.
      * @return the corresponding ExpressionType.
      */
+    @Generated
     public static ExpressionType fromString(String name) {
         return fromString(name, ExpressionType.class);
     }
@@ -40,6 +44,7 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
      * 
      * @return known ExpressionType values.
      */
+    @Generated
     public static Collection<ExpressionType> values() {
         return values(ExpressionType.class);
     }

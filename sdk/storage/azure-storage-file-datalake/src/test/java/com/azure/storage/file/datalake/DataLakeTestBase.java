@@ -27,12 +27,14 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
@@ -58,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -105,6 +108,13 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_BLOB_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-blob-content-md5");
     protected static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName X_MS_META_FOO = HttpHeaderName.fromString("x-ms-meta-foo");
+    private static final HttpHeaderName CONTENT_DISPOSITION = HttpHeaderName.fromString("Content-Disposition");
+    private static final HttpHeaderName CONTENT_ENCODING = HttpHeaderName.fromString("Content-Encoding");
+    private static final HttpHeaderName CONTENT_LANGUAGE = HttpHeaderName.fromString("Content-Language");
+    private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.fromString("Content-Type");
+    private static final HttpHeaderName CACHE_CONTROL = HttpHeaderName.fromString("Cache-Control");
+    private static final HttpHeaderName ACCEPT_RANGES = HttpHeaderName.fromString("Accept-Ranges");
 
     protected String prefix;
 
@@ -506,6 +516,22 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertArraysEqual(contentMD5, response.getValue().getContentMd5());
     }
 
+    /*
+    This assertation contains headers I have manually determined will not appear when using this API
+     */
+    protected void validateUserDefinedHeadersNotPresent(Response<PathSystemProperties> response) {
+        assertNull(response.getHeaders().get(ACCEPT_RANGES));
+        assertNull(response.getHeaders().get(CACHE_CONTROL));
+        assertNull(response.getHeaders().get(CONTENT_DISPOSITION));
+        assertNull(response.getHeaders().get(CONTENT_ENCODING));
+        assertNull(response.getHeaders().get(CONTENT_LANGUAGE));
+        assertNull(response.getHeaders().get(CONTENT_TYPE));
+        assertNull(response.getHeaders().get(X_MS_LEASE_STATE));
+        assertNull(response.getHeaders().get(X_MS_LEASE_DURATION));
+        assertNull(response.getHeaders().get(X_MS_LEASE_STATUS));
+        assertNull(response.getHeaders().get(X_MS_META_FOO));
+    }
+
     protected String setupFileSystemLeaseCondition(DataLakeFileSystemClient fsc, String leaseID) {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseClient(fsc).acquireLease(-1) : leaseID;
     }
@@ -733,6 +759,56 @@ public class DataLakeTestBase extends TestProxyTestBase {
             }
 
             sleepIfLiveTesting(delayMillis);
+        }
+    }
+
+    protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received) {
+        validatePropsSet(sent, received, true);
+    }
+
+    protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received,
+        boolean isStaticWebsite) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+
+        if (isStaticWebsite) {
+            assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+            assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+                received.getStaticWebsite().getErrorDocument404Path());
         }
     }
 }

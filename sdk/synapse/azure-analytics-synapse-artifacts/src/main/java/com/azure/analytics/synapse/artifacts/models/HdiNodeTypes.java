@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
     /**
      * Static value Headnode for HdiNodeTypes.
      */
+    @Generated
     public static final HdiNodeTypes HEADNODE = fromString("Headnode");
 
     /**
      * Static value Workernode for HdiNodeTypes.
      */
+    @Generated
     public static final HdiNodeTypes WORKERNODE = fromString("Workernode");
 
     /**
      * Static value Zookeeper for HdiNodeTypes.
      */
+    @Generated
     public static final HdiNodeTypes ZOOKEEPER = fromString("Zookeeper");
 
     /**
@@ -31,6 +35,7 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HdiNodeTypes() {
     }
@@ -41,6 +46,7 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
      * @param name a name to look for.
      * @return the corresponding HdiNodeTypes.
      */
+    @Generated
     public static HdiNodeTypes fromString(String name) {
         return fromString(name, HdiNodeTypes.class);
     }
@@ -50,6 +56,7 @@ public final class HdiNodeTypes extends ExpandableStringEnum<HdiNodeTypes> {
      * 
      * @return known HdiNodeTypes values.
      */
+    @Generated
     public static Collection<HdiNodeTypes> values() {
         return values(HdiNodeTypes.class);
     }

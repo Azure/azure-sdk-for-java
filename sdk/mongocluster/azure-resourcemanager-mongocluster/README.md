@@ -2,7 +2,7 @@
 
 Azure Resource Manager Mongo Cluster client library for Java.
 
-This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-mongocluster</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment 
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -60,7 +60,7 @@ MongoClusterManager manager = MongoClusterManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -75,16 +75,15 @@ mongoCluster = mongoClusterManager.mongoClusters()
     .define(clusterName)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
-    .withProperties(
-        new MongoClusterProperties()
-            .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-            .withStorage(new StorageProperties().withSizeGb(128L))
-            .withCompute(new ComputeProperties().withTier("M30"))
-            .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
-            .withSharding(new ShardingProperties().withShardCount(1))
-            .withServerVersion("7.0")
-        )
+    .withProperties(new MongoClusterProperties()
+        .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
+        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+        .withStorage(new StorageProperties().withSizeGb(128L))
+        .withCompute(new ComputeProperties().withTier("M30"))
+        .withHighAvailability(
+            new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
+        .withSharding(new ShardingProperties().withShardCount(1))
+        .withServerVersion("7.0"))
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/mongocluster/azure-resourcemanager-mongocluster/SAMPLE.md)
@@ -117,5 +116,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmongocluster%2Fazure-resourcemanager-mongocluster%2FREADME.png)

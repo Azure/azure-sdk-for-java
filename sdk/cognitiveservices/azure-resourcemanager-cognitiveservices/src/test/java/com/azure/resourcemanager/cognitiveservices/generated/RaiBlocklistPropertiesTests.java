@@ -12,14 +12,14 @@ public final class RaiBlocklistPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistProperties model
-            = BinaryData.fromString("{\"description\":\"r\"}").toObject(RaiBlocklistProperties.class);
-        Assertions.assertEquals("r", model.description());
+            = BinaryData.fromString("{\"description\":\"f\"}").toObject(RaiBlocklistProperties.class);
+        Assertions.assertEquals("f", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistProperties model = new RaiBlocklistProperties().withDescription("r");
+        RaiBlocklistProperties model = new RaiBlocklistProperties().withDescription("f");
         model = BinaryData.fromObject(model).toObject(RaiBlocklistProperties.class);
-        Assertions.assertEquals("r", model.description());
+        Assertions.assertEquals("f", model.description());
     }
 }

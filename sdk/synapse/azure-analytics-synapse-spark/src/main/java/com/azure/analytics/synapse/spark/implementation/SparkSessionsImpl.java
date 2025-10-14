@@ -63,7 +63,7 @@ public final class SparkSessionsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SparkClientSparkSess")
+    @ServiceInterface(name = "SparkClientSparkSessions")
     public interface SparkSessionsService {
         @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions")
         @ExpectedResponses({ 200 })

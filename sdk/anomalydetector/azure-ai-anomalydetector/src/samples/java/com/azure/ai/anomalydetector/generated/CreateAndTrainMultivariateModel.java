@@ -22,7 +22,7 @@ public class CreateAndTrainMultivariateModel {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariatetrainmultivariatemodel.createandtrainmultivariatemodel
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-train-multivariate-model.create-and-train-multivariate-model
         AnomalyDetectionModel response = multivariateClient.trainMultivariateModel(
             new ModelInfo("https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv",
                 OffsetDateTime.parse("2019-04-01T00:00:00Z"), OffsetDateTime.parse("2019-04-02T00:00:00Z"))
@@ -32,6 +32,6 @@ public class CreateAndTrainMultivariateModel {
                     .setAlignPolicy(new AlignPolicy().setAlignMode(AlignMode.OUTER)
                         .setFillNAMethod(FillNAMethod.LINEAR)
                         .setPaddingValue(0.0D)));
-        // END:com.azure.ai.anomalydetector.generated.multivariatetrainmultivariatemodel.createandtrainmultivariatemodel
+        // END:com.azure.ai.anomalydetector.generated.multivariate-train-multivariate-model.create-and-train-multivariate-model
     }
 }

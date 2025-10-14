@@ -85,7 +85,7 @@ variables have been set by the user:
   certificate which contains the public key associated with POLICY_SIGNING_KEY0, Base64 encoded.
 
 The tests also assume that the currently logged on user is authorized to call
-into the attestation service instance because they use [DefaultAzureCredential](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential) for authorization.
+into the attestation service instance because they use [DefaultAzureCredential](https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential) for authorization.
 
 This directory contains functional samples for the attestation service SDK.
 
@@ -138,11 +138,11 @@ the SGX enclave is configured as follows:
 Assuming a token is issued, this policy will cause a claim named `<custom-name>`
 to be issued with a value which matches the `x-ms-sgx-mrsigner` claim.
 
-For more information on authoring attestation policy documents, see: [Authoring an attestation policy](https://docs.microsoft.com/azure/attestation/author-sign-policy)
+For more information on authoring attestation policy documents, see: [Authoring an attestation policy](https://learn.microsoft.com/azure/attestation/author-sign-policy)
 
 ## Next Steps
 
-For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/) .
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://learn.microsoft.com/azure/attestation/) .
 
 <!-- LINKS -->
 <!-- links are known to be broken, they will be fixed after this initial pull

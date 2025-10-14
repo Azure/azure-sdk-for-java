@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,43 +21,51 @@ public final class Office365Source extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "Office365Source";
 
     /*
      * The groups containing all the users. Type: array of strings (or Expression with resultType array of strings).
      */
+    @Generated
     private Object allowedGroups;
 
     /*
      * The user scope uri. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userScopeFilterUri;
 
     /*
      * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object dateFilterColumn;
 
     /*
      * Start time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object startTime;
 
     /*
      * End time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object endTime;
 
     /*
      * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType array
      * of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
+    @Generated
     private Object outputColumns;
 
     /**
      * Creates an instance of Office365Source class.
      */
+    @Generated
     public Office365Source() {
     }
 
@@ -65,6 +74,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -76,6 +86,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the allowedGroups value.
      */
+    @Generated
     public Object getAllowedGroups() {
         return this.allowedGroups;
     }
@@ -87,6 +98,7 @@ public final class Office365Source extends CopySource {
      * @param allowedGroups the allowedGroups value to set.
      * @return the Office365Source object itself.
      */
+    @Generated
     public Office365Source setAllowedGroups(Object allowedGroups) {
         this.allowedGroups = allowedGroups;
         return this;
@@ -97,6 +109,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the userScopeFilterUri value.
      */
+    @Generated
     public Object getUserScopeFilterUri() {
         return this.userScopeFilterUri;
     }
@@ -107,6 +120,7 @@ public final class Office365Source extends CopySource {
      * @param userScopeFilterUri the userScopeFilterUri value to set.
      * @return the Office365Source object itself.
      */
+    @Generated
     public Office365Source setUserScopeFilterUri(Object userScopeFilterUri) {
         this.userScopeFilterUri = userScopeFilterUri;
         return this;
@@ -118,6 +132,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the dateFilterColumn value.
      */
+    @Generated
     public Object getDateFilterColumn() {
         return this.dateFilterColumn;
     }
@@ -129,6 +144,7 @@ public final class Office365Source extends CopySource {
      * @param dateFilterColumn the dateFilterColumn value to set.
      * @return the Office365Source object itself.
      */
+    @Generated
     public Office365Source setDateFilterColumn(Object dateFilterColumn) {
         this.dateFilterColumn = dateFilterColumn;
         return this;
@@ -140,6 +156,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the startTime value.
      */
+    @Generated
     public Object getStartTime() {
         return this.startTime;
     }
@@ -151,6 +168,7 @@ public final class Office365Source extends CopySource {
      * @param startTime the startTime value to set.
      * @return the Office365Source object itself.
      */
+    @Generated
     public Office365Source setStartTime(Object startTime) {
         this.startTime = startTime;
         return this;
@@ -162,6 +180,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the endTime value.
      */
+    @Generated
     public Object getEndTime() {
         return this.endTime;
     }
@@ -173,6 +192,7 @@ public final class Office365Source extends CopySource {
      * @param endTime the endTime value to set.
      * @return the Office365Source object itself.
      */
+    @Generated
     public Office365Source setEndTime(Object endTime) {
         this.endTime = endTime;
         return this;
@@ -185,6 +205,7 @@ public final class Office365Source extends CopySource {
      * 
      * @return the outputColumns value.
      */
+    @Generated
     public Object getOutputColumns() {
         return this.outputColumns;
     }
@@ -197,6 +218,7 @@ public final class Office365Source extends CopySource {
      * @param outputColumns the outputColumns value to set.
      * @return the Office365Source object itself.
      */
+    @Generated
     public Office365Source setOutputColumns(Object outputColumns) {
         this.outputColumns = outputColumns;
         return this;
@@ -205,6 +227,7 @@ public final class Office365Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -214,6 +237,7 @@ public final class Office365Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -223,6 +247,7 @@ public final class Office365Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -232,19 +257,38 @@ public final class Office365Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("allowedGroups", this.allowedGroups);
-        jsonWriter.writeUntypedField("userScopeFilterUri", this.userScopeFilterUri);
-        jsonWriter.writeUntypedField("dateFilterColumn", this.dateFilterColumn);
-        jsonWriter.writeUntypedField("startTime", this.startTime);
-        jsonWriter.writeUntypedField("endTime", this.endTime);
-        jsonWriter.writeUntypedField("outputColumns", this.outputColumns);
+        if (this.allowedGroups != null) {
+            jsonWriter.writeUntypedField("allowedGroups", this.allowedGroups);
+        }
+        if (this.userScopeFilterUri != null) {
+            jsonWriter.writeUntypedField("userScopeFilterUri", this.userScopeFilterUri);
+        }
+        if (this.dateFilterColumn != null) {
+            jsonWriter.writeUntypedField("dateFilterColumn", this.dateFilterColumn);
+        }
+        if (this.startTime != null) {
+            jsonWriter.writeUntypedField("startTime", this.startTime);
+        }
+        if (this.endTime != null) {
+            jsonWriter.writeUntypedField("endTime", this.endTime);
+        }
+        if (this.outputColumns != null) {
+            jsonWriter.writeUntypedField("outputColumns", this.outputColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -261,6 +305,7 @@ public final class Office365Source extends CopySource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the Office365Source.
      */
+    @Generated
     public static Office365Source fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Office365Source deserializedOffice365Source = new Office365Source();

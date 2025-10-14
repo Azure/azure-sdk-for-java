@@ -38,7 +38,6 @@ import static com.azure.spring.messaging.implementation.config.AzureMessagingBoo
  */
 public final class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
 
-    private static final String LOG_IGNORE_NULL_CUSTOMIZER = "The provided '{}' customizer is null, will ignore it.";
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
@@ -79,7 +78,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
-        if (entityType != null) {
+        // Assign the entityType from the method parameter to producerProperties only if
+        // producerProperties' entityType is null. This ensures that the method parameter
+        // has a lower priority compared to an already set entityType in producerProperties.
+        if (producerProperties.getEntityType() == null && entityType != null) {
             producerProperties.setEntityType(entityType);
         }
         return doCreateProducer(name, producerProperties);
@@ -151,7 +153,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      */
     public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
         } else {
             this.serviceBusClientBuilderCustomizers.add(customizer);
         }
@@ -164,7 +166,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class.getName());
             return;
         }
         this.customizers.add(customizer);
@@ -180,7 +183,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     public void addBuilderCustomizer(String entityName,
                                      AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug("The provided customizer is null, will ignore it.");
+            LOGGER.debug("The provided '{}' dedicated customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class.getName());
             return;
         }
         this.dedicatedCustomizers

@@ -15,6 +15,7 @@ module com.azure.spring.data.cosmos {
     requires spring.data.commons;
     requires spring.expression;
     requires spring.tx;
+    requires spring.web;
 
     exports com.azure.spring.data.cosmos;
     exports com.azure.spring.data.cosmos.common;

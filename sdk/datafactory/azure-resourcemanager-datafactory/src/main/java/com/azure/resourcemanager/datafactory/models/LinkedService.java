@@ -487,7 +487,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
                     return SharePointOnlineListLinkedService.fromJson(readerToUse.reset());
                 } else if ("AzureSynapseArtifacts".equals(discriminatorValue)) {
                     return AzureSynapseArtifactsLinkedService.fromJson(readerToUse.reset());
-                } else if ("LakeHouse".equals(discriminatorValue)) {
+                } else if ("Lakehouse".equals(discriminatorValue)) {
                     return LakeHouseLinkedService.fromJson(readerToUse.reset());
                 } else if ("SalesforceV2".equals(discriminatorValue)) {
                     return SalesforceV2LinkedService.fromJson(readerToUse.reset());

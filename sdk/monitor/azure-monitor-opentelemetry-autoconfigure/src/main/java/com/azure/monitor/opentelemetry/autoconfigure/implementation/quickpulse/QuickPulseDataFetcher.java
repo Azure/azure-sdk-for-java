@@ -93,6 +93,7 @@ class QuickPulseDataFetcher {
         point.setVersion(sdkVersion);
         point.setTimestamp(OffsetDateTime.now());
         point.setMetrics(addMetricsToMonitoringDataPoint(counters));
+        point.setCollectionConfigurationErrors(counters.configErrors);
         return point;
     }
 

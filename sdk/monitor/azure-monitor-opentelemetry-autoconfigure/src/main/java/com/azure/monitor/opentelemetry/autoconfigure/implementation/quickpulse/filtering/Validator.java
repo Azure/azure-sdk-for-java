@@ -8,14 +8,10 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationErrorType;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
@@ -31,77 +27,63 @@ public class Validator {
     private final Set<PredicateType> validStringPredicates = new HashSet<>(
         asList(PredicateType.CONTAINS, PredicateType.DOES_NOT_CONTAIN, PredicateType.EQUAL, PredicateType.NOT_EQUAL));
 
-    // TODO (harskaur): In ErrorTracker PR, track a list of configuration validation errors here
-    private final List<CollectionConfigurationError> errors = new ArrayList<>();
-
-    public boolean isValidDerivedMetricInfo(DerivedMetricInfo derivedMetricInfo) {
+    // The string in the return Optional represents an error encountered when validating the derived metric info.
+    // If the Optional is empty, that means validation passed.
+    public Optional<String> validateDerivedMetricInfo(DerivedMetricInfo derivedMetricInfo) {
         TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
         if (!isValidTelemetryType(telemetryType)) {
-            return false;
+            return Optional
+                .of("The user selected a telemetry type that the SDK does not support for Live Metrics Filtering. "
+                    + "Telemetry type: " + telemetryType);
         }
 
         if (!isNotCustomMetricProjection(derivedMetricInfo.getProjection())) {
-            return false;
+            return Optional.of("The user selected a projection of Custom Metric, which this SDK does not support.");
         }
 
         for (FilterConjunctionGroupInfo conjunctionGroupInfo : derivedMetricInfo.getFilterGroups()) {
             for (FilterInfo filter : conjunctionGroupInfo.getFilters()) {
-                if (!isValidFieldName(filter.getFieldName(), telemetryType)) {
-                    return false;
+                Optional<String> error = validateFieldName(filter.getFieldName());
+                if (error.isPresent()) {
+                    return error;
                 }
-                if (!isValidPredicateAndComparand(filter)) {
-                    return false;
+
+                error = validatePredicateAndComparand(filter);
+                if (error.isPresent()) {
+                    return error;
                 }
             }
         }
-        return true;
+        return Optional.empty();
     }
 
-    public boolean
-        isValidDocConjunctionGroupInfo(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) {
+    // The string in the return Optional represents an error encountered when validating the DocumentFilterConjunctionGroupInfo.
+    // If the Optional is empty, that means validation passed.
+    public Optional<String>
+        validateDocConjunctionGroupInfo(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) {
         TelemetryType telemetryType = documentFilterConjunctionGroupInfo.getTelemetryType();
         if (!isValidTelemetryType(telemetryType)) {
-            return false;
+            return Optional
+                .of("The user selected a telemetry type that the SDK does not support for Live Metrics Filtering. "
+                    + "Telemetry type: " + telemetryType);
         }
 
         FilterConjunctionGroupInfo conjunctionGroupInfo = documentFilterConjunctionGroupInfo.getFilters();
         for (FilterInfo filter : conjunctionGroupInfo.getFilters()) {
-            if (!isValidFieldName(filter.getFieldName(), telemetryType)) {
-                return false;
+            Optional<String> error = validateFieldName(filter.getFieldName());
+            if (error.isPresent()) {
+                return error;
             }
-            if (!isValidPredicateAndComparand(filter)) {
-                return false;
+
+            error = validatePredicateAndComparand(filter);
+            if (error.isPresent()) {
+                return error;
             }
         }
-        return true;
-    }
-
-    public void constructAndTrackCollectionConfigurationError(CollectionConfigurationErrorType errorType,
-        String message, String eTag, String id, boolean isDerivedMetricId) {
-        CollectionConfigurationError error = new CollectionConfigurationError();
-        error.setMessage(message);
-        error.setCollectionConfigurationErrorType(errorType);
-
-        KeyValuePairString keyValuePair1 = new KeyValuePairString();
-        keyValuePair1.setKey("ETag");
-        keyValuePair1.setValue(eTag);
-
-        KeyValuePairString keyValuePair2 = new KeyValuePairString();
-        keyValuePair2.setKey(isDerivedMetricId ? "DerivedMetricInfoId" : "DocumentStreamInfoId");
-        keyValuePair2.setValue(id);
-
-        List<KeyValuePairString> data = new ArrayList<>();
-        data.add(keyValuePair1);
-        data.add(keyValuePair2);
-
-        error.setData(data);
-
-        // TODO (harskaur): For ErrorTracker PR, add this error to list of tracked errors
-        errors.add(error);
+        return Optional.empty();
     }
 
     private boolean isValidTelemetryType(TelemetryType telemetryType) {
-        // TODO (harskaur): In ErrorTracker PR, create an error message & track an error for each false case
         if (telemetryType.equals(TelemetryType.PERFORMANCE_COUNTER)) {
             return false;
         } else if (telemetryType.equals(TelemetryType.EVENT)) {
@@ -115,46 +97,53 @@ public class Validator {
 
     private boolean isNotCustomMetricProjection(String projection) {
         if (projection.startsWith("CustomMetrics.")) {
-            // TODO (harskaur): In ErrorTracker PR, create an error message & track an error for this case
             return false;
         }
         return true;
     }
 
-    private boolean isValidFieldName(String fieldName, TelemetryType telemetryType) {
-        // TODO (harskaur): In ErrorTracker PR, create an error message & track an error for each false case
+    // The string in the return Optional represents an error encountered when validating the field name.
+    // If the Optional is empty, that means validation passed.
+    private Optional<String> validateFieldName(String fieldName) {
         if (fieldName.isEmpty()) {
-            return false;
+            return Optional.of("The user specified an empty field name for a filter.");
         }
         if (fieldName.startsWith("CustomMetrics.")) {
-            return false;
+            return Optional.of(
+                "The user selected a custom metric field name, but this SDK does not support filtering of custom metrics.");
         }
-        return true;
+        return Optional.empty();
     }
 
-    private boolean isValidPredicateAndComparand(FilterInfo filter) {
-        // TODO (harskaur): In ErrorTracker PR, create an error message & track an error for each false case
+    // The string in the return Optional represents an error encountered when validating the predicate/comparand.
+    // If the Optional is empty, that means validation passed.
+    private Optional<String> validatePredicateAndComparand(FilterInfo filter) {
         if (filter.getComparand().isEmpty()) {
             // It is possible to not type in a comparand and the service side to send us empty string.
-            return false;
+            return Optional.of("The user specified an empty comparand value for a filter.");
         } else if (Filter.ANY_FIELD.equals(filter.getFieldName())
             && !(filter.getPredicate().equals(PredicateType.CONTAINS)
                 || filter.getPredicate().equals(PredicateType.DOES_NOT_CONTAIN))) {
             // While the UI allows != and == for the ANY_FIELD fieldName, .net classic code only allows contains/not contains & the spec follows
             // .net classic behavior for this particular condition.
-            return false;
+            return Optional.of("The specified predicate is not supported for the fieldName * (Any field): "
+                + filter.getPredicate().getValue());
         } else if (knownNumericColumns.contains(filter.getFieldName())) {
             // Just in case a strange timestamp value is passed from the service side. The service side should send a duration with a specific
             // format ([days].[hours]:[minutes]:[seconds] - the seconds may be a whole number or something like 7.89).
             if (KnownDependencyColumns.DURATION.equals(filter.getFieldName())) {
                 if (Filter.getMicroSecondsFromFilterTimestampString(filter.getComparand()) == Long.MIN_VALUE) {
-                    return false;
+                    return Optional
+                        .of("The duration string provided by the user could not be parsed to a numeric value: "
+                            + filter.getComparand());
                 }
             } else { // The service side not does not validate if resultcode or responsecode is a numeric value
                 try {
                     Long.parseLong(filter.getComparand());
                 } catch (NumberFormatException e) {
-                    return false;
+                    return Optional
+                        .of("The result/response code specified by the user did not parse to a numeric value: "
+                            + filter.getComparand());
                 }
             }
         } else if (knownStringColumns.contains(filter.getFieldName())
@@ -162,9 +151,10 @@ public class Validator {
             // While the UI allows a user to select any predicate for a custom dimension filter, .net classic treats all custom dimensions like
             // String values. therefore we validate for predicates applicable to String. This is called out in the spec as well.
             if (!validStringPredicates.contains(filter.getPredicate())) {
-                return false;
+                return Optional.of("The user selected a predicate (" + filter.getPredicate().getValue()
+                    + ") that is not supported for the field name " + filter.getFieldName());
             }
         }
-        return true;
+        return Optional.empty();
     }
 }

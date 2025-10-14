@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ public final class VectorThresholdKind extends ExpandableStringEnum<VectorThresh
      * canonical definition of similarity metric, not the 'distance' version. The threshold direction (larger or
      * smaller) will be chosen automatically according to the metric used by the field.
      */
+    @Generated
     public static final VectorThresholdKind VECTOR_SIMILARITY = fromString("vectorSimilarity");
 
     /**
@@ -25,6 +27,7 @@ public final class VectorThresholdKind extends ExpandableStringEnum<VectorThresh
      * &#064;search.score returned as part of the search response. The threshold direction will be chosen for higher
      * &#064;search.score.
      */
+    @Generated
     public static final VectorThresholdKind SEARCH_SCORE = fromString("searchScore");
 
     /**
@@ -32,6 +35,7 @@ public final class VectorThresholdKind extends ExpandableStringEnum<VectorThresh
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorThresholdKind() {
     }
@@ -42,6 +46,7 @@ public final class VectorThresholdKind extends ExpandableStringEnum<VectorThresh
      * @param name a name to look for.
      * @return the corresponding VectorThresholdKind.
      */
+    @Generated
     public static VectorThresholdKind fromString(String name) {
         return fromString(name, VectorThresholdKind.class);
     }
@@ -51,6 +56,7 @@ public final class VectorThresholdKind extends ExpandableStringEnum<VectorThresh
      * 
      * @return known VectorThresholdKind values.
      */
+    @Generated
     public static Collection<VectorThresholdKind> values() {
         return values(VectorThresholdKind.class);
     }

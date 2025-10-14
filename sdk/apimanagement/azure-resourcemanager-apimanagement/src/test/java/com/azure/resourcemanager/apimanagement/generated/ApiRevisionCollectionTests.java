@@ -12,15 +12,15 @@ public final class ApiRevisionCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiRevisionCollection model = BinaryData.fromString(
-            "{\"value\":[{\"apiId\":\"ckbasyypndd\",\"apiRevision\":\"gcbacphejkot\",\"createdDateTime\":\"2021-05-11T13:05:51Z\",\"updatedDateTime\":\"2021-02-05T05:14:14Z\",\"description\":\"l\",\"privateUrl\":\"dlikwyqkgfgibma\",\"isOnline\":false,\"isCurrent\":true},{\"apiId\":\"s\",\"apiRevision\":\"yb\",\"createdDateTime\":\"2021-03-26T22:16:08Z\",\"updatedDateTime\":\"2021-02-21T09:55:36Z\",\"description\":\"ytb\",\"privateUrl\":\"qfou\",\"isOnline\":true,\"isCurrent\":true},{\"apiId\":\"zsm\",\"apiRevision\":\"mglougpbkw\",\"createdDateTime\":\"2021-06-18T17:23:58Z\",\"updatedDateTime\":\"2021-03-15T14:00:11Z\",\"description\":\"qktapspwgcuert\",\"privateUrl\":\"kdosvqw\",\"isOnline\":true,\"isCurrent\":true},{\"apiId\":\"bjf\",\"apiRevision\":\"gmbmbexppbh\",\"createdDateTime\":\"2021-09-17T16:41:16Z\",\"updatedDateTime\":\"2021-11-29T14:18:07Z\",\"description\":\"fpfpsalgbquxigj\",\"privateUrl\":\"gzjaoyfhrtxilne\",\"isOnline\":false,\"isCurrent\":true}],\"count\":1076277813436926770,\"nextLink\":\"juvf\"}")
+            "{\"value\":[{\"apiId\":\"kouknvudwtiu\",\"apiRevision\":\"ldngkpoci\",\"createdDateTime\":\"2021-03-10T18:39:36Z\",\"updatedDateTime\":\"2021-03-18T22:03:28Z\",\"description\":\"egukgjnpiucg\",\"privateUrl\":\"evqzntypmrbp\",\"isOnline\":false,\"isCurrent\":false},{\"apiId\":\"j\",\"apiRevision\":\"pyd\",\"createdDateTime\":\"2021-02-06T09:08:09Z\",\"updatedDateTime\":\"2021-08-04T14:21:07Z\",\"description\":\"eoejzic\",\"privateUrl\":\"fsj\",\"isOnline\":true,\"isCurrent\":true},{\"apiId\":\"ishc\",\"apiRevision\":\"hajdeyeamdpha\",\"createdDateTime\":\"2021-05-30T00:59:07Z\",\"updatedDateTime\":\"2021-01-24T10:22:55Z\",\"description\":\"wgipwhono\",\"privateUrl\":\"gshwankixz\",\"isOnline\":true,\"isCurrent\":true}],\"count\":5855033535599353005,\"nextLink\":\"mryw\"}")
             .toObject(ApiRevisionCollection.class);
-        Assertions.assertEquals(1076277813436926770L, model.count());
+        Assertions.assertEquals(5855033535599353005L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiRevisionCollection model = new ApiRevisionCollection().withCount(1076277813436926770L);
+        ApiRevisionCollection model = new ApiRevisionCollection().withCount(5855033535599353005L);
         model = BinaryData.fromObject(model).toObject(ApiRevisionCollection.class);
-        Assertions.assertEquals(1076277813436926770L, model.count());
+        Assertions.assertEquals(5855033535599353005L, model.count());
     }
 }

@@ -27,7 +27,7 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
     private String logStorageAccountId;
 
     /*
-     * The DiskType.
+     * The disk type.
      */
     private DiskAccountType diskType;
 
@@ -35,6 +35,11 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
      * The DiskEncryptionSet ARM ID.
      */
     private String diskEncryptionSetId;
+
+    /*
+     * The logical sector size (in bytes), 512 by default.
+     */
+    private Integer sectorSizeInBytes;
 
     /**
      * Creates an instance of HyperVReplicaAzureDiskInputDetails class.
@@ -83,7 +88,7 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
     }
 
     /**
-     * Get the diskType property: The DiskType.
+     * Get the diskType property: The disk type.
      * 
      * @return the diskType value.
      */
@@ -92,7 +97,7 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
     }
 
     /**
-     * Set the diskType property: The DiskType.
+     * Set the diskType property: The disk type.
      * 
      * @param diskType the diskType value to set.
      * @return the HyperVReplicaAzureDiskInputDetails object itself.
@@ -123,6 +128,26 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
     }
 
     /**
+     * Get the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @return the sectorSizeInBytes value.
+     */
+    public Integer sectorSizeInBytes() {
+        return this.sectorSizeInBytes;
+    }
+
+    /**
+     * Set the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @param sectorSizeInBytes the sectorSizeInBytes value to set.
+     * @return the HyperVReplicaAzureDiskInputDetails object itself.
+     */
+    public HyperVReplicaAzureDiskInputDetails withSectorSizeInBytes(Integer sectorSizeInBytes) {
+        this.sectorSizeInBytes = sectorSizeInBytes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,6 +165,7 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
         jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
         jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
         jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        jsonWriter.writeNumberField("sectorSizeInBytes", this.sectorSizeInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,6 +194,9 @@ public final class HyperVReplicaAzureDiskInputDetails implements JsonSerializabl
                         = DiskAccountType.fromString(reader.getString());
                 } else if ("diskEncryptionSetId".equals(fieldName)) {
                     deserializedHyperVReplicaAzureDiskInputDetails.diskEncryptionSetId = reader.getString();
+                } else if ("sectorSizeInBytes".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureDiskInputDetails.sectorSizeInBytes
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

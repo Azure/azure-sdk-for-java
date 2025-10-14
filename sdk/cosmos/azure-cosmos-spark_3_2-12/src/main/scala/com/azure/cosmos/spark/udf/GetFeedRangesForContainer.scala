@@ -18,11 +18,11 @@ class GetFeedRangesForContainer extends UDF2[Map[String, String], Option[Int], A
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
     var feedRanges = List[String]()
     val cosmosContainerConfig: CosmosContainerConfig =
-      CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig, None, None)
+      CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
     val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
-      useEventualConsistency = readConfig.forceEventualConsistency,
+      readConsistencyStrategy = readConfig.readConsistencyStrategy,
       CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession))
     Loan(
       List[Option[CosmosClientCacheItem]](

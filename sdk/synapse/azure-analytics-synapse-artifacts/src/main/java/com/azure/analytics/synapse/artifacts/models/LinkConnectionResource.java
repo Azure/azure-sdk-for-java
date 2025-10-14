@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
     /*
      * Link connection id
      */
+    @Generated
     private String id;
 
     /*
      * Link connection name
      */
+    @Generated
     private String name;
 
     /*
      * Link connection type
      */
+    @Generated
     private String type;
 
     /*
      * Properties of link connection
      */
+    @Generated
     private LinkConnection properties;
 
     /*
      * Link connection description
      */
+    @Generated
     private String description;
 
     /**
      * Creates an instance of LinkConnectionResource class.
      */
+    @Generated
     public LinkConnectionResource() {
     }
 
@@ -52,6 +59,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -62,6 +70,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * @param id the id value to set.
      * @return the LinkConnectionResource object itself.
      */
+    @Generated
     public LinkConnectionResource setId(String id) {
         this.id = id;
         return this;
@@ -72,6 +81,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -82,6 +92,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * @param name the name value to set.
      * @return the LinkConnectionResource object itself.
      */
+    @Generated
     public LinkConnectionResource setName(String name) {
         this.name = name;
         return this;
@@ -92,6 +103,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -102,6 +114,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * @param type the type value to set.
      * @return the LinkConnectionResource object itself.
      */
+    @Generated
     public LinkConnectionResource setType(String type) {
         this.type = type;
         return this;
@@ -112,6 +125,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * 
      * @return the properties value.
      */
+    @Generated
     public LinkConnection getProperties() {
         return this.properties;
     }
@@ -122,6 +136,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * @param properties the properties value to set.
      * @return the LinkConnectionResource object itself.
      */
+    @Generated
     public LinkConnectionResource setProperties(LinkConnection properties) {
         this.properties = properties;
         return this;
@@ -132,6 +147,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -142,6 +158,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * @param description the description value to set.
      * @return the LinkConnectionResource object itself.
      */
+    @Generated
     public LinkConnectionResource setDescription(String description) {
         this.description = description;
         return this;
@@ -150,6 +167,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class LinkConnectionResource implements JsonSerializable<LinkConnec
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkConnectionResource.
      */
+    @Generated
     public static LinkConnectionResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionResource deserializedLinkConnectionResource = new LinkConnectionResource();

@@ -30,6 +30,8 @@ import static io.micrometer.core.instrument.Timer.Sample;
 })
 public final class RntbdRequestArgs {
 
+    private static final Uri emptyUri = Uri.create("");
+    private static final String emptyUriPath = "";
     private static final AtomicLong instanceCount = new AtomicLong();
 
     private final Sample sample;
@@ -51,9 +53,17 @@ public final class RntbdRequestArgs {
         this.lifetime = Stopwatch.createStarted();
         this.origin = physicalAddressUri.getURI().getScheme() + "://" + physicalAddressUri.getURI().getAuthority();
         this.physicalAddressUri = physicalAddressUri;
-        this.replicaPath = StringUtils.stripEnd(physicalAddressUri.getURI().getPath(), "/");
+        if (emptyUri.equals(physicalAddressUri)) {
+            this.replicaPath = emptyUriPath;
+        } else {
+            this.replicaPath = StringUtils.stripEnd(physicalAddressUri.getURI().getPath(), "/");
+        }
         this.serviceRequest = serviceRequest;
         this.transportRequestId = instanceCount.incrementAndGet();
+    }
+
+    public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest) {
+        this(serviceRequest, emptyUri);
     }
 
     // region Accessors

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationProtectionContainerMappingsCreateSam {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectionContainerMappings_Create.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationProtectionContainerMappingsCreateSam {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectionContainerMappings()
             .define("cloud1protectionprofile1")
-            .withExistingReplicationProtectionContainer("vault1", "resourceGroupPS1", "cloud1",
+            .withExistingReplicationProtectionContainer("resourceGroupPS1", "vault1", "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179")
             .withProperties(new CreateProtectionContainerMappingInputProperties()
                 .withTargetProtectionContainerId("Microsoft Azure")

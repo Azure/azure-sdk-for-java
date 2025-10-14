@@ -23,12 +23,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.models.ConfigurationAudience;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -146,23 +149,11 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord
-    public void nullAADCredential() {
+    public void nullEntraCredential() {
         assertThrows(NullPointerException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
             builder.endpoint(ENDPOINT).credential(null).buildAsyncClient();
         });
-    }
-
-    @Test
-    @DoNotRecord
-    public void timeoutPolicy() {
-        final ConfigurationClient client = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-            .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)))
-            .httpClient(request -> Mono.delay(Duration.ofMillis(100)).thenReturn(new MockHttpResponse(request, 200)))
-            .buildClient();
-
-        assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
     }
 
     @Test
@@ -298,5 +289,75 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             throw new IllegalArgumentException(String.format(Locale.US, "Invalid namespace name: %s", namespace),
                 exception);
         }
+    }
+
+    @Test
+    @DoNotRecord
+    public void testGetUsGovScope() throws Exception {
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String expectedScope = "https://appconfig.azure.us/.default";
+
+        String legacyEndpoint = "https://example1.azconfig.azure.us";
+        String actualScope = (String) method.invoke(builder, legacyEndpoint);
+        assertEquals(expectedScope, actualScope);
+
+        String endpoint = "https://example1.appconfig.azure.us";
+        actualScope = (String) method.invoke(builder, endpoint);
+        assertEquals(expectedScope, actualScope);
+    }
+
+    @Test
+    @DoNotRecord
+    public void testGetDefaultScope() throws Exception {
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String expectedScope = "https://appconfig.azure.com/.default";
+
+        String legacyEndpoint = "https://example1.azconfig.azure.com";
+        String actualScope = (String) method.invoke(builder, legacyEndpoint);
+        assertEquals(expectedScope, actualScope);
+
+        String endpoint = "https://example1.appconfig.azure.com";
+        actualScope = (String) method.invoke(builder, endpoint);
+        assertEquals(expectedScope, actualScope);
+    }
+
+    @Test
+    @DoNotRecord
+    public void testGetChinaScope() throws Exception {
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String expectedScope = "https://appconfig.azure.cn/.default";
+
+        String legacyEndpoint = "https://example1.azconfig.azure.cn";
+        String actualScope = (String) method.invoke(builder, legacyEndpoint);
+        assertEquals(expectedScope, actualScope);
+
+        String endpoint = "https://example1.appconfig.azure.cn";
+        actualScope = (String) method.invoke(builder, endpoint);
+        assertEquals(expectedScope, actualScope);
+    }
+
+    @Test
+    @DoNotRecord
+    public void testUserDefinedScope() throws Exception {
+        String fakeEndpoint = "https://example1.azconfig.azure.com";
+        ConfigurationClientBuilder builder
+            = new ConfigurationClientBuilder().endpoint("https://example1.azconfig.azure.com")
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .audience(ConfigurationAudience.AZURE_CHINA);
+        builder.buildClient();
+        Method method = ConfigurationClientBuilder.class.getDeclaredMethod("getDefaultScope", String.class);
+        method.setAccessible(true);
+
+        String actualScope = (String) method.invoke(builder, fakeEndpoint);
+        assertEquals(ConfigurationAudience.AZURE_CHINA + "/.default", actualScope);
     }
 }

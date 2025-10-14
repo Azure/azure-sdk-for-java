@@ -16,4 +16,4 @@ To get started with a specific library, see the **README.md** file located in th
 - [Azure Storage File Datalake](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md) is Microsoft's optimized storage solution for for big data analytics workloads. A fundamental part of Data Lake Storage Gen2 is the addition of a hierarchical namespace to Blob storage. The hierarchical namespace organizes objects/files into a hierarchy of directories for efficient data access. 
 
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FREADME.png)
+

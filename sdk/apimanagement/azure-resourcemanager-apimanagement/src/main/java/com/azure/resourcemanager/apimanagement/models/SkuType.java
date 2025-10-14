@@ -42,6 +42,16 @@ public final class SkuType extends ExpandableStringEnum<SkuType> {
     public static final SkuType ISOLATED = fromString("Isolated");
 
     /**
+     * Static value BasicV2 for SkuType.
+     */
+    public static final SkuType BASIC_V2 = fromString("BasicV2");
+
+    /**
+     * Static value StandardV2 for SkuType.
+     */
+    public static final SkuType STANDARD_V2 = fromString("StandardV2");
+
+    /**
      * Creates a new instance of SkuType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

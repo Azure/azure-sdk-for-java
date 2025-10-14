@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -23,57 +24,68 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
     /*
      * The ID of the session supplied when the session was created.
      */
+    @Generated
     private final String id;
 
     /*
      * The TCP port at which the Azure Remote Rendering Inspector tool is hosted.
      */
+    @Generated
     private Integer arrInspectorPort;
 
     /*
      * The TCP port used for the handshake when establishing a connection.
      */
+    @Generated
     private Integer handshakePort;
 
     /*
      * Amount of time in minutes the session is or was in the 'Ready' state. Time is rounded down to a full minute.
      */
+    @Generated
     private Integer elapsedTimeMinutes;
 
     /*
      * The hostname under which the rendering session is reachable.
      */
+    @Generated
     private String hostname;
 
     /*
      * The time in minutes the session will run after reaching the 'Ready' state.
      */
+    @Generated
     private Integer maxLeaseTimeMinutes;
 
     /*
      * The size of the server used for the rendering session. The size impacts the number of polygons the server can
      * render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for details.
      */
+    @Generated
     private final SessionSize size;
 
     /*
      * The status of the rendering session. Terminal states are 'Error', 'Expired', and 'Stopped'.
      */
+    @Generated
     private final SessionStatus status;
 
     /*
      * The computational power of the rendering session GPU measured in teraflops.
      */
+    @Generated
     private Float teraflops;
 
     /*
      * The error object containing details about the rendering session startup failure.
      */
+    @Generated
     private Error error;
 
     /*
      * The time when the rendering session was created. Date and time in ISO 8601 format.
      */
+    @Generated
     private OffsetDateTime creationTime;
 
     /**
@@ -83,6 +95,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * @param size the size value to set.
      * @param status the status value to set.
      */
+    @Generated
     public SessionProperties(String id, SessionSize size, SessionStatus status) {
         this.id = id;
         this.size = size;
@@ -94,6 +107,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -103,6 +117,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the arrInspectorPort value.
      */
+    @Generated
     public Integer getArrInspectorPort() {
         return this.arrInspectorPort;
     }
@@ -112,6 +127,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the handshakePort value.
      */
+    @Generated
     public Integer getHandshakePort() {
         return this.handshakePort;
     }
@@ -122,6 +138,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the elapsedTimeMinutes value.
      */
+    @Generated
     public Integer getElapsedTimeMinutes() {
         return this.elapsedTimeMinutes;
     }
@@ -131,6 +148,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the hostname value.
      */
+    @Generated
     public String getHostname() {
         return this.hostname;
     }
@@ -140,6 +158,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the maxLeaseTimeMinutes value.
      */
+    @Generated
     public Integer getMaxLeaseTimeMinutes() {
         return this.maxLeaseTimeMinutes;
     }
@@ -151,6 +170,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the size value.
      */
+    @Generated
     public SessionSize getSize() {
         return this.size;
     }
@@ -161,6 +181,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the status value.
      */
+    @Generated
     public SessionStatus getStatus() {
         return this.status;
     }
@@ -170,6 +191,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the teraflops value.
      */
+    @Generated
     public Float getTeraflops() {
         return this.teraflops;
     }
@@ -179,6 +201,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the error value.
      */
+    @Generated
     public Error getError() {
         return this.error;
     }
@@ -188,6 +211,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -195,6 +219,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -213,6 +238,7 @@ public final class SessionProperties implements JsonSerializable<SessionProperti
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SessionProperties.
      */
+    @Generated
     public static SessionProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

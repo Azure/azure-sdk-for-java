@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
@@ -19,7 +20,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
@@ -257,8 +257,8 @@ class DocumentProducer<T> {
                         if (partitionKeyRangesValueHolder == null
                             || partitionKeyRangesValueHolder.v == null
                             || partitionKeyRangesValueHolder.v.size() == 0) {
-                            logger.error("Failed to find at least one child range");
-                            return Mono.error(new IllegalStateException("Failed to find at least one child range"));
+                            logger.error("Failed to find at least one child range for range {}", this.feedRange.getRange() );
+                            return Mono.error(new InvalidPartitionException("Failed to find at least one child range"));
                         }
 
                         if (partitionKeyRangesValueHolder.v.size() == 1) {
@@ -332,7 +332,7 @@ class DocumentProducer<T> {
             collectionRid,
             range,
             true,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(cosmosQueryRequestOptions));
+            qryOptionsAccessor.getProperties(cosmosQueryRequestOptions));
     }
 
     private boolean isSplitOrMerge(CosmosException e) {

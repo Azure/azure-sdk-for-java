@@ -14,10 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
-import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubContentType;
-import com.azure.messaging.webpubsub.models.WebPubSubPermission;
+import com.azure.messaging.webpubsub.models.*;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
@@ -27,6 +24,9 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import com.azure.core.http.rest.PagedFlux;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -299,7 +299,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetSocketIOAuthenticationToken() {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         StepVerifier.create(client.getClientAccessToken(options)).assertNext(token -> {
             Assertions.assertNotNull(token);
             Assertions.assertNotNull(token.getToken());
@@ -344,7 +344,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
                 .hub(TestUtils.HUB_NAME);
         WebPubSubServiceAsyncClient aadClient = aadClientBuilder.buildAsyncClient();
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         StepVerifier.create(aadClient.getClientAccessToken(options)).assertNext(token -> {
             Assertions.assertNotNull(token);
             Assertions.assertNotNull(token.getToken());
@@ -388,26 +388,20 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
 
     @Test
     public void testSendMessageToGroup() {
-        StepVerifier
-            .create(
-                client
-                    .sendToGroupWithResponse("java", BinaryData.fromString("Hello World!"),
-                        new RequestOptions()
-                            .addRequestCallback(request -> request.getHeaders().set("Content-Type", "text/plain"))),
-                202);
+        StepVerifier.create(
+            client.sendToGroupWithResponse("java", BinaryData.fromString("Hello World!"), new RequestOptions()
+                .addRequestCallback(request -> request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/plain"))),
+            202);
     }
 
     @Test
     public void testSendMessageToGroupWithContentType() {
         String message = "Hello World!";
-        StepVerifier
-            .create(
-                client
-                    .sendToGroupWithResponse("java", BinaryData.fromString(message), WebPubSubContentType.TEXT_PLAIN,
-                        message.length(),
-                        new RequestOptions()
-                            .addRequestCallback(request -> request.getHeaders().set("Content-Type", "text/plain"))),
-                202);
+        StepVerifier.create(client.sendToGroupWithResponse("java", BinaryData.fromString(message),
+            WebPubSubContentType.TEXT_PLAIN, message.length(),
+            new RequestOptions()
+                .addRequestCallback(request -> request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/plain"))),
+            202);
     }
 
     @Test
@@ -464,5 +458,57 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             })
             .expectComplete()
             .verify(TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "6, 6, -1, 6, 1, group2_uniqueA",
+        "6, 3, -1, 3, 1, group2_uniqueB",
+        "6, -1, 2, 6, 3, group2_uniqueC",
+        "6, 5, 2, 5, 3, group2_uniqueD" })
+    public void testListConnectionsInGroupAsync(int totalConnectionCount, int top, int maxPageSize,
+        int expectedTotalCount, int expectedPageCount, String groupName) {
+        final List<WebSocketTestClient> clients = new java.util.ArrayList<>();
+        if (getTestMode() != TestMode.PLAYBACK) {
+            StepVerifier
+                .create(
+                    client.getClientAccessToken(new GetClientAccessTokenOptions().setGroups(Arrays.asList(groupName))))
+                .assertNext(token -> {
+                    for (int i = 0; i < totalConnectionCount; i++) {
+                        WebSocketTestClient wsClient = new WebSocketTestClient();
+                        wsClient.connect(token.getUrl());
+                        clients.add(wsClient);
+                    }
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
+        }
+
+        int[] actualPageCount = { 0 };
+        int[] actualConnectionCount = { 0 };
+
+        RequestOptions options = new RequestOptions();
+        if (maxPageSize != -1) {
+            options.addQueryParam("maxpagesize", String.valueOf(maxPageSize));
+        }
+        if (top != -1) {
+            options.addQueryParam("top", String.valueOf(top));
+        }
+
+        PagedFlux<WebPubSubGroupConnection> pagedFlux = client.listConnectionsInGroup(groupName, options);
+        StepVerifier.create(pagedFlux.byPage()).thenConsumeWhile(page -> {
+            actualPageCount[0]++;
+            actualConnectionCount[0] += page.getValue().size();
+            return true;
+        }).expectComplete().verify(TIMEOUT);
+
+        assertEquals(expectedPageCount, actualPageCount[0]);
+        assertEquals(expectedTotalCount, actualConnectionCount[0]);
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            for (WebSocketTestClient wsClient : clients) {
+                wsClient.close();
+            }
+        }
     }
 }

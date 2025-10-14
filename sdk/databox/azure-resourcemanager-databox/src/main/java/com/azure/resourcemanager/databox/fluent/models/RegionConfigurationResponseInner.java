@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.DatacenterAddressResponse;
+import com.azure.resourcemanager.databox.models.DeviceCapabilityResponse;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityResponse;
 import com.azure.resourcemanager.databox.models.TransportAvailabilityResponse;
 import java.io.IOException;
@@ -33,6 +34,11 @@ public final class RegionConfigurationResponseInner implements JsonSerializable<
      * Datacenter address for given sku in a region.
      */
     private DatacenterAddressResponse datacenterAddressResponse;
+
+    /*
+     * Device capabilities available for a given sku in a region.
+     */
+    private DeviceCapabilityResponse deviceCapabilityResponse;
 
     /**
      * Creates an instance of RegionConfigurationResponseInner class.
@@ -68,6 +74,15 @@ public final class RegionConfigurationResponseInner implements JsonSerializable<
     }
 
     /**
+     * Get the deviceCapabilityResponse property: Device capabilities available for a given sku in a region.
+     * 
+     * @return the deviceCapabilityResponse value.
+     */
+    public DeviceCapabilityResponse deviceCapabilityResponse() {
+        return this.deviceCapabilityResponse;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -81,6 +96,9 @@ public final class RegionConfigurationResponseInner implements JsonSerializable<
         }
         if (datacenterAddressResponse() != null) {
             datacenterAddressResponse().validate();
+        }
+        if (deviceCapabilityResponse() != null) {
+            deviceCapabilityResponse().validate();
         }
     }
 
@@ -118,6 +136,9 @@ public final class RegionConfigurationResponseInner implements JsonSerializable<
                 } else if ("datacenterAddressResponse".equals(fieldName)) {
                     deserializedRegionConfigurationResponseInner.datacenterAddressResponse
                         = DatacenterAddressResponse.fromJson(reader);
+                } else if ("deviceCapabilityResponse".equals(fieldName)) {
+                    deserializedRegionConfigurationResponseInner.deviceCapabilityResponse
+                        = DeviceCapabilityResponse.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,23 +15,33 @@ public final class DynamicsAuthenticationType extends ExpandableStringEnum<Dynam
     /**
      * Static value Office365 for DynamicsAuthenticationType.
      */
+    @Generated
     public static final DynamicsAuthenticationType OFFICE365 = fromString("Office365");
 
     /**
      * Static value Ifd for DynamicsAuthenticationType.
      */
+    @Generated
     public static final DynamicsAuthenticationType IFD = fromString("Ifd");
 
     /**
      * Static value AADServicePrincipal for DynamicsAuthenticationType.
      */
+    @Generated
     public static final DynamicsAuthenticationType AADSERVICE_PRINCIPAL = fromString("AADServicePrincipal");
+
+    /**
+     * Static value Active Directory for DynamicsAuthenticationType.
+     */
+    @Generated
+    public static final DynamicsAuthenticationType ACTIVE_DIRECTORY = fromString("Active Directory");
 
     /**
      * Creates a new instance of DynamicsAuthenticationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DynamicsAuthenticationType() {
     }
@@ -41,6 +52,7 @@ public final class DynamicsAuthenticationType extends ExpandableStringEnum<Dynam
      * @param name a name to look for.
      * @return the corresponding DynamicsAuthenticationType.
      */
+    @Generated
     public static DynamicsAuthenticationType fromString(String name) {
         return fromString(name, DynamicsAuthenticationType.class);
     }
@@ -50,6 +62,7 @@ public final class DynamicsAuthenticationType extends ExpandableStringEnum<Dynam
      * 
      * @return known DynamicsAuthenticationType values.
      */
+    @Generated
     public static Collection<DynamicsAuthenticationType> values() {
         return values(DynamicsAuthenticationType.class);
     }

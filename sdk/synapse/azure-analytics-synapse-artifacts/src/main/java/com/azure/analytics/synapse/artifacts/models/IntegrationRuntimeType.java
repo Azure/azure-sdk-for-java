@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
     /**
      * Static value Managed for IntegrationRuntimeType.
      */
+    @Generated
     public static final IntegrationRuntimeType MANAGED = fromString("Managed");
 
     /**
      * Static value SelfHosted for IntegrationRuntimeType.
      */
+    @Generated
     public static final IntegrationRuntimeType SELF_HOSTED = fromString("SelfHosted");
 
     /**
@@ -26,6 +29,7 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeType() {
     }
@@ -36,6 +40,7 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeType.
      */
+    @Generated
     public static IntegrationRuntimeType fromString(String name) {
         return fromString(name, IntegrationRuntimeType.class);
     }
@@ -45,6 +50,7 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
      * 
      * @return known IntegrationRuntimeType values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeType> values() {
         return values(IntegrationRuntimeType.class);
     }

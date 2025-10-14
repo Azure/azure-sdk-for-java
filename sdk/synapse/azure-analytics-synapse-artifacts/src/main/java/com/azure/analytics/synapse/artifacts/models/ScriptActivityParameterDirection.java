@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
     /**
      * Static value Input for ScriptActivityParameterDirection.
      */
+    @Generated
     public static final ScriptActivityParameterDirection INPUT = fromString("Input");
 
     /**
      * Static value Output for ScriptActivityParameterDirection.
      */
+    @Generated
     public static final ScriptActivityParameterDirection OUTPUT = fromString("Output");
 
     /**
      * Static value InputOutput for ScriptActivityParameterDirection.
      */
+    @Generated
     public static final ScriptActivityParameterDirection INPUT_OUTPUT = fromString("InputOutput");
 
     /**
@@ -31,6 +35,7 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ScriptActivityParameterDirection() {
     }
@@ -41,6 +46,7 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding ScriptActivityParameterDirection.
      */
+    @Generated
     public static ScriptActivityParameterDirection fromString(String name) {
         return fromString(name, ScriptActivityParameterDirection.class);
     }
@@ -50,6 +56,7 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
      * 
      * @return known ScriptActivityParameterDirection values.
      */
+    @Generated
     public static Collection<ScriptActivityParameterDirection> values() {
         return values(ScriptActivityParameterDirection.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,52 +22,61 @@ public class Db2LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Db2";
 
     /*
      * The connection string. It is mutually exclusive with server, database, authenticationType, userName,
      * packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * Server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * Database name for connection. It is mutually exclusive with connectionString property. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object database;
 
     /*
      * AuthenticationType to be used for connection. It is mutually exclusive with connectionString property.
      */
+    @Generated
     private Db2AuthenticationType authenticationType;
 
     /*
      * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password for authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Under where packages are created when querying database. It is mutually exclusive with connectionString property.
      * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object packageCollection;
 
     /*
      * Certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object certificateCommonName;
 
     /*
@@ -74,11 +84,13 @@ public class Db2LinkedService extends LinkedService {
      * credential manager. It is mutually exclusive with connectionString property. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of Db2LinkedService class.
      */
+    @Generated
     public Db2LinkedService() {
     }
 
@@ -87,6 +99,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -99,6 +112,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -111,6 +125,7 @@ public class Db2LinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -122,6 +137,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -133,6 +149,7 @@ public class Db2LinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -144,6 +161,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -155,6 +173,7 @@ public class Db2LinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -166,6 +185,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Db2AuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -177,6 +197,7 @@ public class Db2LinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setAuthenticationType(Db2AuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -188,6 +209,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -199,6 +221,7 @@ public class Db2LinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -209,6 +232,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -219,6 +243,7 @@ public class Db2LinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -230,6 +255,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the packageCollection value.
      */
+    @Generated
     public Object getPackageCollection() {
         return this.packageCollection;
     }
@@ -241,6 +267,7 @@ public class Db2LinkedService extends LinkedService {
      * @param packageCollection the packageCollection value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setPackageCollection(Object packageCollection) {
         this.packageCollection = packageCollection;
         return this;
@@ -252,6 +279,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the certificateCommonName value.
      */
+    @Generated
     public Object getCertificateCommonName() {
         return this.certificateCommonName;
     }
@@ -263,6 +291,7 @@ public class Db2LinkedService extends LinkedService {
      * @param certificateCommonName the certificateCommonName value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setCertificateCommonName(Object certificateCommonName) {
         this.certificateCommonName = certificateCommonName;
         return this;
@@ -275,6 +304,7 @@ public class Db2LinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -287,6 +317,7 @@ public class Db2LinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Db2LinkedService object itself.
      */
+    @Generated
     public Db2LinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -295,6 +326,17 @@ public class Db2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public Db2LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public Db2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -304,6 +346,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2LinkedService setDescription(String description) {
         super.setDescription(description);
@@ -313,6 +356,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -322,6 +366,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Db2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -331,9 +376,11 @@ public class Db2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -349,16 +396,26 @@ public class Db2LinkedService extends LinkedService {
             || certificateCommonName != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
             jsonWriter.writeUntypedField("server", this.server);
             jsonWriter.writeUntypedField("database", this.database);
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("packageCollection", this.packageCollection);
-            jsonWriter.writeUntypedField("certificateCommonName", this.certificateCommonName);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.packageCollection != null) {
+                jsonWriter.writeUntypedField("packageCollection", this.packageCollection);
+            }
+            if (this.certificateCommonName != null) {
+                jsonWriter.writeUntypedField("certificateCommonName", this.certificateCommonName);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -378,6 +435,7 @@ public class Db2LinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Db2LinkedService.
      */
+    @Generated
     public static Db2LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Db2LinkedService deserializedDb2LinkedService = new Db2LinkedService();
@@ -386,7 +444,9 @@ public class Db2LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedDb2LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedDb2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedDb2LinkedService.setDescription(reader.getString());

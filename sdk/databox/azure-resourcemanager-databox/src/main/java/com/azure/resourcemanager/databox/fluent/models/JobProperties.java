@@ -68,6 +68,11 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
     private StageName status;
 
     /*
+     * Name of the stage where delay might be present.
+     */
+    private StageName delayedStage;
+
+    /*
      * Time at which the job was started in UTC ISO 8601 format.
      */
     private OffsetDateTime startTime;
@@ -101,6 +106,11 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
      * Flag to indicate cancellation of scheduled job.
      */
     private Boolean isCancellableWithoutFee;
+
+    /*
+     * Flag to indicate if all devices associated with the job are lost.
+     */
+    private Boolean allDevicesLost;
 
     /**
      * Creates an instance of JobProperties class.
@@ -189,6 +199,15 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
      */
     public StageName status() {
         return this.status;
+    }
+
+    /**
+     * Get the delayedStage property: Name of the stage where delay might be present.
+     * 
+     * @return the delayedStage value.
+     */
+    public StageName delayedStage() {
+        return this.delayedStage;
     }
 
     /**
@@ -288,6 +307,15 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
     }
 
     /**
+     * Get the allDevicesLost property: Flag to indicate if all devices associated with the job are lost.
+     * 
+     * @return the allDevicesLost value.
+     */
+    public Boolean allDevicesLost() {
+        return this.allDevicesLost;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -357,6 +385,8 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
                     deserializedJobProperties.isPrepareToShipEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("status".equals(fieldName)) {
                     deserializedJobProperties.status = StageName.fromString(reader.getString());
+                } else if ("delayedStage".equals(fieldName)) {
+                    deserializedJobProperties.delayedStage = StageName.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
                     deserializedJobProperties.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -372,6 +402,8 @@ public final class JobProperties implements JsonSerializable<JobProperties> {
                     deserializedJobProperties.deliveryInfo = JobDeliveryInfo.fromJson(reader);
                 } else if ("isCancellableWithoutFee".equals(fieldName)) {
                     deserializedJobProperties.isCancellableWithoutFee = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allDevicesLost".equals(fieldName)) {
+                    deserializedJobProperties.allDevicesLost = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings, UUIDs}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -13,7 +13,6 @@ import org.apache.spark.sql.types.StructType
 
 import java.nio.file.Paths
 import java.time.Duration
-import java.util.UUID
 
 private class ChangeFeedBatch
 (
@@ -26,7 +25,7 @@ private class ChangeFeedBatch
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val correlationActivityId = UUID.randomUUID()
+  private val correlationActivityId = UUIDs.nonBlockingRandomUUID()
   private val batchId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
   private val defaultParallelism = session.sparkContext.defaultParallelism
@@ -39,7 +38,7 @@ private class ChangeFeedBatch
 
     val clientConfiguration = CosmosClientConfiguration.apply(
       config,
-      readConfig.forceEventualConsistency,
+      readConfig.readConsistencyStrategy,
       sparkEnvironmentInfo)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
@@ -100,7 +99,7 @@ private class ChangeFeedBatch
               SparkBridgeImplementationInternal.extractCollectionRid(changeFeedStateBase64))
 
             val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-              container, changeFeedConfig, partitioningConfig, None)
+              container, containerConfig, changeFeedConfig, partitioningConfig, None)
             log.logWarning(s"Invalid Start offset '$offsetJson' retrieved from file location " +
               s"'$startOffsetLocation' for batchId: $batchId -> New offset retrieved from " +
               s"service: '$newOffsetJson'.")
@@ -114,14 +113,14 @@ private class ChangeFeedBatch
             newOffsetJson
           }
         } else {
-          val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+          val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, containerConfig, changeFeedConfig, partitioningConfig, None)
           log.logDebug(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
             s"-> offset retrieved from service: '$newOffsetJson'.")
 
           newOffsetJson
         }
       } else {
-        val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+        val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, containerConfig, changeFeedConfig, partitioningConfig, None)
         log.logDebug(s"No offset file location provided for batchId: $batchId " +
           s"-> offset retrieved from service: '$newOffsetJson'.")
 
@@ -186,14 +185,16 @@ private class ChangeFeedBatch
 
       // Latest offset above has the EndLsn specified based on the point-in-time latest offset
       // For batch mode instead we need to reset it so that the change feed will get fully drained
+      val parsedInitialOffset = SparkBridgeImplementationInternal.parseChangeFeedState(initialOffsetJson)
       val inputPartitions = latestOffset
         .inputPartitions
         .get
         .map(partition => partition
           .withContinuationState(
             SparkBridgeImplementationInternal
-              .extractChangeFeedStateForRange(initialOffsetJson, partition.feedRange),
+              .extractChangeFeedStateForRange(parsedInitialOffset, partition.feedRange),
             clearEndLsn = !hasBatchCheckpointLocation))
+        .map(_.asInstanceOf[InputPartition])
 
       log.logInfo(s"<-- planInputPartitions $batchId (creating ${inputPartitions.length} partitions)")
       inputPartitions

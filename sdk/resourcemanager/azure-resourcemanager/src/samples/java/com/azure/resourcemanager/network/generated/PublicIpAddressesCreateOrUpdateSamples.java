@@ -19,7 +19,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/PublicIpAddressCreateDns.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
@@ -38,7 +38,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * PublicIpAddressCreateCustomizedValues.json
      */
     /**
@@ -63,7 +63,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/PublicIpAddressCreateDefaults
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PublicIpAddressCreateDefaults
      * .json
      */
     /**
@@ -81,7 +81,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
      * PublicIpAddressCreateDnsWithDomainNameLabelScope.json
      */
     /**
@@ -99,6 +99,25 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
                 new PublicIpAddressInner().withLocation("eastus")
                     .withDnsSettings(new PublicIpAddressDnsSettings().withDomainNameLabel("dnslbl")
                         .withDomainNameLabelScope(PublicIpAddressDnsSettingsDomainNameLabelScope.TENANT_REUSE)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * PublicIpAddressCreateDefaultsStandardV2Sku.json
+     */
+    /**
+     * Sample code: Create public IP address defaults with StandardV2 Sku.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createPublicIPAddressDefaultsWithStandardV2Sku(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .createOrUpdate("rg1", "test-ip", new PublicIpAddressInner().withLocation("eastus"),
                 com.azure.core.util.Context.NONE);
     }
 }

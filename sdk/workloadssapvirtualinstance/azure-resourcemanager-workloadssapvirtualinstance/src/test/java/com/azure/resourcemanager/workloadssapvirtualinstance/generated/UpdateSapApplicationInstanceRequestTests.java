@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSapApplicationInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSapApplicationInstanceRequest model = BinaryData.fromString(
-            "{\"tags\":{\"b\":\"orwkqnyh\",\"jivfxzsjabib\":\"j\",\"jxbkzbzkdvn\":\"ystawfsdjpvkvp\",\"zhjjklffhmouwq\":\"jabudurgkakmo\"}}")
+        UpdateSapApplicationInstanceRequest model = BinaryData
+            .fromString(
+                "{\"tags\":{\"oluhczbwemh\":\"ivwitqscywugg\",\"sbrgz\":\"i\",\"ggicccnxqhue\":\"wmsweypqwd\"}}")
             .toObject(UpdateSapApplicationInstanceRequest.class);
-        Assertions.assertEquals("orwkqnyh", model.tags().get("b"));
+        Assertions.assertEquals("ivwitqscywugg", model.tags().get("oluhczbwemh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSapApplicationInstanceRequest model = new UpdateSapApplicationInstanceRequest().withTags(mapOf("b",
-            "orwkqnyh", "jivfxzsjabib", "j", "jxbkzbzkdvn", "ystawfsdjpvkvp", "zhjjklffhmouwq", "jabudurgkakmo"));
+        UpdateSapApplicationInstanceRequest model = new UpdateSapApplicationInstanceRequest()
+            .withTags(mapOf("oluhczbwemh", "ivwitqscywugg", "sbrgz", "i", "ggicccnxqhue", "wmsweypqwd"));
         model = BinaryData.fromObject(model).toObject(UpdateSapApplicationInstanceRequest.class);
-        Assertions.assertEquals("orwkqnyh", model.tags().get("b"));
+        Assertions.assertEquals("ivwitqscywugg", model.tags().get("oluhczbwemh"));
     }
 
     // Use "Map.of" if available

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class DataFlowSource extends Transformation {
     /*
      * Schema linked service reference.
      */
+    @Generated
     private LinkedServiceReference schemaLinkedService;
 
     /**
      * Creates an instance of DataFlowSource class.
      */
+    @Generated
     public DataFlowSource() {
     }
 
@@ -31,6 +34,7 @@ public final class DataFlowSource extends Transformation {
      * 
      * @return the schemaLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getSchemaLinkedService() {
         return this.schemaLinkedService;
     }
@@ -41,6 +45,7 @@ public final class DataFlowSource extends Transformation {
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSource object itself.
      */
+    @Generated
     public DataFlowSource setSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         this.schemaLinkedService = schemaLinkedService;
         return this;
@@ -49,6 +54,7 @@ public final class DataFlowSource extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSource setName(String name) {
         super.setName(name);
@@ -58,6 +64,7 @@ public final class DataFlowSource extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSource setDescription(String description) {
         super.setDescription(description);
@@ -67,6 +74,7 @@ public final class DataFlowSource extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSource setDataset(DatasetReference dataset) {
         super.setDataset(dataset);
@@ -76,6 +84,7 @@ public final class DataFlowSource extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSource setLinkedService(LinkedServiceReference linkedService) {
         super.setLinkedService(linkedService);
@@ -85,6 +94,7 @@ public final class DataFlowSource extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSource setFlowlet(DataFlowReference flowlet) {
         super.setFlowlet(flowlet);
@@ -94,6 +104,7 @@ public final class DataFlowSource extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -115,6 +126,7 @@ public final class DataFlowSource extends Transformation {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowSource.
      */
+    @Generated
     public static DataFlowSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowSource deserializedDataFlowSource = new DataFlowSource();

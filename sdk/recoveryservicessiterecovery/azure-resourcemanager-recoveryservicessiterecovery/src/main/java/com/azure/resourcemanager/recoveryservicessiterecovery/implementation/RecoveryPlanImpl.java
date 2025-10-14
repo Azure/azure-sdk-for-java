@@ -63,9 +63,9 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String recoveryPlanName;
 
@@ -73,23 +73,23 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
 
     private UpdateRecoveryPlanInput updateInput;
 
-    public RecoveryPlanImpl withExistingVault(String resourceName, String resourceGroupName) {
-        this.resourceName = resourceName;
+    public RecoveryPlanImpl withExistingVault(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         return this;
     }
 
     public RecoveryPlan create() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationRecoveryPlans()
-            .create(resourceName, resourceGroupName, recoveryPlanName, createInput, Context.NONE);
+            .create(resourceGroupName, resourceName, recoveryPlanName, createInput, Context.NONE);
         return this;
     }
 
     public RecoveryPlan create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationRecoveryPlans()
-            .create(resourceName, resourceGroupName, recoveryPlanName, createInput, context);
+            .create(resourceGroupName, resourceName, recoveryPlanName, createInput, context);
         return this;
     }
 
@@ -109,14 +109,14 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
     public RecoveryPlan apply() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationRecoveryPlans()
-            .update(resourceName, resourceGroupName, recoveryPlanName, updateInput, Context.NONE);
+            .update(resourceGroupName, resourceName, recoveryPlanName, updateInput, Context.NONE);
         return this;
     }
 
     public RecoveryPlan apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationRecoveryPlans()
-            .update(resourceName, resourceGroupName, recoveryPlanName, updateInput, context);
+            .update(resourceGroupName, resourceName, recoveryPlanName, updateInput, context);
         return this;
     }
 
@@ -124,15 +124,15 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.recoveryPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationRecoveryPlans");
     }
 
     public RecoveryPlan refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationRecoveryPlans()
-            .getWithResponse(resourceName, resourceGroupName, recoveryPlanName, Context.NONE)
+            .getWithResponse(resourceGroupName, resourceName, recoveryPlanName, Context.NONE)
             .getValue();
         return this;
     }
@@ -140,78 +140,78 @@ public final class RecoveryPlanImpl implements RecoveryPlan, RecoveryPlan.Defini
     public RecoveryPlan refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationRecoveryPlans()
-            .getWithResponse(resourceName, resourceGroupName, recoveryPlanName, context)
+            .getWithResponse(resourceGroupName, resourceName, recoveryPlanName, context)
             .getValue();
         return this;
     }
 
     public RecoveryPlan failoverCancel() {
         return serviceManager.replicationRecoveryPlans()
-            .failoverCancel(resourceName, resourceGroupName, recoveryPlanName);
+            .failoverCancel(resourceGroupName, resourceName, recoveryPlanName);
     }
 
     public RecoveryPlan failoverCancel(Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .failoverCancel(resourceName, resourceGroupName, recoveryPlanName, context);
+            .failoverCancel(resourceGroupName, resourceName, recoveryPlanName, context);
     }
 
     public RecoveryPlan failoverCommit() {
         return serviceManager.replicationRecoveryPlans()
-            .failoverCommit(resourceName, resourceGroupName, recoveryPlanName);
+            .failoverCommit(resourceGroupName, resourceName, recoveryPlanName);
     }
 
     public RecoveryPlan failoverCommit(Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .failoverCommit(resourceName, resourceGroupName, recoveryPlanName, context);
+            .failoverCommit(resourceGroupName, resourceName, recoveryPlanName, context);
     }
 
     public RecoveryPlan plannedFailover(RecoveryPlanPlannedFailoverInput input) {
         return serviceManager.replicationRecoveryPlans()
-            .plannedFailover(resourceName, resourceGroupName, recoveryPlanName, input);
+            .plannedFailover(resourceGroupName, resourceName, recoveryPlanName, input);
     }
 
     public RecoveryPlan plannedFailover(RecoveryPlanPlannedFailoverInput input, Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .plannedFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+            .plannedFailover(resourceGroupName, resourceName, recoveryPlanName, input, context);
     }
 
     public RecoveryPlan reprotect() {
-        return serviceManager.replicationRecoveryPlans().reprotect(resourceName, resourceGroupName, recoveryPlanName);
+        return serviceManager.replicationRecoveryPlans().reprotect(resourceGroupName, resourceName, recoveryPlanName);
     }
 
     public RecoveryPlan reprotect(Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .reprotect(resourceName, resourceGroupName, recoveryPlanName, context);
+            .reprotect(resourceGroupName, resourceName, recoveryPlanName, context);
     }
 
     public RecoveryPlan testFailover(RecoveryPlanTestFailoverInput input) {
         return serviceManager.replicationRecoveryPlans()
-            .testFailover(resourceName, resourceGroupName, recoveryPlanName, input);
+            .testFailover(resourceGroupName, resourceName, recoveryPlanName, input);
     }
 
     public RecoveryPlan testFailover(RecoveryPlanTestFailoverInput input, Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .testFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+            .testFailover(resourceGroupName, resourceName, recoveryPlanName, input, context);
     }
 
     public RecoveryPlan testFailoverCleanup(RecoveryPlanTestFailoverCleanupInput input) {
         return serviceManager.replicationRecoveryPlans()
-            .testFailoverCleanup(resourceName, resourceGroupName, recoveryPlanName, input);
+            .testFailoverCleanup(resourceGroupName, resourceName, recoveryPlanName, input);
     }
 
     public RecoveryPlan testFailoverCleanup(RecoveryPlanTestFailoverCleanupInput input, Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .testFailoverCleanup(resourceName, resourceGroupName, recoveryPlanName, input, context);
+            .testFailoverCleanup(resourceGroupName, resourceName, recoveryPlanName, input, context);
     }
 
     public RecoveryPlan unplannedFailover(RecoveryPlanUnplannedFailoverInput input) {
         return serviceManager.replicationRecoveryPlans()
-            .unplannedFailover(resourceName, resourceGroupName, recoveryPlanName, input);
+            .unplannedFailover(resourceGroupName, resourceName, recoveryPlanName, input);
     }
 
     public RecoveryPlan unplannedFailover(RecoveryPlanUnplannedFailoverInput input, Context context) {
         return serviceManager.replicationRecoveryPlans()
-            .unplannedFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+            .unplannedFailover(resourceGroupName, resourceName, recoveryPlanName, input, context);
     }
 
     public RecoveryPlanImpl withProperties(CreateRecoveryPlanInputProperties properties) {

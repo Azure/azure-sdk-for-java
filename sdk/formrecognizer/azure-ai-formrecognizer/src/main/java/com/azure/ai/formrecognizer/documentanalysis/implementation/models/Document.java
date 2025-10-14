@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,26 +23,31 @@ public final class Document implements JsonSerializable<Document> {
     /*
      * Document type.
      */
+    @Generated
     private final String docType;
 
     /*
      * Bounding regions covering the document.
      */
+    @Generated
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the document in the reading order concatenated content.
      */
+    @Generated
     private final List<DocumentSpan> spans;
 
     /*
      * Dictionary of named field values.
      */
+    @Generated
     private Map<String, DocumentField> fields;
 
     /*
      * Confidence of correctly extracting the document.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -51,6 +57,7 @@ public final class Document implements JsonSerializable<Document> {
      * @param spans the spans value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public Document(String docType, List<DocumentSpan> spans, float confidence) {
         this.docType = docType;
         this.spans = spans;
@@ -62,6 +69,7 @@ public final class Document implements JsonSerializable<Document> {
      * 
      * @return the docType value.
      */
+    @Generated
     public String getDocType() {
         return this.docType;
     }
@@ -71,6 +79,7 @@ public final class Document implements JsonSerializable<Document> {
      * 
      * @return the boundingRegions value.
      */
+    @Generated
     public List<BoundingRegion> getBoundingRegions() {
         return this.boundingRegions;
     }
@@ -81,6 +90,7 @@ public final class Document implements JsonSerializable<Document> {
      * @param boundingRegions the boundingRegions value to set.
      * @return the Document object itself.
      */
+    @Generated
     public Document setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
         return this;
@@ -91,6 +101,7 @@ public final class Document implements JsonSerializable<Document> {
      * 
      * @return the spans value.
      */
+    @Generated
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -100,6 +111,7 @@ public final class Document implements JsonSerializable<Document> {
      * 
      * @return the fields value.
      */
+    @Generated
     public Map<String, DocumentField> getFields() {
         return this.fields;
     }
@@ -110,6 +122,7 @@ public final class Document implements JsonSerializable<Document> {
      * @param fields the fields value to set.
      * @return the Document object itself.
      */
+    @Generated
     public Document setFields(Map<String, DocumentField> fields) {
         this.fields = fields;
         return this;
@@ -120,6 +133,7 @@ public final class Document implements JsonSerializable<Document> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -127,6 +141,7 @@ public final class Document implements JsonSerializable<Document> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,6 +163,7 @@ public final class Document implements JsonSerializable<Document> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Document.
      */
+    @Generated
     public static Document fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean docTypeFound = false;

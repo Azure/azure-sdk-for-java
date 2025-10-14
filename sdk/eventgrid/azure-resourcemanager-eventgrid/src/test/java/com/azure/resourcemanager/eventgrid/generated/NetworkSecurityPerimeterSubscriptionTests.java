@@ -12,14 +12,14 @@ public final class NetworkSecurityPerimeterSubscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterSubscription model
-            = BinaryData.fromString("{\"id\":\"w\"}").toObject(NetworkSecurityPerimeterSubscription.class);
-        Assertions.assertEquals("w", model.id());
+            = BinaryData.fromString("{\"id\":\"ddei\"}").toObject(NetworkSecurityPerimeterSubscription.class);
+        Assertions.assertEquals("ddei", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityPerimeterSubscription model = new NetworkSecurityPerimeterSubscription().withId("w");
+        NetworkSecurityPerimeterSubscription model = new NetworkSecurityPerimeterSubscription().withId("ddei");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterSubscription.class);
-        Assertions.assertEquals("w", model.id());
+        Assertions.assertEquals("ddei", model.id());
     }
 }

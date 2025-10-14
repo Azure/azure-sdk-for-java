@@ -14,8 +14,8 @@ public interface SupportedOperatingSystemsOperations {
     /**
      * Gets the data of supported operating systems by SRS.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param instanceType The instance type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,18 +23,18 @@ public interface SupportedOperatingSystemsOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the data of supported operating systems by SRS along with {@link Response}.
      */
-    Response<SupportedOperatingSystems> getWithResponse(String resourceName, String resourceGroupName,
+    Response<SupportedOperatingSystems> getWithResponse(String resourceGroupName, String resourceName,
         String instanceType, Context context);
 
     /**
      * Gets the data of supported operating systems by SRS.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the data of supported operating systems by SRS.
      */
-    SupportedOperatingSystems get(String resourceName, String resourceGroupName);
+    SupportedOperatingSystems get(String resourceGroupName, String resourceName);
 }

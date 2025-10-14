@@ -215,17 +215,37 @@ public final class AzureTableSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("azureTableDefaultPartitionKeyValue", this.azureTableDefaultPartitionKeyValue);
-        jsonWriter.writeUntypedField("azureTablePartitionKeyName", this.azureTablePartitionKeyName);
-        jsonWriter.writeUntypedField("azureTableRowKeyName", this.azureTableRowKeyName);
-        jsonWriter.writeUntypedField("azureTableInsertType", this.azureTableInsertType);
+        if (this.azureTableDefaultPartitionKeyValue != null) {
+            jsonWriter.writeUntypedField("azureTableDefaultPartitionKeyValue", this.azureTableDefaultPartitionKeyValue);
+        }
+        if (this.azureTablePartitionKeyName != null) {
+            jsonWriter.writeUntypedField("azureTablePartitionKeyName", this.azureTablePartitionKeyName);
+        }
+        if (this.azureTableRowKeyName != null) {
+            jsonWriter.writeUntypedField("azureTableRowKeyName", this.azureTableRowKeyName);
+        }
+        if (this.azureTableInsertType != null) {
+            jsonWriter.writeUntypedField("azureTableInsertType", this.azureTableInsertType);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

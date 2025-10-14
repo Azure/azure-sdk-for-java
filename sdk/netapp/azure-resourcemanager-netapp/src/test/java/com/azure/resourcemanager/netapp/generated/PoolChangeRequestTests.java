@@ -12,14 +12,14 @@ public final class PoolChangeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolChangeRequest model
-            = BinaryData.fromString("{\"newPoolResourceId\":\"kgymareqnajxqug\"}").toObject(PoolChangeRequest.class);
-        Assertions.assertEquals("kgymareqnajxqug", model.newPoolResourceId());
+            = BinaryData.fromString("{\"newPoolResourceId\":\"wi\"}").toObject(PoolChangeRequest.class);
+        Assertions.assertEquals("wi", model.newPoolResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolChangeRequest model = new PoolChangeRequest().withNewPoolResourceId("kgymareqnajxqug");
+        PoolChangeRequest model = new PoolChangeRequest().withNewPoolResourceId("wi");
         model = BinaryData.fromObject(model).toObject(PoolChangeRequest.class);
-        Assertions.assertEquals("kgymareqnajxqug", model.newPoolResourceId());
+        Assertions.assertEquals("wi", model.newPoolResourceId());
     }
 }

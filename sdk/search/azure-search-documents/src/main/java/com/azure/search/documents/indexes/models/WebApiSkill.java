@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,40 +22,47 @@ import java.util.Map;
  * A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code.
  */
 @Fluent
-public final class WebApiSkill extends SearchIndexerSkill {
+public class WebApiSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
 
     /*
      * The url for the Web API.
      */
+    @Generated
     private final String uri;
 
     /*
      * The headers required to make the http request.
      */
+    @Generated
     private Map<String, String> httpHeaders;
 
     /*
      * The method for the http request.
      */
+    @Generated
     private String httpMethod;
 
     /*
      * The desired timeout for the request. Default is 30 seconds.
      */
+    @Generated
     private Duration timeout;
 
     /*
      * The desired batch size which indicates number of documents.
      */
+    @Generated
     private Integer batchSize;
 
     /*
      * If set, the number of parallel calls that can be made to the Web API.
      */
+    @Generated
     private Integer degreeOfParallelism;
 
     /*
@@ -64,6 +72,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * managed ID (either system or user-assigned) of the search service and the access token of the function or app,
      * using this value as the resource id for creating the scope of the access token.
      */
+    @Generated
     private String authResourceId;
 
     /*
@@ -71,6 +80,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * specified, the system-assigned managed identity is used. On updates to the indexer, if the identity is
      * unspecified, the value remains unchanged. If set to "none", the value of this property is cleared.
      */
+    @Generated
     private SearchIndexerDataIdentity authIdentity;
 
     /**
@@ -80,6 +90,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @param uri the uri value to set.
      */
+    @Generated
     public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
         super(inputs, outputs);
         this.uri = uri;
@@ -90,6 +101,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -100,6 +112,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the uri value.
      */
+    @Generated
     public String getUri() {
         return this.uri;
     }
@@ -109,6 +122,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the httpHeaders value.
      */
+    @Generated
     public Map<String, String> getHttpHeaders() {
         return this.httpHeaders;
     }
@@ -119,6 +133,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param httpHeaders the httpHeaders value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setHttpHeaders(Map<String, String> httpHeaders) {
         this.httpHeaders = httpHeaders;
         return this;
@@ -129,6 +144,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the httpMethod value.
      */
+    @Generated
     public String getHttpMethod() {
         return this.httpMethod;
     }
@@ -139,6 +155,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param httpMethod the httpMethod value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setHttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;
         return this;
@@ -149,6 +166,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the timeout value.
      */
+    @Generated
     public Duration getTimeout() {
         return this.timeout;
     }
@@ -159,6 +177,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param timeout the timeout value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
@@ -169,6 +188,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the batchSize value.
      */
+    @Generated
     public Integer getBatchSize() {
         return this.batchSize;
     }
@@ -179,6 +199,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param batchSize the batchSize value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
@@ -189,6 +210,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the degreeOfParallelism value.
      */
+    @Generated
     public Integer getDegreeOfParallelism() {
         return this.degreeOfParallelism;
     }
@@ -199,6 +221,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
@@ -213,6 +236,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the authResourceId value.
      */
+    @Generated
     public String getAuthResourceId() {
         return this.authResourceId;
     }
@@ -227,6 +251,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param authResourceId the authResourceId value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setAuthResourceId(String authResourceId) {
         this.authResourceId = authResourceId;
         return this;
@@ -240,6 +265,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @return the authIdentity value.
      */
+    @Generated
     public SearchIndexerDataIdentity getAuthIdentity() {
         return this.authIdentity;
     }
@@ -253,6 +279,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param authIdentity the authIdentity value to set.
      * @return the WebApiSkill object itself.
      */
+    @Generated
     public WebApiSkill setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
@@ -261,6 +288,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebApiSkill setName(String name) {
         super.setName(name);
@@ -270,6 +298,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebApiSkill setDescription(String description) {
         super.setDescription(description);
@@ -279,6 +308,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebApiSkill setContext(String context) {
         super.setContext(context);
@@ -288,6 +318,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -317,7 +348,34 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebApiSkill.
      */
+    @Generated
     public static WebApiSkill fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Skills.Custom.ChatCompletionSkill".equals(discriminatorValue)) {
+                    return ChatCompletionSkill.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static WebApiSkill fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;
             List<InputFieldMappingEntry> inputs = null;

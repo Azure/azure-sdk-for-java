@@ -11,6 +11,7 @@
   <modules>
       <module>azure-search-documents</module>
       <module>azure-search-perf</module>
+      <module>azure-resourcemanager-search</module>
   </modules>
 
 </project>

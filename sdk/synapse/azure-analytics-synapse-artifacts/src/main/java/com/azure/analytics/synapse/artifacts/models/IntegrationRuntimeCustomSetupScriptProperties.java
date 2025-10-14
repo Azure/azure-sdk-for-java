@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
     /*
      * The URI of the Azure blob container that contains the custom setup script.
      */
+    @Generated
     private String blobContainerUri;
 
     /*
      * The SAS token of the Azure blob container.
      */
+    @Generated
     private SecureString sasToken;
 
     /**
      * Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class.
      */
+    @Generated
     public IntegrationRuntimeCustomSetupScriptProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
      * 
      * @return the blobContainerUri value.
      */
+    @Generated
     public String getBlobContainerUri() {
         return this.blobContainerUri;
     }
@@ -48,6 +53,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
      * @param blobContainerUri the blobContainerUri value to set.
      * @return the IntegrationRuntimeCustomSetupScriptProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeCustomSetupScriptProperties setBlobContainerUri(String blobContainerUri) {
         this.blobContainerUri = blobContainerUri;
         return this;
@@ -58,6 +64,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
      * 
      * @return the sasToken value.
      */
+    @Generated
     public SecureString getSasToken() {
         return this.sasToken;
     }
@@ -68,6 +75,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
      * @param sasToken the sasToken value to set.
      * @return the IntegrationRuntimeCustomSetupScriptProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeCustomSetupScriptProperties setSasToken(SecureString sasToken) {
         this.sasToken = sasToken;
         return this;
@@ -76,6 +84,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties
      * instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeCustomSetupScriptProperties.
      */
+    @Generated
     public static IntegrationRuntimeCustomSetupScriptProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeCustomSetupScriptProperties deserializedIntegrationRuntimeCustomSetupScriptProperties

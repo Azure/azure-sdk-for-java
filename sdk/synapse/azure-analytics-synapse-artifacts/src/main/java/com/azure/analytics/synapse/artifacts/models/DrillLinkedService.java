@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class DrillLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Drill";
 
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference pwd;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of DrillLinkedService class.
      */
+    @Generated
     public DrillLinkedService() {
     }
 
@@ -50,6 +56,7 @@ public class DrillLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public class DrillLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -72,6 +80,7 @@ public class DrillLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the DrillLinkedService object itself.
      */
+    @Generated
     public DrillLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -82,6 +91,7 @@ public class DrillLinkedService extends LinkedService {
      * 
      * @return the pwd value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPwd() {
         return this.pwd;
     }
@@ -92,6 +102,7 @@ public class DrillLinkedService extends LinkedService {
      * @param pwd the pwd value to set.
      * @return the DrillLinkedService object itself.
      */
+    @Generated
     public DrillLinkedService setPwd(AzureKeyVaultSecretReference pwd) {
         this.pwd = pwd;
         return this;
@@ -103,6 +114,7 @@ public class DrillLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -114,6 +126,7 @@ public class DrillLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DrillLinkedService object itself.
      */
+    @Generated
     public DrillLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -122,6 +135,17 @@ public class DrillLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public DrillLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public DrillLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -131,6 +155,7 @@ public class DrillLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DrillLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -140,6 +165,7 @@ public class DrillLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DrillLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -149,6 +175,7 @@ public class DrillLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DrillLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -158,9 +185,11 @@ public class DrillLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -168,9 +197,13 @@ public class DrillLinkedService extends LinkedService {
         jsonWriter.writeStringField("type", this.type);
         if (connectionString != null || pwd != null || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
             jsonWriter.writeJsonField("pwd", this.pwd);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -189,6 +222,7 @@ public class DrillLinkedService extends LinkedService {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DrillLinkedService.
      */
+    @Generated
     public static DrillLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DrillLinkedService deserializedDrillLinkedService = new DrillLinkedService();
@@ -197,7 +231,9 @@ public class DrillLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedDrillLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedDrillLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedDrillLinkedService.setDescription(reader.getString());

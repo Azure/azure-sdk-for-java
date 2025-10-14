@@ -5,7 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,11 +21,13 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
     /*
      * The Name property.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of BlobPrefix class.
      */
+    @Generated
     public BlobPrefix() {
     }
 
@@ -34,6 +36,7 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -44,19 +47,22 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * @param name the name value to set.
      * @return the BlobPrefix object itself.
      */
+    @Generated
     public BlobPrefix setName(String name) {
         this.name = name;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "BlobPrefix" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Name", this.name);
         return xmlWriter.writeEndElement();
@@ -70,6 +76,7 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobPrefix.
      */
+    @Generated
     public static BlobPrefix fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -84,8 +91,10 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobPrefix.
      */
+    @Generated
     public static BlobPrefix fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "BlobPrefix" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobPrefix deserializedBlobPrefix = new BlobPrefix();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

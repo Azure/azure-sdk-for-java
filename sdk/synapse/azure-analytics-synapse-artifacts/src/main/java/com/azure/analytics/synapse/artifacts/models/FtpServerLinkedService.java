@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,55 +22,65 @@ public class FtpServerLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "FtpServer";
 
     /*
      * Host name of the FTP server. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object host;
 
     /*
      * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type: integer
      * (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object port;
 
     /*
      * The authentication type to be used to connect to the FTP server.
      */
+    @Generated
     private FtpAuthenticationType authenticationType;
 
     /*
      * Username to logon the FTP server. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * Password to logon the FTP server.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object enableSsl;
 
     /*
      * If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type:
      * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableServerCertificateValidation;
 
     /**
      * Creates an instance of FtpServerLinkedService class.
      */
+    @Generated
     public FtpServerLinkedService() {
     }
 
@@ -78,6 +89,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -88,6 +100,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -98,6 +111,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -109,6 +123,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -120,6 +135,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -130,6 +146,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public FtpAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -140,6 +157,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setAuthenticationType(FtpAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -150,6 +168,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -160,6 +179,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -170,6 +190,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -180,6 +201,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -191,6 +213,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -202,6 +225,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -213,6 +237,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
@@ -224,6 +249,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param enableSsl the enableSsl value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
         return this;
@@ -235,6 +261,7 @@ public class FtpServerLinkedService extends LinkedService {
      * 
      * @return the enableServerCertificateValidation value.
      */
+    @Generated
     public Object getEnableServerCertificateValidation() {
         return this.enableServerCertificateValidation;
     }
@@ -246,6 +273,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
      * @return the FtpServerLinkedService object itself.
      */
+    @Generated
     public FtpServerLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
         this.enableServerCertificateValidation = enableServerCertificateValidation;
         return this;
@@ -254,6 +282,17 @@ public class FtpServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public FtpServerLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public FtpServerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -263,6 +302,7 @@ public class FtpServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FtpServerLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -272,6 +312,7 @@ public class FtpServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FtpServerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -281,6 +322,7 @@ public class FtpServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FtpServerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -290,9 +332,11 @@ public class FtpServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -308,14 +352,25 @@ public class FtpServerLinkedService extends LinkedService {
             || enableServerCertificateValidation != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("port", this.port);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -335,6 +390,7 @@ public class FtpServerLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FtpServerLinkedService.
      */
+    @Generated
     public static FtpServerLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FtpServerLinkedService deserializedFtpServerLinkedService = new FtpServerLinkedService();
@@ -343,7 +399,9 @@ public class FtpServerLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedFtpServerLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedFtpServerLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedFtpServerLinkedService.setDescription(reader.getString());

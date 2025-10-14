@@ -6,20 +6,36 @@ package com.azure.resourcemanager.computeschedule.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationErrorsResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.OccurrenceInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.RecurringActionsResourceOperationResultInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
+import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
+import com.azure.resourcemanager.computeschedule.models.ResourceAttachRequest;
+import com.azure.resourcemanager.computeschedule.models.ResourceDetachRequest;
+import com.azure.resourcemanager.computeschedule.models.ResourcePatchRequest;
+import com.azure.resourcemanager.computeschedule.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
@@ -29,7 +45,8 @@ import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
  */
 public interface ScheduledActionsClient {
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -44,7 +61,8 @@ public interface ScheduledActionsClient {
         String locationparameter, SubmitDeallocateRequest requestBody, Context context);
 
     /**
-     * virtualMachinesSubmitDeallocate: submitDeallocate for a virtual machine.
+     * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -58,7 +76,8 @@ public interface ScheduledActionsClient {
         SubmitDeallocateRequest requestBody);
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -73,7 +92,8 @@ public interface ScheduledActionsClient {
         String locationparameter, SubmitHibernateRequest requestBody, Context context);
 
     /**
-     * virtualMachinesSubmitHibernate: submitHibernate for a virtual machine.
+     * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
+     * future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -87,7 +107,7 @@ public interface ScheduledActionsClient {
         SubmitHibernateRequest requestBody);
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -102,7 +122,7 @@ public interface ScheduledActionsClient {
         SubmitStartRequest requestBody, Context context);
 
     /**
-     * virtualMachinesSubmitStart: submitStart for a virtual machine.
+     * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -116,7 +136,8 @@ public interface ScheduledActionsClient {
         SubmitStartRequest requestBody);
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -131,7 +152,8 @@ public interface ScheduledActionsClient {
         String locationparameter, ExecuteDeallocateRequest requestBody, Context context);
 
     /**
-     * virtualMachinesExecuteDeallocate: executeDeallocate for a virtual machine.
+     * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -145,7 +167,8 @@ public interface ScheduledActionsClient {
         ExecuteDeallocateRequest requestBody);
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -160,7 +183,8 @@ public interface ScheduledActionsClient {
         String locationparameter, ExecuteHibernateRequest requestBody, Context context);
 
     /**
-     * virtualMachinesExecuteHibernate: executeHibernate for a virtual machine.
+     * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -174,7 +198,8 @@ public interface ScheduledActionsClient {
         ExecuteHibernateRequest requestBody);
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -189,7 +214,8 @@ public interface ScheduledActionsClient {
         ExecuteStartRequest requestBody, Context context);
 
     /**
-     * virtualMachinesExecuteStart: executeStart for a virtual machine.
+     * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
+     * as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -203,7 +229,69 @@ public interface ScheduledActionsClient {
         ExecuteStartRequest requestBody);
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(String locationparameter,
+        ExecuteCreateRequest requestBody, Context context);
+
+    /**
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateResourceOperationResponseInner virtualMachinesExecuteCreate(String locationparameter,
+        ExecuteCreateRequest requestBody);
+
+    /**
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a delete request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(String locationparameter,
+        ExecuteDeleteRequest requestBody, Context context);
+
+    /**
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeleteResourceOperationResponseInner virtualMachinesExecuteDelete(String locationparameter,
+        ExecuteDeleteRequest requestBody);
+
+    /**
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -218,7 +306,7 @@ public interface ScheduledActionsClient {
         GetOperationStatusRequest requestBody, Context context);
 
     /**
-     * virtualMachinesGetOperationStatus: getOperationStatus for a virtual machine.
+     * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -232,7 +320,7 @@ public interface ScheduledActionsClient {
         GetOperationStatusRequest requestBody);
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -247,7 +335,7 @@ public interface ScheduledActionsClient {
         CancelOperationsRequest requestBody, Context context);
 
     /**
-     * virtualMachinesCancelOperations: cancelOperations for a virtual machine.
+     * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -261,7 +349,8 @@ public interface ScheduledActionsClient {
         CancelOperationsRequest requestBody);
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -276,7 +365,8 @@ public interface ScheduledActionsClient {
         GetOperationErrorsRequest requestBody, Context context);
 
     /**
-     * virtualMachinesGetOperationErrors: getOperationErrors associated with an operation on a virtual machine.
+     * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
+     * additional logs) if they exist.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -288,4 +378,461 @@ public interface ScheduledActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     GetOperationErrorsResponseInner virtualMachinesGetOperationErrors(String locationparameter,
         GetOperationErrorsRequest requestBody);
+
+    /**
+     * Get a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a ScheduledAction along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduledActionInner> getByResourceGroupWithResponse(String resourceGroupName, String scheduledActionName,
+        Context context);
+
+    /**
+     * Get a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a ScheduledAction.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledActionInner getByResourceGroup(String resourceGroupName, String scheduledActionName);
+
+    /**
+     * Create a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the scheduled action resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner> beginCreateOrUpdate(String resourceGroupName,
+        String scheduledActionName, ScheduledActionInner resource);
+
+    /**
+     * Create a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the scheduled action resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner> beginCreateOrUpdate(String resourceGroupName,
+        String scheduledActionName, ScheduledActionInner resource, Context context);
+
+    /**
+     * Create a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled action resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
+        ScheduledActionInner resource);
+
+    /**
+     * Create a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled action resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
+        ScheduledActionInner resource, Context context);
+
+    /**
+     * Update a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled action resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduledActionInner> updateWithResponse(String resourceGroupName, String scheduledActionName,
+        ScheduledActionUpdate properties, Context context);
+
+    /**
+     * Update a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the scheduled action resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScheduledActionInner update(String resourceGroupName, String scheduledActionName, ScheduledActionUpdate properties);
+
+    /**
+     * Delete a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName);
+
+    /**
+     * Delete a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName,
+        Context context);
+
+    /**
+     * Delete a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String scheduledActionName);
+
+    /**
+     * Delete a ScheduledAction.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String scheduledActionName, Context context);
+
+    /**
+     * List ScheduledAction resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * List ScheduledAction resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * List ScheduledAction resources by subscription ID.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledActionInner> list();
+
+    /**
+     * List ScheduledAction resources by subscription ID.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ScheduledAction list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledActionInner> list(Context context);
+
+    /**
+     * List resources attached to Scheduled Actions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName, String scheduledActionName);
+
+    /**
+     * List resources attached to Scheduled Actions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName, String scheduledActionName,
+        Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RecurringActionsResourceOperationResultInner> attachResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, ResourceAttachRequest body, Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecurringActionsResourceOperationResultInner attachResources(String resourceGroupName, String scheduledActionName,
+        ResourceAttachRequest body);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RecurringActionsResourceOperationResultInner> detachResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, ResourceDetachRequest body, Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecurringActionsResourceOperationResultInner detachResources(String resourceGroupName, String scheduledActionName,
+        ResourceDetachRequest body);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RecurringActionsResourceOperationResultInner> patchResourcesWithResponse(String resourceGroupName,
+        String scheduledActionName, ResourcePatchRequest body, Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecurringActionsResourceOperationResultInner patchResources(String resourceGroupName, String scheduledActionName,
+        ResourcePatchRequest body);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> disableWithResponse(String resourceGroupName, String scheduledActionName, Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disable(String resourceGroupName, String scheduledActionName);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> enableWithResponse(String resourceGroupName, String scheduledActionName, Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enable(String resourceGroupName, String scheduledActionName);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RecurringActionsResourceOperationResultInner> cancelNextOccurrenceWithResponse(String resourceGroupName,
+        String scheduledActionName, CancelOccurrenceRequest body, Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RecurringActionsResourceOperationResultInner cancelNextOccurrence(String resourceGroupName,
+        String scheduledActionName, CancelOccurrenceRequest body);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OccurrenceInner> triggerManualOccurrenceWithResponse(String resourceGroupName, String scheduledActionName,
+        Context context);
+
+    /**
+     * A synchronous resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scheduledActionName The name of the ScheduledAction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OccurrenceInner triggerManualOccurrence(String resourceGroupName, String scheduledActionName);
 }

@@ -7,6 +7,7 @@ package com.azure.ai.metricsadvisor.implementation.models;
 import com.azure.ai.metricsadvisor.models.FeedbackQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -26,36 +27,43 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
     /*
      * filter feedbacks by metric id
      */
+    @Generated
     private UUID metricId;
 
     /*
      * The dimensionFilter property.
      */
+    @Generated
     private FeedbackDimensionFilter dimensionFilter;
 
     /*
      * filter feedbacks by type
      */
+    @Generated
     private FeedbackType feedbackType;
 
     /*
      * start time filter under chosen time mode
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * end time filter under chosen time mode
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * time mode to filter feedback
      */
+    @Generated
     private FeedbackQueryTimeMode timeMode;
 
     /**
      * Creates an instance of MetricFeedbackFilter class.
      */
+    @Generated
     public MetricFeedbackFilter() {
     }
 
@@ -64,6 +72,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * 
      * @return the metricId value.
      */
+    @Generated
     public UUID getMetricId() {
         return this.metricId;
     }
@@ -74,6 +83,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @param metricId the metricId value to set.
      * @return the MetricFeedbackFilter object itself.
      */
+    @Generated
     public MetricFeedbackFilter setMetricId(UUID metricId) {
         this.metricId = metricId;
         return this;
@@ -84,6 +94,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * 
      * @return the dimensionFilter value.
      */
+    @Generated
     public FeedbackDimensionFilter getDimensionFilter() {
         return this.dimensionFilter;
     }
@@ -94,6 +105,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the MetricFeedbackFilter object itself.
      */
+    @Generated
     public MetricFeedbackFilter setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
         this.dimensionFilter = dimensionFilter;
         return this;
@@ -104,6 +116,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * 
      * @return the feedbackType value.
      */
+    @Generated
     public FeedbackType getFeedbackType() {
         return this.feedbackType;
     }
@@ -114,6 +127,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @param feedbackType the feedbackType value to set.
      * @return the MetricFeedbackFilter object itself.
      */
+    @Generated
     public MetricFeedbackFilter setFeedbackType(FeedbackType feedbackType) {
         this.feedbackType = feedbackType;
         return this;
@@ -124,6 +138,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -134,6 +149,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @param startTime the startTime value to set.
      * @return the MetricFeedbackFilter object itself.
      */
+    @Generated
     public MetricFeedbackFilter setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -144,6 +160,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -154,6 +171,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @param endTime the endTime value to set.
      * @return the MetricFeedbackFilter object itself.
      */
+    @Generated
     public MetricFeedbackFilter setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -164,6 +182,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * 
      * @return the timeMode value.
      */
+    @Generated
     public FeedbackQueryTimeMode getTimeMode() {
         return this.timeMode;
     }
@@ -174,6 +193,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @param timeMode the timeMode value to set.
      * @return the MetricFeedbackFilter object itself.
      */
+    @Generated
     public MetricFeedbackFilter setTimeMode(FeedbackQueryTimeMode timeMode) {
         this.timeMode = timeMode;
         return this;
@@ -182,6 +202,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,6 +226,7 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricFeedbackFilter.
      */
+    @Generated
     public static MetricFeedbackFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricFeedbackFilter deserializedMetricFeedbackFilter = new MetricFeedbackFilter();

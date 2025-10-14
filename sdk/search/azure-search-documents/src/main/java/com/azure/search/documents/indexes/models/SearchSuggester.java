@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,16 +24,19 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
     /*
      * The name of the suggester.
      */
+    @Generated
     private final String name;
 
     /*
      * A value indicating the capabilities of the suggester.
      */
+    @Generated
     private String searchMode = "analyzingInfixMatching";
 
     /*
      * The list of field names to which the suggester applies. Each field must be searchable.
      */
+    @Generated
     private final List<String> sourceFields;
 
     /**
@@ -41,6 +45,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      * @param name the name value to set.
      * @param sourceFields the sourceFields value to set.
      */
+    @Generated
     public SearchSuggester(String name, List<String> sourceFields) {
         this.searchMode = "analyzingInfixMatching";
         this.sourceFields = sourceFields;
@@ -52,6 +57,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -61,6 +67,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      *
      * @return the searchMode value.
      */
+    @Generated
     public String getSearchMode() {
         return this.searchMode;
     }
@@ -71,6 +78,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      *
      * @return the sourceFields value.
      */
+    @Generated
     public List<String> getSourceFields() {
         return this.sourceFields;
     }
@@ -78,6 +86,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchSuggester.
      */
+    @Generated
     public static SearchSuggester fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

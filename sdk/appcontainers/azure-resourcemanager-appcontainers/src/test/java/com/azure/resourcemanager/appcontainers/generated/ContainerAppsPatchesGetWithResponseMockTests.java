@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsPatchResource;
@@ -20,17 +20,17 @@ public final class ContainerAppsPatchesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"targetEnvironmentId\":\"coybaj\",\"targetContainerAppId\":\"qubfajcyw\",\"targetRevisionId\":\"qwmchqohtfxc\",\"patchApplyStatus\":\"Canceled\",\"createdAt\":\"2021-11-23T12:25:12Z\",\"lastModifiedAt\":\"2021-01-03T15:25:04Z\",\"patchDetails\":[{\"targetContainerName\":\"zpwdlvwtiwsmo\",\"targetImage\":\"aonhqnamppul\",\"lastDetectionTime\":\"2021-11-30T08:03:43Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"aekewnazea\",\"newLayer\":{\"name\":\"aj\",\"frameworkAndVersion\":\"yizyddcvxodk\",\"osAndVersion\":\"fsxxby\"},\"oldLayer\":{\"name\":\"qlvge\",\"frameworkAndVersion\":\"wgoljtzx\",\"osAndVersion\":\"xsdobygoogxqapjx\"},\"patchType\":\"OSSecurity\"}]},\"id\":\"jfucsaodjnosdkv\",\"name\":\"bfas\",\"type\":\"matrnzpducd\"}";
+            = "{\"properties\":{\"targetEnvironmentId\":\"bmxlxm\",\"targetContainerAppId\":\"ygeqzusito\",\"targetRevisionId\":\"ahfsgb\",\"patchApplyStatus\":\"ImagePushPullFailed\",\"createdAt\":\"2021-01-14T01:38:47Z\",\"lastModifiedAt\":\"2021-05-15T13:32:12Z\",\"patchDetails\":[{\"targetContainerName\":\"wsszvlc\",\"targetImage\":\"lisolntfxxc\",\"lastDetectionTime\":\"2021-04-15T15:53:33Z\",\"detectionStatus\":\"Succeeded\",\"newImageName\":\"pfjwfo\",\"newLayer\":{\"name\":\"zms\",\"frameworkAndVersion\":\"xbaizab\",\"osAndVersion\":\"nvgskjtoxjd\"},\"oldLayer\":{\"name\":\"jznvhxqqmq\",\"frameworkAndVersion\":\"aydhf\",\"osAndVersion\":\"ocxm\"},\"patchType\":\"OSSecurity\"},{\"targetContainerName\":\"hksnyzmspamwbw\",\"targetImage\":\"bnl\",\"lastDetectionTime\":\"2021-07-18T17:31:16Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"fi\",\"newLayer\":{\"name\":\"twtkvih\",\"frameworkAndVersion\":\"fliwoynguuzhwvl\",\"osAndVersion\":\"p\"},\"oldLayer\":{\"name\":\"jha\",\"frameworkAndVersion\":\"ybkekym\",\"osAndVersion\":\"ztsilscvq\"},\"patchType\":\"FrameworkAndOSSecurity\"},{\"targetContainerName\":\"iihfymkoui\",\"targetImage\":\"yese\",\"lastDetectionTime\":\"2021-11-06T11:52:30Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"igzhogsmgbvmtdw\",\"newLayer\":{\"name\":\"ebjnf\",\"frameworkAndVersion\":\"glab\",\"osAndVersion\":\"kbiwznhtfgfic\"},\"oldLayer\":{\"name\":\"hizpaczmuh\",\"frameworkAndVersion\":\"akznhokhoitwhr\",\"osAndVersion\":\"dmmazdnc\"},\"patchType\":\"FrameworkSecurity\"}]},\"id\":\"jpg\",\"name\":\"hzqpxzbawkikcdgf\",\"type\":\"bssdpjeyoqxd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ContainerAppsPatchResource response = manager.containerAppsPatches()
-            .getWithResponse("qontwhymxymulw", "vqtow", "h", com.azure.core.util.Context.NONE)
+            .getWithResponse("bzdrdpuenxkgt", "zlm", "rlxcznnhz", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

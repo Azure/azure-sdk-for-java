@@ -3,308 +3,302 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.azure.tools</groupId>
-    <artifactId>azure-sdk-archetype</artifactId>
-    <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.tools:azure-sdk-archetype;current} -->
-    <name>Azure SDK Maven archetype</name>
-    <description>Azure SDK archetype to generate a new Maven project with
-        recommended Azure SDK tools and configuration.</description>
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
-    </properties>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure.tools</groupId>
+  <artifactId>azure-sdk-archetype</artifactId>
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.tools:azure-sdk-archetype;current} -->
+  <name>Azure SDK Maven archetype</name>
+  <description>Azure SDK archetype to generate a new Maven project with recommended Azure SDK tools and configuration.</description>
+  <properties>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+  </properties>
 
-    <url>https://github.com/azure/azure-sdk-for-java</url>
-    <organization>
-        <name>Microsoft Corporation</name>
-        <url>http://microsoft.com</url>
-    </organization>
+  <url>https://github.com/azure/azure-sdk-for-java</url>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
 
 
-    <licenses>
-        <license>
-            <name>The MIT License (MIT)</name>
-            <url>http://opensource.org/licenses/MIT</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <developers>
-        <developer>
-            <id>microsoft</id>
-            <name>Microsoft Corporation</name>
-        </developer>
-    </developers>
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
 
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
-    </issueManagement>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
 
-    <scm>
-        <url>https://github.com/Azure/azure-sdk-for-java</url>
-        <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
-        <developerConnection/>
-        <tag>HEAD</tag>
-    </scm>
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection/>
+    <tag>HEAD</tag>
+  </scm>
 
-    <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.archetype</groupId>
-                <artifactId>archetype-packaging</artifactId>
-                <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
-            </extension>
-        </extensions>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
-                </plugin>
-            </plugins>
-        </pluginManagement>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
+      </extension>
+    </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
-        <plugins>
-            <!-- generate sources jar -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${packageOutputDirectory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Copy the pom file to output -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <target>
-                                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>copy-readme-to-javadocTemp</id>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <target>
-                                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
-                                <delete includeEmptyDirs="true" quiet="true">
-                                    <fileset dir="${project.basedir}/javadocTemp"/>
-                                </delete>
-                                <echo>Copying ${project.basedir}/README.md to
-                                    ${project.basedir}/javadocTemp/README.md
-                                </echo>
-                                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- START: Empty Java Doc -->
-            <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
-                 to pass the required checks on Maven. The way this works is by setting the classesDirectory
-                 to a directory that only contains the README.md, which we need to copy. If the classesDirectory
-                 is set to the root, where the README.md lives, it still won't have javadocs but the jar file
-                 will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
-                 and recreated with the README.md being copied every time to guarantee that, when building locally,
-                 it'll have the latest copy of the README.md file.
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-                <executions>
-                    <execution>
-                        <id>empty-javadoc-jar-with-readme</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>javadoc</classifier>
-                            <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- END: Empty Java Doc -->
-
-          <!-- TODO: Move the following plugins to a parent pom -->
-          <!-- This plugin scans checkstyle issues in the code -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
-            <dependencies>
-              <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>sdk-build-tools</artifactId>
-                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>com.puppycrawl.tools</groupId>
-                <artifactId>checkstyle</artifactId>
-                <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
-          <!-- This plugin scans reports spotbugs in the code -->
-          <plugin>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-            <dependencies>
-              <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>sdk-build-tools</artifactId>
-                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs</artifactId>
-                <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-              </dependency>
-              <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
-              <dependency>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
-              </dependency>
-            </dependencies>
+    <plugins>
+      <!-- generate sources jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
             <configuration>
-              <effort>max</effort>
-              <threshold>Low</threshold>
-              <xmlOutput>true</xmlOutput>
-              <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-              <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-              <fork>true</fork>
+              <outputDirectory>${packageOutputDirectory}</outputDirectory>
             </configuration>
-          </plugin>
+          </execution>
+        </executions>
+      </plugin>
 
-          <!-- Checks public surface area for breaking changes. -->
-          <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+      <!-- Copy the pom file to output -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
             <configuration>
-              <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
-              <analysisConfigurationFiles>
-                <configurationFile>
-                  <resource>revapi/revapi.json</resource>
-                </configurationFile>
-              </analysisConfigurationFiles>
-              <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-              <checkDependencies>true</checkDependencies>
-              <!-- The following configures reporting to file in addition to CLI reporting. -->
-              <analysisConfiguration>
-                <revapi.reporter.json id="file-report">
-                  <minSeverity>NON_BREAKING</minSeverity>
-                  <minCriticality>error</minCriticality>
-                  <indent>true</indent>
-                  <output>${project.build.directory}/revapi.json</output>
-                  <keepEmptyFile>false</keepEmptyFile>
-                </revapi.reporter.json>
-              </analysisConfiguration>
-              <pipelineConfiguration>
-                <filters>
-                  <include>
-                    <item>class-and-package-tree-filter-provider</item>
-                  </include>
-                </filters>
-              </pipelineConfiguration>
+              <target>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+              </target>
             </configuration>
-            <dependencies>
-              <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>sdk-build-tools</artifactId>
-                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.revapi</groupId>
-                <artifactId>revapi-java</artifactId>
-                <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.revapi</groupId>
-                <artifactId>revapi-reporter-json</artifactId>
-                <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
-          <plugin>
-            <groupId>com.azure.tools</groupId>
-            <artifactId>codesnippet-maven-plugin</artifactId>
-            <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>copy-readme-to-javadocTemp</id>
+            <phase>prepare-package</phase>
             <configuration>
-              <readmeGlob>**/*.md</readmeGlob>
+              <target>
+                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                <delete includeEmptyDirs="true" quiet="true">
+                  <fileset dir="${project.basedir}/javadocTemp"/>
+                </delete>
+                <echo>Copying ${project.basedir}/README.md to
+                  ${project.basedir}/javadocTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+              </target>
             </configuration>
-            <executions>
-              <execution>
-                <id>update-codesnippets</id>
-                <goals>
-                  <goal>update-codesnippet</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>verify-codesnippets</id>
-                <goals>
-                  <goal>verify-codesnippet</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
-          <plugin>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+      <!-- START: Empty Java Doc -->
+      <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+           to pass the required checks on Maven. The way this works is by setting the classesDirectory
+           to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+           is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+           will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+           and recreated with the README.md being copied every time to guarantee that, when building locally,
+           it'll have the latest copy of the README.md file.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
             <configuration>
               <skip>true</skip>
             </configuration>
-          </plugin>
-        </plugins>
-    </build>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>empty-javadoc-jar-with-readme</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>javadoc</classifier>
+              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- END: Empty Java Doc -->
+
+      <!-- TODO: Move the following plugins to a parent pom -->
+      <!-- This plugin scans checkstyle issues in the code -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>linting-extensions</artifactId>
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:linting-extensions;current} -->
+          </dependency>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+          </dependency>
+        </dependencies>
+      </plugin>
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <dependencies>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+          </dependency>
+          <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+          <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+          </dependency>
+        </dependencies>
+        <configuration>
+          <effort>max</effort>
+          <threshold>Low</threshold>
+          <xmlOutput>true</xmlOutput>
+          <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+          <excludeFilterFile>${project.parent.relativePath}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
+          <fork>true</fork>
+        </configuration>
+      </plugin>
+
+      <!-- Checks public surface area for breaking changes. -->
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
+          <analysisConfigurationFiles>
+            <configurationFile>
+              <resource>${project.basedir}/../../../eng/lintingconfigs/revapi/track2/revapi.json</resource>
+            </configurationFile>
+          </analysisConfigurationFiles>
+          <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+          <checkDependencies>true</checkDependencies>
+          <!-- The following configures reporting to file in addition to CLI reporting. -->
+          <analysisConfiguration>
+            <revapi.reporter.json id="file-report">
+              <minSeverity>NON_BREAKING</minSeverity>
+              <minCriticality>error</minCriticality>
+              <indent>true</indent>
+              <output>${project.build.directory}/revapi.json</output>
+              <keepEmptyFile>false</keepEmptyFile>
+            </revapi.reporter.json>
+          </analysisConfiguration>
+          <pipelineConfiguration>
+            <filters>
+              <include>
+                <item>class-and-package-tree-filter-provider</item>
+              </include>
+            </filters>
+          </pipelineConfiguration>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>io.clientcore</groupId>
+            <artifactId>linting-extensions</artifactId>
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:linting-extensions;current} -->
+          </dependency>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-java</artifactId>
+            <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+          </dependency>
+          <dependency>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-reporter-json</artifactId>
+            <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <readmeGlob>**/*.md</readmeGlob>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippets</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippets</id>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

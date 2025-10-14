@@ -48,7 +48,7 @@ public final class AzureFunctionEventSubscriptionDestination extends EventSubscr
      * 
      * @return the innerProperties value.
      */
-    private AzureFunctionEventSubscriptionDestinationProperties innerProperties() {
+    AzureFunctionEventSubscriptionDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

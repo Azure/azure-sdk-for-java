@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
     /**
      * Static value General for DataFlowComputeType.
      */
+    @Generated
     public static final DataFlowComputeType GENERAL = fromString("General");
 
     /**
      * Static value MemoryOptimized for DataFlowComputeType.
      */
+    @Generated
     public static final DataFlowComputeType MEMORY_OPTIMIZED = fromString("MemoryOptimized");
 
     /**
      * Static value ComputeOptimized for DataFlowComputeType.
      */
+    @Generated
     public static final DataFlowComputeType COMPUTE_OPTIMIZED = fromString("ComputeOptimized");
 
     /**
@@ -31,6 +35,7 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataFlowComputeType() {
     }
@@ -41,6 +46,7 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
      * @param name a name to look for.
      * @return the corresponding DataFlowComputeType.
      */
+    @Generated
     public static DataFlowComputeType fromString(String name) {
         return fromString(name, DataFlowComputeType.class);
     }
@@ -50,6 +56,7 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
      * 
      * @return known DataFlowComputeType values.
      */
+    @Generated
     public static Collection<DataFlowComputeType> values() {
         return values(DataFlowComputeType.class);
     }

@@ -17,6 +17,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -36,6 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableServiceClientBuilderTest {
 
     private static final String ENDPOINT = "https://myAccount.table.core.windows.net";
+    private static final String[] COSMOS_ENDPOINTS = {
+        "https://myAccount.table.cosmos.azure.com",
+        "https://myAccount.table.cosmos.azure.us",
+        "https://myAccount.table.cosmos.azure.cn" };
     private static final String CONNECTION_STRING
         = "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net";
     private static final TokenCredential CREDENTIAL = new MockTokenCredential();
@@ -315,5 +320,26 @@ public class TableServiceClientBuilderTest {
             .connectionString(
                 "DefaultEndpointsProtocol=https;AccountName=myOtherAccount;AccountKey=myKey;EndpointSuffix=core.windows.net")
             .buildAsyncClient());
+    }
+
+    @Test
+    public void cosmosEndpointsResultsInCosmosPatchPolicyAppliedToBuilder() {
+        for (String endpoint : COSMOS_ENDPOINTS) {
+            TableServiceClient client = new TableServiceClientBuilder().endpoint(endpoint)
+                .credential(CREDENTIAL)
+                .serviceVersion(serviceVersion)
+                .buildClient();
+
+            int policyCount = client.getHttpPipeline().getPolicyCount();
+            assertTrue(client.getHttpPipeline().getPolicyCount() > 0);
+            boolean detectedCosmosPatchPolicy = false;
+            for (int i = 0; i < policyCount; i++) {
+                if (client.getHttpPipeline().getPolicy(i) instanceof CosmosPatchTransformPolicy) {
+                    detectedCosmosPatchPolicy = true;
+                    break;
+                }
+            }
+            assertTrue(detectedCosmosPatchPolicy);
+        }
     }
 }

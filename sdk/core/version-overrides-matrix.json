@@ -1,0 +1,31 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+    },
+    "TestConfig": {
+      "version_override": {
+        "TestVersionSupport": true,
+        "VERSION_OVERRIDE_TESTS": true,
+        "TestGoals": "surefire:test",
+        // This has to be stringified json
+        "ArtifactsJson": "{
+          \"name\": \"azure-core-version-tests\",
+          \"groupId\": \"com.azure\",
+          \"safeName\": \"azurecoreversiontests\"
+        }",
+        // blank this out so we don't pick up the defaults from ci.yml
+        "AdditionalModulesJson": ""
+      }
+    },
+    "VersionOverride": [
+      "jackson_2.10",
+      "jackson_2.12",
+      "jackson_2.15",
+      "jackson_2.18",
+      "reactor_2020",
+      "reactor_2024",
+      "reactor_2025"
+    ]
+  }
+}

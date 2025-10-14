@@ -387,19 +387,7 @@
  * JSON, and as with {@link io.clientcore.core.serialization.json.JsonReader}, it contains both abstract methods for implementations to
  * implement and final methods for commonly shared logic that builds on the abstract methods. Both types implement
  * {@link java.io.Closeable} and should be used in try-with-resources blocks to ensure any resources created by
- * the implementations are cleaned up once JSON reading or writing is complete. Both types are used by the
- * {@link io.clientcore.core.serialization.json.JsonProvider} service provider interface which is used to create instances of
- * {@link io.clientcore.core.serialization.json.JsonReader} and {@link io.clientcore.core.serialization.json.JsonWriter} implementations.</p>
- *
- *
- * <p>{@link io.clientcore.core.serialization.json.JsonProviders} is a utility class that handles finding {@link io.clientcore.core.serialization.json.JsonProvider}
- * implementations on the classpath and should be the default way to create instances of
- * {@link io.clientcore.core.serialization.json.JsonReader} and {@link io.clientcore.core.serialization.json.JsonWriter}. As mentioned earlier, the Client Core JSON
- * package provides a default implementation allowing for the library to be used stand-alone.
- * {@link io.clientcore.core.serialization.json.JsonReader} can be created from {@code byte[]}, {@link java.lang.String},
- * {@link java.io.InputStream}, and {@link java.io.Reader} sources, {@link io.clientcore.core.serialization.json.JsonWriter} can be created
- * from {@link java.io.OutputStream} and {@link java.io.Writer} sources. No matter the source the functionality will be
- * the same, the options exist to provide the best convenience and performance by reducing type translations.
+ * the implementations are cleaned up once JSON reading or writing is complete.</p>
  *
  * <p><strong>Sample: Reading a JSON byte[]</strong></p>
  *
@@ -409,7 +397,7 @@
  * byte[] json = &#40;&quot;&#123;&#92;&quot;memoryInBytes&#92;&quot;:10000000000,&#92;&quot;clockSpeedInHertz&#92;&quot;:4800000000,&quot;
  *     + &quot;&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Memory Corp&#92;&quot;,&#92;&quot;errorCorrecting&#92;&quot;:true&#125;&quot;&#41;.getBytes&#40;StandardCharsets.UTF_8&#41;;
  *
- * try &#40;JsonReader jsonReader = JsonProviders.createReader&#40;json&#41;&#41; &#123;
+ * try &#40;JsonReader jsonReader = JsonReader.fromBytes&#40;json&#41;&#41; &#123;
  *     return ComputerMemory.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
@@ -422,7 +410,7 @@
  * String json = &quot;&#123;&#92;&quot;cores&#92;&quot;:16,&#92;&quot;threads&#92;&quot;:32,&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Processor Corp&#92;&quot;,&quot;
  *     + &quot;&#92;&quot;clockSpeedInHertz&#92;&quot;:5000000000,&#92;&quot;releaseDate&#92;&quot;:null&#125;&quot;;
  *
- * try &#40;JsonReader jsonReader = JsonProviders.createReader&#40;json&#41;&#41; &#123;
+ * try &#40;JsonReader jsonReader = JsonReader.fromString&#40;json&#41;&#41; &#123;
  *     return ComputerProcessor.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
@@ -440,7 +428,7 @@
  *     + &quot;&#92;&quot;AcceleratedNetwork&#92;&quot;:true,&#92;&quot;CloudProvider&#92;&quot;:&#92;&quot;SomeCloud&#92;&quot;,&#92;&quot;Available&#92;&quot;:true&#125;&quot;&#41;
  *     .getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
  *
- * try &#40;JsonReader jsonReader = JsonProviders.createReader&#40;json&#41;&#41; &#123;
+ * try &#40;JsonReader jsonReader = JsonReader.fromStream&#40;json&#41;&#41; &#123;
  *     return VmStatistics.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
@@ -456,7 +444,7 @@
  *     + &quot;&#92;&quot;manufacturer&#92;&quot;:&#92;&quot;Memory Corp&#92;&quot;,&#92;&quot;errorCorrecting&#92;&quot;:true&#125;,&#92;&quot;AcceleratedNetwork&#92;&quot;:true,&quot;
  *     + &quot;&#92;&quot;CloudProvider&#92;&quot;:&#92;&quot;SomeCloud&#92;&quot;,&#92;&quot;Available&#92;&quot;:true&#125;&quot;&#41;;
  *
- * try &#40;JsonReader jsonReader = JsonProviders.createReader&#40;json&#41;&#41; &#123;
+ * try &#40;JsonReader jsonReader = JsonReader.fromReader&#40;json&#41;&#41; &#123;
  *     return VmStatistics.fromJson&#40;jsonReader&#41;;
  * &#125;
  * </pre>
@@ -481,7 +469,7 @@
  *     .setAdditionalProperties&#40;additionalVmProperties&#41;;
  *
  * ByteArrayOutputStream json = new ByteArrayOutputStream&#40;&#41;;
- * try &#40;JsonWriter jsonWriter = JsonProviders.createWriter&#40;json&#41;&#41; &#123;
+ * try &#40;JsonWriter jsonWriter = JsonWriter.toStream&#40;json&#41;&#41; &#123;
  *     &#47;&#47; JsonWriter automatically flushes on close.
  *     vmStatistics.toJson&#40;jsonWriter&#41;;
  * &#125;
@@ -513,7 +501,7 @@
  *     .setAdditionalProperties&#40;additionalVmProperties&#41;;
  *
  * Writer json = new StringWriter&#40;&#41;;
- * try &#40;JsonWriter jsonWriter = JsonProviders.createWriter&#40;json&#41;&#41; &#123;
+ * try &#40;JsonWriter jsonWriter = JsonWriter.toWriter&#40;json&#41;&#41; &#123;
  *     &#47;&#47; JsonWriter automatically flushes on close.
  *     vmStatistics.toJson&#40;jsonWriter&#41;;
  * &#125;
@@ -529,7 +517,5 @@
  * @see io.clientcore.core.serialization.json.JsonSerializable
  * @see io.clientcore.core.serialization.json.JsonReader
  * @see io.clientcore.core.serialization.json.JsonWriter
- * @see io.clientcore.core.serialization.json.JsonProvider
- * @see io.clientcore.core.serialization.json.JsonProviders
  */
 package io.clientcore.core.serialization.json;

@@ -359,11 +359,11 @@ public class OkHttpAsyncHttpClientBuilder {
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
-            httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
+            httpClientBuilder.addNetworkInterceptor(interceptor);
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()))
+        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()))
             .writeTimeout(getTimeout(writeTimeout, getDefaultWriteTimeout()))
             .readTimeout(getTimeout(readTimeout, getDefaultReadTimeout()));
 
@@ -374,12 +374,12 @@ public class OkHttpAsyncHttpClientBuilder {
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
-            httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
+            httpClientBuilder.connectionPool(connectionPool);
         }
 
         // If set use the configured dispatcher.
         if (this.dispatcher != null) {
-            httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
+            httpClientBuilder.dispatcher(dispatcher);
         }
 
         Configuration buildConfiguration
@@ -389,15 +389,14 @@ public class OkHttpAsyncHttpClientBuilder {
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder
-                = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
-                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
                 ProxyAuthenticator proxyAuthenticator
                     = new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
 
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
+                httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
             }
         }

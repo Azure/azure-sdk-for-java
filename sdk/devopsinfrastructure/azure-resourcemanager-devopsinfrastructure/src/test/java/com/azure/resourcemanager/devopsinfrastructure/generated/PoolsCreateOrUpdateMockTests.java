@@ -6,8 +6,8 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager;
 import com.azure.resourcemanager.devopsinfrastructure.models.AgentProfile;
@@ -33,40 +33,42 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":665760554,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"anvx\"},\"identity\":{\"principalId\":\"vudutncor\",\"tenantId\":\"lxqtvcofudfl\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"sgsahmkycgr\":{\"principalId\":\"bgdknnqv\",\"clientId\":\"znqntoru\"}}},\"location\":\"wjue\",\"tags\":{\"ovsm\":\"buruvd\",\"wabm\":\"l\"},\"id\":\"oefki\",\"name\":\"rvtp\",\"type\":\"qujmqlgkf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":125087632,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"zkoj\"},\"identity\":{\"principalId\":\"pzfoqoui\",\"tenantId\":\"bxarzgszufoxci\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"gokdwbwhks\":{\"principalId\":\"oamciodh\",\"clientId\":\"azxkhnzbonlwnto\"},\"gsfraoyzkoow\":{\"principalId\":\"cmrvexzt\",\"clientId\":\"t\"},\"ykutwpf\":{\"principalId\":\"mnguxawqaldsyu\",\"clientId\":\"imerqfobwyznk\"},\"doakgtdlmkkzevdl\":{\"principalId\":\"a\",\"clientId\":\"hrskdsnfd\"}}},\"location\":\"wpusdsttwvogv\",\"tags\":{\"akufgmjz\":\"jdcngqqm\",\"grtwae\":\"wr\",\"zkopb\":\"u\",\"hziuiefozbhdms\":\"inrfdwoyu\"},\"id\":\"l\",\"name\":\"zqhof\",\"type\":\"rmaequ\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DevOpsInfrastructureManager manager = DevOpsInfrastructureManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Pool response
             = manager.pools()
-                .define("fw")
-                .withRegion("fz")
-                .withExistingResourceGroup("odtji")
-                .withTags(mapOf("xzfe", "xxbuyq"))
-                .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.PROVISIONING)
-                    .withMaximumConcurrency(1139569570)
+                .define("pqblylsyxkqjnsj")
+                .withRegion("f")
+                .withExistingResourceGroup("wpu")
+                .withTags(mapOf("bgdknnqv", "gj", "sgsahmkycgr", "aznqntoru", "s", "uwjuetaeburuvdmo", "tpuqujmq",
+                    "zlxwabmqoefkifr"))
+                .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.ACCEPTED)
+                    .withMaximumConcurrency(1868480291)
                     .withOrganizationProfile(new OrganizationProfile())
                     .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                         .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
                     .withFabricProfile(new FabricProfile())
-                    .withDevCenterProjectResourceId("cjvefkdlfo"))
+                    .withDevCenterProjectResourceId("xsdszuempsb"))
                 .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("beyvpnqicvinvkjj", new UserAssignedIdentity(), "pofncck",
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("fn", new UserAssignedIdentity(), "ppriol",
+                            new UserAssignedIdentity(), "ucqdpfuvglsb", new UserAssignedIdentity(), "ncormrlxqtvcof",
                             new UserAssignedIdentity())))
                 .create();
 
-        Assertions.assertEquals("wjue", response.location());
-        Assertions.assertEquals("buruvd", response.tags().get("ovsm"));
+        Assertions.assertEquals("wpusdsttwvogv", response.location());
+        Assertions.assertEquals("jdcngqqm", response.tags().get("akufgmjz"));
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(665760554, response.properties().maximumConcurrency());
-        Assertions.assertEquals("anvx", response.properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(125087632, response.properties().maximumConcurrency());
+        Assertions.assertEquals("zkoj", response.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

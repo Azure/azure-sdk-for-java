@@ -48,9 +48,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
-
         try {
             return encryptInternalAsync(algorithm, plaintext, null, null, context);
         } catch (Exception e) {
@@ -60,9 +57,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
-
         try {
             return encryptInternal(algorithm, plaintext, null, null, context);
         } catch (Exception e) {
@@ -96,6 +90,10 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private Mono<EncryptResult> encryptInternalAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) throws NoSuchAlgorithmException {
+
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
+
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -142,6 +140,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] additionalAuthenticatedData, Context context) throws BadPaddingException, IllegalBlockSizeException,
         InvalidAlgorithmParameterException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
+
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -178,9 +179,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
-
         try {
             return decryptInternalAsync(algorithm, ciphertext, null, null, null, context);
         } catch (Exception e) {
@@ -190,9 +188,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
-
         try {
             return decryptInternal(algorithm, ciphertext, null, null, null, context);
         } catch (Exception e) {
@@ -228,6 +223,10 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private Mono<DecryptResult> decryptInternalAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) throws NoSuchAlgorithmException {
+
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
+
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
@@ -259,6 +258,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context)
         throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException,
         NoSuchAlgorithmException, NoSuchPaddingException {
+
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
 
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());

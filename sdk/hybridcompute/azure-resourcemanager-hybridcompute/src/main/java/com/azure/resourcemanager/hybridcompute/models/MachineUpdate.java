@@ -241,6 +241,54 @@ public final class MachineUpdate extends ResourceUpdate {
     }
 
     /**
+     * Get the identityKeyStore property: Identity key store type of the machine.
+     * 
+     * @return the identityKeyStore value.
+     */
+    public String identityKeyStore() {
+        return this.innerProperties() == null ? null : this.innerProperties().identityKeyStore();
+    }
+
+    /**
+     * Set the identityKeyStore property: Identity key store type of the machine.
+     * 
+     * @param identityKeyStore the identityKeyStore value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withIdentityKeyStore(String identityKeyStore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withIdentityKeyStore(identityKeyStore);
+        return this;
+    }
+
+    /**
+     * Get the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @return the tpmEkCertificate value.
+     */
+    public String tpmEkCertificate() {
+        return this.innerProperties() == null ? null : this.innerProperties().tpmEkCertificate();
+    }
+
+    /**
+     * Set the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @param tpmEkCertificate the tpmEkCertificate value to set.
+     * @return the MachineUpdate object itself.
+     */
+    public MachineUpdate withTpmEkCertificate(String tpmEkCertificate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MachineUpdateProperties();
+        }
+        this.innerProperties().withTpmEkCertificate(tpmEkCertificate);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

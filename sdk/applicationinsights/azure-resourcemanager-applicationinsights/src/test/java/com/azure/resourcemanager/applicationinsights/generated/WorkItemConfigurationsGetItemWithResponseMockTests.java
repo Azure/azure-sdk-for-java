@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.WorkItemConfiguration;
@@ -21,23 +21,23 @@ public final class WorkItemConfigurationsGetItemWithResponseMockTests {
     @Test
     public void testGetItemWithResponse() throws Exception {
         String responseStr
-            = "{\"ConnectorId\":\"eljeamurvzmlovua\",\"ConfigDisplayName\":\"shcxlpmjerbdk\",\"IsDefault\":true,\"Id\":\"di\",\"ConfigProperties\":\"zsdbccxjmon\"}";
+            = "{\"ConnectorId\":\"sawddjibabxvi\",\"ConfigDisplayName\":\"tvtzeexavoxtfg\",\"IsDefault\":false,\"Id\":\"m\",\"ConfigProperties\":\"bwpypqtgsfjacb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkItemConfiguration response = manager.workItemConfigurations()
-            .getItemWithResponse("jtszcof", "zehtdhgb", "k", com.azure.core.util.Context.NONE)
+            .getItemWithResponse("vecuijpx", "xs", "wprtu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eljeamurvzmlovua", response.connectorId());
-        Assertions.assertEquals("shcxlpmjerbdk", response.configDisplayName());
-        Assertions.assertEquals(true, response.isDefault());
-        Assertions.assertEquals("di", response.id());
-        Assertions.assertEquals("zsdbccxjmon", response.configProperties());
+        Assertions.assertEquals("sawddjibabxvi", response.connectorId());
+        Assertions.assertEquals("tvtzeexavoxtfg", response.configDisplayName());
+        Assertions.assertEquals(false, response.isDefault());
+        Assertions.assertEquals("m", response.id());
+        Assertions.assertEquals("bwpypqtgsfjacb", response.configProperties());
     }
 }

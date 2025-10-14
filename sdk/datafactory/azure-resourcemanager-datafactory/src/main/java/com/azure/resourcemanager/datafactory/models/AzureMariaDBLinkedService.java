@@ -51,7 +51,7 @@ public final class AzureMariaDBLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMariaDBLinkedServiceTypeProperties innerTypeProperties() {
+    AzureMariaDBLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

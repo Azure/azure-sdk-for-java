@@ -12,24 +12,25 @@ public final class DiagnosticRenderingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticRendering model = BinaryData
-            .fromString("{\"type\":1451303679,\"title\":\"rdfjmzsyzfhotl\",\"description\":\"k\",\"isVisible\":true}")
+            .fromString(
+                "{\"type\":833975977,\"title\":\"auxofshfph\",\"description\":\"nulaiywzejywhsl\",\"isVisible\":true}")
             .toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(1451303679, model.type());
-        Assertions.assertEquals("rdfjmzsyzfhotl", model.title());
-        Assertions.assertEquals("k", model.description());
-        Assertions.assertEquals(true, model.isVisible());
+        Assertions.assertEquals(833975977, model.type());
+        Assertions.assertEquals("auxofshfph", model.title());
+        Assertions.assertEquals("nulaiywzejywhsl", model.description());
+        Assertions.assertTrue(model.isVisible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticRendering model = new DiagnosticRendering().withType(1451303679)
-            .withTitle("rdfjmzsyzfhotl")
-            .withDescription("k")
+        DiagnosticRendering model = new DiagnosticRendering().withType(833975977)
+            .withTitle("auxofshfph")
+            .withDescription("nulaiywzejywhsl")
             .withIsVisible(true);
         model = BinaryData.fromObject(model).toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(1451303679, model.type());
-        Assertions.assertEquals("rdfjmzsyzfhotl", model.title());
-        Assertions.assertEquals("k", model.description());
-        Assertions.assertEquals(true, model.isVisible());
+        Assertions.assertEquals(833975977, model.type());
+        Assertions.assertEquals("auxofshfph", model.title());
+        Assertions.assertEquals("nulaiywzejywhsl", model.description());
+        Assertions.assertTrue(model.isVisible());
     }
 }

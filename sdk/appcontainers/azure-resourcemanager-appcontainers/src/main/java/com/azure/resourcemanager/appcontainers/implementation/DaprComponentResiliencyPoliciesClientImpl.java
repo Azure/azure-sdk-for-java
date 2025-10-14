@@ -27,6 +27,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.DaprComponentResiliencyPoliciesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentResiliencyPolicyInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponentResiliencyPoliciesCollection;
@@ -63,7 +64,7 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientDaprComponentResiliencyPolicies")
     public interface DaprComponentResiliencyPoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies")
@@ -76,10 +77,31 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DaprComponentResiliencyPoliciesCollection> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("componentName") String componentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DaprComponentResiliencyPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("componentName") String componentName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DaprComponentResiliencyPolicyInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName, @PathParam("componentName") String componentName,
@@ -99,6 +121,18 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DaprComponentResiliencyPolicyInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("componentName") String componentName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DaprComponentResiliencyPolicyInner daprComponentResiliencyPolicyEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -110,10 +144,29 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies/{name}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("componentName") String componentName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DaprComponentResiliencyPoliciesCollection>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DaprComponentResiliencyPoliciesCollection> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -167,50 +220,6 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param componentName Name of the Dapr Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resiliency policies for a Dapr component along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DaprComponentResiliencyPolicyInner>> listSinglePageAsync(String resourceGroupName,
-        String environmentName, String componentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (componentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, environmentName,
-                componentName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get the resiliency policies for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -229,17 +238,87 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param componentName Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resiliency policies for a Dapr component along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DaprComponentResiliencyPolicyInner> listSinglePage(String resourceGroupName,
+        String environmentName, String componentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (componentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DaprComponentResiliencyPoliciesCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                environmentName, componentName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the resiliency policies for a Dapr component.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resiliency policies for a Dapr component as paginated response with {@link PagedFlux}.
+     * @return the resiliency policies for a Dapr component along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DaprComponentResiliencyPolicyInner> listAsync(String resourceGroupName, String environmentName,
-        String componentName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, environmentName, componentName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DaprComponentResiliencyPolicyInner> listSinglePage(String resourceGroupName,
+        String environmentName, String componentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (componentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DaprComponentResiliencyPoliciesCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                environmentName, componentName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -256,7 +335,8 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DaprComponentResiliencyPolicyInner> list(String resourceGroupName, String environmentName,
         String componentName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, environmentName, componentName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, componentName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -274,7 +354,8 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DaprComponentResiliencyPolicyInner> list(String resourceGroupName, String environmentName,
         String componentName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, environmentName, componentName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, componentName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -328,50 +409,6 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * @param environmentName Name of the Managed Environment.
      * @param componentName Name of the Dapr Component.
      * @param name Name of the Dapr Component Resiliency Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dapr component resiliency policy along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DaprComponentResiliencyPolicyInner>> getWithResponseAsync(String resourceGroupName,
-        String environmentName, String componentName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (componentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, componentName, name, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a Dapr component resiliency policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -400,7 +437,34 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprComponentResiliencyPolicyInner> getWithResponse(String resourceGroupName,
         String environmentName, String componentName, String name, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, componentName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (componentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, componentName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -486,61 +550,6 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * @param componentName Name of the Dapr Component.
      * @param name Name of the Dapr Component Resiliency Policy.
      * @param daprComponentResiliencyPolicyEnvelope Configuration details of the Dapr Component Resiliency Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component Resiliency Policy along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DaprComponentResiliencyPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String environmentName, String componentName, String name,
-        DaprComponentResiliencyPolicyInner daprComponentResiliencyPolicyEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (componentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (daprComponentResiliencyPolicyEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter daprComponentResiliencyPolicyEnvelope is required and cannot be null."));
-        } else {
-            daprComponentResiliencyPolicyEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, componentName, name, this.client.getApiVersion(), daprComponentResiliencyPolicyEnvelope,
-            accept, context);
-    }
-
-    /**
-     * Creates or updates a Dapr component resiliency policy.
-     * 
-     * Creates or updates a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
-     * @param daprComponentResiliencyPolicyEnvelope Configuration details of the Dapr Component Resiliency Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -574,8 +583,42 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     public Response<DaprComponentResiliencyPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
         String environmentName, String componentName, String name,
         DaprComponentResiliencyPolicyInner daprComponentResiliencyPolicyEnvelope, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, componentName, name,
-            daprComponentResiliencyPolicyEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (componentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (daprComponentResiliencyPolicyEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter daprComponentResiliencyPolicyEnvelope is required and cannot be null."));
+        } else {
+            daprComponentResiliencyPolicyEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, componentName, name, this.client.getApiVersion(), daprComponentResiliencyPolicyEnvelope,
+            accept, context);
     }
 
     /**
@@ -655,52 +698,6 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * @param environmentName Name of the Managed Environment.
      * @param componentName Name of the Dapr Component.
      * @param name Name of the Dapr Component Resiliency Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
-        String componentName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (componentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, componentName, name, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete a Dapr component resiliency policy.
-     * 
-     * Delete a resiliency policy for a Dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param name Name of the Dapr Component Resiliency Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -731,7 +728,34 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String componentName,
         String name, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, componentName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (componentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter componentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, componentName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -753,14 +777,16 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     }
 
     /**
+     * Get the resiliency policies for a Dapr component.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component Resiliency Policies ARM resource along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the resiliency policies for a Dapr component along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DaprComponentResiliencyPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -779,6 +805,37 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
     }
 
     /**
+     * Get the resiliency policies for a Dapr component.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resiliency policies for a Dapr component along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DaprComponentResiliencyPolicyInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DaprComponentResiliencyPoliciesCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the resiliency policies for a Dapr component.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -786,23 +843,25 @@ public final class DaprComponentResiliencyPoliciesClientImpl implements DaprComp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component Resiliency Policies ARM resource along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the resiliency policies for a Dapr component along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DaprComponentResiliencyPolicyInner>> listNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<DaprComponentResiliencyPolicyInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DaprComponentResiliencyPoliciesCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DaprComponentResiliencyPoliciesClientImpl.class);
 }

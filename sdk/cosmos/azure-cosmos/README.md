@@ -55,7 +55,7 @@ Refer to [javadocs][api_documentation] for more details on the package
 ### Prerequisites
 
 - [Java Development Kit (JDK) with version 8 or above][jdk]
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://learn.microsoft.com/azure/cosmos-db/local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) [Maven][maven]
@@ -92,40 +92,40 @@ CosmosClient cosmosClient = new CosmosClientBuilder()
 
 Azure Cosmos DB Java SDK provides client-side logical representation to access the Azure Cosmos DB SQL API.
 A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items.
-You may read more about databases, containers and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
+You may read more about databases, containers and items [here](https://learn.microsoft.com/azure/cosmos-db/databases-containers-items).
 A few important properties defined at the level of the container, among them are provisioned throughput and partition key.
 
 ### Global Distribution
 - Azure Cosmos DB is a globally distributed database service that's designed to provide low latency, elastic scalability of throughput, well-defined semantics for data consistency, and high availability.
 In short, if your application needs guaranteed fast response time anywhere in the world, if it's required to be always online, and needs unlimited and elastic scalability of throughput and storage, you should build your application on Azure Cosmos DB.
-You may read more about global distribution [here](https://docs.microsoft.com/azure/cosmos-db/distribute-data-globally).
+You may read more about global distribution [here](https://learn.microsoft.com/azure/cosmos-db/distribute-data-globally).
 
 ### Throughput Provisioning
 - Azure Cosmos DB allows you to set provisioned throughput on your databases and containers.
 There are two types of provisioned throughput, standard (manual) or autoscale. Provisioned throughput can be selected at per-container granularity or per-database granularity, however container-level throughput specification is typically preferred.
-You may read more about throughput provisioning [here](https://docs.microsoft.com/azure/cosmos-db/set-throughput).
+You may read more about throughput provisioning [here](https://learn.microsoft.com/azure/cosmos-db/set-throughput).
 
 ### Request Units (RUs)
 - Azure Cosmos DB supports many APIs, such as SQL, MongoDB, Cassandra, Gremlin, and Table.
 Each API has its own set of database operations. These operations range from simple point reads and writes to complex queries.
 Each database operation consumes system resources based on the complexity of the operation. The cost of all database operations is normalized by Azure Cosmos DB and is expressed by Request Units (or RUs, for short).
 You can think of RUs per second as the currency for throughput. RUs per second is a rate-based currency. It abstracts the system resources such as CPU, IOPS, and memory that are required to perform the database operations supported by Azure Cosmos DB.
-You may read more about request units [here](https://docs.microsoft.com/azure/cosmos-db/request-units).
+You may read more about request units [here](https://learn.microsoft.com/azure/cosmos-db/request-units).
 
 ### Partitioning
 - As items are inserted into a Cosmos DB container, the database grows horizontally by adding more storage and compute to handle requests.
 Storage and compute capacity are added in discrete units known as partitions, and you must choose one field in your documents to be the partition key which maps each document to a partition.
 The way partitions are managed is that each partition is assigned a roughly equal slice out of the range of partition key values; therefore you are advised to choose a partition key which is relatively random or evenly-distributed.
 Otherwise, some partitions will see substantially more requests (hot partition) while other partitions see substantially fewer requests (cold partition), and this is to be avoided.
-You may learn more about partitioning [here](https://docs.microsoft.com/azure/cosmos-db/partitioning-overview).
+You may learn more about partitioning [here](https://learn.microsoft.com/azure/cosmos-db/partitioning-overview).
 
 ## Examples
 
 The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:
-* [Create Cosmos Client](#create-cosmos-client "Create Cosmos Client")
-* [Create Database](#create-database "Create Database")
-* [Create Container](#create-container "Create Container")
-* [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Create Cosmos Client](#create-cosmos-client)
+* [Create Database](#create-database)
+* [Create Container](#create-container)
+* [CRUD operation on Items](#crud-operation-on-items)
 
 ### Create Cosmos Client
 ```java readme-sample-createCosmosClient2
@@ -285,10 +285,10 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos/src
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
-[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
+[api_documentation]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-cosmos/latest/index.html
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [slf4j]: http://www.slf4j.org/
 [maven]: https://maven.apache.org/
 [cosmos_maven]: https://central.sonatype.com/artifact/com.azure/azure-cosmos
@@ -300,11 +300,9 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 [samples_readme]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples/blob/master/README.md
-[troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
-[perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
+[perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
-[quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
+[quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 [project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos%2FREADME.png)

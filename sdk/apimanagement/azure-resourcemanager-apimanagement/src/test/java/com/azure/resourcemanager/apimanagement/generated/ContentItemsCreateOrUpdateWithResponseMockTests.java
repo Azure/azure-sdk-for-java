@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ContentItemContract;
@@ -22,21 +22,20 @@ public final class ContentItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vg\":\"datalaxseisv\",\"kpalecztl\":\"dataphheove\"},\"id\":\"h\",\"name\":\"tzpu\",\"type\":\"fssrgrq\"}";
+            = "{\"properties\":{\"mtqvmkmzvagqxf\":\"datarevfwcbawapn\",\"fmiz\":\"datalsxyfqgtodgkll\"},\"id\":\"csrvbbnasgfyxh\",\"name\":\"xcgqbmxbp\",\"type\":\"cnxskeh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ContentItemContract response = manager.contentItems()
-            .define("fpxeswctlfytb")
-            .withExistingContentType("dlirqqclsaqifep", "ure", "vivkiglioklsu")
-            .withProperties(
-                mapOf("fddf", "datatvnpbgce", "wweoblbtdqz", "datalmowurofofkbcjz", "yoxmyqzyqepg", "dataixccnkfsog"))
-            .withIfMatch("dddpwmgwxwukfj")
+            .define("ombodvdgfuakqsj")
+            .withExistingContentType("zyjbuwuuusyd", "cizvkayi", "xpqgqsblclef")
+            .withProperties(mapOf("vzceuy", "dataf"))
+            .withIfMatch("vrmesfhqsac")
             .create();
 
     }

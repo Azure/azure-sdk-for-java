@@ -19,33 +19,32 @@ public final class PartnerNamespaceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerNamespaceUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"ieekpndzaa\":\"kmr\"},\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"qwigpibudqwyxe\",\"action\":\"Allow\"},{\"ipMask\":\"pmzznrtffya\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.2\",\"disableLocalAuth\":true}}")
+            "{\"tags\":{\"qhlwigdivbkbxgo\":\"ymo\",\"vdaeyyguxakjsq\":\"fajuwas\"},\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"gims\",\"action\":\"Allow\"},{\"ipMask\":\"sicddyvv\",\"action\":\"Allow\"}],\"minimumTlsVersionAllowed\":\"1.0\",\"disableLocalAuth\":false}}")
             .toObject(PartnerNamespaceUpdateParameters.class);
-        Assertions.assertEquals("kmr", model.tags().get("ieekpndzaa"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("qwigpibudqwyxe", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("ymo", model.tags().get("qhlwigdivbkbxgo"));
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertEquals("gims", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersionAllowed());
-        Assertions.assertEquals(true, model.disableLocalAuth());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
+        Assertions.assertFalse(model.disableLocalAuth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerNamespaceUpdateParameters model
-            = new PartnerNamespaceUpdateParameters().withTags(mapOf("ieekpndzaa", "kmr"))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                .withInboundIpRules(
-                    Arrays.asList(new InboundIpRule().withIpMask("qwigpibudqwyxe").withAction(IpActionType.ALLOW),
-                        new InboundIpRule().withIpMask("pmzznrtffya").withAction(IpActionType.ALLOW)))
-                .withMinimumTlsVersionAllowed(TlsVersion.ONE_TWO)
-                .withDisableLocalAuth(true);
+        PartnerNamespaceUpdateParameters model = new PartnerNamespaceUpdateParameters()
+            .withTags(mapOf("qhlwigdivbkbxgo", "ymo", "vdaeyyguxakjsq", "fajuwas"))
+            .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+            .withInboundIpRules(Arrays.asList(new InboundIpRule().withIpMask("gims").withAction(IpActionType.ALLOW),
+                new InboundIpRule().withIpMask("sicddyvv").withAction(IpActionType.ALLOW)))
+            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+            .withDisableLocalAuth(false);
         model = BinaryData.fromObject(model).toObject(PartnerNamespaceUpdateParameters.class);
-        Assertions.assertEquals("kmr", model.tags().get("ieekpndzaa"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("qwigpibudqwyxe", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("ymo", model.tags().get("qhlwigdivbkbxgo"));
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertEquals("gims", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersionAllowed());
-        Assertions.assertEquals(true, model.disableLocalAuth());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
+        Assertions.assertFalse(model.disableLocalAuth());
     }
 
     // Use "Map.of" if available

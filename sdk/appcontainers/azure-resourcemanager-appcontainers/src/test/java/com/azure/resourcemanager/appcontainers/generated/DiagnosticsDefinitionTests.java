@@ -14,17 +14,18 @@ public final class DiagnosticsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsDefinition model = BinaryData.fromString(
-            "{\"id\":\"ddm\",\"name\":\"huytxzvtzn\",\"description\":\"xbannovvoxc\",\"author\":\"tprwnw\",\"category\":\"oevytlyokr\",\"supportTopicList\":[{\"id\":\"uxvnsasbcrymodi\",\"pesId\":\"xkl\"}],\"analysisTypes\":[\"xnazpmkml\"],\"type\":\"evfxzopjhbzxlioh\",\"score\":9.690398}")
+            "{\"id\":\"ivhjknidi\",\"name\":\"qjxgpnrhgovfgp\",\"description\":\"qmhhaowj\",\"author\":\"zvuporqzdfuydz\",\"category\":\"fvxcnqmxqpswo\",\"supportTopicList\":[{\"id\":\"hl\",\"pesId\":\"dhbemzqkzszu\"},{\"id\":\"wtglxx\",\"pesId\":\"jfpgpicrmn\"},{\"id\":\"rgmqgjs\",\"pesId\":\"pqcbfrmbodthsq\"}],\"analysisTypes\":[\"riibakclacj\",\"rnxousxauzlwvsg\",\"wohqfzizvu\",\"mmkjsvthnwpztek\"],\"type\":\"mribiat\",\"score\":96.43654}")
             .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("xnazpmkml", model.analysisTypes().get(0));
+        Assertions.assertEquals("riibakclacj", model.analysisTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsDefinition model
-            = new DiagnosticsDefinition().withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic()))
-                .withAnalysisTypes(Arrays.asList("xnazpmkml"));
+        DiagnosticsDefinition model = new DiagnosticsDefinition()
+            .withSupportTopicList(
+                Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
+            .withAnalysisTypes(Arrays.asList("riibakclacj", "rnxousxauzlwvsg", "wohqfzizvu", "mmkjsvthnwpztek"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("xnazpmkml", model.analysisTypes().get(0));
+        Assertions.assertEquals("riibakclacj", model.analysisTypes().get(0));
     }
 }

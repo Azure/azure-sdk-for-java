@@ -45,11 +45,13 @@ public class Utils {
     public static final String COMMANDLINE_INPUTDIRECTORY = "inputdir";
     public static final String COMMANDLINE_OUTPUTDIRECTORY = "outputdir";
     public static final String COMMANDLINE_MODE = "mode";
+    public static final String COMMANDLINE_GROUP_IDS = "groupids";
     public static final String ANALYZE_MODE = "analyze";
     public static final String GENERATE_MODE = "generate";
     public  static final Pattern COMMANDLINE_REGEX = Pattern.compile("-(.*)=(.*)");
     public static final List<String> EXCLUSION_LIST = Arrays.asList("azure-spring-data-cosmos", "azure-core-test", "azure-sdk-all", "azure-sdk-parent", "azure-client-sdk-parent");
-    public static final Pattern SDK_DEPENDENCY_PATTERN = Pattern.compile("com.azure:(.+);(.+);(.+)");
+    public static final Pattern SDK_DEPENDENCY_PATTERN = Pattern.compile("(com.azure):(.+);(.+);(.+)");
+    // TODO (alzimmer): Handle creation of BOM for v2 libraries. https://github.com/Azure/azure-sdk-for-java/issues/44475
     public static final String BASE_AZURE_GROUPID = "com.azure";
     public static final String AZURE_TEST_LIBRARY_IDENTIFIER = "-test";
     public static final String AZURE_PERF_LIBRARY_IDENTIFIER = "-perf";
@@ -150,6 +152,8 @@ public class Utils {
                 .uri(URI.create(url))
                 .GET()
                 .header("accept", "application/xml")
+                .header("Content-signal", "search=yes,ai-train=no")
+                .header("User-Agent", "azure-sdk-for-java")
                 .timeout(Duration.ofMillis(5000))
                 .build();
 

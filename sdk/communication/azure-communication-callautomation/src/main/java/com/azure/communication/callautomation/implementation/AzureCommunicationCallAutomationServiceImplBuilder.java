@@ -12,7 +12,6 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -21,8 +20,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -33,6 +32,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -71,22 +71,6 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
     }
 
     /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public AzureCommunicationCallAutomationServiceImplBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The HTTP client used to send the request.
      */
     @Generated
@@ -99,6 +83,25 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
     @Override
     public AzureCommunicationCallAutomationServiceImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public AzureCommunicationCallAutomationServiceImplBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -270,13 +273,21 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
      */
     @Generated
     public AzureCommunicationCallAutomationServiceImpl buildClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-09-01-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-06-15";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationCallAutomationServiceImpl client = new AzureCommunicationCallAutomationServiceImpl(
             localPipeline, localSerializerAdapter, this.endpoint, localApiVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -292,10 +303,8 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -318,4 +327,7 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
             .build();
         return httpPipeline;
     }
+
+    private static final ClientLogger LOGGER
+        = new ClientLogger(AzureCommunicationCallAutomationServiceImplBuilder.class);
 }

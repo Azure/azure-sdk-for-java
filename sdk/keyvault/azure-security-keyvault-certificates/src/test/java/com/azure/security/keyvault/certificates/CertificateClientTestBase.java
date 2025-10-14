@@ -456,7 +456,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     public abstract void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
         throws IOException;
 
-    void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
+    void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) {
         byte[] certificateContent = FAKE_PEM_CERTIFICATE.getBytes();
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
@@ -574,6 +574,8 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getProperties().getCreatedOn(), actual.getProperties().getCreatedOn());
         assertEquals(expected.getProperties().getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getProperties().getRecoveryLevel(), actual.getProperties().getRecoveryLevel());
+        assertEquals(expected.getProperties().isCertificateOrderPreserved(),
+            actual.getProperties().isCertificateOrderPreserved());
         TestUtils.assertArraysEqual(expected.getProperties().getX509Thumbprint(),
             actual.getProperties().getX509Thumbprint());
         TestUtils.assertArraysEqual(expected.getCer(), actual.getCer());

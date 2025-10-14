@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,21 +20,25 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     /*
      * Type of authentication used to connect to the web table source.
      */
+    @Generated
     private WebAuthenticationType authenticationType = WebAuthenticationType.CLIENT_CERTIFICATE;
 
     /*
      * Base64-encoded contents of a PFX file.
      */
+    @Generated
     private SecretBase pfx;
 
     /*
      * Password for the PFX file.
      */
+    @Generated
     private SecretBase password;
 
     /**
      * Creates an instance of WebClientCertificateAuthentication class.
      */
+    @Generated
     public WebClientCertificateAuthentication() {
     }
 
@@ -42,6 +47,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * 
      * @return the authenticationType value.
      */
+    @Generated
     @Override
     public WebAuthenticationType getAuthenticationType() {
         return this.authenticationType;
@@ -52,6 +58,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * 
      * @return the pfx value.
      */
+    @Generated
     public SecretBase getPfx() {
         return this.pfx;
     }
@@ -62,6 +69,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * @param pfx the pfx value to set.
      * @return the WebClientCertificateAuthentication object itself.
      */
+    @Generated
     public WebClientCertificateAuthentication setPfx(SecretBase pfx) {
         this.pfx = pfx;
         return this;
@@ -72,6 +80,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -82,6 +91,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * @param password the password value to set.
      * @return the WebClientCertificateAuthentication object itself.
      */
+    @Generated
     public WebClientCertificateAuthentication setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -90,6 +100,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebClientCertificateAuthentication setUrl(Object url) {
         super.setUrl(url);
@@ -99,6 +110,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebClientCertificateAuthentication.
      */
+    @Generated
     public static WebClientCertificateAuthentication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebClientCertificateAuthentication deserializedWebClientCertificateAuthentication

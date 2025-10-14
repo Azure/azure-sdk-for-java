@@ -13,7 +13,7 @@ import com.azure.resourcemanager.keyvault.models.SecretPatchProperties;
 public final class SecretsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/updateSecret.json
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2024-11-01/examples/updateSecret.json
      */
     /**
      * Sample code: Update a secret.

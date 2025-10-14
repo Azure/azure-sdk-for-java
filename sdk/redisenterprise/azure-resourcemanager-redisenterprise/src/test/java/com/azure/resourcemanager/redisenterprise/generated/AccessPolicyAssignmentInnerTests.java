@@ -13,18 +13,18 @@ public final class AccessPolicyAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessPolicyAssignmentInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"pxokajionp\",\"user\":{\"objectId\":\"ex\"}},\"id\":\"stxgc\",\"name\":\"odgmaajrmvdjwz\",\"type\":\"lovmclwhijcoe\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"jmkljavbqidtqajz\",\"user\":{\"objectId\":\"l\"}},\"id\":\"kudjkrlkhb\",\"name\":\"hfepgzgqex\",\"type\":\"locx\"}")
             .toObject(AccessPolicyAssignmentInner.class);
-        Assertions.assertEquals("pxokajionp", model.accessPolicyName());
-        Assertions.assertEquals("ex", model.user().objectId());
+        Assertions.assertEquals("jmkljavbqidtqajz", model.accessPolicyName());
+        Assertions.assertEquals("l", model.user().objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyAssignmentInner model = new AccessPolicyAssignmentInner().withAccessPolicyName("pxokajionp")
-            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ex"));
+        AccessPolicyAssignmentInner model = new AccessPolicyAssignmentInner().withAccessPolicyName("jmkljavbqidtqajz")
+            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("l"));
         model = BinaryData.fromObject(model).toObject(AccessPolicyAssignmentInner.class);
-        Assertions.assertEquals("pxokajionp", model.accessPolicyName());
-        Assertions.assertEquals("ex", model.user().objectId());
+        Assertions.assertEquals("jmkljavbqidtqajz", model.accessPolicyName());
+        Assertions.assertEquals("l", model.user().objectId());
     }
 }

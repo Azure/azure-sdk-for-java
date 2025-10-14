@@ -76,6 +76,36 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
      */
     private LicenseType licenseType;
 
+    /*
+     * The SQL Server license type.
+     */
+    private SqlServerLicenseType sqlServerLicenseType;
+
+    /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
+    /*
+     * The target VM tags.
+     */
+    private List<UserCreatedResourceTag> targetVmTags;
+
+    /*
+     * The tags for the target managed disks.
+     */
+    private List<UserCreatedResourceTag> targetManagedDiskTags;
+
+    /*
+     * The tags for the target NICs.
+     */
+    private List<UserCreatedResourceTag> targetNicTags;
+
     /**
      * Creates an instance of InMageRcmUpdateReplicationProtectedItemInput class.
      */
@@ -315,6 +345,128 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
     }
 
     /**
+     * Get the sqlServerLicenseType property: The SQL Server license type.
+     * 
+     * @return the sqlServerLicenseType value.
+     */
+    public SqlServerLicenseType sqlServerLicenseType() {
+        return this.sqlServerLicenseType;
+    }
+
+    /**
+     * Set the sqlServerLicenseType property: The SQL Server license type.
+     * 
+     * @param sqlServerLicenseType the sqlServerLicenseType value to set.
+     * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
+     */
+    public InMageRcmUpdateReplicationProtectedItemInput
+        withSqlServerLicenseType(SqlServerLicenseType sqlServerLicenseType) {
+        this.sqlServerLicenseType = sqlServerLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
+     */
+    public InMageRcmUpdateReplicationProtectedItemInput withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
+     */
+    public InMageRcmUpdateReplicationProtectedItemInput withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
+        return this;
+    }
+
+    /**
+     * Get the targetVmTags property: The target VM tags.
+     * 
+     * @return the targetVmTags value.
+     */
+    public List<UserCreatedResourceTag> targetVmTags() {
+        return this.targetVmTags;
+    }
+
+    /**
+     * Set the targetVmTags property: The target VM tags.
+     * 
+     * @param targetVmTags the targetVmTags value to set.
+     * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
+     */
+    public InMageRcmUpdateReplicationProtectedItemInput withTargetVmTags(List<UserCreatedResourceTag> targetVmTags) {
+        this.targetVmTags = targetVmTags;
+        return this;
+    }
+
+    /**
+     * Get the targetManagedDiskTags property: The tags for the target managed disks.
+     * 
+     * @return the targetManagedDiskTags value.
+     */
+    public List<UserCreatedResourceTag> targetManagedDiskTags() {
+        return this.targetManagedDiskTags;
+    }
+
+    /**
+     * Set the targetManagedDiskTags property: The tags for the target managed disks.
+     * 
+     * @param targetManagedDiskTags the targetManagedDiskTags value to set.
+     * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
+     */
+    public InMageRcmUpdateReplicationProtectedItemInput
+        withTargetManagedDiskTags(List<UserCreatedResourceTag> targetManagedDiskTags) {
+        this.targetManagedDiskTags = targetManagedDiskTags;
+        return this;
+    }
+
+    /**
+     * Get the targetNicTags property: The tags for the target NICs.
+     * 
+     * @return the targetNicTags value.
+     */
+    public List<UserCreatedResourceTag> targetNicTags() {
+        return this.targetNicTags;
+    }
+
+    /**
+     * Set the targetNicTags property: The tags for the target NICs.
+     * 
+     * @param targetNicTags the targetNicTags value to set.
+     * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
+     */
+    public InMageRcmUpdateReplicationProtectedItemInput withTargetNicTags(List<UserCreatedResourceTag> targetNicTags) {
+        this.targetNicTags = targetNicTags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -323,6 +475,15 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
     public void validate() {
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
+        }
+        if (targetVmTags() != null) {
+            targetVmTags().forEach(e -> e.validate());
+        }
+        if (targetManagedDiskTags() != null) {
+            targetManagedDiskTags().forEach(e -> e.validate());
+        }
+        if (targetNicTags() != null) {
+            targetNicTags().forEach(e -> e.validate());
         }
     }
 
@@ -345,6 +506,15 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
         jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
         jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
+        jsonWriter.writeArrayField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -394,6 +564,27 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
                 } else if ("licenseType".equals(fieldName)) {
                     deserializedInMageRcmUpdateReplicationProtectedItemInput.licenseType
                         = LicenseType.fromString(reader.getString());
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedInMageRcmUpdateReplicationProtectedItemInput.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedInMageRcmUpdateReplicationProtectedItemInput.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedInMageRcmUpdateReplicationProtectedItemInput.userSelectedOSName = reader.getString();
+                } else if ("targetVmTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetVmTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmUpdateReplicationProtectedItemInput.targetVmTags = targetVmTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetManagedDiskTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmUpdateReplicationProtectedItemInput.targetManagedDiskTags
+                        = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetNicTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmUpdateReplicationProtectedItemInput.targetNicTags = targetNicTags;
                 } else {
                     reader.skipChildren();
                 }

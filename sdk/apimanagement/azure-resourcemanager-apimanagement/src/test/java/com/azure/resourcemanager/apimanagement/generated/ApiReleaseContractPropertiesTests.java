@@ -12,18 +12,17 @@ public final class ApiReleaseContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiReleaseContractProperties model = BinaryData.fromString(
-            "{\"apiId\":\"dwzjeiach\",\"createdDateTime\":\"2021-09-14T11:53:52Z\",\"updatedDateTime\":\"2021-05-15T06:55:08Z\",\"notes\":\"nrosfqpte\"}")
+            "{\"apiId\":\"jky\",\"createdDateTime\":\"2021-03-04T13:42:29Z\",\"updatedDateTime\":\"2021-07-11T10:53:21Z\",\"notes\":\"j\"}")
             .toObject(ApiReleaseContractProperties.class);
-        Assertions.assertEquals("dwzjeiach", model.apiId());
-        Assertions.assertEquals("nrosfqpte", model.notes());
+        Assertions.assertEquals("jky", model.apiId());
+        Assertions.assertEquals("j", model.notes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiReleaseContractProperties model
-            = new ApiReleaseContractProperties().withApiId("dwzjeiach").withNotes("nrosfqpte");
+        ApiReleaseContractProperties model = new ApiReleaseContractProperties().withApiId("jky").withNotes("j");
         model = BinaryData.fromObject(model).toObject(ApiReleaseContractProperties.class);
-        Assertions.assertEquals("dwzjeiach", model.apiId());
-        Assertions.assertEquals("nrosfqpte", model.notes());
+        Assertions.assertEquals("jky", model.apiId());
+        Assertions.assertEquals("j", model.notes());
     }
 }

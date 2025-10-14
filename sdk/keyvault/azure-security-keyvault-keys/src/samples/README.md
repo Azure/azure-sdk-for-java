@@ -94,7 +94,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#contributing
 [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#getting-started
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md#key-concepts
-[azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
+[azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [sample_helloWorld]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorld.java
 [sample_helloWorldAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/HelloWorldAsync.java
 [sample_list]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/ListOperations.java
@@ -110,4 +110,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_wrapUnwrap]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
 [sample_wrapUnwrapAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2Fsrc%2Fsamples%2FREADME.png)
+

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,71 +22,85 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "HDInsightStreaming";
 
     /*
      * Storage linked service references.
      */
+    @Generated
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
+    @Generated
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
+    @Generated
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Mapper executable name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object mapper;
 
     /*
      * Reducer executable name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object reducer;
 
     /*
      * Input blob path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object input;
 
     /*
      * Output blob path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object output;
 
     /*
      * Paths to streaming job files. Can be directories.
      */
+    @Generated
     private List<Object> filePaths;
 
     /*
      * Linked service reference where the files are located.
      */
+    @Generated
     private LinkedServiceReference fileLinkedService;
 
     /*
      * Combiner executable name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object combiner;
 
     /*
      * Command line environment values.
      */
+    @Generated
     private List<Object> commandEnvironment;
 
     /*
      * Allows user to specify defines for streaming job request.
      */
+    @Generated
     private Map<String, Object> defines;
 
     /**
      * Creates an instance of HDInsightStreamingActivity class.
      */
+    @Generated
     public HDInsightStreamingActivity() {
     }
 
@@ -94,6 +109,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -104,6 +120,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the storageLinkedServices value.
      */
+    @Generated
     public List<LinkedServiceReference> getStorageLinkedServices() {
         return this.storageLinkedServices;
     }
@@ -114,6 +131,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
@@ -124,6 +142,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<Object> getArguments() {
         return this.arguments;
     }
@@ -134,6 +153,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param arguments the arguments value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setArguments(List<Object> arguments) {
         this.arguments = arguments;
         return this;
@@ -144,6 +164,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the getDebugInfo value.
      */
+    @Generated
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
         return this.getDebugInfo;
     }
@@ -154,6 +175,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
         this.getDebugInfo = getDebugInfo;
         return this;
@@ -164,6 +186,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the mapper value.
      */
+    @Generated
     public Object getMapper() {
         return this.mapper;
     }
@@ -174,6 +197,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param mapper the mapper value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setMapper(Object mapper) {
         this.mapper = mapper;
         return this;
@@ -184,6 +208,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the reducer value.
      */
+    @Generated
     public Object getReducer() {
         return this.reducer;
     }
@@ -194,6 +219,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param reducer the reducer value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setReducer(Object reducer) {
         this.reducer = reducer;
         return this;
@@ -204,6 +230,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the input value.
      */
+    @Generated
     public Object getInput() {
         return this.input;
     }
@@ -214,6 +241,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param input the input value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setInput(Object input) {
         this.input = input;
         return this;
@@ -224,6 +252,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the output value.
      */
+    @Generated
     public Object getOutput() {
         return this.output;
     }
@@ -234,6 +263,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param output the output value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setOutput(Object output) {
         this.output = output;
         return this;
@@ -244,6 +274,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the filePaths value.
      */
+    @Generated
     public List<Object> getFilePaths() {
         return this.filePaths;
     }
@@ -254,6 +285,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param filePaths the filePaths value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setFilePaths(List<Object> filePaths) {
         this.filePaths = filePaths;
         return this;
@@ -264,6 +296,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the fileLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getFileLinkedService() {
         return this.fileLinkedService;
     }
@@ -274,6 +307,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param fileLinkedService the fileLinkedService value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setFileLinkedService(LinkedServiceReference fileLinkedService) {
         this.fileLinkedService = fileLinkedService;
         return this;
@@ -284,6 +318,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the combiner value.
      */
+    @Generated
     public Object getCombiner() {
         return this.combiner;
     }
@@ -294,6 +329,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param combiner the combiner value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setCombiner(Object combiner) {
         this.combiner = combiner;
         return this;
@@ -304,6 +340,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the commandEnvironment value.
      */
+    @Generated
     public List<Object> getCommandEnvironment() {
         return this.commandEnvironment;
     }
@@ -314,6 +351,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param commandEnvironment the commandEnvironment value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setCommandEnvironment(List<Object> commandEnvironment) {
         this.commandEnvironment = commandEnvironment;
         return this;
@@ -324,6 +362,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the defines value.
      */
+    @Generated
     public Map<String, Object> getDefines() {
         return this.defines;
     }
@@ -334,6 +373,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @param defines the defines value to set.
      * @return the HDInsightStreamingActivity object itself.
      */
+    @Generated
     public HDInsightStreamingActivity setDefines(Map<String, Object> defines) {
         this.defines = defines;
         return this;
@@ -342,6 +382,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -351,6 +392,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -360,6 +402,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setName(String name) {
         super.setName(name);
@@ -369,6 +412,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setDescription(String description) {
         super.setDescription(description);
@@ -378,6 +422,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setState(ActivityState state) {
         super.setState(state);
@@ -387,6 +432,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -396,6 +442,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -405,6 +452,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightStreamingActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -414,6 +462,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -452,7 +501,9 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
             jsonWriter.writeUntypedField("output", this.output);
             jsonWriter.writeArrayField("filePaths", this.filePaths, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeJsonField("fileLinkedService", this.fileLinkedService);
-            jsonWriter.writeUntypedField("combiner", this.combiner);
+            if (this.combiner != null) {
+                jsonWriter.writeUntypedField("combiner", this.combiner);
+            }
             jsonWriter.writeArrayField("commandEnvironment", this.commandEnvironment,
                 (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
@@ -475,6 +526,7 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HDInsightStreamingActivity.
      */
+    @Generated
     public static HDInsightStreamingActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HDInsightStreamingActivity deserializedHDInsightStreamingActivity = new HDInsightStreamingActivity();

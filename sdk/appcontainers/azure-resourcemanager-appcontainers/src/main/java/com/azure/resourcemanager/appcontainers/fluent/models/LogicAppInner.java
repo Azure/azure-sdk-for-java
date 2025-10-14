@@ -121,7 +121,9 @@ public final class LogicAppInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         return jsonWriter.writeEndObject();
     }
 

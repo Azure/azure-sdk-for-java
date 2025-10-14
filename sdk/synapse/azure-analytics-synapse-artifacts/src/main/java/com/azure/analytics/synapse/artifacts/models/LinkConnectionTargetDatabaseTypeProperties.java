@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class LinkConnectionTargetDatabaseTypeProperties
     /*
      * Enable cross table transaction consistency on target database
      */
+    @Generated
     private Boolean crossTableTransaction;
 
     /*
      * Drop and recreate same existing target table on link connection target database
      */
+    @Generated
     private Boolean dropExistingTargetTableOnStart;
 
     /*
      * Action on existing target table. If not specified, 'FailOnNonEmptyTable' action is used.
      */
+    @Generated
     private ActionOnExistingTargetTable actionOnExistingTargetTable;
 
     /**
      * Creates an instance of LinkConnectionTargetDatabaseTypeProperties class.
      */
+    @Generated
     public LinkConnectionTargetDatabaseTypeProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * 
      * @return the crossTableTransaction value.
      */
+    @Generated
     public Boolean isCrossTableTransaction() {
         return this.crossTableTransaction;
     }
@@ -53,6 +59,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * @param crossTableTransaction the crossTableTransaction value to set.
      * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
      */
+    @Generated
     public LinkConnectionTargetDatabaseTypeProperties setCrossTableTransaction(Boolean crossTableTransaction) {
         this.crossTableTransaction = crossTableTransaction;
         return this;
@@ -64,6 +71,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * 
      * @return the dropExistingTargetTableOnStart value.
      */
+    @Generated
     public Boolean isDropExistingTargetTableOnStart() {
         return this.dropExistingTargetTableOnStart;
     }
@@ -75,6 +83,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * @param dropExistingTargetTableOnStart the dropExistingTargetTableOnStart value to set.
      * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
      */
+    @Generated
     public LinkConnectionTargetDatabaseTypeProperties
         setDropExistingTargetTableOnStart(Boolean dropExistingTargetTableOnStart) {
         this.dropExistingTargetTableOnStart = dropExistingTargetTableOnStart;
@@ -87,6 +96,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * 
      * @return the actionOnExistingTargetTable value.
      */
+    @Generated
     public ActionOnExistingTargetTable getActionOnExistingTargetTable() {
         return this.actionOnExistingTargetTable;
     }
@@ -98,6 +108,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * @param actionOnExistingTargetTable the actionOnExistingTargetTable value to set.
      * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
      */
+    @Generated
     public LinkConnectionTargetDatabaseTypeProperties
         setActionOnExistingTargetTable(ActionOnExistingTargetTable actionOnExistingTargetTable) {
         this.actionOnExistingTargetTable = actionOnExistingTargetTable;
@@ -107,6 +118,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,6 +137,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnectionTargetDatabaseTypeProperties.
      */
+    @Generated
     public static LinkConnectionTargetDatabaseTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionTargetDatabaseTypeProperties deserializedLinkConnectionTargetDatabaseTypeProperties

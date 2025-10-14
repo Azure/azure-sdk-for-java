@@ -6,12 +6,12 @@ package io.clientcore.core.implementation.http;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * Represents a class responsible for maintaining information related to request-specific context and pipeline data.
  */
-public class HttpPipelineCallState implements Cloneable {
+public class HttpPipelineCallState {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineCallState.class);
     private final HttpPipeline pipeline;
     private final HttpRequest httpRequest;
@@ -41,7 +41,7 @@ public class HttpPipelineCallState implements Cloneable {
         this.currentPolicyIndex++;
 
         if (this.currentPolicyIndex > size) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("There is no more policies to execute."));
+            throw LOGGER.throwableAtError().log("There is no more policies to execute.", IllegalStateException::new);
         } else if (this.currentPolicyIndex == size) {
             return null;
         } else {
@@ -76,12 +76,17 @@ public class HttpPipelineCallState implements Cloneable {
         return this.httpRequest;
     }
 
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    @Override
-    public HttpPipelineCallState clone() {
-        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, this.httpRequest);
-        cloned.currentPolicyIndex = this.currentPolicyIndex;
+    /**
+     * Copies the current state of the {@link HttpPipelineCallState}.
+     * <p>
+     * This method must be used when a re-request is made in the pipeline.
+     *
+     * @return A new instance of this pipeline call state.
+     */
+    public HttpPipelineCallState copy() {
+        HttpPipelineCallState copy = new HttpPipelineCallState(this.pipeline, this.httpRequest);
+        copy.currentPolicyIndex = this.currentPolicyIndex;
 
-        return cloned;
+        return copy;
     }
 }
