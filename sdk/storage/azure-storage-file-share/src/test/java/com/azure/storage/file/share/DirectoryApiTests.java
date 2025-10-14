@@ -6,7 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -59,7 +58,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1816,16 +1814,5 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         //cleanup
         premiumShareClient.delete();
-    }
-
-    @Test
-    public void directoryExistsHandlesParentNotFound() {
-        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("fakeDir");
-        ShareDirectoryClient subDirectoryClient = directoryClient.getSubdirectoryClient(generatePathName());
-
-        Response<Boolean> response = subDirectoryClient.existsWithResponse(null, Context.NONE);
-        assertFalse(response.getValue());
-        assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(),
-            response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 }

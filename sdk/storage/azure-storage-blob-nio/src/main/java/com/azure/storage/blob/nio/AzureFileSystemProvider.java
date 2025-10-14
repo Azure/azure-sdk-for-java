@@ -339,7 +339,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(resource.getPath());
 
         // Ensure the path points to a file.
-        if (!resource.getDirectoryStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
+        if (!resource.checkDirStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IOException("Path either does not exist or points to a directory."
                     + "Path must point to a file. Path: " + path.toString()));
@@ -419,7 +419,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         AzureResource resource = new AzureResource(path);
         AzurePath.ensureFileSystemOpen(resource.getPath());
-        DirectoryStatus status = resource.getDirectoryStatus();
+        DirectoryStatus status = resource.checkDirStatus();
 
         // Cannot write to a directory.
         if (DirectoryStatus.isDirectory(status)) {
@@ -496,6 +496,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         /*
         Ensure the path is a directory. Note that roots are always directories. The case of an invalid root will be
         caught in instantiating the stream below.
+        
         Possible optimization later is to save the result of the list call to use as the first list call inside the
         stream rather than a list call for checking the status and a list call for listing.
          */
@@ -578,7 +579,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
-        if (azureResource.parentDirectoryExists()) {
+        if (azureResource.checkParentDirectoryExists()) {
             try {
                 azureResource.setFileAttributes(Arrays.asList(fileAttributes))
                     .putDirectoryBlob(new BlobRequestConditions().setIfNoneMatch("*"));
@@ -620,7 +621,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check directory status--possibly throw DirectoryNotEmpty or NoSuchFile.
-        DirectoryStatus dirStatus = azureResource.getDirectoryStatus();
+        DirectoryStatus dirStatus = azureResource.checkDirStatus();
         if (dirStatus.equals(DirectoryStatus.DOES_NOT_EXIST)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new NoSuchFileException(path.toString()));
         }
@@ -710,7 +711,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(destinationRes.getPath());
 
         // Check destination is not a directory with children.
-        DirectoryStatus destinationStatus = destinationRes.getDirectoryStatus();
+        DirectoryStatus destinationStatus = destinationRes.checkDirStatus();
         if (destinationStatus.equals(DirectoryStatus.NOT_EMPTY)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new DirectoryNotEmptyException(destination.toString()));
@@ -732,11 +733,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         /*
         More path validation
+        
         Check that the parent for the destination exists. We only need to perform this check if there is nothing
         currently at the destination, for if the destination exists, its parent at least weakly exists and we
         can skip a service call.
          */
-        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !destinationRes.parentDirectoryExists()) {
+        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !destinationRes.checkParentDirectoryExists()) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IOException("Parent directory of destination location does not exist. The destination path is "
                     + "therefore invalid. Destination: " + destinationRes.getPath()));
@@ -744,6 +746,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         /*
         Try to copy the resource at the source path.
+        
         There is an optimization here where we try to do the copy first and only check for a virtual directory if
         there's a 404. In the cases of files and concrete directories, this only requires one request. For virtual
         directories, however, this requires three requests: failed copy, check status, create directory. Depending on
@@ -758,7 +761,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             // If the source was not found, it could be because it's a virtual directory. Check the status.
             // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.
             if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)
-                && !sourceRes.getDirectoryStatus().equals(DirectoryStatus.DOES_NOT_EXIST)) {
+                && !sourceRes.checkDirStatus().equals(DirectoryStatus.DOES_NOT_EXIST)) {
                 /*
                 We already checked that the parent exists and validated the paths above, so we can put the blob
                 directly.
@@ -772,10 +775,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
     }
 
-    /*
-    Used for checking the status of the root directory. To be implemented later when needed.
-    int checkRootDirStatus(BlobContainerClient rootClient) { }
-     */
+    // Used for checking the status of the root directory. To be implemented later when needed.
+    /*int checkRootDirStatus(BlobContainerClient rootClient) {
+    
+    }*/
 
     /**
      * Unsupported.
