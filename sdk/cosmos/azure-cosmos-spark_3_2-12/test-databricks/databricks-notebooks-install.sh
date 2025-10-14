@@ -36,11 +36,12 @@ databricks workspace import-dir "$NOTEBOOKSFOLDER" /notebooks
 echo "Validating Notebooks in workspace"
 $(databricks workspace list /notebooks -o json | jq -r '.[].object_id')
 
-NOTEBOOKS=$(databricks workspace list /notebooks -o json | jq -r '.[].object_id')
+NOTEBOOKS=$(databricks workspace list /notebooks -o json | jq -r '.[].path')
 for f in $NOTEBOOKS
 do
-	echo "Creating job for $f"
-	JOB_ID=$(databricks jobs create --json "{\"name\": \"$f\", \"tasks\": [{\"task_key\": \"${f}_task\", \"existing_cluster_id\": \"$CLUSTER_ID\", \"notebook_task\": { \"notebook_path\": \"/notebooks/$f\" }}]}" | jq -r '.job_id')
+	name="${f##*/}"
+	echo "Creating job for $f - $name"
+	JOB_ID=$(databricks jobs create --json "{\"name\": \"$name\", \"tasks\": [{\"task_key\": \"${name}_task\", \"existing_cluster_id\": \"$CLUSTER_ID\", \"notebook_task\": { \"notebook_path\": \"$f\" }}]}" | jq -r '.job_id')
 
 	if [[ -z "$JOB_ID" ]]
 	then
