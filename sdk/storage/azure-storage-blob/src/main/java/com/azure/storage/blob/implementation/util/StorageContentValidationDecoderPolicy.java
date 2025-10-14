@@ -43,17 +43,19 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
         return next.process().map(httpResponse -> {
             // Only apply decoding to download responses (GET requests with body)
-            if (isDownloadResponse(httpResponse)) {
-                DownloadContentValidationOptions validationOptions = getValidationOptions(context);
-                Long contentLength = getContentLength(httpResponse.getHeaders());
-
-                if (contentLength != null && contentLength > 0 && validationOptions != null) {
-                    Flux<ByteBuffer> decodedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(
-                        httpResponse.getBody(), contentLength, validationOptions);
-
-                    return new DecodedResponse(httpResponse, decodedStream);
-                }
+            if (!isDownloadResponse(httpResponse)) {
+                return httpResponse;
             }
+
+            DownloadContentValidationOptions validationOptions = getValidationOptions(context);
+            Long contentLength = getContentLength(httpResponse.getHeaders());
+
+            if (contentLength != null && contentLength > 0 && validationOptions != null) {
+                Flux<ByteBuffer> decodedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(
+                    httpResponse.getBody(), contentLength, validationOptions);
+                return new DecodedResponse(httpResponse, decodedStream);
+            }
+
             return httpResponse;
         });
     }
@@ -116,29 +118,27 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      */
     static class DecodedResponse extends HttpResponse {
         private final Flux<ByteBuffer> decodedBody;
-        private final HttpHeaders httpHeaders;
-        private final int statusCode;
+        private final HttpResponse originalResponse;
 
         DecodedResponse(HttpResponse httpResponse, Flux<ByteBuffer> decodedBody) {
             super(httpResponse.getRequest());
+            this.originalResponse = httpResponse;
             this.decodedBody = decodedBody;
-            this.httpHeaders = httpResponse.getHeaders();
-            this.statusCode = httpResponse.getStatusCode();
         }
 
         @Override
         public int getStatusCode() {
-            return statusCode;
+            return originalResponse.getStatusCode();
         }
 
         @Override
         public String getHeaderValue(String name) {
-            return httpHeaders.getValue(name);
+            return originalResponse.getHeaderValue(name);
         }
 
         @Override
         public HttpHeaders getHeaders() {
-            return httpHeaders;
+            return originalResponse.getHeaders();
         }
 
         @Override
@@ -153,12 +153,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
         @Override
         public Mono<String> getBodyAsString() {
-            return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(String::new);
+            return getBodyAsByteArray().map(String::new);
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return FluxUtil.collectBytesInByteBufferStream(decodedBody).map(b -> new String(b, charset));
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
         }
     }
 }
