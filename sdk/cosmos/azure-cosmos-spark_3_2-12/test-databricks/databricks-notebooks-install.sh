@@ -33,6 +33,9 @@ fi
 echo "Importing notebooks from $NOTEBOOKSFOLDER"
 databricks workspace import-dir "$NOTEBOOKSFOLDER" /notebooks
 
+echo "Validating Notebooks in workspace"
+databricks workspace list /notebooks
+
 NOTEBOOKS=$(databricks workspace list /notebooks)
 for f in $NOTEBOOKS
 do
@@ -46,11 +49,13 @@ do
 	fi
 
 	echo "Creating run for job $JOB_ID"
-	RUN_ID=$(databricks jobs run-now --json "{\"job_id\": $JOB_ID, \"notebook_params\": {\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}" | jq -r '.run_id')
+	DBG_JSON="{\"job_id\": $JOB_ID, \"notebook_params\": {\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}}"
+	echo "DBG_JSON: $DBG_JSON"
+	RUN_ID=$(databricks jobs run-now --json $DBG_JSON | jq -r '.run_id')
 
 	if [[ -z "$RUN_ID" ]]
 	then
-		echo "Could not run job"
+		echo "Could not run job $JOB_ID"
 		databricks jobs delete $JOB_ID
 		exit 1
 	fi
