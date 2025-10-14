@@ -39,6 +39,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;

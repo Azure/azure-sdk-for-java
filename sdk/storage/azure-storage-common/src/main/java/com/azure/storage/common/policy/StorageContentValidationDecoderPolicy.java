@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -22,8 +22,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 /**
- * This is a decoding policy in an {@link com.azure.core.http.HttpPipeline} to decode structured messages in blob
- * download requests. The policy checks for a context value to determine when to apply structured message decoding.
+ * This is a decoding policy in an {@link com.azure.core.http.HttpPipeline} to decode structured messages in
+ * storage download requests. The policy checks for a context value to determine when to apply structured message decoding.
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
