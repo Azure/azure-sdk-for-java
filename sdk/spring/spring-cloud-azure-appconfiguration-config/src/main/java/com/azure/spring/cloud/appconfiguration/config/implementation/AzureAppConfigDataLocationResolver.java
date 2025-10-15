@@ -77,12 +77,8 @@ public class AzureAppConfigDataLocationResolver
             || hasNonEmptyProperty(binder, configPrefix + "connection-strings");
     }
 
-    private String getProperty(Binder binder, String propertyPath) {
-        return binder.bind(propertyPath, String.class).orElse("");
-    }
-
     private boolean hasNonEmptyProperty(Binder binder, String propertyPath) {
-        return StringUtils.hasText(getProperty(binder, propertyPath));
+        return StringUtils.hasText(binder.bind(propertyPath, String.class).orElse(""));
     }
 
     /**
