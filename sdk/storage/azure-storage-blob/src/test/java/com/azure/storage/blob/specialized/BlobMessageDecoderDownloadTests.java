@@ -8,6 +8,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
@@ -52,7 +54,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
@@ -73,7 +76,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         BlobRange range = new BlobRange(0, 512L);
 
         StepVerifier.create(bc.upload(input, null, true)
-            .then(bc.downloadStreamWithResponse(range, null, null, false, validationOptions))
+            .then(bc.downloadStreamWithResponse(range, (DownloadRetryOptions) null,
+                (BlobRequestConditions) null, false, validationOptions))
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(r -> {
                 assertNotNull(r);
                 assertTrue(r.length > 0);
@@ -95,7 +99,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
@@ -116,7 +121,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
@@ -135,7 +141,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         // No validation options - should download encoded data as-is
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> {
                 assertNotNull(r);
@@ -160,7 +167,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> {
                 assertNotNull(r);
@@ -185,7 +193,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
@@ -206,7 +215,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         StepVerifier
             .create(bc.upload(input, null, true)
-                .then(bc.downloadStreamWithResponse(null, null, null, false, validationOptions))
+                .then(bc.downloadStreamWithResponse((BlobRange) null, (DownloadRetryOptions) null,
+                    (BlobRequestConditions) null, false, validationOptions))
                 .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
