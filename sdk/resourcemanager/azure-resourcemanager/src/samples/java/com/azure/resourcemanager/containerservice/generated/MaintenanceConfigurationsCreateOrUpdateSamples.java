@@ -23,8 +23,8 @@ import java.util.Arrays;
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
-     * MaintenanceConfigurationsCreate_Update.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
+     * examples/MaintenanceConfigurationsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration.
@@ -46,8 +46,8 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
-     * MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
+     * examples/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration with Maintenance Window.

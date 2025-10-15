@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersGetMeshRevisionProfileSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
-     * ManagedClustersGet_MeshRevisionProfile.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
+     * examples/ManagedClustersGet_MeshRevisionProfile.json
      */
     /**
      * Sample code: Get a mesh revision profile for a mesh mode.

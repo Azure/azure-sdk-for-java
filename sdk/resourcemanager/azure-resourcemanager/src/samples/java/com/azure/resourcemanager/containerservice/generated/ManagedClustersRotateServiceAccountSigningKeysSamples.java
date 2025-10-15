@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersRotateServiceAccountSigningKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
-     * ManagedClustersRotateServiceAccountSigningKeys.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
+     * examples/ManagedClustersRotateServiceAccountSigningKeys.json
      */
     /**
      * Sample code: Rotate Cluster Service Account Signing Keys.

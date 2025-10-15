@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
-     * ManagedClustersGet.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
+     * examples/ManagedClustersGet.json
      */
     /**
      * Sample code: Get Managed Cluster.

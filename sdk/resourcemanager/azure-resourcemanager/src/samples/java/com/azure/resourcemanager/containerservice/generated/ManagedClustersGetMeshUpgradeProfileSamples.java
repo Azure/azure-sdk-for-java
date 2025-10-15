@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersGetMeshUpgradeProfileSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
-     * ManagedClustersGet_MeshUpgradeProfile.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
+     * examples/ManagedClustersGet_MeshUpgradeProfile.json
      */
     /**
      * Sample code: Gets version compatibility and upgrade profile for a service mesh in a cluster.
