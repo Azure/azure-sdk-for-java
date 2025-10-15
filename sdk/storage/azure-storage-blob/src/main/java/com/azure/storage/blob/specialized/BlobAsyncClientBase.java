@@ -1333,18 +1333,19 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
         // The first range should eagerly convert headers as they'll be used to create response types.
-        Context firstRangeContext = context == null
+        Context initialContext = context == null
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
         // Add structured message decoding context if enabled
+        final Context firstRangeContext;
         if (contentValidationOptions != null
             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-            firstRangeContext = firstRangeContext.addData(
-                Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true);
-            firstRangeContext = firstRangeContext.addData(
-                Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY,
-                contentValidationOptions);
+            firstRangeContext = initialContext
+                .addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+                .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions);
+        } else {
+            firstRangeContext = initialContext;
         }
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), finalGetMD5,
