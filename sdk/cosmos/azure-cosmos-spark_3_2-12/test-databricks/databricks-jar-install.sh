@@ -3,7 +3,7 @@
 CLUSTER_NAME=$1
 AVOID_DBFS=$2
 JARPATH=$3
-SASURI=$4
+STORAGE_ACCOUNT_KEY=$4
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$JARPATH" ]] && exit 1
 
@@ -37,26 +37,10 @@ echo "Avoid DBFS: $AVOID_DBFS"
 # DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
 # Using cluster name for the cluster that was created with 16.4
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
-  # Parse the SAS URL into parts Azure CLI expects
-  # https://ACCOUNT.blob.core.windows.net/CONTAINER/BLOB?SAS
-  u="${SAS_URL#https://}"                          # ACCOUNT.blob.core.windows.net/...
-  account="${u%%.blob.core.windows.net/*}"         # ACCOUNT
-  path="${u#*.blob.core.windows.net/}"             # CONTAINER/BLOB?SAS
-  container="${path%%/*}"                          # CONTAINER
-  blob_q="${path#*/}"                              # BLOB?SAS
-  blob="${blob_q%%\?*}"                            # BLOB
-  sas="${SAS_URL#*?}"                              # SAS (everything after ?)
+  account=oltpsparkcijarstore
 
-  echo "Uploading jar '$JARPATH/$JARFILE' to Azure Storage account $account (ephemeral tenant) container $container BLOB $blob"
-  az storage blob upload \
-    --account-name "$account" \
-    --container-name "$container" \
-    --name "$blob" \
-    --file "$JARPATH/$JARFILE" \
-    --sas-token "$sas" \
-    --type block \
-    --overwrite true \
-    --only-show-errors
+  echo "Uploading jar '$JARPATH/$JARFILE' to Azure Storage account oltpsparkcijarstore (ephemeral tenant) container jarstore BLOB jars/azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar"
+  az storage blob upload --account-name oltpsparkcijarstore --account-key $STORAGE_ACCOUNT_KEY --container-name jarstore --name jars/azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar --file $JARPATH/$JARFILE --type block --overwrite true --only-show-errors
 
   if [ $? -eq 0 ]; then
     echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
