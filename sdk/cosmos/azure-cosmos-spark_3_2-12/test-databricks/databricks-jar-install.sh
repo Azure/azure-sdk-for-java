@@ -54,7 +54,7 @@ echo "Avoid DBFS: $AVOID_DBFS"
 # Using cluster name for the cluster that was created with 16.4
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   echo "Importing files from $JARPATH/$JARFILE to /Workspace/libs/$JARFILE"
-  databricks workspace files upload --local-path "$JARPATH/$JARFILE" --workspace-path "/Workspace/libs/$JARFILE" --overwrite
+  databricks workspace import "/Workspace/libs/$JARFILE" --file "$JARPATH/$JARFILE" --format AUTO --overwrite
   if [$? -ne 0]; then
       echo "Failed to upload JAR to Workspace Files."
       echo $?
