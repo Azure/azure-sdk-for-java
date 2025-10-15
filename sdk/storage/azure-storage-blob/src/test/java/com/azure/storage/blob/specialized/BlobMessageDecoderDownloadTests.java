@@ -22,6 +22,7 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,6 +64,9 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
     @Test
     public void downloadStreamWithResponseContentValidationRange() throws IOException {
+        // Note: Range downloads are not compatible with structured message validation
+        // because you need the complete encoded message for validation.
+        // This test verifies that range downloads work without validation.
         byte[] randomData = getRandomByteArray(Constants.KB);
         StructuredMessageEncoder encoder
             = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
@@ -70,17 +74,16 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         Flux<ByteBuffer> input = Flux.just(encodedData);
 
-        DownloadContentValidationOptions validationOptions
-            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
-
+        // Range download without validation should work
         BlobRange range = new BlobRange(0, 512L);
 
         StepVerifier.create(bc.upload(input, null, true)
             .then(bc.downloadStreamWithResponse(range, (DownloadRetryOptions) null,
-                (BlobRequestConditions) null, false, validationOptions))
+                (BlobRequestConditions) null, false))
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(r -> {
                 assertNotNull(r);
-                assertTrue(r.length > 0);
+                // Should get exactly 512 bytes of encoded data
+                assertEquals(512, r.length);
             }).verifyComplete();
     }
 
