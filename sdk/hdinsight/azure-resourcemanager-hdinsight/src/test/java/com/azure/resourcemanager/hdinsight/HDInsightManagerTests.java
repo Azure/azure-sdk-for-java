@@ -108,6 +108,9 @@ public class HDInsightManagerTests extends TestProxyTestBase {
             clusterProperties.put("restAuthCredential.password", strPassword);
             clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
 
+            // trigger the auth, to mitigate https://github.com/Azure/azure-sdk-for-java/issues/46858
+            resourceManager.providers().getByName("Microsoft.HDInsight");
+
             // @embedmeStart
             com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts()
                 .define(storageName)
