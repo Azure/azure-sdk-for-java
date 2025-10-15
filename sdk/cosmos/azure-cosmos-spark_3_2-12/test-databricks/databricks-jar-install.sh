@@ -39,14 +39,15 @@ echo "Avoid DBFS: $AVOID_DBFS"
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   echo "Importing files from $JARPATH/$JARFILE to Azure Storage account oltpsparkcijarstore (ephemeral tenant)"
   echo "Uploading jar '$JARPATH/$JARFILE' to oltpsparkcijarstore (ephemeral tenant)"
-  azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true
-  if [$? -ne 0]; then
-      echo "Failed to upload JAR to Workspace Files."
-      echo $?
-      exit $?
+  if $(azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true --from-to LocalBlob --output-type=json --no-progress)
+  then
+    echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
+    echo "Rebooting cluster to install new library via init script"
+  else
+    echo "Failed to upload JAR to Workspace Files."
+    echo $?
+    exit $?
   fi
-  echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
-  echo "Rebooting cluster to install new library via init script"
 else
   echo "Uninstalling libraries in $CLUSTER_ID"
   LIBRARIES=$(databricks libraries cluster-status $CLUSTER_ID | jq -r '.[] | .library.jar')
