@@ -263,7 +263,7 @@ public final class DirectConnectionConfig {
      * Sets the network request timeout interval (time to wait for response from network peer).
      *
      * Default value is 5 seconds.
-     * It only allows values &ge;1s and &le;10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
+     * It only allows values &ge;5s and &le;10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
      * buffer so 10 seconds in total for transport is more than sufficient).
      *
      * Attention! Please adjust this value with caution.
