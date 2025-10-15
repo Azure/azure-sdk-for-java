@@ -13,8 +13,8 @@ import java.util.Arrays;
 public final class AgentPoolsDeleteMachinesSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
-     * examples/AgentPoolsDeleteMachines.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
+     * AgentPoolsDeleteMachines.json
      */
     /**
      * Sample code: Delete Specific Machines in an Agent Pool.

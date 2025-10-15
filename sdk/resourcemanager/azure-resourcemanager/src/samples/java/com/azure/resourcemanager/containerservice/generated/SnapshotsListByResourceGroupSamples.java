@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class SnapshotsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-08-02-preview/
-     * examples/SnapshotsListByResourceGroup.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-08-01/examples/
+     * SnapshotsListByResourceGroup.json
      */
     /**
      * Sample code: List Snapshots by Resource Group.
