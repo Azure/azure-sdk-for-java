@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-dataprotection</artifactId>
-  <version>1.5.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dataprotection;current} -->
+  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dataprotection;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Data Protection Management</name>
