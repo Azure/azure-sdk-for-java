@@ -464,7 +464,7 @@ com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0;1.1.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-standbypool;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.1.0;1.2.0
+com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.3
