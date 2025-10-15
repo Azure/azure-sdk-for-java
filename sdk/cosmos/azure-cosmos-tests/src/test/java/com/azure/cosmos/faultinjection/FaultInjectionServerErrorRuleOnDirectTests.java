@@ -1373,6 +1373,70 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionInjectTcpResponseDelay() throws JsonProcessingException {
+        CosmosAsyncClient newClient = null; // creating new client to force creating new connections
+        // define another rule which can simulate timeout
+        String timeoutRuleId = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
+        FaultInjectionRule timeoutRule =
+            new FaultInjectionRuleBuilder(timeoutRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                        .times(2)
+                        .delay(Duration.ofSeconds(4)) // the default time out is 5s
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+        try {
+            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+            directConnectionConfig.setNetworkRequestTimeout(Duration.ofMillis(1100));
+
+            newClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .consistencyLevel(BridgeInternal.getContextClient(this.clientWithoutPreferredRegions).getConsistencyLevel())
+                .directMode(directConnectionConfig)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                newClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+
+            // create a new item to be used by read operations
+            TestObject createdItem = TestObject.create();
+            container.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
+            CosmosItemResponse<TestObject> itemResponse =
+                container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestObject.class).block();
+
+            assertThat(timeoutRule.getHitCount()).isEqualTo(2);
+            this.validateHitCount(timeoutRule, 2, OperationType.Read, ResourceType.Document);
+
+            this.validateFaultInjectionRuleApplied(
+                itemResponse.getDiagnostics(),
+                OperationType.Read,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                timeoutRuleId,
+                false
+            );
+
+        } finally {
+            timeoutRule.disable();
+            safeClose(newClient);
+        }
+    }
+
     private void validateFaultInjectionRuleApplied(
         CosmosDiagnostics cosmosDiagnostics,
         OperationType operationType,

@@ -281,7 +281,7 @@ public final class DirectConnectionConfig {
         checkArgument(networkRequestTimeout.toMillis() <= MAX_NETWORK_REQUEST_TIMEOUT.toMillis(),
             "NetworkRequestTimeout can not be larger than %s Millis", MAX_NETWORK_REQUEST_TIMEOUT.toMillis());
 
-        this.networkRequestTimeout = networkRequestTimeout;
+        this.networkRequestTimeout = Duration.ofMillis(Math.max(networkRequestTimeout.toMillis(), DEFAULT_NETWORK_REQUEST_TIMEOUT.toMillis()));
         return this;
     }
 
