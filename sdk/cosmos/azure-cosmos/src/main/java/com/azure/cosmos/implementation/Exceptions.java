@@ -58,4 +58,8 @@ public class Exceptions {
     public static String getInternalServerErrorMessage(String prefix) {
         return prefix + " - " + RMResources.InternalServerError;
     }
+
+    public static boolean isClientAssignedSubStatusCodeForInternalServerError(int statusCode, int subStatusCode) {
+        return statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR && (subStatusCode >= 20_000 && subStatusCode < 21_000);
+    }
 }
