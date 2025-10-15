@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * SubscriptionQuotaItem Properties.
+ * QuotaItem Properties.
  */
 @Immutable
-public final class SubscriptionQuotaItemProperties implements JsonSerializable<SubscriptionQuotaItemProperties> {
+public final class QuotaItemProperties implements JsonSerializable<QuotaItemProperties> {
     /*
      * The current quota value.
      */
@@ -26,10 +26,15 @@ public final class SubscriptionQuotaItemProperties implements JsonSerializable<S
      */
     private Integer defaultProperty;
 
-    /**
-     * Creates an instance of SubscriptionQuotaItemProperties class.
+    /*
+     * The usage quota value.
      */
-    public SubscriptionQuotaItemProperties() {
+    private Integer usage;
+
+    /**
+     * Creates an instance of QuotaItemProperties class.
+     */
+    public QuotaItemProperties() {
     }
 
     /**
@@ -51,6 +56,15 @@ public final class SubscriptionQuotaItemProperties implements JsonSerializable<S
     }
 
     /**
+     * Get the usage property: The usage quota value.
+     * 
+     * @return the usage value.
+     */
+    public Integer usage() {
+        return this.usage;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -68,32 +82,32 @@ public final class SubscriptionQuotaItemProperties implements JsonSerializable<S
     }
 
     /**
-     * Reads an instance of SubscriptionQuotaItemProperties from the JsonReader.
+     * Reads an instance of QuotaItemProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SubscriptionQuotaItemProperties if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SubscriptionQuotaItemProperties.
+     * @return An instance of QuotaItemProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaItemProperties.
      */
-    public static SubscriptionQuotaItemProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static QuotaItemProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SubscriptionQuotaItemProperties deserializedSubscriptionQuotaItemProperties
-                = new SubscriptionQuotaItemProperties();
+            QuotaItemProperties deserializedQuotaItemProperties = new QuotaItemProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("current".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemProperties.current = reader.getNullable(JsonReader::getInt);
+                    deserializedQuotaItemProperties.current = reader.getNullable(JsonReader::getInt);
                 } else if ("default".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemProperties.defaultProperty
-                        = reader.getNullable(JsonReader::getInt);
+                    deserializedQuotaItemProperties.defaultProperty = reader.getNullable(JsonReader::getInt);
+                } else if ("usage".equals(fieldName)) {
+                    deserializedQuotaItemProperties.usage = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSubscriptionQuotaItemProperties;
+            return deserializedQuotaItemProperties;
         });
     }
 }

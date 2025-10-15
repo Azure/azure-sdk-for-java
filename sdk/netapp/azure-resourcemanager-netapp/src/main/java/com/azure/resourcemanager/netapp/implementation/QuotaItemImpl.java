@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
-import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
+import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.models.QuotaItem;
 
-public final class SubscriptionQuotaItemImpl implements SubscriptionQuotaItem {
-    private SubscriptionQuotaItemInner innerObject;
+public final class QuotaItemImpl implements QuotaItem {
+    private QuotaItemInner innerObject;
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    SubscriptionQuotaItemImpl(SubscriptionQuotaItemInner innerObject,
-        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    QuotaItemImpl(QuotaItemInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -43,7 +42,11 @@ public final class SubscriptionQuotaItemImpl implements SubscriptionQuotaItem {
         return this.innerModel().defaultProperty();
     }
 
-    public SubscriptionQuotaItemInner innerModel() {
+    public Integer usage() {
+        return this.innerModel().usage();
+    }
+
+    public QuotaItemInner innerModel() {
         return this.innerObject;
     }
 
