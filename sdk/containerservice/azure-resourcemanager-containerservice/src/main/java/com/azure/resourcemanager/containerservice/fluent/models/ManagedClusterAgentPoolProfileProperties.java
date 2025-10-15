@@ -9,6 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolArtifactStreamingProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolBlueGreenUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
@@ -23,6 +25,8 @@ import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
+import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
+import com.azure.resourcemanager.containerservice.models.NodeCustomizationProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -31,6 +35,7 @@ import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.UpgradeStrategy;
 import com.azure.resourcemanager.containerservice.models.VirtualMachineNodes;
 import com.azure.resourcemanager.containerservice.models.VirtualMachinesProfile;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
@@ -47,7 +52,7 @@ public class ManagedClusterAgentPoolProfileProperties
     /*
      * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
      * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
-     * optimistic concurrency per the normal etag convention.
+     * optimistic concurrency per the normal eTag convention.
      */
     private String etag;
 
@@ -129,8 +134,9 @@ public class ManagedClusterAgentPoolProfileProperties
     private OSType osType;
 
     /*
-     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
-     * when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
+     * Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if OSType=Linux or
+     * Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after Windows2019 is
+     * deprecated.
      */
     private OSSku osSku;
 
@@ -168,20 +174,20 @@ public class ManagedClusterAgentPoolProfileProperties
     private AgentPoolMode mode;
 
     /*
-     * The version of Kubernetes specified by the user. Both patch version <major.minor.patch> (e.g. 1.20.13) and
-     * <major.minor> (e.g. 1.20) are supported. When <major.minor> is specified, the latest supported GA patch version
-     * is chosen automatically. Updating the cluster with the same <major.minor> once it has been created (e.g. 1.14.x
-     * -> 1.14) will not trigger an upgrade, even if a newer patch version is available. As a best practice, you should
-     * upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same
-     * major version as the control plane. The node pool minor version must be within two minor versions of the control
-     * plane version. The node pool version cannot be greater than the control plane version. For more information see
-     * [upgrading a node pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
+     * The version of Kubernetes specified by the user. Both patch version <major.minor.patch> and <major.minor> are
+     * supported. When <major.minor> is specified, the latest supported patch version is chosen automatically. Updating
+     * the agent pool with the same <major.minor> once it has been created will not trigger an upgrade, even if a newer
+     * patch version is available. As a best practice, you should upgrade all node pools in an AKS cluster to the same
+     * Kubernetes version. The node pool version must have the same major version as the control plane. The node pool
+     * minor version must be within two minor versions of the control plane version. The node pool version cannot be
+     * greater than the control plane version. For more information see [upgrading a node
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      */
     private String orchestratorVersion;
 
     /*
-     * The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version
-     * <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field
+     * The version of Kubernetes running on the Agent Pool. If orchestratorVersion was a fully specified version
+     * <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion was <major.minor>, this field
      * will contain the full <major.minor.patch> version being used.
      */
     private String currentOrchestratorVersion;
@@ -192,9 +198,19 @@ public class ManagedClusterAgentPoolProfileProperties
     private String nodeImageVersion;
 
     /*
-     * Settings for upgrading the agentpool
+     * Defines the upgrade strategy for the agent pool. The default is Rolling.
+     */
+    private UpgradeStrategy upgradeStrategy;
+
+    /*
+     * Settings for upgrading the agentpool. Applies when upgrade strategy is set to Rolling.
      */
     private AgentPoolUpgradeSettings upgradeSettings;
+
+    /*
+     * Settings for Blue-Green upgrade on the agentpool. Applies when upgrade strategy is set to BlueGreen.
+     */
+    private AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen;
 
     /*
      * The current deployment or provisioning state.
@@ -266,6 +282,16 @@ public class ManagedClusterAgentPoolProfileProperties
     private List<String> nodeTaints;
 
     /*
+     * Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled
+     * by AKS and can be removed with a kubectl call. This field can be modified after node pool is created, but nodes
+     * will not be recreated with new taints until another operation that requires recreation (e.g. node image upgrade)
+     * happens. These taints allow for required configuration to run before the node is ready to accept workloads, for
+     * example 'key1=value1:NoSchedule' that then can be removed with `kubectl taint nodes node1
+     * key1=value1:NoSchedule-`
+     */
+    private List<String> nodeInitializationTaints;
+
+    /*
      * The ID for Proximity Placement Group.
      */
     private String proximityPlacementGroupId;
@@ -324,14 +350,14 @@ public class ManagedClusterAgentPoolProfileProperties
     private String hostGroupId;
 
     /*
-     * Network-related settings of an agent pool.
-     */
-    private AgentPoolNetworkProfile networkProfile;
-
-    /*
      * The Windows agent pool's specific profile.
      */
     private AgentPoolWindowsProfile windowsProfile;
+
+    /*
+     * Network-related settings of an agent pool.
+     */
+    private AgentPoolNetworkProfile networkProfile;
 
     /*
      * The security settings of an agent pool.
@@ -339,15 +365,14 @@ public class ManagedClusterAgentPoolProfileProperties
     private AgentPoolSecurityProfile securityProfile;
 
     /*
-     * GPU settings for the Agent Pool.
+     * The GPU settings of an agent pool.
      */
     private GpuProfile gpuProfile;
 
     /*
-     * Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not
-     * Gateway.
+     * Configuration for using artifact streaming on AKS.
      */
-    private AgentPoolGatewayProfile gatewayProfile;
+    private AgentPoolArtifactStreamingProfile artifactStreamingProfile;
 
     /*
      * Specifications on VirtualMachines agent pool.
@@ -360,9 +385,26 @@ public class ManagedClusterAgentPoolProfileProperties
     private List<VirtualMachineNodes> virtualMachineNodesStatus;
 
     /*
+     * Profile specific to a managed agent pool in Gateway mode. This field cannot be set if agent pool mode is not
+     * Gateway.
+     */
+    private AgentPoolGatewayProfile gatewayProfile;
+
+    /*
      * Contains read-only information about the Agent Pool.
      */
     private AgentPoolStatus status;
+
+    /*
+     * Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance and
+     * reliability of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
+     */
+    private LocalDnsProfile localDnsProfile;
+
+    /*
+     * Settings to determine the node customization used to provision nodes in a pool.
+     */
+    private NodeCustomizationProfile nodeCustomizationProfile;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -373,7 +415,7 @@ public class ManagedClusterAgentPoolProfileProperties
     /**
      * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @return the etag value.
      */
@@ -384,7 +426,7 @@ public class ManagedClusterAgentPoolProfileProperties
     /**
      * Set the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @param etag the etag value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -671,9 +713,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
-     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
-     * Windows.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
+     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
+     * Windows2019 is deprecated.
      * 
      * @return the osSku value.
      */
@@ -682,9 +724,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
-     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
-     * Windows.
+     * Set the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
+     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
+     * Windows2019 is deprecated.
      * 
      * @param osSku the osSku value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -822,13 +864,13 @@ public class ManagedClusterAgentPoolProfileProperties
 
     /**
      * Get the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
-     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
-     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
-     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
-     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
-     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
-     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
-     * version cannot be greater than the control plane version. For more information see [upgrading a node
+     * &lt;major.minor.patch&gt; and &lt;major.minor&gt; are supported. When &lt;major.minor&gt; is specified, the
+     * latest supported patch version is chosen automatically. Updating the agent pool with the same &lt;major.minor&gt;
+     * once it has been created will not trigger an upgrade, even if a newer patch version is available. As a best
+     * practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool
+     * version must have the same major version as the control plane. The node pool minor version must be within two
+     * minor versions of the control plane version. The node pool version cannot be greater than the control plane
+     * version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      * 
      * @return the orchestratorVersion value.
@@ -839,13 +881,13 @@ public class ManagedClusterAgentPoolProfileProperties
 
     /**
      * Set the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
-     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
-     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
-     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
-     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
-     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
-     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
-     * version cannot be greater than the control plane version. For more information see [upgrading a node
+     * &lt;major.minor.patch&gt; and &lt;major.minor&gt; are supported. When &lt;major.minor&gt; is specified, the
+     * latest supported patch version is chosen automatically. Updating the agent pool with the same &lt;major.minor&gt;
+     * once it has been created will not trigger an upgrade, even if a newer patch version is available. As a best
+     * practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool
+     * version must have the same major version as the control plane. The node pool minor version must be within two
+     * minor versions of the control plane version. The node pool version cannot be greater than the control plane
+     * version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      * 
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -857,9 +899,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
-     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
-     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * Get the currentOrchestratorVersion property: The version of Kubernetes running on the Agent Pool. If
+     * orchestratorVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
      * version being used.
      * 
      * @return the currentOrchestratorVersion value.
@@ -869,9 +911,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
-     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
-     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * Set the currentOrchestratorVersion property: The version of Kubernetes running on the Agent Pool. If
+     * orchestratorVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
      * version being used.
      * 
      * @param currentOrchestratorVersion the currentOrchestratorVersion value to set.
@@ -897,13 +939,34 @@ public class ManagedClusterAgentPoolProfileProperties
      * @param nodeImageVersion the nodeImageVersion value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
+    public ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
         this.nodeImageVersion = nodeImageVersion;
         return this;
     }
 
     /**
-     * Get the upgradeSettings property: Settings for upgrading the agentpool.
+     * Get the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
+     * 
+     * @return the upgradeStrategy value.
+     */
+    public UpgradeStrategy upgradeStrategy() {
+        return this.upgradeStrategy;
+    }
+
+    /**
+     * Set the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
+     * 
+     * @param upgradeStrategy the upgradeStrategy value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withUpgradeStrategy(UpgradeStrategy upgradeStrategy) {
+        this.upgradeStrategy = upgradeStrategy;
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettings property: Settings for upgrading the agentpool. Applies when upgrade strategy is set to
+     * Rolling.
      * 
      * @return the upgradeSettings value.
      */
@@ -912,13 +975,37 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the upgradeSettings property: Settings for upgrading the agentpool.
+     * Set the upgradeSettings property: Settings for upgrading the agentpool. Applies when upgrade strategy is set to
+     * Rolling.
      * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
     public ManagedClusterAgentPoolProfileProperties withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
         this.upgradeSettings = upgradeSettings;
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
+     * strategy is set to BlueGreen.
+     * 
+     * @return the upgradeSettingsBlueGreen value.
+     */
+    public AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen() {
+        return this.upgradeSettingsBlueGreen;
+    }
+
+    /**
+     * Set the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
+     * strategy is set to BlueGreen.
+     * 
+     * @param upgradeSettingsBlueGreen the upgradeSettingsBlueGreen value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withUpgradeSettingsBlueGreen(AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen) {
+        this.upgradeSettingsBlueGreen = upgradeSettingsBlueGreen;
         return this;
     }
 
@@ -1180,6 +1267,37 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
+     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
+     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
+     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
+     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
+     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
+     * 
+     * @return the nodeInitializationTaints value.
+     */
+    public List<String> nodeInitializationTaints() {
+        return this.nodeInitializationTaints;
+    }
+
+    /**
+     * Set the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
+     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
+     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
+     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
+     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
+     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
+     * 
+     * @param nodeInitializationTaints the nodeInitializationTaints value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withNodeInitializationTaints(List<String> nodeInitializationTaints) {
+        this.nodeInitializationTaints = nodeInitializationTaints;
+        return this;
+    }
+
+    /**
      * Get the proximityPlacementGroupId property: The ID for Proximity Placement Group.
      * 
      * @return the proximityPlacementGroupId value.
@@ -1402,26 +1520,6 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the networkProfile property: Network-related settings of an agent pool.
-     * 
-     * @return the networkProfile value.
-     */
-    public AgentPoolNetworkProfile networkProfile() {
-        return this.networkProfile;
-    }
-
-    /**
-     * Set the networkProfile property: Network-related settings of an agent pool.
-     * 
-     * @param networkProfile the networkProfile value to set.
-     * @return the ManagedClusterAgentPoolProfileProperties object itself.
-     */
-    public ManagedClusterAgentPoolProfileProperties withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
-        this.networkProfile = networkProfile;
-        return this;
-    }
-
-    /**
      * Get the windowsProfile property: The Windows agent pool's specific profile.
      * 
      * @return the windowsProfile value.
@@ -1438,6 +1536,26 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     public ManagedClusterAgentPoolProfileProperties withWindowsProfile(AgentPoolWindowsProfile windowsProfile) {
         this.windowsProfile = windowsProfile;
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: Network-related settings of an agent pool.
+     * 
+     * @return the networkProfile value.
+     */
+    public AgentPoolNetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: Network-related settings of an agent pool.
+     * 
+     * @param networkProfile the networkProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
         return this;
     }
 
@@ -1462,7 +1580,7 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the gpuProfile property: GPU settings for the Agent Pool.
+     * Get the gpuProfile property: The GPU settings of an agent pool.
      * 
      * @return the gpuProfile value.
      */
@@ -1471,7 +1589,7 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the gpuProfile property: GPU settings for the Agent Pool.
+     * Set the gpuProfile property: The GPU settings of an agent pool.
      * 
      * @param gpuProfile the gpuProfile value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -1482,24 +1600,23 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
-     * set if agent pool mode is not Gateway.
+     * Get the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
      * 
-     * @return the gatewayProfile value.
+     * @return the artifactStreamingProfile value.
      */
-    public AgentPoolGatewayProfile gatewayProfile() {
-        return this.gatewayProfile;
+    public AgentPoolArtifactStreamingProfile artifactStreamingProfile() {
+        return this.artifactStreamingProfile;
     }
 
     /**
-     * Set the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
-     * set if agent pool mode is not Gateway.
+     * Set the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
      * 
-     * @param gatewayProfile the gatewayProfile value to set.
+     * @param artifactStreamingProfile the artifactStreamingProfile value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
-        this.gatewayProfile = gatewayProfile;
+    public ManagedClusterAgentPoolProfileProperties
+        withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
+        this.artifactStreamingProfile = artifactStreamingProfile;
         return this;
     }
 
@@ -1546,6 +1663,28 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
+     * 
+     * @return the gatewayProfile value.
+     */
+    public AgentPoolGatewayProfile gatewayProfile() {
+        return this.gatewayProfile;
+    }
+
+    /**
+     * Set the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
+     * 
+     * @param gatewayProfile the gatewayProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
+        this.gatewayProfile = gatewayProfile;
+        return this;
+    }
+
+    /**
      * Get the status property: Contains read-only information about the Agent Pool.
      * 
      * @return the status value.
@@ -1566,6 +1705,53 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @return the localDnsProfile value.
+     */
+    public LocalDnsProfile localDnsProfile() {
+        return this.localDnsProfile;
+    }
+
+    /**
+     * Set the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @param localDnsProfile the localDnsProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
+        this.localDnsProfile = localDnsProfile;
+        return this;
+    }
+
+    /**
+     * Get the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
+     * in a pool.
+     * 
+     * @return the nodeCustomizationProfile value.
+     */
+    public NodeCustomizationProfile nodeCustomizationProfile() {
+        return this.nodeCustomizationProfile;
+    }
+
+    /**
+     * Set the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
+     * in a pool.
+     * 
+     * @param nodeCustomizationProfile the nodeCustomizationProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
+        this.nodeCustomizationProfile = nodeCustomizationProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1573,6 +1759,9 @@ public class ManagedClusterAgentPoolProfileProperties
     public void validate() {
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
+        }
+        if (upgradeSettingsBlueGreen() != null) {
+            upgradeSettingsBlueGreen().validate();
         }
         if (powerState() != null) {
             powerState().validate();
@@ -1586,11 +1775,11 @@ public class ManagedClusterAgentPoolProfileProperties
         if (creationData() != null) {
             creationData().validate();
         }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
         if (windowsProfile() != null) {
             windowsProfile().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
         if (securityProfile() != null) {
             securityProfile().validate();
@@ -1598,8 +1787,8 @@ public class ManagedClusterAgentPoolProfileProperties
         if (gpuProfile() != null) {
             gpuProfile().validate();
         }
-        if (gatewayProfile() != null) {
-            gatewayProfile().validate();
+        if (artifactStreamingProfile() != null) {
+            artifactStreamingProfile().validate();
         }
         if (virtualMachinesProfile() != null) {
             virtualMachinesProfile().validate();
@@ -1607,8 +1796,17 @@ public class ManagedClusterAgentPoolProfileProperties
         if (virtualMachineNodesStatus() != null) {
             virtualMachineNodesStatus().forEach(e -> e.validate());
         }
+        if (gatewayProfile() != null) {
+            gatewayProfile().validate();
+        }
         if (status() != null) {
             status().validate();
+        }
+        if (localDnsProfile() != null) {
+            localDnsProfile().validate();
+        }
+        if (nodeCustomizationProfile() != null) {
+            nodeCustomizationProfile().validate();
         }
     }
 
@@ -1641,7 +1839,11 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
+        jsonWriter.writeStringField("nodeImageVersion", this.nodeImageVersion);
+        jsonWriter.writeStringField("upgradeStrategy",
+            this.upgradeStrategy == null ? null : this.upgradeStrategy.toString());
         jsonWriter.writeJsonField("upgradeSettings", this.upgradeSettings);
+        jsonWriter.writeJsonField("upgradeSettingsBlueGreen", this.upgradeSettingsBlueGreen);
         jsonWriter.writeJsonField("powerState", this.powerState);
         jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
             (writer, element) -> writer.writeString(element));
@@ -1655,6 +1857,8 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("nodeLabels", this.nodeLabels, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("nodeTaints", this.nodeTaints, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeInitializationTaints", this.nodeInitializationTaints,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("proximityPlacementGroupID", this.proximityPlacementGroupId);
         jsonWriter.writeJsonField("kubeletConfig", this.kubeletConfig);
         jsonWriter.writeJsonField("linuxOSConfig", this.linuxOSConfig);
@@ -1666,15 +1870,18 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeJsonField("creationData", this.creationData);
         jsonWriter.writeStringField("capacityReservationGroupID", this.capacityReservationGroupId);
         jsonWriter.writeStringField("hostGroupID", this.hostGroupId);
-        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("windowsProfile", this.windowsProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         jsonWriter.writeJsonField("gpuProfile", this.gpuProfile);
-        jsonWriter.writeJsonField("gatewayProfile", this.gatewayProfile);
+        jsonWriter.writeJsonField("artifactStreamingProfile", this.artifactStreamingProfile);
         jsonWriter.writeJsonField("virtualMachinesProfile", this.virtualMachinesProfile);
         jsonWriter.writeArrayField("virtualMachineNodesStatus", this.virtualMachineNodesStatus,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("gatewayProfile", this.gatewayProfile);
         jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeJsonField("localDNSProfile", this.localDnsProfile);
+        jsonWriter.writeJsonField("nodeCustomizationProfile", this.nodeCustomizationProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1753,9 +1960,15 @@ public class ManagedClusterAgentPoolProfileProperties
                         = reader.getString();
                 } else if ("nodeImageVersion".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.nodeImageVersion = reader.getString();
+                } else if ("upgradeStrategy".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.upgradeStrategy
+                        = UpgradeStrategy.fromString(reader.getString());
                 } else if ("upgradeSettings".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.upgradeSettings
                         = AgentPoolUpgradeSettings.fromJson(reader);
+                } else if ("upgradeSettingsBlueGreen".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.upgradeSettingsBlueGreen
+                        = AgentPoolBlueGreenUpgradeSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.provisioningState = reader.getString();
                 } else if ("powerState".equals(fieldName)) {
@@ -1786,6 +1999,10 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("nodeTaints".equals(fieldName)) {
                     List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterAgentPoolProfileProperties.nodeTaints = nodeTaints;
+                } else if ("nodeInitializationTaints".equals(fieldName)) {
+                    List<String> nodeInitializationTaints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterAgentPoolProfileProperties.nodeInitializationTaints
+                        = nodeInitializationTaints;
                 } else if ("proximityPlacementGroupID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.proximityPlacementGroupId = reader.getString();
                 } else if ("kubeletConfig".equals(fieldName)) {
@@ -1811,20 +2028,20 @@ public class ManagedClusterAgentPoolProfileProperties
                         = reader.getString();
                 } else if ("hostGroupID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.hostGroupId = reader.getString();
-                } else if ("networkProfile".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfileProperties.networkProfile
-                        = AgentPoolNetworkProfile.fromJson(reader);
                 } else if ("windowsProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.windowsProfile
                         = AgentPoolWindowsProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.networkProfile
+                        = AgentPoolNetworkProfile.fromJson(reader);
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.securityProfile
                         = AgentPoolSecurityProfile.fromJson(reader);
                 } else if ("gpuProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.gpuProfile = GpuProfile.fromJson(reader);
-                } else if ("gatewayProfile".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfileProperties.gatewayProfile
-                        = AgentPoolGatewayProfile.fromJson(reader);
+                } else if ("artifactStreamingProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.artifactStreamingProfile
+                        = AgentPoolArtifactStreamingProfile.fromJson(reader);
                 } else if ("virtualMachinesProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.virtualMachinesProfile
                         = VirtualMachinesProfile.fromJson(reader);
@@ -1833,8 +2050,17 @@ public class ManagedClusterAgentPoolProfileProperties
                         = reader.readArray(reader1 -> VirtualMachineNodes.fromJson(reader1));
                     deserializedManagedClusterAgentPoolProfileProperties.virtualMachineNodesStatus
                         = virtualMachineNodesStatus;
+                } else if ("gatewayProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.gatewayProfile
+                        = AgentPoolGatewayProfile.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.status = AgentPoolStatus.fromJson(reader);
+                } else if ("localDNSProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.localDnsProfile
+                        = LocalDnsProfile.fromJson(reader);
+                } else if ("nodeCustomizationProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.nodeCustomizationProfile
+                        = NodeCustomizationProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

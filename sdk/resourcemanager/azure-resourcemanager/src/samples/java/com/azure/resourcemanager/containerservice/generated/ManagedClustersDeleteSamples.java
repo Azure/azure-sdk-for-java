@@ -23,6 +23,6 @@ public final class ManagedClustersDeleteSamples {
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .delete("rg1", "clustername1", null, com.azure.core.util.Context.NONE);
+            .delete("rg1", "clustername1");
     }
 }
