@@ -40,12 +40,15 @@ if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   echo "Importing files from $JARPATH/$JARFILE to Azure Storage account oltpsparkcijarstore (ephemeral tenant)"
   echo "Uploading jar '$JARPATH/$JARFILE' to oltpsparkcijarstore (ephemeral tenant)"
 
-  azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true --from-to LocalBlob --output-type=text
+  AZCOPY_JOB_ID=$(azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true --from-to LocalBlob --output-type=json | jq -r '.[] | sort_by(.StartTime) | last | .JobID')
   if [ $? -eq 0 ]; then
+    echo "AzCopy JobID $AZCOPY_JOB_ID"
     echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
     echo "Rebooting cluster to install new library via init script"
   else
+    echo "AzCopy JobID $AZCOPY_JOB_ID"
     echo "Failed to upload JAR to Workspace Files."
+    azcopy jobs show $AZCOPY_JOB_ID
     echo $?
     exit $?
   fi
