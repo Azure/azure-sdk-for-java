@@ -9,19 +9,19 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * List of Subscription Quota Items.
+ * List of Quota Items.
  */
 @Fluent
-public final class SubscriptionQuotaItemList implements JsonSerializable<SubscriptionQuotaItemList> {
+public final class QuotaItemList implements JsonSerializable<QuotaItemList> {
     /*
-     * A list of SubscriptionQuotaItems
+     * A list of QuotaItems
      */
-    private List<SubscriptionQuotaItemInner> value;
+    private List<QuotaItemInner> value;
 
     /*
      * URL to get the next set of results.
@@ -29,27 +29,27 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
     private String nextLink;
 
     /**
-     * Creates an instance of SubscriptionQuotaItemList class.
+     * Creates an instance of QuotaItemList class.
      */
-    public SubscriptionQuotaItemList() {
+    public QuotaItemList() {
     }
 
     /**
-     * Get the value property: A list of SubscriptionQuotaItems.
+     * Get the value property: A list of QuotaItems.
      * 
      * @return the value value.
      */
-    public List<SubscriptionQuotaItemInner> value() {
+    public List<QuotaItemInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: A list of SubscriptionQuotaItems.
+     * Set the value property: A list of QuotaItems.
      * 
      * @param value the value value to set.
-     * @return the SubscriptionQuotaItemList object itself.
+     * @return the QuotaItemList object itself.
      */
-    public SubscriptionQuotaItemList withValue(List<SubscriptionQuotaItemInner> value) {
+    public QuotaItemList withValue(List<QuotaItemInner> value) {
         this.value = value;
         return this;
     }
@@ -67,9 +67,9 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
      * Set the nextLink property: URL to get the next set of results.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the SubscriptionQuotaItemList object itself.
+     * @return the QuotaItemList object itself.
      */
-    public SubscriptionQuotaItemList withNextLink(String nextLink) {
+    public QuotaItemList withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
@@ -97,32 +97,31 @@ public final class SubscriptionQuotaItemList implements JsonSerializable<Subscri
     }
 
     /**
-     * Reads an instance of SubscriptionQuotaItemList from the JsonReader.
+     * Reads an instance of QuotaItemList from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SubscriptionQuotaItemList if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SubscriptionQuotaItemList.
+     * @return An instance of QuotaItemList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaItemList.
      */
-    public static SubscriptionQuotaItemList fromJson(JsonReader jsonReader) throws IOException {
+    public static QuotaItemList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SubscriptionQuotaItemList deserializedSubscriptionQuotaItemList = new SubscriptionQuotaItemList();
+            QuotaItemList deserializedQuotaItemList = new QuotaItemList();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<SubscriptionQuotaItemInner> value
-                        = reader.readArray(reader1 -> SubscriptionQuotaItemInner.fromJson(reader1));
-                    deserializedSubscriptionQuotaItemList.value = value;
+                    List<QuotaItemInner> value = reader.readArray(reader1 -> QuotaItemInner.fromJson(reader1));
+                    deserializedQuotaItemList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedSubscriptionQuotaItemList.nextLink = reader.getString();
+                    deserializedQuotaItemList.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSubscriptionQuotaItemList;
+            return deserializedQuotaItemList;
         });
     }
 }
