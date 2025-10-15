@@ -35,6 +35,7 @@ import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -87,6 +88,7 @@ public class HDInsightManagerTests extends TestProxyTestBase {
         }
     }
 
+    @Disabled("No sufficient core to create the cluster resource")
     @Test
     @LiveOnly
     public void testCreateCluster() {
@@ -107,9 +109,6 @@ public class HDInsightManagerTests extends TestProxyTestBase {
             clusterProperties.put("restAuthCredential.username", "admin");
             clusterProperties.put("restAuthCredential.password", strPassword);
             clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
-
-            // trigger the auth, to mitigate https://github.com/Azure/azure-sdk-for-java/issues/46858
-            resourceManager.providers().getByName("Microsoft.HDInsight");
 
             // @embedmeStart
             com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts()
