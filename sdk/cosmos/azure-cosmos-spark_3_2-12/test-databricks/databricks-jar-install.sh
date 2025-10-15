@@ -8,9 +8,6 @@ JARPATH=$3
 
 echo "Looking for cluster '$CLUSTER_NAME' - Avoid DBFS '$AVOID_DBFS'"
 
-echo "Dumping clusters as JSON"
-databricks clusters list --output json
-
 CLUSTER_ID=$(databricks clusters list --output json | jq -r --arg N "$CLUSTER_NAME" '.[] | select(.cluster_name == $N) | .cluster_id')
 
 if [[ -z "$CLUSTER_ID" ]]
@@ -18,9 +15,6 @@ then
 	echo "Cannot find a cluster named '$CLUSTER_NAME'"
 	exit 1
 fi
-
-echo "Dumping libraries"
-databricks libraries cluster-status $CLUSTER_ID
 
 echo "Uninstalling libraries in $CLUSTER_ID"
 LIBRARIES=$(databricks libraries cluster-status $CLUSTER_ID | jq -r '.[] | .library.jar')
@@ -74,11 +68,9 @@ else
   echo "Using DBFS library installation for DBR $DBR_VERSION"
   echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
   databricks fs rm dbfs:/tmp/libraries/$JARFILE
-  databricks fs ls dbfs:/tmp/libraries/
 
   echo "Copying files to DBFS $JARPATH/$JARFILE"
   databricks fs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
-  databricks fs ls dbfs:/tmp/libraries/
 
   echo "Installing $JARFILE in $CLUSTER_ID"
   databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"dbfs:/tmp/libraries/$JARFILE\"}]}"
