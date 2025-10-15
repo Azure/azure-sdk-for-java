@@ -37,18 +37,32 @@ echo "Avoid DBFS: $AVOID_DBFS"
 # DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
 # Using cluster name for the cluster that was created with 16.4
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
-  echo "Importing files from $JARPATH/$JARFILE to Azure Storage account oltpsparkcijarstore (ephemeral tenant)"
-  echo "Uploading jar '$JARPATH/$JARFILE' to oltpsparkcijarstore (ephemeral tenant)"
+  # Parse the SAS URL into parts Azure CLI expects
+  # https://ACCOUNT.blob.core.windows.net/CONTAINER/BLOB?SAS
+  u="${SAS_URL#https://}"                          # ACCOUNT.blob.core.windows.net/...
+  account="${u%%.blob.core.windows.net/*}"         # ACCOUNT
+  path="${u#*.blob.core.windows.net/}"             # CONTAINER/BLOB?SAS
+  container="${path%%/*}"                          # CONTAINER
+  blob_q="${path#*/}"                              # BLOB?SAS
+  blob="${blob_q%%\?*}"                            # BLOB
+  sas="${SAS_URL#*?}"                              # SAS (everything after ?)
 
-  AZCOPY_JOB_ID=$(azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true --from-to LocalBlob --output-type=json | jq -r '.[] | sort_by(.StartTime) | last | .JobID')
+  echo "Uploading jar '$JARPATH/$JARFILE' to Azure Storage account $account (ephemeral tenant) container $container BLOB $blob"
+  az storage blob upload \
+    --account-name "$account" \
+    --container-name "$container" \
+    --name "$blob" \
+    --file "$JARPATH/$JARFILE" \
+    --sas-token "$sas" \
+    --type block \
+    --overwrite true \
+    --only-show-errors
+
   if [ $? -eq 0 ]; then
-    echo "AzCopy JobID $AZCOPY_JOB_ID"
     echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
     echo "Rebooting cluster to install new library via init script"
   else
-    echo "AzCopy JobID $AZCOPY_JOB_ID"
     echo "Failed to upload JAR to Workspace Files."
-    azcopy jobs show $AZCOPY_JOB_ID
     echo $?
     exit $?
   fi
