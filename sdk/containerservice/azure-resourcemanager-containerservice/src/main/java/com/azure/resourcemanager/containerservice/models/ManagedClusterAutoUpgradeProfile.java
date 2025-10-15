@@ -23,7 +23,8 @@ public final class ManagedClusterAutoUpgradeProfile implements JsonSerializable<
     private UpgradeChannel upgradeChannel;
 
     /*
-     * Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
+     * Manner in which the OS on your nodes is updated. The default is Unmanaged, but may change to either NodeImage or
+     * SecurityPatch at GA.
      */
     private NodeOSUpgradeChannel nodeOSUpgradeChannel;
 
@@ -58,8 +59,8 @@ public final class ManagedClusterAutoUpgradeProfile implements JsonSerializable<
     }
 
     /**
-     * Get the nodeOSUpgradeChannel property: Node OS Upgrade Channel. Manner in which the OS on your nodes is updated.
-     * The default is NodeImage.
+     * Get the nodeOSUpgradeChannel property: Manner in which the OS on your nodes is updated. The default is Unmanaged,
+     * but may change to either NodeImage or SecurityPatch at GA.
      * 
      * @return the nodeOSUpgradeChannel value.
      */
@@ -68,8 +69,8 @@ public final class ManagedClusterAutoUpgradeProfile implements JsonSerializable<
     }
 
     /**
-     * Set the nodeOSUpgradeChannel property: Node OS Upgrade Channel. Manner in which the OS on your nodes is updated.
-     * The default is NodeImage.
+     * Set the nodeOSUpgradeChannel property: Manner in which the OS on your nodes is updated. The default is Unmanaged,
+     * but may change to either NodeImage or SecurityPatch at GA.
      * 
      * @param nodeOSUpgradeChannel the nodeOSUpgradeChannel value to set.
      * @return the ManagedClusterAutoUpgradeProfile object itself.
