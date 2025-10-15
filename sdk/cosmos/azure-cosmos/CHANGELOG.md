@@ -15,6 +15,7 @@
 * Improved resilience around several completion events for an ssl handshake. - [PR 46734](https://github.com/Azure/azure-sdk-for-java/pull/46734)
 * Changed timestamp format to be consistent in leases for CFP. - [PR 46784](https://github.com/Azure/azure-sdk-for-java/pull/46784)
 * Added `MetadataThrottlingRetryPolicy` for `PartitionKeyRange` `RequestRateTooLargeException` handling. - [PR 46823](https://github.com/Azure/azure-sdk-for-java/pull/46823)
+* Disallow `DirectConnectionConfig#setNetworkRequestTimeout` to be set to less than 5 seconds. - [PR 47024](https://github.com/Azure/azure-sdk-for-java/pull/47024)
 
 ### 4.74.0 (2025-09-05)
 
