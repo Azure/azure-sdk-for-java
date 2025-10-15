@@ -48,7 +48,16 @@ echo "Avoid DBFS: $AVOID_DBFS"
 # Using cluster name for the cluster that was created with 16.4
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   echo "Importing files from $JARPATH/$JARFILE to /Workspace/libs/$JARFILE"
-  databricks workspace import "/Workspace/libs/$JARFILE" --file "$JARPATH/$JARFILE" --format AUTO --overwrite
+  echo "Ensuring jar folder exists"
+  databricks api put "/api/2.0/fs/directories/Workspace/Shared/Files/libs/"
+  echo "Dumping jars"
+  databricks api get "/api/2.0/fs/directories/Workspace/Shared/Files/libs" | jq .
+  echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
+  databricks api delete "/api/2.0/fs/files/Workspace/Shared/Files/libs/$JARFILE"
+  echo "Dumping jars"
+  databricks api get "/api/2.0/fs/directories/Workspace/Shared/Files/libs" | jq .
+  echo "Uploading jar"
+  databricks api put "/api/2.0/fs/files/Workspace/Shared/Files/libs/$JARFILE?overwrite=true" --header "Content-Type: application/octet-stream" --data-binary @"$JARPATH/$JARFILE"
   if [$? -ne 0]; then
       echo "Failed to upload JAR to Workspace Files."
       echo $?
@@ -56,7 +65,7 @@ if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   fi
   echo "Successfully uploaded JAR to Workspace."
   echo "Installing $JARFILE in $CLUSTER_ID"
-  databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"/Workspace/libs/$JARFILE\"}]}"
+  databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"file:/Workspace/Shared/Files/libs/$JARFILE\"}]}"
   if [ $? -ne 0 ]; then
         echo "Failed to install JAR to cluster."
         echo $?
