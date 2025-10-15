@@ -92,6 +92,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
             // no reason to circuit break a partition key range which is effectively won't be used in the future
             if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+                logger.info("Skipping circuit breaking for partitionKeyRange which is splitting or invalid / undergoing migrations, partitionKeyRange: " +
+                    resolvedPartitionKeyRangeForCircuitBreaker +
+                    " and operationType: " +
+                    request.getOperationType());
                 return;
             }
 
@@ -101,6 +105,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             // if the exception is not due to a cancellation, then we should have enough information to decide if we should circuit break or not
             // so we proceed with circuit breaking in this case
             if (resolvedPartitionKeyRangeForCircuitBreaker == null && isCancellationException) {
+                logger.warn("Skipping circuit breaking for operation as partitionKeyRange information isn't available for an e2e timeout cancelled request with operationType: " +
+                    request.getOperationType());
                 return;
             }
 
@@ -146,15 +152,15 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 return;
             }
 
-            if (logger.isWarnEnabled()) {
-                logger.warn("It is not possible to mark region {} as Unavailable for partition key range {}-{} and collection rid {} " +
-                        "as all regions will be Unavailable in that case, will remove health status tracking for this partition!",
-                    this.globalEndpointManager.getRegionName(
-                        failedRegionalRoutingContext.getGatewayRegionalEndpoint(), request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create),
-                    resolvedPartitionKeyRangeForCircuitBreaker.getMinInclusive(),
-                    resolvedPartitionKeyRangeForCircuitBreaker.getMaxExclusive(),
-                    collectionResourceId);
-            }
+            logger.warn("It is not possible to mark region " +
+                this.globalEndpointManager.getRegionName(
+                failedRegionalRoutingContext.getGatewayRegionalEndpoint(), request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create) + " as Unavailable as " +
+                " all regions will be Unavailable in that case, will remove health status tracking for this partitionKeyRange : " +
+                resolvedPartitionKeyRangeForCircuitBreaker +
+                " and collectionResourceId : " +
+                collectionResourceId +
+                " and operationType: " +
+                request.getOperationType());
 
             // no regions to fail over to
             this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.remove(partitionKeyRangeWrapper);
@@ -307,11 +313,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         return Mono.empty();
                     }
                 } catch (Exception e) {
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
-                    }
-
+                    logger.warn("An exception was thrown trying to recover an Unavailable partitionKeyRange!", e);
                     return Flux.empty();
                 }
             }, 1, 1)
@@ -338,12 +340,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                     .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                     .doOnComplete(() -> {
 
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("Partition health recovery query for partition key range : {} and " +
-                                                    "collection rid : {} has succeeded...",
-                                                partitionKeyRangeWrapper.getPartitionKeyRange(),
-                                                partitionKeyRangeWrapper.getCollectionResourceId());
-                                        }
+                                        logger.debug("Partition health recovery query for partitionKeyRange : " +
+                                            partitionKeyRangeWrapper.getPartitionKeyRange() +
+                                            " and collectionResourceId : "
+                                            + partitionKeyRangeWrapper.getCollectionResourceId() +
+                                            " has succeeded...");
 
                                         partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
 
@@ -360,10 +361,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                         });
                                     })
                                     .onErrorResume(throwable -> {
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", throwable.getMessage());
-                                        }
-
+                                        logger.debug("An exception was thrown trying to recover an Unavailable partition key range!", throwable);
                                         return Mono.empty();
                                     });
                             }
@@ -384,18 +382,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         }
                     }
                 } catch (Exception e) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("An exception {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
-                    }
+                    logger.debug("An exception was thrown trying to recover an Unavailable partition key range!", e);
                     return Flux.empty();
                 }
 
                 return Flux.empty();
             }, 1, 1)
             .onErrorResume(throwable -> {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("An exception : {} was thrown trying to recover an Unavailable partition key range!, fail-back flow won't be executed!", throwable.getMessage());
-                }
+                logger.warn("An exception : was thrown trying to recover an Unavailable partitionKeyRange!, fail-back flow won't be executed!", throwable);
                 return Flux.empty();
             });
     }
