@@ -89,7 +89,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
             PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
 
-            // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
+            // in scenarios where partition is splitting or invalid partition (name cache is stale) then resolvedPartitionKeyRange could be set to null
             // no reason to circuit break a partition key range which is effectively won't be used in the future
             if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
                 logger.info("Skipping circuit breaking for partitionKeyRange which is splitting or invalid / undergoing migrations, partitionKeyRange: " +
