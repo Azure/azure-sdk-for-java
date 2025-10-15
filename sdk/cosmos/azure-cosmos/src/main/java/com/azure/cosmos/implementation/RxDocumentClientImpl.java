@@ -1486,18 +1486,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (this.connectionPolicy.getHttp2ConnectionConfig() != null) {
-
             Http2ConnectionConfig http2ConnectionConfig = this.connectionPolicy.getHttp2ConnectionConfig();
-
             if (http2ConnectionConfig.isEnabled() != null) {
-
                 if (http2ConnectionConfig.isEnabled()) {
                     userAgentFeatureFlags.add(UserAgentFeatureFlags.Http2);
                 } else {
                     userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
                 }
-
-                userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
             }
         }
 
