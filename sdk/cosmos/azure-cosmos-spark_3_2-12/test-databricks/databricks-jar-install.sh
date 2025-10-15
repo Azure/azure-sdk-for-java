@@ -39,8 +39,9 @@ echo "Avoid DBFS: $AVOID_DBFS"
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   echo "Importing files from $JARPATH/$JARFILE to Azure Storage account oltpsparkcijarstore (ephemeral tenant)"
   echo "Uploading jar '$JARPATH/$JARFILE' to oltpsparkcijarstore (ephemeral tenant)"
-  if $(azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true --from-to LocalBlob --output-type=json --no-progress)
-  then
+
+  azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true --from-to LocalBlob --output-type=text
+  if [ $? -eq 0 ]; then
     echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
     echo "Rebooting cluster to install new library via init script"
   else
