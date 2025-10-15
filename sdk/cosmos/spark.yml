@@ -24,6 +24,7 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'
+      JarSasUri: $(spark-databricks-cosmos-spn-clientIdCert)
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -40,6 +41,7 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-4_2-12'
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
+      JarSasUri: $(spark-databricks-cosmos-spn-clientIdCert)
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -57,6 +59,7 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2'
       AvoidDBFS: false
+      JarSasUri: $(spark-databricks-cosmos-spn-clientIdCert)
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -74,4 +77,5 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4'
       AvoidDBFS: true
+      JarSasUri: $(spark-databricks-cosmos-spn-clientIdCert)
 

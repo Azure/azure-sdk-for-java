@@ -3,6 +3,7 @@
 CLUSTER_NAME=$1
 AVOID_DBFS=$2
 JARPATH=$3
+SASURI=$4
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$JARPATH" ]] && exit 1
 
@@ -15,17 +16,6 @@ then
 	echo "Cannot find a cluster named '$CLUSTER_NAME'"
 	exit 1
 fi
-
-echo "Uninstalling libraries in $CLUSTER_ID"
-LIBRARIES=$(databricks libraries cluster-status $CLUSTER_ID | jq -r '.[] | .library.jar')
-for library in $LIBRARIES
-do
-  databricks -v
-	echo "Uninstalling $library"
-	databricks libraries uninstall --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"$library\"}]}"
-done
-
-bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
 for file in $JARPATH/*.jar
 do
@@ -47,32 +37,28 @@ echo "Avoid DBFS: $AVOID_DBFS"
 # DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
 # Using cluster name for the cluster that was created with 16.4
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
-  echo "Importing files from $JARPATH/$JARFILE to /Workspace/libs/$JARFILE"
-  echo "Ensuring jar folder exists"
-  databricks api put "/api/2.0/fs/directories/Workspace/Shared/Files/libs/"
-  echo "Dumping jars"
-  databricks api get "/api/2.0/fs/directories/Workspace/Shared/Files/libs" | jq .
-  echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
-  databricks api delete "/api/2.0/fs/files/Workspace/Shared/Files/libs/$JARFILE"
-  echo "Dumping jars"
-  databricks api get "/api/2.0/fs/directories/Workspace/Shared/Files/libs" | jq .
-  echo "Uploading jar"
-  databricks api put "/api/2.0/fs/files/Workspace/Shared/Files/libs/$JARFILE?overwrite=true" --header "Content-Type: application/octet-stream" --data-binary @"$JARPATH/$JARFILE"
+  echo "Importing files from $JARPATH/$JARFILE to Azure Storage account oltpsparkcijarstore (ephemeral tenant)"
+  echo "Uploading jar '$JARPATH/$JARFILE' to oltpsparkcijarstore (ephemeral tenant)"
+  azcopy copy "$JARPATH/$JARFILE" "$SASURI" --overwrite=true
   if [$? -ne 0]; then
       echo "Failed to upload JAR to Workspace Files."
       echo $?
       exit $?
   fi
-  echo "Successfully uploaded JAR to Workspace."
-  echo "Installing $JARFILE in $CLUSTER_ID"
-  databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"file:/Workspace/Shared/Files/libs/$JARFILE\"}]}"
-  if [ $? -ne 0 ]; then
-        echo "Failed to install JAR to cluster."
-        echo $?
-        exit $?
-  fi
-  echo "Successfully installed JAR to cluster"
+  echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
+  echo "Rebooting cluster to install new library via init script"
 else
+  echo "Uninstalling libraries in $CLUSTER_ID"
+  LIBRARIES=$(databricks libraries cluster-status $CLUSTER_ID | jq -r '.[] | .library.jar')
+  for library in $LIBRARIES
+  do
+    databricks -v
+  	echo "Uninstalling $library"
+  	databricks libraries uninstall --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"$library\"}]}"
+  done
+
+  bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
+
   # For older runtimes: Use DBFS path
   echo "Using DBFS library installation for DBR $DBR_VERSION"
   echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
