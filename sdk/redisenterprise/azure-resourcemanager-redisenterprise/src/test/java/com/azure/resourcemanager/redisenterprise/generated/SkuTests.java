@@ -13,16 +13,16 @@ public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Sku model
-            = BinaryData.fromString("{\"name\":\"FlashOptimized_A500\",\"capacity\":355528987}").toObject(Sku.class);
-        Assertions.assertEquals(SkuName.FLASH_OPTIMIZED_A500, model.name());
-        Assertions.assertEquals(355528987, model.capacity());
+            = BinaryData.fromString("{\"name\":\"ComputeOptimized_X500\",\"capacity\":825844249}").toObject(Sku.class);
+        Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED_X500, model.name());
+        Assertions.assertEquals(825844249, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.FLASH_OPTIMIZED_A500).withCapacity(355528987);
+        Sku model = new Sku().withName(SkuName.COMPUTE_OPTIMIZED_X500).withCapacity(825844249);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals(SkuName.FLASH_OPTIMIZED_A500, model.name());
-        Assertions.assertEquals(355528987, model.capacity());
+        Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED_X500, model.name());
+        Assertions.assertEquals(825844249, model.capacity());
     }
 }
