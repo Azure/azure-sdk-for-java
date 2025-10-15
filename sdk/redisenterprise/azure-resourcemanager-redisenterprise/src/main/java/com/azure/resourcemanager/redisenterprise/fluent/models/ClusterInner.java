@@ -10,11 +10,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.Kind;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
@@ -51,7 +52,7 @@ public final class ClusterInner extends Resource {
     /*
      * Other properties of the cluster.
      */
-    private ClusterProperties innerProperties;
+    private ClusterCreateProperties innerProperties;
 
     /*
      * The type of the resource.
@@ -148,7 +149,7 @@ public final class ClusterInner extends Resource {
      * 
      * @return the innerProperties value.
      */
-    private ClusterProperties innerProperties() {
+    private ClusterCreateProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -201,6 +202,33 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterCreateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Get the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
      * replicated. This affects the availability SLA, and increases the risk of data loss.
      * 
@@ -219,7 +247,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withHighAvailability(HighAvailability highAvailability) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterProperties();
+            this.innerProperties = new ClusterCreateProperties();
         }
         this.innerProperties().withHighAvailability(highAvailability);
         return this;
@@ -246,7 +274,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterProperties();
+            this.innerProperties = new ClusterCreateProperties();
         }
         this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
         return this;
@@ -257,7 +285,7 @@ public final class ClusterInner extends Resource {
      * 
      * @return the encryption value.
      */
-    public ClusterPropertiesEncryption encryption() {
+    public ClusterCommonPropertiesEncryption encryption() {
         return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
@@ -267,9 +295,9 @@ public final class ClusterInner extends Resource {
      * @param encryption the encryption value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withEncryption(ClusterPropertiesEncryption encryption) {
+    public ClusterInner withEncryption(ClusterCommonPropertiesEncryption encryption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterProperties();
+            this.innerProperties = new ClusterCreateProperties();
         }
         this.innerProperties().withEncryption(encryption);
         return this;
@@ -405,7 +433,7 @@ public final class ClusterInner extends Resource {
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                    deserializedClusterInner.innerProperties = ClusterCreateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

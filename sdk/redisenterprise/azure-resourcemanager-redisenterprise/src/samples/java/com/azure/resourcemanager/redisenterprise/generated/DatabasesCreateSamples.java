@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.AofFrequency;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
-import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DatabaseCommonPropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 public final class DatabasesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
      * RedisEnterpriseDatabasesNoClusterCacheCreate.json
      */
     /**
@@ -44,7 +44,7 @@ public final class DatabasesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
      * RedisEnterpriseDatabasesCreate.json
      */
     /**
@@ -72,7 +72,7 @@ public final class DatabasesCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
      * RedisEnterpriseDatabasesCreateWithGeoReplication.json
      */
     /**
@@ -89,7 +89,7 @@ public final class DatabasesCreateSamples {
             .withPort(10000)
             .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
             .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
-            .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("groupName")
+            .withGeoReplication(new DatabaseCommonPropertiesGeoReplication().withGroupNickname("groupName")
                 .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId(
                     "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
                     new LinkedDatabase().withId(

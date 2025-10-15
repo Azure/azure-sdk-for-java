@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseProperties;
+import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseUpdateProperties;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
     /*
      * Properties of the database.
      */
-    private DatabaseProperties innerProperties;
+    private DatabaseUpdateProperties innerProperties;
 
     /**
      * Creates an instance of DatabaseUpdate class.
@@ -34,7 +34,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      * 
      * @return the innerProperties value.
      */
-    private DatabaseProperties innerProperties() {
+    private DatabaseUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -57,7 +57,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withClientProtocol(Protocol clientProtocol) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withClientProtocol(clientProtocol);
         return this;
@@ -82,7 +82,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withPort(Integer port) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withPort(port);
         return this;
@@ -127,7 +127,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withClusteringPolicy(clusteringPolicy);
         return this;
@@ -150,7 +150,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withEvictionPolicy(EvictionPolicy evictionPolicy) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withEvictionPolicy(evictionPolicy);
         return this;
@@ -173,7 +173,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withPersistence(Persistence persistence) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withPersistence(persistence);
         return this;
@@ -198,7 +198,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withModules(List<Module> modules) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withModules(modules);
         return this;
@@ -209,7 +209,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      * 
      * @return the geoReplication value.
      */
-    public DatabasePropertiesGeoReplication geoReplication() {
+    public DatabaseCommonPropertiesGeoReplication geoReplication() {
         return this.innerProperties() == null ? null : this.innerProperties().geoReplication();
     }
 
@@ -219,9 +219,9 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      * @param geoReplication the geoReplication value to set.
      * @return the DatabaseUpdate object itself.
      */
-    public DatabaseUpdate withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
+    public DatabaseUpdate withGeoReplication(DatabaseCommonPropertiesGeoReplication geoReplication) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withGeoReplication(geoReplication);
         return this;
@@ -255,7 +255,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withDeferUpgrade(deferUpgrade);
         return this;
@@ -280,7 +280,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
      */
     public DatabaseUpdate withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseUpdateProperties();
         }
         this.innerProperties().withAccessKeysAuthentication(accessKeysAuthentication);
         return this;
@@ -323,7 +323,7 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
                 reader.nextToken();
 
                 if ("properties".equals(fieldName)) {
-                    deserializedDatabaseUpdate.innerProperties = DatabaseProperties.fromJson(reader);
+                    deserializedDatabaseUpdate.innerProperties = DatabaseUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

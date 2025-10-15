@@ -16,8 +16,8 @@ import java.io.IOException;
  * Vault.
  */
 @Fluent
-public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
-    implements JsonSerializable<ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity> {
+public final class ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+    implements JsonSerializable<ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity> {
     /*
      * User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/<sub
      * uuid>/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
@@ -30,9 +30,9 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     private CmkIdentityType identityType;
 
     /**
-     * Creates an instance of ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity class.
+     * Creates an instance of ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity class.
      */
-    public ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity() {
+    public ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity() {
     }
 
     /**
@@ -52,9 +52,9 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
      * group&gt;/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
      * 
      * @param userAssignedIdentityResourceId the userAssignedIdentityResourceId value to set.
-     * @return the ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity object itself.
+     * @return the ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity object itself.
      */
-    public ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+    public ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
         withUserAssignedIdentityResourceId(String userAssignedIdentityResourceId) {
         this.userAssignedIdentityResourceId = userAssignedIdentityResourceId;
         return this;
@@ -75,9 +75,9 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
      * supported in the future.
      * 
      * @param identityType the identityType value to set.
-     * @return the ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity object itself.
+     * @return the ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity object itself.
      */
-    public ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+    public ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
         withIdentityType(CmkIdentityType identityType) {
         this.identityType = identityType;
         return this;
@@ -103,35 +103,36 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     }
 
     /**
-     * Reads an instance of ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity from the JsonReader.
+     * Reads an instance of ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity from the
+     * JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity if the JsonReader was
-     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity if the JsonReader
+     * was pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.
+     * ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.
      */
-    public static ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity fromJson(JsonReader jsonReader)
-        throws IOException {
+    public static ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+        fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity deserializedClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
-                = new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity();
+            ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity deserializedClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity
+                = new ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("userAssignedIdentityResourceId".equals(fieldName)) {
-                    deserializedClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.userAssignedIdentityResourceId
+                    deserializedClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.userAssignedIdentityResourceId
                         = reader.getString();
                 } else if ("identityType".equals(fieldName)) {
-                    deserializedClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.identityType
+                    deserializedClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.identityType
                         = CmkIdentityType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity;
+            return deserializedClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity;
         });
     }
 }

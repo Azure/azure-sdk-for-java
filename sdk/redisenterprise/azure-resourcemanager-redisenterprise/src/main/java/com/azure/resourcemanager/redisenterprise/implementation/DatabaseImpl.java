@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Database;
-import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DatabaseCommonPropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
 import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
@@ -88,7 +88,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         }
     }
 
-    public DatabasePropertiesGeoReplication geoReplication() {
+    public DatabaseCommonPropertiesGeoReplication geoReplication() {
         return this.innerModel().geoReplication();
     }
 
@@ -311,7 +311,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    public DatabaseImpl withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
+    public DatabaseImpl withGeoReplication(DatabaseCommonPropertiesGeoReplication geoReplication) {
         this.innerModel().withGeoReplication(geoReplication);
         return this;
     }
@@ -337,6 +337,6 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

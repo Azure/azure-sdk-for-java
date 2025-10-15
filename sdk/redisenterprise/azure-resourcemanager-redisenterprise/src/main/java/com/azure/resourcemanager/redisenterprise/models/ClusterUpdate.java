@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterProperties;
+import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterUpdateProperties;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointConnectionInner;
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +28,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
     /*
      * Other properties of the cluster.
      */
-    private ClusterProperties innerProperties;
+    private ClusterUpdateProperties innerProperties;
 
     /*
      * The identity of the resource.
@@ -71,7 +71,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      * 
      * @return the innerProperties value.
      */
-    private ClusterProperties innerProperties() {
+    private ClusterUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -116,6 +116,33 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
     }
 
     /**
+     * Get the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Get the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
      * replicated. This affects the availability SLA, and increases the risk of data loss.
      * 
@@ -134,7 +161,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      */
     public ClusterUpdate withHighAvailability(HighAvailability highAvailability) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterProperties();
+            this.innerProperties = new ClusterUpdateProperties();
         }
         this.innerProperties().withHighAvailability(highAvailability);
         return this;
@@ -161,7 +188,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      */
     public ClusterUpdate withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterProperties();
+            this.innerProperties = new ClusterUpdateProperties();
         }
         this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
         return this;
@@ -172,7 +199,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      * 
      * @return the encryption value.
      */
-    public ClusterPropertiesEncryption encryption() {
+    public ClusterCommonPropertiesEncryption encryption() {
         return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
@@ -182,9 +209,9 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      * @param encryption the encryption value to set.
      * @return the ClusterUpdate object itself.
      */
-    public ClusterUpdate withEncryption(ClusterPropertiesEncryption encryption) {
+    public ClusterUpdate withEncryption(ClusterCommonPropertiesEncryption encryption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterProperties();
+            this.innerProperties = new ClusterUpdateProperties();
         }
         this.innerProperties().withEncryption(encryption);
         return this;
@@ -294,7 +321,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
                 if ("sku".equals(fieldName)) {
                     deserializedClusterUpdate.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedClusterUpdate.innerProperties = ClusterProperties.fromJson(reader);
+                    deserializedClusterUpdate.innerProperties = ClusterUpdateProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {

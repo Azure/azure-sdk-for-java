@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
-import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption;
-import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonPropertiesEncryption;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.redisenterprise.models.CmkIdentityType;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
@@ -24,7 +25,7 @@ import java.util.Map;
 public final class RedisEnterpriseCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
      * RedisEnterpriseCreate.json
      */
     /**
@@ -44,10 +45,11 @@ public final class RedisEnterpriseCreateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity",
                     new UserAssignedIdentity())))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
-            .withEncryption(new ClusterPropertiesEncryption().withCustomerManagedKeyEncryption(
-                new ClusterPropertiesEncryptionCustomerManagedKeyEncryption().withKeyEncryptionKeyIdentity(
-                    new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
+            .withEncryption(new ClusterCommonPropertiesEncryption().withCustomerManagedKeyEncryption(
+                new ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption().withKeyEncryptionKeyIdentity(
+                    new ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
                         .withUserAssignedIdentityResourceId(
                             "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity")
                         .withIdentityType(CmkIdentityType.USER_ASSIGNED_IDENTITY))

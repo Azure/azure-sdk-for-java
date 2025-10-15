@@ -15,17 +15,17 @@ import java.io.IOException;
  * Encryption-at-rest configuration for the cluster.
  */
 @Fluent
-public final class ClusterPropertiesEncryption implements JsonSerializable<ClusterPropertiesEncryption> {
+public final class ClusterCommonPropertiesEncryption implements JsonSerializable<ClusterCommonPropertiesEncryption> {
     /*
      * All Customer-managed key encryption properties for the resource. Set this to an empty object to use
      * Microsoft-managed key encryption.
      */
-    private ClusterPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption;
+    private ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption;
 
     /**
-     * Creates an instance of ClusterPropertiesEncryption class.
+     * Creates an instance of ClusterCommonPropertiesEncryption class.
      */
-    public ClusterPropertiesEncryption() {
+    public ClusterCommonPropertiesEncryption() {
     }
 
     /**
@@ -34,7 +34,7 @@ public final class ClusterPropertiesEncryption implements JsonSerializable<Clust
      * 
      * @return the customerManagedKeyEncryption value.
      */
-    public ClusterPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption() {
+    public ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption() {
         return this.customerManagedKeyEncryption;
     }
 
@@ -43,10 +43,10 @@ public final class ClusterPropertiesEncryption implements JsonSerializable<Clust
      * Set this to an empty object to use Microsoft-managed key encryption.
      * 
      * @param customerManagedKeyEncryption the customerManagedKeyEncryption value to set.
-     * @return the ClusterPropertiesEncryption object itself.
+     * @return the ClusterCommonPropertiesEncryption object itself.
      */
-    public ClusterPropertiesEncryption withCustomerManagedKeyEncryption(
-        ClusterPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption) {
+    public ClusterCommonPropertiesEncryption withCustomerManagedKeyEncryption(
+        ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption) {
         this.customerManagedKeyEncryption = customerManagedKeyEncryption;
         return this;
     }
@@ -73,29 +73,30 @@ public final class ClusterPropertiesEncryption implements JsonSerializable<Clust
     }
 
     /**
-     * Reads an instance of ClusterPropertiesEncryption from the JsonReader.
+     * Reads an instance of ClusterCommonPropertiesEncryption from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClusterPropertiesEncryption if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ClusterPropertiesEncryption.
+     * @return An instance of ClusterCommonPropertiesEncryption if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCommonPropertiesEncryption.
      */
-    public static ClusterPropertiesEncryption fromJson(JsonReader jsonReader) throws IOException {
+    public static ClusterCommonPropertiesEncryption fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ClusterPropertiesEncryption deserializedClusterPropertiesEncryption = new ClusterPropertiesEncryption();
+            ClusterCommonPropertiesEncryption deserializedClusterCommonPropertiesEncryption
+                = new ClusterCommonPropertiesEncryption();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("customerManagedKeyEncryption".equals(fieldName)) {
-                    deserializedClusterPropertiesEncryption.customerManagedKeyEncryption
-                        = ClusterPropertiesEncryptionCustomerManagedKeyEncryption.fromJson(reader);
+                    deserializedClusterCommonPropertiesEncryption.customerManagedKeyEncryption
+                        = ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedClusterPropertiesEncryption;
+            return deserializedClusterCommonPropertiesEncryption;
         });
     }
 }

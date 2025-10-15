@@ -10,13 +10,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
-import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterUpdate;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.Kind;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
@@ -78,6 +79,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().identity();
     }
 
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
     public HighAvailability highAvailability() {
         return this.innerModel().highAvailability();
     }
@@ -86,7 +91,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().minimumTlsVersion();
     }
 
-    public ClusterPropertiesEncryption encryption() {
+    public ClusterCommonPropertiesEncryption encryption() {
         return this.innerModel().encryption();
     }
 
@@ -269,6 +274,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
     public ClusterImpl withHighAvailability(HighAvailability highAvailability) {
         if (isInCreateMode()) {
             this.innerModel().withHighAvailability(highAvailability);
@@ -289,7 +304,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
-    public ClusterImpl withEncryption(ClusterPropertiesEncryption encryption) {
+    public ClusterImpl withEncryption(ClusterCommonPropertiesEncryption encryption) {
         if (isInCreateMode()) {
             this.innerModel().withEncryption(encryption);
             return this;
@@ -300,6 +315,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

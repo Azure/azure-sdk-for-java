@@ -108,7 +108,7 @@ public interface Database {
      * 
      * @return the geoReplication value.
      */
-    DatabasePropertiesGeoReplication geoReplication();
+    DatabaseCommonPropertiesGeoReplication geoReplication();
 
     /**
      * Gets the redisVersion property: Version of Redis the database is running on, e.g. '6.0'.
@@ -301,7 +301,7 @@ public interface Database {
              * @param geoReplication Optional set of properties to configure geo replication for this database.
              * @return the next definition stage.
              */
-            WithCreate withGeoReplication(DatabasePropertiesGeoReplication geoReplication);
+            WithCreate withGeoReplication(DatabaseCommonPropertiesGeoReplication geoReplication);
         }
 
         /**
