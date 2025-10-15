@@ -55,9 +55,13 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      * @param isRefresh whether this resource supports runtime configuration refresh
      * @param refreshInterval the interval at which configuration should be refreshed
      */
-    AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles, boolean isRefresh,
+    AzureAppConfigDataResource(Boolean appConfigEnabled, ConfigStore configStore, Profiles profiles, boolean isRefresh,
         Duration refreshInterval) {
-        this.configStoreEnabled = configStore.isEnabled();
+        if (appConfigEnabled) {
+            this.configStoreEnabled = configStore.isEnabled();
+        } else {
+            this.configStoreEnabled = false;
+        }
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
         this.featureFlagSelects = configStore.getFeatureFlags().getSelects();
