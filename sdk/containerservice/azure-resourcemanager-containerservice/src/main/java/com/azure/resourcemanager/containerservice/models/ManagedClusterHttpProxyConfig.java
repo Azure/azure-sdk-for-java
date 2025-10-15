@@ -33,9 +33,21 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
     private List<String> noProxy;
 
     /*
+     * A read-only list of all endpoints for which traffic should not be sent to the proxy. This list is a superset of
+     * noProxy and values injected by AKS.
+     */
+    private List<String> effectiveNoProxy;
+
+    /*
      * Alternative CA cert to use for connecting to proxy servers.
      */
     private String trustedCa;
+
+    /*
+     * Whether to enable HTTP proxy. When disabled, the specified proxy configuration will be not be set on pods and
+     * nodes.
+     */
+    private Boolean enabled;
 
     /**
      * Creates an instance of ManagedClusterHttpProxyConfig class.
@@ -104,6 +116,16 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
     }
 
     /**
+     * Get the effectiveNoProxy property: A read-only list of all endpoints for which traffic should not be sent to the
+     * proxy. This list is a superset of noProxy and values injected by AKS.
+     * 
+     * @return the effectiveNoProxy value.
+     */
+    public List<String> effectiveNoProxy() {
+        return this.effectiveNoProxy;
+    }
+
+    /**
      * Get the trustedCa property: Alternative CA cert to use for connecting to proxy servers.
      * 
      * @return the trustedCa value.
@@ -120,6 +142,28 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
      */
     public ManagedClusterHttpProxyConfig withTrustedCa(String trustedCa) {
         this.trustedCa = trustedCa;
+        return this;
+    }
+
+    /**
+     * Get the enabled property: Whether to enable HTTP proxy. When disabled, the specified proxy configuration will be
+     * not be set on pods and nodes.
+     * 
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set the enabled property: Whether to enable HTTP proxy. When disabled, the specified proxy configuration will be
+     * not be set on pods and nodes.
+     * 
+     * @param enabled the enabled value to set.
+     * @return the ManagedClusterHttpProxyConfig object itself.
+     */
+    public ManagedClusterHttpProxyConfig withEnabled(Boolean enabled) {
+        this.enabled = enabled;
         return this;
     }
 
@@ -141,6 +185,7 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
         jsonWriter.writeStringField("httpsProxy", this.httpsProxy);
         jsonWriter.writeArrayField("noProxy", this.noProxy, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("trustedCa", this.trustedCa);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,8 +212,13 @@ public final class ManagedClusterHttpProxyConfig implements JsonSerializable<Man
                 } else if ("noProxy".equals(fieldName)) {
                     List<String> noProxy = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterHttpProxyConfig.noProxy = noProxy;
+                } else if ("effectiveNoProxy".equals(fieldName)) {
+                    List<String> effectiveNoProxy = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterHttpProxyConfig.effectiveNoProxy = effectiveNoProxy;
                 } else if ("trustedCa".equals(fieldName)) {
                     deserializedManagedClusterHttpProxyConfig.trustedCa = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterHttpProxyConfig.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

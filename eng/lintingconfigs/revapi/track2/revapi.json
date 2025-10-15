@@ -654,8 +654,8 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.search.models.CheckNameAvailabilityInput com.azure.resourcemanager.search.models.CheckNameAvailabilityInput::withType(java.lang.String)",
-          "justification": "Bug fix. type property is a constant."
+          "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
+          "justification": "Not a break, same method exists on its parent class."
         }
       ]
     }
