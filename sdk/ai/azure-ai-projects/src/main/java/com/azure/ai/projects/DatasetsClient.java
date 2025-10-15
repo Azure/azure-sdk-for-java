@@ -557,65 +557,253 @@ public final class DatasetsClient {
 
     /********************* GENERATED WRAPPER CODE *********************/
     /**
-     * Creates or updates a DatasetVersion from a local file in a single call, handling upload and registration.
+     * Retrieves all versions of a dataset, sorted with the latest version first.
      *
-     * @param name The name of the dataset resource.
-     * @param version The version id of the DatasetVersion to create or update.
-     * @param filePath The path to the file to upload.
-     * @return The created or updated FileDatasetVersion.
-     * @throws IllegalArgumentException If the provided path is not a file.
+     * <p>This wrapper simplifies the common workflow of listing dataset versions in descending order of version,
+     * which is a frequent developer need (e.g., to easily pick the most recent version or display a version history).
+     * </p>
+     *
+     * @param name The name of the dataset.
+     * @return PagedIterable of DatasetVersion, sorted with the latest version first.
      */
-    public FileDatasetVersion uploadFileAsDatasetVersion(String name, String version, Path filePath) {
+    public PagedIterable<DatasetVersion> listDatasetVersionsLatestFirst(String name) {
         /*
-          Combined Methods: pendingUpload, BlobClient.upload, createOrUpdateDatasetVersionWithResponse
-          Reason: This wrapper automates the multi-step workflow of uploading a file as a dataset version, including obtaining upload credentials, uploading the file, and registering the dataset version. It eliminates repetitive, error-prone boilerplate and exposes the common user intent as a single operation.
+          Combined Methods: listDatasetVersions
+          Reason: Developers often want to see dataset versions with the latest first, but the base API may not guarantee order.
+                  This wrapper sorts the results in-memory, reducing repetitive sorting logic in user code and aligning with common UX patterns.
         */
-        if (!Files.isRegularFile(filePath)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
-        }
-        PendingUploadRequest pendingUploadRequest = new PendingUploadRequest();
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, pendingUploadRequest);
-        SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(name).buildClient();
-        blobClient.upload(BinaryData.fromFile(filePath));
-        RequestOptions requestOptions = new RequestOptions();
-        FileDatasetVersion datasetVersion = this
-            .createOrUpdateDatasetVersionWithResponse(name, version,
-                BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
-            .getValue()
-            .toObject(FileDatasetVersion.class);
-        return datasetVersion;
+        return listDatasetVersions(name)
+            .stream()
+            .sorted((v1, v2) -> v2.getVersion().compareTo(v1.getVersion()))
+            .collect(com.azure.core.util.paging.PagedIterable.toPagedIterable());
     }
     
     /**
-     * Creates or updates a DatasetVersion from a local folder in a single call, handling upload and registration.
+     * Retrieves the latest version of a dataset by name.
+     *
+     * <p>This wrapper abstracts the common workflow of fetching only the most recent version of a dataset,
+     * eliminating the need for the developer to manually list all versions and filter for the latest.
+     * </p>
+     *
+     * @param name The name of the dataset.
+     * @return The latest DatasetVersion, or null if none exist.
+     */
+    public DatasetVersion getLatestDatasetVersion(String name) {
+        /*
+          Combined Methods: listDatasetVersions
+          Reason: Developers frequently need just the latest version, not the full list.
+                  This wrapper encapsulates the logic to retrieve and return the latest version, reducing boilerplate and potential errors.
+        */
+        return listDatasetVersions(name)
+            .stream()
+            .max((v1, v2) -> v1.getVersion().compareTo(v2.getVersion()))
+            .orElse(null);
+    }
+    
+    /**
+     * Retrieves the latest version of each dataset in the workspace as a list.
+     *
+     * <p>This wrapper converts the paged iterable of latest dataset versions into a List for easier consumption in scenarios
+     * where paging is not required and a simple collection is preferred.</p>
+     *
+     * @return List of the latest DatasetVersion for each dataset.
+     */
+    public List<DatasetVersion> listLatestDatasetVersionsAsList() {
+        /*
+          Combined Methods: listLatestDatasetVersions
+          Reason: Many developers want to work with a List directly for convenience, especially in small-to-medium datasets.
+                  This wrapper removes the need for manual iteration and collection, streamlining common use cases.
+        */
+        List<DatasetVersion> result = new ArrayList<>();
+        listLatestDatasetVersions().forEach(result::add);
+        return result;
+    }/**
+     * Retrieves a specific version of a DatasetVersion with sensible defaults and simplified error handling.
+     * <p>
+     * This method streamlines the retrieval of a DatasetVersion by automatically handling request options and deserialization,
+     * reducing the need for boilerplate code. It returns <code>null</code> if the DatasetVersion does not exist.
+     * </p>
+     *
+     * @param name The name of the dataset.
+     * @param version The version identifier of the DatasetVersion to retrieve.
+     * @return The DatasetVersion if found, or <code>null</code> if not found.
+     */
+    public DatasetVersion tryGetDatasetVersion(String name, String version) {
+        /*
+          Combined Methods: getDatasetVersionWithResponse(String name, String version, RequestOptions requestOptions)
+          Reason: This wrapper improves developer experience by:
+            - Providing a single, intent-revealing method for the common "try-get" workflow.
+            - Automatically supplying default RequestOptions, reducing repetitive setup.
+            - Handling ResourceNotFoundException internally and returning null, which is a common developer expectation for "try-get" patterns.
+            - Avoiding the need for users to manually catch exceptions for the not-found case.
+            - Preserving all other error signaling for unexpected failures.
+        */
+        try {
+            RequestOptions requestOptions = new RequestOptions();
+            return getDatasetVersionWithResponse(name, version, requestOptions)
+                .getValue()
+                .toObject(DatasetVersion.class);
+        } catch (ResourceNotFoundException ex) {
+            return null;
+        }
+    }
+    
+    /**
+     * Retrieves a specific version of a DatasetVersion, allowing customization of request options,
+     * and returns the deserialized DatasetVersion along with the full HTTP response.
+     *
+     * @param name The name of the dataset.
+     * @param version The version identifier of the DatasetVersion to retrieve.
+     * @param requestOptions The options to configure the HTTP request.
+     * @return The HTTP response containing the deserialized DatasetVersion.
+     */
+    public Response<DatasetVersion> getDatasetVersionWithDeserializedResponse(String name, String version, RequestOptions requestOptions) {
+        /*
+          Combined Methods: getDatasetVersionWithResponse(String name, String version, RequestOptions requestOptions)
+          Reason: This wrapper improves developer experience by:
+            - Automatically deserializing the BinaryData payload into a DatasetVersion, so the developer does not need to manually convert the response.
+            - Returning the full Response<DatasetVersion> for scenarios where headers/status are needed, while hiding the BinaryData type.
+            - Reducing repetitive code for deserialization in advanced scenarios.
+        */
+        Response<BinaryData> rawResponse = getDatasetVersionWithResponse(name, version, requestOptions);
+        DatasetVersion datasetVersion = rawResponse.getValue().toObject(DatasetVersion.class);
+        return new SimpleResponse<>(rawResponse.getRequest(), rawResponse.getStatusCode(), rawResponse.getHeaders(), datasetVersion);
+    }/**
+     * Starts a new pending upload or retrieves an existing one for a dataset version, using only required parameters and sensible defaults for common scenarios.
+     *
+     * <p>This method streamlines the process of initiating a pending upload by requiring only the dataset name, version, and pending upload type.
+     * Optional parameters such as connectionName and pendingUploadId are omitted for simplicity, and default request options are used.
+     * This is ideal for the common case where a developer simply wants to start an upload with minimal configuration.</p>
      *
      * @param name The name of the dataset resource.
-     * @param version The version id of the DatasetVersion to create or update.
-     * @param folderPath The path to the folder containing files to upload.
-     * @return The created or updated FolderDatasetVersion.
-     * @throws IllegalArgumentException If the provided path is not a directory.
-     * @throws IOException if an I/O error occurs when accessing the files.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadType The type of pending upload (e.g., "BlobReference").
+     * @return The response for the pending upload request.
      */
-    public FolderDatasetVersion uploadFolderAsDatasetVersion(String name, String version, Path folderPath) throws IOException {
+    public PendingUploadResponse startPendingUpload(String name, String version, String pendingUploadType) {
         /*
-          Combined Methods: pendingUpload, BlobClient.upload (per file), createOrUpdateDatasetVersionWithResponse
-          Reason: This wrapper automates the multi-step workflow of uploading a folder as a dataset version, including obtaining upload credentials, uploading all files, and registering the dataset version. It encapsulates a common, but otherwise complex, developer task into a single, intention-revealing method.
+          Combined Methods: pendingUpload(String, String, PendingUploadRequest)
+          Reason: Simplifies the most common workflow by allowing developers to start a pending upload with only the required parameters,
+          eliminating the need to manually construct a PendingUploadRequest object or supply optional parameters.
+          This reduces boilerplate and aligns with the options pattern for common scenarios.
+        */
+        PendingUploadRequest request = new PendingUploadRequest()
+            .setPendingUploadType(pendingUploadType);
+        return pendingUpload(name, version, request);
+    }
+    
+    /**
+     * Starts a new pending upload or retrieves an existing one for a dataset version, with the option to specify a connection name.
+     *
+     * <p>This method is a convenience overload for the common case where a developer may want to specify a connection name,
+     * but does not need to set a pendingUploadId or custom request options. Default request options are used.</p>
+     *
+     * @param name The name of the dataset resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadType The type of pending upload (e.g., "BlobReference").
+     * @param connectionName The name of the connection to use for the upload.
+     * @return The response for the pending upload request.
+     */
+    public PendingUploadResponse startPendingUpload(String name, String version, String pendingUploadType, String connectionName) {
+        /*
+          Combined Methods: pendingUpload(String, String, PendingUploadRequest)
+          Reason: Reduces friction for a common scenario where a connection name is specified, but other optional parameters are not needed.
+          This wrapper eliminates the need for developers to manually construct the request object, improving usability.
+        */
+        PendingUploadRequest request = new PendingUploadRequest()
+            .setPendingUploadType(pendingUploadType)
+            .setConnectionName(connectionName);
+        return pendingUpload(name, version, request);
+    }
+    
+    /**
+     * Starts or resumes a pending upload for a dataset version, specifying all parameters with sensible defaults for request options.
+     *
+     * <p>This method is a convenience overload for the case where a developer wants to resume an existing pending upload by specifying a pendingUploadId,
+     * in addition to the required parameters. Default request options are used.</p>
+     *
+     * @param name The name of the dataset resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @param pendingUploadType The type of pending upload (e.g., "BlobReference").
+     * @param connectionName The name of the connection to use for the upload (optional, may be null).
+     * @param pendingUploadId The ID of the existing pending upload to resume.
+     * @return The response for the pending upload request.
+     */
+    public PendingUploadResponse resumePendingUpload(String name, String version, String pendingUploadType, String connectionName, String pendingUploadId) {
+        /*
+          Combined Methods: pendingUpload(String, String, PendingUploadRequest)
+          Reason: Streamlines the workflow for resuming an upload by allowing all relevant parameters to be set in a single call,
+          removing the need for manual request object construction and reducing boilerplate.
+        */
+        PendingUploadRequest request = new PendingUploadRequest()
+            .setPendingUploadType(pendingUploadType)
+            .setConnectionName(connectionName)
+            .setPendingUploadId(pendingUploadId);
+        return pendingUpload(name, version, request);
+    }/**
+     * Creates or updates a dataset version from a single file or a folder, automatically detecting the input type.
+     * <p>
+     * If the provided path is a file, creates a FileDatasetVersion. If it is a directory, creates a FolderDatasetVersion.
+     * </p>
+     * 
+     * @param name The name of the dataset resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param path The path to the file or folder to upload.
+     * @return The created dataset version, as FileDatasetVersion or FolderDatasetVersion.
+     * @throws IllegalArgumentException If the provided path is neither a file nor a directory.
+     * @throws IOException If an I/O error occurs during folder upload.
+     */
+    public Object createDatasetAuto(String name, String version, Path path) throws IOException {
+        /*
+          Combined Methods: createDatasetWithFile, createDatasetWithFolder
+          Reason: Developers often want to create a dataset from a local path, regardless of whether it's a file or folder.
+          This wrapper abstracts the manual type-checking and method selection, streamlining the workflow and reducing boilerplate.
+        */
+        if (Files.isRegularFile(path)) {
+            return createDatasetWithFile(name, version, path);
+        } else if (Files.isDirectory(path)) {
+            return createDatasetWithFolder(name, version, path);
+        } else {
+            throw new IllegalArgumentException("The provided path is neither a file nor a directory: " + path);
+        }
+    }
+    
+    /**
+     * Creates or updates a dataset version from a folder, uploading all files recursively, with optional file filter.
+     * <p>
+     * This overload allows specifying a filter to include only certain files in the upload.
+     * </p>
+     * 
+     * @param name The name of the dataset resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param fileFilter A filter to select which files to include (e.g., by extension or name).
+     * @return The created FolderDatasetVersion.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     * @throws IOException If an I/O error occurs during folder upload.
+     */
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath, java.util.function.Predicate<Path> fileFilter) throws IOException {
+        /*
+          Combined Methods: createDatasetWithFolder (customized)
+          Reason: Developers often want to upload only a subset of files from a folder (e.g., only .csv files).
+          This wrapper provides a convenient way to filter files, reducing repetitive code for file selection.
         */
         if (!Files.isDirectory(folderPath)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
+            throw new IllegalArgumentException("The provided path is not a folder: " + folderPath);
         }
         PendingUploadRequest request = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
         String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
         SasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
-        Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
-            String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-            BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(relativePath).buildClient();
-            blobClient.upload(BinaryData.fromFile(filePath), true);
-        });
+        Files.walk(folderPath)
+            .filter(Files::isRegularFile)
+            .filter(fileFilter)
+            .forEach(filePath -> {
+                String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUri()).blobName(relativePath).buildClient();
+                blobClient.upload(BinaryData.fromFile(filePath), true);
+            });
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
             .createOrUpdateDatasetVersionWithResponse(name, version,
@@ -626,41 +814,255 @@ public final class DatasetsClient {
     }
     
     /**
-     * Deletes all versions of a Dataset by name.
-     *
+     * Creates or updates a dataset version from a file, using sensible defaults for request options.
+     * <p>
+     * Simplifies the creation of a FileDatasetVersion by requiring only the essential parameters.
+     * </p>
+     * 
      * @param name The name of the dataset resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @return The created FileDatasetVersion.
+     * @throws IllegalArgumentException If the provided path is not a file.
      */
-    public void deleteAllDatasetVersions(String name) {
+    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath) {
         /*
-          Combined Methods: listDatasetVersions, deleteDatasetVersion
-          Reason: This wrapper enables a common bulk operation—deleting all versions of a dataset—by internally listing all versions and deleting each one. It saves developers from writing repetitive code and ensures correct sequencing.
+          Wrapped Method: createDatasetWithFile
+          Reason: This method already provides a high-level abstraction, but is included here for completeness and discoverability,
+          ensuring developers can easily find the streamlined file upload path without needing to construct request options.
         */
-        for (DatasetVersion version : listDatasetVersions(name)) {
-            deleteDatasetVersion(name, version.getVersion());
+        return createDatasetWithFile(name, version, filePath);
+    }/**
+     * Deletes a specific version of a dataset, handling common error scenarios and optionally suppressing 404 errors.
+     *
+     * @param name The name of the dataset.
+     * @param version The version of the dataset to delete.
+     * @param suppressNotFound If true, suppresses ResourceNotFoundException (404) and returns silently if the version does not exist.
+     * @throws IllegalArgumentException if parameters fail validation.
+     * @throws HttpResponseException if the request is rejected by server (other than 404, if suppressed).
+     * @throws ClientAuthenticationException if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException if the request is rejected by server on status code 409.
+     * @throws RuntimeException for all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public void deleteDatasetVersionIfExists(String name, String version, boolean suppressNotFound) {
+        /*
+          Combined Methods: deleteDatasetVersion, deleteDatasetVersionWithResponse
+          Reason: Developers often want to delete a resource if it exists, but not treat a missing resource (404) as an error.
+          This wrapper streamlines the common pattern of catching and suppressing ResourceNotFoundException, reducing boilerplate.
+        */
+        try {
+            deleteDatasetVersion(name, version);
+        } catch (ResourceNotFoundException ex) {
+            if (!suppressNotFound) {
+                throw ex;
+            }
+            // else: silently ignore 404
         }
     }
     
     /**
-     * Retrieves the latest version of a Dataset by name.
+     * Deletes a specific version of a dataset, allowing the caller to specify custom request options.
      *
-     * @param name The name of the dataset resource.
-     * @return The latest DatasetVersion, or null if none exist.
+     * @param name The name of the dataset.
+     * @param version The version of the dataset to delete.
+     * @param requestOptions The options to configure the HTTP request before sending.
+     * @throws IllegalArgumentException if parameters fail validation.
+     * @throws HttpResponseException if the request is rejected by server.
+     * @throws ClientAuthenticationException if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException if the request is rejected by server on status code 409.
+     * @throws RuntimeException for all other wrapped checked exceptions if the request fails to be sent.
      */
-    public DatasetVersion getLatestDatasetVersion(String name) {
+    public void deleteDatasetVersion(String name, String version, RequestOptions requestOptions) {
         /*
-          Combined Methods: listDatasetVersions, getDatasetVersion
-          Reason: This wrapper expresses the intent to fetch the latest version of a dataset, hiding the need to manually enumerate and select the latest version. It streamlines a frequent lookup pattern.
+          Combined Methods: deleteDatasetVersionWithResponse
+          Reason: The codegen only exposes deleteDatasetVersionWithResponse for custom RequestOptions, but developers expect
+          a void-returning convenience overload for simple use cases. This wrapper provides a streamlined, idiomatic overload.
         */
-        DatasetVersion latest = null;
-        for (DatasetVersion version : listDatasetVersions(name)) {
-            if (latest == null || version.getVersion().compareTo(latest.getVersion()) > 0) {
-                latest = version;
-            }
+        deleteDatasetVersionWithResponse(name, version, requestOptions);
+    }/**
+     * Creates or updates a DatasetVersion with minimal required parameters, using sensible defaults for optional fields.
+     * <p>
+     * This wrapper streamlines the creation or update of a DatasetVersion by requiring only the most essential parameters,
+     * and automatically constructing the DatasetVersion model with optional fields left unset. This is ideal for the
+     * common case where only name, version, type, and dataUri are needed.
+     * </p>
+     *
+     * @param name The name of the Dataset resource.
+     * @param version The version identifier for the DatasetVersion.
+     * @param type The type of the DatasetVersion (e.g., "uri_file" or "uri_folder").
+     * @param dataUri The URI to the data (required on create).
+     * @return The created or updated DatasetVersion.
+     */
+    public DatasetVersion createOrUpdateDatasetVersion(String name, String version, String type, String dataUri) {
+        /*
+          Combined Methods: createOrUpdateDatasetVersion(String, String, DatasetVersion)
+          Reason: Developers often only need to specify the minimal required fields for a DatasetVersion. This wrapper reduces boilerplate by constructing the DatasetVersion model internally, applying sensible defaults for optional fields, and invoking the existing convenience method. This aligns with the options pattern and streamlines the most common workflow.
+        */
+        DatasetVersion datasetVersion = new DatasetVersion()
+            .setName(name)
+            .setVersion(version)
+            .setType(type)
+            .setDataUri(dataUri);
+        return createOrUpdateDatasetVersion(name, version, datasetVersion);
+    }
+    
+    /**
+     * Creates or updates a DatasetVersion with required and commonly-used optional parameters, simplifying model construction.
+     * <p>
+     * This wrapper allows developers to specify the most frequently-used fields directly, including description and tags,
+     * without manually constructing a DatasetVersion object. It is intended for scenarios where developers want to
+     * supply metadata along with the required fields.
+     * </p>
+     *
+     * @param name The name of the Dataset resource.
+     * @param version The version identifier for the DatasetVersion.
+     * @param type The type of the DatasetVersion (e.g., "uri_file" or "uri_folder").
+     * @param dataUri The URI to the data (required on create).
+     * @param description The description of the DatasetVersion.
+     * @param tags The tags to associate with the DatasetVersion.
+     * @return The created or updated DatasetVersion.
+     */
+    public DatasetVersion createOrUpdateDatasetVersion(
+        String name,
+        String version,
+        String type,
+        String dataUri,
+        String description,
+        Map<String, String> tags
+    ) {
+        /*
+          Combined Methods: createOrUpdateDatasetVersion(String, String, DatasetVersion)
+          Reason: This wrapper targets the common workflow of creating or updating a DatasetVersion with both required and frequently-used optional fields, reducing the need for verbose model construction and improving clarity.
+        */
+        DatasetVersion datasetVersion = new DatasetVersion()
+            .setName(name)
+            .setVersion(version)
+            .setType(type)
+            .setDataUri(dataUri)
+            .setDescription(description)
+            .setTags(tags);
+        return createOrUpdateDatasetVersion(name, version, datasetVersion);
+    }
+    
+    /**
+     * Creates or updates a DatasetVersion with all available parameters, providing a single entry point for full customization.
+     * <p>
+     * This wrapper enables developers to specify every possible field of a DatasetVersion directly, reducing the need to
+     * manually instantiate and populate the model. It is intended for advanced scenarios where all fields may be relevant.
+     * </p>
+     *
+     * @param name The name of the Dataset resource.
+     * @param version The version identifier for the DatasetVersion.
+     * @param type The type of the DatasetVersion (e.g., "uri_file" or "uri_folder").
+     * @param dataUri The URI to the data (required on create).
+     * @param isReference Whether this DatasetVersion is a reference.
+     * @param connectionName The name of the connection.
+     * @param id The unique identifier of the DatasetVersion.
+     * @param description The description of the DatasetVersion.
+     * @param tags The tags to associate with the DatasetVersion.
+     * @return The created or updated DatasetVersion.
+     */
+    public DatasetVersion createOrUpdateDatasetVersion(
+        String name,
+        String version,
+        String type,
+        String dataUri,
+        Boolean isReference,
+        String connectionName,
+        String id,
+        String description,
+        Map<String, String> tags
+    ) {
+        /*
+          Combined Methods: createOrUpdateDatasetVersion(String, String, DatasetVersion)
+          Reason: This wrapper provides a comprehensive overload for advanced scenarios, enabling full control over all DatasetVersion fields without requiring manual model construction. This reduces repetitive code and aligns with the options pattern for complex inputs.
+        */
+        DatasetVersion datasetVersion = new DatasetVersion()
+            .setName(name)
+            .setVersion(version)
+            .setType(type)
+            .setDataUri(dataUri)
+            .setIsReference(isReference)
+            .setConnectionName(connectionName)
+            .setId(id)
+            .setDescription(description)
+            .setTags(tags);
+        return createOrUpdateDatasetVersion(name, version, datasetVersion);
+    }/**
+     * Retrieves the SAS URI for the blob associated with a Dataset version, simplifying access for download or upload scenarios.
+     * <p>
+     * This method abstracts away the details of the credential response structure and returns the direct SAS URI string,
+     * which is the most common developer need for accessing the blob.
+     * </p>
+     *
+     * @param name The name of the Dataset resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @return The SAS URI string for the blob associated with the Dataset version.
+     * @throws IllegalArgumentException if parameters fail validation.
+     * @throws HttpResponseException if the request is rejected by server.
+     * @throws ClientAuthenticationException if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException if the request is rejected by server on status code 409.
+     * @throws RuntimeException for all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public String getDatasetVersionBlobSasUri(String name, String version) {
+        /*
+          Combined Methods: getCredentials(String, String)
+          Reason: Developers commonly want to access the blob directly (e.g., for download/upload) and need only the SAS URI.
+          This wrapper extracts the SAS URI from the nested response, eliminating the need for the user to parse the result structure.
+        */
+        AssetCredentialResult result = getCredentials(name, version);
+        if (result == null
+            || result.getBlobReference() == null
+            || result.getBlobReference().getCredential() == null
+            || result.getBlobReference().getCredential().getSasUri() == null) {
+            throw new IllegalStateException("SAS URI not found in the credential response.");
         }
-        if (latest == null) {
-            return null;
+        return result.getBlobReference().getCredential().getSasUri();
+    }
+    
+    /**
+     * Retrieves the full Blob URI (including SAS token) for the blob associated with a Dataset version.
+     * <p>
+     * This method combines the blobUri and the SAS token, providing a ready-to-use URI for direct blob access.
+     * </p>
+     *
+     * @param name The name of the Dataset resource.
+     * @param version The specific version id of the DatasetVersion to operate on.
+     * @return The full Blob URI (including SAS token) for the Dataset version.
+     * @throws IllegalArgumentException if parameters fail validation.
+     * @throws HttpResponseException if the request is rejected by server.
+     * @throws ClientAuthenticationException if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException if the request is rejected by server on status code 409.
+     * @throws RuntimeException for all other wrapped checked exceptions if the request fails to be sent.
+     */
+    public String getDatasetVersionBlobUriWithSas(String name, String version) {
+        /*
+          Combined Methods: getCredentials(String, String)
+          Reason: Developers often need a single URI for direct blob access (e.g., with Azure Storage SDKs or tools).
+          This wrapper combines the blobUri and the SAS token, hiding response parsing and URI construction logic.
+        */
+        AssetCredentialResult result = getCredentials(name, version);
+        if (result == null
+            || result.getBlobReference() == null
+            || result.getBlobReference().getBlobUri() == null
+            || result.getBlobReference().getCredential() == null
+            || result.getBlobReference().getCredential().getSasUri() == null) {
+            throw new IllegalStateException("Blob URI or SAS token not found in the credential response.");
         }
-        return getDatasetVersion(name, latest.getVersion());
+        String blobUri = result.getBlobReference().getBlobUri();
+        String sasUri = result.getBlobReference().getCredential().getSasUri();
+        // If the SAS token is already appended, return as is; otherwise, combine.
+        if (blobUri.contains("?")) {
+            return blobUri;
+        }
+        // Assume sasUri is of the form "?sv=..."; append to blobUri if not present.
+        if (sasUri.startsWith("?")) {
+            return blobUri + sasUri;
+        }
+        return blobUri + "?" + sasUri;
     }
 
     /********************* END OF GENERATED CODE *********************/
