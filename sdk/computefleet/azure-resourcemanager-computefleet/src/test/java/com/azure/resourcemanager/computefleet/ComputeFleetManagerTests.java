@@ -110,7 +110,7 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     @LiveOnly
     public void testCreateComputeFleet() {
         // trigger the auth, to mitigate https://github.com/Azure/azure-sdk-for-java/issues/46858
-        resourceManager.providers().getByName("Microsoft.HDInsight");
+        resourceManager.providers().getByName("Microsoft.AzureFleet");
 
         Fleet fleet = null;
         try {
