@@ -61,7 +61,7 @@ import java.util.UUID;
 
 public class ComputeFleetManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST2;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private ResourceManager resourceManager = null;
     private ComputeFleetManager computeFleetManager = null;
