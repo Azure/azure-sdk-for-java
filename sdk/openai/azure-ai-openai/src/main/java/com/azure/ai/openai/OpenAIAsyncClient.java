@@ -1521,7 +1521,7 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getImageGenerationsWithResponse(String deploymentOrModelName,
+    public Mono<Response<BinaryData>> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return this.openAIServiceClient != null
             ? this.openAIServiceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName,
