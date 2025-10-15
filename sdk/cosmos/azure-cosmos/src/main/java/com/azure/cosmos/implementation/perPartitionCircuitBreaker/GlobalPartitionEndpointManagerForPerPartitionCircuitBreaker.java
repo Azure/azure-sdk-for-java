@@ -92,10 +92,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             // in scenarios where partition is splitting or invalid partition (name cache is stale) then resolvedPartitionKeyRange could be set to null
             // no reason to circuit break a partition key range which is effectively won't be used in the future
             if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
-                logger.info("Skipping circuit breaking for partitionKeyRange which is splitting or invalid / undergoing migrations, partitionKeyRange: " +
+                logger.info("Skipping circuit breaking for partitionKeyRange which is splitting or invalid partition (name cache is stale), partitionKeyRange: " +
                     resolvedPartitionKeyRangeForCircuitBreaker +
                     " and operationType: " +
-                    request.getOperationType());
+                    request.getOperationType() +
+                    " and collectionResourceId: " +
+                    request.getResourceId());
                 return;
             }
 
@@ -106,7 +108,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             // so we proceed with circuit breaking in this case
             if (resolvedPartitionKeyRangeForCircuitBreaker == null && isCancellationException) {
                 logger.warn("Skipping circuit breaking for operation as partitionKeyRange information isn't available for an e2e timeout cancelled request with operationType: " +
-                    request.getOperationType());
+                    request.getOperationType() +
+                    " and collectionResourceId: " +
+                    request.getResourceId());
                 return;
             }
 
