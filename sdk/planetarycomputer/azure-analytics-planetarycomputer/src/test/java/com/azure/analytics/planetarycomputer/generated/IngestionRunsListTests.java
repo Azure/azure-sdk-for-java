@@ -21,7 +21,7 @@ public final class IngestionRunsListTests extends PlanetaryComputerClientTestBas
     public void testIngestionRunsListTests() {
         // method invocation
         PagedIterable<IngestionRun> response
-            = ingestionClient.listRuns("collectionId", "7763987f-8ccd-457e-81d1-41b430510b8a", null, null);
+            = ingestionManagementClient.listRuns("collectionId", "7763987f-8ccd-457e-81d1-41b430510b8a", null, null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

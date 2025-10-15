@@ -376,10 +376,10 @@ public class StacItemOrStacItemCollection implements JsonSerializable<StacItemOr
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Feature".equals(discriminatorValue)) {
-                    return StacItem.fromJson(readerToUse.reset());
-                } else if ("FeatureCollection".equals(discriminatorValue)) {
+                if ("FeatureCollection".equals(discriminatorValue)) {
                     return StacItemCollection.fromJson(readerToUse.reset());
+                } else if ("Feature".equals(discriminatorValue)) {
+                    return StacItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

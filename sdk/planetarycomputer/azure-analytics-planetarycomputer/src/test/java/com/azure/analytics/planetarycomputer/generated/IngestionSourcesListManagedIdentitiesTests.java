@@ -16,7 +16,7 @@ public final class IngestionSourcesListManagedIdentitiesTests extends PlanetaryC
     @Disabled
     public void testIngestionSourcesListManagedIdentitiesTests() {
         // method invocation
-        PagedIterable<ManagedIdentityMetadata> response = ingestionClient.listManagedIdentities();
+        PagedIterable<ManagedIdentityMetadata> response = ingestionManagementClient.listManagedIdentities();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

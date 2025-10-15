@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.IngestionsImpl;
+import com.azure.analytics.planetarycomputer.implementation.IngestionManagementsImpl;
 import com.azure.analytics.planetarycomputer.models.Ingestion;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.analytics.planetarycomputer.models.IngestionSource;
@@ -36,17 +36,17 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous PlanetaryComputerClient type.
  */
 @ServiceClient(builder = PlanetaryComputerClientBuilder.class, isAsync = true)
-public final class IngestionAsyncClient {
+public final class IngestionManagementAsyncClient {
     @Generated
-    private final IngestionsImpl serviceClient;
+    private final IngestionManagementsImpl serviceClient;
 
     /**
-     * Initializes an instance of IngestionAsyncClient class.
+     * Initializes an instance of IngestionManagementAsyncClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    IngestionAsyncClient(IngestionsImpl serviceClient) {
+    IngestionManagementAsyncClient(IngestionManagementsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

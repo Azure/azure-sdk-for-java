@@ -18,7 +18,7 @@ public final class IngestionsDeleteTests extends PlanetaryComputerClientTestBase
     public void testIngestionsDeleteTests() {
         // method invocation
         SyncPoller<Operation, Void> response = setPlaybackSyncPollerPollInterval(
-            ingestionClient.beginDelete("potsdam-stacforge", "5e961a4c-7c3e-40ca-b151-2e574bae1635"));
+            ingestionManagementClient.beginDelete("potsdam-stacforge", "5e961a4c-7c3e-40ca-b151-2e574bae1635"));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

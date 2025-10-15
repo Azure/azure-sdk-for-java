@@ -4,9 +4,9 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.SharedAccessSignatureClientsImpl;
+import com.azure.analytics.planetarycomputer.implementation.SharedAccessSignaturesImpl;
+import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureSignedLink;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureToken;
-import com.azure.analytics.planetarycomputer.models.SignedLink;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -25,7 +25,7 @@ import com.azure.core.util.BinaryData;
 @ServiceClient(builder = PlanetaryComputerClientBuilder.class)
 public final class SharedAccessSignatureClient {
     @Generated
-    private final SharedAccessSignatureClientsImpl serviceClient;
+    private final SharedAccessSignaturesImpl serviceClient;
 
     /**
      * Initializes an instance of SharedAccessSignatureClient class.
@@ -33,7 +33,7 @@ public final class SharedAccessSignatureClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    SharedAccessSignatureClient(SharedAccessSignatureClientsImpl serviceClient) {
+    SharedAccessSignatureClient(SharedAccessSignaturesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -174,13 +174,13 @@ public final class SharedAccessSignatureClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignedLink getSign(String href, Integer durationInMinutes) {
+    public SharedAccessSignatureSignedLink getSign(String href, Integer durationInMinutes) {
         // Generated convenience method for getSignWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (durationInMinutes != null) {
             requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
         }
-        return getSignWithResponse(href, requestOptions).getValue().toObject(SignedLink.class);
+        return getSignWithResponse(href, requestOptions).getValue().toObject(SharedAccessSignatureSignedLink.class);
     }
 
     /**
@@ -203,10 +203,10 @@ public final class SharedAccessSignatureClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignedLink getSign(String href) {
+    public SharedAccessSignatureSignedLink getSign(String href) {
         // Generated convenience method for getSignWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSignWithResponse(href, requestOptions).getValue().toObject(SignedLink.class);
+        return getSignWithResponse(href, requestOptions).getValue().toObject(SharedAccessSignatureSignedLink.class);
     }
 
     /**

@@ -13,6 +13,6 @@ public final class IngestionOperationsDeleteAllTests extends PlanetaryComputerCl
     @Disabled
     public void testIngestionOperationsDeleteAllTests() {
         // method invocation
-        ingestionClient.cancelAllOperations();
+        ingestionManagementClient.cancelAllOperations();
     }
 }

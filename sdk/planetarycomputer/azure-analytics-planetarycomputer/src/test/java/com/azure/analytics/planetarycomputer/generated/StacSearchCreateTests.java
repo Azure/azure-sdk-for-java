@@ -44,10 +44,10 @@ public final class StacSearchCreateTests extends PlanetaryComputerClientTestBase
         Geometry responseFeaturesFirstItemGeometry = responseFeaturesFirstItem.getGeometry();
         Assertions.assertNotNull(responseFeaturesFirstItemGeometry);
         Assertions.assertEquals(GeometryType.POLYGON, responseFeaturesFirstItemGeometry.getType());
-        List<Double> responseFeaturesFirstItemBoundingBox = responseFeaturesFirstItem.getBoundingBox();
-        Assertions.assertEquals(-33.93336757082145, responseFeaturesFirstItemBoundingBox.iterator().next());
         Assertions.assertEquals("LC09_L2SP_060238_20250714_02_T1", responseFeaturesFirstItem.getId());
         Assertions.assertEquals("landsat-c2-l2", responseFeaturesFirstItem.getCollection());
+        List<Double> responseFeaturesFirstItemBoundingBox = responseFeaturesFirstItem.getBoundingBox();
+        Assertions.assertEquals(-33.93336757082145, responseFeaturesFirstItemBoundingBox.iterator().next());
         StacItemProperties responseFeaturesFirstItemProperties = responseFeaturesFirstItem.getProperties();
         Assertions.assertNotNull(responseFeaturesFirstItemProperties);
         Assertions.assertEquals("landsat-9", responseFeaturesFirstItemProperties.getPlatform());

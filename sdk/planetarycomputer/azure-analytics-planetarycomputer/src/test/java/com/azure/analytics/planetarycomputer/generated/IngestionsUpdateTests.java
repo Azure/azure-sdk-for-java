@@ -18,7 +18,7 @@ public final class IngestionsUpdateTests extends PlanetaryComputerClientTestBase
         BinaryData definition = BinaryData.fromString(
             "{\"displayName\":\"test-ingestion1\",\"keepOriginalAssets\":false,\"skipExistingItems\":false,\"sourceCatalogUrl\":\"https://uksouthdatazoo.blob.core.windows.net/impactobservatory\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = ingestionClient.updateWithResponse("potsdam-stacforge",
+        Response<BinaryData> response = ingestionManagementClient.updateWithResponse("potsdam-stacforge",
             "5e961a4c-7c3e-40ca-b151-2e574bae1635", definition, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(

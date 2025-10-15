@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.models.SignedLink;
+import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureSignedLink;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ public final class SasGetSignTests extends PlanetaryComputerClientTestBase {
     @Disabled
     public void testSasGetSignTests() {
         // method invocation
-        SignedLink response = sharedAccessSignatureClient.getSign("https://contoso.com", null);
+        SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getSign("https://contoso.com", null);
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -6,18 +6,20 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * STAC Item representing a spatiotemporal asset with statistical information.
  */
 @Immutable
-public final class GeoJsonStatisticsItemResponse implements JsonSerializable<GeoJsonStatisticsItemResponse> {
+public final class StacItemStatisticsGeoJson implements JsonSerializable<StacItemStatisticsGeoJson> {
     /*
      * Geometry object defining the feature's shape
      */
@@ -25,22 +27,16 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     private final Geometry geometry;
 
     /*
-     * Bounding box coordinates for the feature
-     */
-    @Generated
-    private final List<Double> boundingBox;
-
-    /*
-     * Unique identifier for the feature
-     */
-    @Generated
-    private final String id;
-
-    /*
      * GeoJSON type identifier for Feature
      */
     @Generated
     private final FeatureType type;
+
+    /*
+     * Feature properties
+     */
+    @Generated
+    private Map<String, BinaryData> properties;
 
     /*
      * MSFT Created
@@ -61,6 +57,18 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     private String shortDescription;
 
     /*
+     * Unique identifier for the feature
+     */
+    @Generated
+    private final String id;
+
+    /*
+     * Bounding box coordinates for the feature
+     */
+    @Generated
+    private final List<Double> boundingBox;
+
+    /*
      * Stac Version
      */
     @Generated
@@ -71,12 +79,6 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
      */
     @Generated
     private String collection;
-
-    /*
-     * Properties
-     */
-    @Generated
-    private final StacItemProperties properties;
 
     /*
      * MSFT Timestamp
@@ -97,22 +99,19 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     private List<String> stacExtensions;
 
     /**
-     * Creates an instance of GeoJsonStatisticsItemResponse class.
+     * Creates an instance of StacItemStatisticsGeoJson class.
      * 
      * @param geometry the geometry value to set.
-     * @param boundingBox the boundingBox value to set.
-     * @param id the id value to set.
      * @param type the type value to set.
-     * @param properties the properties value to set.
+     * @param id the id value to set.
+     * @param boundingBox the boundingBox value to set.
      */
     @Generated
-    private GeoJsonStatisticsItemResponse(Geometry geometry, List<Double> boundingBox, String id, FeatureType type,
-        StacItemProperties properties) {
+    private StacItemStatisticsGeoJson(Geometry geometry, FeatureType type, String id, List<Double> boundingBox) {
         this.geometry = geometry;
-        this.boundingBox = boundingBox;
-        this.id = id;
         this.type = type;
-        this.properties = properties;
+        this.id = id;
+        this.boundingBox = boundingBox;
     }
 
     /**
@@ -126,26 +125,6 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     }
 
     /**
-     * Get the boundingBox property: Bounding box coordinates for the feature.
-     * 
-     * @return the boundingBox value.
-     */
-    @Generated
-    public List<Double> getBoundingBox() {
-        return this.boundingBox;
-    }
-
-    /**
-     * Get the id property: Unique identifier for the feature.
-     * 
-     * @return the id value.
-     */
-    @Generated
-    public String getId() {
-        return this.id;
-    }
-
-    /**
      * Get the type property: GeoJSON type identifier for Feature.
      * 
      * @return the type value.
@@ -153,6 +132,16 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     @Generated
     public FeatureType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the properties property: Feature properties.
+     * 
+     * @return the properties value.
+     */
+    @Generated
+    public Map<String, BinaryData> getProperties() {
+        return this.properties;
     }
 
     /**
@@ -186,6 +175,26 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     }
 
     /**
+     * Get the id property: Unique identifier for the feature.
+     * 
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Get the boundingBox property: Bounding box coordinates for the feature.
+     * 
+     * @return the boundingBox value.
+     */
+    @Generated
+    public List<Double> getBoundingBox() {
+        return this.boundingBox;
+    }
+
+    /**
      * Get the stacVersion property: Stac Version.
      * 
      * @return the stacVersion value.
@@ -203,16 +212,6 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     @Generated
     public String getCollection() {
         return this.collection;
-    }
-
-    /**
-     * Get the properties property: Properties.
-     * 
-     * @return the properties value.
-     */
-    @Generated
-    public StacItemProperties getProperties() {
-        return this.properties;
     }
 
     /**
@@ -253,10 +252,11 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("geometry", this.geometry);
-        jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeMapField("properties", this.properties,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("msft:_created", this.createdOn);
         jsonWriter.writeStringField("msft:_updated", this.updatedOn);
         jsonWriter.writeStringField("msft:short_description", this.shortDescription);
@@ -270,22 +270,22 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
     }
 
     /**
-     * Reads an instance of GeoJsonStatisticsItemResponse from the JsonReader.
+     * Reads an instance of StacItemStatisticsGeoJson from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GeoJsonStatisticsItemResponse if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of StacItemStatisticsGeoJson if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GeoJsonStatisticsItemResponse.
+     * @throws IOException If an error occurs while reading the StacItemStatisticsGeoJson.
      */
     @Generated
-    public static GeoJsonStatisticsItemResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static StacItemStatisticsGeoJson fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Geometry geometry = null;
-            List<Double> boundingBox = null;
-            String id = null;
             FeatureType type = null;
-            StacItemProperties properties = null;
+            String id = null;
+            List<Double> boundingBox = null;
+            Map<String, BinaryData> properties = null;
             String createdOn = null;
             String updatedOn = null;
             String shortDescription = null;
@@ -300,14 +300,15 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
 
                 if ("geometry".equals(fieldName)) {
                     geometry = Geometry.fromJson(reader);
-                } else if ("bbox".equals(fieldName)) {
-                    boundingBox = reader.readArray(reader1 -> reader1.getDouble());
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = FeatureType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("bbox".equals(fieldName)) {
+                    boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                 } else if ("properties".equals(fieldName)) {
-                    properties = StacItemProperties.fromJson(reader);
+                    properties = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("msft:_created".equals(fieldName)) {
                     createdOn = reader.getString();
                 } else if ("msft:_updated".equals(fieldName)) {
@@ -328,18 +329,19 @@ public final class GeoJsonStatisticsItemResponse implements JsonSerializable<Geo
                     reader.skipChildren();
                 }
             }
-            GeoJsonStatisticsItemResponse deserializedGeoJsonStatisticsItemResponse
-                = new GeoJsonStatisticsItemResponse(geometry, boundingBox, id, type, properties);
-            deserializedGeoJsonStatisticsItemResponse.createdOn = createdOn;
-            deserializedGeoJsonStatisticsItemResponse.updatedOn = updatedOn;
-            deserializedGeoJsonStatisticsItemResponse.shortDescription = shortDescription;
-            deserializedGeoJsonStatisticsItemResponse.stacVersion = stacVersion;
-            deserializedGeoJsonStatisticsItemResponse.collection = collection;
-            deserializedGeoJsonStatisticsItemResponse.timestamp = timestamp;
-            deserializedGeoJsonStatisticsItemResponse.eTag = eTag;
-            deserializedGeoJsonStatisticsItemResponse.stacExtensions = stacExtensions;
+            StacItemStatisticsGeoJson deserializedStacItemStatisticsGeoJson
+                = new StacItemStatisticsGeoJson(geometry, type, id, boundingBox);
+            deserializedStacItemStatisticsGeoJson.properties = properties;
+            deserializedStacItemStatisticsGeoJson.createdOn = createdOn;
+            deserializedStacItemStatisticsGeoJson.updatedOn = updatedOn;
+            deserializedStacItemStatisticsGeoJson.shortDescription = shortDescription;
+            deserializedStacItemStatisticsGeoJson.stacVersion = stacVersion;
+            deserializedStacItemStatisticsGeoJson.collection = collection;
+            deserializedStacItemStatisticsGeoJson.timestamp = timestamp;
+            deserializedStacItemStatisticsGeoJson.eTag = eTag;
+            deserializedStacItemStatisticsGeoJson.stacExtensions = stacExtensions;
 
-            return deserializedGeoJsonStatisticsItemResponse;
+            return deserializedStacItemStatisticsGeoJson;
         });
     }
 }

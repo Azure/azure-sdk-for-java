@@ -45,11 +45,11 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        IngestionClient.class,
+        IngestionManagementClient.class,
         StacClient.class,
         TilerClient.class,
         SharedAccessSignatureClient.class,
-        IngestionAsyncClient.class,
+        IngestionManagementAsyncClient.class,
         StacAsyncClient.class,
         TilerAsyncClient.class,
         SharedAccessSignatureAsyncClient.class })
@@ -320,13 +320,13 @@ public final class PlanetaryComputerClientBuilder
     }
 
     /**
-     * Builds an instance of IngestionAsyncClient class.
+     * Builds an instance of IngestionManagementAsyncClient class.
      * 
-     * @return an instance of IngestionAsyncClient.
+     * @return an instance of IngestionManagementAsyncClient.
      */
     @Generated
-    public IngestionAsyncClient buildIngestionAsyncClient() {
-        return new IngestionAsyncClient(buildInnerClient().getIngestions());
+    public IngestionManagementAsyncClient buildIngestionManagementAsyncClient() {
+        return new IngestionManagementAsyncClient(buildInnerClient().getIngestionManagements());
     }
 
     /**
@@ -356,17 +356,17 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     public SharedAccessSignatureAsyncClient buildSharedAccessSignatureAsyncClient() {
-        return new SharedAccessSignatureAsyncClient(buildInnerClient().getSharedAccessSignatureClients());
+        return new SharedAccessSignatureAsyncClient(buildInnerClient().getSharedAccessSignatures());
     }
 
     /**
-     * Builds an instance of IngestionClient class.
+     * Builds an instance of IngestionManagementClient class.
      * 
-     * @return an instance of IngestionClient.
+     * @return an instance of IngestionManagementClient.
      */
     @Generated
-    public IngestionClient buildIngestionClient() {
-        return new IngestionClient(buildInnerClient().getIngestions());
+    public IngestionManagementClient buildIngestionManagementClient() {
+        return new IngestionManagementClient(buildInnerClient().getIngestionManagements());
     }
 
     /**
@@ -396,7 +396,7 @@ public final class PlanetaryComputerClientBuilder
      */
     @Generated
     public SharedAccessSignatureClient buildSharedAccessSignatureClient() {
-        return new SharedAccessSignatureClient(buildInnerClient().getSharedAccessSignatureClients());
+        return new SharedAccessSignatureClient(buildInnerClient().getSharedAccessSignatures());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PlanetaryComputerClientBuilder.class);

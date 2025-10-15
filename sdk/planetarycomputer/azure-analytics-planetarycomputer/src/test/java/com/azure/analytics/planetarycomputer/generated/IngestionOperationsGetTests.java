@@ -18,7 +18,7 @@ public final class IngestionOperationsGetTests extends PlanetaryComputerClientTe
     @Disabled
     public void testIngestionOperationsGetTests() {
         // method invocation
-        Operation response = ingestionClient.getOperation("59c757bb-01fc-4196-8036-11e3ee0c08b8");
+        Operation response = ingestionManagementClient.getOperation("59c757bb-01fc-4196-8036-11e3ee0c08b8");
 
         // response assertion
         Assertions.assertNotNull(response);

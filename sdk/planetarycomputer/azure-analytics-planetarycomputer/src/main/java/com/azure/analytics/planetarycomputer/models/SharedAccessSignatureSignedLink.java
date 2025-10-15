@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
  * The expiry field will be null for unsigned links.
  */
 @Immutable
-public final class SignedLink implements JsonSerializable<SignedLink> {
+public final class SharedAccessSignatureSignedLink implements JsonSerializable<SharedAccessSignatureSignedLink> {
     /*
      * Msft:Expiry
      * 
@@ -40,12 +40,12 @@ public final class SignedLink implements JsonSerializable<SignedLink> {
     private final String href;
 
     /**
-     * Creates an instance of SignedLink class.
+     * Creates an instance of SharedAccessSignatureSignedLink class.
      * 
      * @param href the href value to set.
      */
     @Generated
-    private SignedLink(String href) {
+    private SharedAccessSignatureSignedLink(String href) {
         this.href = href;
     }
 
@@ -87,16 +87,16 @@ public final class SignedLink implements JsonSerializable<SignedLink> {
     }
 
     /**
-     * Reads an instance of SignedLink from the JsonReader.
+     * Reads an instance of SharedAccessSignatureSignedLink from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SignedLink if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     * @return An instance of SharedAccessSignatureSignedLink if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SignedLink.
+     * @throws IOException If an error occurs while reading the SharedAccessSignatureSignedLink.
      */
     @Generated
-    public static SignedLink fromJson(JsonReader jsonReader) throws IOException {
+    public static SharedAccessSignatureSignedLink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String href = null;
             OffsetDateTime expiresOn = null;
@@ -113,10 +113,11 @@ public final class SignedLink implements JsonSerializable<SignedLink> {
                     reader.skipChildren();
                 }
             }
-            SignedLink deserializedSignedLink = new SignedLink(href);
-            deserializedSignedLink.expiresOn = expiresOn;
+            SharedAccessSignatureSignedLink deserializedSharedAccessSignatureSignedLink
+                = new SharedAccessSignatureSignedLink(href);
+            deserializedSharedAccessSignatureSignedLink.expiresOn = expiresOn;
 
-            return deserializedSignedLink;
+            return deserializedSharedAccessSignatureSignedLink;
         });
     }
 }

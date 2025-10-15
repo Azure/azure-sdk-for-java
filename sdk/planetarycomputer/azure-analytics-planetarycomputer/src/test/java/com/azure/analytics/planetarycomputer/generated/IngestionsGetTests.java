@@ -17,7 +17,7 @@ public final class IngestionsGetTests extends PlanetaryComputerClientTestBase {
     @Disabled
     public void testIngestionsGetTests() {
         // method invocation
-        Ingestion response = ingestionClient.get("collectionId", "24a8a15d-61bd-453f-ac67-b9cec532ed78");
+        Ingestion response = ingestionManagementClient.get("collectionId", "24a8a15d-61bd-453f-ac67-b9cec532ed78");
 
         // response assertion
         Assertions.assertNotNull(response);

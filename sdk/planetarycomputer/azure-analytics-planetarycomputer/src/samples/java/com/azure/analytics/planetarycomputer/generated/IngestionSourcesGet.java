@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.models.IngestionSource;
 import com.azure.core.util.Configuration;
@@ -12,12 +12,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionSourcesGet {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-get-source.ingestion-sources-get
-        IngestionSource response = ingestionClient.getSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-get-source.ingestion-sources-get
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-source.ingestion-sources-get
+        IngestionSource response = ingestionManagementClient.getSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-source.ingestion-sources-get
     }
 }

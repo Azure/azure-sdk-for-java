@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.core.util.Configuration;
@@ -12,12 +12,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionRunsCreate {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-create-run.ingestion-runs-create
-        IngestionRun response = ingestionClient.createRun("collectionId", "64224dad-2778-409e-95b1-0675522bbaa4");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-create-run.ingestion-runs-create
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-create-run.ingestion-runs-create
+        IngestionRun response
+            = ingestionManagementClient.createRun("collectionId", "64224dad-2778-409e-95b1-0675522bbaa4");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-create-run.ingestion-runs-create
     }
 }

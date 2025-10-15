@@ -4,9 +4,9 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.SharedAccessSignatureClientsImpl;
+import com.azure.analytics.planetarycomputer.implementation.SharedAccessSignaturesImpl;
+import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureSignedLink;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureToken;
-import com.azure.analytics.planetarycomputer.models.SignedLink;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = PlanetaryComputerClientBuilder.class, isAsync = true)
 public final class SharedAccessSignatureAsyncClient {
     @Generated
-    private final SharedAccessSignatureClientsImpl serviceClient;
+    private final SharedAccessSignaturesImpl serviceClient;
 
     /**
      * Initializes an instance of SharedAccessSignatureAsyncClient class.
@@ -35,7 +35,7 @@ public final class SharedAccessSignatureAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    SharedAccessSignatureAsyncClient(SharedAccessSignatureClientsImpl serviceClient) {
+    SharedAccessSignatureAsyncClient(SharedAccessSignaturesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -177,14 +177,14 @@ public final class SharedAccessSignatureAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SignedLink> getSign(String href, Integer durationInMinutes) {
+    public Mono<SharedAccessSignatureSignedLink> getSign(String href, Integer durationInMinutes) {
         // Generated convenience method for getSignWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (durationInMinutes != null) {
             requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
         }
         return getSignWithResponse(href, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SignedLink.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SharedAccessSignatureSignedLink.class));
     }
 
     /**
@@ -207,11 +207,11 @@ public final class SharedAccessSignatureAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SignedLink> getSign(String href) {
+    public Mono<SharedAccessSignatureSignedLink> getSign(String href) {
         // Generated convenience method for getSignWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSignWithResponse(href, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SignedLink.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SharedAccessSignatureSignedLink.class));
     }
 
     /**

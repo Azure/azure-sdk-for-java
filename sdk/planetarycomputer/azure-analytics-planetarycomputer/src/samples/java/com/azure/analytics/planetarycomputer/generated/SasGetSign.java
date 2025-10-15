@@ -6,7 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.SharedAccessSignatureClient;
-import com.azure.analytics.planetarycomputer.models.SignedLink;
+import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureSignedLink;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -16,8 +16,8 @@ public class SasGetSign {
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-client-get-sign.sas-get-sign
-        SignedLink response = sharedAccessSignatureClient.getSign("https://contoso.com", null);
-        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-client-get-sign.sas-get-sign
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-sign.sas-get-sign
+        SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getSign("https://contoso.com", null);
+        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-sign.sas-get-sign
     }
 }

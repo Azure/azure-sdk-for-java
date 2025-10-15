@@ -19,7 +19,8 @@ public final class IngestionRunsCreateTests extends PlanetaryComputerClientTestB
     @Disabled
     public void testIngestionRunsCreateTests() {
         // method invocation
-        IngestionRun response = ingestionClient.createRun("collectionId", "64224dad-2778-409e-95b1-0675522bbaa4");
+        IngestionRun response
+            = ingestionManagementClient.createRun("collectionId", "64224dad-2778-409e-95b1-0675522bbaa4");
 
         // response assertion
         Assertions.assertNotNull(response);

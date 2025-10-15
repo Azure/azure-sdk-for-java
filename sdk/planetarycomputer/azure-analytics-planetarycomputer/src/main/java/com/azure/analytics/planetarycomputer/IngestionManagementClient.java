@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.implementation.IngestionsImpl;
+import com.azure.analytics.planetarycomputer.implementation.IngestionManagementsImpl;
 import com.azure.analytics.planetarycomputer.models.Ingestion;
 import com.azure.analytics.planetarycomputer.models.IngestionRun;
 import com.azure.analytics.planetarycomputer.models.IngestionSource;
@@ -30,17 +30,17 @@ import com.azure.core.util.polling.SyncPoller;
  * Initializes a new instance of the synchronous PlanetaryComputerClient type.
  */
 @ServiceClient(builder = PlanetaryComputerClientBuilder.class)
-public final class IngestionClient {
+public final class IngestionManagementClient {
     @Generated
-    private final IngestionsImpl serviceClient;
+    private final IngestionManagementsImpl serviceClient;
 
     /**
-     * Initializes an instance of IngestionClient class.
+     * Initializes an instance of IngestionManagementClient class.
      * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    IngestionClient(IngestionsImpl serviceClient) {
+    IngestionManagementClient(IngestionManagementsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

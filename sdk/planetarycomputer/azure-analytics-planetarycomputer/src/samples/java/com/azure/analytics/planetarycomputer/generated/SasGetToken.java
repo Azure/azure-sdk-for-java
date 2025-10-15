@@ -16,8 +16,8 @@ public class SasGetToken {
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-client-get-token.sas-get-token
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-token.sas-get-token
         SharedAccessSignatureToken response = sharedAccessSignatureClient.getToken("weather-sample", null);
-        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-client-get-token.sas-get-token
+        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-token.sas-get-token
     }
 }

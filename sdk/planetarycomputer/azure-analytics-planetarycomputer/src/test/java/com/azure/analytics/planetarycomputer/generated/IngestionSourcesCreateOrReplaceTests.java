@@ -18,10 +18,11 @@ public final class IngestionSourcesCreateOrReplaceTests extends PlanetaryCompute
     @Disabled
     public void testIngestionSourcesCreateOrReplaceTests() {
         // method invocation
-        IngestionSource response = ingestionClient.createOrReplaceSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-            new SharedAccessSignatureTokenIngestionSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
-                new SharedAccessSignatureTokenConnection("https://sample.blob.core.windows.net/sample2")
-                    .setSharedAccessSignatureToken("fakeTokenPlaceholder")));
+        IngestionSource response
+            = ingestionManagementClient.createOrReplaceSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
+                new SharedAccessSignatureTokenIngestionSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
+                    new SharedAccessSignatureTokenConnection("https://sample.blob.core.windows.net/sample2")
+                        .setSharedAccessSignatureToken("fakeTokenPlaceholder")));
 
         // response assertion
         Assertions.assertNotNull(response);

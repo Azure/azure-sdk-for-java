@@ -17,7 +17,7 @@ public final class IngestionsCreateTests extends PlanetaryComputerClientTestBase
     @Disabled
     public void testIngestionsCreateTests() {
         // method invocation
-        Ingestion response = ingestionClient.create("collectionId",
+        Ingestion response = ingestionManagementClient.create("collectionId",
             new Ingestion().setImportType(IngestionType.STATIC_CATALOG)
                 .setSourceCatalogUrl("https://sample.blob.core.windows.net/sample.json")
                 .setSkipExistingItems(false)

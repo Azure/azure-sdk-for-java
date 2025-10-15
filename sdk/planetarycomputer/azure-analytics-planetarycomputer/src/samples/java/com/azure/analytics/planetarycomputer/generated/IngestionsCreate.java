@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.models.Ingestion;
 import com.azure.analytics.planetarycomputer.models.IngestionType;
@@ -13,16 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionsCreate {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-create.ingestions-create
-        Ingestion response = ingestionClient.create("collectionId",
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-create.ingestions-create
+        Ingestion response = ingestionManagementClient.create("collectionId",
             new Ingestion().setImportType(IngestionType.STATIC_CATALOG)
                 .setSourceCatalogUrl("https://sample.blob.core.windows.net/sample.json")
                 .setSkipExistingItems(false)
                 .setKeepOriginalAssets(false));
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-create.ingestions-create
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-create.ingestions-create
     }
 }

@@ -4,19 +4,19 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionOperationsDeleteAll {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-cancel-all-operations.ingestion-operations-delete-all
-        ingestionClient.cancelAllOperations();
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-cancel-all-operations.ingestion-operations-delete-all
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-cancel-all-operations.ingestion-operations-delete-all
+        ingestionManagementClient.cancelAllOperations();
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-cancel-all-operations.ingestion-operations-delete-all
     }
 }

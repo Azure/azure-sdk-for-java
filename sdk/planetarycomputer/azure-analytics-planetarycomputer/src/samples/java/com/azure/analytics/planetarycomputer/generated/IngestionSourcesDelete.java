@@ -4,19 +4,19 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionSourcesDelete {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-delete-source.ingestion-sources-delete
-        ingestionClient.deleteSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-delete-source.ingestion-sources-delete
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-delete-source.ingestion-sources-delete
+        ingestionManagementClient.deleteSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-delete-source.ingestion-sources-delete
     }
 }

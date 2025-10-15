@@ -232,7 +232,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listGeoJsonStatistics(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getGeoJsonStatistics(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -244,7 +244,7 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listGeoJsonStatisticsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getGeoJsonStatisticsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
@@ -638,9 +638,9 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMosaicsAssetsForTile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
-            @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
-            @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("tileMatrixSetId") String tileMatrixSetId, @QueryParam("collection") String collectionId,
+            @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/data/mosaic/{searchId}/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets")
         @ExpectedResponses({ 200 })
@@ -650,9 +650,9 @@ public final class TilersImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getMosaicsAssetsForTileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
-            @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
-            @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("tileMatrixSetId") String tileMatrixSetId, @QueryParam("collection") String collectionId,
+            @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/data/mosaic/{searchId}/info")
         @ExpectedResponses({ 200 })
@@ -1381,100 +1381,16 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(Feature/FeatureCollection) (Required)
-     *     stac_version: String (Optional)
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     geometry (Optional, Required on create): {
+     *     geometry (Required): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [
      *             double (Optional)
      *         ]
      *     }
-     *     bbox (Optional, Required on create): [
-     *         double (Optional, Required on create)
-     *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
-     *     properties (Optional, Required on create): {
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
-     *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 roles (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 url: String (Optional)
-     *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         datetime: String (Optional, Required on create)
-     *         start_datetime: OffsetDateTime (Optional)
-     *         end_datetime: OffsetDateTime (Optional)
-     *          (Optional): {
-     *             String: BinaryData (Required)
-     *         }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
      *     }
-     *     assets (Optional, Required on create): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
      * }
      * }
      * </pre>
@@ -1489,7 +1405,7 @@ public final class TilersImpl {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param format Output format for the tile or image (e.g., png, jpeg, webp) (default: "png").
+     * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param accept The accept parameter.
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1574,100 +1490,16 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(Feature/FeatureCollection) (Required)
-     *     stac_version: String (Optional)
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     geometry (Optional, Required on create): {
+     *     geometry (Required): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [
      *             double (Optional)
      *         ]
      *     }
-     *     bbox (Optional, Required on create): [
-     *         double (Optional, Required on create)
-     *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
-     *     properties (Optional, Required on create): {
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
-     *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 roles (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 url: String (Optional)
-     *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         datetime: String (Optional, Required on create)
-     *         start_datetime: OffsetDateTime (Optional)
-     *         end_datetime: OffsetDateTime (Optional)
-     *          (Optional): {
-     *             String: BinaryData (Required)
-     *         }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
      *     }
-     *     assets (Optional, Required on create): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
      * }
      * }
      * </pre>
@@ -1682,7 +1514,7 @@ public final class TilersImpl {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param format Output format for the tile or image (e.g., png, jpeg, webp) (default: "png").
+     * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param accept The accept parameter.
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1764,100 +1596,16 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(Feature/FeatureCollection) (Required)
-     *     stac_version: String (Optional)
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     geometry (Optional, Required on create): {
+     *     geometry (Required): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [
      *             double (Optional)
      *         ]
      *     }
-     *     bbox (Optional, Required on create): [
-     *         double (Optional, Required on create)
-     *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
-     *     properties (Optional, Required on create): {
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
-     *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 roles (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 url: String (Optional)
-     *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         datetime: String (Optional, Required on create)
-     *         start_datetime: OffsetDateTime (Optional)
-     *         end_datetime: OffsetDateTime (Optional)
-     *          (Optional): {
-     *             String: BinaryData (Required)
-     *         }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
      *     }
-     *     assets (Optional, Required on create): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
      * }
      * }
      * </pre>
@@ -1957,100 +1705,16 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(Feature/FeatureCollection) (Required)
-     *     stac_version: String (Optional)
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     geometry (Optional, Required on create): {
+     *     geometry (Required): {
      *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
      *         bbox (Optional): [
      *             double (Optional)
      *         ]
      *     }
-     *     bbox (Optional, Required on create): [
-     *         double (Optional, Required on create)
-     *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
-     *     properties (Optional, Required on create): {
-     *         platform: String (Optional)
-     *         instruments (Optional): [
-     *             String (Optional)
-     *         ]
-     *         constellation: String (Optional)
-     *         mission: String (Optional)
-     *         providers (Optional): [
-     *              (Optional){
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 roles (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 url: String (Optional)
-     *             }
-     *         ]
-     *         gsd: Double (Optional)
-     *         created: OffsetDateTime (Optional)
-     *         updated: OffsetDateTime (Optional)
-     *         title: String (Optional)
-     *         description: String (Optional)
-     *         datetime: String (Optional, Required on create)
-     *         start_datetime: OffsetDateTime (Optional)
-     *         end_datetime: OffsetDateTime (Optional)
-     *          (Optional): {
-     *             String: BinaryData (Required)
-     *         }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
      *     }
-     *     assets (Optional, Required on create): {
-     *         String (Required): {
-     *             platform: String (Optional)
-     *             instruments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             constellation: String (Optional)
-     *             mission: String (Optional)
-     *             providers (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             gsd: Double (Optional)
-     *             created: OffsetDateTime (Optional)
-     *             updated: OffsetDateTime (Optional)
-     *             title: String (Optional)
-     *             description: String (Optional)
-     *             href: String (Optional, Required on create)
-     *             type: String (Optional)
-     *             roles (Optional): [
-     *                 String (Optional)
-     *             ]
-     *              (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *         }
-     *     }
-     *     _msft:ts: String (Optional)
-     *     _msft:etag: String (Optional)
      * }
      * }
      * </pre>
@@ -2089,7 +1753,7 @@ public final class TilersImpl {
     /**
      * Geojson Statistics
      * 
-     * Get Statistics from a geojson feature or featureCollection.
+     * Get Statistics from a geojson feature.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2138,122 +1802,15 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(Feature/FeatureCollection) (Required)
-     *     stac_version: String (Optional)
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     features (Optional, Required on create): [
-     *          (Optional, Required on create){
-     *             type: String(Feature/FeatureCollection) (Required)
-     *             stac_version: String (Optional)
-     *             links (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
-     *             msft:short_description: String (Optional)
-     *             stac_extensions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             geometry (Optional, Required on create): {
-     *                 type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
-     *                 bbox (Optional): [
-     *                     double (Optional)
-     *                 ]
-     *             }
-     *             bbox (Optional, Required on create): [
-     *                 double (Optional, Required on create)
-     *             ]
-     *             id: String (Required)
-     *             collection: String (Optional)
-     *             properties (Optional, Required on create): {
-     *                 platform: String (Optional)
-     *                 instruments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 constellation: String (Optional)
-     *                 mission: String (Optional)
-     *                 providers (Optional): [
-     *                      (Optional){
-     *                         name: String (Optional, Required on create)
-     *                         description: String (Optional)
-     *                         roles (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         url: String (Optional)
-     *                     }
-     *                 ]
-     *                 gsd: Double (Optional)
-     *                 created: OffsetDateTime (Optional)
-     *                 updated: OffsetDateTime (Optional)
-     *                 title: String (Optional)
-     *                 description: String (Optional)
-     *                 datetime: String (Optional, Required on create)
-     *                 start_datetime: OffsetDateTime (Optional)
-     *                 end_datetime: OffsetDateTime (Optional)
-     *                  (Optional): {
-     *                     String: BinaryData (Required)
-     *                 }
-     *             }
-     *             assets (Optional, Required on create): {
-     *                 String (Required): {
-     *                     platform: String (Optional)
-     *                     instruments (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     constellation: String (Optional)
-     *                     mission: String (Optional)
-     *                     providers (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     gsd: Double (Optional)
-     *                     created: OffsetDateTime (Optional)
-     *                     updated: OffsetDateTime (Optional)
-     *                     title: String (Optional)
-     *                     description: String (Optional)
-     *                     href: String (Optional, Required on create)
-     *                     type: String (Optional)
-     *                     roles (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                      (Optional): {
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 }
-     *             }
-     *             _msft:ts: String (Optional)
-     *             _msft:etag: String (Optional)
-     *         }
-     *     ]
-     *     bbox (Optional): [
-     *         double (Optional)
-     *     ]
-     *     context (Optional): {
-     *         returned: int (Optional, Required on create)
-     *         limit: Integer (Optional)
-     *         matched: Integer (Optional)
+     *     geometry (Required): {
+     *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
+     *         bbox (Optional): [
+     *             double (Optional)
+     *         ]
+     *     }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2264,94 +1821,30 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(FeatureCollection) (Required)
-     *     features (Required): [
-     *          (Required){
-     *             geometry (Required): {
-     *                 type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
-     *                 bbox (Optional): [
-     *                     double (Optional)
-     *                 ]
-     *             }
-     *             bbox (Required): [
-     *                 double (Required)
-     *             ]
-     *             id: String (Required)
-     *             type: String(Feature) (Required)
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
-     *             msft:short_description: String (Optional)
-     *             stac_version: String (Optional)
-     *             collection: String (Optional)
-     *             properties (Required): {
-     *                 platform: String (Optional)
-     *                 instruments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 constellation: String (Optional)
-     *                 mission: String (Optional)
-     *                 providers (Optional): [
-     *                      (Optional){
-     *                         name: String (Optional, Required on create)
-     *                         description: String (Optional)
-     *                         roles (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         url: String (Optional)
-     *                     }
-     *                 ]
-     *                 gsd: Double (Optional)
-     *                 created: OffsetDateTime (Optional)
-     *                 updated: OffsetDateTime (Optional)
-     *                 title: String (Optional)
-     *                 description: String (Optional)
-     *                 datetime: String (Optional, Required on create)
-     *                 start_datetime: OffsetDateTime (Optional)
-     *                 end_datetime: OffsetDateTime (Optional)
-     *                  (Optional): {
-     *                     String: BinaryData (Required)
-     *                 }
-     *             }
-     *             _msft:ts: String (Optional)
-     *             _msft:etag: String (Optional)
-     *             stac_extensions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     *     bbox (Optional): [
-     *         double (Optional)
-     *     ]
-     *     stac_version: String (Optional)
+     *     geometry (Required): {
+     *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
+     *         bbox (Optional): [
+     *             double (Optional)
+     *         ]
+     *     }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     msft:_created: String (Optional)
      *     msft:_updated: String (Optional)
-     *     short_description: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     id: String (Required)
+     *     bbox (Required): [
+     *         double (Required)
+     *     ]
+     *     stac_version: String (Optional)
+     *     collection: String (Optional)
+     *     _msft:ts: String (Optional)
+     *     _msft:etag: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
      *     ]
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     context (Optional): {
-     *         returned: int (Optional, Required on create)
-     *         limit: Integer (Optional)
-     *         matched: Integer (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -2364,15 +1857,15 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/item-spec/itemcollection-spec.mdCollection of STAC
-     * items with statistical information along with {@link Response} on successful completion of {@link Mono}.
+     * @return sTAC Item representing a spatiotemporal asset with statistical information along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listGeoJsonStatisticsWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getGeoJsonStatisticsWithResponseAsync(String collectionId, String itemId,
         BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listGeoJsonStatistics(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getGeoJsonStatistics(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, contentType, accept, body,
             requestOptions, context));
     }
@@ -2380,7 +1873,7 @@ public final class TilersImpl {
     /**
      * Geojson Statistics
      * 
-     * Get Statistics from a geojson feature or featureCollection.
+     * Get Statistics from a geojson feature.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2429,122 +1922,15 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(Feature/FeatureCollection) (Required)
-     *     stac_version: String (Optional)
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     msft:_created: String (Optional)
-     *     msft:_updated: String (Optional)
-     *     msft:short_description: String (Optional)
-     *     stac_extensions (Optional): [
-     *         String (Optional)
-     *     ]
-     *     features (Optional, Required on create): [
-     *          (Optional, Required on create){
-     *             type: String(Feature/FeatureCollection) (Required)
-     *             stac_version: String (Optional)
-     *             links (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
-     *             msft:short_description: String (Optional)
-     *             stac_extensions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             geometry (Optional, Required on create): {
-     *                 type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
-     *                 bbox (Optional): [
-     *                     double (Optional)
-     *                 ]
-     *             }
-     *             bbox (Optional, Required on create): [
-     *                 double (Optional, Required on create)
-     *             ]
-     *             id: String (Required)
-     *             collection: String (Optional)
-     *             properties (Optional, Required on create): {
-     *                 platform: String (Optional)
-     *                 instruments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 constellation: String (Optional)
-     *                 mission: String (Optional)
-     *                 providers (Optional): [
-     *                      (Optional){
-     *                         name: String (Optional, Required on create)
-     *                         description: String (Optional)
-     *                         roles (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         url: String (Optional)
-     *                     }
-     *                 ]
-     *                 gsd: Double (Optional)
-     *                 created: OffsetDateTime (Optional)
-     *                 updated: OffsetDateTime (Optional)
-     *                 title: String (Optional)
-     *                 description: String (Optional)
-     *                 datetime: String (Optional, Required on create)
-     *                 start_datetime: OffsetDateTime (Optional)
-     *                 end_datetime: OffsetDateTime (Optional)
-     *                  (Optional): {
-     *                     String: BinaryData (Required)
-     *                 }
-     *             }
-     *             assets (Optional, Required on create): {
-     *                 String (Required): {
-     *                     platform: String (Optional)
-     *                     instruments (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     constellation: String (Optional)
-     *                     mission: String (Optional)
-     *                     providers (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     gsd: Double (Optional)
-     *                     created: OffsetDateTime (Optional)
-     *                     updated: OffsetDateTime (Optional)
-     *                     title: String (Optional)
-     *                     description: String (Optional)
-     *                     href: String (Optional, Required on create)
-     *                     type: String (Optional)
-     *                     roles (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                      (Optional): {
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 }
-     *             }
-     *             _msft:ts: String (Optional)
-     *             _msft:etag: String (Optional)
-     *         }
-     *     ]
-     *     bbox (Optional): [
-     *         double (Optional)
-     *     ]
-     *     context (Optional): {
-     *         returned: int (Optional, Required on create)
-     *         limit: Integer (Optional)
-     *         matched: Integer (Optional)
+     *     geometry (Required): {
+     *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
+     *         bbox (Optional): [
+     *             double (Optional)
+     *         ]
+     *     }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2555,94 +1941,30 @@ public final class TilersImpl {
      * <pre>
      * {@code
      * {
-     *     type: String(FeatureCollection) (Required)
-     *     features (Required): [
-     *          (Required){
-     *             geometry (Required): {
-     *                 type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
-     *                 bbox (Optional): [
-     *                     double (Optional)
-     *                 ]
-     *             }
-     *             bbox (Required): [
-     *                 double (Required)
-     *             ]
-     *             id: String (Required)
-     *             type: String(Feature) (Required)
-     *             msft:_created: String (Optional)
-     *             msft:_updated: String (Optional)
-     *             msft:short_description: String (Optional)
-     *             stac_version: String (Optional)
-     *             collection: String (Optional)
-     *             properties (Required): {
-     *                 platform: String (Optional)
-     *                 instruments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 constellation: String (Optional)
-     *                 mission: String (Optional)
-     *                 providers (Optional): [
-     *                      (Optional){
-     *                         name: String (Optional, Required on create)
-     *                         description: String (Optional)
-     *                         roles (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         url: String (Optional)
-     *                     }
-     *                 ]
-     *                 gsd: Double (Optional)
-     *                 created: OffsetDateTime (Optional)
-     *                 updated: OffsetDateTime (Optional)
-     *                 title: String (Optional)
-     *                 description: String (Optional)
-     *                 datetime: String (Optional, Required on create)
-     *                 start_datetime: OffsetDateTime (Optional)
-     *                 end_datetime: OffsetDateTime (Optional)
-     *                  (Optional): {
-     *                     String: BinaryData (Required)
-     *                 }
-     *             }
-     *             _msft:ts: String (Optional)
-     *             _msft:etag: String (Optional)
-     *             stac_extensions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     ]
-     *     bbox (Optional): [
-     *         double (Optional)
-     *     ]
-     *     stac_version: String (Optional)
+     *     geometry (Required): {
+     *         type: String(Point/LineString/Polygon/MultiPoint/MultiLineString/MultiPolygon) (Required)
+     *         bbox (Optional): [
+     *             double (Optional)
+     *         ]
+     *     }
+     *     type: String(Feature) (Required)
+     *     properties (Optional): {
+     *         String: BinaryData (Required)
+     *     }
      *     msft:_created: String (Optional)
      *     msft:_updated: String (Optional)
-     *     short_description: String (Optional)
+     *     msft:short_description: String (Optional)
+     *     id: String (Required)
+     *     bbox (Required): [
+     *         double (Required)
+     *     ]
+     *     stac_version: String (Optional)
+     *     collection: String (Optional)
+     *     _msft:ts: String (Optional)
+     *     _msft:etag: String (Optional)
      *     stac_extensions (Optional): [
      *         String (Optional)
      *     ]
-     *     links (Optional): [
-     *          (Optional){
-     *             rel: String (Optional)
-     *             title: String (Optional)
-     *             type: String(image/tiff; application=geotiff/image/jp2/image/png/image/jpeg/image/jpg/image/webp/application/x-binary/application/xml/application/json/application/geo+json/text/html/text/plain/application/x-protobuf) (Optional)
-     *             href: String (Optional, Required on create)
-     *             hreflang: String (Optional)
-     *             length: Integer (Optional)
-     *             method: String(GET/POST) (Optional)
-     *             headers (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             body (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             merge: Boolean (Optional)
-     *         }
-     *     ]
-     *     context (Optional): {
-     *         returned: int (Optional, Required on create)
-     *         limit: Integer (Optional)
-     *         matched: Integer (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -2655,17 +1977,15 @@ public final class TilersImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return https://github.com/radiantearth/stac-spec/blob/v1.0.0/item-spec/itemcollection-spec.mdCollection of STAC
-     * items with statistical information along with {@link Response}.
+     * @return sTAC Item representing a spatiotemporal asset with statistical information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listGeoJsonStatisticsWithResponse(String collectionId, String itemId, BinaryData body,
+    public Response<BinaryData> getGeoJsonStatisticsWithResponse(String collectionId, String itemId, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.listGeoJsonStatisticsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, itemId, contentType, accept, body,
-            requestOptions, Context.NONE);
+        return service.getGeoJsonStatisticsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            collectionId, itemId, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -4536,8 +3856,8 @@ public final class TilersImpl {
      * MatrixHeight-1 for the selected TileMatrix.
      * @param y Row (Y) index of the tile on the selected TileMatrix. It cannot exceed the
      * MatrixWidth-1 for the selected TileMatrix.
-     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles (default: "1").
-     * @param format Output format for the tile or image (e.g., png, jpeg, webp) (default: "png").
+     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
+     * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4634,8 +3954,8 @@ public final class TilersImpl {
      * MatrixHeight-1 for the selected TileMatrix.
      * @param y Row (Y) index of the tile on the selected TileMatrix. It cannot exceed the
      * MatrixWidth-1 for the selected TileMatrix.
-     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles (default: "1").
-     * @param format Output format for the tile or image (e.g., png, jpeg, webp) (default: "png").
+     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
+     * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5295,6 +4615,7 @@ public final class TilersImpl {
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param tileMatrixSetId Identifier selecting one of the TileMatrixSetId supported.
+     * @param collectionId STAC Collection Identifier.
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
      * representing the scaleDenominator the tile.
      * @param x Column (X) index of the tile on the selected TileMatrix. It cannot exceed the
@@ -5310,11 +4631,11 @@ public final class TilersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMosaicsAssetsForTileWithResponseAsync(String searchId, String tileMatrixSetId,
-        double z, double x, double y, RequestOptions requestOptions) {
+        String collectionId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getMosaicsAssetsForTile(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, accept, requestOptions,
-            context));
+            this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, collectionId, z, x, y, accept,
+            requestOptions, context));
     }
 
     /**
@@ -5350,6 +4671,7 @@ public final class TilersImpl {
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param tileMatrixSetId Identifier selecting one of the TileMatrixSetId supported.
+     * @param collectionId STAC Collection Identifier.
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
      * representing the scaleDenominator the tile.
      * @param x Column (X) index of the tile on the selected TileMatrix. It cannot exceed the
@@ -5364,12 +4686,12 @@ public final class TilersImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMosaicsAssetsForTileWithResponse(String searchId, String tileMatrixSetId, double z,
-        double x, double y, RequestOptions requestOptions) {
+    public Response<BinaryData> getMosaicsAssetsForTileWithResponse(String searchId, String tileMatrixSetId,
+        String collectionId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getMosaicsAssetsForTileSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, accept, requestOptions,
-            Context.NONE);
+            this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, collectionId, z, x, y, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -6065,8 +5387,8 @@ public final class TilersImpl {
      * MatrixHeight-1 for the selected TileMatrix.
      * @param y Row (Y) index of the tile on the selected TileMatrix. It cannot exceed the
      * MatrixWidth-1 for the selected TileMatrix.
-     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles (default: "1").
-     * @param format Output format for the tile or image (e.g., png, jpeg, webp) (default: "png").
+     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
+     * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6172,8 +5494,8 @@ public final class TilersImpl {
      * MatrixHeight-1 for the selected TileMatrix.
      * @param y Row (Y) index of the tile on the selected TileMatrix. It cannot exceed the
      * MatrixWidth-1 for the selected TileMatrix.
-     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles (default: "1").
-     * @param format Output format for the tile or image (e.g., png, jpeg, webp) (default: "png").
+     * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
+     * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

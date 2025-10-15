@@ -15,8 +15,8 @@ public class SasRevokeToken {
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-client-revoke-token.sas-revoke-token
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-revoke-token.sas-revoke-token
         sharedAccessSignatureClient.revokeToken(null);
-        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-client-revoke-token.sas-revoke-token
+        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-revoke-token.sas-revoke-token
     }
 }

@@ -73,17 +73,17 @@ public final class PlanetaryComputerClientImpl {
     }
 
     /**
-     * The IngestionsImpl object to access its operations.
+     * The IngestionManagementsImpl object to access its operations.
      */
-    private final IngestionsImpl ingestions;
+    private final IngestionManagementsImpl ingestionManagements;
 
     /**
-     * Gets the IngestionsImpl object to access its operations.
+     * Gets the IngestionManagementsImpl object to access its operations.
      * 
-     * @return the IngestionsImpl object.
+     * @return the IngestionManagementsImpl object.
      */
-    public IngestionsImpl getIngestions() {
-        return this.ingestions;
+    public IngestionManagementsImpl getIngestionManagements() {
+        return this.ingestionManagements;
     }
 
     /**
@@ -115,17 +115,17 @@ public final class PlanetaryComputerClientImpl {
     }
 
     /**
-     * The SharedAccessSignatureClientsImpl object to access its operations.
+     * The SharedAccessSignaturesImpl object to access its operations.
      */
-    private final SharedAccessSignatureClientsImpl sharedAccessSignatureClients;
+    private final SharedAccessSignaturesImpl sharedAccessSignatures;
 
     /**
-     * Gets the SharedAccessSignatureClientsImpl object to access its operations.
+     * Gets the SharedAccessSignaturesImpl object to access its operations.
      * 
-     * @return the SharedAccessSignatureClientsImpl object.
+     * @return the SharedAccessSignaturesImpl object.
      */
-    public SharedAccessSignatureClientsImpl getSharedAccessSignatureClients() {
-        return this.sharedAccessSignatureClients;
+    public SharedAccessSignaturesImpl getSharedAccessSignatures() {
+        return this.sharedAccessSignatures;
     }
 
     /**
@@ -165,9 +165,9 @@ public final class PlanetaryComputerClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.ingestions = new IngestionsImpl(this);
+        this.ingestionManagements = new IngestionManagementsImpl(this);
         this.stacs = new StacsImpl(this);
         this.tilers = new TilersImpl(this);
-        this.sharedAccessSignatureClients = new SharedAccessSignatureClientsImpl(this);
+        this.sharedAccessSignatures = new SharedAccessSignaturesImpl(this);
     }
 }

@@ -8,7 +8,7 @@ package com.azure.analytics.planetarycomputer.generated;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.SharedAccessSignatureClient;
 import com.azure.analytics.planetarycomputer.StacClient;
@@ -22,7 +22,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 class PlanetaryComputerClientTestBase extends TestProxyTestBase {
-    protected IngestionClient ingestionClient;
+    protected IngestionManagementClient ingestionManagementClient;
 
     protected StacClient stacClient;
 
@@ -32,19 +32,19 @@ class PlanetaryComputerClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        PlanetaryComputerClientBuilder ingestionClientbuilder = new PlanetaryComputerClientBuilder()
+        PlanetaryComputerClientBuilder ingestionManagementClientbuilder = new PlanetaryComputerClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            ingestionClientbuilder.credential(new MockTokenCredential());
+            ingestionManagementClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            ingestionClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+            ingestionManagementClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            ingestionClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            ingestionManagementClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        ingestionClient = ingestionClientbuilder.buildIngestionClient();
+        ingestionManagementClient = ingestionManagementClientbuilder.buildIngestionManagementClient();
 
         PlanetaryComputerClientBuilder stacClientbuilder = new PlanetaryComputerClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))

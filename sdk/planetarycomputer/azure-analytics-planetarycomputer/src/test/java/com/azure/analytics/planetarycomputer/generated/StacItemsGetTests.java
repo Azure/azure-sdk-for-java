@@ -31,13 +31,13 @@ public final class StacItemsGetTests extends PlanetaryComputerClientTestBase {
         Geometry responseGeometry = response.getGeometry();
         Assertions.assertNotNull(responseGeometry);
         Assertions.assertEquals(GeometryType.POLYGON, responseGeometry.getType());
-        // verify property "boundingBox"
-        List<Double> responseBoundingBox = response.getBoundingBox();
-        Assertions.assertEquals(136.11023969131566, responseBoundingBox.iterator().next());
         // verify property "id"
         Assertions.assertEquals("S2A_MSIL2A_20231017T013651_R117_T53SPA_20231017T053413", response.getId());
         // verify property "collection"
         Assertions.assertEquals("example-collection", response.getCollection());
+        // verify property "boundingBox"
+        List<Double> responseBoundingBox = response.getBoundingBox();
+        Assertions.assertEquals(136.11023969131566, responseBoundingBox.iterator().next());
         // verify property "properties"
         StacItemProperties responseProperties = response.getProperties();
         Assertions.assertNotNull(responseProperties);

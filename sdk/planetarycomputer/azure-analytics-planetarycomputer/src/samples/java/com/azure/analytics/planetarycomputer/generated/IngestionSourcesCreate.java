@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.models.IngestionSource;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenConnection;
@@ -14,15 +14,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionSourcesCreate {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-create-source.ingestion-sources-create
-        IngestionSource response = ingestionClient
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-create-source.ingestion-sources-create
+        IngestionSource response = ingestionManagementClient
             .createSource(new SharedAccessSignatureTokenIngestionSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
                 new SharedAccessSignatureTokenConnection("https://sample.blob.core.windows.net/sample")
                     .setSharedAccessSignatureToken("fakeTokenPlaceholder")));
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-create-source.ingestion-sources-create
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-create-source.ingestion-sources-create
     }
 }

@@ -49,13 +49,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Ingestions.
+ * An instance of this class provides access to all the operations defined in IngestionManagements.
  */
-public final class IngestionsImpl {
+public final class IngestionManagementsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final IngestionsService service;
+    private final IngestionManagementsService service;
 
     /**
      * The service client containing this operation class.
@@ -63,13 +63,13 @@ public final class IngestionsImpl {
     private final PlanetaryComputerClientImpl client;
 
     /**
-     * Initializes an instance of IngestionsImpl.
+     * Initializes an instance of IngestionManagementsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    IngestionsImpl(PlanetaryComputerClientImpl client) {
-        this.service
-            = RestProxy.create(IngestionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    IngestionManagementsImpl(PlanetaryComputerClientImpl client) {
+        this.service = RestProxy.create(IngestionManagementsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -83,12 +83,12 @@ public final class IngestionsImpl {
     }
 
     /**
-     * The interface defining all the services for PlanetaryComputerClientIngestions to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for PlanetaryComputerClientIngestionManagements to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PlanetaryComputerClientIngestions")
-    public interface IngestionsService {
+    @ServiceInterface(name = "PlanetaryComputerClientIngestionManagements")
+    public interface IngestionManagementsService {
         @Delete("/inma/operations/{operationId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

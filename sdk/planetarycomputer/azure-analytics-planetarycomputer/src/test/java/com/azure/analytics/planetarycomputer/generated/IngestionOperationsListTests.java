@@ -20,7 +20,7 @@ public final class IngestionOperationsListTests extends PlanetaryComputerClientT
     public void testIngestionOperationsListTests() {
         // method invocation
         PagedIterable<Operation> response
-            = ingestionClient.listOperations(null, null, "c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", null);
+            = ingestionManagementClient.listOperations(null, null, "c1007ec2-3ddc-4335-9edd-b1c26b1b4c92", null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

@@ -18,7 +18,7 @@ public final class IngestionsListTests extends PlanetaryComputerClientTestBase {
     @Disabled
     public void testIngestionsListTests() {
         // method invocation
-        PagedIterable<Ingestion> response = ingestionClient.lists("collectionId", null, null);
+        PagedIterable<Ingestion> response = ingestionManagementClient.lists("collectionId", null, null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

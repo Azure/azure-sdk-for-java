@@ -36,8 +36,8 @@ public final class StacItemsCreateTests extends PlanetaryComputerClientTestBase 
                         new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-80.560478, 27.997976),
                             Arrays.asList(-80.560208, 28.064325), Arrays.asList(-80.627067, 28.064522),
                             Arrays.asList(-80.627296, 27.998174), Arrays.asList(-80.560478, 27.997976)))))
-                    .setBoundingBox(Arrays.asList(-80.627296, 27.997976, -80.560208, 28.064522))
                     .setCollection("{{collectionId}}")
+                    .setBoundingBox(Arrays.asList(-80.627296, 27.997976, -80.560208, 28.064522))
                     .setProperties(new StacItemProperties().setGsd(0.6D)
                         .setDatetime("2019-12-15T00:00:00Z")
                         .setAdditionalProperties(mapOf("proj:epsg",

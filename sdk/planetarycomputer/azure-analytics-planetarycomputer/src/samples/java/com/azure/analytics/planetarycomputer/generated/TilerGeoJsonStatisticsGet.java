@@ -6,32 +6,31 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.TilerClient;
-import com.azure.analytics.planetarycomputer.models.CropGeoJsonOptions;
 import com.azure.analytics.planetarycomputer.models.Feature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
+import com.azure.analytics.planetarycomputer.models.GetGeoJsonStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.Polygon;
-import com.azure.core.util.BinaryData;
+import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 
-public class TilerGeoJsonsCropFormat {
+public class TilerGeoJsonStatisticsGet {
     public static void main(String[] args) {
         TilerClient tilerClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildTilerClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-crop-geo-json.tiler-geo-jsons-crop-format
-        BinaryData response
-            = tilerClient.cropGeoJson("collectionId-0df36a74d7ed", "item-0df36a74d7ed", "png", new CropGeoJsonOptions(),
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-geo-json-statistics.tiler-geo-json-statistics-get
+        StacItemStatisticsGeoJson response
+            = tilerClient.getGeoJsonStatistics("{{collectionId}}", "{{itemId}}", new GetGeoJsonStatisticsOptions(),
                 new Feature(new Polygon()
                     .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-65.75386020444417, 18.252659831448764),
                         Arrays.asList(-65.75385878091376, 18.252569552371305),
                         Arrays.asList(-65.75376429311993, 18.252570912467043),
                         Arrays.asList(-65.75376571660163, 18.252661191551685),
                         Arrays.asList(-65.75386020444417, 18.252659831448764)))),
-                    FeatureType.FEATURE),
-                null);
-        // END:com.azure.analytics.planetarycomputer.generated.tiler-crop-geo-json.tiler-geo-jsons-crop-format
+                    FeatureType.FEATURE));
+        // END:com.azure.analytics.planetarycomputer.generated.tiler-get-geo-json-statistics.tiler-geo-json-statistics-get
     }
 }

@@ -16,7 +16,7 @@ public final class IngestionSourcesGetTests extends PlanetaryComputerClientTestB
     @Disabled
     public void testIngestionSourcesGetTests() {
         // method invocation
-        IngestionSource response = ingestionClient.getSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        IngestionSource response = ingestionManagementClient.getSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
 
         // response assertion
         Assertions.assertNotNull(response);

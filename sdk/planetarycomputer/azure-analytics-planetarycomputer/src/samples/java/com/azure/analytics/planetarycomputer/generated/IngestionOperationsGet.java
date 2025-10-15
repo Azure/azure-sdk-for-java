@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.analytics.planetarycomputer.models.Operation;
 import com.azure.core.util.Configuration;
@@ -12,12 +12,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionOperationsGet {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-get-operation.ingestion-operations-get
-        Operation response = ingestionClient.getOperation("59c757bb-01fc-4196-8036-11e3ee0c08b8");
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-get-operation.ingestion-operations-get
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-operation.ingestion-operations-get
+        Operation response = ingestionManagementClient.getOperation("59c757bb-01fc-4196-8036-11e3ee0c08b8");
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-get-operation.ingestion-operations-get
     }
 }

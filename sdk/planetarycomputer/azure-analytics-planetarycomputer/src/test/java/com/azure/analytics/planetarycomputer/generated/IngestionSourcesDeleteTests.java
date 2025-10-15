@@ -13,6 +13,6 @@ public final class IngestionSourcesDeleteTests extends PlanetaryComputerClientTe
     @Disabled
     public void testIngestionSourcesDeleteTests() {
         // method invocation
-        ingestionClient.deleteSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
+        ingestionManagementClient.deleteSource("c1007ec2-3ddc-4335-9edd-b1c26b1b4c92");
     }
 }

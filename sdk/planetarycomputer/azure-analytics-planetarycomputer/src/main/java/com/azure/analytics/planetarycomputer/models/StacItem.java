@@ -34,12 +34,6 @@ public final class StacItem extends StacItemOrStacItemCollection {
     private Geometry geometry;
 
     /*
-     * Bounding box coordinates for the feature
-     */
-    @Generated
-    private List<Double> boundingBox;
-
-    /*
      * Unique identifier for the feature
      */
     @Generated
@@ -50,6 +44,12 @@ public final class StacItem extends StacItemOrStacItemCollection {
      */
     @Generated
     private String collection;
+
+    /*
+     * Bounding box coordinates for the feature
+     */
+    @Generated
+    private List<Double> boundingBox;
 
     /*
      * Attributes associated with the feature
@@ -124,30 +124,6 @@ public final class StacItem extends StacItemOrStacItemCollection {
     }
 
     /**
-     * Get the boundingBox property: Bounding box coordinates for the feature.
-     * 
-     * @return the boundingBox value.
-     */
-    @Generated
-    public List<Double> getBoundingBox() {
-        return this.boundingBox;
-    }
-
-    /**
-     * Set the boundingBox property: Bounding box coordinates for the feature.
-     * <p>Required when create the resource.</p>
-     * 
-     * @param boundingBox the boundingBox value to set.
-     * @return the StacItem object itself.
-     */
-    @Generated
-    public StacItem setBoundingBox(List<Double> boundingBox) {
-        this.boundingBox = boundingBox;
-        this.updatedProperties.add("boundingBox");
-        return this;
-    }
-
-    /**
      * Get the id property: Unique identifier for the feature.
      * 
      * @return the id value.
@@ -177,6 +153,30 @@ public final class StacItem extends StacItemOrStacItemCollection {
     public StacItem setCollection(String collection) {
         this.collection = collection;
         this.updatedProperties.add("collection");
+        return this;
+    }
+
+    /**
+     * Get the boundingBox property: Bounding box coordinates for the feature.
+     * 
+     * @return the boundingBox value.
+     */
+    @Generated
+    public List<Double> getBoundingBox() {
+        return this.boundingBox;
+    }
+
+    /**
+     * Set the boundingBox property: Bounding box coordinates for the feature.
+     * <p>Required when create the resource.</p>
+     * 
+     * @param boundingBox the boundingBox value to set.
+     * @return the StacItem object itself.
+     */
+    @Generated
+    public StacItem setBoundingBox(List<Double> boundingBox) {
+        this.boundingBox = boundingBox;
+        this.updatedProperties.add("boundingBox");
         return this;
     }
 
@@ -359,8 +359,8 @@ public final class StacItem extends StacItemOrStacItemCollection {
                 (writer, element) -> writer.writeString(element));
             jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
             jsonWriter.writeJsonField("geometry", this.geometry);
-            jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
             jsonWriter.writeStringField("collection", this.collection);
+            jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
             jsonWriter.writeJsonField("properties", this.properties);
             jsonWriter.writeMapField("assets", this.assets, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeStringField("_msft:ts", this.timestamp);
@@ -425,18 +425,18 @@ public final class StacItem extends StacItemOrStacItemCollection {
                 JsonMergePatchHelper.getGeometryAccessor().prepareModelForJsonMergePatch(this.geometry, false);
             }
         }
-        if (updatedProperties.contains("boundingBox")) {
-            if (this.boundingBox == null) {
-                jsonWriter.writeNullField("bbox");
-            } else {
-                jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
-            }
-        }
         if (updatedProperties.contains("collection")) {
             if (this.collection == null) {
                 jsonWriter.writeNullField("collection");
             } else {
                 jsonWriter.writeStringField("collection", this.collection);
+            }
+        }
+        if (updatedProperties.contains("boundingBox")) {
+            if (this.boundingBox == null) {
+                jsonWriter.writeNullField("bbox");
+            } else {
+                jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
             }
         }
         if (updatedProperties.contains("properties")) {
@@ -525,11 +525,11 @@ public final class StacItem extends StacItemOrStacItemCollection {
                     deserializedStacItem.type = StacModelType.fromString(reader.getString());
                 } else if ("geometry".equals(fieldName)) {
                     deserializedStacItem.geometry = Geometry.fromJson(reader);
+                } else if ("collection".equals(fieldName)) {
+                    deserializedStacItem.collection = reader.getString();
                 } else if ("bbox".equals(fieldName)) {
                     List<Double> boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                     deserializedStacItem.boundingBox = boundingBox;
-                } else if ("collection".equals(fieldName)) {
-                    deserializedStacItem.collection = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedStacItem.properties = StacItemProperties.fromJson(reader);
                 } else if ("assets".equals(fieldName)) {

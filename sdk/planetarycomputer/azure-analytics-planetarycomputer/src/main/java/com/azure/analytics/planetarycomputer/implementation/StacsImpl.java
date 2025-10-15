@@ -6523,11 +6523,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -6679,11 +6679,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -6833,11 +6833,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -6992,11 +6992,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -7151,11 +7151,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -7310,11 +7310,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -7788,11 +7788,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -7911,11 +7911,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -8107,11 +8107,11 @@ public final class StacsImpl {
      *                     double (Optional)
      *                 ]
      *             }
+     *             id: String (Required)
+     *             collection: String (Optional)
      *             bbox (Optional, Required on create): [
      *                 double (Optional, Required on create)
      *             ]
-     *             id: String (Required)
-     *             collection: String (Optional)
      *             properties (Optional, Required on create): {
      *                 platform: String (Optional)
      *                 instruments (Optional): [
@@ -8315,11 +8315,11 @@ public final class StacsImpl {
      *                     double (Optional)
      *                 ]
      *             }
+     *             id: String (Required)
+     *             collection: String (Optional)
      *             bbox (Optional, Required on create): [
      *                 double (Optional, Required on create)
      *             ]
-     *             id: String (Required)
-     *             collection: String (Optional)
      *             properties (Optional, Required on create): {
      *                 platform: String (Optional)
      *                 instruments (Optional): [
@@ -8447,11 +8447,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -8602,11 +8602,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -8757,11 +8757,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -8916,11 +8916,11 @@ public final class StacsImpl {
      *             double (Optional)
      *         ]
      *     }
+     *     id: String (Required)
+     *     collection: String (Optional)
      *     bbox (Optional, Required on create): [
      *         double (Optional, Required on create)
      *     ]
-     *     id: String (Required)
-     *     collection: String (Optional)
      *     properties (Optional, Required on create): {
      *         platform: String (Optional)
      *         instruments (Optional): [
@@ -9649,11 +9649,11 @@ public final class StacsImpl {
      *                     double (Optional)
      *                 ]
      *             }
+     *             id: String (Required)
+     *             collection: String (Optional)
      *             bbox (Optional, Required on create): [
      *                 double (Optional, Required on create)
      *             ]
-     *             id: String (Required)
-     *             collection: String (Optional)
      *             properties (Optional, Required on create): {
      *                 platform: String (Optional)
      *                 instruments (Optional): [
@@ -9852,11 +9852,11 @@ public final class StacsImpl {
      *                     double (Optional)
      *                 ]
      *             }
+     *             id: String (Required)
+     *             collection: String (Optional)
      *             bbox (Optional, Required on create): [
      *                 double (Optional, Required on create)
      *             ]
-     *             id: String (Required)
-     *             collection: String (Optional)
      *             properties (Optional, Required on create): {
      *                 platform: String (Optional)
      *                 instruments (Optional): [

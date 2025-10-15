@@ -35,11 +35,11 @@ public final class StacItemsGetFeaturesTests extends PlanetaryComputerClientTest
         Geometry responseFeaturesFirstItemGeometry = responseFeaturesFirstItem.getGeometry();
         Assertions.assertNotNull(responseFeaturesFirstItemGeometry);
         Assertions.assertEquals(GeometryType.POLYGON, responseFeaturesFirstItemGeometry.getType());
-        List<Double> responseFeaturesFirstItemBoundingBox = responseFeaturesFirstItem.getBoundingBox();
-        Assertions.assertEquals(136.11023969131566, responseFeaturesFirstItemBoundingBox.iterator().next());
         Assertions.assertEquals("S2A_MSIL2A_20231017T013651_R117_T53SPA_20231017T053413",
             responseFeaturesFirstItem.getId());
         Assertions.assertEquals("example-collection", responseFeaturesFirstItem.getCollection());
+        List<Double> responseFeaturesFirstItemBoundingBox = responseFeaturesFirstItem.getBoundingBox();
+        Assertions.assertEquals(136.11023969131566, responseFeaturesFirstItemBoundingBox.iterator().next());
         StacItemProperties responseFeaturesFirstItemProperties = responseFeaturesFirstItem.getProperties();
         Assertions.assertNotNull(responseFeaturesFirstItemProperties);
         Assertions.assertEquals("2023-10-17T01:36:51.024000Z", responseFeaturesFirstItemProperties.getDatetime());

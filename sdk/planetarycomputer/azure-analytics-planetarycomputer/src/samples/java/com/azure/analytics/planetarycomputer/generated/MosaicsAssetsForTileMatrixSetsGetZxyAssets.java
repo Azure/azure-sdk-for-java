@@ -19,7 +19,7 @@ public class MosaicsAssetsForTileMatrixSetsGetZxyAssets {
                 .buildTilerClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-assets-for-tile.mosaics-assets-for-tile-matrix-sets-get-zxy-assets
         List<BinaryData> response = tilerClient.getMosaicsAssetsForTile("e32e0b12176246816953d75e3356d613",
-            "WebMercatorQuad", 12.0, 47.6062, 17.0, null, null, null, null, null);
+            "WebMercatorQuad", "{{collectionId}}", 12.0, 47.6062, 17.0, null, null, null, null, null);
         // END:com.azure.analytics.planetarycomputer.generated.tiler-get-mosaics-assets-for-tile.mosaics-assets-for-tile-matrix-sets-get-zxy-assets
     }
 }

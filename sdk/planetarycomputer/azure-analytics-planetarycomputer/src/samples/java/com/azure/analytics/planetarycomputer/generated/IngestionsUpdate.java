@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
-import com.azure.analytics.planetarycomputer.IngestionClient;
+import com.azure.analytics.planetarycomputer.IngestionManagementClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -14,16 +14,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IngestionsUpdate {
     public static void main(String[] args) {
-        IngestionClient ingestionClient
+        IngestionManagementClient ingestionManagementClient
             = new PlanetaryComputerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                .buildIngestionClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-update.ingestions-update
+                .buildIngestionManagementClient();
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-management-update.ingestions-update
         BinaryData definition = BinaryData.fromString(
             "{\"displayName\":\"test-ingestion1\",\"keepOriginalAssets\":false,\"skipExistingItems\":false,\"sourceCatalogUrl\":\"https://uksouthdatazoo.blob.core.windows.net/impactobservatory\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = ingestionClient.updateWithResponse("potsdam-stacforge",
+        Response<BinaryData> response = ingestionManagementClient.updateWithResponse("potsdam-stacforge",
             "5e961a4c-7c3e-40ca-b151-2e574bae1635", definition, requestOptions);
-        // END:com.azure.analytics.planetarycomputer.generated.ingestion-update.ingestions-update
+        // END:com.azure.analytics.planetarycomputer.generated.ingestion-management-update.ingestions-update
     }
 }

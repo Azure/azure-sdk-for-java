@@ -18,7 +18,7 @@ public final class IngestionSourcesCreateTests extends PlanetaryComputerClientTe
     @Disabled
     public void testIngestionSourcesCreateTests() {
         // method invocation
-        IngestionSource response = ingestionClient
+        IngestionSource response = ingestionManagementClient
             .createSource(new SharedAccessSignatureTokenIngestionSource("36fcb8da-9b15-49e0-b400-0d2e751e2061",
                 new SharedAccessSignatureTokenConnection("https://sample.blob.core.windows.net/sample")
                     .setSharedAccessSignatureToken("fakeTokenPlaceholder")));

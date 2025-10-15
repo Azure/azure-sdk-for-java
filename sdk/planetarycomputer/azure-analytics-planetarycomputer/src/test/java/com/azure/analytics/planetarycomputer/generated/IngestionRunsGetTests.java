@@ -19,8 +19,8 @@ public final class IngestionRunsGetTests extends PlanetaryComputerClientTestBase
     @Disabled
     public void testIngestionRunsGetTests() {
         // method invocation
-        IngestionRun response = ingestionClient.getRun("weather-sample", "94659cc0-538e-4688-9d01-8c7f464b885b",
-            "23e710f1-d004-4dbc-84b0-259398ef7bab");
+        IngestionRun response = ingestionManagementClient.getRun("weather-sample",
+            "94659cc0-538e-4688-9d01-8c7f464b885b", "23e710f1-d004-4dbc-84b0-259398ef7bab");
 
         // response assertion
         Assertions.assertNotNull(response);

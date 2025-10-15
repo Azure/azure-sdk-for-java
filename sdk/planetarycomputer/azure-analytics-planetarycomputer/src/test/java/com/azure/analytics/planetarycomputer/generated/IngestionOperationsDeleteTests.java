@@ -13,6 +13,6 @@ public final class IngestionOperationsDeleteTests extends PlanetaryComputerClien
     @Disabled
     public void testIngestionOperationsDeleteTests() {
         // method invocation
-        ingestionClient.cancelOperation("9bb31abd-91d6-4649-9c6f-beadbec7c622");
+        ingestionManagementClient.cancelOperation("9bb31abd-91d6-4649-9c6f-beadbec7c622");
     }
 }

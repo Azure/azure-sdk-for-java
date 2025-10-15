@@ -16,6 +16,6 @@ public final class MosaicsAssetsForTileMatrixSetsGetZxyAssetsTests extends Plane
     public void testMosaicsAssetsForTileMatrixSetsGetZxyAssetsTests() {
         // method invocation
         List<BinaryData> response = tilerClient.getMosaicsAssetsForTile("e32e0b12176246816953d75e3356d613",
-            "WebMercatorQuad", 12.0, 47.6062, 17.0, null, null, null, null, null);
+            "WebMercatorQuad", "{{collectionId}}", 12.0, 47.6062, 17.0, null, null, null, null, null);
     }
 }
