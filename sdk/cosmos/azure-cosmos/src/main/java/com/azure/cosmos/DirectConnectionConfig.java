@@ -275,13 +275,16 @@ public final class DirectConnectionConfig {
      * @return the {@link DirectConnectionConfig}
      */
     public DirectConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+
+        long networkRequestTimeoutInMs = networkRequestTimeout.toMillis();
+
         checkNotNull(networkRequestTimeout, "NetworkRequestTimeout can not be null");
-        checkArgument(networkRequestTimeout.toMillis() >= MIN_NETWORK_REQUEST_TIMEOUT.toMillis(),
+        checkArgument(networkRequestTimeoutInMs >= MIN_NETWORK_REQUEST_TIMEOUT.toMillis(),
             "NetworkRequestTimeout can not be less than %s Millis", MIN_NETWORK_REQUEST_TIMEOUT.toMillis());
-        checkArgument(networkRequestTimeout.toMillis() <= MAX_NETWORK_REQUEST_TIMEOUT.toMillis(),
+        checkArgument(networkRequestTimeoutInMs <= MAX_NETWORK_REQUEST_TIMEOUT.toMillis(),
             "NetworkRequestTimeout can not be larger than %s Millis", MAX_NETWORK_REQUEST_TIMEOUT.toMillis());
 
-        this.networkRequestTimeout = Duration.ofMillis(Math.max(networkRequestTimeout.toMillis(), DEFAULT_NETWORK_REQUEST_TIMEOUT.toMillis()));
+        this.networkRequestTimeout = Duration.ofMillis(Math.max(networkRequestTimeoutInMs, DEFAULT_NETWORK_REQUEST_TIMEOUT.toMillis()));
         return this;
     }
 
