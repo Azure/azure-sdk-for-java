@@ -1382,20 +1382,22 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             new FaultInjectionRuleBuilder(timeoutRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .times(2)
-                        .delay(Duration.ofSeconds(4)) // the default time out is 5s
+                        .times(1)
+                        .delay(Duration.ofSeconds(4))
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
                 .build();
         try {
             DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+
+            // set networkRequestTimeout to 1.1s but CosmosClient internally sets networkRequestTimeout back to 5s, so the injected delay (4s) will not cause failures
             directConnectionConfig.setNetworkRequestTimeout(Duration.ofMillis(1100));
 
             newClient = new CosmosClientBuilder()
@@ -1411,21 +1413,19 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                     .getDatabase(cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(cosmosAsyncContainer.getId());
 
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
+
             // create a new item to be used by read operations
             TestObject createdItem = TestObject.create();
-            container.createItem(createdItem).block();
+            CosmosItemResponse<TestObject> itemResponse = container.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(timeoutRule)).block();
-            CosmosItemResponse<TestObject> itemResponse =
-                container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestObject.class).block();
-
-            assertThat(timeoutRule.getHitCount()).isEqualTo(2);
-            this.validateHitCount(timeoutRule, 2, OperationType.Read, ResourceType.Document);
+            assertThat(timeoutRule.getHitCount()).isEqualTo(1);
+            this.validateHitCount(timeoutRule, 1, OperationType.Create, ResourceType.Document);
 
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
-                OperationType.Read,
-                HttpConstants.StatusCodes.OK,
+                OperationType.Create,
+                HttpConstants.StatusCodes.CREATED,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 timeoutRuleId,
                 false
