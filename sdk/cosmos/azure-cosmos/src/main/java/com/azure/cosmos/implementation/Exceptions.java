@@ -71,7 +71,7 @@ public class Exceptions {
             && Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
     }
 
-    public static boolean isClientAssignedSubStatusCode(int subStatusCode) {
-        return subStatusCode >= 20_000 && subStatusCode < 21_000;
+    public static boolean isClientAssignedSubStatusCodeForInternalServerError(int statusCode, int subStatusCode) {
+        return statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR && (subStatusCode >= 20_000 && subStatusCode < 21_000);
     }
 }
