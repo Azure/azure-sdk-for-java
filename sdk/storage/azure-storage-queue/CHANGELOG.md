@@ -3,8 +3,8 @@
 ## 12.27.0 (2025-10-16)
 
 ### Features Added
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
-- Added `QueueProperties.ApproximateMessagesCountLong` to replace `QueueProperties.ApproximateMessagesCount`.  This property will correctly handle approximate message counts greater than max int.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added `QueueProperties.ApproximateMessagesCountLong` to replace `QueueProperties.ApproximateMessagesCount`. This property will correctly handle approximate message counts greater than max int.
 - Added support for service version 2025-11-05.
 
 ### Other Changes
