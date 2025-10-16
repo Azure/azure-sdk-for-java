@@ -1,9 +1,26 @@
 ## Release History
 
+### 4.71.2-hotfix (2025-10-15)
+
+#### Bugs Fixed
+* Fixed issue with change feed processor logs not showing exceptions. - [46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
+* Fixed an issue where Per-Partition Circuit Breaker was hitting `NullPointerException` in e2e timeout scenarios. - [PR 46968](https://github.com/Azure/azure-sdk-for-java/pull/46968/files)
+
+#### Other Changes
+* Added `MetadataThrottlingRetryPolicy` for `PartitionKeyRange` `RequestRateTooLargeException` handling. - [PR 46823](https://github.com/Azure/azure-sdk-for-java/pull/46823)
+* Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [PR 46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
+* Allow lease in `ChangeFeedProcessor` to be rebalanced if changes for associated partition have not been processed for a while. - [PR 25](https://github.com/jeet1995/azure-sdk-for-java/pull/25)
+* Ensure effective `DirectConnectionConfig#setNetworkRequestTimeout` is set to at least 5 seconds. - [PR 47024](https://github.com/Azure/azure-sdk-for-java/pull/47024)
+
 ### 4.71.1-hotfix (2025-08-04)
 
 #### Bugs Fixed
 * Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46236](https://github.com/Azure/azure-sdk-for-java/pull/46236)
+
+### 4.68.2-hotfix (2025-08-04)
+
+#### Bugs Fixed
+* Fixed an issue where child partition leases are being created with null continuation token when change feed processor restarts after split - See [PR 46235](https://github.com/Azure/azure-sdk-for-java/pull/46235)
 
 ### 4.71.0 (2025-06-04)
 
@@ -41,10 +58,11 @@
 ### 4.69.0 (2025-05-14)
 
 #### Features Added
-* Added Beta public API to enable http2. - See [PR 43123](https://github.com/Azure/azure-sdk-for-java/pull/43123)
+* Added Beta public API to enable http2. - See [PR 45294](https://github.com/Azure/azure-sdk-for-java/pull/45294)
 * Added API to allow customers to wrap/extend `CosmosAsyncContainer` - [PR 43724](https://github.com/Azure/azure-sdk-for-java/pull/43724) and [PR 45087](https://github.com/Azure/azure-sdk-for-java/pull/45087) 
 * Added Per-Partition Automatic Failover which enables failover for writes at per-partition level for Single-Write Multi-Region accounts. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
 * Added Beta public API to allow defining the consistency behavior for read / query / change feed operations independent of the chosen account-level consistency level. **NOTE: This API is still in preview mode and can only be used when using DIRECT connection mode.** - See [PR 45161](https://github.com/Azure/azure-sdk-for-java/pull/45161)
+* Added Weighted RRF for Hybrid and Full Text Search queries - [PR 45328](https://github.com/Azure/azure-sdk-for-java/pull/45328)
 
 #### Bugs Fixed
 * Fixed the fail back flow where not all partitions were failing back to original first preferred region for Per-Partition Circuit Breaker. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)

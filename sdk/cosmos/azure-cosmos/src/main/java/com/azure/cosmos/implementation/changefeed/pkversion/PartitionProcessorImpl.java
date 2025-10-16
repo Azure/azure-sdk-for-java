@@ -7,6 +7,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -57,6 +58,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
+    private Instant lastProcessedTime;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
@@ -81,6 +83,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
                 String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
+        this.lastProcessedTime = Instant.now();
     }
 
     @Override
@@ -141,6 +144,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     .getToken();
 
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
+                this.lastProcessedTime = Instant.now();
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
@@ -249,8 +253,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner());
                     this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
-                    logger.debug("Task cancelled exception: Partition {} from thread {} with owner {}",
-                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), throwable);
+                    logger.debug("Task cancelled exception: Partition " + this.lease.getLeaseToken()
+                        + " from thread " + Thread.currentThread().getId() + " with owner " + this.lease.getOwner(),
+                        throwable);
                     this.resultException = (TaskCancelledException) throwable;
                 } else {
                     logger.warn("Unexpected exception: Partition {} from thread {} with owner {}",
@@ -303,6 +308,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
+    }
+
+    @Override
+    public Instant getLastProcessedTime() {
+        return this.lastProcessedTime;
     }
 
     private Mono<Void> dispatchChanges(

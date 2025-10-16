@@ -16,22 +16,85 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PartitionProcessorImplTests {
 
-    @Test
+    @Test(groups = "unit")
+    public void processedTimeSetAfterProcessing() {
+        ChangeFeedObserver<JsonNode> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
+
+        ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+        CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+
+        ChangeFeedStateV1 startState = getChangeFeedStateWithContinuationTokens(1);
+        ProcessorSettings settings = new ProcessorSettings(startState, containerMock);
+        settings.withMaxItemCount(10);
+
+        Lease leaseMock = Mockito.mock(ServiceItemLeaseV1.class);
+        Mockito.when(leaseMock.getContinuationToken()).thenReturn(startState.toString());
+
+        PartitionCheckpointer checkpointerMock = Mockito.mock(PartitionCheckpointerImpl.class);
+
+        // Create a feed response with one mocked result
+        @SuppressWarnings("unchecked") FeedResponse<ChangeFeedProcessorItem> feedResponseMock = Mockito.mock(FeedResponse.class);
+        List<ChangeFeedProcessorItem> results = new ArrayList<>();
+        results.add(Mockito.mock(ChangeFeedProcessorItem.class));
+        AtomicInteger counter = new AtomicInteger(0);
+        Mockito.when(feedResponseMock.getResults()).thenAnswer(invocation -> {
+            Thread.sleep(500);
+            return counter.getAndIncrement() < 10 ? results : new ArrayList<>();
+        });
+        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+        Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(changeFeedState.toString());
+
+        // The processor will continuously fetch, but we will cancel shortly after first batch
+        Mockito.doReturn(Flux.just(feedResponseMock))
+            .when(changeFeedContextClientMock)
+            .createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any());
+
+        PartitionProcessorImpl processor = new PartitionProcessorImpl(
+            observerMock,
+            changeFeedContextClientMock,
+            settings,
+            checkpointerMock,
+            leaseMock,
+            null);
+        Instant initialTime = processor.getLastProcessedTime();
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        Mono<Void> runMono = processor.run(cts.getToken());
+
+        StepVerifier.create(runMono)
+            .thenAwait(Duration.ofMillis(800))
+            .then(cts::cancel)
+            .verifyComplete();
+
+        assertThat(processor.getLastProcessedTime()).isAfter(initialTime);
+    }
+
+    @Test(groups = "unit")
     public void partitionSplitHappenOnFirstRequest() {
         @SuppressWarnings("unchecked") ChangeFeedObserver<JsonNode> observerMock =
             (ChangeFeedObserver<JsonNode>) Mockito.mock(ChangeFeedObserver.class);
@@ -102,5 +165,43 @@ public class PartitionProcessorImplTests {
             continuation);
 
         return state;
+    }
+
+    private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {
+        String containerRid = "/cols/" + UUID.randomUUID();
+        String pkRangeId = UUID.randomUUID().toString();
+        String continuationDummy = UUID.randomUUID().toString();
+
+        StringBuilder continuationBuilder = new StringBuilder();
+        continuationBuilder.append("{\"V\":1,")
+            .append("\"Rid\":\"").append(containerRid).append("\",")
+            .append("\"Continuation\":[");
+
+        for (int i = 0; i < tokenCount; i++) {
+            if (i > 0) {
+                continuationBuilder.append(",");
+            }
+            char minRange = (char)('A' + (i * 2));
+            char maxRange = (char)('B' + (i * 2));
+            continuationBuilder.append("{\"token\":\"").append(continuationDummy)
+                .append("\",\"range\":{\"min\":\"").append(minRange).append(minRange)
+                .append("\",\"max\":\"").append(maxRange).append(maxRange).append("\"}}");
+        }
+
+        continuationBuilder.append("],")
+            .append("\"PKRangeId\":\"").append(pkRangeId).append("\"}");
+
+        String continuationJson = continuationBuilder.toString();
+
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+        ChangeFeedStartFromInternal startFromSettings = ChangeFeedStartFromInternal.createFromNow();
+        FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
+
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            startFromSettings,
+            continuation);
     }
 }
