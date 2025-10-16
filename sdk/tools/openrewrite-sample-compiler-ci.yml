@@ -45,6 +45,7 @@ extends:
                     - "/sdk/tools/"
                     - "/sdk/core-v2/"
                     - "/sdk/identity-v2/"
+                    - "/sdk/keyvault-v2/azure-security-keyvault-certificates"
                     - "/sdk/appconfiguration-v2/"
                     - "/eng/"
                     - "/common/perf-test-core/"
@@ -56,7 +57,7 @@ extends:
                 displayName: 'Build and Install Necesssary Dependencies'
                 inputs:
                   goals: 'install'
-                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-data-appconfiguration,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
+                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-data-appconfiguration,com.azure.v2:azure-security-keyvault-certificates,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
 

@@ -1,0 +1,101 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.security.keyvault.certificates.models
+displayName: Migrate from azure.security.keyvault.certificates.models to next generation stack
+description: This recipe migrates the azure.security.keyvault.certificates.models package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # CertificateKeyCurveName
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificateKeyCurveName
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificateKeyCurveName
+
+  # --------------------------------------------------------------------
+  # CertificateIssuer
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificateIssuer
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificateIssuer
+
+  # --------------------------------------------------------------------
+  # KeyVaultCertificateWithPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy
+
+  # --------------------------------------------------------------------
+  # CertificatePolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificatePolicy
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificatePolicy
+
+  # --------------------------------------------------------------------
+  # DeletedCertificate
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.DeletedCertificate
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.DeletedCertificate
+
+  # --------------------------------------------------------------------
+  # SubjectAlternativeNames
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.SubjectAlternativeNames
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.SubjectAlternativeNames
+
+  # --------------------------------------------------------------------
+  # CertificateOperation
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificateOperation
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificateOperation
+
+  # --------------------------------------------------------------------
+  # KeyVaultCertificate
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.KeyVaultCertificate
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificate
+
+  # --------------------------------------------------------------------
+  # CertificateKeyType
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificateKeyType
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificateKeyType
+
+  # --------------------------------------------------------------------
+  # CertificateContact
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificateContact
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificateContact
+
+  # --------------------------------------------------------------------
+  # CertificateProperties
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.CertificateProperties
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.CertificateProperties
+
+  # --------------------------------------------------------------------
+  # IssuerProperties
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.certificates.models.IssuerProperties
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.certificates.models.IssuerProperties
