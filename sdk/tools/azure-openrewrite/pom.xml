@@ -278,6 +278,8 @@
         </dependency>
         <dependency>
           <groupId>com.azure.v2</groupId>
+          <artifactId>azure-security-keyvault-secrets</artifactId>
+          <version>5.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-security-keyvault-secrets;dependency} -->
           <artifactId>azure-security-keyvault-keys</artifactId>
           <version>5.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-security-keyvault-keys;dependency} -->
           <artifactId>azure-security-keyvault-certificates</artifactId>
@@ -384,6 +386,8 @@
         </dependency>
         <dependency>
           <groupId>com.azure.v2</groupId>
+          <artifactId>azure-security-keyvault-secrets</artifactId>
+          <version>5.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-security-keyvault-secrets;dependency} -->
           <artifactId>azure-security-keyvault-keys</artifactId>
           <version>5.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-security-keyvault-keys;dependency} -->
           <artifactId>azure-security-keyvault-certificates</artifactId>

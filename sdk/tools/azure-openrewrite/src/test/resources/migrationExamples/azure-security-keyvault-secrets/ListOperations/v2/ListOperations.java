@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.secrets;
-
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.SecretProperties;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.secrets.SecretClient;
+import com.azure.v2.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
@@ -30,7 +30,7 @@ public class ListOperations {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
         for links and instructions. */
         SecretClient client = new SecretClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 

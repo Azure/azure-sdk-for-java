@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.secrets;
-
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.secrets.models.DeletedSecret;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.SecretProperties;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.secrets.SecretClient;
+import com.azure.v2.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.v2.security.keyvault.secrets.models.DeletedSecret;
+import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +38,7 @@ public class BackupAndRestoreOperations {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
         for links and instructions. */
         SecretClient client = new SecretClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -56,7 +56,7 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(secretBackup, backupFilePath);
 
         // The storage account secret is no longer in use, so you delete it.
-        SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller =
+        Poller<DeletedSecret, Void> deletedStorageSecretPoller =
             client.beginDeleteSecret("StorageAccountPassword");
         PollResponse<DeletedSecret>  pollResponse = deletedStorageSecretPoller.poll();
         DeletedSecret deletedStorageSecret = pollResponse.getValue();
