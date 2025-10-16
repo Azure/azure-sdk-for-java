@@ -23,8 +23,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.agents.implementation.models.ErrorResponseException;
 import com.azure.search.documents.agents.implementation.models.RequestOptions;
-import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
-import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalResponse;
+import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalRequest;
+import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalResponse;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -40,49 +40,51 @@ public final class KnowledgeRetrievalsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final KnowledgeAgentRetrievalClientImpl client;
+    private final KnowledgeBaseRetrievalClientImpl client;
 
     /**
      * Initializes an instance of KnowledgeRetrievalsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    KnowledgeRetrievalsImpl(KnowledgeAgentRetrievalClientImpl client) {
+    KnowledgeRetrievalsImpl(KnowledgeBaseRetrievalClientImpl client) {
         this.service = RestProxy.create(KnowledgeRetrievalsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for KnowledgeAgentRetrievalClientKnowledgeRetrievals to be used by the
+     * The interface defining all the services for KnowledgeBaseRetrievalClientKnowledgeRetrievals to be used by the
      * proxy service to perform REST calls.
      */
-    @Host("{endpoint}/agents('{agentName}')")
-    @ServiceInterface(name = "KnowledgeAgentRetrievalClientKnowledgeRetrievals")
+    @Host("{endpoint}/knowledgebases('{knowledgeBaseName}')")
+    @ServiceInterface(name = "KnowledgeBaseRetrievalClientKnowledgeRetrievals")
     public interface KnowledgeRetrievalsService {
         @Post("/retrieve")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgentRetrievalResponse>> retrieve(@HostParam("endpoint") String endpoint,
-            @HostParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+        Mono<Response<KnowledgeBaseRetrievalResponse>> retrieve(@HostParam("endpoint") String endpoint,
+            @HostParam("knowledgeBaseName") String knowledgeBaseName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KnowledgeAgentRetrievalRequest retrievalRequest, Context context);
+            @BodyParam("application/json") KnowledgeBaseRetrievalRequest retrievalRequest, Context context);
 
         @Post("/retrieve")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgentRetrievalResponse> retrieveSync(@HostParam("endpoint") String endpoint,
-            @HostParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+        Response<KnowledgeBaseRetrievalResponse> retrieveSync(@HostParam("endpoint") String endpoint,
+            @HostParam("knowledgeBaseName") String knowledgeBaseName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KnowledgeAgentRetrievalRequest retrievalRequest, Context context);
+            @BodyParam("application/json") KnowledgeBaseRetrievalRequest retrievalRequest, Context context);
     }
 
     /**
-     * KnowledgeAgent retrieves relevant data from backing stores.
+     * KnowledgeBase retrieves relevant data from backing stores.
      * 
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
@@ -95,15 +97,15 @@ public final class KnowledgeRetrievalsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgentRetrievalResponse>> retrieveWithResponseAsync(
-        KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization,
+    public Mono<Response<KnowledgeBaseRetrievalResponse>> retrieveWithResponseAsync(
+        KnowledgeBaseRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization,
             requestOptions, context));
     }
 
     /**
-     * KnowledgeAgent retrieves relevant data from backing stores.
+     * KnowledgeBase retrieves relevant data from backing stores.
      * 
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
@@ -117,8 +119,8 @@ public final class KnowledgeRetrievalsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgentRetrievalResponse>> retrieveWithResponseAsync(
-        KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization,
+    public Mono<Response<KnowledgeBaseRetrievalResponse>> retrieveWithResponseAsync(
+        KnowledgeBaseRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization,
         RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -126,12 +128,12 @@ public final class KnowledgeRetrievalsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.retrieve(this.client.getEndpoint(), this.client.getAgentName(), xMsClientRequestId,
+        return service.retrieve(this.client.getEndpoint(), this.client.getKnowledgeBaseName(), xMsClientRequestId,
             this.client.getApiVersion(), xMsQuerySourceAuthorization, accept, retrievalRequest, context);
     }
 
     /**
-     * KnowledgeAgent retrieves relevant data from backing stores.
+     * KnowledgeBase retrieves relevant data from backing stores.
      * 
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
@@ -143,14 +145,14 @@ public final class KnowledgeRetrievalsImpl {
      * @return the output contract for the retrieval response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgentRetrievalResponse> retrieveAsync(KnowledgeAgentRetrievalRequest retrievalRequest,
+    public Mono<KnowledgeBaseRetrievalResponse> retrieveAsync(KnowledgeBaseRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
         return retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * KnowledgeAgent retrieves relevant data from backing stores.
+     * KnowledgeBase retrieves relevant data from backing stores.
      * 
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
@@ -163,14 +165,14 @@ public final class KnowledgeRetrievalsImpl {
      * @return the output contract for the retrieval response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgentRetrievalResponse> retrieveAsync(KnowledgeAgentRetrievalRequest retrievalRequest,
+    public Mono<KnowledgeBaseRetrievalResponse> retrieveAsync(KnowledgeBaseRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
         return retrieveWithResponseAsync(retrievalRequest, xMsQuerySourceAuthorization, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * KnowledgeAgent retrieves relevant data from backing stores.
+     * KnowledgeBase retrieves relevant data from backing stores.
      * 
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
@@ -183,21 +185,20 @@ public final class KnowledgeRetrievalsImpl {
      * @return the output contract for the retrieval response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgentRetrievalResponse> retrieveWithResponse(
-        KnowledgeAgentRetrievalRequest retrievalRequest, String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions, Context context) {
+    public Response<KnowledgeBaseRetrievalResponse> retrieveWithResponse(KnowledgeBaseRetrievalRequest retrievalRequest,
+        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.retrieveSync(this.client.getEndpoint(), this.client.getAgentName(), xMsClientRequestId,
+        return service.retrieveSync(this.client.getEndpoint(), this.client.getKnowledgeBaseName(), xMsClientRequestId,
             this.client.getApiVersion(), xMsQuerySourceAuthorization, accept, retrievalRequest, context);
     }
 
     /**
-     * KnowledgeAgent retrieves relevant data from backing stores.
+     * KnowledgeBase retrieves relevant data from backing stores.
      * 
      * @param retrievalRequest The retrieval request to process.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
@@ -209,7 +210,7 @@ public final class KnowledgeRetrievalsImpl {
      * @return the output contract for the retrieval response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgentRetrievalResponse retrieve(KnowledgeAgentRetrievalRequest retrievalRequest,
+    public KnowledgeBaseRetrievalResponse retrieve(KnowledgeBaseRetrievalRequest retrievalRequest,
         String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
         return retrieveWithResponse(retrievalRequest, xMsQuerySourceAuthorization, requestOptions, Context.NONE)
             .getValue();

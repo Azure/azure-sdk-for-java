@@ -5,7 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 /**
- * Package containing the implementations for KnowledgeAgentRetrievalClient.
- * Client that can be used to query an agent.
+ * Package containing the implementations for KnowledgeBaseRetrievalClient.
+ * Client that can be used to query an knowledge base.
  */
 package com.azure.search.documents.agents.implementation;

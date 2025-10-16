@@ -15,16 +15,40 @@ import java.util.Collection;
  */
 public final class KnowledgeSourceKind extends ExpandableStringEnum<KnowledgeSourceKind> {
     /**
-     * A knowledge source that reads data from a Search Index.
+     * A knowledge source that retrieves data from a Search Index.
      */
     @Generated
     public static final KnowledgeSourceKind SEARCH_INDEX = fromString("searchIndex");
 
     /**
-     * A knowledge source that read and ingest data from Azure Blob Storage to a Search Index.
+     * A knowledge source that retrieves and ingests data from Azure Blob Storage to a Search Index.
      */
     @Generated
     public static final KnowledgeSourceKind AZURE_BLOB = fromString("azureBlob");
+
+    /**
+     * A knowledge source that retrieves data from the web.
+     */
+    @Generated
+    public static final KnowledgeSourceKind WEB = fromString("web");
+
+    /**
+     * A knowledge source that retrieves data from a remote SharePoint endpoint.
+     */
+    @Generated
+    public static final KnowledgeSourceKind REMOTE_SHARE_POINT = fromString("remoteSharePoint");
+
+    /**
+     * A knowledge source that retrieves and ingests data from SharePoint to a Search Index.
+     */
+    @Generated
+    public static final KnowledgeSourceKind INDEXED_SHARE_POINT = fromString("indexedSharePoint");
+
+    /**
+     * A knowledge source that retrieves and ingests data from OneLake to a Search Index.
+     */
+    @Generated
+    public static final KnowledgeSourceKind INDEXED_ONE_LAKE = fromString("indexedOneLake");
 
     /**
      * Creates a new instance of KnowledgeSourceKind value.

@@ -5,7 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 /**
- * Package containing the data models for KnowledgeAgentRetrievalClient.
- * Client that can be used to query an agent.
+ * Package containing the data models for KnowledgeBaseRetrievalClient.
+ * Client that can be used to query an knowledge base.
  */
 package com.azure.search.documents.agents.implementation.models;

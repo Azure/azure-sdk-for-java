@@ -11,8 +11,12 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
 import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResults;
+import com.azure.search.documents.models.SemanticSearchResultsType;
 
 import java.util.List;
 import java.util.Map;
@@ -144,4 +148,51 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
             ? metadataSupplier.get().getFirstPageResponse().getDebugInfo()
             : pagedFlux.getDebugInfo().block();
     }
+
+    /**
+     * The query answers results based on the search request.
+     * <p>
+     * If query answers weren't requested this will be {@code null}.
+     *
+     * @return The query answers results if query answers were requested, otherwise {@code null}.
+     */
+    public List<QueryAnswerResult> getQueryAnswers() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getQueryAnswers()
+            : pagedFlux.getQueryAnswers().block();
+    }
+
+    /**
+     * The semantic error reason if the semantic search request failed.
+     *
+     * @return The semantic error reason if the semantic search request failed, otherwise an empty Mono.
+     */
+    public SemanticErrorReason getSemanticErrorReason() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticErrorReason()
+            : pagedFlux.getSemanticErrorReason().block();
+    }
+
+    /**
+     * The semantic search results type if semantic search was requested.
+     *
+     * @return The semantic search results type if semantic search was requested, otherwise an empty Mono.
+     */
+    public SemanticSearchResultsType getSemanticSearchResultsType() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticSearchResultsType()
+            : pagedFlux.getSemanticSearchResultsType().block();
+    }
+
+    /**
+     * The semantic query rewrites result type if semantic search was requested.
+     *
+     * @return The semantic query rewrites result type if semantic search was requested, otherwise an empty Mono.
+     */
+    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticQueryRewritesResultType()
+            : pagedFlux.getSemanticQueryRewritesResultType().block();
+    }
+
 }

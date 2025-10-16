@@ -14,29 +14,31 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies runtime parameters for a search index knowledge source.
+ * Specifies runtime parameters for a remote SharePoint knowledge source.
  */
 @Fluent
-public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParams {
+public final class RemoteSharePointKnowledgeSourceParams extends KnowledgeSourceParams {
     /*
      * The type of the knowledge source.
      */
     @Generated
-    private KnowledgeSourceKind kind = KnowledgeSourceKind.SEARCH_INDEX;
+    private KnowledgeSourceKind kind = KnowledgeSourceKind.REMOTE_SHARE_POINT;
 
     /*
-     * A filter condition applied to the index (e.g., 'State eq VA').
+     * A filter condition applied to the SharePoint data source. It must be specified in the Keyword Query Language
+     * syntax. It will be combined as a conjunction with the filter expression specified in the knowledge source
+     * definition.
      */
     @Generated
-    private String filterAddOn;
+    private String filterExpressionAddOn;
 
     /**
-     * Creates an instance of SearchIndexKnowledgeSourceParams class.
+     * Creates an instance of RemoteSharePointKnowledgeSourceParams class.
      * 
      * @param knowledgeSourceName the knowledgeSourceName value to set.
      */
     @Generated
-    public SearchIndexKnowledgeSourceParams(String knowledgeSourceName) {
+    public RemoteSharePointKnowledgeSourceParams(String knowledgeSourceName) {
         super(knowledgeSourceName);
     }
 
@@ -52,24 +54,28 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
     }
 
     /**
-     * Get the filterAddOn property: A filter condition applied to the index (e.g., 'State eq VA').
+     * Get the filterExpressionAddOn property: A filter condition applied to the SharePoint data source. It must be
+     * specified in the Keyword Query Language syntax. It will be combined as a conjunction with the filter expression
+     * specified in the knowledge source definition.
      * 
-     * @return the filterAddOn value.
+     * @return the filterExpressionAddOn value.
      */
     @Generated
-    public String getFilterAddOn() {
-        return this.filterAddOn;
+    public String getFilterExpressionAddOn() {
+        return this.filterExpressionAddOn;
     }
 
     /**
-     * Set the filterAddOn property: A filter condition applied to the index (e.g., 'State eq VA').
+     * Set the filterExpressionAddOn property: A filter condition applied to the SharePoint data source. It must be
+     * specified in the Keyword Query Language syntax. It will be combined as a conjunction with the filter expression
+     * specified in the knowledge source definition.
      * 
-     * @param filterAddOn the filterAddOn value to set.
-     * @return the SearchIndexKnowledgeSourceParams object itself.
+     * @param filterExpressionAddOn the filterExpressionAddOn value to set.
+     * @return the RemoteSharePointKnowledgeSourceParams object itself.
      */
     @Generated
-    public SearchIndexKnowledgeSourceParams setFilterAddOn(String filterAddOn) {
-        this.filterAddOn = filterAddOn;
+    public RemoteSharePointKnowledgeSourceParams setFilterExpressionAddOn(String filterExpressionAddOn) {
+        this.filterExpressionAddOn = filterExpressionAddOn;
         return this;
     }
 
@@ -78,7 +84,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
      */
     @Generated
     @Override
-    public SearchIndexKnowledgeSourceParams setIncludeReferences(Boolean includeReferences) {
+    public RemoteSharePointKnowledgeSourceParams setIncludeReferences(Boolean includeReferences) {
         super.setIncludeReferences(includeReferences);
         return this;
     }
@@ -88,7 +94,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
      */
     @Generated
     @Override
-    public SearchIndexKnowledgeSourceParams setIncludeReferenceSourceData(Boolean includeReferenceSourceData) {
+    public RemoteSharePointKnowledgeSourceParams setIncludeReferenceSourceData(Boolean includeReferenceSourceData) {
         super.setIncludeReferenceSourceData(includeReferenceSourceData);
         return this;
     }
@@ -98,7 +104,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
      */
     @Generated
     @Override
-    public SearchIndexKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
+    public RemoteSharePointKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
         super.setAlwaysQuerySource(alwaysQuerySource);
         return this;
     }
@@ -108,7 +114,7 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
      */
     @Generated
     @Override
-    public SearchIndexKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
+    public RemoteSharePointKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
     }
@@ -126,21 +132,21 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("filterAddOn", this.filterAddOn);
+        jsonWriter.writeStringField("filterExpressionAddOn", this.filterExpressionAddOn);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of SearchIndexKnowledgeSourceParams from the JsonReader.
+     * Reads an instance of RemoteSharePointKnowledgeSourceParams from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchIndexKnowledgeSourceParams if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of RemoteSharePointKnowledgeSourceParams if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SearchIndexKnowledgeSourceParams.
+     * @throws IOException If an error occurs while reading the RemoteSharePointKnowledgeSourceParams.
      */
     @Generated
-    public static SearchIndexKnowledgeSourceParams fromJson(JsonReader jsonReader) throws IOException {
+    public static RemoteSharePointKnowledgeSourceParams fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean knowledgeSourceNameFound = false;
             String knowledgeSourceName = null;
@@ -148,8 +154,8 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
             Float rerankerThreshold = null;
-            KnowledgeSourceKind kind = KnowledgeSourceKind.SEARCH_INDEX;
-            String filterAddOn = null;
+            KnowledgeSourceKind kind = KnowledgeSourceKind.REMOTE_SHARE_POINT;
+            String filterExpressionAddOn = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -167,23 +173,24 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
-                } else if ("filterAddOn".equals(fieldName)) {
-                    filterAddOn = reader.getString();
+                } else if ("filterExpressionAddOn".equals(fieldName)) {
+                    filterExpressionAddOn = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             if (knowledgeSourceNameFound) {
-                SearchIndexKnowledgeSourceParams deserializedSearchIndexKnowledgeSourceParams
-                    = new SearchIndexKnowledgeSourceParams(knowledgeSourceName);
-                deserializedSearchIndexKnowledgeSourceParams.setIncludeReferences(includeReferences);
-                deserializedSearchIndexKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
-                deserializedSearchIndexKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
-                deserializedSearchIndexKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
-                deserializedSearchIndexKnowledgeSourceParams.kind = kind;
-                deserializedSearchIndexKnowledgeSourceParams.filterAddOn = filterAddOn;
+                RemoteSharePointKnowledgeSourceParams deserializedRemoteSharePointKnowledgeSourceParams
+                    = new RemoteSharePointKnowledgeSourceParams(knowledgeSourceName);
+                deserializedRemoteSharePointKnowledgeSourceParams.setIncludeReferences(includeReferences);
+                deserializedRemoteSharePointKnowledgeSourceParams
+                    .setIncludeReferenceSourceData(includeReferenceSourceData);
+                deserializedRemoteSharePointKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+                deserializedRemoteSharePointKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+                deserializedRemoteSharePointKnowledgeSourceParams.kind = kind;
+                deserializedRemoteSharePointKnowledgeSourceParams.filterExpressionAddOn = filterExpressionAddOn;
 
-                return deserializedSearchIndexKnowledgeSourceParams;
+                return deserializedRemoteSharePointKnowledgeSourceParams;
             }
             throw new IllegalStateException("Missing required property: knowledgeSourceName");
         });
