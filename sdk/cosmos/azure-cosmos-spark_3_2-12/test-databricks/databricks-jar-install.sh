@@ -32,7 +32,7 @@ then
 	exit 1
 fi
 
-$JAR_CHECK_SUM = sha256sum $JARPATH/$JARFILE
+JAR_CHECK_SUM=sha256sum $JARPATH/$JARFILE
 echo "CHECKSUM of the jar (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
 echo "##vso[task.setvariable variable=JarCheckSum]$JAR_CHECK_SUM"
 

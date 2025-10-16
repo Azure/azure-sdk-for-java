@@ -115,17 +115,14 @@ stages:
                 echo "[init][error] Neither curl nor wget is available." >&2
                 exit 1
               fi
-            
-              # Basic validity check (optional but helpful)
-              if command -v unzip >/dev/null 2>&1; then
-                if ! unzip -tq "$TMP_FILE" >/dev/null 2>&1; then
-                  echo "[init][error] Downloaded file is not a valid JAR/ZIP." >&2
-                  rm -f "$TMP_FILE"
-                  exit 1
-                fi
-              fi
 
-              CHECKSUM_AFTER_EXECUTION=sha256sum $TMP_FILE
+              chmod 0644 "$TMP_FILE"
+
+              CHECKSUM_AFTER_EXECUTION="$(sha256sum -- "$TMP_FILE")" || {
+                echo "ERROR: checksum failed for $TMP_FILE" >&2
+                exit 1
+              }
+              CHECKSUM_AFTER_EXECUTION="${CHECKSUM_AFTER_EXECUTION%% *}"
               echo "CheckSum of JAR build on this agent: $JAR_CHECK_SUM"
               echo "CheckSum of jar after notebook execution: $CHECKSUM_AFTER_EXECUTION"
             
