@@ -976,7 +976,7 @@ public final class SearchAsyncClient {
         String querySourceAuthorization, Context context) {
         try {
             return restClient.getDocuments()
-                .getWithResponseAsync(key, selectedFields, querySourceAuthorization, null, context)
+                .getWithResponseAsync(key, selectedFields, querySourceAuthorization, null, null, context)
                 .onErrorMap(Utility::exceptionMapper)
                 .map(res -> new SimpleResponse<>(res, serializer
                     .deserializeFromBytes(serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
@@ -1285,7 +1285,7 @@ public final class SearchAsyncClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.getDocuments()
-            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, null, context)
+            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, null, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();

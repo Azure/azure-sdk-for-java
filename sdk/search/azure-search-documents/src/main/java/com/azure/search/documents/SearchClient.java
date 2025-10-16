@@ -873,7 +873,7 @@ public final class SearchClient {
 
         try {
             Response<Map<String, Object>> response = restClient.getDocuments()
-                .getWithResponse(key, selectedFields, querySourceAuthorization, null, context);
+                .getWithResponse(key, selectedFields, querySourceAuthorization, null, null, context);
 
             return new SimpleResponse<>(response, serializer
                 .deserializeFromBytes(serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
@@ -1120,7 +1120,7 @@ public final class SearchClient {
 
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Response<SearchDocumentsResult> response = restClient.getDocuments()
-                .searchPostWithResponse(requestToUse, querySourceAuthorization, null, context);
+                .searchPostWithResponse(requestToUse, querySourceAuthorization, null, null, context);
             SearchDocumentsResult result = response.getValue();
             SearchPagedResponse page
                 = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),

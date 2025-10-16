@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help configure and instantiate {@link SearchKnowledgeAgentClient}
- * and {@link SearchKnowledgeAgentAsyncClient} for interacting with Azure AI Search Knowledge Agents.
+ * This class provides a fluent builder API to help configure and instantiate {@link SearchKnowledgeBaseClient}
+ * and {@link SearchKnowledgeBaseAsyncClient} for interacting with Azure AI Search Knowledge Agents.
  *
  * <h2>Overview</h2>
  * <p>
@@ -54,8 +54,8 @@ import java.util.Objects;
  *
  * <h3>Client Instantiation</h3>
  * <p>
- * Use {@link #buildClient()} to create a synchronous {@link SearchKnowledgeAgentClient}, or {@link #buildAsyncClient()} to create
- * an asynchronous {@link SearchKnowledgeAgentAsyncClient}. Each call to these methods returns a new client instance with the
+ * Use {@link #buildClient()} to create a synchronous {@link SearchKnowledgeBaseClient}, or {@link #buildAsyncClient()} to create
+ * an asynchronous {@link SearchKnowledgeBaseAsyncClient}. Each call to these methods returns a new client instance with the
  * configured options.
  * </p>
  *
@@ -72,17 +72,17 @@ import java.util.Objects;
  *   <li>For Azure SDK for Java guidelines, see the <a href="https://azure.github.io/azure-sdk/java_introduction.html">Azure SDK for Java Introduction</a>.</li>
  * </ul>
  *
- * @see SearchKnowledgeAgentClient
- * @see SearchKnowledgeAgentAsyncClient
+ * @see SearchKnowledgeBaseClient
+ * @see SearchKnowledgeBaseAsyncClient
  * @see com.azure.search.documents.agents
  */
-@ServiceClientBuilder(serviceClients = { SearchKnowledgeAgentClient.class, SearchKnowledgeAgentAsyncClient.class })
-public final class SearchKnowledgeAgentClientBuilder
-    implements AzureKeyCredentialTrait<SearchKnowledgeAgentClientBuilder>,
-    ConfigurationTrait<SearchKnowledgeAgentClientBuilder>, EndpointTrait<SearchKnowledgeAgentClientBuilder>,
-    HttpTrait<SearchKnowledgeAgentClientBuilder>, TokenCredentialTrait<SearchKnowledgeAgentClientBuilder> {
+@ServiceClientBuilder(serviceClients = { SearchKnowledgeBaseClient.class, SearchKnowledgeBaseAsyncClient.class })
+public final class SearchKnowledgeBaseClientBuilder
+    implements AzureKeyCredentialTrait<SearchKnowledgeBaseClientBuilder>,
+    ConfigurationTrait<SearchKnowledgeBaseClientBuilder>, EndpointTrait<SearchKnowledgeBaseClientBuilder>,
+    HttpTrait<SearchKnowledgeBaseClientBuilder>, TokenCredentialTrait<SearchKnowledgeBaseClientBuilder> {
 
-    private static final ClientLogger LOGGER = new ClientLogger(SearchKnowledgeAgentClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SearchKnowledgeBaseClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -105,7 +105,7 @@ public final class SearchKnowledgeAgentClientBuilder
     /**
      * Creates a new builder instance.
      */
-    public SearchKnowledgeAgentClientBuilder() {
+    public SearchKnowledgeBaseClientBuilder() {
     }
 
     /**
@@ -115,7 +115,7 @@ public final class SearchKnowledgeAgentClientBuilder
      * @return The updated builder object.
      */
     @Override
-    public SearchKnowledgeAgentClientBuilder endpoint(String endpoint) {
+    public SearchKnowledgeBaseClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -126,7 +126,7 @@ public final class SearchKnowledgeAgentClientBuilder
      * @param agentName The name of the agent.
      * @return The updated builder object.
      */
-    public SearchKnowledgeAgentClientBuilder agentName(String agentName) {
+    public SearchKnowledgeBaseClientBuilder agentName(String agentName) {
         this.agentName = agentName;
         return this;
     }
@@ -137,19 +137,19 @@ public final class SearchKnowledgeAgentClientBuilder
      * @param apiVersion The API version.
      * @return The updated builder object.
      */
-    public SearchKnowledgeAgentClientBuilder serviceVersion(SearchServiceVersion apiVersion) {
+    public SearchKnowledgeBaseClientBuilder serviceVersion(SearchServiceVersion apiVersion) {
         this.serviceVersion = apiVersion;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder credential(AzureKeyCredential credential) {
+    public SearchKnowledgeBaseClientBuilder credential(AzureKeyCredential credential) {
         this.azureKeyCredential = credential;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder credential(TokenCredential credential) {
+    public SearchKnowledgeBaseClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
         return this;
     }
@@ -160,60 +160,60 @@ public final class SearchKnowledgeAgentClientBuilder
      * @param audience The audience to use.
      * @return The updated builder object.
      */
-    public SearchKnowledgeAgentClientBuilder audience(SearchAudience audience) {
+    public SearchKnowledgeBaseClientBuilder audience(SearchAudience audience) {
         this.audience = audience;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public SearchKnowledgeBaseClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder clientOptions(ClientOptions clientOptions) {
+    public SearchKnowledgeBaseClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public SearchKnowledgeBaseClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
         this.perCallPolicies.add(policy); // For simplicity, treat as per-call; refine as needed
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder httpClient(HttpClient client) {
+    public SearchKnowledgeBaseClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public SearchKnowledgeBaseClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder configuration(Configuration configuration) {
+    public SearchKnowledgeBaseClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     @Override
-    public SearchKnowledgeAgentClientBuilder retryOptions(RetryOptions retryOptions) {
+    public SearchKnowledgeBaseClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
 
     /**
-     * Builds a synchronous {@link SearchKnowledgeAgentClient}.
+     * Builds a synchronous {@link SearchKnowledgeBaseClient}.
      *
-     * @return a new {@link SearchKnowledgeAgentClient} instance.
+     * @return a new {@link SearchKnowledgeBaseClient} instance.
      */
-    public SearchKnowledgeAgentClient buildClient() {
+    public SearchKnowledgeBaseClient buildClient() {
         validateRequiredFields();
         SearchServiceVersion serviceVersion
             = this.serviceVersion != null ? this.serviceVersion : SearchServiceVersion.getLatest();
@@ -221,15 +221,15 @@ public final class SearchKnowledgeAgentClientBuilder
             ? this.httpPipeline
             : Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
                 azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
-        return new SearchKnowledgeAgentClient(endpoint, agentName, serviceVersion, pipeline);
+        return new SearchKnowledgeBaseClient(endpoint, agentName, serviceVersion, pipeline);
     }
 
     /**
-     * Builds an asynchronous {@link SearchKnowledgeAgentAsyncClient}.
+     * Builds an asynchronous {@link SearchKnowledgeBaseAsyncClient}.
      *
-     * @return a new {@link SearchKnowledgeAgentAsyncClient} instance.
+     * @return a new {@link SearchKnowledgeBaseAsyncClient} instance.
      */
-    public SearchKnowledgeAgentAsyncClient buildAsyncClient() {
+    public SearchKnowledgeBaseAsyncClient buildAsyncClient() {
         validateRequiredFields();
         SearchServiceVersion serviceVersion
             = this.serviceVersion != null ? this.serviceVersion : SearchServiceVersion.getLatest();
@@ -237,7 +237,7 @@ public final class SearchKnowledgeAgentClientBuilder
             ? this.httpPipeline
             : Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
                 azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
-        return new SearchKnowledgeAgentAsyncClient(endpoint, agentName, serviceVersion, pipeline);
+        return new SearchKnowledgeBaseAsyncClient(endpoint, agentName, serviceVersion, pipeline);
     }
 
     private void validateRequiredFields() {
