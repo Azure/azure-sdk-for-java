@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.32 (2025-10-16)
+## 12.0.0-beta.32 (2025-10-20)
 
 ### Features Added
 - Added more useful error message when the SDK encounters an x-ms-version mismatch issue.

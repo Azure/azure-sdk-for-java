@@ -1,6 +1,6 @@
 # Release History
 
-## 12.32.0 (2025-10-16)
+## 12.32.0 (2025-10-20)
 
 ### Features Added
 - AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
