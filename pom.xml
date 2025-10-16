@@ -215,7 +215,6 @@
     <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
-    <module>sdk/remoterendering</module>
     <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
@@ -259,6 +258,7 @@
     <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
+    <module>sdk/template-v2</module>
     <module>sdk/terraform</module>
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>

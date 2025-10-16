@@ -30,8 +30,8 @@ public final class DatabasesFlushMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databases()
-            .flush("sbkyvpycanuzbp", "kafkuwbcrnwbm", "hhseyv",
-                new FlushParameters().withIds(Arrays.asList("rts", "hspkdeemao", "mx", "gkvtmelmqkrhah")),
+            .flush("isgwbnbbeldawkz", "ali", "urqhaka",
+                new FlushParameters().withIds(Arrays.asList("shsfwxosowzxcu", "i", "jooxdjebw")),
                 com.azure.core.util.Context.NONE);
 
     }

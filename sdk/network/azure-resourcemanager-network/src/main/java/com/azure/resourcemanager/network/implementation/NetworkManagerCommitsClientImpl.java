@@ -61,7 +61,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientNetworkManagerCommits")
     public interface NetworkManagerCommitsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/commit")
@@ -110,7 +110,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -154,7 +154,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.post(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
