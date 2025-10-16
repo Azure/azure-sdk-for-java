@@ -15,7 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,8 +27,8 @@ class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
     implements NetworkSecurityRule, NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
     NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>, NetworkSecurityRule.Update {
-    private Map<String, ApplicationSecurityGroupInner> sourceAsgs = new HashMap<>();
-    private Map<String, ApplicationSecurityGroupInner> destinationAsgs = new HashMap<>();
+    private Map<String, ApplicationSecurityGroupInner> sourceAsgs = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private Map<String, ApplicationSecurityGroupInner> destinationAsgs = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private final ClientLogger logger = new ClientLogger(getClass());
 
     NetworkSecurityRuleImpl(SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {

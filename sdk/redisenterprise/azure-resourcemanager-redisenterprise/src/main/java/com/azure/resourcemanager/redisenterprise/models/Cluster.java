@@ -79,6 +79,15 @@ public interface Cluster {
     ManagedServiceIdentity identity();
 
     /**
+     * Gets the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
      * replicated. This affects the availability SLA, and increases the risk of data loss.
      * 
@@ -242,8 +251,9 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithZones,
-            DefinitionStages.WithIdentity, DefinitionStages.WithHighAvailability,
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithZones, DefinitionStages.WithIdentity,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithHighAvailability,
             DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
@@ -298,6 +308,23 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network traffic can access the Redis
+             * cluster. Only 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old
+             * API version which do not have this property and cannot be set..
+             * 
+             * @param publicNetworkAccess Whether or not public network traffic can access the Redis cluster. Only
+             * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version
+             * which do not have this property and cannot be set.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
 
         /**
@@ -357,7 +384,8 @@ public interface Cluster {
      * The template for Cluster update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
-        UpdateStages.WithHighAvailability, UpdateStages.WithMinimumTlsVersion, UpdateStages.WithEncryption {
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithHighAvailability, UpdateStages.WithMinimumTlsVersion,
+        UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          * 
@@ -415,6 +443,23 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network traffic can access the Redis
+             * cluster. Only 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old
+             * API version which do not have this property and cannot be set..
+             * 
+             * @param publicNetworkAccess Whether or not public network traffic can access the Redis cluster. Only
+             * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version
+             * which do not have this property and cannot be set.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
 
         /**

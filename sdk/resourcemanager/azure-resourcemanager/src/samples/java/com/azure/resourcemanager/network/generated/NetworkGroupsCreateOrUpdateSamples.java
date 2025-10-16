@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.GroupMemberType;
 public final class NetworkGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkManagerGroupPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkManagerGroupPut.json
      */
     /**
      * Sample code: NetworkGroupsPut.

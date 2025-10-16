@@ -46,6 +46,10 @@ extends:
                     - "/sdk/core-v2/"
                     - "/sdk/identity-v2/"
                     - "/sdk/keyvault-v2/azure-security-keyvault-administration/"
+                    - "/sdk/keyvault-v2/azure-security-keyvault-secrets/"
+                    - "/sdk/keyvault-v2/azure-security-keyvault-keys/"
+                    - "/sdk/keyvault-v2/azure-security-keyvault-certificates"
+                    - "/sdk/appconfiguration-v2/"
                     - "/eng/"
                     - "/common/perf-test-core/"
                     - "**/*.xml"
@@ -56,7 +60,7 @@ extends:
                 displayName: 'Build and Install Necesssary Dependencies'
                 inputs:
                   goals: 'install'
-                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-security-keyvault-administration,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
+                  options: '-pl com.azure.v2:azure-core,com.azure.v2:azure-identity,com.azure.v2:azure-data-appconfiguration,com.azure.v2:azure-security-keyvault-certificates,com.azure.v2:azure-security-keyvault-keys,com.azure.v2:azure-security-keyvault-administration,com.azure.v2:azure-security-keyvault-secrets,com.azure:perf-test-core,com.azure:azure-openrewrite-compiler-maven-plugin -am -T 1C -Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip -Djacoco.skip -Dspotless.skip --no-transfer-progress'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: '1.8'
 

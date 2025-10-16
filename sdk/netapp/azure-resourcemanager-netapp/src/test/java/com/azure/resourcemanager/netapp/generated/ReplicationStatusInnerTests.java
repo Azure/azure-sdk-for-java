@@ -6,7 +6,6 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
-import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,27 +13,24 @@ public final class ReplicationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationStatusInner model = BinaryData.fromString(
-            "{\"healthy\":false,\"relationshipStatus\":\"Unknown\",\"mirrorState\":\"Broken\",\"totalProgress\":\"knso\",\"errorMessage\":\"jhxbld\"}")
+            "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"enwash\",\"errorMessage\":\"dtkcnqxwbpokulp\"}")
             .toObject(ReplicationStatusInner.class);
-        Assertions.assertFalse(model.healthy());
-        Assertions.assertEquals(RelationshipStatus.UNKNOWN, model.relationshipStatus());
-        Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("knso", model.totalProgress());
-        Assertions.assertEquals("jhxbld", model.errorMessage());
+        Assertions.assertTrue(model.healthy());
+        Assertions.assertEquals(RelationshipStatus.IDLE, model.relationshipStatus());
+        Assertions.assertEquals("enwash", model.totalProgress());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationStatusInner model = new ReplicationStatusInner().withHealthy(false)
-            .withRelationshipStatus(RelationshipStatus.UNKNOWN)
-            .withMirrorState(MirrorState.BROKEN)
-            .withTotalProgress("knso")
-            .withErrorMessage("jhxbld");
+        ReplicationStatusInner model = new ReplicationStatusInner().withHealthy(true)
+            .withRelationshipStatus(RelationshipStatus.IDLE)
+            .withTotalProgress("enwash")
+            .withErrorMessage("dtkcnqxwbpokulp");
         model = BinaryData.fromObject(model).toObject(ReplicationStatusInner.class);
-        Assertions.assertFalse(model.healthy());
-        Assertions.assertEquals(RelationshipStatus.UNKNOWN, model.relationshipStatus());
-        Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("knso", model.totalProgress());
-        Assertions.assertEquals("jhxbld", model.errorMessage());
+        Assertions.assertTrue(model.healthy());
+        Assertions.assertEquals(RelationshipStatus.IDLE, model.relationshipStatus());
+        Assertions.assertEquals("enwash", model.totalProgress());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.errorMessage());
     }
 }

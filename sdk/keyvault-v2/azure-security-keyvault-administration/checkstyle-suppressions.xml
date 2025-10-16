@@ -13,7 +13,7 @@
   <!-- Generated classes -->
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl.java" checks="FinalClass" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="com.azure.v2.security.keyvault.administration.implementation.*" checks="JavadocPackage" />
+  <suppress files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrowCheck" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl.java" checks="FinalClass" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />

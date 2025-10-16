@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.certificates;
-
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.v2.core.http.polling.LongRunningOperationStatus;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.certificates.CertificateClient;
+import com.azure.v2.security.keyvault.certificates.CertificateClientBuilder;
+import com.azure.v2.security.keyvault.certificates.models.CertificateContact;
+import com.azure.v2.security.keyvault.certificates.models.CertificateIssuer;
+import com.azure.v2.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.v2.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.v2.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.v2.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class ListOperations {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
         for links and instructions. */
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -48,7 +48,7 @@ public class ListOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
+        Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
             certificateClient.beginCreateCertificate("certName", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
@@ -62,14 +62,14 @@ public class ListOperations {
 
         // Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
-            new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
+                new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
 
         // Let's list all the certificates in the key vault.
         for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificates()) {
             KeyVaultCertificate certificateWithAllProperties =
-                certificateClient.getCertificateVersion(certificate.getName(), certificate.getVersion());
+                certificateClient.getCertificate(certificate.getName(), certificate.getVersion());
 
             System.out.printf("Received certificate with name %s and secret id %s",
                 certificateWithAllProperties.getProperties().getName(), certificateWithAllProperties.getSecretId());
@@ -78,7 +78,7 @@ public class ListOperations {
         // Let's list all certificate versions of the certificate.
         for (CertificateProperties certificate : certificateClient.listPropertiesOfCertificateVersions("myCertificate")) {
             KeyVaultCertificate certificateWithAllProperties =
-                certificateClient.getCertificateVersion(certificate.getName(), certificate.getVersion());
+                certificateClient.getCertificate(certificate.getName(), certificate.getVersion());
 
             System.out.printf("Received certificate with name %s and version %s",
                 certificateWithAllProperties.getProperties().getName(),
