@@ -14,8 +14,8 @@ import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionRead
 import org.apache.spark.sql.sources.Filter
 import org.apache.spark.sql.types.StructType
 
+import java.util.OptionalLong
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
-import java.util.{OptionalLong, UUID}
 import scala.collection.mutable.ListBuffer
 
 private[spark] abstract class ItemsScanBase(session: SparkSession,

@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class TemplateDeploymentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TemplateDeploymentOptions model = BinaryData.fromString(
-            "{\"preflightSupported\":true,\"preflightOptions\":[\"None\",\"ContinueDeploymentOnFailure\",\"None\"]}")
-            .toObject(TemplateDeploymentOptions.class);
-        Assertions.assertEquals(true, model.preflightSupported());
-        Assertions.assertEquals(PreflightOption.NONE, model.preflightOptions().get(0));
+        TemplateDeploymentOptions model
+            = BinaryData.fromString("{\"preflightSupported\":true,\"preflightOptions\":[\"DefaultValidationOnly\"]}")
+                .toObject(TemplateDeploymentOptions.class);
+        Assertions.assertTrue(model.preflightSupported());
+        Assertions.assertEquals(PreflightOption.DEFAULT_VALIDATION_ONLY, model.preflightOptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TemplateDeploymentOptions model = new TemplateDeploymentOptions().withPreflightSupported(true)
-            .withPreflightOptions(Arrays.asList(PreflightOption.NONE, PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE,
-                PreflightOption.NONE));
+            .withPreflightOptions(Arrays.asList(PreflightOption.DEFAULT_VALIDATION_ONLY));
         model = BinaryData.fromObject(model).toObject(TemplateDeploymentOptions.class);
-        Assertions.assertEquals(true, model.preflightSupported());
-        Assertions.assertEquals(PreflightOption.NONE, model.preflightOptions().get(0));
+        Assertions.assertTrue(model.preflightSupported());
+        Assertions.assertEquals(PreflightOption.DEFAULT_VALIDATION_ONLY, model.preflightOptions().get(0));
     }
 }

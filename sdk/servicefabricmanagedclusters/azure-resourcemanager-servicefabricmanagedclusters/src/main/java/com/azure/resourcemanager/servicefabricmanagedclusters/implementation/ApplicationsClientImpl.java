@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ApplicationsClient;
@@ -136,25 +135,23 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ApplicationUpdateParameters parameters,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("applicationName") String applicationName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("applicationName") String applicationName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications")
@@ -174,26 +171,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/fetchUpgradeStatus")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> readUpgrade(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("applicationName") String applicationName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/fetchUpgradeStatus")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> readUpgradeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("applicationName") String applicationName, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/resumeUpgrade")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -201,9 +197,9 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationName") String applicationName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") RuntimeResumeApplicationUpgradeParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/resumeUpgrade")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -211,28 +207,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationName") String applicationName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json") RuntimeResumeApplicationUpgradeParameters parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/startRollback")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startRollback(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("applicationName") String applicationName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/startRollback")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> startRollbackSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
-            @PathParam("applicationName") String applicationName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("applicationName") String applicationName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -265,25 +258,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationResourceInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -328,28 +302,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationResourceInner> getWithResponse(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, applicationName, accept, context);
@@ -388,30 +340,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationName, ApplicationResourceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -436,34 +364,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, ApplicationResourceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -487,34 +387,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, ApplicationResourceInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -660,30 +532,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationName, ApplicationUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -728,34 +576,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationResourceInner> updateWithResponse(String resourceGroupName, String clusterName,
         String applicationName, ApplicationUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -795,29 +615,9 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -835,31 +635,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -877,31 +654,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, context);
     }
 
     /**
@@ -1024,21 +778,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationResourceInner>> listSinglePageAsync(String resourceGroupName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1080,24 +819,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listSinglePage(String resourceGroupName, String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
@@ -1121,24 +842,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listSinglePage(String resourceGroupName, String clusterName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
@@ -1199,29 +902,9 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> readUpgradeWithResponseAsync(String resourceGroupName, String clusterName,
         String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.readUpgrade(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1240,31 +923,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> readUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.readUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -1283,31 +943,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> readUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.readUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, context);
     }
 
     /**
@@ -1438,35 +1075,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeUpgradeWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationName, RuntimeResumeApplicationUpgradeParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resumeUpgrade(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, accept,
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType,
                 parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1487,39 +1099,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName, RuntimeResumeApplicationUpgradeParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.resumeUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, accept,
-            parameters, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, parameters,
+            Context.NONE);
     }
 
     /**
@@ -1539,39 +1122,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeUpgradeWithResponse(String resourceGroupName, String clusterName,
         String applicationName, RuntimeResumeApplicationUpgradeParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
-        final String accept = "application/json";
         return service.resumeUpgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, accept,
-            parameters, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, contentType, parameters,
+            context);
     }
 
     /**
@@ -1711,29 +1265,9 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startRollbackWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startRollback(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1752,31 +1286,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startRollbackWithResponse(String resourceGroupName, String clusterName,
         String applicationName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.startRollbackSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, Context.NONE);
     }
 
     /**
@@ -1795,31 +1306,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startRollbackWithResponse(String resourceGroupName, String clusterName,
         String applicationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.startRollbackSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationName, context);
     }
 
     /**
@@ -1941,18 +1429,11 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all managed application resources created or in the process of being created in the Service Fabric
+     * cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ApplicationResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -1967,19 +1448,11 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application resources along with {@link PagedResponse}.
+     * @return all managed application resources created or in the process of being created in the Service Fabric
+     * cluster resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationResourceList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1995,25 +1468,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application resources along with {@link PagedResponse}.
+     * @return all managed application resources created or in the process of being created in the Service Fabric
+     * cluster resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationResourceList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ApplicationsClientImpl.class);
 }

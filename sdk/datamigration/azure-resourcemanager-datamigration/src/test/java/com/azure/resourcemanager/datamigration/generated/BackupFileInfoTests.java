@@ -14,21 +14,21 @@ public final class BackupFileInfoTests {
     public void testDeserialize() throws Exception {
         BackupFileInfo model = BinaryData
             .fromString(
-                "{\"fileLocation\":\"kouknvudwtiu\",\"familySequenceNumber\":45967354,\"status\":\"Restoring\"}")
+                "{\"fileLocation\":\"baiyhddviaceg\",\"familySequenceNumber\":266106906,\"status\":\"Restored\"}")
             .toObject(BackupFileInfo.class);
-        Assertions.assertEquals("kouknvudwtiu", model.fileLocation());
-        Assertions.assertEquals(45967354, model.familySequenceNumber());
-        Assertions.assertEquals(BackupFileStatus.RESTORING, model.status());
+        Assertions.assertEquals("baiyhddviaceg", model.fileLocation());
+        Assertions.assertEquals(266106906, model.familySequenceNumber());
+        Assertions.assertEquals(BackupFileStatus.RESTORED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupFileInfo model = new BackupFileInfo().withFileLocation("kouknvudwtiu")
-            .withFamilySequenceNumber(45967354)
-            .withStatus(BackupFileStatus.RESTORING);
+        BackupFileInfo model = new BackupFileInfo().withFileLocation("baiyhddviaceg")
+            .withFamilySequenceNumber(266106906)
+            .withStatus(BackupFileStatus.RESTORED);
         model = BinaryData.fromObject(model).toObject(BackupFileInfo.class);
-        Assertions.assertEquals("kouknvudwtiu", model.fileLocation());
-        Assertions.assertEquals(45967354, model.familySequenceNumber());
-        Assertions.assertEquals(BackupFileStatus.RESTORING, model.status());
+        Assertions.assertEquals("baiyhddviaceg", model.fileLocation());
+        Assertions.assertEquals(266106906, model.familySequenceNumber());
+        Assertions.assertEquals(BackupFileStatus.RESTORED, model.status());
     }
 }

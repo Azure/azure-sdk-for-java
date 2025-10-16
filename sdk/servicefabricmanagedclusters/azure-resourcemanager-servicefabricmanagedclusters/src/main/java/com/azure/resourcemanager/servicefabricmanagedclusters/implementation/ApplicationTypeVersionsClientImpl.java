@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ApplicationTypeVersionsClient;
@@ -134,7 +133,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ApplicationTypeVersionUpdateParameters parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -142,9 +141,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationTypeName") String applicationTypeName, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,7 +151,7 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("applicationTypeName") String applicationTypeName, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, Context context);
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions")
@@ -210,28 +209,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationTypeVersionResourceInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationTypeName, String version) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -279,32 +256,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationTypeVersionResourceInner> getWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName, String version, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, applicationTypeName, version, accept, context);
@@ -348,33 +299,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationTypeName, String version,
         ApplicationTypeVersionResourceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -401,38 +325,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName, String version, ApplicationTypeVersionResourceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -458,38 +350,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName, String version, ApplicationTypeVersionResourceInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -652,33 +512,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     private Mono<Response<ApplicationTypeVersionResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String clusterName, String applicationTypeName, String version,
         ApplicationTypeVersionUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -728,38 +561,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     public Response<ApplicationTypeVersionResourceInner> updateWithResponse(String resourceGroupName,
         String clusterName, String applicationTypeName, String version,
         ApplicationTypeVersionUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -802,33 +603,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String applicationTypeName, String version) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -847,35 +624,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName, String version) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, accept,
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version,
             Context.NONE);
     }
 
@@ -895,36 +645,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String applicationTypeName, String version, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
-        if (version == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter version is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, accept,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, applicationTypeName, version, context);
     }
 
     /**
@@ -1058,25 +780,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeVersionResourceInner>> listByApplicationTypesSinglePageAsync(
         String resourceGroupName, String clusterName, String applicationTypeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByApplicationTypes(this.client.getEndpoint(),
@@ -1124,28 +827,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner>
         listByApplicationTypesSinglePage(String resourceGroupName, String clusterName, String applicationTypeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationTypeVersionResourceList> res = service.listByApplicationTypesSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
@@ -1171,28 +852,6 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesSinglePage(
         String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (applicationTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationTypeVersionResourceList> res
             = service.listByApplicationTypesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1251,19 +910,12 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeVersionResourceInner>>
         listByApplicationTypesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1280,20 +932,11 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationTypeVersionResourceList> res
             = service.listByApplicationTypesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1309,27 +952,16 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ApplicationTypeVersionResourceList> res
             = service.listByApplicationTypesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ApplicationTypeVersionsClientImpl.class);
 }

@@ -20,7 +20,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
@@ -194,6 +193,7 @@ public class NettyAsyncHttpClientBuilder {
 
         // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
         // no-op address resolver to be set.
+        boolean setDefaultAddressResolverGroup = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
@@ -202,8 +202,10 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = HttpClient.create();
         }
 
-        if (proxyOptions == null) {
+        // If a resolver hasn't been set, set the default one.
+        if (nettyHttpClient.configuration().resolver() == null) {
             nettyHttpClient = nettyHttpClient.resolver(DefaultAddressResolverGroup.INSTANCE);
+            setDefaultAddressResolverGroup = true;
         }
 
         long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
@@ -273,14 +275,13 @@ public class NettyAsyncHttpClientBuilder {
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
-                        .address(buildProxyOptions.getAddress())
+                        .socketAddress(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
             }
 
-            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null) {
+            if (setDefaultAddressResolverGroup) {
                 if (nonProxyHostsPattern != null) {
                     // Special handling for proxy configurations with non-proxy hosts to use a resolver that can
                     // alternate between the no-op resolver for proxying situations and the default resolve for

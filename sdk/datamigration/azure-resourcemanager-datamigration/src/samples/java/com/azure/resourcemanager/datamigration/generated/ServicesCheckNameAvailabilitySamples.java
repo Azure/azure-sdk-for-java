@@ -12,7 +12,7 @@ import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 public final class ServicesCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_CheckNameAvailability.json
      */
     /**
@@ -23,7 +23,8 @@ public final class ServicesCheckNameAvailabilitySamples {
     public static void
         servicesCheckNameAvailability(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
         manager.services()
-            .checkNameAvailabilityWithResponse("eastus", new NameAvailabilityRequest(),
+            .checkNameAvailabilityWithResponse("eastus",
+                new NameAvailabilityRequest().withName("DmsSdkService").withType("services"),
                 com.azure.core.util.Context.NONE);
     }
 }

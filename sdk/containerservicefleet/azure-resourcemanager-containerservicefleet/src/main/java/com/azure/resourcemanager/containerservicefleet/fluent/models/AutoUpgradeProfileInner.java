@@ -255,14 +255,67 @@ public final class AutoUpgradeProfileInner extends ProxyResource {
     }
 
     /**
-     * Validates the instance.
+     * Get the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format must
+     * be `{major version}.{minor version}`. For example, "1.30".
+     * By default, this is empty.
+     * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the targetKubernetesVersion value.
      */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+    public String targetKubernetesVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetKubernetesVersion();
+    }
+
+    /**
+     * Set the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format must
+     * be `{major version}.{minor version}`. For example, "1.30".
+     * By default, this is empty.
+     * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
+     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     * 
+     * @param targetKubernetesVersion the targetKubernetesVersion value to set.
+     * @return the AutoUpgradeProfileInner object itself.
+     */
+    public AutoUpgradeProfileInner withTargetKubernetesVersion(String targetKubernetesVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoUpgradeProfileProperties();
         }
+        this.innerProperties().withTargetKubernetesVersion(targetKubernetesVersion);
+        return this;
+    }
+
+    /**
+     * Get the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
+     * N-2
+     * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+     * By default, this is set to False.
+     * For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+     * 
+     * @return the longTermSupport value.
+     */
+    public Boolean longTermSupport() {
+        return this.innerProperties() == null ? null : this.innerProperties().longTermSupport();
+    }
+
+    /**
+     * Set the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
+     * N-2
+     * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
+     * By default, this is set to False.
+     * For more information on AKS LTS, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support.
+     * 
+     * @param longTermSupport the longTermSupport value to set.
+     * @return the AutoUpgradeProfileInner object itself.
+     */
+    public AutoUpgradeProfileInner withLongTermSupport(Boolean longTermSupport) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoUpgradeProfileProperties();
+        }
+        this.innerProperties().withLongTermSupport(longTermSupport);
+        return this;
     }
 
     /**

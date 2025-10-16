@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public class TrafficRegionRolloutConfiguration extends TrafficRegions {
     /*
-     * The waitDuration property.
+     * The wait duration.
      */
     private Duration waitDuration;
 
@@ -30,7 +30,7 @@ public class TrafficRegionRolloutConfiguration extends TrafficRegions {
     }
 
     /**
-     * Get the waitDuration property: The waitDuration property.
+     * Get the waitDuration property: The wait duration.
      * 
      * @return the waitDuration value.
      */
@@ -39,7 +39,7 @@ public class TrafficRegionRolloutConfiguration extends TrafficRegions {
     }
 
     /**
-     * Set the waitDuration property: The waitDuration property.
+     * Set the waitDuration property: The wait duration.
      * 
      * @param waitDuration the waitDuration value to set.
      * @return the TrafficRegionRolloutConfiguration object itself.

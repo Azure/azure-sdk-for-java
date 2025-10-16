@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ThrottlingMetricType.
+ * The throttling metric type.
  */
 public final class ThrottlingMetricType extends ExpandableStringEnum<ThrottlingMetricType> {
     /**

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Revision resource specific properties.
@@ -59,6 +60,11 @@ public final class RevisionProperties implements JsonSerializable<RevisionProper
      * Traffic weight assigned to this revision
      */
     private Integer trafficWeight;
+
+    /*
+     * List of labels assigned to this revision.
+     */
+    private List<String> labels;
 
     /*
      * Optional Field - Platform Error Message
@@ -154,6 +160,15 @@ public final class RevisionProperties implements JsonSerializable<RevisionProper
     }
 
     /**
+     * Get the labels property: List of labels assigned to this revision.
+     * 
+     * @return the labels value.
+     */
+    public List<String> labels() {
+        return this.labels;
+    }
+
+    /**
      * Get the provisioningError property: Optional Field - Platform Error Message.
      * 
      * @return the provisioningError value.
@@ -240,6 +255,9 @@ public final class RevisionProperties implements JsonSerializable<RevisionProper
                     deserializedRevisionProperties.replicas = reader.getNullable(JsonReader::getInt);
                 } else if ("trafficWeight".equals(fieldName)) {
                     deserializedRevisionProperties.trafficWeight = reader.getNullable(JsonReader::getInt);
+                } else if ("labels".equals(fieldName)) {
+                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRevisionProperties.labels = labels;
                 } else if ("provisioningError".equals(fieldName)) {
                     deserializedRevisionProperties.provisioningError = reader.getString();
                 } else if ("healthState".equals(fieldName)) {

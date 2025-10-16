@@ -6,18 +6,28 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.fluent.models.NameAvailabilityResponseInner;
+import com.azure.resourcemanager.datamigration.models.NameCheckFailureReason;
+import org.junit.jupiter.api.Assertions;
 
 public final class NameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NameAvailabilityResponseInner model
-            = BinaryData.fromString("{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"rokft\"}")
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"p\"}")
                 .toObject(NameAvailabilityResponseInner.class);
+        Assertions.assertTrue(model.nameAvailable());
+        Assertions.assertEquals(NameCheckFailureReason.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("p", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityResponseInner model = new NameAvailabilityResponseInner();
+        NameAvailabilityResponseInner model = new NameAvailabilityResponseInner().withNameAvailable(true)
+            .withReason(NameCheckFailureReason.ALREADY_EXISTS)
+            .withMessage("p");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityResponseInner.class);
+        Assertions.assertTrue(model.nameAvailable());
+        Assertions.assertEquals(NameCheckFailureReason.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("p", model.message());
     }
 }

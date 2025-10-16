@@ -19,12 +19,12 @@ import java.util.Map;
 @Fluent
 public class RolloutStatusBase implements JsonSerializable<RolloutStatusBase> {
     /*
-     * The completedRegions property.
+     * The completed regions.
      */
     private List<String> completedRegions;
 
     /*
-     * Dictionary of <ExtendedErrorInfo>
+     * The failed or skipped regions.
      */
     private Map<String, ExtendedErrorInfo> failedOrSkippedRegions;
 
@@ -35,7 +35,7 @@ public class RolloutStatusBase implements JsonSerializable<RolloutStatusBase> {
     }
 
     /**
-     * Get the completedRegions property: The completedRegions property.
+     * Get the completedRegions property: The completed regions.
      * 
      * @return the completedRegions value.
      */
@@ -44,7 +44,7 @@ public class RolloutStatusBase implements JsonSerializable<RolloutStatusBase> {
     }
 
     /**
-     * Set the completedRegions property: The completedRegions property.
+     * Set the completedRegions property: The completed regions.
      * 
      * @param completedRegions the completedRegions value to set.
      * @return the RolloutStatusBase object itself.
@@ -55,7 +55,7 @@ public class RolloutStatusBase implements JsonSerializable<RolloutStatusBase> {
     }
 
     /**
-     * Get the failedOrSkippedRegions property: Dictionary of &lt;ExtendedErrorInfo&gt;.
+     * Get the failedOrSkippedRegions property: The failed or skipped regions.
      * 
      * @return the failedOrSkippedRegions value.
      */
@@ -64,7 +64,7 @@ public class RolloutStatusBase implements JsonSerializable<RolloutStatusBase> {
     }
 
     /**
-     * Set the failedOrSkippedRegions property: Dictionary of &lt;ExtendedErrorInfo&gt;.
+     * Set the failedOrSkippedRegions property: The failed or skipped regions.
      * 
      * @param failedOrSkippedRegions the failedOrSkippedRegions value to set.
      * @return the RolloutStatusBase object itself.

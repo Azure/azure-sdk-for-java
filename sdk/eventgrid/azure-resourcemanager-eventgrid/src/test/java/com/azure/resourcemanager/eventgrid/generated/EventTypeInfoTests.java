@@ -16,44 +16,34 @@ public final class EventTypeInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventTypeInfo model = BinaryData.fromString(
-            "{\"kind\":\"Inline\",\"inlineEventTypes\":{\"h\":{\"description\":\"napczwlokjy\",\"displayName\":\"kkvnipjox\",\"documentationUrl\":\"nchgej\",\"dataSchemaUrl\":\"odmailzyd\"},\"jozkrwfndiod\":{\"description\":\"wyahuxinpmqnja\",\"displayName\":\"ixjsprozvcputeg\",\"documentationUrl\":\"wmfdatscmdvpjhul\",\"dataSchemaUrl\":\"uvm\"},\"fdosyg\":{\"description\":\"slwejdpvw\",\"displayName\":\"oqpsoa\",\"documentationUrl\":\"tazak\",\"dataSchemaUrl\":\"lahbcryff\"},\"tfell\":{\"description\":\"paojakhmsbzjh\",\"displayName\":\"zevdphlx\",\"documentationUrl\":\"lthqtrgqjbp\",\"dataSchemaUrl\":\"fsinzgvfcjrwzoxx\"}}}")
+            "{\"kind\":\"Inline\",\"inlineEventTypes\":{\"eltmrldhugjzzdat\":{\"description\":\"jitcjczdzevn\",\"displayName\":\"krwpdap\",\"documentationUrl\":\"sbdkvwr\",\"dataSchemaUrl\":\"feusnhut\"},\"ftyxolniw\":{\"description\":\"hocdgeab\",\"displayName\":\"phut\",\"documentationUrl\":\"ndv\",\"dataSchemaUrl\":\"ozwyiftyhxhuro\"}}}")
             .toObject(EventTypeInfo.class);
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.kind());
-        Assertions.assertEquals("napczwlokjy", model.inlineEventTypes().get("h").description());
-        Assertions.assertEquals("kkvnipjox", model.inlineEventTypes().get("h").displayName());
-        Assertions.assertEquals("nchgej", model.inlineEventTypes().get("h").documentationUrl());
-        Assertions.assertEquals("odmailzyd", model.inlineEventTypes().get("h").dataSchemaUrl());
+        Assertions.assertEquals("jitcjczdzevn", model.inlineEventTypes().get("eltmrldhugjzzdat").description());
+        Assertions.assertEquals("krwpdap", model.inlineEventTypes().get("eltmrldhugjzzdat").displayName());
+        Assertions.assertEquals("sbdkvwr", model.inlineEventTypes().get("eltmrldhugjzzdat").documentationUrl());
+        Assertions.assertEquals("feusnhut", model.inlineEventTypes().get("eltmrldhugjzzdat").dataSchemaUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventTypeInfo model = new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-            .withInlineEventTypes(mapOf("h",
-                new InlineEventProperties().withDescription("napczwlokjy")
-                    .withDisplayName("kkvnipjox")
-                    .withDocumentationUrl("nchgej")
-                    .withDataSchemaUrl("odmailzyd"),
-                "jozkrwfndiod",
-                new InlineEventProperties().withDescription("wyahuxinpmqnja")
-                    .withDisplayName("ixjsprozvcputeg")
-                    .withDocumentationUrl("wmfdatscmdvpjhul")
-                    .withDataSchemaUrl("uvm"),
-                "fdosyg",
-                new InlineEventProperties().withDescription("slwejdpvw")
-                    .withDisplayName("oqpsoa")
-                    .withDocumentationUrl("tazak")
-                    .withDataSchemaUrl("lahbcryff"),
-                "tfell",
-                new InlineEventProperties().withDescription("paojakhmsbzjh")
-                    .withDisplayName("zevdphlx")
-                    .withDocumentationUrl("lthqtrgqjbp")
-                    .withDataSchemaUrl("fsinzgvfcjrwzoxx")));
+            .withInlineEventTypes(mapOf("eltmrldhugjzzdat",
+                new InlineEventProperties().withDescription("jitcjczdzevn")
+                    .withDisplayName("krwpdap")
+                    .withDocumentationUrl("sbdkvwr")
+                    .withDataSchemaUrl("feusnhut"),
+                "ftyxolniw",
+                new InlineEventProperties().withDescription("hocdgeab")
+                    .withDisplayName("phut")
+                    .withDocumentationUrl("ndv")
+                    .withDataSchemaUrl("ozwyiftyhxhuro")));
         model = BinaryData.fromObject(model).toObject(EventTypeInfo.class);
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.kind());
-        Assertions.assertEquals("napczwlokjy", model.inlineEventTypes().get("h").description());
-        Assertions.assertEquals("kkvnipjox", model.inlineEventTypes().get("h").displayName());
-        Assertions.assertEquals("nchgej", model.inlineEventTypes().get("h").documentationUrl());
-        Assertions.assertEquals("odmailzyd", model.inlineEventTypes().get("h").dataSchemaUrl());
+        Assertions.assertEquals("jitcjczdzevn", model.inlineEventTypes().get("eltmrldhugjzzdat").description());
+        Assertions.assertEquals("krwpdap", model.inlineEventTypes().get("eltmrldhugjzzdat").displayName());
+        Assertions.assertEquals("sbdkvwr", model.inlineEventTypes().get("eltmrldhugjzzdat").documentationUrl());
+        Assertions.assertEquals("feusnhut", model.inlineEventTypes().get("eltmrldhugjzzdat").dataSchemaUrl());
     }
 
     // Use "Map.of" if available

@@ -22,6 +22,10 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 - **Management Libraries**: Libraries with Maven group `com.azure.resourcemanager`
 - **Spring Libraries**: Libraries with Maven group `com.azure.spring`
 
+### Prerequisites
+
+- To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
+
 ## Behavior
 
 - Always ensure your solutions prioritize clarity, maintainability, and testability.
@@ -113,11 +117,11 @@ When possible, refer to the Azure SDK for Java Design Guidelines for specific ex
 - Include tests that cover your changes
 - Update CHANGELOG.md with your changes
 - Provide a proper description of the pull request to document the changes in the PR. The description should include:
-  - A summary of the changes made.
-  - The reason for the changes.
-  - Any relevant issue numbers.
-  - Instructions on how to verify the changes.
-  - Any additional context or information that reviewers should be aware of.
+    - A summary of the changes made.
+    - The reason for the changes.
+    - Any relevant issue numbers.
+    - Instructions on how to verify the changes.
+    - Any additional context or information that reviewers should be aware of.
 
 ## Release Process
 
@@ -144,3 +148,22 @@ When facing issues, direct users to:
 - [Support for Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md)
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 - [Stack Overflow with azure-java-sdk tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
+
+## SDK release
+
+There are two tools to help with SDK releases:
+- Check SDK release readiness
+- Release SDK
+
+### Check SDK Release Readiness
+Run `CheckPackageReleaseReadiness` to verify if the package is ready for release. This tool checks:
+- API review status
+- Change log status
+- Package name approval (If package is new and releasing a preview version)
+- Release date is set in release tracker
+
+### Release SDK
+Run `ReleasePackage` to release the package. This tool requires package name and language as inputs. It will:- Check if the package is ready for release
+- Identify the release pipeline
+- Trigger the release pipeline.
+  User needs to approve the release stage in the pipeline after it is triggered.

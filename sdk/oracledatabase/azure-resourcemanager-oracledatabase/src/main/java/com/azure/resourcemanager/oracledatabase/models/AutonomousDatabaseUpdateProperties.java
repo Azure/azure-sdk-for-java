@@ -91,7 +91,7 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     /*
      * The list of scheduled operations.
      */
-    private ScheduledOperationsTypeUpdate scheduledOperations;
+    private List<ScheduledOperationsTypeUpdate> scheduledOperationsList;
 
     /*
      * The Oracle Database Edition that applies to the Autonomous databases.
@@ -439,23 +439,23 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     }
 
     /**
-     * Get the scheduledOperations property: The list of scheduled operations.
+     * Get the scheduledOperationsList property: The list of scheduled operations.
      * 
-     * @return the scheduledOperations value.
+     * @return the scheduledOperationsList value.
      */
-    public ScheduledOperationsTypeUpdate scheduledOperations() {
-        return this.scheduledOperations;
+    public List<ScheduledOperationsTypeUpdate> scheduledOperationsList() {
+        return this.scheduledOperationsList;
     }
 
     /**
-     * Set the scheduledOperations property: The list of scheduled operations.
+     * Set the scheduledOperationsList property: The list of scheduled operations.
      * 
-     * @param scheduledOperations the scheduledOperations value to set.
+     * @param scheduledOperationsList the scheduledOperationsList value to set.
      * @return the AutonomousDatabaseUpdateProperties object itself.
      */
     public AutonomousDatabaseUpdateProperties
-        withScheduledOperations(ScheduledOperationsTypeUpdate scheduledOperations) {
-        this.scheduledOperations = scheduledOperations;
+        withScheduledOperationsList(List<ScheduledOperationsTypeUpdate> scheduledOperationsList) {
+        this.scheduledOperationsList = scheduledOperationsList;
         return this;
     }
 
@@ -632,23 +632,6 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -670,7 +653,8 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
         jsonWriter.writeBooleanField("isLocalDataGuardEnabled", this.isLocalDataGuardEnabled);
         jsonWriter.writeBooleanField("isMtlsConnectionRequired", this.isMtlsConnectionRequired);
         jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
-        jsonWriter.writeJsonField("scheduledOperations", this.scheduledOperations);
+        jsonWriter.writeArrayField("scheduledOperationsList", this.scheduledOperationsList,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("databaseEdition",
             this.databaseEdition == null ? null : this.databaseEdition.toString());
         jsonWriter.writeJsonField("longTermBackupSchedule", this.longTermBackupSchedule);
@@ -741,9 +725,10 @@ public final class AutonomousDatabaseUpdateProperties implements JsonSerializabl
                 } else if ("licenseModel".equals(fieldName)) {
                     deserializedAutonomousDatabaseUpdateProperties.licenseModel
                         = LicenseModel.fromString(reader.getString());
-                } else if ("scheduledOperations".equals(fieldName)) {
-                    deserializedAutonomousDatabaseUpdateProperties.scheduledOperations
-                        = ScheduledOperationsTypeUpdate.fromJson(reader);
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsTypeUpdate> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsTypeUpdate.fromJson(reader1));
+                    deserializedAutonomousDatabaseUpdateProperties.scheduledOperationsList = scheduledOperationsList;
                 } else if ("databaseEdition".equals(fieldName)) {
                     deserializedAutonomousDatabaseUpdateProperties.databaseEdition
                         = DatabaseEditionType.fromString(reader.getString());

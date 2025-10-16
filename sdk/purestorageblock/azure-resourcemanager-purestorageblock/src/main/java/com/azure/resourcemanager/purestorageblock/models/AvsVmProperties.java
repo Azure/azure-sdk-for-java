@@ -149,23 +149,6 @@ public final class AvsVmProperties implements JsonSerializable<AvsVmProperties> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (softDeletion() != null) {
-            softDeletion().validate();
-        }
-        if (avs() != null) {
-            avs().validate();
-        }
-        if (space() != null) {
-            space().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

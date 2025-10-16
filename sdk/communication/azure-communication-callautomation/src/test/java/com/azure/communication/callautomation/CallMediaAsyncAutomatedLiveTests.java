@@ -113,7 +113,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -332,7 +332,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -443,7 +443,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -555,7 +555,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -661,7 +661,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -757,7 +757,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -855,7 +855,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -956,7 +956,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -1057,7 +1057,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -1158,7 +1158,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(callerConnectionId);
 
             // wait for the incomingCallContext
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ManifestResourceDeletionPolicy.
+ * The resource deletion policy.
  */
 public final class ManifestResourceDeletionPolicy extends ExpandableStringEnum<ManifestResourceDeletionPolicy> {
     /**

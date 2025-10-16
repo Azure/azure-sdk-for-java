@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public final class SubscriptionStateRule implements JsonSerializable<SubscriptionStateRule> {
     /*
-     * The state property.
+     * The subscription state.
      */
     private SubscriptionState state;
 
     /*
-     * The allowedActions property.
+     * The allowed actions.
      */
     private List<String> allowedActions;
 
@@ -34,7 +34,7 @@ public final class SubscriptionStateRule implements JsonSerializable<Subscriptio
     }
 
     /**
-     * Get the state property: The state property.
+     * Get the state property: The subscription state.
      * 
      * @return the state value.
      */
@@ -43,7 +43,7 @@ public final class SubscriptionStateRule implements JsonSerializable<Subscriptio
     }
 
     /**
-     * Set the state property: The state property.
+     * Set the state property: The subscription state.
      * 
      * @param state the state value to set.
      * @return the SubscriptionStateRule object itself.
@@ -54,7 +54,7 @@ public final class SubscriptionStateRule implements JsonSerializable<Subscriptio
     }
 
     /**
-     * Get the allowedActions property: The allowedActions property.
+     * Get the allowedActions property: The allowed actions.
      * 
      * @return the allowedActions value.
      */
@@ -63,7 +63,7 @@ public final class SubscriptionStateRule implements JsonSerializable<Subscriptio
     }
 
     /**
-     * Set the allowedActions property: The allowedActions property.
+     * Set the allowedActions property: The allowed actions.
      * 
      * @param allowedActions the allowedActions value to set.
      * @return the SubscriptionStateRule object itself.

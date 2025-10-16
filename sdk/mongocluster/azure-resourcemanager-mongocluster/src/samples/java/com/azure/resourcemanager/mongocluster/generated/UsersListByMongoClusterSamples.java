@@ -9,7 +9,7 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class UsersListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_UserList.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserList.json
      */
     /**
      * Sample code: List the users on a Mongo Cluster resource.

@@ -117,21 +117,6 @@ public final class LinuxConfiguration extends OSConfiguration {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (ssh() != null) {
-            ssh().validate();
-        }
-        if (sshKeyPair() != null) {
-            sshKeyPair().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.healthbot.models;
 
 /**
- * The name of the HealthBot SKU.
+ * The name of the Azure Health Bot SKU.
  */
 public enum SkuName {
     /**
@@ -21,7 +21,17 @@ public enum SkuName {
     /**
      * Enum value C0.
      */
-    C0("C0");
+    C0("C0"),
+
+    /**
+     * Enum value PES.
+     */
+    PES("PES"),
+
+    /**
+     * Enum value C1.
+     */
+    C1("C1");
 
     /**
      * The actual serialized value for a SkuName instance.

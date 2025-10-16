@@ -47,7 +47,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
             .withRegion("NorthCentralUS")
             .withExistingTrafficController("rg1", "tc1")
             .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .create();
     }
 }

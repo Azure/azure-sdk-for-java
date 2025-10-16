@@ -4,6 +4,6 @@
 
 <suppressions>
   <suppress files="com.azure.maps.route.package-info.java" checks="HeaderCheck" />
-  <suppress files="com.azure.maps.route.implementation.models.ErrorDetail.java" checks="com.azure.tools.checkstyle.checks.ImmutableClassCheck" />
-  <suppress files="com.azure.maps.route.implementation.RouteClientImplBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.maps.route.implementation.models.ErrorDetail.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ImmutableClassCheck" />
+  <suppress files="com.azure.maps.route.implementation.RouteClientImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>

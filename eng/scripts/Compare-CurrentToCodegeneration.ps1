@@ -36,6 +36,9 @@ param(
   [int]$Parallelization = [Environment]::ProcessorCount
 )
 
+$sdkFolder = Join-Path -Path $PSScriptRoot ".." ".." "sdk"
+$tspClientFolder = Join-Path -Path $PSScriptRoot ".." ".." "eng" "common" "tsp-client"
+
 class GenerationInformation {
   # The directory where the library is located. Used for logging and validation.
   [string]$LibraryFolder
@@ -59,11 +62,10 @@ class GenerationInformation {
 function Find-GenerationInformation {
   param (
     [System.Collections.ArrayList]$GenerationInformations,
-    [string]$ServiceDirectory,
-    [string]$RegenerationType
+    [string]$LibraryFolder
   )
 
-  $path = "sdk/$ServiceDirectory"
+  $path = Join-Path -Path $sdkFolder $LibraryFolder
   if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
     # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
@@ -72,6 +74,12 @@ function Find-GenerationInformation {
   }
 
   if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
+    if ($LibraryFolder.Contains("-v2")) {
+      # Skip v2 libraries for TypeSpec regeneration as they are not supported.
+      Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
+      return
+    }
+
     # Search for 'tsp-location.yaml' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
       $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
@@ -99,23 +107,20 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
   if ($serviceDirectory -match '\w+/\w+') {
     # The service directory is a specific library, e.g., "communication/azure-communication-chat"
     # Search the directory directly for an "Update-Codegeneration.ps1" script.
-    Find-GenerationInformation $generationInformations $serviceDirectory $RegenerationType
+    Find-GenerationInformation $generationInformations $serviceDirectory
   } else {
     # The service directory is a top-level service, e.g., "storage"
     # Search for all libraries under the service directory.
-    foreach ($libraryFolder in Get-ChildItem -Path "sdk/$serviceDirectory" -Directory) {
-      Find-GenerationInformation $generationInformations "$serviceDirectory/$($libraryFolder.Name)" $RegenerationType
+    $searchPath = Join-Path -Path $sdkFolder $serviceDirectory
+    Get-ChildItem -Path $searchPath -Directory | ForEach-Object {
+      Find-GenerationInformation $generationInformations "$serviceDirectory/$($_.Name)"
     }
   }
 }
 
 if ($generationInformations.Count -eq 0) {
   $kind = $RegenerationType -eq 'All' ? 'Swagger or TypeSpec' : $RegenerationType
-  Write-Host @"
-======================================
-No $kind generation files to regenerate in directories: $ServiceDirectories.
-======================================
-"@
+  Write-Host "No $kind generation files to regenerate in directories: $ServiceDirectories."
   exit 0
 }
 
@@ -123,22 +128,21 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
   # Ensure Autorest is installed.
   $output = (& npm install -g autorest 2>&1)
   if ($LASTEXITCODE -ne 0) {
-    Write-Error "Failed to install Autorest for Swagger regeneration."
-    Write-Error $output
+    Write-Error "Failed to install Autorest for Swagger regeneration.`n$output"
     exit 1
   }
 }
 
 if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm install -g @azure-tools/typespec-client-generator-cli 2>&1)
+  $output = (& npm --prefix "$tspClientFolder" ci 2>&1)
   if ($LASTEXITCODE -ne 0) {
-    Write-Error "Error installing @azure-tools/typespec-client-generator-cli"
-    Write-Error "$output"
+    Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
     exit 1
   }
 }
 
 $generateScript = {
+  $separatorBar = "======================================"
   $directory = $_.LibraryFolder
   $updateCodegenScript = $_.ScriptPath
 
@@ -147,12 +151,7 @@ $generateScript = {
     $generateOutput = (& $updateCodegenScript 6>&1)
 
     if ($LastExitCode -ne 0) {
-      Write-Host @"
-======================================
-Error running Swagger regeneration $updateCodegenScript
-======================================
-$([String]::Join("`n", $generateOutput))
-"@
+      Write-Host "$separatorBar`nError running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
       throw
     } else {
       # prevent warning related to EOL differences which triggers an exception for some reason
@@ -160,72 +159,50 @@ $([String]::Join("`n", $generateOutput))
 
       if ($LastExitCode -ne 0) {
         $status = (git status -s "$directory" | Out-String)
-        Write-Host @"
-======================================
-The following Swagger generated files in directoy $directory are out of date:
-======================================
-$status
-"@
+        Write-Host "$separatorBar`nThe following Swagger generated files in directoy $directory are out of date`n$status`n$separatorBar"
         throw
       } else {
-        Write-Host @"
-======================================
-Successfully ran Swagger regneration with no diff $updateCodegenScript
-======================================
-"@
+        Write-Host "$separatorBar`nSuccessfully ran Swagger regneration with no diff $updateCodegenScript`n$separatorBar"
       }
     }
   } elseif ($_.Type -eq 'TypeSpec') {
-    Push-Location $Directory
+    Push-Location $directory
     try {
-      $generateOutput = (& tsp-client update 2>&1)
-      if ($LastExitCode -ne 0) {
-        Write-Host @"
-======================================
-Error running TypeSpec regeneration in directory $Directory
-======================================
-$([String]::Join("`n", $generateOutput))
-"@
-        throw
+      try {
+        $generateOutput = (& npx --no --prefix "$using:tspClientFolder" tsp-client update 2>&1)
+        if ($LastExitCode -ne 0) {
+          Write-Host "$separatorBar`nError running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
+          throw
+        }
+      } finally {
+        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+          Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
+        }
       }
 
       # Update code snippets before comparing the diff
       $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
       if ($LastExitCode -ne 0) {
-        Write-Host @"
-======================================
-Error updating TypeSpec codesnippets in directory $Directory
-======================================
-$([String]::Join("`n", $mvnOutput))
-"@
+        Write-Host "$separatorBar`nError updating TypeSpec codesnippets in directory $directory`n$([String]::Join("`n", $mvnOutput))`n$separatorBar"
         throw
       }
     } finally {
       Pop-Location
     }
-    
+
     # prevent warning related to EOL differences which triggers an exception for some reason
-    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$Directory/*.java" ":(exclude)**/src/test/**" ":
-  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
+    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
+  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
-      $status = (git status -s "$Directory" | Out-String)
-      Write-Host @"
-======================================
-The following TypeSpec files in directoy $Directory are out of date:
-======================================
-$status
-"@
+      $status = (git status -s "$directory" | Out-String)
+      Write-Host "$separatorBar`nThe following TypeSpec files in directoy $directory are out of date`n$status`n$separatorBar"
       throw
     } else {
-      Write-Host @"
-======================================
-Successfully ran TypeSpec update in directory with no diff $Directory
-======================================
-"@
+      Write-Host "$separatorBar`nSuccessfully ran TypeSpec update in directory with no diff $directory`n$separatorBar"
     }
   } else {
-    Write-Error "Unknown generation type: $($_.Type), directory: $directory"
+    Write-Host "$separatorBar`nUnknown generation type: $($_.Type), directory: $directory`n$separatorBar"
     throw
   }
 }

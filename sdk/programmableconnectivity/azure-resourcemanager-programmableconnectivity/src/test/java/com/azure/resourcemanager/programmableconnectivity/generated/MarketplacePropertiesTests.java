@@ -12,12 +12,10 @@ public final class MarketplacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceProperties model = BinaryData.fromString(
-            "{\"offerId\":\"eicxmqciwqvhkhi\",\"legacyOfferId\":\"igdtopbob\",\"publisherId\":\"ghmewuam\",\"planId\":\"hrzayvvtpgvdf\",\"termId\":\"otkftutqxlngx\"}")
+            "{\"offerId\":\"ou\",\"publisherId\":\"vudwtiukbldng\",\"planId\":\"ocipazyxoeg\",\"planTermsAndConditionsLinks\":[\"g\"]}")
             .toObject(MarketplaceProperties.class);
-        Assertions.assertEquals("eicxmqciwqvhkhi", model.offerId());
-        Assertions.assertEquals("igdtopbob", model.legacyOfferId());
-        Assertions.assertEquals("ghmewuam", model.publisherId());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.planId());
-        Assertions.assertEquals("otkftutqxlngx", model.termId());
+        Assertions.assertEquals("ou", model.offerId());
+        Assertions.assertEquals("vudwtiukbldng", model.publisherId());
+        Assertions.assertEquals("ocipazyxoeg", model.planId());
     }
 }

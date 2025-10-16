@@ -74,7 +74,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientCommitmentPlans")
     public interface CommitmentPlansService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/commitmentPlans")
@@ -2982,8 +2982,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listNextSinglePageAsync(String nextLink) {
@@ -3008,7 +3008,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommitmentPlanInner> listNextSinglePage(String nextLink) {
@@ -3036,7 +3036,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response along with {@link PagedResponse}.
+     * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommitmentPlanInner> listNextSinglePage(String nextLink, Context context) {
@@ -3230,8 +3230,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
@@ -3258,8 +3258,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with
-     * {@link PagedResponse}.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommitmentPlanAccountAssociationInner> listAssociationsNextSinglePage(String nextLink) {
@@ -3287,8 +3286,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with
-     * {@link PagedResponse}.
+     * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommitmentPlanAccountAssociationInner> listAssociationsNextSinglePage(String nextLink,

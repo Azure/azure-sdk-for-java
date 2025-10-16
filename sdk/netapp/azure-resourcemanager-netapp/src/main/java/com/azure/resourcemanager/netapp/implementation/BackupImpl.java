@@ -208,6 +208,6 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

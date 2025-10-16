@@ -1384,7 +1384,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1457,7 +1457,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1530,7 +1530,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body Server metric configuration model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1604,7 +1604,7 @@ public final class LoadTestRunClientImpl {
      * }
      * </pre>
      * 
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
      * numeric, underscore or hyphen characters.
      * @param body Server metric configuration model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5412,7 +5412,7 @@ public final class LoadTestRunClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TestRun items along with {@link PagedResponse} on successful completion of
+     * @return all test runs for the given filters along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5593,7 +5593,7 @@ public final class LoadTestRunClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TestRun items along with {@link PagedResponse}.
+     * @return all test runs for the given filters along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listTestRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {

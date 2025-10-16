@@ -568,15 +568,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Map<String, Object> getPropertiesFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        if (options == null) {
-            return null;
-        }
-
-        return options.getImpl().getProperties();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions setQueryRequestOptionsProperties(CosmosQueryRequestOptions options, Map<String, Object> properties) {
         options.getImpl().setProperties(properties);
         return options;

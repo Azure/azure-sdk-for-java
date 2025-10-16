@@ -23,7 +23,7 @@ public final class InventoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"tqs\",\"azureResourceId\":\"qxujxukndxd\",\"status\":\"Failed\",\"statusDetails\":\"guufzd\",\"provisioningState\":\"Succeeded\"},\"id\":\"tfih\",\"name\":\"hbotzingamvppho\",\"type\":\"zqzudph\"}";
+            = "{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"sdtclusiypbs\",\"azureResourceId\":\"ytguslf\",\"status\":\"Failed\",\"statusDetails\":\"ygqukyhejh\",\"provisioningState\":\"Failed\"},\"id\":\"gfpelolppvksrpqv\",\"name\":\"jzraehtwdwrf\",\"type\":\"swibyr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class InventoriesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InventoryResource response = manager.inventories()
-            .getWithResponse("hfkvtvsexsowuel", "qhhahhxvrhmzkwpj", "wws", com.azure.core.util.Context.NONE)
+            .getWithResponse("wmsweypqwd", "ggicccnxqhue", "mkttlstvlzywem", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(CloudNativeType.EC2, response.properties().cloudNativeType());
-        Assertions.assertEquals("tqs", response.properties().cloudNativeResourceId());
-        Assertions.assertEquals("qxujxukndxd", response.properties().azureResourceId());
+        Assertions.assertEquals("sdtclusiypbs", response.properties().cloudNativeResourceId());
+        Assertions.assertEquals("ytguslf", response.properties().azureResourceId());
         Assertions.assertEquals(SolutionConfigurationStatus.FAILED, response.properties().status());
-        Assertions.assertEquals("guufzd", response.properties().statusDetails());
+        Assertions.assertEquals("ygqukyhejh", response.properties().statusDetails());
     }
 }

@@ -12,16 +12,16 @@ public final class SolutionTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTypeProperties model = BinaryData.fromString(
-            "{\"solutionType\":\"cuh\",\"description\":\"tcty\",\"supportedAzureRegions\":[\"lbbovplw\"],\"solutionSettings\":[{\"name\":\"vgyuguos\",\"displayName\":\"mkfssxqukkfplgm\",\"type\":\"sxnkjzkdeslpvlo\",\"description\":\"wiyighxpkdw\",\"allowedValues\":[\"aiuebbaumnyqu\",\"edeojnabc\",\"hsmtxpsiebtfhvp\"],\"defaultValue\":\"sapskr\"},{\"name\":\"qmhjjdhtld\",\"displayName\":\"kyzxuutk\",\"type\":\"cwscwsvlx\",\"description\":\"togt\",\"allowedValues\":[\"upqsx\",\"nmic\",\"kvceoveilovnotyf\"],\"defaultValue\":\"fcnj\"},{\"name\":\"k\",\"displayName\":\"nxdhbt\",\"type\":\"kphywpnvjto\",\"description\":\"nermcl\",\"allowedValues\":[\"lphox\",\"scrpabgyepsbjt\"],\"defaultValue\":\"zq\"}]}")
+            "{\"solutionType\":\"mg\",\"description\":\"nkjzkdeslpvlop\",\"supportedAzureRegions\":[\"ighxpk\",\"wzbaiue\"],\"solutionSettings\":[{\"name\":\"umnyqu\",\"displayName\":\"edeojnabc\",\"type\":\"hsmtxpsiebtfhvp\",\"description\":\"sapskr\",\"allowedValues\":[\"mhjjdhtldwkyzx\",\"utknc\",\"scwsv\"],\"defaultValue\":\"xotogtwrupqsxv\"}]}")
             .toObject(SolutionTypeProperties.class);
-        Assertions.assertEquals("cuh", model.solutionType());
-        Assertions.assertEquals("tcty", model.description());
-        Assertions.assertEquals("lbbovplw", model.supportedAzureRegions().get(0));
-        Assertions.assertEquals("vgyuguos", model.solutionSettings().get(0).name());
-        Assertions.assertEquals("mkfssxqukkfplgm", model.solutionSettings().get(0).displayName());
-        Assertions.assertEquals("sxnkjzkdeslpvlo", model.solutionSettings().get(0).type());
-        Assertions.assertEquals("wiyighxpkdw", model.solutionSettings().get(0).description());
-        Assertions.assertEquals("aiuebbaumnyqu", model.solutionSettings().get(0).allowedValues().get(0));
-        Assertions.assertEquals("sapskr", model.solutionSettings().get(0).defaultValue());
+        Assertions.assertEquals("mg", model.solutionType());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.description());
+        Assertions.assertEquals("ighxpk", model.supportedAzureRegions().get(0));
+        Assertions.assertEquals("umnyqu", model.solutionSettings().get(0).name());
+        Assertions.assertEquals("edeojnabc", model.solutionSettings().get(0).displayName());
+        Assertions.assertEquals("hsmtxpsiebtfhvp", model.solutionSettings().get(0).type());
+        Assertions.assertEquals("sapskr", model.solutionSettings().get(0).description());
+        Assertions.assertEquals("mhjjdhtldwkyzx", model.solutionSettings().get(0).allowedValues().get(0));
+        Assertions.assertEquals("xotogtwrupqsxv", model.solutionSettings().get(0).defaultValue());
     }
 }

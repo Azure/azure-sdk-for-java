@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.datamigration.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectTaskInner;
+import com.azure.resourcemanager.datamigration.models.CommandProperties;
 import com.azure.resourcemanager.datamigration.models.ProjectTask;
 import com.azure.resourcemanager.datamigration.models.ProjectTaskProperties;
 
@@ -33,6 +36,10 @@ public final class ProjectTaskImpl implements ProjectTask, ProjectTask.Definitio
 
     public ProjectTaskProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -138,6 +145,15 @@ public final class ProjectTaskImpl implements ProjectTask, ProjectTask.Definitio
 
     public ProjectTask cancel() {
         return serviceManager.tasks().cancel(groupName, serviceName, projectName, taskName);
+    }
+
+    public Response<CommandProperties> commandWithResponse(CommandPropertiesInner parameters, Context context) {
+        return serviceManager.tasks()
+            .commandWithResponse(groupName, serviceName, projectName, taskName, parameters, context);
+    }
+
+    public CommandProperties command(CommandPropertiesInner parameters) {
+        return serviceManager.tasks().command(groupName, serviceName, projectName, taskName, parameters);
     }
 
     public ProjectTaskImpl withEtag(String etag) {

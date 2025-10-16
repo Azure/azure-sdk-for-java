@@ -4,15 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.resourcemanager.compute.models.Expand;
-
 /**
  * Samples for VirtualMachineImages ListWithProperties.
  */
 public final class VirtualMachineImagesListWithPropertiesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineImageExamples/VirtualMachineImages_ListWithProperties_MinimumSet_Gen.json
      */
     /**
@@ -26,13 +24,13 @@ public final class VirtualMachineImagesListWithPropertiesSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listWithProperties("eastus", "MicrosoftWindowsServer", "WindowsServer", "2022-datacenter-azure-edition",
-                Expand.PROPERTIES, null, null, com.azure.core.util.Context.NONE);
+            .listWithPropertiesWithResponse("eastus", "MicrosoftWindowsServer", "WindowsServer",
+                "2022-datacenter-azure-edition", "Properties", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineImageExamples/VirtualMachineImages_ListWithProperties_MaximumSet_Gen.json
      */
     /**
@@ -46,7 +44,7 @@ public final class VirtualMachineImagesListWithPropertiesSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listWithProperties("eastus", "MicrosoftWindowsServer", "WindowsServer", "2022-datacenter-azure-edition",
-                Expand.PROPERTIES, 4, "aa", com.azure.core.util.Context.NONE);
+            .listWithPropertiesWithResponse("eastus", "MicrosoftWindowsServer", "WindowsServer",
+                "2022-datacenter-azure-edition", "Properties", 4, "aa", com.azure.core.util.Context.NONE);
     }
 }

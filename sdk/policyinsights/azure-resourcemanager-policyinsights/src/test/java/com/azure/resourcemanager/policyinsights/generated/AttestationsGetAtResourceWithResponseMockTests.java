@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.Attestation;
@@ -22,27 +22,27 @@ public final class AttestationsGetAtResourceWithResponseMockTests {
     @Test
     public void testGetAtResourceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"galgxnwfm\",\"policyDefinitionReferenceId\":\"zta\",\"complianceState\":\"Unknown\",\"expiresOn\":\"2021-08-21T15:55:25Z\",\"owner\":\"qxfcssanybzzgh\",\"comments\":\"fe\",\"evidence\":[{\"description\":\"svcdhlywkh\",\"sourceUri\":\"kjunzxezriwgoew\"}],\"provisioningState\":\"cqksaaapxjh\",\"lastComplianceStateChangeAt\":\"2021-08-15T21:30:36Z\",\"assessmentDate\":\"2020-12-24T02:07:16Z\",\"metadata\":\"datanwsdfpv\"},\"id\":\"ahlfrcqk\",\"name\":\"pmvzpireszya\",\"type\":\"gomlb\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"w\",\"policyDefinitionReferenceId\":\"zsjwyfixirgcj\",\"complianceState\":\"NonCompliant\",\"expiresOn\":\"2021-02-11T04:55:04Z\",\"owner\":\"pjkakrxifqnf\",\"comments\":\"rxsqtz\",\"evidence\":[{\"description\":\"salewguxcmmhi\",\"sourceUri\":\"vsk\"},{\"description\":\"tlynkwfsaangfg\",\"sourceUri\":\"c\"}],\"provisioningState\":\"hidyliu\",\"lastComplianceStateChangeAt\":\"2021-09-21T16:36:25Z\",\"assessmentDate\":\"2021-09-22T00:08:35Z\",\"metadata\":\"datacgdnxqeonmzr\"},\"id\":\"aojpzngdrzi\",\"name\":\"ecwsadsqyuddkh\",\"type\":\"qdmohheuyuunxmy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Attestation response = manager.attestations()
-            .getAtResourceWithResponse("hpjhubohxvzga", "bvrhh", com.azure.core.util.Context.NONE)
+            .getAtResourceWithResponse("zzfzdjek", "b", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("galgxnwfm", response.policyAssignmentId());
-        Assertions.assertEquals("zta", response.policyDefinitionReferenceId());
-        Assertions.assertEquals(ComplianceState.UNKNOWN, response.complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T15:55:25Z"), response.expiresOn());
-        Assertions.assertEquals("qxfcssanybzzgh", response.owner());
-        Assertions.assertEquals("fe", response.comments());
-        Assertions.assertEquals("svcdhlywkh", response.evidence().get(0).description());
-        Assertions.assertEquals("kjunzxezriwgoew", response.evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-24T02:07:16Z"), response.assessmentDate());
+        Assertions.assertEquals("w", response.policyAssignmentId());
+        Assertions.assertEquals("zsjwyfixirgcj", response.policyDefinitionReferenceId());
+        Assertions.assertEquals(ComplianceState.NON_COMPLIANT, response.complianceState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T04:55:04Z"), response.expiresOn());
+        Assertions.assertEquals("pjkakrxifqnf", response.owner());
+        Assertions.assertEquals("rxsqtz", response.comments());
+        Assertions.assertEquals("salewguxcmmhi", response.evidence().get(0).description());
+        Assertions.assertEquals("vsk", response.evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T00:08:35Z"), response.assessmentDate());
     }
 }

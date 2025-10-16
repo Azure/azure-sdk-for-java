@@ -10,11 +10,11 @@ package com.azure.resourcemanager.compute.generated;
 public final class DisksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskExamples/
      * Disk_Delete.json
      */
     /**
-     * Sample code: Delete a managed disk.
+     * Sample code: delete a managed disk.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

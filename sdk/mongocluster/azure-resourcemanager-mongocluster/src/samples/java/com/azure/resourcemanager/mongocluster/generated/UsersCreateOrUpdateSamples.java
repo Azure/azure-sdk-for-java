@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/MongoClusters_UserCreateOrUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserCreateOrUpdate.json
      */
     /**
      * Sample code: Creates a user on a Mongo Cluster resource.
@@ -32,7 +32,7 @@ public final class UsersCreateOrUpdateSamples {
             .withProperties(new UserProperties()
                 .withIdentityProvider(new EntraIdentityProvider()
                     .withProperties(new EntraIdentityProviderProperties().withPrincipalType(EntraPrincipalType.USER)))
-                .withRoles(Arrays.asList(new DatabaseRole().withDb("admin").withRole(UserRole.DATABASE_OWNER))))
+                .withRoles(Arrays.asList(new DatabaseRole().withDb("admin").withRole(UserRole.ROOT))))
             .create();
     }
 }

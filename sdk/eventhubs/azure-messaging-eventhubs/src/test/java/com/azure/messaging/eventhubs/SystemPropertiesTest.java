@@ -24,6 +24,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_N
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +36,8 @@ public class SystemPropertiesTest {
     private final byte[] data = "hello-world".getBytes(StandardCharsets.UTF_8);
     private final String partitionKey = "my-partition-key";
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
-    private final long offset = 102L;
+    private final Long offset = 102L;
+    private final String offsetString = String.valueOf(offset);
     private final long sequenceNumber = 12345L;
 
     private AmqpAnnotatedMessage message;
@@ -95,6 +97,7 @@ public class SystemPropertiesTest {
         assertNull(systemProperties.getEnqueuedTime());
         assertNull(systemProperties.getSequenceNumber());
         assertNull(systemProperties.getOffset());
+        assertNull(systemProperties.getOffsetString());
 
         assertTrue(systemProperties.isEmpty());
     }
@@ -106,7 +109,7 @@ public class SystemPropertiesTest {
     public void cannotModifyProperties() {
         // Act
         final SystemProperties properties
-            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
+            = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber, partitionKey);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
         testMap.put("two", 2);
@@ -114,7 +117,7 @@ public class SystemPropertiesTest {
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
         assertEquals(sequenceNumber, properties.getSequenceNumber());
-        assertEquals(offset, properties.getOffset());
+        assertEquals(offsetString, properties.getOffsetString());
         assertEquals(partitionKey, properties.getPartitionKey());
 
         assertThrows(UnsupportedOperationException.class, () -> properties.put("foo", "bar"));
@@ -148,12 +151,12 @@ public class SystemPropertiesTest {
     public void queryProperties() {
         // Act
         final SystemProperties properties
-            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
+            = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber, partitionKey);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
         assertEquals(sequenceNumber, properties.getSequenceNumber());
-        assertEquals(offset, properties.getOffset());
+        assertEquals(offsetString, properties.getOffsetString());
         assertEquals(partitionKey, properties.getPartitionKey());
 
         assertEquals(message.getProperties().getMessageId().toString(),
@@ -162,7 +165,7 @@ public class SystemPropertiesTest {
         assertEquals(message.getProperties().getTo().toString(), properties.get(AmqpMessageConstant.TO.getValue()));
 
         final Object actualUserId = properties.get(AmqpMessageConstant.USER_ID.getValue());
-        assertTrue(actualUserId instanceof byte[]);
+        assertInstanceOf(byte[].class, actualUserId);
         assertArrayEquals(message.getProperties().getUserId(), (byte[]) actualUserId);
         assertEquals(message.getProperties().getAbsoluteExpiryTime(),
             properties.get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigur
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -33,6 +34,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -60,6 +62,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer {
+    private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
+        ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
 
     private final DiagnosticsClientContext clientContext;
@@ -197,30 +201,36 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
-        ByteBuf content) {
+        ByteBuf retainedContent) {
 
         checkNotNull(headers, "Argument 'headers' must not be null.");
         checkNotNull(
-            content,
-            "Argument 'content' must not be null - use empty ByteBuf when theres is no payload.");
+            retainedContent,
+            "Argument 'retainedContent' must not be null - use empty ByteBuf when theres is no payload.");
 
         // If there is any error in the header response this throws exception
-        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, content);
+        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, retainedContent);
 
         int size;
-        if ((size = content.readableBytes()) > 0) {
+        if ((size = retainedContent.readableBytes()) > 0) {
+            if (leakDetectionDebuggingEnabled) {
+                retainedContent.touch(this);
+            }
+
             return new StoreResponse(
                 endpoint,
                 statusCode,
-                HttpUtils.unescape(headers.toMap()),
-                new ByteBufInputStream(content, true),
+                HttpUtils.unescape(headers.toLowerCaseMap()),
+                new ByteBufInputStream(retainedContent, true),
                 size);
+        } else {
+            retainedContent.release();
         }
 
         return new StoreResponse(
             endpoint,
             statusCode,
-            HttpUtils.unescape(headers.toMap()),
+            HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
             0);
     }
@@ -402,11 +412,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             Mono<ByteBuf> contentObservable = httpResponse
                 .body()
                 .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER))
-                .map(bodyByteBuf -> bodyByteBuf.retain())
+                .map(bodyByteBuf -> leakDetectionDebuggingEnabled
+                    ? bodyByteBuf.retain().touch(this)
+                    : bodyByteBuf.retain())
                 .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
             return contentObservable
                 .map(content -> {
+                    if (leakDetectionDebuggingEnabled) {
+                        content.touch(this);
+                    }
+
                     // Capture transport client request timeline
                     ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                     if (reactorNettyRequestRecord != null) {
@@ -492,6 +508,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
             }
 
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setRequestUri(dce, Uri.create(httpRequest.uri().toString()));
+
             if (request.requestContext.cosmosDiagnostics != null) {
                 if (httpRequest.reactorNettyRequestRecord() != null) {
                     ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
@@ -541,7 +562,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
                                  HttpHeaders headers,
-                                 ByteBuf bodyAsByteBuf) {
+                                 ByteBuf retainedBodyAsByteBuf) {
 
         int statusCode = status.code();
 
@@ -550,14 +571,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 ? status.reasonPhrase().replace(" ", "")
                 : "";
 
-            String body = bodyAsByteBuf != null ?bodyAsByteBuf.toString(StandardCharsets.UTF_8) : null;
+            String body = retainedBodyAsByteBuf != null
+                ? retainedBodyAsByteBuf.toString(StandardCharsets.UTF_8)
+                : null;
+
+            retainedBodyAsByteBuf.release();
+
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
                 String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                 cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toLowerCaseMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }

@@ -57,6 +57,7 @@ private[spark] object CosmosConfigNames {
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
   val ClientCertPemBase64 = "spark.cosmos.auth.aad.clientCertPemBase64"
   val ClientCertSendChain = "spark.cosmos.auth.aad.clientCertSendChain"
+  val Audience = "spark.cosmos.auth.aad.audience"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -68,6 +69,7 @@ private[spark] object CosmosConfigNames {
   val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
   val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
   val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
+  val FeedRangeRefreshIntervalInSeconds = "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
@@ -89,8 +91,25 @@ private[spark] object CosmosConfigNames {
   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
-  val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
-  val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint"
+  val DiagnosticsSamplingMaxCount = "spark.cosmos.diagnostics.sampling.maxCount"
+  val DiagnosticsSamplingIntervalInSeconds = "spark.cosmos.diagnostics.sampling.intervalInSeconds"
+  val DiagnosticsThresholdsRequestCharge = "spark.cosmos.diagnostics.thresholds.requestCharge"
+  val DiagnosticsThresholdsPointOperationLatencyInMs = "spark.cosmos.diagnostics.thresholds.latency.pointOperationInMs"
+  val DiagnosticsThresholdsNonPointOperationLatencyInMs = "spark.cosmos.diagnostics.thresholds.latency.nonPointOperationInMs"
+  val DiagnosticsAzureMonitorEnabled = "spark.cosmos.diagnostics.azureMonitor.enabled"
+  val DiagnosticsAzureMonitorMetricCollectionIntervalInSeconds = "spark.cosmos.diagnostics.azureMonitor.metrics.intervalInSeconds"
+  val DiagnosticsAzureMonitorLiveMetricsEnabled = "spark.cosmos.diagnostics.azureMonitor.liveMetrics.enabled"
+  val DiagnosticsAzureMonitorSamplingMaxCount = "spark.cosmos.diagnostics.azureMonitor.sampling.maxCount"
+  val DiagnosticsAzureMonitorSamplingIntervalInSeconds = "spark.cosmos.diagnostics.azureMonitor.sampling.intervalInSeconds"
+  val DiagnosticsAzureMonitorSamplingRate = "spark.cosmos.diagnostics.azureMonitor.sampling.rate"
+  val DiagnosticsAzureMonitorLogLevel = "spark.cosmos.diagnostics.azureMonitor.log.level"
+  val DiagnosticsAzureMonitorLogSamplingMaxCount = "spark.cosmos.diagnostics.azureMonitor.log.sampling.maxCount"
+  val DiagnosticsAzureMonitorLogSamplingIntervalInSeconds = "spark.cosmos.diagnostics.azureMonitor.log.sampling.intervalInSeconds"
+  val DiagnosticsAzureMonitorConnectionString = "spark.cosmos.diagnostics.azureMonitor.connectionString"
+  val DiagnosticsAzureMonitorAuthEnabled = "spark.cosmos.diagnostics.azureMonitor.auth.enabled"
+  val DiagnosticsAzureMonitorAuthType = "spark.cosmos.diagnostics.azureMonitor.auth.type"
+  val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled" // keep this to avoid breaking changes
+  val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint" // keep this to avoid breaking changes
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxBatchSize = "spark.cosmos.write.bulk.maxBatchSize"
@@ -113,6 +132,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid = "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid"
+  val ChangeFeedPerformanceMonitoringEnabled = "spark.cosmos.changeFeed.performance.monitoring.enabled"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
   val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
@@ -162,6 +182,7 @@ private[spark] object CosmosConfigNames {
     ClientSecret,
     ClientCertPemBase64,
     ClientCertSendChain,
+    Audience,
     AzureEnvironment,
     AzureEnvironmentAAD,
     AzureEnvironmentManagement,
@@ -177,6 +198,7 @@ private[spark] object CosmosConfigNames {
     ProactiveConnectionInitializationDurationInSeconds,
     GatewayConnectionPoolSize,
     AllowInvalidJsonWithDuplicateJsonProperties,
+    FeedRangeRefreshIntervalInSeconds,
     ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadConsistencyStrategy,
@@ -197,6 +219,23 @@ private[spark] object CosmosConfigNames {
     ReadManyFilteringEnabled,
     ViewsRepositoryPath,
     DiagnosticsMode,
+    DiagnosticsSamplingIntervalInSeconds,
+    DiagnosticsSamplingMaxCount,
+    DiagnosticsThresholdsPointOperationLatencyInMs,
+    DiagnosticsThresholdsNonPointOperationLatencyInMs,
+    DiagnosticsAzureMonitorEnabled,
+    DiagnosticsAzureMonitorConnectionString,
+    DiagnosticsAzureMonitorAuthEnabled,
+    DiagnosticsAzureMonitorAuthType,
+    DiagnosticsAzureMonitorLiveMetricsEnabled,
+    DiagnosticsAzureMonitorSamplingRate,
+    DiagnosticsAzureMonitorSamplingMaxCount,
+    DiagnosticsAzureMonitorSamplingIntervalInSeconds,
+    DiagnosticsAzureMonitorMetricCollectionIntervalInSeconds,
+    DiagnosticsAzureMonitorLogLevel,
+    DiagnosticsAzureMonitorLogSamplingMaxCount,
+    DiagnosticsAzureMonitorLogSamplingIntervalInSeconds,
+    DiagnosticsThresholdsRequestCharge,
     ClientTelemetryEnabled,
     ClientTelemetryEndpoint,
     WriteBulkEnabled,
@@ -218,6 +257,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedItemCountPerTriggerHint,
     ChangeFeedBatchCheckpointLocation,
     ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
+    ChangeFeedPerformanceMonitoringEnabled,
     ThroughputControlEnabled,
     ThroughputControlAccountEndpoint,
     ThroughputControlAccountKey,
@@ -732,16 +772,6 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     assert(accountName.isDefined, s"Parameter '${CosmosConfigNames.AccountEndpoint}' is missing.")
     assert(azureEnvironmentOpt.isDefined, s"Parameter '${CosmosConfigNames.AzureEnvironment}' is missing.")
 
-    authConfig match {
-        case _: CosmosServicePrincipalAuthConfig =>
-        case _: CosmosManagedIdentityAuthConfig =>
-        case _: CosmosAccessTokenAuthConfig =>
-            assert(subscriptionIdOpt.isDefined, s"Parameter '${CosmosConfigNames.SubscriptionId}' is missing.")
-            assert(resourceGroupNameOpt.isDefined, s"Parameter '${CosmosConfigNames.ResourceGroupName}' is missing.")
-            assert(tenantIdOpt.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-        case  _ =>
-    }
-
     if (preferredRegionsListOpt.isDefined) {
       // scalastyle:off null
       var uri : URI = null
@@ -837,7 +867,7 @@ private case class CosmosManagedIdentityAuthConfig( tenantId: String,
                                                      clientId: Option[String],
                                                      resourceId: Option[String]) extends CosmosAuthConfig
 
-private case class CosmosAccessTokenAuthConfig(tenantId: String, tokenProvider: List[String] => CosmosAccessToken)
+private case class CosmosAccessTokenAuthConfig(tenantId: Option[String], tokenProvider: List[String] => CosmosAccessToken)
   extends CosmosAuthConfig
 
 private object CosmosAuthConfig {
@@ -901,6 +931,10 @@ private object CosmosAuthConfig {
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
+        parseCosmosAuthConfig(cfg, authType)
+    }
+
+    def parseCosmosAuthConfig(cfg: Map[String, String], authType: Option[CosmosAuthType]): CosmosAuthConfig = {
         val key = CosmosConfigEntry.parse(cfg, CosmosKey)
         val clientId = CosmosConfigEntry.parse(cfg, ClientId)
         val resourceId = CosmosConfigEntry.parse(cfg, ResourceId)
@@ -931,7 +965,6 @@ private object CosmosAuthConfig {
                 clientSecret,
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
-          assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
           val accountDataResolverServiceName : Option[String] = CaseInsensitiveMap(cfg).get(CosmosConfigNames.AccountDataResolverServiceName)
           val accountDataResolver = CosmosConfig.getAccountDataResolver(accountDataResolverServiceName)
           if (accountDataResolver.isEmpty) {
@@ -948,7 +981,7 @@ private object CosmosAuthConfig {
                 "returns an access token provider in the 'getAccessTokenProvider' method.")
           }
 
-          CosmosAccessTokenAuthConfig(tenantId.get, accessTokenProvider.get)
+          CosmosAccessTokenAuthConfig(tenantId, accessTokenProvider.get)
         } else {
           throw new IllegalArgumentException(s"Unknown auth type '${authType.get}'.")
         }
@@ -1152,24 +1185,30 @@ private object CosmosViewRepositoryConfig {
   }
 }
 
-private[cosmos] case class CosmosContainerConfig(database: String, container: String)
+private[cosmos] case class CosmosContainerConfig(database: String, container: String, feedRangeRefreshIntervalInSecondsOpt: Option[Long])
 
 private[spark] case class DiagnosticsConfig
 (
   mode: Option[String],
-  isClientTelemetryEnabled: Boolean,
-  clientTelemetryEndpoint: Option[String]
+  sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig] = None,
+  azureMonitorConfig: Option[AzureMonitorConfig] = None
 )
 
 private[spark] object DiagnosticsConfig {
+  def apply(): DiagnosticsConfig = {
+    DiagnosticsConfig(None, None, None)
+  }
+
   private val diagnosticsMode = CosmosConfigEntry[String](key = CosmosConfigNames.DiagnosticsMode,
     mandatory = false,
     parseFromStringFunction = diagnostics => {
-      if (diagnostics == "simple") {
+      if ("sampled".equalsIgnoreCase(diagnostics)) {
+        "Sampled"
+      } else if ("simple".equalsIgnoreCase(diagnostics)) {
         classOf[SimpleDiagnosticsProvider].getName
-      } else if (diagnostics == "feed") {
+      } else if ("feed".equalsIgnoreCase(diagnostics)) {
         classOf[FeedDiagnosticsProvider].getName
-      } else if (diagnostics == "feed_details") {
+      } else if ("feed_details".equalsIgnoreCase(diagnostics)) {
         classOf[DetailedFeedDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
@@ -1177,31 +1216,200 @@ private[spark] object DiagnosticsConfig {
         diagnostics
       }
     },
-    helpMessage = "Cosmos DB Spark Diagnostics, supported values 'simple' and 'feed'")
+    helpMessage = "Cosmos DB Spark Diagnostics, supported values 'sampled' (this is strongly recommended), 'simple' and 'feed'")
 
-  private val isClientTelemetryEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ClientTelemetryEnabled,
+  private val diagnosticsSamplingMaxCount = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingMaxCount,
+    mandatory = false,
+    defaultValue = Some(100),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "Max. number of diagnostics logged per interval. This can be used to reduce the noise level.")
+
+  private val diagnosticsAzureMonitorEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.DiagnosticsAzureMonitorEnabled,
     mandatory = false,
     defaultValue = Some(false),
-    parseFromStringFunction = value => value.toBoolean,
-    helpMessage = "Enables Client Telemetry - NOTE: This is a preview feature - and only " +
-      "works with public endpoints right now")
+    parseFromStringFunction = text => text.toBoolean,
+    helpMessage = "A flag indicating whether Open telemetry should be emitted to Azure Monitor.")
 
-  private val clientTelemetryEndpoint = CosmosConfigEntry[String](key = CosmosConfigNames.ClientTelemetryEndpoint,
+  private val diagnosticsAzureMonitorConnectionString = CosmosConfigEntry[String](
+    key = CosmosConfigNames.DiagnosticsAzureMonitorConnectionString,
     mandatory = false,
-    defaultValue = None,
-    parseFromStringFunction = value => value,
-    helpMessage = "Enables Client Telemetry to be sent to the service endpoint provided - " +
-      "NOTE: This is a preview feature - and only " +
-      "works with public endpoints right now")
+    parseFromStringFunction = text => text,
+    helpMessage = s"Connection string for AzureMonitor - required if '"
+      +s"${CosmosConfigNames.DiagnosticsAzureMonitorEnabled}' is 'true'.")
+
+  private val diagnosticsAzureMonitorLiveMetricsEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.DiagnosticsAzureMonitorLiveMetricsEnabled,
+    mandatory = false,
+    defaultValue = Some(true),
+    parseFromStringFunction = text => text.toBoolean,
+    helpMessage = "A flag indicating whether LiveMetrics should be emitted to Azure Monitor.")
+
+  private val diagnosticsAzureMonitorAuthEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.DiagnosticsAzureMonitorAuthEnabled,
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = text => text.toBoolean,
+    helpMessage = "A flag indicating whether authentication should be used for ingestion of metrics. If true the "
+      + "same spark.cosmos.auth.* settings are used for AAD auth against Azure Monitor as for auth against "
+      + "the Cosmos DB service.")
+
+  private val diagnosticsAzureMonitorAuthType = CosmosConfigEntry[CosmosAuthType](key = CosmosConfigNames.DiagnosticsAzureMonitorAuthType,
+    defaultValue = Option.apply(CosmosAuthType.ManagedIdentity),
+    mandatory = false,
+    parseFromStringFunction = authTypeAsString => {
+      val parsedValue = CosmosConfigEntry.parseEnumeration(authTypeAsString, CosmosAuthType)
+      if (parsedValue == CosmosAuthType.MasterKey || parsedValue == CosmosAuthType.ServicePrinciple) {
+        throw new IllegalArgumentException(
+          s"Invalid authentication type '$authTypeAsString' for Azure Monitor auth. Valid values are "
+          + s"'${CosmosAuthType.ManagedIdentity}', '${CosmosAuthType.ServicePrincipal}' or "
+          + s"'${CosmosAuthType.AccessToken}'")
+      }
+
+      parsedValue
+    },
+    helpMessage = "There following auth types are supported for Azure Monitor currently: " +
+      "'ManagedIdentity', 'ServicePrincipal' and 'AccessToken'.")
+
+  private val diagnosticsAzureMonitorSamplingIntervalInSeconds = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.DiagnosticsAzureMonitorSamplingIntervalInSeconds,
+    mandatory = false,
+    defaultValue = Some(60),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The interval (in seconds) for which the max count of sample-in traces is applied.")
+
+  private val diagnosticsAzureMonitorSamplingMaxCount = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsAzureMonitorSamplingMaxCount,
+    mandatory = false,
+    defaultValue = Some(10000),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = s"Max. number of traces sampled-in (based on '"
+      + s"${CosmosConfigNames.DiagnosticsAzureMonitorSamplingRate}' per interval. This can be "
+      + s"used to force an upper-limit of traces/spans to be emitted.")
+
+  private val diagnosticsAzureMonitorSamplingRate = CosmosConfigEntry[Float](key = CosmosConfigNames.DiagnosticsAzureMonitorSamplingRate,
+    mandatory = false,
+    defaultValue = Some(0.05f),
+    parseFromStringFunction = text => text.toFloat,
+    helpMessage = s"Rate/percentage of traces for healthy operations (no error, no latency or "
+      + s"RU-charge thresholds violated) that will be emitted. This can be "
+      + s"used to reduce the trace noise level.")
+
+  private val diagnosticsAzureMonitorMetricCollectionIntervalInSeconds = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.DiagnosticsAzureMonitorMetricCollectionIntervalInSeconds,
+    mandatory = false,
+    defaultValue = Some(60),
+    parseFromStringFunction = text => {
+      val intervalInSeconds = text.toInt
+      if (intervalInSeconds < 0) {
+        -1
+      } else {
+        intervalInSeconds
+      }
+    },
+    helpMessage = "The metric collection interval in seconds. A negative value will disable metric "
+      + "collection in Azure Monitor.")
+
+  private val diagnosticsSamplingIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingIntervalInSeconds,
+    mandatory = false,
+    defaultValue = Some(60),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The interval (in seconds) for which the sample rate is applied.")
+
+  private val diagnosticsThresholdsPointOperationLatencyInMs = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsThresholdsPointOperationLatencyInMs,
+    mandatory = false,
+    defaultValue = Some(1000),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The diagnostics latency threshold for point operations. Diagnostic logs will only be emitted when the operation fails or exceeds this latency threshold.")
+
+  private val diagnosticsThresholdsNonPointOperationLatencyInMs = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsThresholdsNonPointOperationLatencyInMs,
+    mandatory = false,
+    defaultValue = Some(5000),
+    parseFromStringFunction = maxCount => maxCount.toInt,
+    helpMessage = "The diagnostics latency threshold for query, change feed and bulk operations. Diagnostic logs will only be emitted when the operation fails or exceeds this latency threshold.")
+
+  private val diagnosticsThresholdsRequestCharge = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsThresholdsRequestCharge,
+    mandatory = false,
+    defaultValue = Some(Int.MaxValue),
+    parseFromStringFunction = text => text.toInt,
+    helpMessage = "The diagnostics latency threshold for query, change feed and bulk operations. Diagnostic logs will only be emitted when the operation fails or exceeds this latency threshold.")
 
   def parseDiagnosticsConfig(cfg: Map[String, String]): DiagnosticsConfig = {
     val diagnosticsModeOpt = CosmosConfigEntry.parse(cfg, diagnosticsMode)
-    val isClientTelemetryEnabledOpt = CosmosConfigEntry.parse(cfg, isClientTelemetryEnabled)
-    val clientTelemetryEndpointOpt = CosmosConfigEntry.parse(cfg, clientTelemetryEndpoint)
+    val withSampledLogs : Boolean =
+      diagnosticsModeOpt.isDefined && "Sampled".equalsIgnoreCase(diagnosticsModeOpt.get)
+
+    val azureMonitorEnabledOpt = CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorEnabled)
+    val withAzMon: Boolean = azureMonitorEnabledOpt.getOrElse(false)
+
+    val effectiveAzMonConnectionStringOpt: Option[String] = if (withAzMon) {
+      Some(Option(
+        CosmosConfigEntry
+          .parse(cfg, diagnosticsAzureMonitorConnectionString)
+          .getOrElse(Configs.getAzureMonitorConnectionString)
+      ).getOrElse(throw new IllegalArgumentException(
+        s"When '${CosmosConfigNames.DiagnosticsAzureMonitorEnabled}' is enabled a connection "
+        + s"string must be provided either via '${CosmosConfigNames.DiagnosticsAzureMonitorConnectionString}' "
+        + s"config, the system property '${Configs.APPLICATIONINSIGHTS_CONNECTION_STRING}' or "
+        + s"the environment variable '${Configs.APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE}'."
+      )))
+    } else {
+      None
+    }
+
+    val azureMonitorAuthEnabledOpt = CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorAuthEnabled)
+    val azureMonitorAuthTypeOpt: Option[CosmosAuthType] =
+      if (withAzMon && azureMonitorAuthEnabledOpt.getOrElse(false)) {
+        CosmosConfigEntry
+          .parse(cfg, diagnosticsAzureMonitorAuthType)
+      } else {
+        None
+      }
+
+    val azureMonitorAuthConfigOpt: Option[CosmosAuthConfig] =
+      if (azureMonitorAuthTypeOpt.isDefined) {
+        Some(CosmosAuthConfig.parseCosmosAuthConfig(cfg, azureMonitorAuthTypeOpt))
+      } else {
+        None
+      }
+
+    val sampledDiagnosticsLoggerConfig = if (withSampledLogs) {
+      Some(
+        SampledDiagnosticsLoggerConfig(
+          CosmosConfigEntry.parse(cfg, diagnosticsSamplingMaxCount).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsSamplingIntervalInSeconds).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsThresholdsPointOperationLatencyInMs).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsThresholdsNonPointOperationLatencyInMs).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsThresholdsRequestCharge).get
+        )
+      )
+
+    } else {
+      None
+    }
+
+    val azMonConfig = if (withAzMon) {
+      val azMonConfigCandidate =
+        AzureMonitorConfig(
+          azureMonitorEnabledOpt.get,
+          effectiveAzMonConnectionStringOpt.get,
+          azureMonitorAuthEnabledOpt.getOrElse(false),
+          azureMonitorAuthConfigOpt,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLiveMetricsEnabled).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingRate).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingMaxCount).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingIntervalInSeconds).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds).get
+        )
+
+      AzureMonitorConfig.validateConfigUniqueness(azMonConfigCandidate)
+
+      Some(azMonConfigCandidate)
+    } else {
+      None
+    }
+
     DiagnosticsConfig(
       diagnosticsModeOpt,
-      isClientTelemetryEnabledOpt.getOrElse(false),
-      clientTelemetryEndpointOpt)
+      sampledDiagnosticsLoggerConfig,
+      azMonConfig
+    )
   }
 }
 
@@ -1691,6 +1899,9 @@ private object CosmosSerializationConfig {
 }
 
 private object CosmosContainerConfig {
+  private[spark] val MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 1L * 60
+  private[spark] val MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS = 30L * 60
+
   private[spark] val DATABASE_NAME_KEY = CosmosConfigNames.Database
   private[spark] val CONTAINER_NAME_KEY = CosmosConfigNames.Container
 
@@ -1709,6 +1920,11 @@ private object CosmosContainerConfig {
     parseFromStringFunction = container => container,
     helpMessage = "Cosmos DB container name")
 
+  private val feedRangeRefreshIntervalSupplier = CosmosConfigEntry[Long](key = CosmosConfigNames.FeedRangeRefreshIntervalInSeconds,
+    mandatory = false,
+    parseFromStringFunction = refreshIntervalInSeconds => refreshIntervalInSeconds.toLong,
+    helpMessage = "The time interval in seconds to refresh the internal partition key range cache, valid between [60, 1800]. By default it is 120 seconds.")
+
   def parseCosmosContainerConfig(cfg: Map[String, String]): CosmosContainerConfig = {
     this.parseCosmosContainerConfig(cfg, None, None)
   }
@@ -1720,8 +1936,16 @@ private object CosmosContainerConfig {
 
     val databaseOpt = databaseName.getOrElse(CosmosConfigEntry.parse(cfg, databaseNameSupplier).get)
     val containerOpt = containerName.getOrElse(CosmosConfigEntry.parse(cfg, containerNameSupplier).get)
+    val feedRangeRefreshIntervalInSecondsOpt = CosmosConfigEntry.parse(cfg, feedRangeRefreshIntervalSupplier)
 
-    CosmosContainerConfig(databaseOpt, containerOpt)
+    if (feedRangeRefreshIntervalInSecondsOpt.isDefined) {
+      assert(
+        feedRangeRefreshIntervalInSecondsOpt.get >= MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS
+         && feedRangeRefreshIntervalInSecondsOpt.get <= MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS,
+        s"Config 'spark.cosmos.metadata.feedRange.refreshIntervalInSeconds' need to be between [$MIN_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS, $MAX_FEED_RANGE_REFRESH_INTERVAL_IN_SECONDS]")
+    }
+
+    CosmosContainerConfig(databaseOpt, containerOpt, feedRangeRefreshIntervalInSecondsOpt)
   }
 }
 
@@ -1936,7 +2160,8 @@ private case class CosmosChangeFeedConfig
   startFromPointInTime: Option[Instant],
   maxItemCountPerTrigger: Option[Long],
   batchCheckpointLocation: Option[String],
-  ignoreOffsetWhenInvalid: Boolean
+  ignoreOffsetWhenInvalid: Boolean,
+  performanceMonitoringEnabled: Boolean
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -1967,6 +2192,7 @@ private object CosmosChangeFeedConfig {
   private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
   private val DefaultIgnoreOffsetWhenInvalid: Boolean = false
+  private val DefaultPerformanceMonitoringEnabled: Boolean = true
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
     key = CosmosConfigNames.ChangeFeedStartFrom,
@@ -2016,6 +2242,14 @@ private object CosmosChangeFeedConfig {
       "instead. If this config is set and a file exists the StartFrom settings are ignored and instead the change " +
       "feed will be processed from the previous position.")
 
+  private val performanceMonitoringEnabled = CosmosConfigEntry[Boolean](
+    key = CosmosConfigNames.ChangeFeedPerformanceMonitoringEnabled,
+    mandatory = false,
+    defaultValue = Some(DefaultPerformanceMonitoringEnabled),
+    parseFromStringFunction = enabled => enabled.toBoolean,
+    helpMessage = "A Flag to indicate whether enable change feed performance monitoring." +
+     " When enabled, custom task metrics will be tracked internally, which will be used to dynamically tuning the change feed micro-batch size.")
+
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
       val trimmed = sf.trim
@@ -2040,6 +2274,7 @@ private object CosmosChangeFeedConfig {
       case _ => None
     }
     val batchCheckpointLocationParsed = CosmosConfigEntry.parse(cfg, batchCheckpointLocation)
+    val performanceMonitoringEnabledParsed = CosmosConfigEntry.parse(cfg, performanceMonitoringEnabled)
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
@@ -2047,7 +2282,8 @@ private object CosmosChangeFeedConfig {
       startFromPointInTimeParsed,
       maxItemCountPerTriggerHintParsed,
       batchCheckpointLocationParsed,
-      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid)
+      ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid),
+      performanceMonitoringEnabledParsed.get
     )
   }
 }

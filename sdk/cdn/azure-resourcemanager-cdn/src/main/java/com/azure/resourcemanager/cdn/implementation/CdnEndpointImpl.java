@@ -1,0 +1,678 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.cdn.implementation;
+
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
+import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
+import com.azure.resourcemanager.cdn.models.CdnEndpoint;
+import com.azure.resourcemanager.cdn.models.CdnProfile;
+import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
+import com.azure.resourcemanager.cdn.models.CustomDomainValidationResult;
+import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
+import com.azure.resourcemanager.cdn.models.DeliveryRule;
+import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
+import com.azure.resourcemanager.cdn.models.EndpointResourceState;
+import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
+import com.azure.resourcemanager.cdn.models.GeoFilter;
+import com.azure.resourcemanager.cdn.models.GeoFilterActions;
+import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
+import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
+import com.azure.resourcemanager.cdn.models.ResourceUsage;
+import com.azure.resourcemanager.cdn.models.SkuName;
+import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Implementation for {@link CdnEndpoint}.
+ */
+@SuppressWarnings("unchecked")
+class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInner, CdnProfileImpl, CdnProfile>
+    implements CdnEndpoint,
+
+    CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<CdnProfile.DefinitionStages.WithStandardCreate>,
+    CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<CdnProfile.DefinitionStages.WithPremiumVerizonCreate>,
+    CdnEndpoint.DefinitionStages.WithStandardAttach<CdnProfile.DefinitionStages.WithStandardCreate>,
+    CdnEndpoint.DefinitionStages.WithPremiumAttach<CdnProfile.DefinitionStages.WithPremiumVerizonCreate>,
+
+    CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<CdnProfile.Update>,
+    CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<CdnProfile.Update>,
+
+    CdnEndpoint.UpdateStandardEndpoint, CdnEndpoint.UpdatePremiumEndpoint {
+
+    private Set<String> customDomainHostnames;
+    private Set<String> deletedCustomDomainHostnames;
+    // rule map for rules engine in Standard Microsoft SKU, indexed by rule name
+    private final Map<String, DeliveryRule> standardRulesEngineRuleMap = new HashMap<>();
+
+    CdnEndpointImpl(String name, CdnProfileImpl parent, EndpointInner inner) {
+        super(name, parent, inner);
+        this.customDomainHostnames = new LinkedHashSet<>();
+        this.deletedCustomDomainHostnames = new HashSet<>();
+        initializeRuleMapForStandardMicrosoftSku();
+    }
+
+    @Override
+    public String id() {
+        return this.innerModel().id();
+    }
+
+    @Override
+    public Mono<CdnEndpoint> createResourceAsync() {
+        final CdnEndpointImpl self = this;
+        if (isStandardMicrosoftSku()
+            && this.innerModel().deliveryPolicy() == null
+            && this.standardRulesEngineRuleMap.size() > 0) {
+            this.innerModel()
+                .withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
+                    .withRules(this.standardRulesEngineRuleMap.values()
+                        .stream()
+                        .sorted(Comparator.comparingInt(DeliveryRule::order))
+                        .collect(Collectors.toList())));
+        }
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .createAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.innerModel())
+            .flatMap(inner -> {
+                self.setInner(inner);
+                return Flux.fromIterable(self.customDomainHostnames)
+                    .flatMapDelayError(customDomain -> self.parent()
+                        .manager()
+                        .serviceClient()
+                        .getCustomDomains()
+                        .createAsync(self.parent().resourceGroupName(), self.parent().name(), self.name(),
+                            self.parent()
+                                .manager()
+                                .resourceManager()
+                                .internalContext()
+                                .randomResourceName("CustomDomain", 50),
+                            new CustomDomainParameters().withHostname(customDomain)),
+                        32, 32)
+                    .then(self.parent()
+                        .manager()
+                        .serviceClient()
+                        .getCustomDomains()
+                        .listByEndpointAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
+                        .collectList()
+                        .map(customDomainInners -> {
+                            self.customDomainHostnames.addAll(customDomainInners.stream()
+                                .map(CustomDomainInner::hostname)
+                                .collect(Collectors.toSet()));
+                            return self;
+                        }));
+            });
+    }
+
+    @Override
+    public Mono<CdnEndpoint> updateResourceAsync() {
+        final CdnEndpointImpl self = this;
+        EndpointUpdateParameters endpointUpdateParameters = new EndpointUpdateParameters();
+        endpointUpdateParameters.withIsHttpAllowed(this.innerModel().isHttpAllowed())
+            .withIsHttpsAllowed(this.innerModel().isHttpsAllowed())
+            .withOriginPath(this.innerModel().originPath())
+            .withOriginHostHeader(this.innerModel().originHostHeader())
+            .withIsCompressionEnabled(this.innerModel().isCompressionEnabled())
+            .withContentTypesToCompress(this.innerModel().contentTypesToCompress())
+            .withGeoFilters(this.innerModel().geoFilters())
+            .withOptimizationType(this.innerModel().optimizationType())
+            .withQueryStringCachingBehavior(this.innerModel().queryStringCachingBehavior())
+            .withTags(this.innerModel().tags());
+
+        if (isStandardMicrosoftSku()) {
+            List<DeliveryRule> rules = this.standardRulesEngineRuleMap.values()
+                .stream()
+                .sorted(Comparator.comparingInt(DeliveryRule::order))
+                .collect(Collectors.toList());
+            ensureDeliveryPolicy();
+            endpointUpdateParameters
+                .withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy().withRules(rules));
+        }
+
+        DeepCreatedOrigin originInner = this.innerModel().origins().get(0);
+        OriginUpdateParameters originUpdateParameters
+            = new OriginUpdateParameters().withHostname(originInner.hostname())
+                .withHttpPort(originInner.httpPort())
+                .withHttpsPort(originInner.httpsPort());
+
+        Mono<EndpointInner> originUpdateTask = this.parent()
+            .manager()
+            .serviceClient()
+            .getOrigins()
+            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), originInner.name(),
+                originUpdateParameters)
+            .then(Mono.empty());
+
+        Mono<EndpointInner> endpointUpdateTask = this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                endpointUpdateParameters);
+
+        Flux<CustomDomainInner> customDomainCreateTask = Flux.fromIterable(this.customDomainHostnames)
+            .flatMapDelayError(itemToCreate -> this.parent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
+                .createAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                    self.parent().manager().resourceManager().internalContext().randomResourceName("CustomDomain", 50),
+                    new CustomDomainParameters().withHostname(itemToCreate)),
+                32, 32);
+
+        Flux<CustomDomainInner> customDomainDeleteTask;
+        if (this.deletedCustomDomainHostnames.isEmpty()) {
+            customDomainDeleteTask = Flux.empty();
+        } else {
+            customDomainDeleteTask = this.parent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
+                .listByEndpointAsync(this.parent().resourceGroupName(), this.parent().name(), this.name())
+                .filter(customDomain -> this.deletedCustomDomainHostnames.contains(customDomain.hostname()))
+                .flatMapDelayError(itemToDelete -> this.parent()
+                    .manager()
+                    .serviceClient()
+                    .getCustomDomains()
+                    .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                        itemToDelete.name()),
+                    32, 32);
+        }
+
+        Mono<EndpointInner> customDomainTask
+            = Flux.concat(customDomainCreateTask, customDomainDeleteTask).then(Mono.empty());
+
+        return Flux.mergeDelayError(32, customDomainTask, originUpdateTask, endpointUpdateTask).last().map(inner -> {
+            self.setInner(inner);
+            self.customDomainHostnames.clear();
+            self.deletedCustomDomainHostnames.clear();
+            return self;
+        });
+    }
+
+    @Override
+    public Mono<Void> deleteResourceAsync() {
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
+    }
+
+    @Override
+    public Mono<CdnEndpoint> refreshAsync() {
+        final CdnEndpointImpl self = this;
+        return super.refreshAsync().flatMap(cdnEndpoint -> {
+            self.customDomainHostnames.clear();
+            self.deletedCustomDomainHostnames.clear();
+            initializeRuleMapForStandardMicrosoftSku();
+            return self.parent()
+                .manager()
+                .serviceClient()
+                .getCustomDomains()
+                .listByEndpointAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
+                .collectList()
+                .map(customDomainInners -> {
+                    self.customDomainHostnames.addAll(
+                        customDomainInners.stream().map(CustomDomainInner::hostname).collect(Collectors.toSet()));
+                    return self;
+                });
+        });
+    }
+
+    @Override
+    protected Mono<EndpointInner> getInnerAsync() {
+        return this.parent()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
+    }
+
+    @Override
+    public PagedIterable<ResourceUsage> listResourceUsage() {
+        return PagedConverter.mapPage(
+            this.parent()
+                .manager()
+                .serviceClient()
+                .getEndpoints()
+                .listResourceUsage(this.parent().resourceGroupName(), this.parent().name(), this.name()),
+            ResourceUsage::new);
+    }
+
+    @Override
+    public Map<String, DeliveryRule> standardRulesEngineRules() {
+        return Collections.unmodifiableMap(this.standardRulesEngineRuleMap);
+    }
+
+    @Override
+    public CdnProfileImpl attach() {
+        return this.parent();
+    }
+
+    @Override
+    public String originHostHeader() {
+        return this.innerModel().originHostHeader();
+    }
+
+    @Override
+    public String originPath() {
+        return this.innerModel().originPath();
+    }
+
+    @Override
+    public Set<String> contentTypesToCompress() {
+        List<String> contentTypes = this.innerModel().contentTypesToCompress();
+        Set<String> set = new HashSet<>();
+        if (contentTypes != null) {
+            set.addAll(contentTypes);
+        }
+        return Collections.unmodifiableSet(set);
+    }
+
+    @Override
+    public boolean isCompressionEnabled() {
+        return this.innerModel().isCompressionEnabled();
+    }
+
+    @Override
+    public boolean isHttpAllowed() {
+        return this.innerModel().isHttpAllowed();
+    }
+
+    @Override
+    public boolean isHttpsAllowed() {
+        return this.innerModel().isHttpsAllowed();
+    }
+
+    @Override
+    public QueryStringCachingBehavior queryStringCachingBehavior() {
+        return this.innerModel().queryStringCachingBehavior();
+    }
+
+    @Override
+    public String optimizationType() {
+        if (this.innerModel().optimizationType() == null) {
+            return null;
+        }
+        return this.innerModel().optimizationType().toString();
+    }
+
+    @Override
+    public List<GeoFilter> geoFilters() {
+        return this.innerModel().geoFilters();
+    }
+
+    @Override
+    public String hostname() {
+        return this.innerModel().hostname();
+    }
+
+    @Override
+    public EndpointResourceState resourceState() {
+        return this.innerModel().resourceState();
+    }
+
+    @Override
+    public String provisioningState() {
+        return this.innerModel().provisioningState() == null ? null : this.innerModel().provisioningState().toString();
+    }
+
+    @Override
+    public String originHostName() {
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            return this.innerModel().origins().get(0).hostname();
+        }
+        return null;
+    }
+
+    @Override
+    public int httpPort() {
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            Integer httpPort = this.innerModel().origins().get(0).httpPort();
+            return (httpPort != null) ? httpPort : 0;
+        }
+        return 0;
+    }
+
+    @Override
+    public int httpsPort() {
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            Integer httpsPort = this.innerModel().origins().get(0).httpsPort();
+            return (httpsPort != null) ? httpsPort : 0;
+        }
+        return 0;
+    }
+
+    @Override
+    public Set<String> customDomains() {
+        Set<String> set = new HashSet<>();
+        for (CustomDomainInner customDomainInner : this.parent()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
+            .listByEndpoint(this.parent().resourceGroupName(), this.parent().name(), this.name())) {
+            set.add(customDomainInner.hostname());
+        }
+        return Collections.unmodifiableSet(set);
+    }
+
+    @Override
+    public void start() {
+        this.parent().startEndpoint(this.name());
+    }
+
+    @Override
+    public Mono<Void> startAsync() {
+        return this.parent().startEndpointAsync(this.name());
+    }
+
+    @Override
+    public void stop() {
+        this.stopAsync().block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync() {
+        return this.parent().stopEndpointAsync(this.name());
+    }
+
+    @Override
+    public void purgeContent(Set<String> contentPaths) {
+        if (contentPaths != null) {
+            this.purgeContentAsync(contentPaths).block();
+        }
+    }
+
+    @Override
+    public Mono<Void> purgeContentAsync(Set<String> contentPaths) {
+        return this.parent().purgeEndpointContentAsync(this.name(), contentPaths);
+    }
+
+    @Override
+    public void loadContent(Set<String> contentPaths) {
+        this.loadContentAsync(contentPaths).block();
+    }
+
+    @Override
+    public Mono<Void> loadContentAsync(Set<String> contentPaths) {
+        return this.parent().loadEndpointContentAsync(this.name(), contentPaths);
+    }
+
+    @Override
+    public CustomDomainValidationResult validateCustomDomain(String hostName) {
+        return this.validateCustomDomainAsync(hostName).block();
+    }
+
+    @Override
+    public Mono<CustomDomainValidationResult> validateCustomDomainAsync(String hostName) {
+        return this.parent().validateEndpointCustomDomainAsync(this.name(), hostName);
+    }
+
+    @Override
+    public CdnEndpointImpl withOrigin(String originName, String hostname) {
+        this.innerModel().origins().add(new DeepCreatedOrigin().withName(originName).withHostname(hostname));
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withOrigin(String hostname) {
+        return this.withOrigin("origin", hostname);
+    }
+
+    @Override
+    public CdnEndpointImpl withPremiumOrigin(String originName, String hostname) {
+        return this.withOrigin(originName, hostname);
+    }
+
+    @Override
+    public CdnEndpointImpl withPremiumOrigin(String hostname) {
+        return this.withOrigin(hostname);
+    }
+
+    @Override
+    public CdnEndpointImpl withOriginPath(String originPath) {
+        this.innerModel().withOriginPath(originPath);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withHttpAllowed(boolean httpAllowed) {
+        this.innerModel().withIsHttpAllowed(httpAllowed);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withHttpsAllowed(boolean httpsAllowed) {
+        this.innerModel().withIsHttpsAllowed(httpsAllowed);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withHttpPort(int httpPort) {
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            this.innerModel().origins().get(0).withHttpPort(httpPort);
+        }
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withHttpsPort(int httpsPort) {
+        if (this.innerModel().origins() != null && !this.innerModel().origins().isEmpty()) {
+            this.innerModel().origins().get(0).withHttpsPort(httpsPort);
+        }
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withHostHeader(String hostHeader) {
+        this.innerModel().withOriginHostHeader(hostHeader);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withContentTypesToCompress(Set<String> contentTypesToCompress) {
+        List<String> list = null;
+        if (contentTypesToCompress != null) {
+            list = new ArrayList<>(contentTypesToCompress);
+        }
+        this.innerModel().withContentTypesToCompress(list);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withoutContentTypesToCompress() {
+        if (this.innerModel().contentTypesToCompress() != null) {
+            this.innerModel().contentTypesToCompress().clear();
+        }
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withContentTypeToCompress(String contentTypeToCompress) {
+        if (this.innerModel().contentTypesToCompress() == null) {
+            this.innerModel().withContentTypesToCompress(new ArrayList<>());
+        }
+        this.innerModel().contentTypesToCompress().add(contentTypeToCompress);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withoutContentTypeToCompress(String contentTypeToCompress) {
+        if (this.innerModel().contentTypesToCompress() != null) {
+            this.innerModel().contentTypesToCompress().remove(contentTypeToCompress);
+        }
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withCompressionEnabled(boolean compressionEnabled) {
+        this.innerModel().withIsCompressionEnabled(compressionEnabled);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior) {
+        this.innerModel().withQueryStringCachingBehavior(cachingBehavior);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withGeoFilters(Collection<GeoFilter> geoFilters) {
+        List<GeoFilter> list = null;
+        if (geoFilters != null) {
+            list = new ArrayList<>(geoFilters);
+        }
+
+        this.innerModel().withGeoFilters(list);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withoutGeoFilters() {
+        if (this.innerModel().geoFilters() != null) {
+            this.innerModel().geoFilters().clear();
+        }
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, CountryIsoCode countryCode) {
+        GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
+
+        if (geoFilter.countryCodes() == null) {
+            geoFilter.withCountryCodes(new ArrayList<>());
+        }
+        geoFilter.countryCodes().add(countryCode.toString());
+
+        this.innerModel().geoFilters().add(geoFilter);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action,
+        Collection<CountryIsoCode> countryCodes) {
+        GeoFilter geoFilter = this.createGeoFiltersObject(relativePath, action);
+
+        if (geoFilter.countryCodes() == null) {
+            geoFilter.withCountryCodes(new ArrayList<>());
+        } else {
+            geoFilter.countryCodes().clear();
+        }
+
+        for (CountryIsoCode countryCode : countryCodes) {
+            geoFilter.countryCodes().add(countryCode.toString());
+        }
+
+        this.innerModel().geoFilters().add(geoFilter);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withoutGeoFilter(String relativePath) {
+        this.innerModel().geoFilters().removeIf(geoFilter -> geoFilter.relativePath().equals(relativePath));
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withCustomDomain(String hostName) {
+        this.customDomainHostnames.add(hostName);
+        return this;
+    }
+
+    @Override
+    public CdnStandardRulesEngineRuleImpl defineNewStandardRulesEngineRule(String name) {
+        throwIfNotStandardMicrosoftSku();
+        CdnStandardRulesEngineRuleImpl deliveryRule = new CdnStandardRulesEngineRuleImpl(this, name);
+        this.standardRulesEngineRuleMap.put(name, deliveryRule.innerModel());
+        return deliveryRule;
+    }
+
+    @Override
+    public CdnStandardRulesEngineRuleImpl updateStandardRulesEngineRule(String name) {
+        throwIfNotStandardMicrosoftSku();
+        return new CdnStandardRulesEngineRuleImpl(this, standardRulesEngineRules().get(name));
+    }
+
+    @Override
+    public CdnEndpointImpl withoutStandardRulesEngineRule(String name) {
+        throwIfNotStandardMicrosoftSku();
+        this.standardRulesEngineRuleMap.remove(name);
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl withoutCustomDomain(String hostName) {
+        deletedCustomDomainHostnames.add(hostName);
+        return this;
+    }
+
+    private GeoFilter createGeoFiltersObject(String relativePath, GeoFilterActions action) {
+        if (this.innerModel().geoFilters() == null) {
+            this.innerModel().withGeoFilters(new ArrayList<>());
+        }
+        GeoFilter geoFilter = null;
+        for (GeoFilter filter : this.innerModel().geoFilters()) {
+            if (filter.relativePath().equals(relativePath)) {
+                geoFilter = filter;
+                break;
+            }
+        }
+        if (geoFilter == null) {
+            geoFilter = new GeoFilter();
+        } else {
+            this.innerModel().geoFilters().remove(geoFilter);
+        }
+        geoFilter.withRelativePath(relativePath).withAction(action);
+
+        return geoFilter;
+    }
+
+    private void initializeRuleMapForStandardMicrosoftSku() {
+        standardRulesEngineRuleMap.clear();
+        if (isStandardMicrosoftSku()
+            && innerModel().deliveryPolicy() != null
+            && innerModel().deliveryPolicy().rules() != null) {
+            for (DeliveryRule rule : innerModel().deliveryPolicy().rules()) {
+                this.standardRulesEngineRuleMap.put(rule.name(), rule);
+            }
+        }
+    }
+
+    private boolean isStandardMicrosoftSku() {
+        return SkuName.STANDARD_MICROSOFT.equals(parent().sku().name());
+    }
+
+    private void throwIfNotStandardMicrosoftSku() {
+        if (!isStandardMicrosoftSku()) {
+            throw new IllegalStateException(
+                String.format("Standard rules engine only supports for Standard Microsoft SKU, " + "current SKU is %s",
+                    parent().sku().name()));
+        }
+    }
+
+    private void ensureDeliveryPolicy() {
+        if (innerModel().deliveryPolicy() == null) {
+            innerModel().withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy());
+        }
+    }
+}

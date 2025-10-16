@@ -38,6 +38,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.TeamsExtensionUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
@@ -258,6 +259,10 @@ public final class CallConnectionAsync {
         } else if (targetParticipant instanceof MicrosoftTeamsAppIdentifier) {
             return transferCallToParticipantWithResponse(
                 new TransferCallToParticipantOptions((MicrosoftTeamsAppIdentifier) targetParticipant))
+                    .flatMap(FluxUtil::toMono);
+        } else if (targetParticipant instanceof TeamsExtensionUserIdentifier) {
+            return transferCallToParticipantWithResponse(
+                new TransferCallToParticipantOptions((TeamsExtensionUserIdentifier) targetParticipant))
                     .flatMap(FluxUtil::toMono);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("targetParticipant type is invalid."));

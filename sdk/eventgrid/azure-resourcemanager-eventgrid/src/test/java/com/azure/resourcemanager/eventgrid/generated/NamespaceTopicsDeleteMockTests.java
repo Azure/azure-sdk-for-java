@@ -27,7 +27,7 @@ public final class NamespaceTopicsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.namespaceTopics().delete("hgjsysmvxo", "gwxfkzsi", "cuvbdujgcwxvec", com.azure.core.util.Context.NONE);
+        manager.namespaceTopics().delete("nnohmmzngo", "fr", "uypwyiulaynos", com.azure.core.util.Context.NONE);
 
     }
 }

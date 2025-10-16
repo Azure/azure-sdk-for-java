@@ -22,7 +22,7 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Extracting\"},\"sku\":{\"name\":\"mcqibycnojv\",\"tier\":\"Premium\",\"size\":\"fqsgzvahapjy\",\"family\":\"pvgqzcjrvxdjzlm\",\"capacity\":391686670},\"location\":\"vu\",\"tags\":{\"nluthnnp\":\"zovawjvz\",\"jzuaejxdultskzbb\":\"nxipeil\",\"wozuhkf\":\"dzumveekg\",\"uusdttouwa\":\"bsjyofdx\"},\"id\":\"oekqvk\",\"name\":\"lns\",\"type\":\"vbxwyjsflhh\"}";
+            = "{\"properties\":{\"provisioningState\":\"Analyzing\"},\"sku\":{\"name\":\"rxbpyb\",\"tier\":\"Premium\",\"size\":\"jfdtwssotftpvj\",\"family\":\"exilzznfqqnvwpmq\",\"capacity\":1628769376},\"location\":\"oujmkcjhwqytj\",\"tags\":{\"jewgdrjerv\":\"n\"},\"id\":\"aen\",\"name\":\"pehindoygm\",\"type\":\"fthnzdn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workspace response = manager.workspaces()
-            .getByResourceGroupWithResponse("rknftguvriuhprwm", "yvxqtayriwwroy", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("bfovasrruvwbhsq", "sub", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vu", response.location());
-        Assertions.assertEquals("zovawjvz", response.tags().get("nluthnnp"));
-        Assertions.assertEquals("mcqibycnojv", response.sku().name());
+        Assertions.assertEquals("oujmkcjhwqytj", response.location());
+        Assertions.assertEquals("n", response.tags().get("jewgdrjerv"));
+        Assertions.assertEquals("rxbpyb", response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("fqsgzvahapjy", response.sku().size());
-        Assertions.assertEquals("pvgqzcjrvxdjzlm", response.sku().family());
-        Assertions.assertEquals(391686670, response.sku().capacity());
+        Assertions.assertEquals("jfdtwssotftpvj", response.sku().size());
+        Assertions.assertEquals("exilzznfqqnvwpmq", response.sku().family());
+        Assertions.assertEquals(1628769376, response.sku().capacity());
     }
 }

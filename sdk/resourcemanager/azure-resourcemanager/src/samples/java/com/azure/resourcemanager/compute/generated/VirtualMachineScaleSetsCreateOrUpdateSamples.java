@@ -9,6 +9,7 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.models.AllInstancesDown;
 import com.azure.resourcemanager.compute.models.AllocationStrategy;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
@@ -23,19 +24,24 @@ import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.DiffDiskOptions;
 import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.DiffDiskSettings;
+import com.azure.resourcemanager.compute.models.DiskControllerTypes;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.DomainNameLabelScopeTypes;
 import com.azure.resourcemanager.compute.models.EventGridAndResourceGraph;
+import com.azure.resourcemanager.compute.models.HighSpeedInterconnectPlacement;
+import com.azure.resourcemanager.compute.models.HostEndpointSettings;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
+import com.azure.resourcemanager.compute.models.MaxInstancePercentPerZonePolicy;
 import com.azure.resourcemanager.compute.models.NetworkApiVersion;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.compute.models.OSImageNotificationProfile;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
+import com.azure.resourcemanager.compute.models.Placement;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ProxyAgentSettings;
@@ -87,8 +93,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetScaleInRul
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.azure.resourcemanager.compute.models.ZonalPlatformFaultDomainAlignMode;
+import com.azure.resourcemanager.compute.models.ZoneAllocationPolicy;
+import com.azure.resourcemanager.compute.models.ZonePlacementPolicyType;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for VirtualMachineScaleSets CreateOrUpdate.
@@ -96,7 +106,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEmptyDataDisksOnEachVm.json
      */
     /**
@@ -151,7 +161,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUserData.json
      */
     /**
@@ -198,7 +208,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromACustomImage.json
      */
     /**
@@ -238,7 +248,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacement.json
      */
     /**
@@ -291,7 +301,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithScaleInPolicy.json
      */
     /**
@@ -341,7 +351,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProxyAgentSettings.json
      */
     /**
@@ -361,36 +371,41 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                     .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL))
                     .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
                         .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
-                            .withAdminUsername("{your-username}")
-                            .withAdminPassword("fakeTokenPlaceholder"))
+                            .withAdminUsername("{your-username}"))
                         .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                                .withOffer("WindowsServer")
-                                .withSku("2019-Datacenter")
+                            .withImageReference(new ImageReference().withPublisher("Canonical")
+                                .withOffer("0001-com-ubuntu-server-jammy")
+                                .withSku("22_04-lts-gen2")
                                 .withVersion("latest"))
-                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
-                                .withCaching(CachingTypes.READ_ONLY)
-                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
-                                    .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS))))
+                            .withOsDisk(
+                                new VirtualMachineScaleSetOSDisk().withCaching(CachingTypes.READ_ONLY)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                        .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS))))
                         .withNetworkProfile(
                             new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
                                 Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
                                     .withPrimary(true)
-                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
-                                        .withName("{vmss-name}")
-                                        .withSubnet(new ApiEntityReference().withId(
-                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
+                                    .withIpConfigurations(Arrays
+                                        .asList(new VirtualMachineScaleSetIpConfiguration().withName("{vmss-name}")
+                                            .withSubnet(
+                                                new ApiEntityReference().withId(
+                                                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
                                     .withEnableIpForwarding(true))))
-                        .withSecurityProfile(
-                            new SecurityProfile().withProxyAgentSettings(new ProxyAgentSettings().withEnabled(true))))
+                        .withSecurityProfile(new SecurityProfile().withProxyAgentSettings(new ProxyAgentSettings()
+                            .withEnabled(true)
+                            .withWireServer(new HostEndpointSettings().withInVMAccessControlProfileReferenceId(
+                                "/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Compute/galleries/{gallery-name}/inVMAccessControlProfiles/{profile-name}/versions/{version}"))
+                            .withImds(new HostEndpointSettings().withInVMAccessControlProfileReferenceId(
+                                "/subscriptions/{sub-id}/resourceGroups/{rg}/providers/Microsoft.Compute/galleries/{gallery-name}/inVMAccessControlProfiles/{profile-name}/versions/{version}"))
+                            .withAddProxyAgentExtension(true))))
                     .withOverprovision(true),
                 null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVM.json
      */
     /**
@@ -444,7 +459,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMCreationPolicy.json
      */
     /**
@@ -493,7 +508,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureApplicationGateway.json
      */
     /**
@@ -543,7 +558,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_CustomImageFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
@@ -583,7 +598,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithZonalPlatformFaultDomainAlignMode.json
      */
     /**
@@ -636,7 +651,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsTimeBudget.json
      */
     /**
@@ -696,7 +711,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithApplicationProfile.json
      */
     /**
@@ -754,7 +769,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskEncryptionSetResource.json
      */
     /**
@@ -805,7 +820,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPremiumStorage.json
      */
     /**
@@ -851,7 +866,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithDisableTcpStateTrackingNetworkInterface.json
      */
     /**
@@ -905,7 +920,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithTerminateScheduledEventEnabled.json
      */
     /**
@@ -954,7 +969,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsSuppressFailuresEnabled.json
      */
     /**
@@ -1013,7 +1028,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPasswordAuthentication.json
      */
     /**
@@ -1059,7 +1074,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskControllerType.json
      */
     /**
@@ -1080,7 +1095,9 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                         .withUserInitiatedRedeploy(new UserInitiatedRedeploy().withAutomaticallyApprove(true))
                         .withUserInitiatedReboot(new UserInitiatedReboot().withAutomaticallyApprove(true))
                         .withScheduledEventsAdditionalPublishingTargets(new ScheduledEventsAdditionalPublishingTargets()
-                            .withEventGridAndResourceGraph(new EventGridAndResourceGraph().withEnable(true))))
+                            .withEventGridAndResourceGraph(new EventGridAndResourceGraph().withEnable(true)
+                                .withScheduledEventsApiVersion("2020-07-01")))
+                        .withAllInstancesDown(new AllInstancesDown().withAutomaticallyApprove(true)))
                     .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
                         .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
                             .withAdminUsername("{your-username}")
@@ -1096,7 +1113,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 .withManagedDisk(
                                     new VirtualMachineScaleSetManagedDiskParameters().withStorageAccountType(
                                         StorageAccountTypes.STANDARD_LRS)))
-                            .withDiskControllerType("NVMe"))
+                            .withDiskControllerType(DiskControllerTypes.NVME))
                         .withNetworkProfile(
                             new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
                                 Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
@@ -1115,7 +1132,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromAGeneralizedSharedImage.json
      */
     /**
@@ -1156,7 +1173,113 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxZoneCount.json
+     */
+    /**
+     * Sample code: Create a zones-auto scale set with Max Zone Count.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAZonesAutoScaleSetWithMaxZoneCount(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate("myResourceGroup", "{vmss-name}",
+                new VirtualMachineScaleSetInner().withLocation("westus")
+                    .withSku(new Sku().withName("Standard_D1_v2").withTier("Standard").withCapacity(3L))
+                    .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO))
+                    .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL))
+                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                                .withOffer("WindowsServer")
+                                .withSku("2016-Datacenter")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(
+                            new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
+                                    .withPrimary(true)
+                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
+                                        .withName("{vmss-name}")
+                                        .withSubnet(new ApiEntityReference().withId(
+                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
+                                    .withEnableIpForwarding(true)))))
+                    .withOverprovision(false)
+                    .withResiliencyPolicy(new ResiliencyPolicy()
+                        .withZoneAllocationPolicy(new ZoneAllocationPolicy().withMaxZoneCount(2))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithHighSpeedInterconnectPlacement.json
+     */
+    /**
+     * Sample code: Create a virtual machine scale set with high-speed interconnect placement.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVirtualMachineScaleSetWithHighSpeedInterconnectPlacement(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate("myResourceGroup", "{vmss-name}",
+                new VirtualMachineScaleSetInner().withLocation("westus")
+                    .withSku(new Sku().withName("Standard_D1_v2").withTier("Standard").withCapacity(2L))
+                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("Canonical")
+                                .withOffer("0001-com-ubuntu-server-focal")
+                                .withSku("20_04-lts-gen2")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile()
+                            .withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
+                                    .withPrimary(true)
+                                    .withEnableAcceleratedNetworking(false)
+                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
+                                        .withName("{vmss-name}")
+                                        .withSubnet(new ApiEntityReference().withId(
+                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))
+                                        .withPrimary(true)
+                                        .withPublicIpAddressConfiguration(
+                                            new VirtualMachineScaleSetPublicIpAddressConfiguration()
+                                                .withName("{vmss-name}")
+                                                .withIdleTimeoutInMinutes(15))
+                                        .withApplicationGatewayBackendAddressPools(Arrays.asList())
+                                        .withLoadBalancerBackendAddressPools(Arrays.asList())))
+                                    .withEnableIpForwarding(true)))
+                            .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)))
+                    .withPlatformFaultDomainCount(1)
+                    .withOrchestrationMode(OrchestrationMode.FLEXIBLE)
+                    .withHighSpeedInterconnectPlacement(HighSpeedInterconnectPlacement.NONE),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOSImageScheduledEventEnabled.json
      */
     /**
@@ -1205,7 +1328,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithFpgaNetworkInterface.json
      */
     /**
@@ -1256,7 +1379,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile.json
      */
     /**
@@ -1312,7 +1435,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
      */
     /**
@@ -1365,7 +1488,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticZoneRebalancingPolicy.json
      */
     /**
@@ -1416,7 +1539,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithServiceArtifactReference.json
      */
     /**
@@ -1462,7 +1585,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEncryptionAtHost.json
      */
     /**
@@ -1513,7 +1636,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProtectedSettingsFromKeyVault.json
      */
     /**
@@ -1576,7 +1699,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureLoadBalancer.json
      */
     /**
@@ -1631,7 +1754,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithManagedBootDiagnostics.json
      */
     /**
@@ -1679,7 +1802,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAMarketplaceImagePlan.json
      */
     /**
@@ -1728,7 +1851,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiffOsDisk.json
      */
     /**
@@ -1778,7 +1901,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMsInDifferentZones.json
      */
     /**
@@ -1835,7 +1958,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMDeletionPolicy.json
      */
     /**
@@ -1884,7 +2007,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithCapacityReservation.json
      */
     /**
@@ -1934,7 +2057,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSshAuthentication.json
      */
     /**
@@ -1979,7 +2102,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile_Prioritized.json
      */
     /**
@@ -2036,7 +2159,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMSizeProperties.json
      */
     /**
@@ -2085,7 +2208,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithNetworkInterfaceWithDnsSettings.json
      */
     /**
@@ -2115,6 +2238,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
                     .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
                         Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{nicConfig1-name}")
+                            .withTags(mapOf("nicTag", "tag"))
                             .withPrimary(true)
                             .withEnableAcceleratedNetworking(true)
                             .withDisableTcpStateTracking(true)
@@ -2136,6 +2260,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                     .withPrimary(true)
                                     .withPublicIpAddressConfiguration(
                                         new VirtualMachineScaleSetPublicIpAddressConfiguration().withName("publicip")
+                                            .withTags(mapOf("pipTag", "tag"))
                                             .withIdleTimeoutInMinutes(10)
                                             .withDnsSettings(
                                                 new VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings()
@@ -2148,7 +2273,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_PlatformImageWithUnmanagedOsDisks.json
      */
     /**
@@ -2201,7 +2326,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUefiSettings.json
      */
     /**
@@ -2251,7 +2376,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityPostureReference.json
      */
     /**
@@ -2297,7 +2422,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPriorityMixPolicy.json
      */
     /**
@@ -2354,7 +2479,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticRepairs.json
      */
     /**
@@ -2376,7 +2501,9 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                         .withUserInitiatedRedeploy(new UserInitiatedRedeploy().withAutomaticallyApprove(true))
                         .withUserInitiatedReboot(new UserInitiatedReboot().withAutomaticallyApprove(true))
                         .withScheduledEventsAdditionalPublishingTargets(new ScheduledEventsAdditionalPublishingTargets()
-                            .withEventGridAndResourceGraph(new EventGridAndResourceGraph().withEnable(true))))
+                            .withEventGridAndResourceGraph(new EventGridAndResourceGraph().withEnable(true)
+                                .withScheduledEventsApiVersion("2020-07-01")))
+                        .withAllInstancesDown(new AllInstancesDown().withAutomaticallyApprove(true)))
                     .withAutomaticRepairsPolicy(new AutomaticRepairsPolicy().withEnabled(true).withGracePeriod("PT10M"))
                     .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
                         .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
@@ -2407,7 +2534,55 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPlacement.json
+     */
+    /**
+     * Sample code: Create a scale set with placement policy 'Auto'.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAScaleSetWithPlacementPolicyAuto(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate("myResourceGroup", "{vmss-name}",
+                new VirtualMachineScaleSetInner().withLocation("westus")
+                    .withSku(new Sku().withName("Standard_D1_v2").withTier("Standard").withCapacity(3L))
+                    .withPlacement(new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
+                        .withIncludeZones(Arrays.asList("1", "3")))
+                    .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL))
+                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                                .withOffer("WindowsServer")
+                                .withSku("2016-Datacenter")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(
+                            new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
+                                    .withPrimary(true)
+                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
+                                        .withName("{vmss-name}")
+                                        .withSubnet(new ApiEntityReference().withId(
+                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
+                                    .withEnableIpForwarding(true)))))
+                    .withOverprovision(false),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotRestorePolicy.json
      */
     /**
@@ -2457,7 +2632,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.
      * json
      */
@@ -2512,7 +2687,57 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxInstancePercentPerZonePolicy.json
+     */
+    /**
+     * Sample code: Create a scale set with Max Instance Percent Per Zone Policy enabled.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAScaleSetWithMaxInstancePercentPerZonePolicyEnabled(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .createOrUpdate("myResourceGroup", "{vmss-name}",
+                new VirtualMachineScaleSetInner().withLocation("westus")
+                    .withSku(new Sku().withName("Standard_D1_v2").withTier("Standard").withCapacity(3L))
+                    .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL))
+                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
+                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("fakeTokenPlaceholder"))
+                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                                .withOffer("WindowsServer")
+                                .withSku("2016-Datacenter")
+                                .withVersion("latest"))
+                            .withOsDisk(new VirtualMachineScaleSetOSDisk()
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                        .withNetworkProfile(
+                            new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
+                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
+                                    .withPrimary(true)
+                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
+                                        .withName("{vmss-name}")
+                                        .withSubnet(new ApiEntityReference().withId(
+                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
+                                    .withEnableIpForwarding(true)))))
+                    .withOverprovision(false)
+                    .withResiliencyPolicy(new ResiliencyPolicy()
+                        .withZoneAllocationPolicy(new ZoneAllocationPolicy().withMaxInstancePercentPerZonePolicy(
+                            new MaxInstancePercentPerZonePolicy().withEnabled(true).withValue(50)))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithBootDiagnostics.json
      */
     /**
@@ -2561,7 +2786,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromASpecializedSharedImage.json
      */
     /**
@@ -2594,5 +2819,17 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                     "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
                             .withEnableIpForwarding(true)))))
                 .withOverprovision(true), null, null, com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

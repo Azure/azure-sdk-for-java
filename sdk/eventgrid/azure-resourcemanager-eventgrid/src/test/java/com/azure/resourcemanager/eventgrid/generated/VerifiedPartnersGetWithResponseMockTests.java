@@ -23,7 +23,7 @@ public final class VerifiedPartnersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"f5878924-ddba-4c66-9bd0-0813e9cbe417\",\"organizationName\":\"exduetbapfczew\",\"partnerDisplayName\":\"rlqbpxyazkjpir\",\"partnerTopicDetails\":{\"description\":\"vbczwhyegb\",\"longDescription\":\"msritjbuiggr\",\"setupUri\":\"ozfvualjt\"},\"provisioningState\":\"Creating\"},\"id\":\"sdwsngkrfi\",\"name\":\"sc\",\"type\":\"vakmhzbhwahfbw\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"e46ebfd9-c8c7-4b08-8f6a-24f028a869d9\",\"organizationName\":\"fmvswx\",\"partnerDisplayName\":\"el\",\"partnerTopicDetails\":{\"description\":\"qhdxtwwulkryb\",\"longDescription\":\"evy\",\"setupUri\":\"yjecrqkwakkch\"},\"partnerDestinationDetails\":{\"description\":\"ulborcxuibsdq\",\"longDescription\":\"yblpectsmwpgwe\",\"setupUri\":\"hbjq\"},\"provisioningState\":\"Canceled\"},\"id\":\"lerufollcshju\",\"name\":\"ihbymjjvtpne\",\"type\":\"xvjeazrah\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,18 @@ public final class VerifiedPartnersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VerifiedPartner response
-            = manager.verifiedPartners().getWithResponse("vab", com.azure.core.util.Context.NONE).getValue();
+            = manager.verifiedPartners().getWithResponse("nry", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("f5878924-ddba-4c66-9bd0-0813e9cbe417"),
+        Assertions.assertEquals(UUID.fromString("e46ebfd9-c8c7-4b08-8f6a-24f028a869d9"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("exduetbapfczew", response.organizationName());
-        Assertions.assertEquals("rlqbpxyazkjpir", response.partnerDisplayName());
-        Assertions.assertEquals("vbczwhyegb", response.partnerTopicDetails().description());
-        Assertions.assertEquals("msritjbuiggr", response.partnerTopicDetails().longDescription());
-        Assertions.assertEquals("ozfvualjt", response.partnerTopicDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.CREATING, response.provisioningState());
+        Assertions.assertEquals("fmvswx", response.organizationName());
+        Assertions.assertEquals("el", response.partnerDisplayName());
+        Assertions.assertEquals("qhdxtwwulkryb", response.partnerTopicDetails().description());
+        Assertions.assertEquals("evy", response.partnerTopicDetails().longDescription());
+        Assertions.assertEquals("yjecrqkwakkch", response.partnerTopicDetails().setupUri());
+        Assertions.assertEquals("ulborcxuibsdq", response.partnerDestinationDetails().description());
+        Assertions.assertEquals("yblpectsmwpgwe", response.partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("hbjq", response.partnerDestinationDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.CANCELED, response.provisioningState());
     }
 }

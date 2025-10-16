@@ -28,7 +28,7 @@ public final class PublicCloudConnectorsDeleteByResourceGroupWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.publicCloudConnectors()
-            .deleteByResourceGroupWithResponse("rwyhqmibzyhwitsm", "pyy", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("yvoqa", "piexpbtgiw", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -54,6 +54,12 @@ Given an input text, the de-identification service can perform three main operat
 - `Tag` returns the category and location within the text of detected PHI entities.
 - `Redact` returns output text where detected PHI entities are replaced with placeholder text. For example `John` replaced with `[name]`.
 - `Surrogate` returns output text where detected PHI entities are replaced with realistic replacement values. For example, `My name is John Smith` could become `My name is Tom Jones`.
+- `SurrogateOnly` returns output text where user-defined PHI entities are replaced with realistic replacement values.
+### String Encoding
+When using the `Tag` operation, the service will return the locations of PHI entities in the input text. These locations will be represented as offsets and lengths, each of which is a [StringIndex][string_index] containing
+three properties corresponding to three different text encodings. **Java applications should call `getUtf16()`.**
+
+For more on text encoding, see [Character encoding in .NET][character_encoding].
 
 ### Available endpoints
 There are two ways to interact with the de-identification service. You can send text directly, or you can create jobs 
@@ -204,6 +210,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [deid_quickstart]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/quickstart
+[string_index]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/main/java/com/azure/health/deidentification/models/StringIndex.java
+[character_encoding]: https://learn.microsoft.com/dotnet/standard/base-types/character-encoding-introduction
 [deid_rbac]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/manage-access-rbac
 [deid_configure_storage]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/configure-storage
 [azure_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity

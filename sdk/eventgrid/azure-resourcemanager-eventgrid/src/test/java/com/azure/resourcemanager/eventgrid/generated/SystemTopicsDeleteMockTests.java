@@ -27,7 +27,7 @@ public final class SystemTopicsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.systemTopics().delete("idzlvssqywjopa", "kyhydvikmf", com.azure.core.util.Context.NONE);
+        manager.systemTopics().delete("btqhvmmniiqyhol", "jn", com.azure.core.util.Context.NONE);
 
     }
 }

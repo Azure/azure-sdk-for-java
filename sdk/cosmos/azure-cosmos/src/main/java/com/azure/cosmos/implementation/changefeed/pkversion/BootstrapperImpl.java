@@ -3,12 +3,9 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;

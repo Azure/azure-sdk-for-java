@@ -6,8 +6,8 @@
   <parent>
     <groupId>com.azure.v2</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent-v2/pom.xml</relativePath>
+    <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.v2:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
   </parent>
 
   <groupId>com.azure.v2</groupId>
@@ -59,10 +59,7 @@
     <!-- skipping test coverage requirements for azure-core-test as this is a utility library for testing -->
     <jacoco.skip>true</jacoco.skip>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <animal.sniffer.skip>false</animal.sniffer.skip>
     <animal.sniffer.ignores>java.lang.management.ThreadMXBean,java.lang.management.ThreadInfo,java.lang.management.ManagementFactory</animal.sniffer.ignores>
   </properties>
@@ -71,7 +68,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.v2</groupId>
@@ -82,17 +79,17 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
     </dependency>
 
     <!-- Used to unpack the tar.gz files of Test Proxy server -->
@@ -101,19 +98,19 @@
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
-      <version>1.10.14</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
+      <version>1.10.15</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>9.4.57.v20241219</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <version>9.4.58.v20250814</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -123,16 +120,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
-                <include>org.junit.jupiter:junit-jupiter-api:[5.13.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-                <include>org.junit.jupiter:junit-jupiter-engine:[5.13.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-                <include>org.junit.jupiter:junit-jupiter-params:[5.13.1]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-                <include>org.apache.ant:ant:[1.10.14]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-engine:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-params:[5.13.4]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+                <include>org.apache.ant:ant:[1.10.15]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -60,7 +60,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         dataCollectionEndpoint
             = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
         dataCollectionRuleId = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_DCR_ID", "dcr-01584ffffeac4f7abbd4fbc24aa64130");
+            .get("AZURE_MONITOR_DCR_ID", "dcr-24bda97534d1495e9ac8ad92daf7efa2");
         streamName = "Custom-MyTableRawData";
 
         LogsIngestionClientBuilder clientBuilder

@@ -13,32 +13,32 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ExtendedErrorInfo model.
+ * Error information.
  */
 @Fluent
 public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorInfo> {
     /*
-     * The code property.
+     * The error code.
      */
     private String code;
 
     /*
-     * The target property.
+     * The target of the error.
      */
     private String target;
 
     /*
-     * The message property.
+     * The error message.
      */
     private String message;
 
     /*
-     * The details property.
+     * The error details.
      */
     private List<ExtendedErrorInfo> details;
 
     /*
-     * The additionalInfo property.
+     * The additional error information.
      */
     private List<TypedErrorInfo> additionalInfo;
 
@@ -49,7 +49,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Get the code property: The code property.
+     * Get the code property: The error code.
      * 
      * @return the code value.
      */
@@ -58,7 +58,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Set the code property: The code property.
+     * Set the code property: The error code.
      * 
      * @param code the code value to set.
      * @return the ExtendedErrorInfo object itself.
@@ -69,7 +69,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Get the target property: The target property.
+     * Get the target property: The target of the error.
      * 
      * @return the target value.
      */
@@ -78,7 +78,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Set the target property: The target property.
+     * Set the target property: The target of the error.
      * 
      * @param target the target value to set.
      * @return the ExtendedErrorInfo object itself.
@@ -89,7 +89,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: The error message.
      * 
      * @return the message value.
      */
@@ -98,7 +98,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Set the message property: The message property.
+     * Set the message property: The error message.
      * 
      * @param message the message value to set.
      * @return the ExtendedErrorInfo object itself.
@@ -109,7 +109,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Get the details property: The details property.
+     * Get the details property: The error details.
      * 
      * @return the details value.
      */
@@ -118,7 +118,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Set the details property: The details property.
+     * Set the details property: The error details.
      * 
      * @param details the details value to set.
      * @return the ExtendedErrorInfo object itself.
@@ -129,7 +129,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Get the additionalInfo property: The additionalInfo property.
+     * Get the additionalInfo property: The additional error information.
      * 
      * @return the additionalInfo value.
      */
@@ -138,7 +138,7 @@ public final class ExtendedErrorInfo implements JsonSerializable<ExtendedErrorIn
     }
 
     /**
-     * Set the additionalInfo property: The additionalInfo property.
+     * Set the additionalInfo property: The additional error information.
      * 
      * @param additionalInfo the additionalInfo value to set.
      * @return the ExtendedErrorInfo object itself.

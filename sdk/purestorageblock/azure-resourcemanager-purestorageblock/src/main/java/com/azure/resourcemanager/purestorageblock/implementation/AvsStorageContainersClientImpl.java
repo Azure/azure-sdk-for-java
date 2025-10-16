@@ -28,7 +28,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.purestorageblock.fluent.AvsStorageContainersClient;
@@ -92,7 +91,7 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             @PathParam("storageContainerName") String storageContainerName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -100,10 +99,9 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName,
-            @PathParam("storageContainerName") String storageContainerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageContainerName") String storageContainerName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -111,8 +109,7 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storagePoolName") String storagePoolName,
-            @PathParam("storageContainerName") String storageContainerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageContainerName") String storageContainerName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers")
@@ -165,26 +162,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvsStorageContainerInner>> getWithResponseAsync(String resourceGroupName,
         String storagePoolName, String storageContainerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (storageContainerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept, context))
@@ -224,28 +201,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvsStorageContainerInner> getWithResponse(String resourceGroupName, String storagePoolName,
         String storageContainerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (storageContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, storagePoolName, storageContainerName, accept, context);
@@ -281,29 +236,9 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storagePoolName,
         String storageContainerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (storageContainerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -321,32 +256,8 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName,
         String storageContainerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (storageContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, Context.NONE);
     }
 
     /**
@@ -364,31 +275,8 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName,
         String storageContainerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
-        if (storageContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageContainerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, storageContainerName, context);
     }
 
     /**
@@ -511,22 +399,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvsStorageContainerInner>> listByStoragePoolSinglePageAsync(String resourceGroupName,
         String storagePoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByStoragePool(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -566,24 +438,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsStorageContainerInner> listByStoragePoolSinglePage(String resourceGroupName,
         String storagePoolName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsStorageContainerListResult> res
             = service.listByStoragePoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -606,24 +460,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsStorageContainerInner> listByStoragePoolSinglePage(String resourceGroupName,
         String storagePoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storagePoolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storagePoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsStorageContainerListResult> res
             = service.listByStoragePoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -678,13 +514,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvsStorageContainerInner>> listByStoragePoolNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByStoragePoolNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -704,15 +533,6 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsStorageContainerInner> listByStoragePoolNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsStorageContainerListResult> res
             = service.listByStoragePoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -732,21 +552,10 @@ public final class AvsStorageContainersClientImpl implements AvsStorageContainer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AvsStorageContainerInner> listByStoragePoolNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<AvsStorageContainerListResult> res
             = service.listByStoragePoolNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AvsStorageContainersClientImpl.class);
 }

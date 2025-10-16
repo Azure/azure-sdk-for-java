@@ -10,7 +10,8 @@ import com.azure.resourcemanager.appcontainers.models.JavaComponentIngress;
 public final class JavaComponentIngressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JavaComponentIngress model = BinaryData.fromString("{\"fqdn\":\"mu\"}").toObject(JavaComponentIngress.class);
+        JavaComponentIngress model
+            = BinaryData.fromString("{\"fqdn\":\"ititjnsxza\"}").toObject(JavaComponentIngress.class);
     }
 
     @org.junit.jupiter.api.Test

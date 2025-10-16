@@ -14,28 +14,27 @@ public final class TopicSpacesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicSpacesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"xblycsxzuj\",\"topicTemplates\":[\"lsmdesqplpvmjc\",\"oewbid\",\"vteo\",\"xvgpiude\"],\"provisioningState\":\"Deleting\"},\"id\":\"xzecpaxwkufykhvu\",\"name\":\"xepmrut\",\"type\":\"nabaobnslujd\"},{\"properties\":{\"description\":\"ymkmvguihyw\",\"topicTemplates\":[\"spphk\",\"xkykxdssjp\",\"mmuc\",\"xhikkflrmymyin\"],\"provisioningState\":\"Deleting\"},\"id\":\"riswslmiiio\",\"name\":\"gqcg\",\"type\":\"uugqk\"},{\"properties\":{\"description\":\"tiowlx\",\"topicTemplates\":[\"dptjgwdtgukranb\"],\"provisioningState\":\"Updating\"},\"id\":\"qlkccuzgygqwaho\",\"name\":\"ulwgniiprglvawuw\",\"type\":\"d\"},{\"properties\":{\"description\":\"pivlsbbjpm\",\"topicTemplates\":[\"kmifoxxkub\",\"phavpmhbrb\",\"gvgovpbbttefjo\"],\"provisioningState\":\"Updating\"},\"id\":\"qyzqedikdfrdb\",\"name\":\"qmrjg\",\"type\":\"ihfqlggwfiwzc\"}],\"nextLink\":\"jpbyephmgtv\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"yvdmvx\",\"topicTemplates\":[\"acfrgna\"],\"provisioningState\":\"Succeeded\"},\"id\":\"gfbktyjmf\",\"name\":\"zlfsyqkfrbzgowo\",\"type\":\"qmje\"},{\"properties\":{\"description\":\"xnyqgxhlusr\",\"topicTemplates\":[\"simjceagbjqvlsu\"],\"provisioningState\":\"Creating\"},\"id\":\"ashxgonoyjfqi\",\"name\":\"ubyzn\",\"type\":\"lkfk\"},{\"properties\":{\"description\":\"gv\",\"topicTemplates\":[\"m\"],\"provisioningState\":\"Updating\"},\"id\":\"ujlyegq\",\"name\":\"vn\",\"type\":\"gflqqbtnyjp\"},{\"properties\":{\"description\":\"dbfvabmv\",\"topicTemplates\":[\"baevwjcnkottl\",\"uhvajmailfemjjza\",\"zwjiqullq\"],\"provisioningState\":\"Deleting\"},\"id\":\"vr\",\"name\":\"cm\",\"type\":\"erndbrnyeofltfnn\"}],\"nextLink\":\"kadjf\"}")
             .toObject(TopicSpacesListResult.class);
-        Assertions.assertEquals("xblycsxzuj", model.value().get(0).description());
-        Assertions.assertEquals("lsmdesqplpvmjc", model.value().get(0).topicTemplates().get(0));
-        Assertions.assertEquals("jpbyephmgtv", model.nextLink());
+        Assertions.assertEquals("yvdmvx", model.value().get(0).description());
+        Assertions.assertEquals("acfrgna", model.value().get(0).topicTemplates().get(0));
+        Assertions.assertEquals("kadjf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TopicSpacesListResult model = new TopicSpacesListResult()
             .withValue(Arrays.asList(
-                new TopicSpaceInner().withDescription("xblycsxzuj")
-                    .withTopicTemplates(Arrays.asList("lsmdesqplpvmjc", "oewbid", "vteo", "xvgpiude")),
-                new TopicSpaceInner().withDescription("ymkmvguihyw")
-                    .withTopicTemplates(Arrays.asList("spphk", "xkykxdssjp", "mmuc", "xhikkflrmymyin")),
-                new TopicSpaceInner().withDescription("tiowlx").withTopicTemplates(Arrays.asList("dptjgwdtgukranb")),
-                new TopicSpaceInner().withDescription("pivlsbbjpm")
-                    .withTopicTemplates(Arrays.asList("kmifoxxkub", "phavpmhbrb", "gvgovpbbttefjo"))))
-            .withNextLink("jpbyephmgtv");
+                new TopicSpaceInner().withDescription("yvdmvx").withTopicTemplates(Arrays.asList("acfrgna")),
+                new TopicSpaceInner().withDescription("xnyqgxhlusr")
+                    .withTopicTemplates(Arrays.asList("simjceagbjqvlsu")),
+                new TopicSpaceInner().withDescription("gv").withTopicTemplates(Arrays.asList("m")),
+                new TopicSpaceInner().withDescription("dbfvabmv")
+                    .withTopicTemplates(Arrays.asList("baevwjcnkottl", "uhvajmailfemjjza", "zwjiqullq"))))
+            .withNextLink("kadjf");
         model = BinaryData.fromObject(model).toObject(TopicSpacesListResult.class);
-        Assertions.assertEquals("xblycsxzuj", model.value().get(0).description());
-        Assertions.assertEquals("lsmdesqplpvmjc", model.value().get(0).topicTemplates().get(0));
-        Assertions.assertEquals("jpbyephmgtv", model.nextLink());
+        Assertions.assertEquals("yvdmvx", model.value().get(0).description());
+        Assertions.assertEquals("acfrgna", model.value().get(0).topicTemplates().get(0));
+        Assertions.assertEquals("kadjf", model.nextLink());
     }
 }

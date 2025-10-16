@@ -27,7 +27,7 @@ public final class PartnerRegistrationsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.partnerRegistrations().delete("zoofj", "qjsvep", com.azure.core.util.Context.NONE);
+        manager.partnerRegistrations().delete("btsertoxa", "hxuvjhxm", com.azure.core.util.Context.NONE);
 
     }
 }

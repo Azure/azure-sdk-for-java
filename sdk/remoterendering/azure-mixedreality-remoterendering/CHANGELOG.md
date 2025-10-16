@@ -8,7 +8,32 @@
 
 ### Bugs Fixed
 
+## 1.1.41 (2025-09-25)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-mixedreality-authentication` from `1.2.34` to version `1.2.35`.
+
+## 1.1.40 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-mixedreality-authentication` from `1.2.33` to version `1.2.35`.
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+
+## 1.1.39 (2025-08-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-mixedreality-authentication` from `1.2.32` to version `1.2.33`.
 
 ## 1.1.38 (2025-06-19)
 
@@ -17,7 +42,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
-- Upgraded `azure-mixedreality-authentication` from `1.2.31` to version `1.2.33`.
+- Upgraded `azure-mixedreality-authentication` from `1.2.31` to version `1.2.32`.
 
 ## 1.1.37 (2025-03-24)
 
@@ -26,7 +51,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
-
 
 ## 1.1.36 (2025-02-27)
 
@@ -46,7 +70,6 @@
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.28` to version `1.2.29`.
 
-
 ## 1.1.34 (2024-10-27)
 
 ### Other Changes
@@ -55,7 +78,6 @@
 
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.27` to version `1.2.28`.
-
 
 ## 1.1.33 (2024-09-27)
 
@@ -66,7 +88,6 @@
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.26` to version `1.2.27`.
 
-
 ## 1.1.32 (2024-08-24)
 
 ### Other Changes
@@ -75,7 +96,6 @@
 
 - Upgraded `azure-mixedreality-authentication` from `1.2.25` to version `1.2.26`.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
-
 
 ## 1.1.31 (2024-07-26)
 
@@ -86,7 +106,6 @@
 - Upgraded `azure-mixedreality-authentication` from `1.2.24` to version `1.2.25`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
-
 ## 1.1.30 (2024-06-27)
 
 ### Other Changes
@@ -95,7 +114,6 @@
 
 - Upgraded `azure-mixedreality-authentication` from `1.2.23` to version `1.2.24`.
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
-
 
 ## 1.1.29 (2024-05-28)
 
@@ -106,7 +124,6 @@
 - Upgraded `azure-mixedreality-authentication` from `1.2.22` to version `1.2.23`.
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 
-
 ## 1.1.28 (2024-04-23)
 
 ### Other Changes
@@ -115,7 +132,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.21` to version `1.2.22`.
-
 
 ## 1.1.27 (2024-03-20)
 
@@ -126,7 +142,6 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.20` to version `1.2.21`.
 
-
 ## 1.1.26 (2024-02-20)
 
 ### Other Changes
@@ -135,7 +150,6 @@
 
 - Upgraded `azure-mixedreality-authentication` from `1.2.19` to version `1.2.20`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
-
 
 ## 1.1.25 (2023-12-04)
 
@@ -146,7 +160,6 @@
 - Upgraded `azure-mixedreality-authentication` from `1.2.18` to version `1.2.19`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
-
 ## 1.1.24 (2023-11-20)
 
 ### Other Changes
@@ -155,7 +168,6 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.17` to version `1.2.18`.
-
 
 ## 1.1.23 (2023-10-20)
 
@@ -166,7 +178,6 @@
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.16` to version `1.2.17`.
 
-
 ## 1.1.22 (2023-09-22)
 
 ### Other Changes
@@ -175,7 +186,6 @@
 
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.15` to version `1.2.16`.
-
 
 ## 1.1.21 (2023-08-18)
 
@@ -186,7 +196,6 @@
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.14` to version `1.2.15`.
 
-
 ## 1.1.20 (2023-07-25)
 
 ### Other Changes
@@ -195,7 +204,6 @@
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.14` to version `1.2.15`.
-
 
 ## 1.1.19 (2023-06-20)
 
@@ -206,7 +214,6 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.12` to version `1.2.13`.
 
-
 ## 1.1.18 (2023-05-23)
 
 ### Other Changes
@@ -216,7 +223,6 @@
 - Upgraded `azure-mixedreality-authentication` from `1.2.11` to version `1.2.12`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
-
 ## 1.1.17 (2023-04-21)
 
 ### Other Changes
@@ -224,7 +230,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
-
 
 ## 1.1.16 (2023-03-16)
 
@@ -234,7 +239,6 @@
 
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 - Upgraded `azure-mixedreality-authentication` from `1.2.10` to `1.2.11`.
-
 
 ## 1.1.15 (2023-03-07)
 ### Other Changes

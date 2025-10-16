@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-integration-azure-servicebus</artifactId>
-  <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
 
   <name>Spring Integration Azure Service Bus</name>
   <description>Spring Integration Azure Service Bus</description>
@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-core</artifactId>
-      <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure-servicebus</artifactId>
-      <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
       Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -60,13 +60,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.5.10</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.14.2</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <version>5.17.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -74,31 +74,31 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.15.11</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.11.4</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.12.2</version> <!-- {x-version-update;springboot3_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.2.5</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.26.3</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.4</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -108,7 +108,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -179,14 +179,14 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-integration-azure-core</artifactId>
-          <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+          <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
           <type>test-jar</type>
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-messaging-azure-servicebus</artifactId>
-          <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+          <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
           <type>test-jar</type>
           <scope>test</scope>
         </dependency>

@@ -52,6 +52,13 @@ public interface Domain {
     Map<String, String> tags();
 
     /**
+     * Gets the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     * 
+     * @return the sku value.
+     */
+    ResourceSku sku();
+
+    /**
      * Gets the identity property: Identity information for the Event Grid Domain resource.
      * 
      * @return the identity value.
@@ -146,8 +153,8 @@ public interface Domain {
 
     /**
      * Gets the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the domain.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the domain.
      * 
      * @return the disableLocalAuth value.
      */
@@ -281,7 +288,7 @@ public interface Domain {
          * The stage of the Domain definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithIdentity,
             DefinitionStages.WithMinimumTlsVersionAllowed, DefinitionStages.WithInputSchema,
             DefinitionStages.WithEventTypeInfo, DefinitionStages.WithInputSchemaMapping,
             DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithInboundIpRules,
@@ -314,6 +321,19 @@ public interface Domain {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Domain definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the Event Grid Domain resource..
+             * 
+             * @param sku The Sku pricing tier for the Event Grid Domain resource.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ResourceSku sku);
         }
 
         /**
@@ -430,12 +450,12 @@ public interface Domain {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the domain..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the domain..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the domain.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the domain.
              * @return the next definition stage.
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
@@ -539,8 +559,9 @@ public interface Domain {
     /**
      * The template for Domain update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithPublicNetworkAccess,
-        UpdateStages.WithInboundIpRules, UpdateStages.WithMinimumTlsVersionAllowed, UpdateStages.WithDisableLocalAuth,
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithInboundIpRules,
+        UpdateStages.WithMinimumTlsVersionAllowed, UpdateStages.WithDisableLocalAuth,
         UpdateStages.WithAutoCreateTopicWithFirstSubscription, UpdateStages.WithAutoDeleteTopicWithLastSubscription,
         UpdateStages.WithDataResidencyBoundary, UpdateStages.WithEventTypeInfo {
         /**
@@ -587,6 +608,19 @@ public interface Domain {
              * @return the next definition stage.
              */
             Update withIdentity(IdentityInfo identity);
+        }
+
+        /**
+         * The stage of the Domain update allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the domain..
+             * 
+             * @param sku The Sku pricing tier for the domain.
+             * @return the next definition stage.
+             */
+            Update withSku(ResourceSku sku);
         }
 
         /**
@@ -645,12 +679,12 @@ public interface Domain {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the domain..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the domain..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the domain.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the domain.
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);

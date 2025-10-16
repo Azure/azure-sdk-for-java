@@ -14,6 +14,7 @@ import com.azure.resourcemanager.eventgrid.models.ChannelUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
+import com.azure.resourcemanager.eventgrid.models.PartnerUpdateDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerUpdateTopicInfo;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -35,13 +36,14 @@ public final class ChannelsUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.channels()
-            .updateWithResponse("ickduoiqta", "t", "vsknxrwzawnv",
+            .updateWithResponse("sbvr", "aqgvto", "rulfuct",
                 new ChannelUpdateParameters()
-                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-04-17T01:43:58Z"))
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-07-18T13:13:11Z"))
+                    .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo())
                     .withPartnerTopicInfo(new PartnerUpdateTopicInfo()
                         .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                            .withInlineEventTypes(mapOf("vhycvdimwrzregzg", new InlineEventProperties(), "ufutrwpw",
-                                new InlineEventProperties(), "ryekzkd", new InlineEventProperties())))),
+                            .withInlineEventTypes(mapOf("lyubqjrostvrjeq", new InlineEventProperties(), "tzzbeq",
+                                new InlineEventProperties(), "ztr", new InlineEventProperties())))),
                 com.azure.core.util.Context.NONE);
 
     }

@@ -3,13 +3,13 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import reactor.core.Scannable
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Scheduler
@@ -37,7 +37,6 @@ import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
 
-import java.util.UUID
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
 import java.util.concurrent.{Semaphore, TimeUnit}
@@ -51,6 +50,7 @@ import scala.collection.JavaConverters._
 private class BulkWriter
 (
   container: CosmosAsyncContainer,
+  containerConfig: CosmosContainerConfig,
   partitionKeyDefinition: PartitionKeyDefinition,
   writeConfig: CosmosWriteConfig,
   diagnosticsConfig: DiagnosticsConfig,
@@ -75,7 +75,7 @@ private class BulkWriter
     case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
     // using the total number of physical partitions
     // multiplied by 2 to leave space for partition splits during ingestion
-    case None => 2 * ContainerFeedRangesCache.getFeedRanges(container).block().size
+    case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
   }
   log.logInfo(
     s"BulkWriter instantiated (Host CPU count: $cpuCount, maxPendingOperations: $maxPendingOperations, " +

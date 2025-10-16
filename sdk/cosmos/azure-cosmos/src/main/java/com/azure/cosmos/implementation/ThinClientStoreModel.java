@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.util.ResourceLeakDetector;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +33,9 @@ import java.util.Map;
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
+    private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
+        ResourceLeakDetector.Level.ADVANCED.ordinal();
+
     private String globalDatabaseAccountName = null;
     private final Map<String, String> defaultHeaders;
 
@@ -94,26 +98,51 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         HttpHeaders headers,
         ByteBuf content) {
 
-        if (content == null || content.readableBytes() == 0) {
+        if (content == null) {
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+        }
+
+        if (content.readableBytes() == 0) {
+
+            content.release();
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+        }
+
+        if (leakDetectionDebuggingEnabled) {
+            content.touch(this);
         }
         if (RntbdFramer.canDecodeHead(content)) {
 
             final RntbdResponse response = RntbdResponse.decode(content);
 
             if (response != null) {
-                return super.unwrapToStoreResponse(
+                ByteBuf payloadBuf = response.getContent();
+
+                if (payloadBuf != Unpooled.EMPTY_BUFFER && leakDetectionDebuggingEnabled) {
+                    content.touch(this);
+                }
+
+                StoreResponse storeResponse = super.unwrapToStoreResponse(
                     endpoint,
                     request,
                     response.getStatus().code(),
                     new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
-                    response.getContent()
+                    payloadBuf
                 );
+
+                if (payloadBuf == Unpooled.EMPTY_BUFFER) {
+                    // means the original RNTBD payload did not have any payload - so, we can release it
+                    content.release();
+                }
+
+                return storeResponse;
             }
 
+            content.release();
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, null);
         }
 
+        content.release();
         throw new IllegalStateException("Invalid rntbd response");
     }
 

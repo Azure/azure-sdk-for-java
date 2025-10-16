@@ -21,7 +21,7 @@ public final class ClientGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"kcvtl\",\"query\":\"seskvcuar\",\"provisioningState\":\"Deleting\"},\"id\":\"nlp\",\"name\":\"rykycndzfqivjr\",\"type\":\"uykbbmn\"}";
+            = "{\"properties\":{\"description\":\"qtwmlmhjnqtqeahj\",\"query\":\"vragpokddx\",\"provisioningState\":\"Succeeded\"},\"id\":\"kvgu\",\"name\":\"vtptbk\",\"type\":\"wkqyns\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ClientGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClientGroup response = manager.clientGroups()
-            .getWithResponse("ixymmpujivyql", "juvsmbmslzoyovw", "dbpqvybefgvm", com.azure.core.util.Context.NONE)
+            .getWithResponse("yejuwyqwdqigmghg", "nztxlujkh", "jcmrnkfm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kcvtl", response.description());
-        Assertions.assertEquals("seskvcuar", response.query());
+        Assertions.assertEquals("qtwmlmhjnqtqeahj", response.description());
+        Assertions.assertEquals("vragpokddx", response.query());
     }
 }

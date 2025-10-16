@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -34,6 +33,16 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      * unspecified.
      */
     private Integer afterStageWaitInSeconds;
+
+    /*
+     * A list of Gates that will be created before this Stage is executed.
+     */
+    private List<GateConfiguration> beforeGates;
+
+    /*
+     * A list of Gates that will be created after this Stage is executed.
+     */
+    private List<GateConfiguration> afterGates;
 
     /**
      * Creates an instance of UpdateStage class.
@@ -106,21 +115,44 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     }
 
     /**
-     * Validates the instance.
+     * Get the beforeGates property: A list of Gates that will be created before this Stage is executed.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the beforeGates value.
      */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model UpdateStage"));
-        }
-        if (groups() != null) {
-            groups().forEach(e -> e.validate());
-        }
+    public List<GateConfiguration> beforeGates() {
+        return this.beforeGates;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(UpdateStage.class);
+    /**
+     * Set the beforeGates property: A list of Gates that will be created before this Stage is executed.
+     * 
+     * @param beforeGates the beforeGates value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withBeforeGates(List<GateConfiguration> beforeGates) {
+        this.beforeGates = beforeGates;
+        return this;
+    }
+
+    /**
+     * Get the afterGates property: A list of Gates that will be created after this Stage is executed.
+     * 
+     * @return the afterGates value.
+     */
+    public List<GateConfiguration> afterGates() {
+        return this.afterGates;
+    }
+
+    /**
+     * Set the afterGates property: A list of Gates that will be created after this Stage is executed.
+     * 
+     * @param afterGates the afterGates value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withAfterGates(List<GateConfiguration> afterGates) {
+        this.afterGates = afterGates;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -131,6 +163,8 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("afterStageWaitInSeconds", this.afterStageWaitInSeconds);
+        jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +191,14 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
                     deserializedUpdateStage.groups = groups;
                 } else if ("afterStageWaitInSeconds".equals(fieldName)) {
                     deserializedUpdateStage.afterStageWaitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("beforeGates".equals(fieldName)) {
+                    List<GateConfiguration> beforeGates
+                        = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));
+                    deserializedUpdateStage.beforeGates = beforeGates;
+                } else if ("afterGates".equals(fieldName)) {
+                    List<GateConfiguration> afterGates
+                        = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));
+                    deserializedUpdateStage.afterGates = afterGates;
                 } else {
                     reader.skipChildren();
                 }

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ChannelType;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
 import com.azure.resourcemanager.eventgrid.models.ReadinessState;
 import java.io.IOException;
@@ -146,6 +147,31 @@ public final class ChannelInner extends ProxyResource {
             this.innerProperties = new ChannelProperties();
         }
         this.innerProperties().withPartnerTopicInfo(partnerTopicInfo);
+        return this;
+    }
+
+    /**
+     * Get the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
+     * and represents information about the partner destination resource corresponding to the channel.
+     * 
+     * @return the partnerDestinationInfo value.
+     */
+    public PartnerDestinationInfo partnerDestinationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationInfo();
+    }
+
+    /**
+     * Set the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
+     * and represents information about the partner destination resource corresponding to the channel.
+     * 
+     * @param partnerDestinationInfo the partnerDestinationInfo value to set.
+     * @return the ChannelInner object itself.
+     */
+    public ChannelInner withPartnerDestinationInfo(PartnerDestinationInfo partnerDestinationInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ChannelProperties();
+        }
+        this.innerProperties().withPartnerDestinationInfo(partnerDestinationInfo);
         return this;
     }
 

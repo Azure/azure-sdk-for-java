@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.providerhub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistration;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProperties;
 
 public final class ResourceTypeRegistrationImpl
@@ -29,6 +31,14 @@ public final class ResourceTypeRegistrationImpl
 
     public ResourceTypeRegistrationProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public ResourceTypeRegistrationKind kind() {
+        return this.innerModel().kind();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ResourceTypeRegistrationInner innerModel() {
@@ -112,6 +122,11 @@ public final class ResourceTypeRegistrationImpl
 
     public ResourceTypeRegistrationImpl withProperties(ResourceTypeRegistrationProperties properties) {
         this.innerModel().withProperties(properties);
+        return this;
+    }
+
+    public ResourceTypeRegistrationImpl withKind(ResourceTypeRegistrationKind kind) {
+        this.innerModel().withKind(kind);
         return this;
     }
 }

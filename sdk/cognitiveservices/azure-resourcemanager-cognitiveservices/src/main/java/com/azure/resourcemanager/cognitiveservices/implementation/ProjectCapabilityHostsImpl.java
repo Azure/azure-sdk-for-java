@@ -59,9 +59,9 @@ public final class ProjectCapabilityHostsImpl implements ProjectCapabilityHosts 
     }
 
     public CapabilityHost createOrUpdate(String resourceGroupName, String accountName, String projectName,
-        String capabilityHostname, CapabilityHostInner body) {
+        String capabilityHostname, CapabilityHostInner capabilityHost) {
         CapabilityHostInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, body);
+            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, capabilityHost);
         if (inner != null) {
             return new CapabilityHostImpl(inner, this.manager());
         } else {
@@ -70,9 +70,9 @@ public final class ProjectCapabilityHostsImpl implements ProjectCapabilityHosts 
     }
 
     public CapabilityHost createOrUpdate(String resourceGroupName, String accountName, String projectName,
-        String capabilityHostname, CapabilityHostInner body, Context context) {
+        String capabilityHostname, CapabilityHostInner capabilityHost, Context context) {
         CapabilityHostInner inner = this.serviceClient()
-            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, body, context);
+            .createOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, capabilityHost, context);
         if (inner != null) {
             return new CapabilityHostImpl(inner, this.manager());
         } else {
