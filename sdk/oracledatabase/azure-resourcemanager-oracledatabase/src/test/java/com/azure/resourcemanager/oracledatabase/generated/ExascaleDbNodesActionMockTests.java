@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class ExascaleDbNodesActionMockTests {
     @Test
     public void testAction() throws Exception {
-        String responseStr = "{\"provisioningState\":\"Canceled\"}";
+        String responseStr = "{\"provisioningState\":\"Provisioning\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class ExascaleDbNodesActionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DbActionResponse response = manager.exascaleDbNodes()
-            .action("ooxf", "i", "hx", new DbNodeAction().withAction(DbNodeActionEnum.RESET),
-                com.azure.core.util.Context.NONE);
+            .action("haokgkskjiv", "sshajqfukpee", "pgeumilh",
+                new DbNodeAction().withAction(DbNodeActionEnum.SOFT_RESET), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AzureResourceProvisioningState.CANCELED, response.provisioningState());
+        Assertions.assertEquals(AzureResourceProvisioningState.PROVISIONING, response.provisioningState());
     }
 }

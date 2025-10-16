@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DayOfWeekUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DayOfWeekUpdate model = BinaryData.fromString("{\"name\":\"Saturday\"}").toObject(DayOfWeekUpdate.class);
-        Assertions.assertEquals(DayOfWeekName.SATURDAY, model.name());
+        DayOfWeekUpdate model = BinaryData.fromString("{\"name\":\"Tuesday\"}").toObject(DayOfWeekUpdate.class);
+        Assertions.assertEquals(DayOfWeekName.TUESDAY, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DayOfWeekUpdate model = new DayOfWeekUpdate().withName(DayOfWeekName.SATURDAY);
+        DayOfWeekUpdate model = new DayOfWeekUpdate().withName(DayOfWeekName.TUESDAY);
         model = BinaryData.fromObject(model).toObject(DayOfWeekUpdate.class);
-        Assertions.assertEquals(DayOfWeekName.SATURDAY, model.name());
+        Assertions.assertEquals(DayOfWeekName.TUESDAY, model.name());
     }
 }

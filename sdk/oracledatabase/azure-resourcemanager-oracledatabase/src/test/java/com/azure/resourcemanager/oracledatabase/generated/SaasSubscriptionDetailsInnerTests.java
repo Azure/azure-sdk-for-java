@@ -11,7 +11,7 @@ public final class SaasSubscriptionDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SaasSubscriptionDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"w\",\"subscriptionName\":\"mslyzrpzbchckqqz\",\"timeCreated\":\"2021-07-29T22:35:12Z\",\"offerId\":\"iysui\",\"planId\":\"ynkedyatrwyhqmib\",\"saasSubscriptionStatus\":\"hwit\",\"publisherId\":\"ypyynpcdpumnzg\",\"purchaserEmailId\":\"z\",\"purchaserTenantId\":\"abikns\",\"termUnit\":\"gj\",\"isAutoRenew\":false,\"isFreeTrial\":true}")
+            "{\"id\":\"jzkzi\",\"subscriptionName\":\"vvcnayr\",\"timeCreated\":\"2021-08-18T18:02:42Z\",\"offerId\":\"xxmueedn\",\"planId\":\"dvstkw\",\"saasSubscriptionStatus\":\"tchealmf\",\"publisherId\":\"d\",\"purchaserEmailId\":\"ygdvwv\",\"purchaserTenantId\":\"iohgwxrtfud\",\"termUnit\":\"pxgy\",\"isAutoRenew\":false,\"isFreeTrial\":true}")
             .toObject(SaasSubscriptionDetailsInner.class);
     }
 }

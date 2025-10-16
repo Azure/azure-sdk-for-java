@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class VirtualApplianceIpConfiguration implements JsonSerializable<VirtualApplianceIpConfiguration> {
     /*
-     * Name of the IP configuration.
+     * For hub NVAs, primary IP configs must be named 'privatenicipconfig' and 'publicnicipconfig', with non-primary
+     * configs using these prefixes; no naming restrictions apply for NVAs in VNets. Maximum 80 character are allowed.
      */
     private String name;
 
@@ -33,7 +34,9 @@ public final class VirtualApplianceIpConfiguration implements JsonSerializable<V
     }
 
     /**
-     * Get the name property: Name of the IP configuration.
+     * Get the name property: For hub NVAs, primary IP configs must be named 'privatenicipconfig' and
+     * 'publicnicipconfig', with non-primary configs using these prefixes; no naming restrictions apply for NVAs in
+     * VNets. Maximum 80 character are allowed.
      * 
      * @return the name value.
      */
@@ -42,7 +45,9 @@ public final class VirtualApplianceIpConfiguration implements JsonSerializable<V
     }
 
     /**
-     * Set the name property: Name of the IP configuration.
+     * Set the name property: For hub NVAs, primary IP configs must be named 'privatenicipconfig' and
+     * 'publicnicipconfig', with non-primary configs using these prefixes; no naming restrictions apply for NVAs in
+     * VNets. Maximum 80 character are allowed.
      * 
      * @param name the name value to set.
      * @return the VirtualApplianceIpConfiguration object itself.

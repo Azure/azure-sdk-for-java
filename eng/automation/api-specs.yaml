@@ -125,6 +125,8 @@ redhatopenshift/Microsoft.RedHatOpenShift/openshiftclusters:
   service: redhatopenshift
 redis:
   suffix: generated
+redisenterprise/Microsoft.Cache/RedisEnterprise:
+  service: redisenterprise
 resources:
   suffix: generated
 resources/Microsoft.Resources/bicep:
