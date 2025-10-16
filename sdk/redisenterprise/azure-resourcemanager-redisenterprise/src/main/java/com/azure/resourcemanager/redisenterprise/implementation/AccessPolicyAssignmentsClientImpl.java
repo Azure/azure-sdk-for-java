@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.redisenterprise.fluent.AccessPolicyAssignmentsClient;
@@ -68,13 +70,26 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "RedisEnterpriseManag")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientAccessPolicyAssignments")
     public interface AccessPolicyAssignmentsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("accessPolicyAssignmentName") String accessPolicyAssignmentName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AccessPolicyAssignmentInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("databaseName") String databaseName,
@@ -95,10 +110,32 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AccessPolicyAssignmentInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("accessPolicyAssignmentName") String accessPolicyAssignmentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("accessPolicyAssignmentName") String accessPolicyAssignmentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("databaseName") String databaseName,
@@ -115,10 +152,27 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             @PathParam("databaseName") String databaseName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AccessPolicyAssignmentList> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessPolicyAssignmentList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AccessPolicyAssignmentList> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -185,47 +239,107 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the access policy assignment of Redis Enterprise database along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return describes the access policy assignment of Redis Enterprise database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String clusterName,
-        String databaseName, String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters,
-        Context context) {
+    private Response<BinaryData> createUpdateWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (accessPolicyAssignmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter accessPolicyAssignmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter accessPolicyAssignmentName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, databaseName, accessPolicyAssignmentName, this.client.getApiVersion(), parameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Creates/Updates a particular access policy assignment for a database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
+     * @param parameters Parameters supplied to the create access policy assignment for database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the access policy assignment of Redis Enterprise database along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createUpdateWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (accessPolicyAssignmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter accessPolicyAssignmentName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             clusterName, databaseName, accessPolicyAssignmentName, this.client.getApiVersion(), parameters, accept,
             context);
     }
@@ -265,34 +379,6 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes the access policy assignment of Redis Enterprise
-     * database.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccessPolicyAssignmentInner>, AccessPolicyAssignmentInner> beginCreateUpdateAsync(
-        String resourceGroupName, String clusterName, String databaseName, String accessPolicyAssignmentName,
-        AccessPolicyAssignmentInner parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateWithResponseAsync(resourceGroupName, clusterName,
-            databaseName, accessPolicyAssignmentName, parameters, context);
-        return this.client.<AccessPolicyAssignmentInner, AccessPolicyAssignmentInner>getLroResult(mono,
-            this.client.getHttpPipeline(), AccessPolicyAssignmentInner.class, AccessPolicyAssignmentInner.class,
-            context);
-    }
-
-    /**
-     * Creates/Updates a particular access policy assignment for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param parameters Parameters supplied to the create access policy assignment for database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -303,10 +389,10 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     public SyncPoller<PollResult<AccessPolicyAssignmentInner>, AccessPolicyAssignmentInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, String databaseName, String accessPolicyAssignmentName,
         AccessPolicyAssignmentInner parameters) {
-        return this
-            .beginCreateUpdateAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
-                parameters)
-            .getSyncPoller();
+        Response<BinaryData> response = createUpdateWithResponse(resourceGroupName, clusterName, databaseName,
+            accessPolicyAssignmentName, parameters);
+        return this.client.<AccessPolicyAssignmentInner, AccessPolicyAssignmentInner>getLroResult(response,
+            AccessPolicyAssignmentInner.class, AccessPolicyAssignmentInner.class, Context.NONE);
     }
 
     /**
@@ -329,10 +415,10 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     public SyncPoller<PollResult<AccessPolicyAssignmentInner>, AccessPolicyAssignmentInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, String databaseName, String accessPolicyAssignmentName,
         AccessPolicyAssignmentInner parameters, Context context) {
-        return this
-            .beginCreateUpdateAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
-                parameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createUpdateWithResponse(resourceGroupName, clusterName, databaseName,
+            accessPolicyAssignmentName, parameters, context);
+        return this.client.<AccessPolicyAssignmentInner, AccessPolicyAssignmentInner>getLroResult(response,
+            AccessPolicyAssignmentInner.class, AccessPolicyAssignmentInner.class, context);
     }
 
     /**
@@ -366,30 +452,6 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the access policy assignment of Redis Enterprise database on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessPolicyAssignmentInner> createUpdateAsync(String resourceGroupName, String clusterName,
-        String databaseName, String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters,
-        Context context) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
-            parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates/Updates a particular access policy assignment for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param parameters Parameters supplied to the create access policy assignment for database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -398,8 +460,8 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyAssignmentInner createUpdate(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters) {
-        return createUpdateAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters)
-            .block();
+        return beginCreateUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters)
+            .getFinalResult();
     }
 
     /**
@@ -420,8 +482,8 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyAssignmentInner createUpdate(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters, Context context) {
-        return createUpdateAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters,
-            context).block();
+        return beginCreateUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters,
+            context).getFinalResult();
     }
 
     /**
@@ -479,52 +541,6 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about access policy assignment for database along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyAssignmentInner>> getWithResponseAsync(String resourceGroupName,
-        String clusterName, String databaseName, String accessPolicyAssignmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (accessPolicyAssignmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter accessPolicyAssignmentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
-            databaseName, accessPolicyAssignmentName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets information about access policy assignment for database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -554,8 +570,36 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPolicyAssignmentInner> getWithResponse(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (accessPolicyAssignmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter accessPolicyAssignmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, databaseName, accessPolicyAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -632,40 +676,92 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        String accessPolicyAssignmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (accessPolicyAssignmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter accessPolicyAssignmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, databaseName, accessPolicyAssignmentName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a single access policy assignment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
-        String databaseName, String accessPolicyAssignmentName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        String accessPolicyAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (accessPolicyAssignmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter accessPolicyAssignmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter accessPolicyAssignmentName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             clusterName, databaseName, accessPolicyAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
@@ -699,30 +795,6 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        String databaseName, String accessPolicyAssignmentName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName,
-            accessPolicyAssignmentName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a single access policy assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -731,8 +803,9 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName) {
-        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -752,8 +825,9 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -784,28 +858,6 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName,
-        String accessPolicyAssignmentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a single access policy assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -813,7 +865,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName) {
-        deleteAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName).block();
+        beginDelete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName).getFinalResult();
     }
 
     /**
@@ -832,7 +884,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName, Context context) {
-        deleteAsync(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context).block();
+        beginDelete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context).getFinalResult();
     }
 
     /**
@@ -884,49 +936,6 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all access policy assignments. along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccessPolicyAssignmentInner>> listSinglePageAsync(String resourceGroupName,
-        String clusterName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, databaseName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets all access policy assignments..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -946,17 +955,88 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
      * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all access policy assignments. along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AccessPolicyAssignmentInner> listSinglePage(String resourceGroupName, String clusterName,
+        String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AccessPolicyAssignmentList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, databaseName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets all access policy assignments..
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all access policy assignments. as paginated response with {@link PagedFlux}.
+     * @return all access policy assignments. along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AccessPolicyAssignmentInner> listAsync(String resourceGroupName, String clusterName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AccessPolicyAssignmentInner> listSinglePage(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, databaseName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AccessPolicyAssignmentList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, databaseName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -974,7 +1054,8 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPolicyAssignmentInner> list(String resourceGroupName, String clusterName,
         String databaseName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, clusterName, databaseName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, databaseName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -993,7 +1074,8 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPolicyAssignmentInner> list(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, clusterName, databaseName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, databaseName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1003,8 +1085,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list-all operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all access policy assignments. along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessPolicyAssignmentInner>> listNextSinglePageAsync(String nextLink) {
@@ -1026,26 +1107,56 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all access policy assignments. along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AccessPolicyAssignmentInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AccessPolicyAssignmentList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list-all operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all access policy assignments. along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccessPolicyAssignmentInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AccessPolicyAssignmentInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AccessPolicyAssignmentList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccessPolicyAssignmentsClientImpl.class);
 }
