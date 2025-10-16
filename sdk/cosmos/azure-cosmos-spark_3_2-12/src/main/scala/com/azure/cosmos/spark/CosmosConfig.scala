@@ -1355,7 +1355,10 @@ private[spark] object DiagnosticsConfig {
 
     val azureMonitorAuthEnabledOpt = CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorAuthEnabled)
     val azureMonitorAuthTypeOpt: Option[CosmosAuthType] =
-      if (withAzMon && azureMonitorAuthEnabledOpt.getOrElse(false)) {
+      if (withAzMon
+        && azureMonitorAuthEnabledOpt.getOrElse(false)
+        && (!effectiveAzMonConnectionStringOpt.getOrElse("").isBlank || azureMonitorAuthEnabledOpt.getOrElse(false))) {
+
         CosmosConfigEntry
           .parse(cfg, diagnosticsAzureMonitorAuthType)
       } else {
@@ -1384,7 +1387,10 @@ private[spark] object DiagnosticsConfig {
       None
     }
 
-    val azMonConfig = if (withAzMon) {
+    val azMonConfig = if (withAzMon
+      && azureMonitorAuthEnabledOpt.getOrElse(false)
+      && (!effectiveAzMonConnectionStringOpt.getOrElse("").isBlank || azureMonitorAuthEnabledOpt.getOrElse(false))) {
+
       val azMonConfigCandidate =
         AzureMonitorConfig(
           azureMonitorEnabledOpt.get,
@@ -1416,7 +1422,7 @@ private[spark] object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemBulkUpdate = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemPatchIfExists, ItemBulkUpdate = Value
 }
 
 private object CosmosPatchOperationTypes extends Enumeration {
@@ -1753,7 +1759,7 @@ private object CosmosWriteConfig {
     assert(maxRetryCountOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteMaxRetryCount}' is missing.")
 
     itemWriteStrategyOpt.get match {
-      case ItemWriteStrategy.ItemPatch =>
+      case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
         patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter))

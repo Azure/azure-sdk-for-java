@@ -3,6 +3,7 @@
 ### 4.41.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support `spark.cosmos.write.strategy` value `ItemPatchIfExists` which allows gracefully ignoring documents/patch-instructions when the document does not exist (anymore). - See [46759](https://github.com/Azure/azure-sdk-for-java/pull/46759)
 
 #### Breaking Changes
 
