@@ -3,6 +3,11 @@
 
 package com.azure.search.documents.util;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
@@ -10,14 +15,14 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
 import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResults;
-import reactor.core.publisher.Mono;
+import com.azure.search.documents.models.SemanticSearchResultsType;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation of {@link ContinuablePagedFlux} where the continuation token type is {@link SearchRequest}, the
@@ -127,4 +132,70 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
             return Mono.just(metaData.getFirstPageResponse().getDebugInfo());
         });
     }
+
+    /**
+     * The query answers returned based on the search request.
+     * <p>
+     * If query answers weren't requested this will be {@code null}.
+     *
+     * @return The query answers if they were requested, otherwise {@code null}.
+     */
+    public Mono<List<QueryAnswerResult>> getQueryAnswers() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getQueryAnswers() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getQueryAnswers());
+        });
+    }
+
+    /**
+     * The reason for a semantic search failure based on the search request.
+     * <p>
+     * If semantic search wasn't requested or there was no error this will be {@code null}.
+     *
+     * @return The reason for a semantic search failure if there was one, otherwise {@code null}.
+     */
+    public Mono<SemanticErrorReason> getSemanticErrorReason() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getSemanticErrorReason() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getSemanticErrorReason());
+        });
+    }
+
+    /**
+     * The type of semantic search results returned.
+     * <p>
+     * If semantic search wasn't requested this will be {@code null}.
+     *
+     * @return The type of semantic search results if semantic search was requested, otherwise {@code null}.
+     */
+    public Mono<SemanticSearchResultsType> getSemanticSearchResultsType() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getSemanticSearchResultsType() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getSemanticSearchResultsType());
+        });
+    }
+    
+    /**
+     * The type of semantic query rewrites applied during the search request.
+     * <p>
+     * If semantic search wasn't requested or there were no rewrites this will be {@code null}.
+     *
+     * @return The type of semantic query rewrites applied if there were any, otherwise {@code null}.
+     */
+    public Mono<SemanticQueryRewritesResultType>getSemanticQueryRewritesType() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getSemanticQueryRewritesResultType() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getSemanticQueryRewritesResultType());
+        });
+    }
+
+
 }

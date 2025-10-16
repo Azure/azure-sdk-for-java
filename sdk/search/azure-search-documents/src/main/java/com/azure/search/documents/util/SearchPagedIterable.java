@@ -3,6 +3,11 @@
 
 package com.azure.search.documents.util;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.core.util.paging.PageRetrieverSync;
@@ -11,13 +16,12 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
 import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResults;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import com.azure.search.documents.models.SemanticSearchResultsType;
 
 /**
  * Implementation of {@link ContinuablePagedIterable} where the continuation token type is {@link SearchRequest}, the
@@ -144,4 +148,60 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
             ? metadataSupplier.get().getFirstPageResponse().getDebugInfo()
             : pagedFlux.getDebugInfo().block();
     }
+
+    /**
+     * The query answers based on the search request.
+     * <p>
+     * If query answers weren't requested this will be {@code null}.
+     *
+     * @return The query answers if they were requested, otherwise {@code null}.
+     */
+    public List<QueryAnswerResult> getQueryAnswers() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getQueryAnswers()
+            : pagedFlux.getQueryAnswers().block();
+    }
+
+    /**
+     * The reason for a semantic error if the semantic search request failed.
+     * <p>
+     * If semantic search wasn't requested or the request was successful this will be {@code null}.
+     *
+     * @return The reason for a semantic error if the semantic search request failed, otherwise {@code null}.
+     */
+    public SemanticErrorReason getSemanticErrorReason() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticErrorReason()
+            : pagedFlux.getSemanticErrorReason().block();
+    }
+
+    /**
+     * The type of semantic search results returned.
+     * <p>
+     * If semantic search wasn't requested this will be {@code null}.
+     *
+     * @return The type of semantic search results if semantic search was requested, otherwise {@code null}.
+     */
+    public SemanticSearchResultsType getSemanticSearchResultsType() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticSearchResultsType()
+            : pagedFlux.getSemanticSearchResultsType().block();
+    }
+
+    /**
+     * The type of semantic query rewrites applied during the search request.
+     * <p>
+     * If semantic search wasn't requested this will be {@code null}.
+     *
+     * @return The type of semantic query rewrites if semantic search was requested, otherwise {@code null}.
+     */
+    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
+        return metadataSupplier != null
+            ? metadataSupplier.get().getFirstPageResponse().getSemanticQueryRewritesResultType()
+            : pagedFlux.getSemanticQueryRewritesType().block();
+    }
+
+
+
+
 }
