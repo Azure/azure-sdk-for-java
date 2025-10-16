@@ -57,7 +57,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      */
     AzureAppConfigDataResource(boolean appConfigEnabled, ConfigStore configStore, Profiles profiles, boolean isRefresh,
         Duration refreshInterval) {
-        this.configStoreEnabled = Boolean.TRUE.equals(appConfigEnabled) && configStore.isEnabled();
+        this.configStoreEnabled = appConfigEnabled && configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
         this.featureFlagSelects = configStore.getFeatureFlags().getSelects();
