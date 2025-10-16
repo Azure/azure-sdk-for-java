@@ -11,6 +11,7 @@ import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
 import com.azure.analytics.planetarycomputer.models.StacLink;
 import com.azure.analytics.planetarycomputer.models.StacLinkType;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -70,11 +71,10 @@ public final class StacCollectionsGetAllTests extends PlanetaryComputerClientTes
         StacCollectionTemporalExtent responseCollectionsFirstItemExtentTemporal
             = responseCollectionsFirstItemExtent.getTemporal();
         Assertions.assertNotNull(responseCollectionsFirstItemExtentTemporal);
-        List<List<String>> responseCollectionsFirstItemExtentTemporalInterval
+        List<List<OffsetDateTime>> responseCollectionsFirstItemExtentTemporalInterval
             = responseCollectionsFirstItemExtentTemporal.getInterval();
-        List<String> responseCollectionsFirstItemExtentTemporalIntervalFirstItem
+        List<OffsetDateTime> responseCollectionsFirstItemExtentTemporalIntervalFirstItem
             = responseCollectionsFirstItemExtentTemporalInterval.iterator().next();
-        Assertions.assertEquals("2018-01-01T00:00:00Z",
-            responseCollectionsFirstItemExtentTemporalIntervalFirstItem.iterator().next());
+        Assertions.assertNotNull(responseCollectionsFirstItemExtentTemporalIntervalFirstItem.iterator().next());
     }
 }

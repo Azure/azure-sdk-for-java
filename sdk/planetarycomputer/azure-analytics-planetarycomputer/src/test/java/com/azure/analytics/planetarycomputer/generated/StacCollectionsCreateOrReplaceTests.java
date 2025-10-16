@@ -11,6 +11,7 @@ import com.azure.analytics.planetarycomputer.models.StacExtensionExtent;
 import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -28,10 +29,11 @@ public final class StacCollectionsCreateOrReplaceTests extends PlanetaryComputer
                     new StacExtensionExtent(
                         new StacExtensionSpatialExtent()
                             .setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0))),
-                        new StacCollectionTemporalExtent(Arrays.asList(Arrays.asList("2020-01-01T00:00:00Z", null)))))
-                            .setStacVersion("1.0.0")
-                            .setTitle("Test Collection d45537668d06")
-                            .setType("Collection")));
+                        new StacCollectionTemporalExtent(
+                            Arrays.asList(Arrays.asList(OffsetDateTime.parse("2020-01-01T00:00:00Z"), null)))))
+                                .setStacVersion("1.0.0")
+                                .setTitle("Test Collection d45537668d06")
+                                .setType("Collection")));
 
         // response assertion
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,

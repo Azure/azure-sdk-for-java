@@ -14,6 +14,7 @@ import com.azure.analytics.planetarycomputer.models.StacExtensionSpatialExtent;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 public class StacCollectionsCreate {
@@ -28,10 +29,11 @@ public class StacCollectionsCreate {
                 new StacExtensionExtent(
                     new StacExtensionSpatialExtent()
                         .setBoundingBox(Arrays.asList(Arrays.asList(-180.0, -90.0, 180.0, 90.0))),
-                    new StacCollectionTemporalExtent(Arrays.asList(Arrays.asList("2020-01-01T00:00:00Z", null)))))
-                        .setStacVersion("1.0.0")
-                        .setTitle("Test Collection d45537668d06")
-                        .setType("Collection"));
+                    new StacCollectionTemporalExtent(
+                        Arrays.asList(Arrays.asList(OffsetDateTime.parse("2020-01-01T00:00:00Z"), null)))))
+                            .setStacVersion("1.0.0")
+                            .setTitle("Test Collection d45537668d06")
+                            .setType("Collection"));
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-collection.stac-collections-create
     }
 }

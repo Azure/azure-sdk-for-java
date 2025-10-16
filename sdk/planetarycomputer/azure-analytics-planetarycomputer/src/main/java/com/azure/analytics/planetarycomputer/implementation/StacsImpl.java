@@ -980,7 +980,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1103,7 +1103,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1225,7 +1225,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1348,7 +1348,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -2137,7 +2137,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -2286,7 +2286,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -2433,7 +2433,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -2586,7 +2586,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -2738,7 +2738,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -2891,7 +2891,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -3043,7 +3043,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -3194,7 +3194,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -3344,7 +3344,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -3498,7 +3498,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -3652,7 +3652,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -3806,7 +3806,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -4291,7 +4291,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -4419,7 +4419,7 @@ public final class StacsImpl {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -4551,7 +4551,7 @@ public final class StacsImpl {
      *                 temporal (Required): {
      *                     interval (Required): [
      *                          (Required)[
-     *                             String (Required)
+     *                             OffsetDateTime (Required)
      *                         ]
      *                     ]
      *                 }
@@ -4685,7 +4685,7 @@ public final class StacsImpl {
      *                 temporal (Required): {
      *                     interval (Required): [
      *                          (Required)[
-     *                             String (Required)
+     *                             OffsetDateTime (Required)
      *                         ]
      *                     ]
      *                 }

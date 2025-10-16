@@ -20,11 +20,11 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-planetarycomputer;current})
+[//]: # ({x-version-update-start;com.azure:azure-analytics-planetarycomputer;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-planetarycomputer</artifactId>
+    <artifactId>azure-analytics-planetarycomputer</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -38,7 +38,7 @@ Various documentation is available to help you get started
 
 ## Examples
 
-```java com.azure.planetarycomputer.readme
+```java com.azure.analytics.planetarycomputer.readme
 ```
 
 ### Service API versions

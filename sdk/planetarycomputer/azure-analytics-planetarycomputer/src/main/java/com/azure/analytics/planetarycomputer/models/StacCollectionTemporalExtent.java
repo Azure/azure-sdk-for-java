@@ -6,11 +6,14 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -24,7 +27,7 @@ public final class StacCollectionTemporalExtent implements JsonSerializable<Stac
      * Array of time intervals in format [[start_datetime, end_datetime]].
      */
     @Generated
-    private final List<List<String>> interval;
+    private final List<List<OffsetDateTime>> interval;
 
     /**
      * Creates an instance of StacCollectionTemporalExtent class.
@@ -32,7 +35,7 @@ public final class StacCollectionTemporalExtent implements JsonSerializable<Stac
      * @param interval the interval value to set.
      */
     @Generated
-    public StacCollectionTemporalExtent(List<List<String>> interval) {
+    public StacCollectionTemporalExtent(List<List<OffsetDateTime>> interval) {
         this.interval = interval;
     }
 
@@ -42,7 +45,7 @@ public final class StacCollectionTemporalExtent implements JsonSerializable<Stac
      * @return the interval value.
      */
     @Generated
-    public List<List<String>> getInterval() {
+    public List<List<OffsetDateTime>> getInterval() {
         return this.interval;
     }
 
@@ -54,7 +57,8 @@ public final class StacCollectionTemporalExtent implements JsonSerializable<Stac
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("interval", this.interval,
-            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1
+                .writeString(element1 == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element1))));
         return jsonWriter.writeEndObject();
     }
 
@@ -70,13 +74,14 @@ public final class StacCollectionTemporalExtent implements JsonSerializable<Stac
     @Generated
     public static StacCollectionTemporalExtent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<List<String>> interval = null;
+            List<List<OffsetDateTime>> interval = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("interval".equals(fieldName)) {
-                    interval = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    interval = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()))));
                 } else {
                     reader.skipChildren();
                 }

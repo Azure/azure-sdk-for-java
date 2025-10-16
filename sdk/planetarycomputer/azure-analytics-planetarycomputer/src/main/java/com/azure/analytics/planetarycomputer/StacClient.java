@@ -143,7 +143,7 @@ public final class StacClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -264,7 +264,7 @@ public final class StacClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -709,7 +709,7 @@ public final class StacClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -854,7 +854,7 @@ public final class StacClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1058,7 +1058,7 @@ public final class StacClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1189,7 +1189,7 @@ public final class StacClient {
      *                 temporal (Required): {
      *                     interval (Required): [
      *                          (Required)[
-     *                             String (Required)
+     *                             OffsetDateTime (Required)
      *                         ]
      *                     ]
      *                 }

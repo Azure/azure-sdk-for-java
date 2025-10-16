@@ -145,7 +145,7 @@ public final class StacAsyncClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -266,7 +266,7 @@ public final class StacAsyncClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -716,7 +716,7 @@ public final class StacAsyncClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -861,7 +861,7 @@ public final class StacAsyncClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1065,7 +1065,7 @@ public final class StacAsyncClient {
      *         temporal (Required): {
      *             interval (Required): [
      *                  (Required)[
-     *                     String (Required)
+     *                     OffsetDateTime (Required)
      *                 ]
      *             ]
      *         }
@@ -1196,7 +1196,7 @@ public final class StacAsyncClient {
      *                 temporal (Required): {
      *                     interval (Required): [
      *                          (Required)[
-     *                             String (Required)
+     *                             OffsetDateTime (Required)
      *                         ]
      *                     ]
      *                 }
