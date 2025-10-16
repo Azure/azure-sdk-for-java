@@ -103,8 +103,6 @@ stages:
           targetType: inline
           script: >-
             if [[ "${AVOID_DBFS,,}" == "true" ]]; then
-              $JAR_URL=${{ parameters.JarReadOnlySasUri }}
-              JAR_NAME='azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
               TMP_FILE="/tmp/${JAR_NAME}.$$"
               echo "[init] Downloading $JAR_NAME to validate checksum..."
               # Download with retries; fail non-zero on HTTP errors
@@ -139,5 +137,7 @@ stages:
               echo "Skipping checksum validation for runtimes still installing jars from DBFS"
             fi
         env:
+          JAR_URL: '${{ parameters.JarReadOnlySasUri }}'
+          JAR_NAME: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
           JAR_CHECK_SUM: $(JarCheckSum)
           AVOID_DBFS:  ${{ parameters.AvoidDBFS }}
