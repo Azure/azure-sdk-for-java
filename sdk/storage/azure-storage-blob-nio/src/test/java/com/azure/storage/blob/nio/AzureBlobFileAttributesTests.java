@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AzureBlobFileAttributesTests extends BlobNioTestBase {
@@ -104,12 +105,7 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
 
     @Test
     public void nonFourOhFourError() throws Exception {
-        String invalidDirectoryName = "very_long_directory_name";
-        StringBuilder repeated = new StringBuilder(invalidDirectoryName);
-        for (int i = 0; i < 1000; i++) {
-            repeated.append(invalidDirectoryName);
-        }
-        invalidDirectoryName = repeated.toString();
+        String invalidDirectoryName = String.join("", Collections.nCopies(1001, "very_long_directory_name"));
 
         Path path = fs.getPath(getNonDefaultRootDir(fs), invalidDirectoryName, "invalid_file.txt");
 
