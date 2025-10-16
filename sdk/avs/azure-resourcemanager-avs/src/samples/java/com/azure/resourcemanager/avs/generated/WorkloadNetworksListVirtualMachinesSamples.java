@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: 2024-09-01/WorkloadNetworks_ListVirtualMachines.json
+     * x-ms-original-file: 2025-09-01/WorkloadNetworks_ListVirtualMachines.json
      */
     /**
      * Sample code: WorkloadNetworks_ListVirtualMachines.
