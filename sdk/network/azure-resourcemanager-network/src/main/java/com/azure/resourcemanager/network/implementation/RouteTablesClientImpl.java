@@ -74,7 +74,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientRouteTables")
     public interface RouteTablesService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}")
@@ -174,7 +174,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, routeTableName,
@@ -211,7 +211,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -378,7 +378,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -416,7 +416,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -508,7 +508,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeTableName,
@@ -551,7 +551,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -740,7 +740,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, routeTableName,
@@ -783,7 +783,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, routeTableName, apiVersion,
@@ -866,7 +866,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -902,7 +902,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -990,7 +990,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1020,7 +1020,7 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1088,8 +1088,8 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListRouteTable API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all route tables in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteTableInner>> listNextSinglePageAsync(String nextLink) {
@@ -1115,8 +1115,8 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListRouteTable API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all route tables in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteTableInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1141,8 +1141,8 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListRouteTable API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all route tables in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteTableInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1169,8 +1169,8 @@ public final class RouteTablesClientImpl implements InnerSupportsGet<RouteTableI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListRouteTable API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all route tables in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteTableInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
