@@ -138,8 +138,6 @@ stages:
             else
               echo "Skipping checksum validation for runtimes still installing jars from DBFS"
             fi
-
-            EOF
         env:
           JAR_CHECK_SUM: $(JarCheckSum)
           AVOID_DBFS:  ${{ parameters.AvoidDBFS }}
