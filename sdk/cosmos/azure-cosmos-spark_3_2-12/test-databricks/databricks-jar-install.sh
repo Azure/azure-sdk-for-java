@@ -32,7 +32,11 @@ then
 	exit 1
 fi
 
-JAR_CHECK_SUM=sha256sum $JARPATH/$JARFILE
+JAR_CHECK_SUM="$(sha256sum -- "$JARPATH/$JARFILE")" || {
+                echo "ERROR: checksum failed for $JARPATH/$JARFILE" >&2echo "CHECKSUM of the jar (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
+                exit 1
+              }
+JAR_CHECK_SUM="${JAR_CHECK_SUM%% *}"
 echo "CHECKSUM of the jar (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
 echo "##vso[task.setvariable variable=JarCheckSum]$JAR_CHECK_SUM"
 
