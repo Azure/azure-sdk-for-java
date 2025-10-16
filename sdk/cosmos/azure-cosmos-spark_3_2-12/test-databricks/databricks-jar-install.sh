@@ -32,6 +32,10 @@ then
 	exit 1
 fi
 
+$JAR_CHECK_SUM = sha256sum $JARPATH/$JARFILE
+echo "CHECKSUM of the jar (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
+echo "##vso[task.setvariable variable=JarCheckSum]$JAR_CHECK_SUM"
+
 echo "CLUSTER_NAME: $CLUSTER_NAME"
 echo "Avoid DBFS: $AVOID_DBFS"
 # DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
