@@ -68,13 +68,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -1488,7 +1488,7 @@ class ApplicationGatewayImpl extends
 
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
-        Set<AvailabilityZoneId> zones = new TreeSet<>();
+        Set<AvailabilityZoneId> zones = new LinkedHashSet<>();
         if (this.innerModel().zones() != null) {
             for (String zone : this.innerModel().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));

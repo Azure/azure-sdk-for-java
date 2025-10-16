@@ -14,18 +14,18 @@ public final class DnsPrivateViewListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"ajguqf\",\"displayName\":\"wygzlvdnkfxusem\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"rmuhapfcq\",\"timeCreated\":\"2021-12-08T21:08:33Z\",\"timeUpdated\":\"2021-11-26T12:11:57Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"vpsvuoymgcce\",\"name\":\"vezrypqlmfeo\",\"type\":\"erqwkyhkobopg\"},{\"properties\":{\"ocid\":\"dkow\",\"displayName\":\"pbqpcrfkbwccsn\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"dw\",\"timeCreated\":\"2021-06-07T08:17:55Z\",\"timeUpdated\":\"2021-03-25T16:45:49Z\",\"provisioningState\":\"Canceled\"},\"id\":\"ftnkhtj\",\"name\":\"y\",\"type\":\"ngwfqatm\"}],\"nextLink\":\"htmdvy\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"vvyhg\",\"displayName\":\"opbyrqufegxu\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"fbn\",\"timeCreated\":\"2021-09-27T14:47:09Z\",\"timeUpdated\":\"2021-08-15T03:14:49Z\",\"provisioningState\":\"Canceled\"},\"id\":\"p\",\"name\":\"ngitvgbmhrixkwm\",\"type\":\"ijejvegrhbpn\"},{\"properties\":{\"ocid\":\"xexccbdreaxhcexd\",\"displayName\":\"rvqahqkghtpwi\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"yjsvfyc\",\"timeCreated\":\"2021-05-05T00:18:03Z\",\"timeUpdated\":\"2021-07-22T08:07:37Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"owvrvmtgjqppyos\",\"name\":\"ronzmyhgfip\",\"type\":\"sxkm\"}],\"nextLink\":\"a\"}")
             .toObject(DnsPrivateViewListResult.class);
-        Assertions.assertEquals("ajguqf", model.value().get(0).properties().ocid());
-        Assertions.assertEquals("wygzlvdnkfxusem", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("vvyhg", model.value().get(0).properties().ocid());
+        Assertions.assertEquals("opbyrqufegxu", model.value().get(0).properties().displayName());
         Assertions.assertFalse(model.value().get(0).properties().isProtected());
-        Assertions.assertEquals(DnsPrivateViewsLifecycleState.UPDATING,
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.ACTIVE,
             model.value().get(0).properties().lifecycleState());
-        Assertions.assertEquals("rmuhapfcq", model.value().get(0).properties().self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T21:08:33Z"),
+        Assertions.assertEquals("fbn", model.value().get(0).properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T14:47:09Z"),
             model.value().get(0).properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T12:11:57Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T03:14:49Z"),
             model.value().get(0).properties().timeUpdated());
-        Assertions.assertEquals("htmdvy", model.nextLink());
+        Assertions.assertEquals("a", model.nextLink());
     }
 }
