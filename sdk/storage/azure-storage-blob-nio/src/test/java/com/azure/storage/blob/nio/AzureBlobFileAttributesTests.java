@@ -3,9 +3,13 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.storage.blob.models.BlobStorageException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,9 +55,7 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
 
         boolean isDirectory = Files.isDirectory(path);
 
-        assertDoesNotThrow(() -> {
-            new AzureBlobFileAttributes(path);
-        });
+        assertDoesNotThrow(() -> new AzureBlobFileAttributes(path));
         assertTrue(isDirectory);
     }
 
@@ -81,8 +83,8 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
         IOException exception = assertThrows(IOException.class, () -> new AzureBlobFileAttributes(path));
         assertFalse(isDirectory);
         assertFalse(isFile);
-        assertTrue(exception.getCause().toString().contains("404"));
-
+        BlobStorageException e = assertInstanceOf(BlobStorageException.class, exception.getCause());
+        assertEquals(404, e.getStatusCode());
     }
 
     @Test
@@ -96,8 +98,8 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
         IOException exception = assertThrows(IOException.class, () -> new AzureBlobFileAttributes(path));
         assertFalse(isDirectory);
         assertFalse(isFile);
-        assertTrue(exception.getCause().toString().contains("404"));
-
+        BlobStorageException e = assertInstanceOf(BlobStorageException.class, exception.getCause());
+        assertEquals(404, e.getStatusCode());
     }
 
     @Test
@@ -113,6 +115,7 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
 
         // Should throw IOException with an underlying cause other than 404
         IOException exception = assertThrows(IOException.class, () -> new AzureBlobFileAttributes(path));
-        assertFalse(exception.getCause().toString().contains("404"));
+        BlobStorageException e = assertInstanceOf(BlobStorageException.class, exception.getCause());
+        assertNotEquals(404, e.getStatusCode());
     }
 }
