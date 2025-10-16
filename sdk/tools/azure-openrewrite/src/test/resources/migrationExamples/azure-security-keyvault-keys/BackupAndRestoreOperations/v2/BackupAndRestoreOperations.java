@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys;
-
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.keys.KeyClient;
+import com.azure.v2.security.keyvault.keys.KeyClientBuilder;
+import com.azure.v2.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.v2.security.keyvault.keys.models.DeletedKey;
+import com.azure.v2.security.keyvault.keys.models.KeyVaultKey;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,7 +39,7 @@ public class BackupAndRestoreOperations {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
         for links and instructions. */
         KeyClient keyClient = new KeyClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -57,7 +57,7 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(keyBackup, backupFilePath);
 
         // The RSA key is no longer in use, so you delete it.
-        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
+        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
         PollResponse<DeletedKey> pollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = pollResponse.getValue();
 
