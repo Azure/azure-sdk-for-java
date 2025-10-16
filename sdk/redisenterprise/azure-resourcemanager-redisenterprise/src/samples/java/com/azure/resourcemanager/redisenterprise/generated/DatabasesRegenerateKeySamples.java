@@ -13,7 +13,7 @@ import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
 public final class DatabasesRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
      * RedisEnterpriseDatabasesRegenerateKey.json
      */
     /**

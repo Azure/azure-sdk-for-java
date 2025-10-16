@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-oracledatabase</artifactId>
-  <version>1.2.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-oracledatabase;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-oracledatabase;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Oracle Database Management</name>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

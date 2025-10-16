@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.tools.changelog.utils;
 
 import japicmp.model.JApiClass;
+import japicmp.model.JApiConstructor;
 import japicmp.model.JApiMethod;
 
 import java.util.ArrayList;
@@ -21,12 +22,18 @@ public class AllMethods {
         return methods;
     }
 
+    public List<JApiConstructor> getConstructors() {
+        return constructors;
+    }
+
     private JApiClass jApiClass;
     private List<JApiMethod> methods;
+    private List<JApiConstructor> constructors;
 
-    private AllMethods(JApiClass jApiClass, List<JApiMethod> methods) {
+    private AllMethods(JApiClass jApiClass, List<JApiMethod> methods, List<JApiConstructor> constructors) {
         this.jApiClass = jApiClass;
         this.methods = methods;
+        this.constructors = constructors;
     }
 
     public static void fromClasses(Map<String, JApiClass> classes, Map<String, AllMethods> results) {
@@ -47,6 +54,7 @@ public class AllMethods {
                 methods.addAll(results.get(aInterface.getFullyQualifiedName()).getMethods());
             }
         });
-        results.put(apiClass.getFullyQualifiedName(), new AllMethods(apiClass, new ArrayList<>(methods)));
+        Set<JApiConstructor> contructors = new HashSet<>(apiClass.getConstructors());
+        results.put(apiClass.getFullyQualifiedName(), new AllMethods(apiClass, new ArrayList<>(methods), new ArrayList<>(contructors)));
     }
 }
