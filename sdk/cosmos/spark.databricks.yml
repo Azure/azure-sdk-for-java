@@ -91,7 +91,7 @@ stages:
         displayName: Importing Jars
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-jar-install.sh
-          arguments: '${{ parameters.ClusterName }} ${{ parameters.AvoidDBFS }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target ${{ parameters.JarAccountKey }}'
+          arguments: '${{ parameters.ClusterName }} ${{ parameters.AvoidDBFS }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target ${{ parameters.JarStorageAccountKey }}'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
