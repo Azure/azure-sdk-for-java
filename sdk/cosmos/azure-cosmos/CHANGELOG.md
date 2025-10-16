@@ -61,7 +61,7 @@
 > We strongly recommend our customers to use version 4.71.2-hotfix of `azure-cosmos`. Please note, that post this the next version to upgrade to would be at least version 4.75.0 of `azure-cosmos`.
 
 #### Bugs Fixed
-* Fixed issue with change feed processor logs not showing exceptions. - [46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
+* Fixed issue with change feed processor logs not showing exceptions. - [PR 46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
 * Fixed an issue where Per-Partition Circuit Breaker was hitting `NullPointerException` transiently in e2e timeout scenarios. - [PR 46968](https://github.com/Azure/azure-sdk-for-java/pull/46968/files)
 
 #### Other Changes
