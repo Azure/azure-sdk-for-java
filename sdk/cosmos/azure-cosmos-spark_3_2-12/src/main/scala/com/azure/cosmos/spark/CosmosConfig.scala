@@ -1357,7 +1357,7 @@ private[spark] object DiagnosticsConfig {
     val azureMonitorAuthTypeOpt: Option[CosmosAuthType] =
       if (withAzMon
         && azureMonitorAuthEnabledOpt.getOrElse(false)
-        && (!effectiveAzMonConnectionStringOpt.getOrElse("").isBlank || azureMonitorAuthEnabledOpt.getOrElse(false))) {
+        && (!effectiveAzMonConnectionStringOpt.getOrElse("").isEmpty || azureMonitorAuthEnabledOpt.getOrElse(false))) {
 
         CosmosConfigEntry
           .parse(cfg, diagnosticsAzureMonitorAuthType)
@@ -1389,7 +1389,7 @@ private[spark] object DiagnosticsConfig {
 
     val azMonConfig = if (withAzMon
       && azureMonitorAuthEnabledOpt.getOrElse(false)
-      && (!effectiveAzMonConnectionStringOpt.getOrElse("").isBlank || azureMonitorAuthEnabledOpt.getOrElse(false))) {
+      && (!effectiveAzMonConnectionStringOpt.getOrElse("").isEmpty || azureMonitorAuthEnabledOpt.getOrElse(false))) {
 
       val azMonConfigCandidate =
         AzureMonitorConfig(
