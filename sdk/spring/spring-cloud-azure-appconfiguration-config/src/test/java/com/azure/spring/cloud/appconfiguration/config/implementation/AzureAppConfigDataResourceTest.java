@@ -123,13 +123,13 @@ class AzureAppConfigDataResourceTest {
         AzureAppConfigDataResource enabledResource = new AzureAppConfigDataResource(
             true, configStore, mockProfiles, false, null);
         assertTrue(enabledResource.isConfigStoreEnabled());
-        assertEquals(null, enabledResource.getRefreshInterval());
+        assertNull(enabledResource.getRefreshInterval());
 
         configStore.setEnabled(false);
         AzureAppConfigDataResource disabledResource = new AzureAppConfigDataResource(
             false, configStore, mockProfiles, true, null);
         assertFalse(disabledResource.isConfigStoreEnabled());
-        assertEquals(null, disabledResource.getRefreshInterval());
+        assertNull(disabledResource.getRefreshInterval());
         assertTrue(disabledResource.isRefresh());
     }
 

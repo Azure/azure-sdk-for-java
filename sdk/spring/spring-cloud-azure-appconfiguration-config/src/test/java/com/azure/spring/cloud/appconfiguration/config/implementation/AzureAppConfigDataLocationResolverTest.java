@@ -186,11 +186,12 @@ class AzureAppConfigDataLocationResolverTest {
         
         when(mockContext.getBinder()).thenReturn(null);
 
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
             resolver.isResolvable(mockContext, location);
         }, "Resolver should handle null binder gracefully");
         
         assertNotNull(exception);
+        assertTrue(exception.getMessage().contains("Binder must not be null"), "Exception message should indicate null binder");
     }
 
     @Test
