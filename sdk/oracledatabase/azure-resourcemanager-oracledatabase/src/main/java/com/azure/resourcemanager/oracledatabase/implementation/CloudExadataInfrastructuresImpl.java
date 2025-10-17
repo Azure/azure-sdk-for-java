@@ -13,6 +13,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.CloudExadataInfrastructur
 import com.azure.resourcemanager.oracledatabase.fluent.models.CloudExadataInfrastructureInner;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructure;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructures;
+import com.azure.resourcemanager.oracledatabase.models.ConfigureExascaleCloudExadataInfrastructureDetails;
 
 public final class CloudExadataInfrastructuresImpl implements CloudExadataInfrastructures {
     private static final ClientLogger LOGGER = new ClientLogger(CloudExadataInfrastructuresImpl.class);
@@ -99,6 +100,28 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
         String cloudexadatainfrastructurename, Context context) {
         CloudExadataInfrastructureInner inner
             = this.serviceClient().addStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, context);
+        if (inner != null) {
+            return new CloudExadataInfrastructureImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CloudExadataInfrastructure configureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
+        ConfigureExascaleCloudExadataInfrastructureDetails body) {
+        CloudExadataInfrastructureInner inner
+            = this.serviceClient().configureExascale(resourceGroupName, cloudexadatainfrastructurename, body);
+        if (inner != null) {
+            return new CloudExadataInfrastructureImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CloudExadataInfrastructure configureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
+        ConfigureExascaleCloudExadataInfrastructureDetails body, Context context) {
+        CloudExadataInfrastructureInner inner
+            = this.serviceClient().configureExascale(resourceGroupName, cloudexadatainfrastructurename, body, context);
         if (inner != null) {
             return new CloudExadataInfrastructureImpl(inner, this.manager());
         } else {

@@ -7,7 +7,7 @@
 println("SCENARIO: basicScenarioAadManagedIdentity")
 
 val authType = "ManagedIdentity"
-val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
+val cosmosEndpoint = dbutils.widgets.get("cosmosEndpointMsi")
 val subscriptionId = dbutils.widgets.get("subscriptionId")
 val tenantId = dbutils.widgets.get("tenantId")
 val resourceGroupName = dbutils.widgets.get("resourceGroupName")

@@ -1502,7 +1502,7 @@ public final class SearchAsyncClient {
             .setTop(options.getTop())
             .setQueryLanguage(options.getQueryLanguage())
             .setSpeller(options.getSpeller())
-            .setDebug(options.getDebug());
+            .setDebug(options.getDebugMode());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {

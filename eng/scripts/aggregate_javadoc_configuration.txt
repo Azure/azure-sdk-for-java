@@ -36,7 +36,6 @@ Group;Azure IoT Models Repository;com.azure.iot.modelsrepository*
 Group;Azure Key Vault;com.azure.security.keyvault*
 Group;Azure Metrics Advisor;com.azure.ai.metricsadvisor*
 Group;Azure Mixed Reality Authentication;com.azure.mixedreality.authentication*
-Group;Azure Mixed Reality Remote Rendering;com.azure.mixedreality.remoterendering*
 Group;Azure Monitor - Ingestion;com.azure.monitor.ingestion*
 Group;Azure Monitor - Logs and Metrics query;com.azure.monitor.query*
 Group;Azure Monitor - OpenTelemetry Exporter;com.azure.monitor.opentelemetry.exporter*

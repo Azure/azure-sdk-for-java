@@ -247,6 +247,11 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
      */
     private String subnetOcid;
 
+    /*
+     * The type of Exascale storage used for Exadata VM cluster.
+     */
+    private ShapeAttribute shapeAttribute;
+
     /**
      * Creates an instance of ExadbVmClusterProperties class.
      */
@@ -928,6 +933,26 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
     }
 
     /**
+     * Get the shapeAttribute property: The type of Exascale storage used for Exadata VM cluster.
+     * 
+     * @return the shapeAttribute value.
+     */
+    public ShapeAttribute shapeAttribute() {
+        return this.shapeAttribute;
+    }
+
+    /**
+     * Set the shapeAttribute property: The type of Exascale storage used for Exadata VM cluster.
+     * 
+     * @param shapeAttribute the shapeAttribute value to set.
+     * @return the ExadbVmClusterProperties object itself.
+     */
+    public ExadbVmClusterProperties withShapeAttribute(ShapeAttribute shapeAttribute) {
+        this.shapeAttribute = shapeAttribute;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -957,6 +982,8 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
         jsonWriter.writeNumberField("scanListenerPortTcpSsl", this.scanListenerPortTcpSsl);
         jsonWriter.writeStringField("systemVersion", this.systemVersion);
         jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("shapeAttribute",
+            this.shapeAttribute == null ? null : this.shapeAttribute.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1072,6 +1099,8 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
                     deserializedExadbVmClusterProperties.backupSubnetOcid = reader.getString();
                 } else if ("subnetOcid".equals(fieldName)) {
                     deserializedExadbVmClusterProperties.subnetOcid = reader.getString();
+                } else if ("shapeAttribute".equals(fieldName)) {
+                    deserializedExadbVmClusterProperties.shapeAttribute = ShapeAttribute.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

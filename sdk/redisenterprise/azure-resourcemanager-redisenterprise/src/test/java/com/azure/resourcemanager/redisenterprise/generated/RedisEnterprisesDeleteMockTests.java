@@ -27,7 +27,7 @@ public final class RedisEnterprisesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.redisEnterprises().delete("e", "csonpclhoco", com.azure.core.util.Context.NONE);
+        manager.redisEnterprises().delete("ptkoenkoukn", "udwtiukbl", com.azure.core.util.Context.NONE);
 
     }
 }

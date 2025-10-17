@@ -13,7 +13,8 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 public final class PoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Pools_CreateOrUpdate.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Pools_CreateOrUpdate.
+     * json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -32,7 +33,7 @@ public final class PoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/
      * Pools_CreateOrUpdate_CustomThroughput.json
      */
     /**

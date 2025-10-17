@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBaseProperties;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecycleAction;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdate;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdateProperties;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
@@ -207,6 +208,14 @@ public final class AutonomousDatabaseImpl
         Context context) {
         return serviceManager.autonomousDatabases()
             .changeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, context);
+    }
+
+    public AutonomousDatabase action(AutonomousDatabaseLifecycleAction body) {
+        return serviceManager.autonomousDatabases().action(resourceGroupName, autonomousdatabasename, body);
+    }
+
+    public AutonomousDatabase action(AutonomousDatabaseLifecycleAction body, Context context) {
+        return serviceManager.autonomousDatabases().action(resourceGroupName, autonomousdatabasename, body, context);
     }
 
     public AutonomousDatabaseImpl withRegion(Region location) {

@@ -19,7 +19,7 @@ public final class ApplicationGetHttpsEndpointTests {
         Assertions.assertEquals(981492544, model.destinationPort());
         Assertions.assertEquals("clhocohsl", model.privateIpAddress());
         Assertions.assertEquals("vleggzfbuhfmvfax", model.subDomainSuffix());
-        Assertions.assertEquals(true, model.disableGatewayAuth());
+        Assertions.assertTrue(model.disableGatewayAuth());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,6 +35,6 @@ public final class ApplicationGetHttpsEndpointTests {
         Assertions.assertEquals(981492544, model.destinationPort());
         Assertions.assertEquals("clhocohsl", model.privateIpAddress());
         Assertions.assertEquals("vleggzfbuhfmvfax", model.subDomainSuffix());
-        Assertions.assertEquals(true, model.disableGatewayAuth());
+        Assertions.assertTrue(model.disableGatewayAuth());
     }
 }
