@@ -56,9 +56,15 @@
   },
   "containerregistry": {
     "dir": "../containerregistry/azure-resourcemanager-containerregistry",
-    "source": "specification/containerregistry/resource-manager/readme.md",
+    "source": "specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
     "args": "--tag=package-2025-04 --modelerfour.lenient-model-deduplication=true --enable-sync-stack=false"
+  },
+  "containerregistrytasks": {
+    "dir": "../containerregistry/azure-resourcemanager-containerregistry",
+    "source": "specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/readme.md",
+    "package": "com.azure.resourcemanager.containerregistry",
+    "args": "--tag=package-2019-06-preview --modelerfour.lenient-model-deduplication=true --enable-sync-stack=false"
   },
   "containerregistry-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
