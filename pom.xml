@@ -266,6 +266,7 @@
     <module>sdk/trafficmanager</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
+    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
