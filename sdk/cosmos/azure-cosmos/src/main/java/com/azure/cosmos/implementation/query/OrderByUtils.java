@@ -122,7 +122,7 @@ class OrderByUtils {
                                     queryItems.add(queryItem);
                                 }
 
-                                // Check  if its the same orderby item from the token
+                                // Check  if it's the same orderby item from the token
                                 long cmp = 0;
                                 for (int i = 0; i < sortOrders.size(); i++) {
                                     cmp = ItemComparator.getInstance().compare(orderByContinuationToken.getOrderByItems()[i].getItem(),
