@@ -20,17 +20,12 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.RegistryTasksClient;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.SourceUploadDefinitionInner;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,257 +61,29 @@ public final class RegistryTasksClientImpl implements RegistryTasksClient {
     @ServiceInterface(name = "ContainerRegistryTasksManagementClientRegistryTasks")
     public interface RegistryTasksService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> scheduleRun(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RunRequest runRequest,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listBuildSourceUploadUrl")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SourceUploadDefinitionInner>> getBuildSourceUploadUrl(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-    }
+            @HeaderParam("Accept") String accept, Context context);
 
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
-        RunRequest runRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (runRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
-        } else {
-            runRequest.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.scheduleRun(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, this.client.getApiVersion(), runRequest, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
-        RunRequest runRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (runRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
-        } else {
-            runRequest.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.scheduleRun(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, this.client.getApiVersion(), runRequest, accept, context);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(String resourceGroupName,
-        String registryName, RunRequest runRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest);
-        return this.client.<RunInner, RunInner>getLroResult(mono, this.client.getHttpPipeline(), RunInner.class,
-            RunInner.class, this.client.getContext());
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(String resourceGroupName,
-        String registryName, RunRequest runRequest, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest, context);
-        return this.client.<RunInner, RunInner>getLroResult(mono, this.client.getHttpPipeline(), RunInner.class,
-            RunInner.class, context);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(String resourceGroupName, String registryName,
-        RunRequest runRequest) {
-        return this.beginScheduleRunAsync(resourceGroupName, registryName, runRequest).getSyncPoller();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(String resourceGroupName, String registryName,
-        RunRequest runRequest, Context context) {
-        return this.beginScheduleRunAsync(resourceGroupName, registryName, runRequest, context).getSyncPoller();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunInner> scheduleRunAsync(String resourceGroupName, String registryName, RunRequest runRequest) {
-        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RunInner> scheduleRunAsync(String resourceGroupName, String registryName, RunRequest runRequest,
-        Context context) {
-        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest) {
-        return scheduleRunAsync(resourceGroupName, registryName, runRequest).block();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
-        return scheduleRunAsync(resourceGroupName, registryName, runRequest, context).block();
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RunInner>> scheduleRun(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @BodyParam("application/json") RunRequest runRequest, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Get the upload location for the user to be able to upload the source.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -345,15 +112,15 @@ public final class RegistryTasksClientImpl implements RegistryTasksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.getBuildSourceUploadUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, this.client.getApiVersion(), accept, context))
+                context -> service.getBuildSourceUploadUrl(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the upload location for the user to be able to upload the source.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,14 +149,14 @@ public final class RegistryTasksClientImpl implements RegistryTasksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getBuildSourceUploadUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, this.client.getApiVersion(), accept, context);
+        return service.getBuildSourceUploadUrl(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context);
     }
 
     /**
      * Get the upload location for the user to be able to upload the source.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -407,7 +174,7 @@ public final class RegistryTasksClientImpl implements RegistryTasksClient {
     /**
      * Get the upload location for the user to be able to upload the source.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,7 +191,7 @@ public final class RegistryTasksClientImpl implements RegistryTasksClient {
     /**
      * Get the upload location for the user to be able to upload the source.
      * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -434,5 +201,138 @@ public final class RegistryTasksClientImpl implements RegistryTasksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceUploadDefinitionInner getBuildSourceUploadUrl(String resourceGroupName, String registryName) {
         return getBuildSourceUploadUrlWithResponse(resourceGroupName, registryName, Context.NONE).getValue();
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RunInner>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
+        RunRequest runRequest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
+        } else {
+            runRequest.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.scheduleRun(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, runRequest, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RunInner>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
+        RunRequest runRequest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
+        } else {
+            runRequest.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.scheduleRun(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, runRequest, accept, context);
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunInner> scheduleRunAsync(String resourceGroupName, String registryName, RunRequest runRequest) {
+        return scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RunInner> scheduleRunWithResponse(String resourceGroupName, String registryName,
+        RunRequest runRequest, Context context) {
+        return scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest, context).block();
+    }
+
+    /**
+     * Schedules a new run based on the request parameters and add it to the run queue.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param runRequest The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest) {
+        return scheduleRunWithResponse(resourceGroupName, registryName, runRequest, Context.NONE).getValue();
     }
 }

@@ -24,12 +24,12 @@ import java.time.Duration;
 public final class ContainerRegistryTasksManagementClientImpl extends AzureServiceClient
     implements ContainerRegistryTasksManagementClient {
     /**
-     * The Microsoft Azure subscription ID.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -184,7 +184,7 @@ public final class ContainerRegistryTasksManagementClientImpl extends AzureServi
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The Microsoft Azure subscription ID.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     ContainerRegistryTasksManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -195,7 +195,7 @@ public final class ContainerRegistryTasksManagementClientImpl extends AzureServi
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-06-01-preview";
+        this.apiVersion = "2025-03-01-preview";
         this.agentPools = new AgentPoolsClientImpl(this);
         this.registryTasks = new RegistryTasksClientImpl(this);
         this.runs = new RunsClientImpl(this);

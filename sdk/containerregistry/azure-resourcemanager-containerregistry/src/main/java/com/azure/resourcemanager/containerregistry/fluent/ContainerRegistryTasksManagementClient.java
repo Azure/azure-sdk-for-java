@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface ContainerRegistryTasksManagementClient {
     /**
-     * Gets The Microsoft Azure subscription ID.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */

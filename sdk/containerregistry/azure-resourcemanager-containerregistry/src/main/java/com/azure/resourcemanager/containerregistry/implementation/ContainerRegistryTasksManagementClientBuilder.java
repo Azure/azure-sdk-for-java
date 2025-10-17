@@ -20,12 +20,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { ContainerRegistryTasksManagementClientImpl.class })
 public final class ContainerRegistryTasksManagementClientBuilder {
     /*
-     * The Microsoft Azure subscription ID.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Microsoft Azure subscription ID.
+     * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the ContainerRegistryTasksManagementClientBuilder.
