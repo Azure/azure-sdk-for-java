@@ -34,6 +34,12 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     private final IndexerStatus status;
 
     /*
+     * Snapshot of the indexer’s cumulative runtime consumption for the service over the current UTC period.
+     */
+    @Generated
+    private final IndexerRuntime runtime;
+
+    /*
      * The result of the most recent or an in-progress indexer execution.
      */
     @Generated
@@ -61,13 +67,15 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
      * Creates an instance of SearchIndexerStatus class.
      * 
      * @param status the status value to set.
+     * @param runtime the runtime value to set.
      * @param executionHistory the executionHistory value to set.
      * @param limits the limits value to set.
      */
     @Generated
-    public SearchIndexerStatus(IndexerStatus status, List<IndexerExecutionResult> executionHistory,
-        SearchIndexerLimits limits) {
+    public SearchIndexerStatus(IndexerStatus status, IndexerRuntime runtime,
+        List<IndexerExecutionResult> executionHistory, SearchIndexerLimits limits) {
         this.status = status;
+        this.runtime = runtime;
         this.executionHistory = executionHistory;
         this.limits = limits;
     }
@@ -90,6 +98,17 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public IndexerStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * Get the runtime property: Snapshot of the indexer’s cumulative runtime consumption for the service over the
+     * current UTC period.
+     * 
+     * @return the runtime value.
+     */
+    @Generated
+    public IndexerRuntime getRuntime() {
+        return this.runtime;
     }
 
     /**
@@ -157,6 +176,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
         return jsonReader.readObject(reader -> {
             boolean statusFound = false;
             IndexerStatus status = null;
+            boolean runtimeFound = false;
+            IndexerRuntime runtime = null;
             boolean executionHistoryFound = false;
             List<IndexerExecutionResult> executionHistory = null;
             boolean limitsFound = false;
@@ -171,6 +192,9 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                 if ("status".equals(fieldName)) {
                     status = IndexerStatus.fromString(reader.getString());
                     statusFound = true;
+                } else if ("runtime".equals(fieldName)) {
+                    runtime = IndexerRuntime.fromJson(reader);
+                    runtimeFound = true;
                 } else if ("executionHistory".equals(fieldName)) {
                     executionHistory = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
                     executionHistoryFound = true;
@@ -187,9 +211,9 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     reader.skipChildren();
                 }
             }
-            if (statusFound && executionHistoryFound && limitsFound) {
+            if (statusFound && runtimeFound && executionHistoryFound && limitsFound) {
                 SearchIndexerStatus deserializedSearchIndexerStatus
-                    = new SearchIndexerStatus(status, executionHistory, limits);
+                    = new SearchIndexerStatus(status, runtime, executionHistory, limits);
                 deserializedSearchIndexerStatus.name = name;
                 deserializedSearchIndexerStatus.lastResult = lastResult;
                 deserializedSearchIndexerStatus.currentState = currentState;
@@ -199,6 +223,9 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             List<String> missingProperties = new ArrayList<>();
             if (!statusFound) {
                 missingProperties.add("status");
+            }
+            if (!runtimeFound) {
+                missingProperties.add("runtime");
             }
             if (!executionHistoryFound) {
                 missingProperties.add("executionHistory");
