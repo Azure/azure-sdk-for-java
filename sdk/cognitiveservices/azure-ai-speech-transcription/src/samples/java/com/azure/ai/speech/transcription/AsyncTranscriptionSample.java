@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * the TranscriptionAsyncClient with Project Reactor.
  *
  * This sample shows:
- * - Creating a TranscriptionAsyncClient
+ * - Creating a TranscriptionAsyncClient with API Key or Azure AD authentication
  * - Using reactive programming with Mono
  * - Different patterns: subscribe(), block(), and timeout()
  * - Handling async errors with doOnError()
@@ -39,8 +39,11 @@ public class AsyncTranscriptionSample {
         String endpoint = System.getenv("SPEECH_ENDPOINT");
         String apiKey = System.getenv("SPEECH_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set SPEECH_ENDPOINT and SPEECH_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set SPEECH_ENDPOINT environment variable");
+            System.err.println("\nFor authentication, choose one of:");
+            System.err.println("  Option 1: set SPEECH_API_KEY=your-api-key");
+            System.err.println("  Option 2: Configure Azure AD credentials (DefaultAzureCredential)");
             return;
         }
 
@@ -65,13 +68,22 @@ public class AsyncTranscriptionSample {
         System.out.println("Example 1: Subscribe Pattern (Non-blocking)");
         System.out.println("--------------------------------------------");
 
-        // BEGIN: com.azure.ai.speech.transcription.async.create-client
-        // Create async client
+        // Create async client with API Key authentication
+        // BEGIN: com.azure.ai.speech.transcription.async.create-client.apikey
         TranscriptionAsyncClient asyncClient = new TranscriptionClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(apiKey))
             .buildAsyncClient();
-        // END: com.azure.ai.speech.transcription.async.create-client
+        // END: com.azure.ai.speech.transcription.async.create-client.apikey
+
+        // Alternative: Create async client with Azure AD authentication
+        // BEGIN: com.azure.ai.speech.transcription.async.create-client.azuread
+        // TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        // TranscriptionAsyncClient asyncClient = new TranscriptionClientBuilder()
+        //     .endpoint(endpoint)
+        //     .credential(credential)
+        //     .buildAsyncClient();
+        // END: com.azure.ai.speech.transcription.async.create-client.azuread
 
         try {
             String audioFilePath = "sample-audio.wav";

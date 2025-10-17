@@ -29,6 +29,7 @@ import java.util.Arrays;
 /**
  * Sample demonstrates advanced features of Azure AI Speech Transcription including:
  * - Custom client configuration (logging, retry policies)
+ * - API Key and Azure AD authentication options
  * - Advanced transcription options (locale, profanity filtering, speaker diarization)
  * - Detailed result processing with word-level timings and speaker information
  */
@@ -42,8 +43,11 @@ public class AdvancedTranscriptionSample {
         String endpoint = System.getenv("SPEECH_ENDPOINT");
         String apiKey = System.getenv("SPEECH_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set SPEECH_ENDPOINT and SPEECH_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set SPEECH_ENDPOINT environment variable");
+            System.err.println("\nFor authentication, choose one of:");
+            System.err.println("  Option 1: set SPEECH_API_KEY=your-api-key");
+            System.err.println("  Option 2: Configure Azure AD credentials (DefaultAzureCredential)");
             return;
         }
 
@@ -80,12 +84,22 @@ public class AdvancedTranscriptionSample {
                 .setMaxDelay(Duration.ofSeconds(60))
         );
 
+        // Option 1: Use API Key authentication
         TranscriptionClient client = new TranscriptionClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(apiKey))
             .httpLogOptions(logOptions)
             .retryOptions(retryOptions)
             .buildClient();
+
+        // Option 2: Use Azure AD authentication (recommended for production)
+        // TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        // TranscriptionClient client = new TranscriptionClientBuilder()
+        //     .endpoint(endpoint)
+        //     .credential(credential)
+        //     .httpLogOptions(logOptions)
+        //     .retryOptions(retryOptions)
+        //     .buildClient();
         // END: com.azure.ai.speech.transcription.advanced.custom-client-config
 
         System.out.println("✓ Client created with custom logging and retry configuration\n");
@@ -124,7 +138,7 @@ public class AdvancedTranscriptionSample {
                 // Control profanity handling: MASKED, REMOVED, RAW, or TAGS
                 .setProfanityFilterMode(ProfanityFilterMode.MASKED)
                 // Enable speaker diarization to identify different speakers
-                .setDiarization(new TranscriptionDiarizationOptions()
+                .setDiarizationOptions(new TranscriptionDiarizationOptions()
                     .setEnabled(true)
                     .setMaxSpeakers(5)); // Max number of speakers (2-36)
             // END: com.azure.ai.speech.transcription.advanced.transcription-options
@@ -178,7 +192,7 @@ public class AdvancedTranscriptionSample {
 
             // Enable diarization for speaker identification
             TranscriptionOptions options = new TranscriptionOptions()
-                .setDiarization(new TranscriptionDiarizationOptions().setEnabled(true));
+                .setDiarizationOptions(new TranscriptionDiarizationOptions().setEnabled(true));
 
             TranscribeRequestContent requestContent = new TranscribeRequestContent()
                 .setAudio(audioFileDetails)
@@ -229,3 +243,4 @@ public class AdvancedTranscriptionSample {
         }
     }
 }
+

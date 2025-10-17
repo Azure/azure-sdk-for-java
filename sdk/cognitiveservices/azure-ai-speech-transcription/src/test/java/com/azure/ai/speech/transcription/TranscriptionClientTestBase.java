@@ -8,6 +8,7 @@ import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -18,6 +19,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for TranscriptionClient tests. Contains helper methods and common test infrastructure.
+ * Supports both API Key (KeyCredential) and Azure AD (TokenCredential) authentication.
  */
 class TranscriptionClientTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClientTestBase.class);
@@ -67,7 +70,8 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
      * Creates a client for testing.
      *
      * @param useKeyAuth Whether to use key-based authentication (true) or token-based authentication (false)
-     * @param useRealKey Whether to use a real key from environment variables (true) or a fake key (false)
+     * @param useRealKey Whether to use a real key from environment variables (true) or a fake key (false).
+     *                   Only applies when useKeyAuth is true.
      * @param sync Whether to create a synchronous client (true) or asynchronous client (false)
      */
     protected void createClient(Boolean useKeyAuth, Boolean useRealKey, Boolean sync) {
@@ -83,7 +87,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
 
             if (useKeyAuth && useRealKey) {
                 key = Configuration.getGlobalConfiguration().get("SPEECH_API_KEY");
-                assertTrue(key != null && !key.isEmpty(), "API key is required to run live tests.");
+                assertTrue(key != null && !key.isEmpty(), "API key is required to run live tests with KeyCredential.");
             }
         }
 
@@ -92,14 +96,25 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         // Update the client builder with credentials and recording/playback policies
-        // Note: TranscriptionClient only supports KeyCredential authentication
         if (getTestMode() == TestMode.LIVE) {
-            transcriptionClientBuilder.credential(new KeyCredential(key));
+            if (useKeyAuth) {
+                transcriptionClientBuilder.credential(new KeyCredential(key));
+            } else {
+                // Use Azure AD authentication (TokenCredential)
+                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                transcriptionClientBuilder.credential(credential);
+            }
         } else if (getTestMode() == TestMode.RECORD) {
             transcriptionClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-            transcriptionClientBuilder.credential(new KeyCredential(key));
+            if (useKeyAuth) {
+                transcriptionClientBuilder.credential(new KeyCredential(key));
+            } else {
+                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                transcriptionClientBuilder.credential(credential);
+            }
         } else if (getTestMode() == TestMode.PLAYBACK) {
             transcriptionClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+            // In playback mode, use a fake key regardless of authentication method
             transcriptionClientBuilder.credential(new KeyCredential(key));
         }
 

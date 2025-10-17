@@ -165,7 +165,7 @@ public final class ReadmeSamples {
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(java.util.Arrays.asList("en-US", "es-ES"))  // Specify candidate locales
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)     // Mask profanity
-            .setDiarization(new TranscriptionDiarizationOptions()   // Enable speaker diarization
+            .setDiarizationOptions(new TranscriptionDiarizationOptions()   // Enable speaker diarization
                 .setEnabled(true)
                 .setMaxSpeakers(5));
 
@@ -249,3 +249,4 @@ public final class ReadmeSamples {
         // END: com.azure.ai.speech.transcription.transcriptionresult.detailed
     }
 }
+

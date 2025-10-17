@@ -14,7 +14,9 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 class TranscriptionClientTestBase extends TestProxyTestBase {
     protected TranscriptionClient transcriptionClient;
@@ -25,8 +27,13 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.RECORD) {
-            transcriptionClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
+        if (getTestMode() == TestMode.PLAYBACK) {
+            transcriptionClientbuilder.credential(new MockTokenCredential());
+        } else if (getTestMode() == TestMode.RECORD) {
+            transcriptionClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            transcriptionClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         transcriptionClient = transcriptionClientbuilder.buildClient();
 

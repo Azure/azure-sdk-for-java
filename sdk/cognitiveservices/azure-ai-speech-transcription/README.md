@@ -30,9 +30,25 @@ Various documentation is available to help you get started:
 ```
 [//]: # ({x-version-update-end})
 
+#### Optional: For Azure AD Authentication
+
+If you plan to use Azure AD authentication (recommended for production), also add the `azure-identity` dependency:
+
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.13.0</version>
+</dependency>
+```
+
 ### Authentication
 
-Azure Speech Transcription uses API key authentication. You can find your Speech resource's API key in the [Azure Portal](https://portal.azure.com) or by using the Azure CLI:
+Azure Speech Transcription supports two authentication methods:
+
+#### Option 1: API Key Authentication (Subscription Key)
+
+You can find your Speech resource's API key in the [Azure Portal](https://portal.azure.com) or by using the Azure CLI:
 
 ```bash
 az cognitiveservices account keys list --name <your-resource-name> --resource-group <your-resource-group>
@@ -48,6 +64,34 @@ TranscriptionClient client = new TranscriptionClientBuilder()
     .credential(new KeyCredential("<your-api-key>"))
     .buildClient();
 ```
+
+#### Option 2: Azure AD OAuth2 Authentication (Recommended for Production)
+
+For production scenarios, it's recommended to use Azure Active Directory (Azure AD) authentication with managed identities or service principals. This provides better security and easier credential management.
+
+The OAuth2 scope for Azure Cognitive Services is: `https://cognitiveservices.azure.com/.default`
+
+```java
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+// Use DefaultAzureCredential which works with managed identities, service principals, Azure CLI, etc.
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+TranscriptionClient client = new TranscriptionClientBuilder()
+    .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+    .credential(credential)
+    .buildClient();
+```
+
+**Note:** To use Azure AD authentication, you need to:
+1. Add the `azure-identity` dependency to your project
+2. Assign the appropriate role (e.g., "Cognitive Services User") to your managed identity or service principal
+3. Ensure your Cognitive Services resource has Azure AD authentication enabled
+
+For more information on Azure AD authentication, see:
+- [Authenticate with Azure Identity](https://learn.microsoft.com/azure/developer/java/sdk/identity)
+- [Azure Cognitive Services authentication](https://learn.microsoft.com/azure/ai-services/authentication)
 
 ## Key concepts
 

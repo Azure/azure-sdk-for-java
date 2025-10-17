@@ -9,10 +9,13 @@ import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.CredentialUnavailableException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +26,7 @@ import java.nio.file.Paths;
  * Sample demonstrates proper error handling patterns when using Azure AI Speech Transcription.
  *
  * This sample shows how to handle:
- * - Authentication errors (invalid API key or endpoint)
+ * - Authentication errors (invalid API key, Azure AD token errors, or endpoint)
  * - Invalid audio format errors
  * - File not found errors
  * - Service-side errors (rate limiting, service unavailable)
@@ -39,31 +42,34 @@ public class ErrorHandlingSample {
         System.out.println("Azure AI Speech Transcription - Error Handling Sample");
         System.out.println("======================================================\n");
 
-        // Example 1: Handling authentication errors
+        // Example 1: Handling API Key authentication errors
         demonstrateAuthenticationErrorHandling();
 
-        // Example 2: Handling file I/O errors
+        // Example 2: Handling Azure AD authentication errors
+        demonstrateAzureAdAuthenticationErrorHandling();
+
+        // Example 3: Handling file I/O errors
         demonstrateFileErrorHandling();
 
-        // Example 3: Handling service errors
+        // Example 4: Handling service errors
         demonstrateServiceErrorHandling();
 
-        // Example 4: Comprehensive error handling
+        // Example 5: Comprehensive error handling
         demonstrateComprehensiveErrorHandling();
     }
 
     /**
-     * Demonstrates handling authentication-related errors.
+     * Demonstrates handling API Key authentication-related errors.
      */
     private static void demonstrateAuthenticationErrorHandling() {
-        System.out.println("Example 1: Authentication Error Handling");
-        System.out.println("-----------------------------------------");
+        System.out.println("Example 1: API Key Authentication Error Handling");
+        System.out.println("-------------------------------------------------");
 
         // Intentionally use invalid credentials to demonstrate error handling
         String invalidEndpoint = "https://invalid-endpoint.cognitiveservices.azure.com/";
         String invalidApiKey = "invalid-api-key";
 
-        // BEGIN: com.azure.ai.speech.transcription.error.authentication
+        // BEGIN: com.azure.ai.speech.transcription.error.authentication.apikey
         try {
             TranscriptionClient client = new TranscriptionClientBuilder()
                 .endpoint(invalidEndpoint)
@@ -88,14 +94,65 @@ public class ErrorHandlingSample {
         } catch (Exception e) {
             System.err.println("✗ Unexpected error: " + e.getMessage() + "\n");
         }
-        // END: com.azure.ai.speech.transcription.error.authentication
+        // END: com.azure.ai.speech.transcription.error.authentication.apikey
+    }
+
+    /**
+     * Demonstrates handling Azure AD authentication-related errors.
+     */
+    private static void demonstrateAzureAdAuthenticationErrorHandling() {
+        System.out.println("Example 2: Azure AD Authentication Error Handling");
+        System.out.println("--------------------------------------------------");
+
+        String endpoint = System.getenv("SPEECH_ENDPOINT");
+        if (endpoint == null) {
+            endpoint = "https://example.cognitiveservices.azure.com/";
+        }
+
+        // BEGIN: com.azure.ai.speech.transcription.error.authentication.azuread
+        try {
+            TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+            TranscriptionClient client = new TranscriptionClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
+
+            // Attempt to transcribe (may fail if Azure AD not configured)
+            byte[] dummyAudio = new byte[1024];
+            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(dummyAudio));
+            TranscribeRequestContent requestContent = new TranscribeRequestContent()
+                .setAudio(audioFileDetails)
+                .setOptions(new TranscriptionOptions());
+
+            client.transcribe(requestContent);
+
+        } catch (CredentialUnavailableException e) {
+            // No Azure AD credential sources are available
+            System.err.println("✗ Azure AD credentials unavailable!");
+            System.err.println("  Error: " + e.getMessage());
+            System.err.println("  → Ensure you have configured at least one credential source:");
+            System.err.println("    - Managed Identity (for Azure-hosted apps)");
+            System.err.println("    - Azure CLI (run 'az login')");
+            System.err.println("    - Environment variables (AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET)");
+            System.err.println("    - Visual Studio Code or IntelliJ authentication\n");
+        } catch (ClientAuthenticationException e) {
+            // Authentication token invalid or expired
+            System.err.println("✗ Azure AD authentication failed!");
+            System.err.println("  Error: " + e.getMessage());
+            System.err.println("  → Verify your identity has 'Cognitive Services User' role assigned");
+            System.err.println("  → Check if your token has expired or is invalid");
+            System.err.println("  → Ensure Azure AD authentication is enabled on the resource\n");
+        } catch (Exception e) {
+            System.err.println("✗ Unexpected error: " + e.getMessage() + "\n");
+        }
+        // END: com.azure.ai.speech.transcription.error.authentication.azuread
     }
 
     /**
      * Demonstrates handling file I/O errors.
      */
     private static void demonstrateFileErrorHandling() {
-        System.out.println("Example 2: File Error Handling");
+        System.out.println("Example 3: File Error Handling");
         System.out.println("-------------------------------");
 
         String endpoint = System.getenv("SPEECH_ENDPOINT");

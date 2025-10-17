@@ -73,7 +73,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         TranscriptionDiarizationOptions diarizationOptions
             = new TranscriptionDiarizationOptions().setEnabled(true).setMaxSpeakers(5);
 
-        TranscriptionOptions options = new TranscriptionOptions().setDiarization(diarizationOptions);
+        TranscriptionOptions options = new TranscriptionOptions().setDiarizationOptions(diarizationOptions);
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -97,7 +97,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setChannels(Arrays.asList(0));
+        TranscriptionOptions options = new TranscriptionOptions().setActiveChannels(Arrays.asList(0));
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -113,9 +113,9 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
             = new TranscriptionDiarizationOptions().setEnabled(true).setMaxSpeakers(5);
 
         TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US"))
-            .setDiarization(diarizationOptions)
+            .setDiarizationOptions(diarizationOptions)
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setChannels(Arrays.asList(0));
+            .setActiveChannels(Arrays.asList(0));
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -145,9 +145,9 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
             = new TranscriptionDiarizationOptions().setEnabled(true).setMaxSpeakers(5);
 
         TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US", "es-ES"))
-            .setDiarization(diarizationOptions)
+            .setDiarizationOptions(diarizationOptions)
             .setProfanityFilterMode(ProfanityFilterMode.REMOVED)
-            .setChannels(Arrays.asList(0, 1));
+            .setActiveChannels(Arrays.asList(0, 1));
 
         RequestOptions requestOptions
             = new RequestOptions().addHeader(HttpHeaderName.fromString("x-custom-header"), "custom-value")
@@ -217,6 +217,9 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
      *
      ***********************************************************************************/
 
+    // Note: This test now passes due to temporary workaround in generated code.
+    // The null check was manually added to TranscriptionAsyncClient.transcribe()
+    // and should be removed when the TypeSpec generator is fixed to include parameter validation.
     @Test
     public void testTranscribeAsyncWithNullRequestContent() {
         createClient(true, true, sync);

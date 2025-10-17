@@ -134,7 +134,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(Arrays.asList("en-US", "es-ES"))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setDiarization(new TranscriptionDiarizationOptions()
+            .setDiarizationOptions(new TranscriptionDiarizationOptions()
                 .setEnabled(true)
                 .setMaxSpeakers(5));
 
@@ -235,3 +235,4 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.speech.transcription.transcriptionasyncclient.results.detailed
     }
 }
+

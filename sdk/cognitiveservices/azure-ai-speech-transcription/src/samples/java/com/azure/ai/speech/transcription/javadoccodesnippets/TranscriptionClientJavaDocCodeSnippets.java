@@ -13,7 +13,9 @@ import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,6 +39,21 @@ public class TranscriptionClientJavaDocCodeSnippets {
             .credential(new KeyCredential(key))
             .buildClient();
         // END: com.azure.ai.speech.transcription.transcriptionclient.instantiation.apikey
+    }
+
+    /**
+     * Sample for creating a synchronous TranscriptionClient with Azure AD authentication.
+     */
+    public void createClientWithTokenCredential() {
+        // BEGIN: com.azure.ai.speech.transcription.transcriptionclient.instantiation.tokencredential
+        // Use DefaultAzureCredential for Azure AD authentication
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildClient();
+        // END: com.azure.ai.speech.transcription.transcriptionclient.instantiation.tokencredential
     }
 
     /**
@@ -94,7 +111,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         TranscriptionOptions options = new TranscriptionOptions()
             .setLocales(Arrays.asList("en-US", "es-ES"))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setDiarization(new TranscriptionDiarizationOptions()
+            .setDiarizationOptions(new TranscriptionDiarizationOptions()
                 .setEnabled(true)
                 .setMaxSpeakers(5));
 
@@ -161,3 +178,4 @@ public class TranscriptionClientJavaDocCodeSnippets {
         // END: com.azure.ai.speech.transcription.transcriptionclient.results.detailed
     }
 }
+

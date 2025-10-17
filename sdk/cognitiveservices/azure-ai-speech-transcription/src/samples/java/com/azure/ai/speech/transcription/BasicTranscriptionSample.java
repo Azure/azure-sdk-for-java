@@ -9,7 +9,9 @@ import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +23,7 @@ import java.nio.file.Paths;
  * an audio file with default settings.
  *
  * This sample shows:
- * - Creating a TranscriptionClient with endpoint and API key
+ * - Creating a TranscriptionClient with endpoint and API key (or Azure AD token)
  * - Reading an audio file from disk
  * - Transcribing the audio with default options
  * - Accessing transcription results
@@ -33,29 +35,52 @@ public class BasicTranscriptionSample {
      * @param args command line arguments (not used)
      */
     public static void main(String[] args) {
-        // PREREQUISITE: Set environment variables SPEECH_ENDPOINT and SPEECH_API_KEY
-        // Example:
+        // PREREQUISITE: Set environment variables for authentication
+        // 
+        // Option 1: API Key Authentication
         // set SPEECH_ENDPOINT=https://your-resource-name.cognitiveservices.azure.com/
         // set SPEECH_API_KEY=your-api-key
+        //
+        // Option 2: Azure AD Authentication (recommended for production)
+        // set SPEECH_ENDPOINT=https://your-resource-name.cognitiveservices.azure.com/
+        // Ensure you have configured Azure AD credentials (managed identity, service principal, etc.)
 
         String endpoint = System.getenv("SPEECH_ENDPOINT");
         String apiKey = System.getenv("SPEECH_API_KEY");
 
-        if (endpoint == null || apiKey == null) {
-            System.err.println("Please set SPEECH_ENDPOINT and SPEECH_API_KEY environment variables");
+        if (endpoint == null) {
+            System.err.println("Please set SPEECH_ENDPOINT environment variable");
             System.err.println("Example:");
             System.err.println("  set SPEECH_ENDPOINT=https://your-resource-name.cognitiveservices.azure.com/");
-            System.err.println("  set SPEECH_API_KEY=your-api-key");
+            System.err.println("\nFor authentication, choose one of:");
+            System.err.println("  Option 1: set SPEECH_API_KEY=your-api-key");
+            System.err.println("  Option 2: Configure Azure AD credentials (DefaultAzureCredential)");
             return;
         }
 
-        // BEGIN: com.azure.ai.speech.transcription.basic.create-client
-        // Create the transcription client
-        TranscriptionClient client = new TranscriptionClientBuilder()
-            .endpoint(endpoint)
-            .credential(new KeyCredential(apiKey))
-            .buildClient();
-        // END: com.azure.ai.speech.transcription.basic.create-client
+        // Create the transcription client with appropriate authentication
+        TranscriptionClient client;
+        
+        if (apiKey != null && !apiKey.isEmpty()) {
+            // BEGIN: com.azure.ai.speech.transcription.basic.create-client.apikey
+            // Option 1: Use API Key authentication
+            client = new TranscriptionClientBuilder()
+                .endpoint(endpoint)
+                .credential(new KeyCredential(apiKey))
+                .buildClient();
+            // END: com.azure.ai.speech.transcription.basic.create-client.apikey
+            System.out.println("Using API Key authentication");
+        } else {
+            // BEGIN: com.azure.ai.speech.transcription.basic.create-client.azuread
+            // Option 2: Use Azure AD authentication (recommended for production)
+            TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+            client = new TranscriptionClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential)
+                .buildClient();
+            // END: com.azure.ai.speech.transcription.basic.create-client.azuread
+            System.out.println("Using Azure AD authentication");
+        }
 
         System.out.println("Azure AI Speech Transcription - Basic Sample");
         System.out.println("==============================================\n");
