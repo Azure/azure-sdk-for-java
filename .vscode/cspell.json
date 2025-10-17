@@ -224,6 +224,7 @@
     "azsdk",
     "azsynapse",
     "azurecr",
+    "azuread",
     "azurestackhci",
     "backoff",
     "boringssl",
