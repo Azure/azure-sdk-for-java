@@ -40,8 +40,6 @@ import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryListCredentialsResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryNameStatusInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryUsageListResultInner;
-import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
-import com.azure.resourcemanager.containerregistry.fluent.models.SourceUploadDefinitionInner;
 import com.azure.resourcemanager.containerregistry.models.GenerateCredentialsParameters;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.PrivateLinkResourceListResult;
@@ -49,7 +47,6 @@ import com.azure.resourcemanager.containerregistry.models.RegenerateCredentialPa
 import com.azure.resourcemanager.containerregistry.models.RegistryListResult;
 import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 import com.azure.resourcemanager.containerregistry.models.RegistryUpdateParameters;
-import com.azure.resourcemanager.containerregistry.models.RunRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -88,7 +85,7 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientRegistries")
     public interface RegistriesService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importImage")
@@ -220,25 +217,6 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> scheduleRun(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RunRequest runRequest,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listBuildSourceUploadUrl")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SourceUploadDefinitionInner>> getBuildSourceUploadUrl(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -296,9 +274,8 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         return FluxUtil
-            .withContext(context -> service.importImage(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.importImage(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -338,10 +315,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         context = this.client.mergeContext(context);
-        return service.importImage(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, parameters, context);
+        return service.importImage(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, parameters, context);
     }
 
     /**
@@ -518,11 +494,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryNameCheckRequest.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), registryNameCheckRequest, accept, context))
+            .withContext(
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), registryNameCheckRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -555,11 +531,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryNameCheckRequest.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            registryNameCheckRequest, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), registryNameCheckRequest, accept, context);
     }
 
     /**
@@ -630,11 +605,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<RegistryInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -660,10 +634,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -745,10 +720,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
             .<PagedResponse<RegistryInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -781,12 +755,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, accept, context)
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -880,10 +853,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -918,11 +890,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, accept, context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context);
     }
 
     /**
@@ -1008,10 +979,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registry.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, registry, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1052,11 +1022,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registry.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, registry, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, registry, accept, context);
     }
 
     /**
@@ -1232,9 +1201,8 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1268,10 +1236,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, context);
     }
 
     /**
@@ -1440,12 +1407,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryUpdateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, registryUpdateParameters, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, registryUpdateParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1486,11 +1452,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             registryUpdateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, registryUpdateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, registryUpdateParameters, accept, context);
     }
 
     /**
@@ -1672,10 +1637,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listUsages(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.listUsages(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1710,11 +1674,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listUsages(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, accept, context);
+        return service.listUsages(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context);
     }
 
     /**
@@ -1794,11 +1757,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listPrivateLinkResources(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
+            .withContext(
+                context -> service.listPrivateLinkResources(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
             .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1834,12 +1797,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listPrivateLinkResources(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, accept, context)
+            .listPrivateLinkResources(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1949,11 +1911,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPrivateLinkResource(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, registryName, groupName, accept, context))
+            .withContext(
+                context -> service.getPrivateLinkResource(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, registryName, groupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1991,11 +1953,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getPrivateLinkResource(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, groupName, accept, context);
+        return service.getPrivateLinkResource(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, groupName, accept, context);
     }
 
     /**
@@ -2081,10 +2042,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCredentials(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.listCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2119,11 +2079,10 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, accept, context);
+        return service.listCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context);
     }
 
     /**
@@ -2212,10 +2171,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             regenerateCredentialParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.regenerateCredential(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.regenerateCredential(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, regenerateCredentialParameters,
                 accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2260,11 +2218,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             regenerateCredentialParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.regenerateCredential(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, regenerateCredentialParameters, accept, context);
+        return service.regenerateCredential(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, regenerateCredentialParameters, accept,
+            context);
     }
 
     /**
@@ -2361,10 +2319,9 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             generateCredentialsParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.generateCredentials(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.generateCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, generateCredentialsParameters, accept,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2407,11 +2364,11 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         } else {
             generateCredentialsParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.generateCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, generateCredentialsParameters, accept, context);
+        return service.generateCredentials(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, generateCredentialsParameters, accept,
+            context);
     }
 
     /**
@@ -2572,360 +2529,6 @@ public final class RegistriesClientImpl implements InnerSupportsGet<RegistryInne
         GenerateCredentialsParameters generateCredentialsParameters, Context context) {
         return generateCredentialsAsync(resourceGroupName, registryName, generateCredentialsParameters, context)
             .block();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
-        RunRequest runRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (runRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
-        } else {
-            runRequest.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.scheduleRun(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, runRequest, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
-        RunRequest runRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        if (runRequest == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runRequest is required and cannot be null."));
-        } else {
-            runRequest.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.scheduleRun(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, runRequest, accept, context);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(String resourceGroupName,
-        String registryName, RunRequest runRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest);
-        return this.client.<RunInner, RunInner>getLroResult(mono, this.client.getHttpPipeline(), RunInner.class,
-            RunInner.class, this.client.getContext());
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(String resourceGroupName,
-        String registryName, RunRequest runRequest, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = scheduleRunWithResponseAsync(resourceGroupName, registryName, runRequest, context);
-        return this.client.<RunInner, RunInner>getLroResult(mono, this.client.getHttpPipeline(), RunInner.class,
-            RunInner.class, context);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(String resourceGroupName, String registryName,
-        RunRequest runRequest) {
-        return this.beginScheduleRunAsync(resourceGroupName, registryName, runRequest).getSyncPoller();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(String resourceGroupName, String registryName,
-        RunRequest runRequest, Context context) {
-        return this.beginScheduleRunAsync(resourceGroupName, registryName, runRequest, context).getSyncPoller();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunInner> scheduleRunAsync(String resourceGroupName, String registryName, RunRequest runRequest) {
-        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RunInner> scheduleRunAsync(String resourceGroupName, String registryName, RunRequest runRequest,
-        Context context) {
-        return beginScheduleRunAsync(resourceGroupName, registryName, runRequest, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest) {
-        return scheduleRunAsync(resourceGroupName, registryName, runRequest).block();
-    }
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest, Context context) {
-        return scheduleRunAsync(resourceGroupName, registryName, runRequest, context).block();
-    }
-
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SourceUploadDefinitionInner>>
-        getBuildSourceUploadUrlWithResponseAsync(String resourceGroupName, String registryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getBuildSourceUploadUrl(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceUploadDefinitionInner>>
-        getBuildSourceUploadUrlWithResponseAsync(String resourceGroupName, String registryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBuildSourceUploadUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, apiVersion, accept, context);
-    }
-
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SourceUploadDefinitionInner> getBuildSourceUploadUrlAsync(String resourceGroupName,
-        String registryName) {
-        return getBuildSourceUploadUrlWithResponseAsync(resourceGroupName, registryName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SourceUploadDefinitionInner> getBuildSourceUploadUrlWithResponse(String resourceGroupName,
-        String registryName, Context context) {
-        return getBuildSourceUploadUrlWithResponseAsync(resourceGroupName, registryName, context).block();
-    }
-
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceUploadDefinitionInner getBuildSourceUploadUrl(String resourceGroupName, String registryName) {
-        return getBuildSourceUploadUrlWithResponse(resourceGroupName, registryName, Context.NONE).getValue();
     }
 
     /**

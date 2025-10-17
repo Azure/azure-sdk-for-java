@@ -54,25 +54,25 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryTasksManagementClientImpl client;
 
     /**
      * Initializes an instance of AgentPoolsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AgentPoolsClientImpl(ContainerRegistryManagementClientImpl client) {
+    AgentPoolsClientImpl(ContainerRegistryTasksManagementClientImpl client) {
         this.service
             = RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerRegistryManagementClientAgentPools to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ContainerRegistryTasksManagementClientAgentPools to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryTasksManagementClientAgentPools")
     public interface AgentPoolsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/agentPools/{agentPoolName}")
@@ -176,11 +176,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -218,11 +217,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-            apiVersion, agentPoolName, accept, context);
+            this.client.getApiVersion(), agentPoolName, accept, context);
     }
 
     /**
@@ -315,11 +313,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             agentPool.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, agentPool, accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    registryName, this.client.getApiVersion(), agentPoolName, agentPool, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -363,11 +361,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             agentPool.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, agentPool, accept, context);
+            registryName, this.client.getApiVersion(), agentPoolName, agentPool, accept, context);
     }
 
     /**
@@ -560,11 +557,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -601,11 +597,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, accept, context);
+            registryName, this.client.getApiVersion(), agentPoolName, accept, context);
     }
 
     /**
@@ -791,11 +786,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, updateParameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    registryName, this.client.getApiVersion(), agentPoolName, updateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -840,11 +835,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, updateParameters, accept, context);
+            registryName, this.client.getApiVersion(), agentPoolName, updateParameters, accept, context);
     }
 
     /**
@@ -1032,11 +1026,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1071,12 +1064,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-                apiVersion, accept, context)
+                this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1178,11 +1170,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getQueueStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, agentPoolName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1220,11 +1211,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getQueueStatus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, agentPoolName, accept, context);
+            registryName, this.client.getApiVersion(), agentPoolName, accept, context);
     }
 
     /**

@@ -29,7 +29,7 @@ public class RegistryTasksImpl implements RegistryTasks {
     @Override
     public PagedFlux<RegistryTask> listByRegistryAsync(String resourceGroupName, String registryName) {
         return PagedConverter.mapPage(
-            this.registryManager.serviceClient().getTasks().listAsync(resourceGroupName, registryName),
+            this.registryManager.taskClient().getTasks().listAsync(resourceGroupName, registryName),
             inner -> wrapModel(inner));
     }
 
@@ -42,12 +42,12 @@ public class RegistryTasksImpl implements RegistryTasks {
     public Mono<RegistryTask> getByRegistryAsync(String resourceGroupName, String registryName, String taskName,
         boolean includeSecrets) {
         if (includeSecrets) {
-            return this.registryManager.serviceClient()
+            return this.registryManager.taskClient()
                 .getTasks()
                 .getDetailsAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
         } else {
-            return this.registryManager.serviceClient()
+            return this.registryManager.taskClient()
                 .getTasks()
                 .getAsync(resourceGroupName, registryName, taskName)
                 .map(taskInner -> new RegistryTaskImpl(registryManager, taskInner));
@@ -62,7 +62,7 @@ public class RegistryTasksImpl implements RegistryTasks {
 
     @Override
     public Mono<Void> deleteByRegistryAsync(String resourceGroupName, String registryName, String taskName) {
-        return this.registryManager.serviceClient().getTasks().deleteAsync(resourceGroupName, registryName, taskName);
+        return this.registryManager.taskClient().getTasks().deleteAsync(resourceGroupName, registryName, taskName);
     }
 
     @Override
@@ -75,6 +75,6 @@ public class RegistryTasksImpl implements RegistryTasks {
     }
 
     public TasksClient inner() {
-        return this.registryManager.serviceClient().getTasks();
+        return this.registryManager.taskClient().getTasks();
     }
 }

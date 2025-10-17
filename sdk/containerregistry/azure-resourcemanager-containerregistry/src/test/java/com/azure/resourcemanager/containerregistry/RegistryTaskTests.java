@@ -1063,7 +1063,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertTrue(registryManager.registryTaskRuns().listByRegistry(rgName, acrName).stream().count() == 1);
 
         // cancelling the run we just created
-        registryManager.serviceClient().getRuns().cancel(rgName, acrName, registryTaskRun.runId());
+        registryManager.taskClient().getRuns().cancel(rgName, acrName, registryTaskRun.runId());
 
         boolean notCanceled = true;
         while (notCanceled) {

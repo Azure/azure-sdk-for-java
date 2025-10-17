@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.containerregistry.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * The UserIdentityProperties model.
  */
-@Immutable
+@Fluent
 public final class UserIdentityProperties implements JsonSerializable<UserIdentityProperties> {
     /*
      * The principal id of user assigned identity.
@@ -42,12 +42,34 @@ public final class UserIdentityProperties implements JsonSerializable<UserIdenti
     }
 
     /**
+     * Set the principalId property: The principal id of user assigned identity.
+     * 
+     * @param principalId the principalId value to set.
+     * @return the UserIdentityProperties object itself.
+     */
+    public UserIdentityProperties withPrincipalId(String principalId) {
+        this.principalId = principalId;
+        return this;
+    }
+
+    /**
      * Get the clientId property: The client id of user assigned identity.
      * 
      * @return the clientId value.
      */
     public String clientId() {
         return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: The client id of user assigned identity.
+     * 
+     * @param clientId the clientId value to set.
+     * @return the UserIdentityProperties object itself.
+     */
+    public UserIdentityProperties withClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
     }
 
     /**
@@ -64,6 +86,8 @@ public final class UserIdentityProperties implements JsonSerializable<UserIdenti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("clientId", this.clientId);
         return jsonWriter.writeEndObject();
     }
 

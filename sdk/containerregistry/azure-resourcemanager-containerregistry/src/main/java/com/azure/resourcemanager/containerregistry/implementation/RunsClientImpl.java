@@ -52,24 +52,24 @@ public final class RunsClientImpl implements RunsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryTasksManagementClientImpl client;
 
     /**
      * Initializes an instance of RunsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RunsClientImpl(ContainerRegistryManagementClientImpl client) {
+    RunsClientImpl(ContainerRegistryTasksManagementClientImpl client) {
         this.service = RestProxy.create(RunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerRegistryManagementClientRuns to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ContainerRegistryTasksManagementClientRuns to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryTasksManagementClientRuns")
     public interface RunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs")
@@ -161,11 +161,10 @@ public final class RunsClientImpl implements RunsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, filter, top, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), filter, top, accept, context))
             .<PagedResponse<RunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -203,12 +202,11 @@ public final class RunsClientImpl implements RunsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-                apiVersion, filter, top, accept, context)
+                this.client.getApiVersion(), filter, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -340,11 +338,10 @@ public final class RunsClientImpl implements RunsClient {
         if (runId == null) {
             return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, runId, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), runId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -382,11 +379,10 @@ public final class RunsClientImpl implements RunsClient {
         if (runId == null) {
             return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-            apiVersion, runId, accept, context);
+            this.client.getApiVersion(), runId, accept, context);
     }
 
     /**
@@ -479,11 +475,11 @@ public final class RunsClientImpl implements RunsClient {
         } else {
             runUpdateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, runId, runUpdateParameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    registryName, this.client.getApiVersion(), runId, runUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -527,11 +523,10 @@ public final class RunsClientImpl implements RunsClient {
         } else {
             runUpdateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, runId, runUpdateParameters, accept, context);
+            registryName, this.client.getApiVersion(), runId, runUpdateParameters, accept, context);
     }
 
     /**
@@ -724,11 +719,10 @@ public final class RunsClientImpl implements RunsClient {
         if (runId == null) {
             return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLogSasUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, runId, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), runId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -765,11 +759,10 @@ public final class RunsClientImpl implements RunsClient {
         if (runId == null) {
             return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLogSasUrl(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, runId, accept, context);
+            registryName, this.client.getApiVersion(), runId, accept, context);
     }
 
     /**
@@ -855,11 +848,10 @@ public final class RunsClientImpl implements RunsClient {
         if (runId == null) {
             return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, runId, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), runId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -896,11 +888,10 @@ public final class RunsClientImpl implements RunsClient {
         if (runId == null) {
             return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.cancel(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, runId, accept, context);
+            registryName, this.client.getApiVersion(), runId, accept, context);
     }
 
     /**
@@ -1051,7 +1042,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the runs for a registry along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listNextSinglePageAsync(String nextLink) {
@@ -1077,7 +1068,7 @@ public final class RunsClientImpl implements RunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of runs along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the runs for a registry along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunInner>> listNextSinglePageAsync(String nextLink, Context context) {

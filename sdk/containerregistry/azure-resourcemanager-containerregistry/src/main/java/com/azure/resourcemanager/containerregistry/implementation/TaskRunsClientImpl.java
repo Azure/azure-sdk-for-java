@@ -53,24 +53,24 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryTasksManagementClientImpl client;
 
     /**
      * Initializes an instance of TaskRunsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    TaskRunsClientImpl(ContainerRegistryManagementClientImpl client) {
+    TaskRunsClientImpl(ContainerRegistryTasksManagementClientImpl client) {
         this.service = RestProxy.create(TaskRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerRegistryManagementClientTaskRuns to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ContainerRegistryTasksManagementClientTaskRuns to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryTasksManagementClientTaskRuns")
     public interface TaskRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
@@ -173,11 +173,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -215,11 +214,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-            apiVersion, taskRunName, accept, context);
+            this.client.getApiVersion(), taskRunName, accept, context);
     }
 
     /**
@@ -312,11 +310,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             taskRun.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, taskRun, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, taskRun, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -360,11 +357,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             taskRun.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, taskRun, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, taskRun, accept, context);
     }
 
     /**
@@ -556,11 +552,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -597,11 +592,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, accept, context);
     }
 
     /**
@@ -786,11 +780,11 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, updateParameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    registryName, this.client.getApiVersion(), taskRunName, updateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -835,11 +829,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, updateParameters, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, updateParameters, accept, context);
     }
 
     /**
@@ -1033,11 +1026,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDetails(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1075,11 +1067,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getDetails(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, accept, context);
     }
 
     /**
@@ -1161,11 +1152,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<TaskRunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1200,12 +1190,11 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-                apiVersion, accept, context)
+                this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
