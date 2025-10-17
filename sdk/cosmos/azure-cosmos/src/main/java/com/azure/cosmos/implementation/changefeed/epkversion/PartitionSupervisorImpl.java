@@ -34,6 +34,11 @@ class PartitionSupervisorImpl<T> implements PartitionSupervisor {
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
     private final CancellationTokenSource childShutdownCts;
+    /**
+     * The verification factor determines the size of the verification window for lease renewal operations.
+     * It is set to 25 times the renewal interval to provide a sufficiently large window for verifying
+     * lease validity and handling transient failures.
+     */
     private static final int VERIFICATION_FACTOR = 25;
 
     private volatile RuntimeException resultException;
@@ -73,7 +78,7 @@ class PartitionSupervisorImpl<T> implements PartitionSupervisor {
 
     private boolean shouldContinue(CancellationToken shutdownToken) {
         Duration timeSinceLastProcessedChanges = Duration.between(processor.getLastProcessedTime(), Instant.now());
-        // if cfp has seen successes processing, we do a renew,
+        // if cfp has seen successful processing, we do a renew,
         // otherwise we do not to allow lease stealing
         if (timeSinceLastProcessedChanges.getSeconds() > this.renewer.getLeaseRenewInterval().getSeconds() * VERIFICATION_FACTOR) {
             logger.info("Lease with token {}: skipping renew as no batches processed.", this.lease.getLeaseToken());

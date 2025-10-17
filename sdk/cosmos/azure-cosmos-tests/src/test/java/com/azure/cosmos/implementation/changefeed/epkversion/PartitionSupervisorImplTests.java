@@ -68,7 +68,6 @@ public class PartitionSupervisorImplTests {
         Mockito.when(processorMock.getLastProcessedTime()).thenReturn(Instant.now());
 
         boolean result = invokeShouldContinue(sup, cts.getToken());
-        // double check this metho
         assertThat(result).isTrue();
     }
 
