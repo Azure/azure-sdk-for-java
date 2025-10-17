@@ -285,6 +285,16 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
      */
     private ComputeModel computeModel;
 
+    /*
+     * Exadata Database Storage Vault ID
+     */
+    private String exascaleDbStorageVaultId;
+
+    /*
+     * Specifies whether the type of storage management for the VM cluster is ASM or Exascale.
+     */
+    private ExadataVmClusterStorageManagementType storageManagementType;
+
     /**
      * Creates an instance of CloudVmClusterProperties class.
      */
@@ -1113,6 +1123,36 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
+     * Get the exascaleDbStorageVaultId property: Exadata Database Storage Vault ID.
+     * 
+     * @return the exascaleDbStorageVaultId value.
+     */
+    public String exascaleDbStorageVaultId() {
+        return this.exascaleDbStorageVaultId;
+    }
+
+    /**
+     * Set the exascaleDbStorageVaultId property: Exadata Database Storage Vault ID.
+     * 
+     * @param exascaleDbStorageVaultId the exascaleDbStorageVaultId value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withExascaleDbStorageVaultId(String exascaleDbStorageVaultId) {
+        this.exascaleDbStorageVaultId = exascaleDbStorageVaultId;
+        return this;
+    }
+
+    /**
+     * Get the storageManagementType property: Specifies whether the type of storage management for the VM cluster is
+     * ASM or Exascale.
+     * 
+     * @return the storageManagementType value.
+     */
+    public ExadataVmClusterStorageManagementType storageManagementType() {
+        return this.storageManagementType;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1150,6 +1190,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
         jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
         jsonWriter.writeArrayField("computeNodes", this.computeNodes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dbServers", this.dbServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("exascaleDbStorageVaultId", this.exascaleDbStorageVaultId);
         return jsonWriter.writeEndObject();
     }
 
@@ -1286,6 +1327,11 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                     deserializedCloudVmClusterProperties.subnetOcid = reader.getString();
                 } else if ("computeModel".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.computeModel = ComputeModel.fromString(reader.getString());
+                } else if ("exascaleDbStorageVaultId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.exascaleDbStorageVaultId = reader.getString();
+                } else if ("storageManagementType".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.storageManagementType
+                        = ExadataVmClusterStorageManagementType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -23,7 +23,7 @@ public final class AutonomousDatabaseVersionsListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"ghwzhomewjjstli\",\"dbWorkload\":\"AJD\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":true},\"id\":\"znvodrrslblxydk\",\"name\":\"rxvvbxi\",\"type\":\"kgfbqljnqkhy\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"mkxwxdcvjwcyziak\",\"dbWorkload\":\"OLTP\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"dsiwdfmmp\",\"name\":\"hzzwvywrgyngy\",\"type\":\"grpxncakiqaondjr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class AutonomousDatabaseVersionsListByLocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AutonomousDbVersion> response
-            = manager.autonomousDatabaseVersions().listByLocation("avsczuejdtxp", com.azure.core.util.Context.NONE);
+            = manager.autonomousDatabaseVersions().listByLocation("a", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ghwzhomewjjstli", response.iterator().next().properties().version());
-        Assertions.assertEquals(WorkloadType.AJD, response.iterator().next().properties().dbWorkload());
+        Assertions.assertEquals("mkxwxdcvjwcyziak", response.iterator().next().properties().version());
+        Assertions.assertEquals(WorkloadType.OLTP, response.iterator().next().properties().dbWorkload());
         Assertions.assertTrue(response.iterator().next().properties().isDefaultForFree());
-        Assertions.assertTrue(response.iterator().next().properties().isDefaultForPaid());
+        Assertions.assertFalse(response.iterator().next().properties().isDefaultForPaid());
         Assertions.assertFalse(response.iterator().next().properties().isFreeTierEnabled());
-        Assertions.assertTrue(response.iterator().next().properties().isPaidEnabled());
+        Assertions.assertFalse(response.iterator().next().properties().isPaidEnabled());
     }
 }

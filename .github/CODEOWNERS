@@ -739,9 +739,6 @@
 # ServiceLabel: %Redis Cache
 # ServiceOwners:                                                   @yegu-ms
 
-# PRLabel: %Remote Rendering
-/sdk/remoterendering/                                              @MichaelZp0 @ChristopherManthei @Azure/azure-java-sdk
-
 # ServiceLabel: %Reservations
 # ServiceOwners:                                                   @Rkapso
 

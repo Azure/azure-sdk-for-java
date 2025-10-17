@@ -11,8 +11,8 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderVolumeMigrateBackupsSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/BackupsUnderVolume_Migrate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/
+     * BackupsUnderVolume_Migrate.json
      */
     /**
      * Sample code: BackupsUnderVolume_Migrate.

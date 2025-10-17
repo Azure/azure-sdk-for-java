@@ -398,8 +398,9 @@ public final class AutonomousDatabaseCloneProperties extends AutonomousDatabaseB
      * {@inheritDoc}
      */
     @Override
-    public AutonomousDatabaseCloneProperties withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+    public AutonomousDatabaseCloneProperties
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -551,7 +552,8 @@ public final class AutonomousDatabaseCloneProperties extends AutonomousDatabaseB
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -677,9 +679,10 @@ public final class AutonomousDatabaseCloneProperties extends AutonomousDatabaseB
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseCloneProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
+                    deserializedAutonomousDatabaseCloneProperties.withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseCloneProperties.withPrivateEndpointIp(reader.getString());
                 } else if ("privateEndpointLabel".equals(fieldName)) {

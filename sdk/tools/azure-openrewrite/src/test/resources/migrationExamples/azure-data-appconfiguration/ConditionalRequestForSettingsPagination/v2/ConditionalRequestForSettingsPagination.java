@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
-
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.MatchConditions;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.SettingSelector;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpMatchConditions;
+import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,20 +32,20 @@ public class ConditionalRequestForSettingsPagination {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+            .connectionString(connectionString)
+            .buildClient();
 
         // list all settings and get their page ETags
-        List<MatchConditions> matchConditionsList = client.listConfigurationSettings(null)
-                .streamByPage()
-                .collect(Collectors.toList())
-                .stream()
-                .map(pagedResponse -> new MatchConditions().setIfNoneMatch(
-                        pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
-                .collect(Collectors.toList());
+        List<HttpMatchConditions> matchConditionsList = client.listConfigurationSettings(null)
+            .streamByPage()
+            .collect(Collectors.toList())
+            .stream()
+            .map(pagedResponse -> new HttpMatchConditions().setIfNoneMatch(
+                pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
+            .collect(Collectors.toList());
 
         PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
-                new SettingSelector().setMatchConditions(matchConditionsList));
+            new SettingSelector().setMatchConditions(matchConditionsList));
 
         settings.iterableByPage().forEach(pagedResponse -> {
             int statusCode = pagedResponse.getStatusCode();

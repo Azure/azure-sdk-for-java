@@ -33,7 +33,9 @@ import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
+import com.azure.resourcemanager.netapp.fluent.BucketsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
+import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceRegionInfosClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceUsagesClient;
@@ -355,6 +357,20 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The NetAppResourceQuotaLimitsAccountsClient object to access its operations.
+     */
+    private final NetAppResourceQuotaLimitsAccountsClient netAppResourceQuotaLimitsAccounts;
+
+    /**
+     * Gets the NetAppResourceQuotaLimitsAccountsClient object to access its operations.
+     * 
+     * @return the NetAppResourceQuotaLimitsAccountsClient object.
+     */
+    public NetAppResourceQuotaLimitsAccountsClient getNetAppResourceQuotaLimitsAccounts() {
+        return this.netAppResourceQuotaLimitsAccounts;
+    }
+
+    /**
      * The BackupVaultsClient object to access its operations.
      */
     private final BackupVaultsClient backupVaults;
@@ -411,6 +427,20 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The BucketsClient object to access its operations.
+     */
+    private final BucketsClient buckets;
+
+    /**
+     * Gets the BucketsClient object to access its operations.
+     * 
+     * @return the BucketsClient object.
+     */
+    public BucketsClient getBuckets() {
+        return this.buckets;
+    }
+
+    /**
      * Initializes an instance of NetAppManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -427,7 +457,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-06-01";
+        this.apiVersion = "2025-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceUsages = new NetAppResourceUsagesClientImpl(this);
@@ -443,10 +473,12 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.volumeGroups = new VolumeGroupsClientImpl(this);
         this.subvolumes = new SubvolumesClientImpl(this);
         this.backups = new BackupsClientImpl(this);
+        this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.backupsUnderBackupVaults = new BackupsUnderBackupVaultsClientImpl(this);
         this.backupsUnderVolumes = new BackupsUnderVolumesClientImpl(this);
         this.backupsUnderAccounts = new BackupsUnderAccountsClientImpl(this);
+        this.buckets = new BucketsClientImpl(this);
     }
 
     /**

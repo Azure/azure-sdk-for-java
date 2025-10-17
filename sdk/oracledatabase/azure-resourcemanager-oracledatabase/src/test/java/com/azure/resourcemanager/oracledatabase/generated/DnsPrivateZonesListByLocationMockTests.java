@@ -24,7 +24,7 @@ public final class DnsPrivateZonesListByLocationMockTests {
     @Test
     public void testListByLocation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ocid\":\"zdcgdzbenr\",\"isProtected\":false,\"lifecycleState\":\"Creating\",\"self\":\"awetzq\",\"serial\":1254127143,\"version\":\"tjwfljhznamtua\",\"viewId\":\"zwcjjncqtj\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-03-13T06:57:20Z\",\"provisioningState\":\"Failed\"},\"id\":\"bgatzu\",\"name\":\"vbxngr\",\"type\":\"bwggahtt\"}]}";
+            = "{\"value\":[{\"properties\":{\"ocid\":\"it\",\"isProtected\":false,\"lifecycleState\":\"Creating\",\"self\":\"zvbrzcdbanfzndsc\",\"serial\":1628332910,\"version\":\"xeatkd\",\"viewId\":\"wnrdjyibqbnaom\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-05-24T04:18:25Z\",\"provisioningState\":\"Canceled\"},\"id\":\"hmaxljalfi\",\"name\":\"cjmobcanc\",\"type\":\"exxqcwg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class DnsPrivateZonesListByLocationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DnsPrivateZone> response
-            = manager.dnsPrivateZones().listByLocation("pqojxcx", com.azure.core.util.Context.NONE);
+            = manager.dnsPrivateZones().listByLocation("uzqymtuowog", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zdcgdzbenr", response.iterator().next().properties().ocid());
+        Assertions.assertEquals("it", response.iterator().next().properties().ocid());
         Assertions.assertFalse(response.iterator().next().properties().isProtected());
         Assertions.assertEquals(DnsPrivateZonesLifecycleState.CREATING,
             response.iterator().next().properties().lifecycleState());
-        Assertions.assertEquals("awetzq", response.iterator().next().properties().self());
-        Assertions.assertEquals(1254127143, response.iterator().next().properties().serial());
-        Assertions.assertEquals("tjwfljhznamtua", response.iterator().next().properties().version());
-        Assertions.assertEquals("zwcjjncqtj", response.iterator().next().properties().viewId());
+        Assertions.assertEquals("zvbrzcdbanfzndsc", response.iterator().next().properties().self());
+        Assertions.assertEquals(1628332910, response.iterator().next().properties().serial());
+        Assertions.assertEquals("xeatkd", response.iterator().next().properties().version());
+        Assertions.assertEquals("wnrdjyibqbnaom", response.iterator().next().properties().viewId());
         Assertions.assertEquals(ZoneType.SECONDARY, response.iterator().next().properties().zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T06:57:20Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T04:18:25Z"),
             response.iterator().next().properties().timeCreated());
     }
 }
