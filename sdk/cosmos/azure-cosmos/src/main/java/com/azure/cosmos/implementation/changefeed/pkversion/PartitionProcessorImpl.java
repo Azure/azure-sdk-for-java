@@ -59,6 +59,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
+    private Instant lastProcessedTime;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
@@ -83,6 +84,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
                 String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
+        this.lastProcessedTime = Instant.now();
     }
 
     @Override
@@ -150,6 +152,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.lastServerContinuationToken = currentServerContinuationToken;
 
                 this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
+                this.lastProcessedTime = Instant.now();
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
@@ -315,6 +318,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
+    }
+
+    @Override
+    public Instant getLastProcessedTime() {
+        return this.lastProcessedTime;
     }
 
     private Mono<Void> dispatchChanges(

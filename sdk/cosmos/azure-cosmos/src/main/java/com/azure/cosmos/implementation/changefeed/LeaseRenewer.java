@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation.changefeed;
 
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * Interface for the lease renewer.
  */
@@ -20,4 +22,9 @@ public interface LeaseRenewer {
      * @return the inner exception if any, otherwise null.
      */
     RuntimeException getResultException();
+
+    /**
+     * @return the interval at which the lease will be renewed.
+     */
+    Duration getLeaseRenewInterval();
 }

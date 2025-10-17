@@ -77,6 +77,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
         return this.resultException;
     }
 
+    @Override
+    public Duration getLeaseRenewInterval() {
+        return this.leaseRenewInterval;
+    }
+
     private Mono<Lease> renew(CancellationToken cancellationToken) {
         if (cancellationToken.isCancellationRequested()) {
             return Mono.empty();
