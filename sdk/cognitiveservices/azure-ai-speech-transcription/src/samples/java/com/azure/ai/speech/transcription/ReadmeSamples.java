@@ -5,6 +5,7 @@
 package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
+import com.azure.ai.speech.transcription.models.EnhancedModeProperties;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscribeRequestContent;
@@ -247,6 +248,105 @@ public final class ReadmeSamples {
             }
         });
         // END: com.azure.ai.speech.transcription.transcriptionresult.detailed
+    }
+
+    /**
+     * Sample for using enhanced mode to improve transcription quality.
+     */
+    public void enhancedModeBasic() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: readme-sample-enhancedModeBasic
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav");
+
+        // Enable enhanced mode for improved transcription quality
+        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
+            .setEnabled(true);
+
+        TranscriptionOptions options = new TranscriptionOptions()
+            .setLocales(java.util.Arrays.asList("en-US"))
+            .setEnhancedMode(enhancedMode);
+
+        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            .setAudio(audioFileDetails)
+            .setOptions(options);
+
+        TranscriptionResult result = client.transcribe(requestContent);
+        // END: readme-sample-enhancedModeBasic
+    }
+
+    /**
+     * Sample for using enhanced mode with custom prompts.
+     */
+    public void enhancedModeWithPrompts() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: readme-sample-enhancedModeWithPrompts
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav");
+
+        // Use prompts to guide transcription with domain-specific terminology
+        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
+            .setEnabled(true)
+            .setPrompt(java.util.Arrays.asList(
+                "Medical consultation discussing hypertension and diabetes",
+                "Common medications: metformin, lisinopril, atorvastatin",
+                "Patient symptoms and treatment plan"
+            ));
+
+        TranscriptionOptions options = new TranscriptionOptions()
+            .setLocales(java.util.Arrays.asList("en-US"))
+            .setEnhancedMode(enhancedMode);
+
+        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            .setAudio(audioFileDetails)
+            .setOptions(options);
+
+        TranscriptionResult result = client.transcribe(requestContent);
+        // END: readme-sample-enhancedModeWithPrompts
+    }
+
+    /**
+     * Sample for using enhanced mode with translation.
+     */
+    public void enhancedModeWithTranslation() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: readme-sample-enhancedModeWithTranslation
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav");
+
+        // Configure enhanced mode to transcribe Spanish audio and translate to English
+        EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
+            .setEnabled(true)
+            .setTargetLanguage("en-US"); // Translate to English
+
+        TranscriptionOptions options = new TranscriptionOptions()
+            .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
+            .setEnhancedMode(enhancedMode);
+
+        TranscribeRequestContent requestContent = new TranscribeRequestContent()
+            .setAudio(audioFileDetails)
+            .setOptions(options);
+
+        TranscriptionResult result = client.transcribe(requestContent);
+        // END: readme-sample-enhancedModeWithTranslation
     }
 }
 

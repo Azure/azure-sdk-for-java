@@ -118,6 +118,7 @@ You can customize transcription with options like:
 - **Speaker diarization**: Identify different speakers in multi-speaker audio
 - **Phrase lists**: Provide domain-specific phrases to improve accuracy
 - **Language detection**: Automatically detect the spoken language
+- **Enhanced mode**: Improve transcription quality with custom prompts, translation, and task-specific configurations
 
 ## Examples
 
@@ -156,6 +157,89 @@ try {
 } catch (Exception e) {
     System.err.println("Error during transcription: " + e.getMessage());
 }
+```
+
+### Use enhanced mode for improved transcription quality
+
+Enhanced mode provides advanced features to improve transcription accuracy with custom prompts, translation capabilities, and task-specific optimizations.
+
+#### Basic enhanced mode
+
+```java readme-sample-enhancedModeBasic
+byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+    .setFilename("audio.wav");
+
+// Enable enhanced mode for improved transcription quality
+EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
+    .setEnabled(true);
+
+TranscriptionOptions options = new TranscriptionOptions()
+    .setLocales(java.util.Arrays.asList("en-US"))
+    .setEnhancedMode(enhancedMode);
+
+TranscribeRequestContent requestContent = new TranscribeRequestContent()
+    .setAudio(audioFileDetails)
+    .setOptions(options);
+
+TranscriptionResult result = client.transcribe(requestContent);
+```
+
+#### Enhanced mode with custom prompts
+
+Use prompts to guide transcription with domain-specific terminology, improving accuracy for specialized content like medical, legal, or technical discussions.
+
+```java readme-sample-enhancedModeWithPrompts
+byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+    .setFilename("audio.wav");
+
+// Use prompts to guide transcription with domain-specific terminology
+EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
+    .setEnabled(true)
+    .setPrompt(java.util.Arrays.asList(
+        "Medical consultation discussing hypertension and diabetes",
+        "Common medications: metformin, lisinopril, atorvastatin",
+        "Patient symptoms and treatment plan"
+    ));
+
+TranscriptionOptions options = new TranscriptionOptions()
+    .setLocales(java.util.Arrays.asList("en-US"))
+    .setEnhancedMode(enhancedMode);
+
+TranscribeRequestContent requestContent = new TranscribeRequestContent()
+    .setAudio(audioFileDetails)
+    .setOptions(options);
+
+TranscriptionResult result = client.transcribe(requestContent);
+```
+
+#### Enhanced mode with translation
+
+Transcribe audio in one language and translate to another language simultaneously.
+
+```java readme-sample-enhancedModeWithTranslation
+byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+    .setFilename("audio.wav");
+
+// Configure enhanced mode to transcribe Spanish audio and translate to English
+EnhancedModeProperties enhancedMode = new EnhancedModeProperties()
+    .setEnabled(true)
+    .setTargetLanguage("en-US"); // Translate to English
+
+TranscriptionOptions options = new TranscriptionOptions()
+    .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
+    .setEnhancedMode(enhancedMode);
+
+TranscribeRequestContent requestContent = new TranscribeRequestContent()
+    .setAudio(audioFileDetails)
+    .setOptions(options);
+
+TranscriptionResult result = client.transcribe(requestContent);
 ```
 
 ### Service API versions
