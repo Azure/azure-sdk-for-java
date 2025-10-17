@@ -1,14 +1,408 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2025-10-13)
 
-### Features Added
+- Azure Resource Manager MySql client library for Java. This package contains Microsoft Azure SDK for MySql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and configurations with new business model. Package api-version 2024-12-30. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CapabilitiesListResult` was removed
 
-### Other Changes
+#### `models.FirewallRuleListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.DatabaseListResult` was removed
+
+#### `models.ServerBackupListResult` was removed
+
+#### `models.ServerListResult` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.VirtualNetworkSubnetUsageParameter` was modified
+
+* `validate()` was removed
+
+#### `models.SkuCapability` was modified
+
+* `validate()` was removed
+
+#### `models.ConfigurationListForBatchUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.NameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentityType` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.ManagedServiceIdentityType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.ServerRestartParameter` was modified
+
+* `validate()` was removed
+
+#### `models.Identity` was modified
+
+* `validate()` was removed
+
+#### `models.HighAvailability` was modified
+
+* `validate()` was removed
+
+#### `models.ServerVersionCapability` was modified
+
+* `validate()` was removed
+
+#### `models.ServerForUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.MaintenanceWindow` was modified
+
+* `validate()` was removed
+
+#### `models.Network` was modified
+
+* `validate()` was removed
+
+#### `models.StorageEditionCapability` was modified
+
+* `validate()` was removed
+
+#### `models.Storage` was modified
+
+* `validate()` was removed
+
+#### `models.Configurations` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConfigurationInner)` was removed
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConfigurationInner,com.azure.core.util.Context)` was removed
+* `listByServer(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.DelegatedSubnetUsage` was modified
+
+* `validate()` was removed
+
+#### `models.ServerEditionCapability` was modified
+
+* `validate()` was removed
+
+#### `models.Operation` was modified
+
+* `java.lang.String origin()` -> `models.Origin origin()`
+
+#### `models.DataEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ConfigurationForBatchUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.Backup` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.Configuration$Update` was added
+
+* `models.BackupAndExportResponseType` was added
+
+* `models.ServerEditionCapabilityV2` was added
+
+* `models.AdvancedThreatProtectionState` was added
+
+* `models.SkuCapabilityV2` was added
+
+* `models.BackupRequestBase` was added
+
+* `models.PrivateEndpointConnection$Update` was added
+
+* `models.AdvancedThreatProtectionProvisioningState` was added
+
+* `models.FullBackupStoreDetails` was added
+
+* `models.ImportFromStorageResponseType` was added
+
+* `models.AzureADAdministrator` was added
+
+* `models.HighAvailabilityValidationEstimation` was added
+
+* `models.ValidateBackupResponse` was added
+
+* `models.AdministratorType` was added
+
+* `models.OperationProgressResponseType` was added
+
+* `models.ServerDetachVNetParameter` was added
+
+* `models.Configuration$Definition` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.BackupStoreDetails` was added
+
+* `models.AzureADAdministrator$UpdateStages` was added
+
+* `models.ResetAllToDefault` was added
+
+* `models.LogFiles` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.OperationResults` was added
+
+* `models.ServerBackupV2$DefinitionStages` was added
+
+* `models.BackupAndExportResponse` was added
+
+* `models.ServerBackupV2$Definition` was added
+
+* `models.BatchOfMaintenance` was added
+
+* `models.PrivateEndpointConnection$UpdateStages` was added
+
+* `models.OperationStatusResult` was added
+
+* `models.MaintenanceUpdate` was added
+
+* `models.OperationStatusExtendedResult` was added
+
+* `models.PrivateLinkResources` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.ServersMigrations` was added
+
+* `models.AzureADAdministrator$Update` was added
+
+* `models.AdvancedThreatProtectionSettings` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.LocationBasedCapabilitySets` was added
+
+* `models.ProvisioningState` was added
+
+* `models.MaintenancePolicy` was added
+
+* `models.BackupAndExports` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.ImportSourceStorageType` was added
+
+* `models.ServerGtidSetParameter` was added
+
+* `models.FeatureProperty` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.BackupAndExportRequest` was added
+
+* `models.MaintenanceProvisioningState` was added
+
+* `models.ServerVersionCapabilityV2` was added
+
+* `models.OperationStatus` was added
+
+* `models.Configuration$UpdateStages` was added
+
+* `models.Configuration$DefinitionStages` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.AdvancedThreatProtectionName` was added
+
+* `models.PatchStrategy` was added
+
+* `models.ImportSourceProperties` was added
+
+* `models.BackupSettings` was added
+
+* `models.StorageRedundancyEnum` was added
+
+* `models.OperationProgressResult` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.Origin` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.ServerBackupV2` was added
+
+* `models.LongRunningBackupOperations` was added
+
+* `models.LongRunningBackups` was added
+
+* `models.ObjectType` was added
+
+* `models.Maintenances` was added
+
+* `models.MaintenanceType` was added
+
+* `models.BackupFormat` was added
+
+* `models.AzureADAdministrators` was added
+
+* `models.AzureADAdministrator$Definition` was added
+
+* `models.AdvancedThreatProtection` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.AzureADAdministrator$DefinitionStages` was added
+
+* `models.AdvancedThreatProtectionForUpdate` was added
+
+* `models.MaintenanceState` was added
+
+* `models.AdministratorName` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+* `models.Capability` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.Maintenance` was added
+
+* `models.BackupType` was added
+
+* `models.LogFile` was added
+
+* `models.OperationProgress` was added
+
+#### `models.ConfigurationListForBatchUpdate` was modified
+
+* `resetAllToDefault()` was added
+* `withResetAllToDefault(models.ResetAllToDefault)` was added
+
+#### `models.Server` was modified
+
+* `fullVersion()` was added
+* `validateEstimateHighAvailabilityWithResponse(fluent.models.HighAvailabilityValidationEstimationInner,com.azure.core.util.Context)` was added
+* `maintenancePolicy()` was added
+* `resetGtid(models.ServerGtidSetParameter)` was added
+* `detachVNet(models.ServerDetachVNetParameter,com.azure.core.util.Context)` was added
+* `privateEndpointConnections()` was added
+* `databasePort()` was added
+* `importSourceProperties()` was added
+* `resetGtid(models.ServerGtidSetParameter,com.azure.core.util.Context)` was added
+* `validateEstimateHighAvailability(fluent.models.HighAvailabilityValidationEstimationInner)` was added
+* `detachVNet(models.ServerDetachVNetParameter)` was added
+
+#### `models.ServerForUpdate` was modified
+
+* `withNetwork(models.Network)` was added
+* `withVersion(models.ServerVersion)` was added
+* `withMaintenancePolicy(models.MaintenancePolicy)` was added
+* `maintenancePolicy()` was added
+* `version()` was added
+* `network()` was added
+
+#### `models.MaintenanceWindow` was modified
+
+* `batchOfMaintenance()` was added
+* `withBatchOfMaintenance(models.BatchOfMaintenance)` was added
+
+#### `models.Network` was modified
+
+* `withPublicNetworkAccess(models.EnableStatusEnum)` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `maxBackupIntervalHours()` was added
+* `minBackupIntervalHours()` was added
+
+#### `MySqlManager` was modified
+
+* `operationProgress()` was added
+* `backupAndExports()` was added
+* `azureADAdministrators()` was added
+* `serversMigrations()` was added
+* `longRunningBackups()` was added
+* `maintenances()` was added
+* `privateLinkResources()` was added
+* `operationResults()` was added
+* `logFiles()` was added
+* `longRunningBackupOperations()` was added
+* `advancedThreatProtectionSettings()` was added
+* `locationBasedCapabilitySets()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.Storage` was modified
+
+* `storageRedundancy()` was added
+* `withAutoIoScaling(models.EnableStatusEnum)` was added
+* `withLogOnDisk(models.EnableStatusEnum)` was added
+* `withStorageRedundancy(models.StorageRedundancyEnum)` was added
+* `autoIoScaling()` was added
+* `logOnDisk()` was added
+
+#### `models.Backups` was modified
+
+* `put(java.lang.String,java.lang.String,java.lang.String)` was added
+* `putWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Server$Definition` was modified
+
+* `withDatabasePort(java.lang.Integer)` was added
+* `withMaintenancePolicy(models.MaintenancePolicy)` was added
+* `withImportSourceProperties(models.ImportSourceProperties)` was added
+
+#### `models.Configurations` was modified
+
+* `listByServer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.Integer,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Servers` was modified
+
+* `resetGtid(java.lang.String,java.lang.String,models.ServerGtidSetParameter)` was added
+* `detachVNet(java.lang.String,java.lang.String,models.ServerDetachVNetParameter)` was added
+* `detachVNet(java.lang.String,java.lang.String,models.ServerDetachVNetParameter,com.azure.core.util.Context)` was added
+* `resetGtid(java.lang.String,java.lang.String,models.ServerGtidSetParameter,com.azure.core.util.Context)` was added
+* `validateEstimateHighAvailability(java.lang.String,java.lang.String,fluent.models.HighAvailabilityValidationEstimationInner)` was added
+* `validateEstimateHighAvailabilityWithResponse(java.lang.String,java.lang.String,fluent.models.HighAvailabilityValidationEstimationInner,com.azure.core.util.Context)` was added
+
+#### `models.Server$Update` was modified
+
+* `withNetwork(models.Network)` was added
+* `withVersion(models.ServerVersion)` was added
+* `withMaintenancePolicy(models.MaintenancePolicy)` was added
+
+#### `models.Backup` was modified
+
+* `backupIntervalHours()` was added
+* `withBackupIntervalHours(java.lang.Integer)` was added
+
+#### `models.Configuration` was modified
+
+* `update()` was added
+* `currentValue()` was added
+* `refresh()` was added
+* `resourceGroupName()` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `documentationLink()` was added
 
 ## 1.0.0 (2024-12-20)
 
