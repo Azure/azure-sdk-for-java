@@ -35,7 +35,9 @@ import com.azure.resourcemanager.avs.implementation.GlobalReachConnectionsImpl;
 import com.azure.resourcemanager.avs.implementation.HcxEnterpriseSitesImpl;
 import com.azure.resourcemanager.avs.implementation.HostsImpl;
 import com.azure.resourcemanager.avs.implementation.IscsiPathsImpl;
+import com.azure.resourcemanager.avs.implementation.LicensesImpl;
 import com.azure.resourcemanager.avs.implementation.LocationsImpl;
+import com.azure.resourcemanager.avs.implementation.MaintenancesImpl;
 import com.azure.resourcemanager.avs.implementation.OperationsImpl;
 import com.azure.resourcemanager.avs.implementation.PlacementPoliciesImpl;
 import com.azure.resourcemanager.avs.implementation.PrivateCloudsImpl;
@@ -44,6 +46,7 @@ import com.azure.resourcemanager.avs.implementation.PureStoragePoliciesImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptCmdletsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptExecutionsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptPackagesImpl;
+import com.azure.resourcemanager.avs.implementation.ServiceComponentsImpl;
 import com.azure.resourcemanager.avs.implementation.SkusImpl;
 import com.azure.resourcemanager.avs.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.avs.implementation.WorkloadNetworksImpl;
@@ -56,7 +59,9 @@ import com.azure.resourcemanager.avs.models.GlobalReachConnections;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSites;
 import com.azure.resourcemanager.avs.models.Hosts;
 import com.azure.resourcemanager.avs.models.IscsiPaths;
+import com.azure.resourcemanager.avs.models.Licenses;
 import com.azure.resourcemanager.avs.models.Locations;
+import com.azure.resourcemanager.avs.models.Maintenances;
 import com.azure.resourcemanager.avs.models.Operations;
 import com.azure.resourcemanager.avs.models.PlacementPolicies;
 import com.azure.resourcemanager.avs.models.PrivateClouds;
@@ -65,6 +70,7 @@ import com.azure.resourcemanager.avs.models.PureStoragePolicies;
 import com.azure.resourcemanager.avs.models.ScriptCmdlets;
 import com.azure.resourcemanager.avs.models.ScriptExecutions;
 import com.azure.resourcemanager.avs.models.ScriptPackages;
+import com.azure.resourcemanager.avs.models.ServiceComponents;
 import com.azure.resourcemanager.avs.models.Skus;
 import com.azure.resourcemanager.avs.models.VirtualMachines;
 import com.azure.resourcemanager.avs.models.WorkloadNetworks;
@@ -101,7 +107,11 @@ public final class AvsManager {
 
     private IscsiPaths iscsiPaths;
 
+    private Licenses licenses;
+
     private Locations locations;
+
+    private Maintenances maintenances;
 
     private PlacementPolicies placementPolicies;
 
@@ -116,6 +126,8 @@ public final class AvsManager {
     private ScriptExecutions scriptExecutions;
 
     private ScriptPackages scriptPackages;
+
+    private ServiceComponents serviceComponents;
 
     private Skus skus;
 
@@ -460,6 +472,18 @@ public final class AvsManager {
     }
 
     /**
+     * Gets the resource collection API of Licenses. It manages License.
+     * 
+     * @return Resource collection API of Licenses.
+     */
+    public Licenses licenses() {
+        if (this.licenses == null) {
+            this.licenses = new LicensesImpl(clientObject.getLicenses(), this);
+        }
+        return licenses;
+    }
+
+    /**
      * Gets the resource collection API of Locations.
      * 
      * @return Resource collection API of Locations.
@@ -469,6 +493,18 @@ public final class AvsManager {
             this.locations = new LocationsImpl(clientObject.getLocations(), this);
         }
         return locations;
+    }
+
+    /**
+     * Gets the resource collection API of Maintenances.
+     * 
+     * @return Resource collection API of Maintenances.
+     */
+    public Maintenances maintenances() {
+        if (this.maintenances == null) {
+            this.maintenances = new MaintenancesImpl(clientObject.getMaintenances(), this);
+        }
+        return maintenances;
     }
 
     /**
@@ -553,6 +589,18 @@ public final class AvsManager {
             this.scriptPackages = new ScriptPackagesImpl(clientObject.getScriptPackages(), this);
         }
         return scriptPackages;
+    }
+
+    /**
+     * Gets the resource collection API of ServiceComponents.
+     * 
+     * @return Resource collection API of ServiceComponents.
+     */
+    public ServiceComponents serviceComponents() {
+        if (this.serviceComponents == null) {
+            this.serviceComponents = new ServiceComponentsImpl(clientObject.getServiceComponents(), this);
+        }
+        return serviceComponents;
     }
 
     /**
