@@ -20,7 +20,7 @@ public final class OracleSubscriptionsListSaasSubscriptionDetailsMockTests {
     @Test
     public void testListSaasSubscriptionDetails() throws Exception {
         String responseStr
-            = "{\"id\":\"q\",\"subscriptionName\":\"odawopqhewjptmcg\",\"timeCreated\":\"2021-04-24T18:57:19Z\",\"offerId\":\"t\",\"planId\":\"lnd\",\"saasSubscriptionStatus\":\"tutmzl\",\"publisherId\":\"ojlvfhrbbpneqvc\",\"purchaserEmailId\":\"yyurmochpprprsnm\",\"purchaserTenantId\":\"ayzejnhlbkpbz\",\"termUnit\":\"piljhahzvech\",\"isAutoRenew\":true,\"isFreeTrial\":true}";
+            = "{\"id\":\"cgjokjljnhvlq\",\"subscriptionName\":\"ek\",\"timeCreated\":\"2021-01-20T04:18:54Z\",\"offerId\":\"snbksdqhj\",\"planId\":\"klxesl\",\"saasSubscriptionStatus\":\"hustcpoqmavnwqjw\",\"publisherId\":\"knlejjjkxybwfd\",\"purchaserEmailId\":\"jbzten\",\"purchaserTenantId\":\"kzykjtjk\",\"termUnit\":\"xfwush\",\"isAutoRenew\":false,\"isFreeTrial\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

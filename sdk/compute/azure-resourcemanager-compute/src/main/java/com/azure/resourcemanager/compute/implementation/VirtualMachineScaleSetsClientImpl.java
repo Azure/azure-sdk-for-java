@@ -42,6 +42,7 @@ import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
+import com.azure.resourcemanager.compute.models.VMScaleSetScaleOutInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListOSUpgradeHistory;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListSkusResult;
@@ -323,6 +324,17 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/scaleOut")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> scaleOut(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vmScaleSetName") String vmScaleSetName,
+            @BodyParam("application/json") VMScaleSetScaleOutInput parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/setOrchestrationServiceState")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
@@ -417,7 +429,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), apiVersion,
@@ -452,7 +464,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -546,7 +558,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -578,7 +590,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -676,7 +688,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -712,7 +724,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -813,7 +825,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -853,7 +865,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -951,7 +963,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -1001,7 +1013,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1277,7 +1289,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1326,7 +1338,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1589,7 +1601,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -1627,7 +1639,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1845,7 +1857,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.approveRollingUpgrade(this.client.getEndpoint(), apiVersion,
@@ -1886,7 +1898,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.approveRollingUpgrade(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2111,7 +2123,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.convertToSinglePlacementGroup(this.client.getEndpoint(), apiVersion,
@@ -2154,7 +2166,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.convertToSinglePlacementGroup(this.client.getEndpoint(), apiVersion,
@@ -2249,7 +2261,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2294,7 +2306,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2545,7 +2557,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteInstances(this.client.getEndpoint(), apiVersion,
@@ -2592,7 +2604,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteInstances(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2837,7 +2849,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.forceRecoveryServiceFabricPlatformUpdateDomainWalk(
@@ -2880,7 +2892,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.forceRecoveryServiceFabricPlatformUpdateDomainWalk(this.client.getEndpoint(), apiVersion,
@@ -2979,7 +2991,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInstanceView(this.client.getEndpoint(), apiVersion,
@@ -3017,7 +3029,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInstanceView(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3107,7 +3119,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateInstances(this.client.getEndpoint(), apiVersion,
@@ -3150,7 +3162,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateInstances(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3334,7 +3346,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getOSUpgradeHistory(this.client.getEndpoint(), apiVersion,
@@ -3375,7 +3387,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3487,7 +3499,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), apiVersion,
@@ -3530,7 +3542,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3775,7 +3787,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3820,7 +3832,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4062,7 +4074,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reapply(this.client.getEndpoint(), apiVersion,
@@ -4099,7 +4111,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reapply(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4270,7 +4282,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), apiVersion,
@@ -4312,7 +4324,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4544,7 +4556,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4588,7 +4600,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4830,7 +4842,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimageAll(this.client.getEndpoint(), apiVersion,
@@ -4872,7 +4884,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimageAll(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -5102,7 +5114,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), apiVersion,
@@ -5143,7 +5155,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -5332,6 +5344,236 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     }
 
     /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> scaleOutWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-04-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.scaleOut(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> scaleOutWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmScaleSetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-04-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.scaleOut(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, vmScaleSetName, parameters, accept, context);
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginScaleOutAsync(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scaleOutWithResponseAsync(resourceGroupName, vmScaleSetName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginScaleOutAsync(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scaleOutWithResponseAsync(resourceGroupName, vmScaleSetName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginScaleOut(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters) {
+        return this.beginScaleOutAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginScaleOut(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters, Context context) {
+        return this.beginScaleOutAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> scaleOutAsync(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters) {
+        return beginScaleOutAsync(resourceGroupName, vmScaleSetName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> scaleOutAsync(String resourceGroupName, String vmScaleSetName,
+        VMScaleSetScaleOutInput parameters, Context context) {
+        return beginScaleOutAsync(resourceGroupName, vmScaleSetName, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void scaleOut(String resourceGroupName, String vmScaleSetName, VMScaleSetScaleOutInput parameters) {
+        scaleOutAsync(resourceGroupName, vmScaleSetName, parameters).block();
+    }
+
+    /**
+     * Scales out one or more virtual machines in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param parameters The input object for ScaleOut API.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void scaleOut(String resourceGroupName, String vmScaleSetName, VMScaleSetScaleOutInput parameters,
+        Context context) {
+        scaleOutAsync(resourceGroupName, vmScaleSetName, parameters, context).block();
+    }
+
+    /**
      * Changes ServiceState property for a given service.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -5365,7 +5607,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setOrchestrationServiceState(this.client.getEndpoint(), apiVersion,
@@ -5408,7 +5650,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setOrchestrationServiceState(this.client.getEndpoint(), apiVersion,
@@ -5594,7 +5836,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), apiVersion,
@@ -5635,7 +5877,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5751,7 +5993,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), apiVersion,
@@ -5792,7 +6034,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2024-11-01";
+        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -5987,8 +6229,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all the VM scale sets under the specified subscription for the specified location along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetInner>> listByLocationNextSinglePageAsync(String nextLink) {
@@ -6015,8 +6257,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all the VM scale sets under the specified subscription for the specified location along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetInner>> listByLocationNextSinglePageAsync(String nextLink,
@@ -6042,8 +6284,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all VM Scale Sets in the subscription, regardless of the associated resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -6070,8 +6312,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all VM Scale Sets in the subscription, regardless of the associated resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetInner>> listAllNextSinglePageAsync(String nextLink,
@@ -6097,8 +6339,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all VM scale sets under a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetInner>> listNextSinglePageAsync(String nextLink) {
@@ -6124,8 +6366,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of all VM scale sets under a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -6150,8 +6392,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Virtual Machine Scale Set OS Upgrade History operation response along with {@link PagedResponse}
-     * on successful completion of {@link Mono}.
+     * @return list of OS upgrades on a VM scale set instance along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpgradeOperationHistoricalStatusInfoInner>>
@@ -6181,8 +6423,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Virtual Machine Scale Set OS Upgrade History operation response along with {@link PagedResponse}
-     * on successful completion of {@link Mono}.
+     * @return list of OS upgrades on a VM scale set instance along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpgradeOperationHistoricalStatusInfoInner>>
@@ -6208,8 +6450,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Machine Scale Set List Skus operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed
+     * for each SKU along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetSkuInner>> listSkusNextSinglePageAsync(String nextLink) {
@@ -6236,8 +6478,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Machine Scale Set List Skus operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed
+     * for each SKU along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineScaleSetSkuInner>> listSkusNextSinglePageAsync(String nextLink,

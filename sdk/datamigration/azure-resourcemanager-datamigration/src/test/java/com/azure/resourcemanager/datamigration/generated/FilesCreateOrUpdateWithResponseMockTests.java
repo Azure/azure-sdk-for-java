@@ -22,7 +22,7 @@ public final class FilesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"jnhj\",\"properties\":{\"extension\":\"llbsupubdxc\",\"filePath\":\"lhzwh\",\"lastModified\":\"2021-03-30T00:05:16Z\",\"mediaType\":\"bosjjfd\",\"size\":7595063653187632662},\"systemData\":{\"createdBy\":\"fyaytvsly\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-10-20T02:04:01Z\",\"lastModifiedBy\":\"arlcjiwgsxfaiocw\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-03-06T07:41:25Z\"},\"id\":\"gnfg\",\"name\":\"zxbarcbpae\",\"type\":\"zqsym\"}";
+            = "{\"etag\":\"jtobdrrp\",\"properties\":{\"extension\":\"hkun\",\"filePath\":\"fjh\",\"lastModified\":\"2021-09-17T06:30:47Z\",\"mediaType\":\"pkvegeatt\",\"size\":5979939364610233845},\"id\":\"z\",\"name\":\"nwqsttewu\",\"type\":\"cysje\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,17 @@ public final class FilesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProjectFile response = manager.files()
-            .define("p")
-            .withExistingProject("nwqsttewu", "cysje", "fjxflpditfno")
-            .withEtag("uxlvrhprrvbwonl")
-            .withProperties(
-                new ProjectFileProperties().withExtension("lvtlrvbst").withFilePath("uy").withMediaType("nttlnrjd"))
+            .define("hmgw")
+            .withExistingProject("qscag", "yvouprsytq", "ss")
+            .withEtag("ivrxpfduiol")
+            .withProperties(new ProjectFileProperties().withExtension("qvpbfjpoqzucfzl")
+                .withFilePath("zdquurbo")
+                .withMediaType("vzielb"))
             .create();
 
-        Assertions.assertEquals("jnhj", response.etag());
-        Assertions.assertEquals("llbsupubdxc", response.properties().extension());
-        Assertions.assertEquals("lhzwh", response.properties().filePath());
-        Assertions.assertEquals("bosjjfd", response.properties().mediaType());
+        Assertions.assertEquals("jtobdrrp", response.etag());
+        Assertions.assertEquals("hkun", response.properties().extension());
+        Assertions.assertEquals("fjh", response.properties().filePath());
+        Assertions.assertEquals("pkvegeatt", response.properties().mediaType());
     }
 }

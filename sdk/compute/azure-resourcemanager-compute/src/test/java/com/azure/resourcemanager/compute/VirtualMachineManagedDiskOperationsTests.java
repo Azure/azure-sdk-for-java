@@ -65,7 +65,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPopularLinuxImage(linuxImage)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         // Ensure default to managed disk
@@ -146,7 +146,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE) // CreateOption: ATTACH
             .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE) // CreateOption: ATTACH
             // End : Add 5 empty managed disks
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -298,7 +298,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE) // CreateOption: ATTACH
             .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE) // CreateOption: ATTACH
             // End : Add bunch of empty managed disks
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         LOGGER.log(LogLevel.VERBOSE, () -> "Waiting for some time before de-provision");
@@ -345,7 +345,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
             // No explicit data disks, let CRP create it from the image's data disk images
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -385,7 +385,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 CachingTypes.READ_ONLY);
         }
         VirtualMachine virtualMachine3 = creatableVirtualMachine3.withNewDataDisk(200) // CreateOption: EMPTY
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -456,7 +456,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             // End : Add bunch of empty managed disks
             .withDataDiskDefaultCachingType(CachingTypes.READ_ONLY)
             .withDataDiskDefaultStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -498,7 +498,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
             .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
@@ -528,7 +528,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
             .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -557,7 +557,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)
             .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
             .withNewAvailabilitySet(availSetName) // Default to managed availability set
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 

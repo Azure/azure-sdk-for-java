@@ -34,7 +34,11 @@ public class SqlSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azureResourceManager));
     }
 
+    /**
+     * CI playback run timeout.
+     */
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageSqlDatabasesAcrossDifferentDataCenters() {
         Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azureResourceManager));
     }

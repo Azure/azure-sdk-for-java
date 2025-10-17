@@ -14,16 +14,14 @@ public final class MigrationValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationValidationResult model = BinaryData.fromString(
-            "{\"id\":\"kranblwphqlkcc\",\"migrationId\":\"gygqwah\",\"summaryResults\":{\"efjokn\":{\"id\":\"wgniipr\",\"migrationId\":\"vawuwzdufypivlsb\",\"sourceDatabaseName\":\"pmcubkmifoxxkub\",\"targetDatabaseName\":\"havpmhbrbqgvg\",\"startedOn\":\"2021-03-12T02:37:11Z\",\"endedOn\":\"2021-11-25T13:45:13Z\",\"status\":\"Stopped\"},\"bvnuile\":{\"id\":\"qyzqedikdfrdb\",\"migrationId\":\"mrjgeihfqlggwfi\",\"sourceDatabaseName\":\"cxmjpbyephmg\",\"targetDatabaseName\":\"ljvrcmyfqipgxhnp\",\"startedOn\":\"2021-03-15T22:12:36Z\",\"endedOn\":\"2021-02-05T16:45:52Z\",\"status\":\"NotStarted\"},\"dsxjwuivedw\":{\"id\":\"aswlp\",\"migrationId\":\"gm\",\"sourceDatabaseName\":\"fjlrxwtoauk\",\"targetDatabaseName\":\"kvci\",\"startedOn\":\"2021-05-06T09:08:56Z\",\"endedOn\":\"2021-08-16T23:18:30Z\",\"status\":\"NotStarted\"},\"new\":{\"id\":\"yeew\",\"migrationId\":\"iqbps\",\"sourceDatabaseName\":\"omguamlj\",\"targetDatabaseName\":\"rgmsplzga\",\"startedOn\":\"2021-02-13T02:42:05Z\",\"endedOn\":\"2021-02-02T09:58:56Z\",\"status\":\"Failed\"}},\"status\":\"NotStarted\"}")
+            "{\"id\":\"xycphdrwjjkh\",\"migrationId\":\"omacluzvxnqmhr\",\"summaryResults\":{\"kihcirlde\":{\"id\":\"fwmkoisqcssffxui\",\"migrationId\":\"csypobkdqzrdzsyl\",\"sourceDatabaseName\":\"lgtrczzy\",\"targetDatabaseName\":\"xzji\",\"startedOn\":\"2021-10-21T21:49:19Z\",\"endedOn\":\"2021-07-02T03:38:34Z\",\"status\":\"Completed\"}},\"status\":\"Completed\"}")
             .toObject(MigrationValidationResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrationValidationResult model = new MigrationValidationResult()
-            .withSummaryResults(mapOf("efjokn", new MigrationValidationDatabaseSummaryResult(), "bvnuile",
-                new MigrationValidationDatabaseSummaryResult(), "dsxjwuivedw",
-                new MigrationValidationDatabaseSummaryResult(), "new", new MigrationValidationDatabaseSummaryResult()));
+            .withSummaryResults(mapOf("kihcirlde", new MigrationValidationDatabaseSummaryResult()));
         model = BinaryData.fromObject(model).toObject(MigrationValidationResult.class);
     }
 

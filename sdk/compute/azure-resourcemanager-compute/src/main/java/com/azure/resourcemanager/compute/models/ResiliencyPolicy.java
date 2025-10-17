@@ -32,6 +32,11 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
      */
     private AutomaticZoneRebalancingPolicy automaticZoneRebalancingPolicy;
 
+    /*
+     * The configuration parameters used while performing zone allocation.
+     */
+    private ZoneAllocationPolicy zoneAllocationPolicy;
+
     /**
      * Creates an instance of ResiliencyPolicy class.
      */
@@ -106,6 +111,26 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
     }
 
     /**
+     * Get the zoneAllocationPolicy property: The configuration parameters used while performing zone allocation.
+     * 
+     * @return the zoneAllocationPolicy value.
+     */
+    public ZoneAllocationPolicy zoneAllocationPolicy() {
+        return this.zoneAllocationPolicy;
+    }
+
+    /**
+     * Set the zoneAllocationPolicy property: The configuration parameters used while performing zone allocation.
+     * 
+     * @param zoneAllocationPolicy the zoneAllocationPolicy value to set.
+     * @return the ResiliencyPolicy object itself.
+     */
+    public ResiliencyPolicy withZoneAllocationPolicy(ZoneAllocationPolicy zoneAllocationPolicy) {
+        this.zoneAllocationPolicy = zoneAllocationPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -120,6 +145,9 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
         if (automaticZoneRebalancingPolicy() != null) {
             automaticZoneRebalancingPolicy().validate();
         }
+        if (zoneAllocationPolicy() != null) {
+            zoneAllocationPolicy().validate();
+        }
     }
 
     /**
@@ -131,6 +159,7 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
         jsonWriter.writeJsonField("resilientVMCreationPolicy", this.resilientVMCreationPolicy);
         jsonWriter.writeJsonField("resilientVMDeletionPolicy", this.resilientVMDeletionPolicy);
         jsonWriter.writeJsonField("automaticZoneRebalancingPolicy", this.automaticZoneRebalancingPolicy);
+        jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -156,6 +185,8 @@ public final class ResiliencyPolicy implements JsonSerializable<ResiliencyPolicy
                 } else if ("automaticZoneRebalancingPolicy".equals(fieldName)) {
                     deserializedResiliencyPolicy.automaticZoneRebalancingPolicy
                         = AutomaticZoneRebalancingPolicy.fromJson(reader);
+                } else if ("zoneAllocationPolicy".equals(fieldName)) {
+                    deserializedResiliencyPolicy.zoneAllocationPolicy = ZoneAllocationPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

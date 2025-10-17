@@ -29,7 +29,9 @@ public final class RestoreStatusInner implements JsonSerializable<RestoreStatusI
     private RelationshipStatus relationshipStatus;
 
     /*
-     * The status of the restore
+     * The mirror state property describes the current status of data replication for a restore. It provides insight
+     * into whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to
+     * be initialized.
      */
     private MirrorState mirrorState;
 
@@ -73,7 +75,9 @@ public final class RestoreStatusInner implements JsonSerializable<RestoreStatusI
     }
 
     /**
-     * Get the mirrorState property: The status of the restore.
+     * Get the mirrorState property: The mirror state property describes the current status of data replication for a
+     * restore. It provides insight into whether the data is actively being mirrored, if the replication process has
+     * been paused, or if it has yet to be initialized.
      * 
      * @return the mirrorState value.
      */

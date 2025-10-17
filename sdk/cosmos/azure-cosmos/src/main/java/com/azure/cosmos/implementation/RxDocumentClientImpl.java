@@ -4862,7 +4862,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("collectionLink");
         }
 
-        return nonDocumentReadFeed(options, ResourceType.PartitionKeyRange, PartitionKeyRange.class,
+        return nonDocumentReadFeedInternal(
+            options,
+            ResourceType.PartitionKeyRange,
+            PartitionKeyRange.class,
             Utils.joinPath(collectionLink, Paths.PARTITION_KEY_RANGES_PATH_SEGMENT));
     }
 
@@ -6152,27 +6155,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ResourceType resourceType,
         Class<T> klass,
         String resourceLink) {
-
-        return nonDocumentReadFeed(state.getQueryOptions(), resourceType, klass, resourceLink);
-    }
-
-    private <T> Flux<FeedResponse<T>> nonDocumentReadFeed(
-        CosmosQueryRequestOptions options,
-        ResourceType resourceType,
-        Class<T> klass,
-        String resourceLink) {
-        DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> nonDocumentReadFeedInternal(options, resourceType, klass, resourceLink, retryPolicy),
-            retryPolicy);
+        return nonDocumentReadFeedInternal(state.getQueryOptions(), resourceType, klass, resourceLink);
     }
 
     private <T> Flux<FeedResponse<T>> nonDocumentReadFeedInternal(
         CosmosQueryRequestOptions options,
         ResourceType resourceType,
         Class<T> klass,
-        String resourceLink,
-        DocumentClientRetryPolicy retryPolicy) {
+        String resourceLink) {
 
         final CosmosQueryRequestOptions nonNullOptions = options != null ? options : new CosmosQueryRequestOptions();
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(nonNullOptions);
@@ -6188,7 +6178,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
-            retryPolicy.onBeforeSendRequest(request);
             return request;
         };
 
@@ -6200,7 +6189,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     klass));
 
         return Paginator
-            .getPaginatedQueryResultAsObservable(
+            .getPaginatedNonDocumentReadFeedResultAsObservable(
+                this,
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,
@@ -7765,10 +7755,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (firstContactedLocationEndpoint != null) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint, true);
         } else {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(failedRequest, failedRequest.requestContext.regionalRoutingContextToRoute);
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, failedRequest.requestContext.regionalRoutingContextToRoute, true);
         }
     }
 

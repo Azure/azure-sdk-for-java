@@ -13,23 +13,22 @@ public final class SchemaMigrationSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaMigrationSetting model = BinaryData
-            .fromString(
-                "{\"schemaOption\":\"ExtractFromSource\",\"fileId\":\"iojlvfhrb\",\"fileName\":\"neqvcwwyyurmo\"}")
+            .fromString("{\"schemaOption\":\"ExtractFromSource\",\"fileId\":\"kmfx\",\"fileName\":\"jwogqqnobpudc\"}")
             .toObject(SchemaMigrationSetting.class);
         Assertions.assertEquals(SchemaMigrationOption.EXTRACT_FROM_SOURCE, model.schemaOption());
-        Assertions.assertEquals("iojlvfhrb", model.fileId());
-        Assertions.assertEquals("neqvcwwyyurmo", model.fileName());
+        Assertions.assertEquals("kmfx", model.fileId());
+        Assertions.assertEquals("jwogqqnobpudc", model.fileName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaMigrationSetting model
             = new SchemaMigrationSetting().withSchemaOption(SchemaMigrationOption.EXTRACT_FROM_SOURCE)
-                .withFileId("iojlvfhrb")
-                .withFileName("neqvcwwyyurmo");
+                .withFileId("kmfx")
+                .withFileName("jwogqqnobpudc");
         model = BinaryData.fromObject(model).toObject(SchemaMigrationSetting.class);
         Assertions.assertEquals(SchemaMigrationOption.EXTRACT_FROM_SOURCE, model.schemaOption());
-        Assertions.assertEquals("iojlvfhrb", model.fileId());
-        Assertions.assertEquals("neqvcwwyyurmo", model.fileName());
+        Assertions.assertEquals("kmfx", model.fileId());
+        Assertions.assertEquals("jwogqqnobpudc", model.fileName());
     }
 }

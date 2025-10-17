@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbSyncTaskOutputError model = BinaryData.fromString(
-            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"jk\",\"actionableMessage\":\"ykyujxsg\",\"filePath\":\"srrryejylmbkzu\",\"lineNumber\":\"igrfihotjewl\",\"hResult\":349681251,\"stackTrace\":\"zj\"},\"id\":\"refqy\"}")
+            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"pubntnbatz\",\"actionableMessage\":\"qs\",\"filePath\":\"saaelca\",\"lineNumber\":\"cjuhplrvkm\",\"hResult\":761308188,\"stackTrace\":\"jvlgfggcvkyyliz\"},\"id\":\"bjpsfxsfuztlvtm\"}")
             .toObject(MigrateSqlServerSqlDbSyncTaskOutputError.class);
     }
 
