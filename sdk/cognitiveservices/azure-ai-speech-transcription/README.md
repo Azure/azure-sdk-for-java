@@ -38,7 +38,7 @@ If you plan to use Azure AD authentication (recommended for production), also ad
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.0</version>
+    <version>1.18.1</version>
 </dependency>
 ```
 
