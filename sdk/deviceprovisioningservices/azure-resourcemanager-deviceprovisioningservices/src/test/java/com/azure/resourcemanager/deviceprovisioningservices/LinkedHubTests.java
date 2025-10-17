@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.deviceprovisioningservices;
 
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.resourcemanager.deviceprovisioningservices.DeviceProvisioningServicesManager;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubDefinitionDescription;
@@ -27,7 +28,7 @@ public class LinkedHubTests extends DeviceProvisioningTestBase {
     @LiveOnly
     public void linkedHubsCRUD() {
         ResourceManager resourceManager = createResourceManager();
-        IotDpsManager iotDpsManager = createIotDpsManager();
+        DeviceProvisioningServicesManager iotDpsManager = createIotDpsManager();
         IotHubManager iotHubManager = createIotHubManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
