@@ -1416,7 +1416,7 @@ private[spark] object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemBulkUpdate = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemPatchIfExists, ItemBulkUpdate = Value
 }
 
 private object CosmosPatchOperationTypes extends Enumeration {
@@ -1753,7 +1753,7 @@ private object CosmosWriteConfig {
     assert(maxRetryCountOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteMaxRetryCount}' is missing.")
 
     itemWriteStrategyOpt.get match {
-      case ItemWriteStrategy.ItemPatch =>
+      case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
         patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter))
