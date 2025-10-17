@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionWithUpdateTypeInner;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
 /**
@@ -124,7 +125,7 @@ public interface SolutionTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SolutionTemplateInner> updateWithResponse(String resourceGroupName, String solutionTemplateName,
-        SolutionTemplateInner properties, Context context);
+        SolutionTemplateUpdate properties, Context context);
 
     /**
      * update a Solution Template Resource.
@@ -139,7 +140,7 @@ public interface SolutionTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionTemplateInner update(String resourceGroupName, String solutionTemplateName,
-        SolutionTemplateInner properties);
+        SolutionTemplateUpdate properties);
 
     /**
      * Create a Solution Template Version Resource.

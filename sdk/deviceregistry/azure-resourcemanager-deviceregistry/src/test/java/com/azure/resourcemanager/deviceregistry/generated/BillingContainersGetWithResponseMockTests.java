@@ -20,7 +20,7 @@ public final class BillingContainersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\"},\"etag\":\"civfsnkymuctq\",\"id\":\"fbebrjcxer\",\"name\":\"uwutttxfvjrbi\",\"type\":\"phxepcyvahf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"etag\":\"hxkizvytnrzv\",\"id\":\"jraaeranokqguk\",\"name\":\"jqnv\",\"type\":\"roylaxxu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +29,9 @@ public final class BillingContainersGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        BillingContainer response
-            = manager.billingContainers().getWithResponse("biqylihkaet", com.azure.core.util.Context.NONE).getValue();
+        BillingContainer response = manager.billingContainers()
+            .getWithResponse("gsftufqobrjlnacg", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

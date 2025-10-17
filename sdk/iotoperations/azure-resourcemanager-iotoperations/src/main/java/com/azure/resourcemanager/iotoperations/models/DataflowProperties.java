@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,6 +21,11 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      * Mode for Dataflow. Optional; defaults to Enabled.
      */
     private OperationalMode mode;
+
+    /*
+     * Disk persistence mode.
+     */
+    private OperationalMode requestDiskPersistence;
 
     /*
      * List of operations including source and destination references as well as transformation.
@@ -60,6 +64,26 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     }
 
     /**
+     * Get the requestDiskPersistence property: Disk persistence mode.
+     * 
+     * @return the requestDiskPersistence value.
+     */
+    public OperationalMode requestDiskPersistence() {
+        return this.requestDiskPersistence;
+    }
+
+    /**
+     * Set the requestDiskPersistence property: Disk persistence mode.
+     * 
+     * @param requestDiskPersistence the requestDiskPersistence value to set.
+     * @return the DataflowProperties object itself.
+     */
+    public DataflowProperties withRequestDiskPersistence(OperationalMode requestDiskPersistence) {
+        this.requestDiskPersistence = requestDiskPersistence;
+        return this;
+    }
+
+    /**
      * Get the operations property: List of operations including source and destination references as well as
      * transformation.
      * 
@@ -91,22 +115,6 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operations() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property operations in model DataflowProperties"));
-        } else {
-            operations().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -114,6 +122,8 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("requestDiskPersistence",
+            this.requestDiskPersistence == null ? null : this.requestDiskPersistence.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -139,6 +149,9 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
                     deserializedDataflowProperties.operations = operations;
                 } else if ("mode".equals(fieldName)) {
                     deserializedDataflowProperties.mode = OperationalMode.fromString(reader.getString());
+                } else if ("requestDiskPersistence".equals(fieldName)) {
+                    deserializedDataflowProperties.requestDiskPersistence
+                        = OperationalMode.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {

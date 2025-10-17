@@ -121,26 +121,6 @@ public final class InstanceHistoryProperties implements JsonSerializable<Instanc
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (solutionVersion() != null) {
-            solutionVersion().validate();
-        }
-        if (target() != null) {
-            target().validate();
-        }
-        if (reconciliationPolicy() != null) {
-            reconciliationPolicy().validate();
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

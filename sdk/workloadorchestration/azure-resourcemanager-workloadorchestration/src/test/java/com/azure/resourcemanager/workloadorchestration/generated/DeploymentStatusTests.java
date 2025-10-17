@@ -13,18 +13,18 @@ public final class DeploymentStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStatus model = BinaryData.fromString(
-            "{\"lastModified\":\"2021-11-25T08:03Z\",\"deployed\":435215346,\"expectedRunningJobId\":746279797,\"runningJobId\":996509936,\"status\":\"smtxpsieb\",\"statusDetails\":\"hvpesapskrdqm\",\"generation\":1058725142,\"targetStatuses\":[{\"name\":\"ldwkyzxuutkn\",\"status\":\"scwsv\",\"componentStatuses\":[{\"name\":\"ogtwrupqsxvnmi\",\"status\":\"kvceoveilovnotyf\"},{\"name\":\"cnjbkcnxdhbt\",\"status\":\"phywpnvj\"},{\"name\":\"qnermclfplphoxu\",\"status\":\"rpabg\"}]},{\"name\":\"psbjta\",\"status\":\"ugxywpmueef\",\"componentStatuses\":[{\"name\":\"qkqujidsu\",\"status\":\"nobglaocq\"},{\"name\":\"ccm\",\"status\":\"udxytlmoyrx\"}]}]}")
+            "{\"lastModified\":\"2021-07-07T21:20Z\",\"deployed\":412409909,\"expectedRunningJobId\":1627840881,\"runningJobId\":1448466618,\"status\":\"zdnds\",\"statusDetails\":\"nayqi\",\"generation\":1427716289,\"targetStatuses\":[{\"name\":\"avhqlkth\",\"status\":\"aqolbgycduiertg\",\"componentStatuses\":[{\"name\":\"vaolpsslqlf\",\"status\":\"dnbbglzps\"}]},{\"name\":\"ydmcwyhzdxssa\",\"status\":\"zmnvdfznudaod\",\"componentStatuses\":[{\"name\":\"ncblylpst\",\"status\":\"hh\"}]}]}")
             .toObject(DeploymentStatus.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T08:03Z"), model.lastModified());
-        Assertions.assertEquals(435215346, model.deployed());
-        Assertions.assertEquals(746279797, model.expectedRunningJobId());
-        Assertions.assertEquals(996509936, model.runningJobId());
-        Assertions.assertEquals("smtxpsieb", model.status());
-        Assertions.assertEquals("hvpesapskrdqm", model.statusDetails());
-        Assertions.assertEquals(1058725142, model.generation());
-        Assertions.assertEquals("ldwkyzxuutkn", model.targetStatuses().get(0).name());
-        Assertions.assertEquals("scwsv", model.targetStatuses().get(0).status());
-        Assertions.assertEquals("ogtwrupqsxvnmi", model.targetStatuses().get(0).componentStatuses().get(0).name());
-        Assertions.assertEquals("kvceoveilovnotyf", model.targetStatuses().get(0).componentStatuses().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T21:20Z"), model.lastModified());
+        Assertions.assertEquals(412409909, model.deployed());
+        Assertions.assertEquals(1627840881, model.expectedRunningJobId());
+        Assertions.assertEquals(1448466618, model.runningJobId());
+        Assertions.assertEquals("zdnds", model.status());
+        Assertions.assertEquals("nayqi", model.statusDetails());
+        Assertions.assertEquals(1427716289, model.generation());
+        Assertions.assertEquals("avhqlkth", model.targetStatuses().get(0).name());
+        Assertions.assertEquals("aqolbgycduiertg", model.targetStatuses().get(0).status());
+        Assertions.assertEquals("vaolpsslqlf", model.targetStatuses().get(0).componentStatuses().get(0).name());
+        Assertions.assertEquals("dnbbglzps", model.targetStatuses().get(0).componentStatuses().get(0).status());
     }
 }

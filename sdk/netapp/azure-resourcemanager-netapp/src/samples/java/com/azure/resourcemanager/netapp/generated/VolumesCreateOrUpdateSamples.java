@@ -12,7 +12,8 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 public final class VolumesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2025-06-01/examples/Volumes_CreateOrUpdate.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-07-01-preview/examples/Volumes_CreateOrUpdate
+     * .json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -27,7 +28,7 @@ public final class VolumesCreateOrUpdateSamples {
             .withCreationToken("my-unique-file-path")
             .withUsageThreshold(107374182400L)
             .withSubnetId(
-                "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
             .withServiceLevel(ServiceLevel.PREMIUM)
             .create();
     }

@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionInner;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in SolutionsClient.
@@ -127,7 +128,7 @@ public interface SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName, String targetName,
-        String solutionName, SolutionInner properties);
+        String solutionName, SolutionUpdate properties);
 
     /**
      * Update a Solution Resource.
@@ -144,7 +145,7 @@ public interface SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName, String targetName,
-        String solutionName, SolutionInner properties, Context context);
+        String solutionName, SolutionUpdate properties, Context context);
 
     /**
      * Update a Solution Resource.
@@ -159,7 +160,7 @@ public interface SolutionsClient {
      * @return solution Resource attached to a Target.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SolutionInner update(String resourceGroupName, String targetName, String solutionName, SolutionInner properties);
+    SolutionInner update(String resourceGroupName, String targetName, String solutionName, SolutionUpdate properties);
 
     /**
      * Update a Solution Resource.
@@ -175,7 +176,7 @@ public interface SolutionsClient {
      * @return solution Resource attached to a Target.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SolutionInner update(String resourceGroupName, String targetName, String solutionName, SolutionInner properties,
+    SolutionInner update(String resourceGroupName, String targetName, String solutionName, SolutionUpdate properties,
         Context context);
 
     /**

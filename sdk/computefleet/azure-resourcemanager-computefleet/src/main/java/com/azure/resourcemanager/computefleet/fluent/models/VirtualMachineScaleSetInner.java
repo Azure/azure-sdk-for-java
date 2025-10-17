@@ -19,6 +19,11 @@ import java.io.IOException;
 @Immutable
 public final class VirtualMachineScaleSetInner implements JsonSerializable<VirtualMachineScaleSetInner> {
     /*
+     * The name of the virtualMachineScaleSet
+     */
+    private String name;
+
+    /*
      * The compute RP resource id of the virtualMachineScaleSet
      * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}"
      */
@@ -44,6 +49,15 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
      * Creates an instance of VirtualMachineScaleSetInner class.
      */
     private VirtualMachineScaleSetInner() {
+    }
+
+    /**
+     * Get the name property: The name of the virtualMachineScaleSet.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -85,17 +99,6 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -120,7 +123,9 @@ public final class VirtualMachineScaleSetInner implements JsonSerializable<Virtu
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.id = reader.getString();
                 } else if ("operationStatus".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.operationStatus

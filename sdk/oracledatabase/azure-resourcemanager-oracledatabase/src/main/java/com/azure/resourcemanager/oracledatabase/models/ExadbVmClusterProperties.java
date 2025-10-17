@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -247,6 +246,11 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
      * Cluster subnet ocid
      */
     private String subnetOcid;
+
+    /*
+     * The type of Exascale storage used for Exadata VM cluster.
+     */
+    private ShapeAttribute shapeAttribute;
 
     /**
      * Creates an instance of ExadbVmClusterProperties class.
@@ -929,70 +933,24 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
     }
 
     /**
-     * Validates the instance.
+     * Get the shapeAttribute property: The type of Exascale storage used for Exadata VM cluster.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the shapeAttribute value.
      */
-    public void validate() {
-        if (vnetId() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property vnetId in model ExadbVmClusterProperties"));
-        }
-        if (subnetId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subnetId in model ExadbVmClusterProperties"));
-        }
-        if (dataCollectionOptions() != null) {
-            dataCollectionOptions().validate();
-        }
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property displayName in model ExadbVmClusterProperties"));
-        }
-        if (exascaleDbStorageVaultId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property exascaleDbStorageVaultId in model ExadbVmClusterProperties"));
-        }
-        if (hostname() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property hostname in model ExadbVmClusterProperties"));
-        }
-        if (nsgCidrs() != null) {
-            nsgCidrs().forEach(e -> e.validate());
-        }
-        if (shape() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property shape in model ExadbVmClusterProperties"));
-        }
-        if (sshPublicKeys() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sshPublicKeys in model ExadbVmClusterProperties"));
-        }
-        if (vmFileSystemStorage() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property vmFileSystemStorage in model ExadbVmClusterProperties"));
-        } else {
-            vmFileSystemStorage().validate();
-        }
-        if (snapshotFileSystemStorage() != null) {
-            snapshotFileSystemStorage().validate();
-        }
-        if (totalFileSystemStorage() != null) {
-            totalFileSystemStorage().validate();
-        }
-        if (iormConfigCache() != null) {
-            iormConfigCache().validate();
-        }
+    public ShapeAttribute shapeAttribute() {
+        return this.shapeAttribute;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ExadbVmClusterProperties.class);
+    /**
+     * Set the shapeAttribute property: The type of Exascale storage used for Exadata VM cluster.
+     * 
+     * @param shapeAttribute the shapeAttribute value to set.
+     * @return the ExadbVmClusterProperties object itself.
+     */
+    public ExadbVmClusterProperties withShapeAttribute(ShapeAttribute shapeAttribute) {
+        this.shapeAttribute = shapeAttribute;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -1024,6 +982,8 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
         jsonWriter.writeNumberField("scanListenerPortTcpSsl", this.scanListenerPortTcpSsl);
         jsonWriter.writeStringField("systemVersion", this.systemVersion);
         jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("shapeAttribute",
+            this.shapeAttribute == null ? null : this.shapeAttribute.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1139,6 +1099,8 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
                     deserializedExadbVmClusterProperties.backupSubnetOcid = reader.getString();
                 } else if ("subnetOcid".equals(fieldName)) {
                     deserializedExadbVmClusterProperties.subnetOcid = reader.getString();
+                } else if ("shapeAttribute".equals(fieldName)) {
+                    deserializedExadbVmClusterProperties.shapeAttribute = ShapeAttribute.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

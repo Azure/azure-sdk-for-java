@@ -48,17 +48,6 @@ public final class ReservationUpdateProperties implements JsonSerializable<Reser
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (user() != null) {
-            user().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

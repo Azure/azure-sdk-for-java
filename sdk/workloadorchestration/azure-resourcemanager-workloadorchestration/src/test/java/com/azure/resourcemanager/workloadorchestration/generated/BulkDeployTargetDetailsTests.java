@@ -12,14 +12,14 @@ public final class BulkDeployTargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkDeployTargetDetails model
-            = BinaryData.fromString("{\"solutionVersionId\":\"xzfe\"}").toObject(BulkDeployTargetDetails.class);
-        Assertions.assertEquals("xzfe", model.solutionVersionId());
+            = BinaryData.fromString("{\"solutionVersionId\":\"hkr\"}").toObject(BulkDeployTargetDetails.class);
+        Assertions.assertEquals("hkr", model.solutionVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BulkDeployTargetDetails model = new BulkDeployTargetDetails().withSolutionVersionId("xzfe");
+        BulkDeployTargetDetails model = new BulkDeployTargetDetails().withSolutionVersionId("hkr");
         model = BinaryData.fromObject(model).toObject(BulkDeployTargetDetails.class);
-        Assertions.assertEquals("xzfe", model.solutionVersionId());
+        Assertions.assertEquals("hkr", model.solutionVersionId());
     }
 }

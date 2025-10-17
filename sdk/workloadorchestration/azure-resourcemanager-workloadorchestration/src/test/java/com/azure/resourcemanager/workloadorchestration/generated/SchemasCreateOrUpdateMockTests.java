@@ -24,7 +24,7 @@ public final class SchemasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"currentVersion\":\"pfbcunezzcez\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"yfwlwxjwet\",\"location\":\"sihclafzvaylp\",\"tags\":{\"mwqkchcxwaxf\":\"qqwzt\"},\"id\":\"w\",\"name\":\"jkjexf\",\"type\":\"eqvhpsylkk\"}";
+            = "{\"properties\":{\"currentVersion\":\"saoafcluqvox\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"im\",\"location\":\"vwg\",\"tags\":{\"w\":\"pbmz\",\"bvopwndyqle\":\"sydsxwefohe\",\"lowkxxpvb\":\"llklmtk\",\"k\":\"dfjmzsyzfhotlh\"},\"id\":\"yych\",\"name\":\"nsjlpjrtws\",\"type\":\"hv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class SchemasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .define("bcblemb")
-            .withRegion("swbzuwfmdurage")
-            .withExistingResourceGroup("hfqpofv")
-            .withTags(mapOf("igkxkbsazga", "vcjfelisdjubggb", "apvu", "gacyrcmjdmspo", "zjedmstkvnlv", "rylniofrzg",
-                "ktwfa", "bcuiiz"))
+            .define("phaimmoi")
+            .withRegion("ahxku")
+            .withExistingResourceGroup("ccrrvweyoxoyyu")
+            .withTags(mapOf("hqepvufhbzehewh", "jcaacfdmmcpugm", "eaclgschorimk", "qhnlbqnbld", "ucsofldpuviyf", "srrm",
+                "bsxtkcudfbsfarfs", "aabeolhbhlvbmxuq"))
             .withProperties(new SchemaProperties())
             .create();
 
-        Assertions.assertEquals("sihclafzvaylp", response.location());
-        Assertions.assertEquals("qqwzt", response.tags().get("mwqkchcxwaxf"));
+        Assertions.assertEquals("vwg", response.location());
+        Assertions.assertEquals("pbmz", response.tags().get("w"));
     }
 
     // Use "Map.of" if available

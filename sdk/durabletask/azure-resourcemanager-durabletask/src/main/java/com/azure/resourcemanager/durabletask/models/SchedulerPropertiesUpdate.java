@@ -102,17 +102,6 @@ public final class SchedulerPropertiesUpdate implements JsonSerializable<Schedul
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

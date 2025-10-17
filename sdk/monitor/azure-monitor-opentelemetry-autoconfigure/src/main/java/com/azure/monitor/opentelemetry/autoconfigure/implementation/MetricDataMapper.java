@@ -108,7 +108,7 @@ public class MetricDataMapper {
                 return;
             }
 
-            if (metricsToLAEnabled && !isPreAggregatedStandardMetric) {
+            if (metricsToLAEnabled) {
                 List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
                 stableOtelMetrics.forEach(consumer::accept);
             }

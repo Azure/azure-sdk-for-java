@@ -11,7 +11,7 @@ public final class MigrationServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"integrationRuntimeState\":\"jlt\"},\"location\":\"bnnhadoocrkvcik\",\"tags\":{\"mqg\":\"p\"},\"id\":\"qqu\",\"name\":\"zikywgg\",\"type\":\"kallatmel\"}],\"nextLink\":\"ipicc\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"integrationRuntimeState\":\"ntorzihleosjswsr\"},\"location\":\"lyzrpzbchckqqzqi\",\"tags\":{\"rwyhqmibzyhwitsm\":\"ysuiizynkedya\",\"pcdpumnz\":\"pyy\"},\"id\":\"mwzn\",\"name\":\"abikns\",\"type\":\"rgjhxb\"},{\"properties\":{\"provisioningState\":\"Updating\",\"integrationRuntimeState\":\"wrlkdmtn\"},\"location\":\"ok\",\"tags\":{\"gsyocogj\":\"lxdy\",\"kvci\":\"tdtbnnhadooc\"},\"id\":\"hnvpamqgxq\",\"name\":\"u\",\"type\":\"zikywgg\"},{\"properties\":{\"provisioningState\":\"Provisioning\",\"integrationRuntimeState\":\"atmelwui\"},\"location\":\"ccjzkzivgvv\",\"tags\":{\"hyrnxxmu\":\"y\",\"v\":\"edndr\"},\"id\":\"tkwqqtchealm\",\"name\":\"mtdaa\",\"type\":\"gdv\"}],\"nextLink\":\"gpiohgwxrtfudxe\"}")
             .toObject(MigrationServiceListResult.class);
     }
 

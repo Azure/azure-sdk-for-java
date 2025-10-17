@@ -11,7 +11,7 @@ public final class SqlMigrationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlMigrationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"uhpkxkgymar\",\"integrationRuntimeState\":\"n\"},\"systemData\":{\"createdBy\":\"qugjhkycube\",\"createdByType\":\"Application\",\"createdAt\":\"2021-04-18T16:03:28Z\",\"lastModifiedBy\":\"fwqmzqalkrmn\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-12-03T00:29:17Z\"},\"location\":\"acqqudfnbyxbaaab\",\"tags\":{\"zrtuzq\":\"ayffim\",\"fdnw\":\"gsexne\",\"euzsoi\":\"wmewzsyy\"},\"id\":\"judpfrxt\",\"name\":\"thzvaytdwkqbrqu\",\"type\":\"paxh\"}],\"nextLink\":\"iilivpdtiirqtd\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"frxtrthzvaytdwk\",\"integrationRuntimeState\":\"rqubpaxhexiil\"},\"location\":\"pdtii\",\"tags\":{\"oaxoruzfgsqu\":\"d\",\"tramxjez\":\"fxrxxle\",\"tdooaoj\":\"lwnwxuqlcvydyp\",\"nuj\":\"niodkooeb\"},\"id\":\"emmsbvdkc\",\"name\":\"odtji\",\"type\":\"fw\"}],\"nextLink\":\"fltkacjv\"}")
             .toObject(SqlMigrationListResult.class);
     }
 

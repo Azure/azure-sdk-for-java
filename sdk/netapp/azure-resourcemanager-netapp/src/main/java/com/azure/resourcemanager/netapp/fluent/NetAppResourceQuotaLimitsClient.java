@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
 
 /**
  * An instance of this class provides access to all the operations defined in NetAppResourceQuotaLimitsClient.
@@ -27,7 +27,7 @@ public interface NetAppResourceQuotaLimitsClient {
      * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionQuotaItemInner> list(String location);
+    PagedIterable<QuotaItemInner> list(String location);
 
     /**
      * Get quota limits
@@ -42,7 +42,7 @@ public interface NetAppResourceQuotaLimitsClient {
      * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionQuotaItemInner> list(String location, Context context);
+    PagedIterable<QuotaItemInner> list(String location, Context context);
 
     /**
      * Get quota limits
@@ -58,7 +58,7 @@ public interface NetAppResourceQuotaLimitsClient {
      * @return the default and current subscription quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionQuotaItemInner> getWithResponse(String location, String quotaLimitName, Context context);
+    Response<QuotaItemInner> getWithResponse(String location, String quotaLimitName, Context context);
 
     /**
      * Get quota limits
@@ -73,5 +73,5 @@ public interface NetAppResourceQuotaLimitsClient {
      * @return the default and current subscription quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionQuotaItemInner get(String location, String quotaLimitName);
+    QuotaItemInner get(String location, String quotaLimitName);
 }

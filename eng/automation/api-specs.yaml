@@ -46,6 +46,8 @@ datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+datamigration/Microsoft.DataMigration/DataMigration:
+  service: datamigration
 developerhub:
   service: devhub
 dnc:
@@ -123,6 +125,8 @@ redhatopenshift/Microsoft.RedHatOpenShift/openshiftclusters:
   service: redhatopenshift
 redis:
   suffix: generated
+redisenterprise/Microsoft.Cache/RedisEnterprise:
+  service: redisenterprise
 resources:
   suffix: generated
 resources/Microsoft.Resources/bicep:

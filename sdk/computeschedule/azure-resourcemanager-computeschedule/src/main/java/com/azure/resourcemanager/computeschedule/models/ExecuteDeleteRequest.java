@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -122,29 +121,6 @@ public final class ExecuteDeleteRequest implements JsonSerializable<ExecuteDelet
         this.forceDeletion = forceDeletion;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (executionParameters() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property executionParameters in model ExecuteDeleteRequest"));
-        } else {
-            executionParameters().validate();
-        }
-        if (resources() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resources in model ExecuteDeleteRequest"));
-        } else {
-            resources().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExecuteDeleteRequest.class);
 
     /**
      * {@inheritDoc}
