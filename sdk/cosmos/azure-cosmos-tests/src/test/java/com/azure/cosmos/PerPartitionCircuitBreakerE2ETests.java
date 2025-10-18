@@ -4872,7 +4872,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
             .delay(paramsWrapper.getResponseDelay())
-            .suppressServiceRequests(false)
+            .suppressServiceRequests(true)
             .build();
 
         List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();

@@ -55,6 +55,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
+    private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
     private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle(
         "partition-availability-staleness-check",
         true);
@@ -72,8 +73,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     }
 
     public void init() {
-        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
-            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).subscribe();
+        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled() && !this.isPartitionRecoveryTaskRunning.get()) {
+            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).doOnSubscribe(ignore -> this.isPartitionRecoveryTaskRunning.set(true)).subscribe();
         }
     }
 
@@ -583,15 +584,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         return this.consecutiveExceptionBasedCircuitBreaker.getPartitionLevelCircuitBreakerConfig();
     }
 
-    public synchronized void resetCircuitBreakerConfig() {
-        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig
-            = Configs.getPartitionLevelCircuitBreakerConfig();
-
+    public synchronized void resetCircuitBreakerConfig(PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig) {
         this.consecutiveExceptionBasedCircuitBreaker
             = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
 
         this.locationSpecificHealthContextTransitionHandler
             = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
+
+        this.clear();
+    }
+
+    private void clear() {
+        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.clear();
+        this.regionalRoutingContextToRegion.clear();
     }
 
     private static CosmosException wrapAsCosmosException(RxDocumentServiceRequest request, Exception innerException) {

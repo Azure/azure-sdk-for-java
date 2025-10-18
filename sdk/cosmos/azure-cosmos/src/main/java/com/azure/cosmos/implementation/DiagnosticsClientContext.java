@@ -64,7 +64,7 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
-                generator.writeStringField("isPpafEnabled", Configs.isPerPartitionAutomaticFailoverEnabled());
+                generator.writeStringField("isPpafEnabled", clientConfig.isPerPartitionAutomaticFailoverEnabledAsString);
                 generator.writeStringField("isFalseProgSessionTokenMergeEnabled", Configs.isSessionTokenFalseProgressMergeEnabled() ? "true" : "false");
                 generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");
@@ -132,6 +132,7 @@ public interface DiagnosticsClientContext {
         private String sessionRetryOptionsAsString;
         private String regionScopedSessionContainerOptionsAsString;
         private String partitionLevelCircuitBreakerConfigAsString;
+        private String isPerPartitionAutomaticFailoverEnabledAsString = "false";
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -251,6 +252,11 @@ public interface DiagnosticsClientContext {
                 this.partitionLevelCircuitBreakerConfigAsString = partitionLevelCircuitBreakerConfig.getConfigAsString();
             }
 
+            return this;
+        }
+
+        public DiagnosticsClientConfig withIsPerPartitionAutomaticFailoverEnabled(Boolean isPpafEnabled) {
+            this.isPerPartitionAutomaticFailoverEnabledAsString = (isPpafEnabled != null && isPpafEnabled) ? "true" : "false";
             return this;
         }
 
