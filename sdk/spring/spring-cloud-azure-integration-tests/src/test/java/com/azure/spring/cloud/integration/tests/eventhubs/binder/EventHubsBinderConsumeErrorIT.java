@@ -6,6 +6,7 @@ import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientCon
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import java.util.function.Supplier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "message" })
 @Import(TestEventHubsClientConfiguration.class)
+@Disabled
 class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);

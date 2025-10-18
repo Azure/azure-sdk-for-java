@@ -3,6 +3,10 @@
 
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
+import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaBinderOAuth2AutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaSpringCloudStreamConfiguration;
+import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
@@ -12,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,8 +31,13 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE,
+                classes = {AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class,
+                           AzureEventHubsKafkaOAuth2AutoConfiguration.class,
+                           AzureKafkaSpringCloudStreamConfiguration.class,
+                           EventHubsKafkaBinderIT.TestConfig.class,})
 @ActiveProfiles("eventhubs-kafka-binder")
+@Import(TestEventHubsClientConfiguration.class)
 class EventHubsKafkaBinderIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsKafkaBinderIT.class);
