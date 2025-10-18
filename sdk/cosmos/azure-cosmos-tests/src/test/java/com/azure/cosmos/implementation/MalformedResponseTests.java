@@ -92,6 +92,8 @@ public class MalformedResponseTests extends TestSuiteBase {
             field.setAccessible(true);
             field.set(null, originalMapper);
             field.setAccessible(false);
+
+            safeClose(cosmosAsyncClient);
         }
     }
 
