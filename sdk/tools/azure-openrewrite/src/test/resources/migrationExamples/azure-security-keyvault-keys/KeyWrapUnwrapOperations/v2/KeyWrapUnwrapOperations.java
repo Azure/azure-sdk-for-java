@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys.cryptography;
-
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
+import com.azure.v2.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.v2.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;
 
 import java.util.Random;
 

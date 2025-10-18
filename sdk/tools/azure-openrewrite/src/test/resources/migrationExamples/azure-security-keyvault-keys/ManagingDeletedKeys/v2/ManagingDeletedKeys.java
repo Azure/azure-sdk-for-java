@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys;
-
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.v2.core.http.polling.PollResponse;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.keys.KeyClient;
+import com.azure.v2.security.keyvault.keys.KeyClientBuilder;
+import com.azure.v2.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.v2.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.v2.security.keyvault.keys.models.DeletedKey;
+import com.azure.v2.security.keyvault.keys.models.KeyVaultKey;
 
 import java.time.OffsetDateTime;
 
@@ -39,7 +39,7 @@ public class ManagingDeletedKeys {
         (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
         for links and instructions. */
         KeyClient keyClient = new KeyClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .endpoint("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
@@ -53,7 +53,7 @@ public class ManagingDeletedKeys {
             .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 
         // The RSA key is no longer needed, need to delete it from the key vault.
-        SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
+        Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
         PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
         DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 
@@ -65,7 +65,7 @@ public class ManagingDeletedKeys {
 
         // We accidentally deleted the EC key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
-        SyncPoller<KeyVaultKey, Void> recoverEcKeyPoller = keyClient.beginRecoverDeletedKey("CloudEcKey");
+        Poller<KeyVaultKey, Void> recoverEcKeyPoller = keyClient.beginRecoverDeletedKey("CloudEcKey");
         PollResponse<KeyVaultKey> recoveryEcKeyPollResponse = recoverEcKeyPoller.poll();
         KeyVaultKey recoveredKey = recoveryEcKeyPollResponse.getValue();
 
@@ -76,7 +76,7 @@ public class ManagingDeletedKeys {
         recoverEcKeyPoller.waitForCompletion();
 
         // The EC and RSA keys are no longer needed, need to delete them from the key vault.
-        SyncPoller<DeletedKey, Void> ecDeletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
+        Poller<DeletedKey, Void> ecDeletedKeyPoller = keyClient.beginDeleteKey("CloudEcKey");
         PollResponse<DeletedKey> ecDeletedKeyPollResponse = ecDeletedKeyPoller.poll();
         DeletedKey ecDeletedKey = ecDeletedKeyPollResponse.getValue();
 
@@ -86,7 +86,7 @@ public class ManagingDeletedKeys {
         // The key is being deleted on the server.
         ecDeletedKeyPoller.waitForCompletion();
 
-        SyncPoller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
+        Poller<DeletedKey, Void> rsaDeletedKeyPoller = keyClient.beginDeleteKey("CloudRsaKey");
         PollResponse<DeletedKey> rsaDeletedKeyPollResponse = rsaDeletedKeyPoller.poll();
         DeletedKey rsaDeletedKey = rsaDeletedKeyPollResponse.getValue();
 

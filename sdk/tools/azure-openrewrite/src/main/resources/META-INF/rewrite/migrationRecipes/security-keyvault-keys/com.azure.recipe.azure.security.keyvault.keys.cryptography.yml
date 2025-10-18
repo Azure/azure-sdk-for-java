@@ -1,0 +1,25 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.security.keyvault.keys.cryptography
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.security.keyvault.keys.cryptography
+displayName: Migrate from azure.security.keyvault.keys.cryptography to next generation stack
+description: This recipe migrates the azure.security.keyvault.keys.cryptography package to the next generation stack.
+recipeList:
+  # --------------------------------------------------------------------
+  # DecryptResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.CryptographyClient
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient
+
+  # --------------------------------------------------------------------
+  # DecryptResult
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder
