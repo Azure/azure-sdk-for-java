@@ -54,7 +54,13 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                     logger.error("Failed to parse JSON document. No customized charset decoder configured.");
                 }
 
-                throw new IllegalStateException("Unable to parse JSON.", e);
+                IllegalStateException innerException = new IllegalStateException("Unable to parse JSON.", e);
+
+                throw Utils.createCosmosException(
+                    HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                    HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
+                    innerException,
+                    responseHeaders);
             }
         }
     }
