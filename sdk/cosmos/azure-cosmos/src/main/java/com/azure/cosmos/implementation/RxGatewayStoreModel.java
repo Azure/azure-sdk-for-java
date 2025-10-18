@@ -486,7 +486,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
 
                     // wrap in CosmosException
-                    logger.warn("Network failure", exception);
+                    logger.error("Network failure", exception);
 
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {
                         statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
