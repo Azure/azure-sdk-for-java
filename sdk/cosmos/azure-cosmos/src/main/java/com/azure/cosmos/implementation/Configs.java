@@ -360,9 +360,9 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
-    private static final boolean DEFAULT_SHOULD_LOG_NON_PARSEABLE_PAYLOADS = false;
-    private static final String SHOULD_LOG_NON_PARSEABLE_PAYLOADS = "COSMOS.SHOULD_LOG_NON_PARSEABLE_PAYLOADS";
-    private static final String SHOULD_LOG_NON_PARSEABLE_PAYLOADS_VARIABLE = "COSMOS_SHOULD_LOG_NON_PARSEABLE_PAYLOADS";
+    private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE = "COSMOS_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
 
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
@@ -1247,10 +1247,10 @@ public class Configs {
 
     public static boolean isNonParseableDocumentLoggingEnabled() {
         String isNonParseableDocumentLoggingEnabledAsString = System.getProperty(
-            SHOULD_LOG_NON_PARSEABLE_PAYLOADS,
+            IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED,
             firstNonNull(
-                emptyToNull(System.getenv().get(SHOULD_LOG_NON_PARSEABLE_PAYLOADS_VARIABLE)),
-                String.valueOf(DEFAULT_SHOULD_LOG_NON_PARSEABLE_PAYLOADS)));
+                emptyToNull(System.getenv().get(IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED)));
 
         return Boolean.parseBoolean(isNonParseableDocumentLoggingEnabledAsString);
     }

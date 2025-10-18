@@ -47,11 +47,13 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                 return fromJsonWithFallbackCharsetDecoder(bytes, responseHeaders);
             } else {
 
+                String baseErrorMessage = "Failed to parse JSON document. No fallback charset decoder configured.";
+
                 if (Configs.isNonParseableDocumentLoggingEnabled()) {
                     String documentSample = Base64.getEncoder().encodeToString(bytes);
-                    logger.error("Failed to parse JSON document. No customized charset decoder configured. Document in Base64 format: [" + documentSample + "]", e);
+                    logger.error(baseErrorMessage + " " + "Document in Base64 format: [" + documentSample + "]", e);
                 } else {
-                    logger.error("Failed to parse JSON document. No customized charset decoder configured.");
+                    logger.error(baseErrorMessage);
                 }
 
                 IllegalStateException innerException = new IllegalStateException("Unable to parse JSON.", e);
@@ -71,11 +73,13 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
             return Utils.getSimpleObjectMapper().readTree(sanitizedJson);
         } catch (IOException e) {
 
+            String baseErrorMessage = "Failed to parse JSON document even after applying fallback charset decoder.";
+
             if (Configs.isNonParseableDocumentLoggingEnabled()) {
                 String documentSample = Base64.getEncoder().encodeToString(bytes);
-                logger.error("Failed to parse JSON document even after applying fallback charset decoder. Document in Base64 format: [" + documentSample + "]", e);
+                logger.error(baseErrorMessage + " " + "Document in Base64 format: [" + documentSample + "]", e);
             } else {
-                logger.error("Failed to parse JSON document even after applying fallback charset decoder.");
+                logger.error(baseErrorMessage);
             }
 
             Exception nestedException = new IllegalStateException(
