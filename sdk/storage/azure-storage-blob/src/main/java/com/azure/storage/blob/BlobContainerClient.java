@@ -1504,4 +1504,62 @@ public final class BlobContainerClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
+
+
+    /********************* GENERATED WRAPPER CODE *********************/
+    /**
+     * Creates a new container if it does not exist, or deletes it if it already exists.
+     * Returns true if the container was created, false if it was deleted.
+     */
+    public boolean createOrDeleteContainerIfExists() {
+        /* 
+          Combined Methods: createIfNotExists, deleteIfExists
+          Reason: Developers often want to ensure a container exists or is deleted in a single operation. This wrapper provides a convenient way to perform this common pattern without having to manually check and call both methods.
+        */
+        if (createIfNotExists()) {
+            return true;
+        } else {
+            deleteIfExists();
+            return false;
+        }
+    }
+    
+    /**
+     * Sets the container's metadata and access policy in a single call.
+     * This is useful for scenarios where both need to be updated together.
+     *
+     * @param metadata Metadata to associate with the container.
+     * @param accessType Specifies how the data in this container is available to the public.
+     * @param identifiers A list of BlobSignedIdentifier objects that specify the permissions for the container.
+     */
+    public void setMetadataAndAccessPolicy(Map<String, String> metadata, PublicAccessType accessType, List<BlobSignedIdentifier> identifiers) {
+        /* 
+          Combined Methods: setMetadata, setAccessPolicy
+          Reason: Setting metadata and access policy together is a common scenario. This wrapper reduces the number of calls and improves code readability.
+        */
+        setMetadata(metadata);
+        setAccessPolicy(accessType, identifiers);
+    }
+    
+    /**
+     * Gets the container's properties and access policy in a single call.
+     * Returns a pair containing BlobContainerProperties and BlobContainerAccessPolicies.
+     *
+     * @param leaseId The lease ID the active lease on the container must match.
+     * @param timeout An optional timeout value.
+     * @param context Additional context for the service call.
+     * @return A Pair containing BlobContainerProperties and BlobContainerAccessPolicies.
+     */
+    public Pair<BlobContainerProperties, BlobContainerAccessPolicies> getPropertiesAndAccessPolicy(String leaseId, Duration timeout, Context context) {
+        /* 
+          Combined Methods: getPropertiesWithResponse, getAccessPolicyWithResponse
+          Reason: Developers often need both properties and access policies together. This wrapper provides both in a single call, improving convenience and reducing boilerplate.
+        */
+        BlobContainerProperties properties = getPropertiesWithResponse(leaseId, timeout, context).getValue();
+        BlobContainerAccessPolicies policies = getAccessPolicyWithResponse(leaseId, timeout, context).getValue();
+        return new Pair<>(properties, policies);
+    }
+
+    /********************* END OF GENERATED CODE *********************/
+
 }

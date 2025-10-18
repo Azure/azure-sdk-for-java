@@ -1072,4 +1072,129 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
         return ranges;
     }
+
+
+    /********************* GENERATED WRAPPER CODE *********************/
+    /**
+     * Uploads a file to a block blob with sensible defaults for most common scenarios.
+     * <p>
+     * This convenience method allows developers to upload a file to a blob with minimal configuration, using default parallel transfer options,
+     * no custom headers, no metadata, no tags, and the default access tier. This greatly simplifies the common case of uploading a file.
+     * </p>
+     */
+    public Mono<Void> uploadFile(String filePath) {
+        /*
+          Combined Methods: uploadFromFile, uploadFromFileWithResponse
+          Reason: Developers commonly want to upload a file to a blob with minimal configuration. The low-level API requires specifying multiple
+          parameters or constructing an options object, even for the simplest use case. This wrapper eliminates boilerplate by applying sensible defaults.
+        */
+        return uploadFromFile(filePath, null, null, null, null, null);
+    }
+    
+    /**
+     * Uploads a file to a block blob, allowing optional metadata and access tier, but using defaults for other parameters.
+     * <p>
+     * This overload allows developers to specify metadata and access tier without needing to construct option objects or specify less commonly used parameters.
+     * </p>
+     * @param filePath Path to the upload file.
+     * @param metadata Metadata to associate with the blob.
+     * @param tier Access tier for the destination blob.
+     */
+    public Mono<Void> uploadFile(String filePath, Map<String, String> metadata, AccessTier tier) {
+        /*
+          Combined Methods: uploadFromFile, uploadFromFileWithResponse
+          Reason: In many scenarios, developers want to upload a file with just metadata or access tier. The low-level API requires passing many nulls or constructing options.
+          This wrapper streamlines the workflow by exposing only the most relevant parameters.
+        */
+        return uploadFromFile(filePath, null, null, metadata, tier, null);
+    }
+    
+    /**
+     * Uploads the given data to a block blob, overwriting if specified, with sensible defaults for most parameters.
+     * <p>
+     * This method enables quick uploads of BinaryData with a simple overwrite flag, hiding the complexity of request conditions and headers.
+     * </p>
+     * @param data The data to write to the blob.
+     * @param overwrite Whether to overwrite, should the blob already exist.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<BlockBlobItem> upload(BinaryData data, boolean overwrite) {
+        /*
+          Combined Methods: upload, uploadWithResponse
+          Reason: The low-level API requires the user to handle request conditions and existence checks for overwrite semantics.
+          This wrapper exposes a clear intent-based API for the common workflow of uploading data with overwrite control.
+        */
+        Mono<Void> overwriteCheck;
+        BlobRequestConditions requestConditions;
+    
+        if (overwrite) {
+            overwriteCheck = Mono.empty();
+            requestConditions = null;
+        } else {
+            overwriteCheck = exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : Mono.empty());
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+    
+        return overwriteCheck
+            .then(uploadWithResponse(data.toFluxByteBuffer(), null, null, null, null, requestConditions))
+            .flatMap(FluxUtil::toMono);
+    }
+    
+    /**
+     * Uploads a file to a block blob and returns the full response, with all advanced options available via a single options parameter.
+     * <p>
+     * This method wraps the lower-level uploadFromFileWithResponse, providing a single options parameter for advanced scenarios.
+     * </p>
+     * @param options The options to configure the upload.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadFileWithResponse(BlobUploadFromFileOptions options) {
+        /*
+          Combined Methods: uploadFromFileWithResponse
+          Reason: This wrapper exposes the options pattern for advanced users, aligning with Azure SDK guidelines for complex service methods.
+          It reduces parameter overload and groups all advanced configuration in a single, discoverable options object.
+        */
+        return uploadFromFileWithResponse(options);
+    }
+    
+    /**
+     * Uploads data from a Flux<ByteBuffer> to a block blob, using sensible defaults for parallel transfer options and headers.
+     * <p>
+     * This method simplifies the common case of uploading a stream of data, without requiring the user to construct options objects.
+     * </p>
+     * @param data The data to upload as a Flux of ByteBuffer.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadStream(Flux<ByteBuffer> data) {
+        /*
+          Combined Methods: uploadWithResponse(BlobParallelUploadOptions)
+          Reason: Developers often want to upload a stream with minimal configuration. This wrapper applies defaults for all advanced options, reducing boilerplate.
+        */
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data);
+        return uploadWithResponse(options);
+    }
+    
+    /**
+     * Uploads a file to a block blob, reporting progress via the provided listener.
+     * <p>
+     * This method enables file upload with progress reporting, a common workflow for large files, without requiring users to manually construct transfer options.
+     * </p>
+     * @param filePath Path to the upload file.
+     * @param progressListener Listener to receive upload progress events.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    public Mono<Response<BlockBlobItem>> uploadFileWithProgress(String filePath, ProgressListener progressListener) {
+        /*
+          Combined Methods: uploadFromFileWithResponse
+          Reason: Progress reporting is a common requirement for file uploads. This wrapper allows developers to easily specify a progress listener without constructing complex option objects.
+        */
+        ParallelTransferOptions transferOptions = new ParallelTransferOptions().setProgressListener(progressListener);
+        BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(filePath).setParallelTransferOptions(transferOptions);
+        return uploadFromFileWithResponse(options);
+    }
+
+    /********************* END OF GENERATED CODE *********************/
+
 }

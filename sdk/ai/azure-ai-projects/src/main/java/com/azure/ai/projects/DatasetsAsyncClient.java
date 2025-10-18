@@ -595,4 +595,160 @@ public final class DatasetsAsyncClient {
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DatasetVersion.class));
     }
+
+
+    /********************* GENERATED WRAPPER CODE *********************/
+    /**
+     * Creates or updates a DatasetVersion from a local file in a single call.
+     * <p>
+     * This method handles the full workflow of creating a new DatasetVersion or updating an existing one
+     * by uploading the specified file to the backing storage and registering the DatasetVersion with the uploaded file's URI.
+     * </p>
+     * @param name The name of the dataset resource.
+     * @param version The version identifier for the DatasetVersion.
+     * @param filePath The path to the file to upload.
+     * @return A Mono that completes with a FileDatasetVersion representing the created or updated dataset.
+     * @throws IllegalArgumentException If the provided path is not a file.
+     */
+    public Mono<FileDatasetVersion> upsertDatasetVersionFromFile(String name, String version, Path filePath) {
+        /*
+          Combined Methods: pendingUpload, BlobAsyncClient.upload, createOrUpdateDatasetVersionWithResponse
+          Reason: Developers want to register a dataset version from a file in one step, without manually handling pending upload, SAS, and registration. This wrapper encapsulates the multi-step upload and registration workflow into a single, intent-driven method.
+        */
+        if (!Files.isRegularFile(filePath)) {
+            return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
+        }
+        PendingUploadRequest request = new PendingUploadRequest();
+        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
+            String blobUri = pendingUploadResponse.getBlobReference().getBlobUri();
+            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUri();
+            BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri).blobName(name).buildAsyncClient();
+            return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
+        }).flatMap(blobUrl -> {
+            RequestOptions requestOptions = new RequestOptions();
+            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUri(blobUrl);
+            return this
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(data -> data.toObject(FileDatasetVersion.class));
+        });
+    }
+    
+    
+    /**
+     * Creates or updates a DatasetVersion from a local folder in a single call.
+     * <p>
+     * This method handles the full workflow of creating a new DatasetVersion or updating an existing one
+     * by uploading the contents of the specified folder to the backing storage and registering the DatasetVersion with the uploaded folder's URI.
+     * </p>
+     * @param name The name of the dataset resource.
+     * @param version The version identifier for the DatasetVersion.
+     * @param folderPath The path to the folder containing files to upload.
+     * @return A Mono that completes with a FolderDatasetVersion representing the created or updated dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     */
+    public Mono<FolderDatasetVersion> upsertDatasetVersionFromFolder(String name, String version, Path folderPath) {
+        /*
+          Combined Methods: pendingUpload, BlobAsyncClient.upload (for each file), createOrUpdateDatasetVersionWithResponse
+          Reason: Developers want to register a dataset version from a folder in one step, without manually handling pending upload, SAS, per-file upload, and registration. This wrapper encapsulates the multi-step upload and registration workflow into a single, intent-driven method.
+        */
+        if (!Files.isDirectory(folderPath)) {
+            return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
+        }
+        PendingUploadRequest request = new PendingUploadRequest();
+        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
+            String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUri();
+            String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUri();
+            String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
+            try {
+                List<Path> files = Files.walk(folderPath).filter(Files::isRegularFile).collect(Collectors.toList());
+                return Flux.fromIterable(files).flatMap(filePath -> {
+                    String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                    BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri).blobName(relativePath).buildAsyncClient();
+                    return blobClient.upload(BinaryData.fromFile(filePath), true);
+                }).then(Mono.just(containerUrl));
+            } catch (Exception e) {
+                return Mono.error(new RuntimeException("Error walking through folder path", e));
+            }
+        }).flatMap(containerUrl -> {
+            RequestOptions requestOptions = new RequestOptions();
+            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
+            return this
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(folderDataset), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(data -> data.toObject(FolderDatasetVersion.class));
+        });
+    }
+    
+    
+    /**
+     * Deletes all versions of a dataset by name.
+     * <p>
+     * This method lists all versions for the given dataset name and deletes each version in sequence.
+     * </p>
+     * @param name The name of the dataset resource.
+     * @return A Mono that completes when all versions have been deleted.
+     */
+    public Mono<Void> deleteAllDatasetVersions(String name) {
+        /*
+          Combined Methods: listDatasetVersions, deleteDatasetVersion
+          Reason: Deleting all versions of a dataset is a common cleanup operation, but currently requires manual enumeration and deletion. This wrapper automates the multi-step process, reducing boilerplate and risk of partial deletion.
+        */
+        return listDatasetVersions(name)
+            .flatMapSequential(datasetVersion -> deleteDatasetVersion(datasetVersion.getName(), datasetVersion.getVersion()))
+            .then();
+    }
+    
+    
+    /**
+     * Retrieves the latest version of a dataset by name.
+     * <p>
+     * This method lists all versions for the given dataset name and returns the one with the highest version identifier.
+     * </p>
+     * @param name The name of the dataset resource.
+     * @return A Mono that completes with the latest DatasetVersion, or empty if none exist.
+     */
+    public Mono<DatasetVersion> getLatestDatasetVersion(String name) {
+        /*
+          Combined Methods: listDatasetVersions, getDatasetVersion
+          Reason: Developers often want the most recent version of a dataset, but must currently enumerate and compare versions manually. This wrapper provides a direct, intent-driven way to fetch the latest version.
+        */
+        return listDatasetVersions(name)
+            .collectList()
+            .flatMap(list -> {
+                if (list.isEmpty()) {
+                    return Mono.empty();
+                }
+                DatasetVersion latest = list.stream()
+                    .max(Comparator.comparing(DatasetVersion::getVersion))
+                    .orElse(null);
+                if (latest == null) {
+                    return Mono.empty();
+                }
+                return getDatasetVersion(latest.getName(), latest.getVersion());
+            });
+    }
+    
+    
+    /**
+     * Checks if a specific version of a dataset exists.
+     * <p>
+     * This method attempts to retrieve the specified dataset version and returns true if it exists, false otherwise.
+     * </p>
+     * @param name The name of the dataset resource.
+     * @param version The version identifier to check.
+     * @return A Mono that completes with true if the version exists, false otherwise.
+     */
+    public Mono<Boolean> datasetVersionExists(String name, String version) {
+        /*
+          Combined Methods: getDatasetVersion
+          Reason: Existence checks are a common pattern, but currently require exception handling boilerplate. This wrapper expresses developer intent and simplifies the workflow.
+        */
+        return getDatasetVersion(name, version)
+            .map(datasetVersion -> true)
+            .onErrorResume(ResourceNotFoundException.class, ex -> Mono.just(false));
+    }
+
+    /********************* END OF GENERATED CODE *********************/
+
 }

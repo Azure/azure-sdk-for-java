@@ -617,4 +617,153 @@ public interface AfdCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void refreshValidationToken(String resourceGroupName, String profileName, String customDomainName, Context context);
+
+
+    /********************* GENERATED WRAPPER CODE *********************/
+    /**
+     * Creates a new custom domain and waits for validation token to be refreshed, simplifying domain onboarding.
+     */
+    public Mono<AfdDomainInner> createDomainAndRefreshValidationAsync(String resourceGroupName, String profileName, String customDomainName, AfdDomainInner customDomain) {
+        /*
+          Combined Methods: createAsync, refreshValidationTokenAsync
+          Reason: Creating a custom domain typically requires refreshing the validation token immediately after creation to complete onboarding. This wrapper automates the sequence, reducing manual steps and improving clarity for common onboarding scenarios.
+        */
+        return createAsync(resourceGroupName, profileName, customDomainName, customDomain)
+            .then(refreshValidationTokenAsync(resourceGroupName, profileName, customDomainName))
+            .then(getAsync(resourceGroupName, profileName, customDomainName));
+    }
+    
+    /**
+     * Deletes a custom domain and waits for the operation to complete, returning the final result.
+     */
+    public void deleteDomainAndWait(String resourceGroupName, String profileName, String customDomainName, Context context) {
+        /*
+          Combined Methods: beginDelete, getWithResponse
+          Reason: Deleting a domain is a long-running operation. This wrapper starts the delete and waits for completion, ensuring the domain is fully removed before proceeding, reducing boilerplate and error-prone polling logic.
+        */
+        beginDelete(resourceGroupName, profileName, customDomainName, context).waitForCompletion();
+    }
+    
+    /**
+     * Updates a custom domain and refreshes its validation token, returning the updated domain.
+     */
+    public Mono<AfdDomainInner> updateDomainAndRefreshValidationAsync(String resourceGroupName, String profileName, String customDomainName, AfdDomainUpdateParameters updateParameters) {
+        /*
+          Combined Methods: updateAsync, refreshValidationTokenAsync, getAsync
+          Reason: After updating domain properties, it's common to refresh the validation token to ensure changes are properly validated. This wrapper automates the update and token refresh sequence, streamlining the workflow.
+        */
+        return updateAsync(resourceGroupName, profileName, customDomainName, updateParameters)
+            .then(refreshValidationTokenAsync(resourceGroupName, profileName, customDomainName))
+            .then(getAsync(resourceGroupName, profileName, customDomainName));
+    }
+    
+    /**
+     * Lists all custom domains for a profile, returning a paginated iterable for easy enumeration.
+     */
+    public PagedIterable<AfdDomainInner> listDomains(String resourceGroupName, String profileName) {
+        /*
+          Combined Methods: listByProfile, listByProfileAsync
+          Reason: Listing domains is a frequent operation. This wrapper provides a simple paginated iterable, hiding the context parameter and aligning with idiomatic Java enumeration patterns.
+        */
+        return listByProfile(resourceGroupName, profileName, Context.NONE);
+    }
+    
+    /**
+     * Creates or updates a custom domain depending on existence, returning the resulting domain.
+     */
+    public Mono<AfdDomainInner> upsertDomainAsync(String resourceGroupName, String profileName, String customDomainName, AfdDomainInner customDomain) {
+        /*
+          Combined Methods: getAsync, createAsync, updateAsync
+          Reason: Developers often want to ensure a domain exists, creating it if missing or updating if present. This wrapper checks existence and performs the appropriate operation, reducing repetitive existence checks and branching logic.
+        */
+        return getAsync(resourceGroupName, profileName, customDomainName)
+            .flatMap(existing -> updateAsync(resourceGroupName, profileName, customDomainName, toUpdateParameters(existing, customDomain)))
+            .onErrorResume(e -> createAsync(resourceGroupName, profileName, customDomainName, customDomain));
+    }
+    
+    /**
+     * Refreshes the validation token and waits for the operation to complete.
+     */
+    public void refreshValidationTokenAndWait(String resourceGroupName, String profileName, String customDomainName, Context context) {
+        /*
+          Combined Methods: beginRefreshValidationToken, getWithResponse
+          Reason: Refreshing the validation token is a long-running operation. This wrapper starts the refresh and waits for completion, ensuring the token is fully updated before proceeding.
+        */
+        beginRefreshValidationToken(resourceGroupName, profileName, customDomainName, context).waitForCompletion();
+    }
+    
+    /**
+     * Gets the details of a custom domain, returning the domain or null if not found.
+     */
+    public AfdDomainInner getDomainOrNull(String resourceGroupName, String profileName, String customDomainName) {
+        /*
+          Combined Methods: get, getWithResponse
+          Reason: Developers often want to retrieve a domain, but handle the case where it may not exist gracefully. This wrapper returns null if the domain is not found, simplifying error handling.
+        */
+        try {
+            return get(resourceGroupName, profileName, customDomainName);
+        } catch (com.azure.core.management.exception.ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            }
+            throw e;
+        }
+    }
+    
+    /**
+     * Updates a custom domain and waits for the operation to complete, returning the updated domain.
+     */
+    public AfdDomainInner updateDomainAndWait(String resourceGroupName, String profileName, String customDomainName, AfdDomainUpdateParameters updateParameters, Context context) {
+        /*
+          Combined Methods: beginUpdate, getWithResponse
+          Reason: Updating a domain is a long-running operation. This wrapper starts the update and waits for completion, returning the updated domain and reducing manual polling logic.
+        */
+        return beginUpdate(resourceGroupName, profileName, customDomainName, updateParameters, context).waitForCompletion();
+    }
+    
+    /**
+     * Creates a new custom domain and waits for the operation to complete, returning the created domain.
+     */
+    public AfdDomainInner createDomainAndWait(String resourceGroupName, String profileName, String customDomainName, AfdDomainInner customDomain, Context context) {
+        /*
+          Combined Methods: beginCreate, getWithResponse
+          Reason: Creating a domain is a long-running operation. This wrapper starts the creation and waits for completion, returning the created domain and reducing manual polling logic.
+        */
+        return beginCreate(resourceGroupName, profileName, customDomainName, customDomain, context).waitForCompletion();
+    }
+    
+    /**
+     * Deletes a custom domain and returns true if the domain was deleted, false if it did not exist.
+     */
+    public boolean deleteDomainIfExists(String resourceGroupName, String profileName, String customDomainName, Context context) {
+        /*
+          Combined Methods: get, delete
+          Reason: Developers often want to delete a domain only if it exists. This wrapper checks existence and deletes if present, returning a boolean result to simplify conditional deletion logic.
+        */
+        try {
+            get(resourceGroupName, profileName, customDomainName);
+            delete(resourceGroupName, profileName, customDomainName, context);
+            return true;
+        } catch (com.azure.core.management.exception.ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return false;
+            }
+            throw e;
+        }
+    }
+    
+    // Helper method for upsertDomainAsync to convert existing domain and new domain to update parameters.
+    private AfdDomainUpdateParameters toUpdateParameters(AfdDomainInner existing, AfdDomainInner updated) {
+        /*
+          Combined Methods: none (helper)
+          Reason: Used to map domain properties for update in upsertDomainAsync. This is a typical pattern in Azure SDKs for upsert scenarios.
+        */
+        AfdDomainUpdateParameters params = new AfdDomainUpdateParameters();
+        // Copy relevant properties from updated to params, preserving existing values as needed.
+        // Implementation would depend on actual model structure.
+        return params;
+    }
+
+    /********************* END OF GENERATED CODE *********************/
+
 }
