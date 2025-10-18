@@ -49,7 +49,7 @@ extends:
     ServiceDirectory: planetarycomputer
     Artifacts:
       - name: azure-analytics-planetarycomputer
-        groupId: com.azure.analytics
+        groupId: com.azure
         safeName: azureanalyticsplanetarycomputer
         releaseInBatch: ${{ parameters.release_azureanalyticsplanetarycomputer }}
       - name: azure-resourcemanager-planetarycomputer
