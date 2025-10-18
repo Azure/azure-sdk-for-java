@@ -3,15 +3,23 @@
 
 package com.azure.identity.implementation.util;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SNIHostName;
+import javax.net.ssl.SNIServerName;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import java.io.IOException;
+import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +27,9 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class IdentitySslUtil {
     public static final HostnameVerifier ALL_HOSTS_ACCEPT_HOSTNAME_VERIFIER;
@@ -124,5 +135,70 @@ public final class IdentitySslUtil {
         } catch (NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public static final class SniSslSocketFactory extends SSLSocketFactory {
+        private final SSLSocketFactory sslSocketFactory;
+        private final String sniName;
+
+        public SniSslSocketFactory(SSLSocketFactory sslSocketFactory, String sniName) {
+            this.sslSocketFactory = sslSocketFactory;
+            this.sniName = sniName;
+        }
+
+        @Override
+        public Socket createSocket(Socket s, String host, int port, boolean autoClose) throws IOException {
+            Socket sslSocket = (SSLSocket) sslSocketFactory.createSocket(s, host, port, autoClose);
+            configureSni(sslSocket);
+            return sslSocket;
+        }
+
+        @Override
+        public Socket createSocket(String host, int port) throws IOException {
+            Socket socket = sslSocketFactory.createSocket(host, port);
+            configureSni(socket);
+            return socket;
+        }
+
+        @Override
+        public Socket createSocket(String host, int port, java.net.InetAddress localAddress, int localPort) throws IOException {
+            Socket socket = sslSocketFactory.createSocket(host, port, localAddress, localPort);
+            configureSni(socket);
+            return socket;
+        }
+
+        @Override
+        public Socket createSocket(java.net.InetAddress host, int port) throws IOException {
+            Socket socket = sslSocketFactory.createSocket(host, port);
+            configureSni(socket);
+            return socket;
+        }
+
+        @Override
+        public Socket createSocket(java.net.InetAddress address, int port, java.net.InetAddress localAddress, int localPort) throws IOException {
+            Socket socket = sslSocketFactory.createSocket(address, port, localAddress, localPort);
+            configureSni(socket);
+            return socket;
+        }
+
+        @Override
+        public String[] getDefaultCipherSuites() {
+            return sslSocketFactory.getDefaultCipherSuites();
+        }
+
+        @Override
+        public String[] getSupportedCipherSuites() {
+            return sslSocketFactory.getSupportedCipherSuites();
+        }
+
+         private void configureSni(Socket socket) {
+            if (socket instanceof SSLSocket && !CoreUtils.isNullOrEmpty(sniName)) {
+                SSLSocket sslSocket = (SSLSocket) socket;
+                SSLParameters sslParameters = sslSocket.getSSLParameters();
+                sslParameters.setServerNames(Collections.singletonList(new SNIHostName(sniName)));
+                sslSocket.setSSLParameters(sslParameters);
+            }
+        }
+
     }
 }
