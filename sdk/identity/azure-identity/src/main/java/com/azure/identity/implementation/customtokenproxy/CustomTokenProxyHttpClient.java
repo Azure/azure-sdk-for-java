@@ -6,15 +6,19 @@ import java.io.InputStream;
 import java.lang.reflect.MalformedParametersException;
 import java.lang.reflect.Proxy;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyStore;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -50,33 +54,11 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     public HttpResponse sendSync(HttpRequest request, Context context) {
        try {
         HttpURLConnection connection = createConnection(request);
-        connection.connect();
         return new CustomTokenProxyHttpResponse(request, connection);
        } catch (IOException e) {
         throw new RuntimeException("Failed to create connection to token proxy", e);
        }
     }
-
-    // private HttpURLConnection createConnection(HttpRequest request) throws IOException {
-    //     URL updateProxyRequest = rewriteTokenRequestForProxy(request.getUrl());
-    //     HttpsURLConnection connection = (HttpsURLConnection) updateProxyRequest.openConnection();
-    //     try {
-    //         SSLContext sslContext = getSSLContext();
-    //         connection.setSSLSocketFactory(sslContext.getSocketFactory());
-
-    //         if(!CoreUtils.isNullOrEmpty(proxyConfig.getSniName())) {
-    //             SSLParameters sslParameters = connection.getSSLParameters();
-    //         }
-    //     }
-    //     return connection;
-
-    //     // connection.setRequestMethod(request.getMethod().toString());
-    //     // connection.setDoOutput(true);
-    //     // request.getHeaders().forEach((key, values) -> {
-    //     //     values.forEach(value -> connection.addRequestProperty(key, value));
-    //     // });
-    //     // return connection;
-    // }
 
     private HttpURLConnection createConnection(HttpRequest request) throws IOException {
     URL updatedUrl = rewriteTokenRequestForProxy(request.getUrl());
@@ -95,8 +77,9 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     }
 
     connection.setRequestMethod(request.getHttpMethod().toString());
-    // connection.setConnectTimeout(10_000);
-    // connection.setReadTimeout(20_000);
+    connection.setInstanceFollowRedirects(false);
+    connection.setConnectTimeout(10_000);
+    connection.setReadTimeout(20_000);
     connection.setDoOutput(true);
 
     request.getHeaders().forEach(header -> {
@@ -114,7 +97,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     }
 
 
-    private URL rewriteTokenRequestForProxy(URL originalUrl) throws MalformedParametersException{
+    private URL rewriteTokenRequestForProxy(URL originalUrl) throws MalformedURLException{
         try {
             String originalPath = originalUrl.getPath();
             String originalQuery = originalUrl.getQuery();
@@ -165,10 +148,9 @@ public class CustomTokenProxyHttpClient implements HttpClient {
                 throw new IOException("CA file not found: " + proxyConfig.getCaFile());
             }
 
-            byte[] currentContent;
-            
+            byte[] currentContent = Files.readAllBytes(path);
+
             synchronized (this) {
-                currentContent = Files.readAllBytes(path);
                 if (currentContent.length == 0) {
                     throw new IOException("CA file " + proxyConfig.getCaFile() + " is empty");
                 }
@@ -182,7 +164,7 @@ public class CustomTokenProxyHttpClient implements HttpClient {
             return cachedSSLContext;
 
         } catch (Exception e) {
-                throw new RuntimeException("Failed to create default SSLContext", e);
+                throw new RuntimeException("Failed to initialize SSLContext for proxy", e);
         }
     }
 
@@ -190,20 +172,42 @@ public class CustomTokenProxyHttpClient implements HttpClient {
     private SSLContext createSslContextFromBytes(byte[] certificateData) {
         try (InputStream inputStream = new ByteArrayInputStream(certificateData)) {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            X509Certificate caCert = (X509Certificate) cf.generateCertificate(inputStream);
-            return createSslContext(caCert);
+
+            List<X509Certificate> certificates = new ArrayList<>();
+            // while(inputStream.available() > 0) {
+            //     X509Certificate cert = (X509Certificate) cf.generateCertificate(inputStream);
+            //     certificates.add(cert);
+            // }
+            while (true) {
+                try {
+                    X509Certificate cert = (X509Certificate) cf.generateCertificate(inputStream);
+                    certificates.add(cert);
+                } catch (CertificateException e) {
+                    break; // end of stream
+                }
+            }
+
+            if (certificates.isEmpty()) {
+                throw new RuntimeException("No valid certificates found");
+            }
+
+            // X509Certificate caCert = certificates.get(0);
+            return createSslContext(certificates);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create SSLContext from bytes", e);
         }
     }
 
     // Create SSLContext from a single X509Certificate
-    private SSLContext createSslContext(X509Certificate caCert) {
+    private SSLContext createSslContext(List<X509Certificate> certificates) {
         try {
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(null, null);
-            keystore.setCertificateEntry("ca-cert", caCert);
-
+            int index = 1;
+            for (X509Certificate caCert : certificates) {
+                keystore.setCertificateEntry("ca-cert-" + index, caCert);
+                index++;
+            }
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(keystore);
 

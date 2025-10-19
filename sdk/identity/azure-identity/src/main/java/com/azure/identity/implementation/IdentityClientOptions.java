@@ -71,6 +71,7 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
     private String dacEnvConfiguredCredential;
+    private boolean enableKubernetesTokenProxy;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
@@ -833,6 +834,15 @@ public final class IdentityClientOptions implements Cloneable {
         return dacEnvConfiguredCredential;
     }
 
+    public boolean isKubernetesTokenProxyEnabled() {
+        return enableKubernetesTokenProxy;
+    }
+
+    public IdentityClientOptions setEnableKubernetesTokenProxy(boolean enableTokenProxy) {
+        this.enableKubernetesTokenProxy = enableTokenProxy;
+        return this;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone
             = new IdentityClientOptions().setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -863,8 +873,9 @@ public final class IdentityClientOptions implements Cloneable {
                 .setPerRetryPolicies(this.perRetryPolicies)
                 .setBrowserCustomizationOptions(this.browserCustomizationOptions)
                 .setChained(this.isChained)
-                .subscription(this.subscription);
-
+                .subscription(this.subscription)
+                .setEnableKubernetesTokenProxy(this.enableKubernetesTokenProxy);
+                
         if (isBrokerEnabled()) {
             clone.setBrokerWindowHandle(this.brokerWindowHandle);
             clone.setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);

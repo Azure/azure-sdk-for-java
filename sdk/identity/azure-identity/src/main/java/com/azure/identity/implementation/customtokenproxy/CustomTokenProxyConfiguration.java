@@ -1,7 +1,6 @@
 package com.azure.identity.implementation.customtokenproxy;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.WorkloadIdentityTokenProxyPolicy;
 
 import java.net.URI;
 import java.net.URL;
@@ -13,7 +12,7 @@ import com.azure.core.util.CoreUtils;
 
 public class CustomTokenProxyConfiguration {
 
-    private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityTokenProxyPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyConfiguration.class);
     
     public static final String AZURE_KUBERNETES_TOKEN_PROXY = "AZURE_KUBERNETES_TOKEN_PROXY";
     public static final String AZURE_KUBERNETES_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
@@ -40,8 +39,7 @@ public class CustomTokenProxyConfiguration {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "AZURE_KUBERNETES_TOKEN_PROXY is not set but other custom endpoint-related environment variables are present"));
             }
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "AZURE_KUBERNETES_TOKEN_PROXY must be set to enable custom token proxy."));
+            return null;
         }
 
         if (!CoreUtils.isNullOrEmpty(caFile) && !CoreUtils.isNullOrEmpty(caData)) {

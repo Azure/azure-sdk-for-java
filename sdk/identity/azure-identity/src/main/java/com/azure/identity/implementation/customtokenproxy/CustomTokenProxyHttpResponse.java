@@ -24,7 +24,7 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
     private final HttpURLConnection connection;
-    private byte[] cachedRequestBodyBytes;
+    private byte[] cachedResponseBodyBytes;
 
     public CustomTokenProxyHttpResponse(HttpRequest request, HttpURLConnection connection) {
         super(request);
@@ -83,13 +83,13 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.fromCallable(() -> {
-            if (cachedRequestBodyBytes != null) {
-                return cachedRequestBodyBytes;
+            if (cachedResponseBodyBytes != null) {
+                return cachedResponseBodyBytes;
             }
             try (InputStream stream = getResponseStream()) {
                 if (stream == null) {
-                    cachedRequestBodyBytes = new byte[0];
-                    return cachedRequestBodyBytes;
+                    cachedResponseBodyBytes = new byte[0];
+                    return cachedResponseBodyBytes;
                 }
                 ByteArrayOutputStream buffer = new ByteArrayOutputStream();
                 byte[] tmp = new byte[4096];
@@ -97,8 +97,8 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
                 while ((n = stream.read(tmp)) != -1) {
                     buffer.write(tmp, 0, n);
                 }
-                cachedRequestBodyBytes = buffer.toByteArray();
-                return cachedRequestBodyBytes;
+                cachedResponseBodyBytes = buffer.toByteArray();
+                return cachedResponseBodyBytes;
             }
         });
     }
@@ -123,24 +123,6 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
     public void close() {
         connection.disconnect();
     }
-
-
-
-    // @Override
-    // public Flux<ByteBuffer> getBody() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getBody'");
-    // }
-
-    // @Override
-    // public Mono<String> getBodyAsString() {
-    //     return getBodyAsByteArray().map(bytes -> new String(bytes, StandardCharsets.UTF_8));
-    // }
-
-    // @Override
-    // public Mono<String> getBodyAsString(Charset charset) {
-    //     return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
-    // }
 
     private InputStream getResponseStream() throws IOException {
         try {
