@@ -875,7 +875,7 @@ public final class IdentityClientOptions implements Cloneable {
                 .setChained(this.isChained)
                 .subscription(this.subscription)
                 .setEnableKubernetesTokenProxy(this.enableKubernetesTokenProxy);
-                
+
         if (isBrokerEnabled()) {
             clone.setBrokerWindowHandle(this.brokerWindowHandle);
             clone.setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);

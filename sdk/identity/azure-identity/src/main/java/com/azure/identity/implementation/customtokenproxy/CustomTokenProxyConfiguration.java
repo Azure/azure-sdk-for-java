@@ -13,13 +13,14 @@ import com.azure.core.util.CoreUtils;
 public class CustomTokenProxyConfiguration {
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomTokenProxyConfiguration.class);
-    
+
     public static final String AZURE_KUBERNETES_TOKEN_PROXY = "AZURE_KUBERNETES_TOKEN_PROXY";
     public static final String AZURE_KUBERNETES_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
     public static final String AZURE_KUBERNETES_CA_DATA = "AZURE_KUBERNETES_CA_DATA";
     public static final String AZURE_KUBERNETES_SNI_NAME = "AZURE_KUBERNETES_SNI_NAME";
 
-    private CustomTokenProxyConfiguration() {}
+    private CustomTokenProxyConfiguration() {
+    }
 
     public static boolean isConfigured(Configuration configuration) {
         String tokenProxyUrl = configuration.get(AZURE_KUBERNETES_TOKEN_PROXY);
@@ -33,8 +34,8 @@ public class CustomTokenProxyConfiguration {
         String sniName = configuration.get(AZURE_KUBERNETES_SNI_NAME);
 
         if (CoreUtils.isNullOrEmpty(tokenProxyUrl)) {
-            if (!CoreUtils.isNullOrEmpty(sniName) 
-                || !CoreUtils.isNullOrEmpty(caFile) 
+            if (!CoreUtils.isNullOrEmpty(sniName)
+                || !CoreUtils.isNullOrEmpty(caFile)
                 || !CoreUtils.isNullOrEmpty(caData)) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "AZURE_KUBERNETES_TOKEN_PROXY is not set but other custom endpoint-related environment variables are present"));
@@ -50,7 +51,7 @@ public class CustomTokenProxyConfiguration {
         URL proxyUrl = validateProxyUrl(tokenProxyUrl);
 
         byte[] caCertBytes = null;
-        if(!CoreUtils.isNullOrEmpty(caData)) {
+        if (!CoreUtils.isNullOrEmpty(caData)) {
             try {
                 caCertBytes = caData.getBytes(StandardCharsets.UTF_8);
             } catch (Exception e) {
@@ -76,23 +77,23 @@ public class CustomTokenProxyConfiguration {
             }
 
             if (tokenProxy.getRawUserInfo() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Custom token endpoint URL must not contain user info: " + endpoint));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Custom token endpoint URL must not contain user info: " + endpoint));
             }
 
             if (tokenProxy.getRawQuery() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Custom token endpoint URL must not contain a query: " + endpoint));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Custom token endpoint URL must not contain a query: " + endpoint));
             }
 
             if (tokenProxy.getRawFragment() != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Custom token endpoint URL must not contain a fragment: " + endpoint));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Custom token endpoint URL must not contain a fragment: " + endpoint));
             }
 
             if (tokenProxy.getRawPath() == null || tokenProxy.getRawPath().isEmpty()) {
-                tokenProxy = new URI(tokenProxy.getScheme(), null, tokenProxy.getHost(), 
-                        tokenProxy.getPort(), "/", null, null);
+                tokenProxy = new URI(tokenProxy.getScheme(), null, tokenProxy.getHost(), tokenProxy.getPort(), "/",
+                    null, null);
             }
 
             return tokenProxy.toURL();

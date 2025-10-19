@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SNIHostName;
-import javax.net.ssl.SNIServerName;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
@@ -161,7 +160,8 @@ public final class IdentitySslUtil {
         }
 
         @Override
-        public Socket createSocket(String host, int port, java.net.InetAddress localAddress, int localPort) throws IOException {
+        public Socket createSocket(String host, int port, java.net.InetAddress localAddress, int localPort)
+            throws IOException {
             Socket socket = sslSocketFactory.createSocket(host, port, localAddress, localPort);
             configureSni(socket);
             return socket;
@@ -175,7 +175,8 @@ public final class IdentitySslUtil {
         }
 
         @Override
-        public Socket createSocket(java.net.InetAddress address, int port, java.net.InetAddress localAddress, int localPort) throws IOException {
+        public Socket createSocket(java.net.InetAddress address, int port, java.net.InetAddress localAddress,
+            int localPort) throws IOException {
             Socket socket = sslSocketFactory.createSocket(address, port, localAddress, localPort);
             configureSni(socket);
             return socket;
@@ -191,7 +192,7 @@ public final class IdentitySslUtil {
             return sslSocketFactory.getSupportedCipherSuites();
         }
 
-         private void configureSni(Socket socket) {
+        private void configureSni(Socket socket) {
             if (socket instanceof SSLSocket && !CoreUtils.isNullOrEmpty(sniName)) {
                 SSLSocket sslSocket = (SSLSocket) socket;
                 SSLParameters sslParameters = sslSocket.getSSLParameters();

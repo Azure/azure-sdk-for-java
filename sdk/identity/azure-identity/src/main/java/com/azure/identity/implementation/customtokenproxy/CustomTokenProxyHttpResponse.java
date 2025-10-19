@@ -46,7 +46,7 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
         return headers;
     }
 
-    public int extractStatusCode(HttpURLConnection connection) {
+    private int extractStatusCode(HttpURLConnection connection) {
         try {
             return connection.getResponseCode();
         } catch (IOException e) {
@@ -106,7 +106,7 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
     @Override
     public Flux<ByteBuffer> getBody() {
         return getBodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
-    }   
+    }
 
     @Override
     public Mono<String> getBodyAsString() {
@@ -117,7 +117,6 @@ public class CustomTokenProxyHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
-    
 
     @Override
     public void close() {
