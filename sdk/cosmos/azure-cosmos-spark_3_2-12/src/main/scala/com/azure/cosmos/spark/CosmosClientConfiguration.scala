@@ -57,12 +57,12 @@ private[spark] object CosmosClientConfiguration {
 
     var applicationName = CosmosConstants.userAgentSuffix
 
-    if (sparkEnvironmentInfo.nonEmpty) {
+    if (sparkEnvironmentInfo.nonEmpty && cosmosAccountConfig.userAgentFormat != UserAgentFormat.NoSparkEnv) {
       applicationName = s"$applicationName|$sparkEnvironmentInfo"
     }
 
     val runtimeInfo = runtimeInformation()
-    if (runtimeInfo.isDefined) {
+    if (runtimeInfo.isDefined && cosmosAccountConfig.userAgentFormat == UserAgentFormat.SparkEnvAndWorkers) {
       applicationName = s"$applicationName|${runtimeInfo.get}"
     }
     applicationName = applicationName.replace("@", " ")
