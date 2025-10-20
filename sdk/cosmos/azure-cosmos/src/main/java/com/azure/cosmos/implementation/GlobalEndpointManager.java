@@ -48,7 +48,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile boolean isClosed;
     private volatile DatabaseAccount latestDatabaseAccount;
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
-    private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true"));
+    private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(false);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
