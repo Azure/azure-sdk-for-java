@@ -599,7 +599,7 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
 
   private val UserAgentFormat = CosmosConfigEntry[UserAgentFormat](key = CosmosConfigNames.UserAgentFormat,
     mandatory = false,
-    parseFromStringFunction = userAgentFormatName => spark.UserAgentFormat.withName(userAgentFormatName),
+    parseFromStringFunction = userAgentFormatName => CosmosConfigEntry.parseEnumeration (userAgentFormatName, spark.UserAgentFormat),
     helpMessage = "The format of the spark-specific UserAgent suffix. Value `NoSparkEnv` means "
       + "neither info about the Spark environment nor the executors/driver will be added to the "
       + "user agent. The Value `OnlySparkEnv` will use a UserAgent suffix with info about the "
