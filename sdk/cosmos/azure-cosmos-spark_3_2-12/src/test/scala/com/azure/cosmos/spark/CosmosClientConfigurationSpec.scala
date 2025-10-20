@@ -49,14 +49,14 @@ class CosmosClientConfigurationSpec extends UnitSpec {
   }
 
   "CosmosClientConfiguration" should "process Spark environment info" in {
-    val userConfig = Map(
+    var userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz"
     )
 
     val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
     val sparkEnvironmentInfo = s"sparkenv-${UUID.randomUUID()}"
-    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo)
+    var configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
@@ -64,6 +64,37 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}".replace("@", " ")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.userAgent.format" -> "NoSparkEnv",
+      "spark.cosmos.accountKey" -> "xyz"
+    )
+
+    configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo)
+
+    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.useGatewayMode shouldBe false
+    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}".replace("@", " ")
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
+      "spark.cosmos.userAgent.format" -> "OnlySparkEnv",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.applicationName" -> "TestApplicationName"
+    )
+
+    configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo)
+
+    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
+    configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.useGatewayMode shouldBe false
+    configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
+    configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|TestApplicationName".replace("@", " ")
   }
 
   it should "apply applicationName if specified" in {
