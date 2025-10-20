@@ -378,7 +378,7 @@ com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.6.0;1.7.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-elastic;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0;1.1.0-beta.1
@@ -467,7 +467,7 @@ com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.2.0;1.3.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0;1.1.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0;1.1.0-beta.1

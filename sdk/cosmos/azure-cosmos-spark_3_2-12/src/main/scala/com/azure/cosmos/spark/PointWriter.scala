@@ -70,7 +70,7 @@ private class PointWriter(container: CosmosAsyncContainer,
     "PointWriter")
 
   private val cosmosPatchHelpOpt = cosmosWriteConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemBulkUpdate =>
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists | ItemWriteStrategy.ItemBulkUpdate =>
         Some(new CosmosPatchHelper(diagnosticsConfig, cosmosWriteConfig.patchConfigs.get))
     case _ => None
   }
@@ -93,7 +93,9 @@ private class PointWriter(container: CosmosAsyncContainer,
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
         deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=true)
       case ItemWriteStrategy.ItemPatch =>
-        patchWithRetryAsync(partitionKeyValue, objectNode)
+        patchWithRetryAsync(partitionKeyValue, objectNode, false)
+      case ItemWriteStrategy.ItemPatchIfExists =>
+        patchWithRetryAsync(partitionKeyValue, objectNode, true)
       case ItemWriteStrategy.ItemBulkUpdate =>
         patchBulkUpdateWithRetry(partitionKeyValue, objectNode)
     }
@@ -201,14 +203,15 @@ private class PointWriter(container: CosmosAsyncContainer,
   }
 
   private def patchWithRetryAsync(partitionKeyValue: PartitionKey,
-                                  objectNode: ObjectNode): Unit = {
+                                  objectNode: ObjectNode,
+                                  ignoreNotFound: Boolean): Unit = {
     val promise = Promise[Unit]()
     pendingPointWrites.put(promise.future, true)
 
     val patchOperation = PatchOperation(taskDiagnosticsContext,
       CosmosItemIdentifier(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue))
 
-    executeAsync(() => patchWithRetry(partitionKeyValue, objectNode, patchOperation))
+    executeAsync(() => patchWithRetry(partitionKeyValue, objectNode, patchOperation, ignoreNotFound))
      .onComplete {
        case Success(_) =>
          promise.success(Unit)
@@ -344,7 +347,8 @@ private class PointWriter(container: CosmosAsyncContainer,
   // scalastyle:on multiple.string.literals
   private def patchWithRetry(partitionKeyValue: PartitionKey,
                              objectNode: ObjectNode,
-                             patchOperation: PatchOperation): Unit = {
+                             patchOperation: PatchOperation,
+                             ignoreNotFound: Boolean): Unit = {
 
     var exceptionOpt = Option.empty[Exception]
 
@@ -362,6 +366,15 @@ private class PointWriter(container: CosmosAsyncContainer,
 
         return
       } catch {
+        case e: CosmosException if ignoreNotFound && Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
+          log.logItemWriteSkipped(patchOperation, "notFound")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
+          return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"patch item $patchOperation attempt #$attempt max remaining retries "
