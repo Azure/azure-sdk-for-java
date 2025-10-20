@@ -174,7 +174,7 @@ public class PartitionProcessorImplTests {
             "A parsing error occurred.",
             new IOException("An error occurred."),
             new HashMap<>(),
-            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+            HttpConstants.StatusCodes.BADREQUEST,
             null);
 
         BridgeInternal.setSubStatusCode(parsingException, HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
