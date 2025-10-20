@@ -77,6 +77,11 @@ public final class AccessTokenUtil {
 
     private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
     private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+    private static final String PROPERTY_AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
+    private static final String PROPERTY_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+    private static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
+    private static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
+    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
 
     /**
      * Get an access token for a managed identity.
@@ -90,11 +95,14 @@ public final class AccessTokenUtil {
         AccessToken result;
 
         /*
+         * Azure Workload Identity (AKS): AZURE_FEDERATED_TOKEN_FILE, AZURE_CLIENT_ID, AZURE_TENANT_ID
          * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
          * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
          * Azure Virtual Machine 2018-02-01, see more from https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
          */
-        if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+        if (isWorkloadIdentityAvailable()) {
+            result = getAccessTokenWithWorkloadIdentity(resource);
+        } else if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
         } else if (System.getenv(PROPERTY_IDENTITY_ENDPOINT) != null
             && !System.getenv(PROPERTY_IDENTITY_ENDPOINT).isEmpty()) {
@@ -166,6 +174,108 @@ public final class AccessTokenUtil {
         LOGGER.exiting("AccessTokenUtil", "getAccessToken", result);
 
         return result;
+    }
+
+    /**
+     * Check if Azure Workload Identity environment is available.
+     *
+     * @return true if Workload Identity environment variables are present, false otherwise.
+     */
+    private static boolean isWorkloadIdentityAvailable() {
+        return System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE) != null
+            && !System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE).isEmpty()
+            && System.getenv(PROPERTY_AZURE_CLIENT_ID) != null
+            && !System.getenv(PROPERTY_AZURE_CLIENT_ID).isEmpty()
+            && System.getenv(PROPERTY_AZURE_TENANT_ID) != null
+            && !System.getenv(PROPERTY_AZURE_TENANT_ID).isEmpty();
+    }
+
+    /**
+     * Get the access token using Azure Workload Identity (AKS federated token).
+     *
+     * @param resource The resource.
+     * @return The authorization token.
+     */
+    private static AccessToken getAccessTokenWithWorkloadIdentity(String resource) {
+        LOGGER.entering("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", resource);
+        LOGGER.info("Getting access token using Azure Workload Identity (federated token)");
+
+        AccessToken result = null;
+
+        try {
+            String tokenFilePath = System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE);
+            String clientId = System.getenv(PROPERTY_AZURE_CLIENT_ID);
+            String tenantId = System.getenv(PROPERTY_AZURE_TENANT_ID);
+            String authorityHost = System.getenv(PROPERTY_AZURE_AUTHORITY_HOST);
+
+            if (authorityHost == null || authorityHost.isEmpty()) {
+                authorityHost = DEFAULT_AUTHORITY_HOST;
+            }
+
+            LOGGER.log(INFO, "Using Workload Identity with client ID: {0}", clientId);
+            LOGGER.log(INFO, "Using federated token file: {0}", tokenFilePath);
+
+            // Read the federated token from the file
+            String federatedToken = readTokenFromFile(tokenFilePath);
+
+            if (federatedToken == null || federatedToken.isEmpty()) {
+                LOGGER.log(WARNING, "Failed to read federated token from file: {0}", tokenFilePath);
+                return null;
+            }
+
+            // Build the OAuth2 token endpoint URL
+            StringBuilder oauth2Url = new StringBuilder();
+            oauth2Url.append(addTrailingSlashIfRequired(authorityHost))
+                .append(tenantId)
+                .append("/oauth2/v2.0/token");
+
+            // Build the request body for client assertion flow
+            StringBuilder requestBody = new StringBuilder();
+            requestBody.append("grant_type=client_credentials")
+                .append("&client_id=").append(clientId)
+                .append("&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
+                .append("&client_assertion=").append(federatedToken)
+                .append("&scope=").append(resource);
+
+            // If resource doesn't end with /.default, append it
+            if (!resource.endsWith("/.default")) {
+                requestBody.append("/.default");
+            }
+
+            String body = HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+
+            if (body != null) {
+                try {
+                    result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
+                } catch (IOException e) {
+                    LOGGER.log(WARNING, "Failed to parse access token response.", e);
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to read federated token file for Workload Identity.", e);
+        }
+
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity", result);
+
+        return result;
+    }
+
+    /**
+     * Read the federated token from the specified file.
+     *
+     * @param tokenFilePath The path to the token file.
+     * @return The token content.
+     * @throws IOException If the file cannot be read.
+     */
+    private static String readTokenFromFile(String tokenFilePath) throws IOException {
+        LOGGER.entering("AccessTokenUtil", "readTokenFromFile", tokenFilePath);
+
+        java.nio.file.Path path = java.nio.file.Paths.get(tokenFilePath);
+        String token = new String(java.nio.file.Files.readAllBytes(path), java.nio.charset.StandardCharsets.UTF_8).trim();
+
+        LOGGER.exiting("AccessTokenUtil", "readTokenFromFile", "[token read successfully]");
+
+        return token;
     }
 
     /**
