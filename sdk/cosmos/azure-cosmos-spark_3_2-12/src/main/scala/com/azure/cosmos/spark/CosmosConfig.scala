@@ -21,6 +21,7 @@ import com.azure.cosmos.spark.PriorityLevels.PriorityLevel
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
+import com.azure.cosmos.spark.UserAgentFormat.UserAgentFormat
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
@@ -64,6 +65,7 @@ private[spark] object CosmosConfigNames {
   val PreferredRegions = "spark.cosmos.preferredRegions"
   val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
+  val UserAgentFormat = "spark.cosmos.userAgent.format"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
   val EnforceNativeTransport = "spark.cosmos.enforceNativeTransport"
   val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
@@ -192,6 +194,7 @@ private[spark] object CosmosConfigNames {
     PreferredRegions,
     DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
+    UserAgentFormat,
     UseGatewayMode,
     EnforceNativeTransport,
     ProactiveConnectionInitialization,
@@ -514,6 +517,7 @@ private case class CosmosAccountConfig(endpoint: String,
                                        authConfig: CosmosAuthConfig,
                                        accountName: String,
                                        applicationName: Option[String],
+                                       userAgentFormat: UserAgentFormat,
                                        useGatewayMode: Boolean,
                                        enforceNativeTransport: Boolean,
                                        proactiveConnectionInitialization: Option[String],
@@ -592,6 +596,16 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     mandatory = false,
     parseFromStringFunction = applicationName => applicationName,
     helpMessage = "Application name")
+
+  private val UserAgentFormat = CosmosConfigEntry[UserAgentFormat](key = CosmosConfigNames.UserAgentFormat,
+    mandatory = false,
+    parseFromStringFunction = userAgentFormatName => CosmosConfigEntry.parseEnumeration (userAgentFormatName, spark.UserAgentFormat),
+    helpMessage = "The format of the spark-specific UserAgent suffix. Value `NoSparkEnv` means "
+      + "neither info about the Spark environment nor the executors/driver will be added to the "
+      + "user agent. The Value `OnlySparkEnv` will use a UserAgent suffix with info about the "
+      + "Spark environment - but use the same suffix across all executors/driver. The default "
+      + "value is `SparkEnvAndWorkers` - it will add info about both Spark environment and "
+      + "individual executors/driver to the UserAgent to allow distinguishing instrumentation.")
 
   private val UseGatewayMode = CosmosConfigEntry[Boolean](key = CosmosConfigNames.UseGatewayMode,
     mandatory = false,
@@ -720,6 +734,7 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     val authConfig = CosmosAuthConfig.parseCosmosAuthConfig(cfg)
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
+    val userAgentFormat = CosmosConfigEntry.parse(cfg, UserAgentFormat)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
     val enforceNativeTransport = CosmosConfigEntry.parse(cfg, EnforceNativeTransport)
     val proactiveConnectionInitialization = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitialization)
@@ -828,6 +843,7 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       authConfig,
       accountName.get,
       applicationName,
+      userAgentFormat.getOrElse(spark.UserAgentFormat.SparkEnvAndWorkers),
       useGatewayMode.get,
       enforceNativeTransport.get,
       proactiveConnectionInitialization,
@@ -842,6 +858,11 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       if (clientBuilderInterceptorsList.nonEmpty) { Some(clientBuilderInterceptorsList.toList) } else { None },
       if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None })
   }
+}
+
+private[spark] object UserAgentFormat extends Enumeration {
+  type UserAgentFormat = Value
+  val SparkEnvAndWorkers, OnlySparkEnv, NoSparkEnv = Value
 }
 
 private[spark] object CosmosAuthType extends Enumeration {
@@ -2451,7 +2472,7 @@ private object CosmosThroughputControlConfig {
         }
     }
 
-  private def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+  private[spark] def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
     val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
     assert(
@@ -2496,6 +2517,12 @@ private object CosmosThroughputControlConfig {
       throughputControlAccountConfigMap,
       CosmosConfigNames.ApplicationName,
       CosmosConfigNames.ApplicationName)
+
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.UserAgentFormat,
+      CosmosConfigNames.UserAgentFormat)
 
     CosmosAccountConfig.parseCosmosAccountConfig(throughputControlAccountConfigMap.toMap)
   }
