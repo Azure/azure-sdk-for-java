@@ -17,12 +17,12 @@ import java.io.IOException;
  * Specifies the Azure OpenAI resource used to do query planning.
  */
 @Immutable
-public final class KnowledgeAgentAzureOpenAIModel extends KnowledgeAgentModel {
+public final class KnowledgeBaseAzureOpenAIModel extends KnowledgeBaseModel {
     /*
      * The type of AI model.
      */
     @Generated
-    private KnowledgeAgentModelKind kind = KnowledgeAgentModelKind.AZURE_OPEN_AI;
+    private KnowledgeBaseModelKind kind = KnowledgeBaseModelKind.AZURE_OPEN_AI;
 
     /*
      * Contains the parameters specific to Azure OpenAI model endpoint.
@@ -31,12 +31,12 @@ public final class KnowledgeAgentAzureOpenAIModel extends KnowledgeAgentModel {
     private final AzureOpenAIVectorizerParameters azureOpenAIParameters;
 
     /**
-     * Creates an instance of KnowledgeAgentAzureOpenAIModel class.
+     * Creates an instance of KnowledgeBaseAzureOpenAIModel class.
      * 
      * @param azureOpenAIParameters the azureOpenAIParameters value to set.
      */
     @Generated
-    public KnowledgeAgentAzureOpenAIModel(AzureOpenAIVectorizerParameters azureOpenAIParameters) {
+    public KnowledgeBaseAzureOpenAIModel(AzureOpenAIVectorizerParameters azureOpenAIParameters) {
         this.azureOpenAIParameters = azureOpenAIParameters;
     }
 
@@ -47,7 +47,7 @@ public final class KnowledgeAgentAzureOpenAIModel extends KnowledgeAgentModel {
      */
     @Generated
     @Override
-    public KnowledgeAgentModelKind getKind() {
+    public KnowledgeBaseModelKind getKind() {
         return this.kind;
     }
 
@@ -74,20 +74,20 @@ public final class KnowledgeAgentAzureOpenAIModel extends KnowledgeAgentModel {
     }
 
     /**
-     * Reads an instance of KnowledgeAgentAzureOpenAIModel from the JsonReader.
+     * Reads an instance of KnowledgeBaseAzureOpenAIModel from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KnowledgeAgentAzureOpenAIModel if the JsonReader was pointing to an instance of it, or
+     * @return An instance of KnowledgeBaseAzureOpenAIModel if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KnowledgeAgentAzureOpenAIModel.
+     * @throws IOException If an error occurs while reading the KnowledgeBaseAzureOpenAIModel.
      */
     @Generated
-    public static KnowledgeAgentAzureOpenAIModel fromJson(JsonReader jsonReader) throws IOException {
+    public static KnowledgeBaseAzureOpenAIModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean azureOpenAIParametersFound = false;
             AzureOpenAIVectorizerParameters azureOpenAIParameters = null;
-            KnowledgeAgentModelKind kind = KnowledgeAgentModelKind.AZURE_OPEN_AI;
+            KnowledgeBaseModelKind kind = KnowledgeBaseModelKind.AZURE_OPEN_AI;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -96,17 +96,17 @@ public final class KnowledgeAgentAzureOpenAIModel extends KnowledgeAgentModel {
                     azureOpenAIParameters = AzureOpenAIVectorizerParameters.fromJson(reader);
                     azureOpenAIParametersFound = true;
                 } else if ("kind".equals(fieldName)) {
-                    kind = KnowledgeAgentModelKind.fromString(reader.getString());
+                    kind = KnowledgeBaseModelKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             if (azureOpenAIParametersFound) {
-                KnowledgeAgentAzureOpenAIModel deserializedKnowledgeAgentAzureOpenAIModel
-                    = new KnowledgeAgentAzureOpenAIModel(azureOpenAIParameters);
-                deserializedKnowledgeAgentAzureOpenAIModel.kind = kind;
+                KnowledgeBaseAzureOpenAIModel deserializedKnowledgeBaseAzureOpenAIModel
+                    = new KnowledgeBaseAzureOpenAIModel(azureOpenAIParameters);
+                deserializedKnowledgeBaseAzureOpenAIModel.kind = kind;
 
-                return deserializedKnowledgeAgentAzureOpenAIModel;
+                return deserializedKnowledgeBaseAzureOpenAIModel;
             }
             throw new IllegalStateException("Missing required property: azureOpenAIParameters");
         });

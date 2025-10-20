@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.agents;
+package com.azure.search.documents.knowledgebases;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -29,11 +29,11 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help configure and instantiate {@link SearchKnowledgeBaseClient}
- * and {@link SearchKnowledgeBaseAsyncClient} for interacting with Azure AI Search Knowledge Agents.
+ * and {@link SearchKnowledgeBaseAsyncClient} for interacting with Azure AI Search Knowledge Bases.
  *
  * <h2>Overview</h2>
  * <p>
- * This builder enables the creation of both synchronous and asynchronous clients for Azure AI Search Knowledge Agents,
+ * This builder enables the creation of both synchronous and asynchronous clients for Azure AI Search Knowledge Bases,
  * allowing you to interact with knowledge retrieval and agent-based search capabilities. The builder supports configuration
  * of authentication, endpoint, agent name, API version, and HTTP pipeline options, following Azure SDK for Java standards.
  * </p>
@@ -47,7 +47,7 @@ import java.util.Objects;
  *
  * <h3>Authentication</h3>
  * <p>
- * Azure AI Search Knowledge Agents support authentication using either an {@link AzureKeyCredential} (API key) or a
+ * Azure AI Search Knowledge Bases support authentication using either an {@link AzureKeyCredential} (API key) or a
  * {@link TokenCredential} (Microsoft Entra ID). When using Microsoft Entra ID, you may also specify a {@link SearchAudience}
  * to target a specific Azure cloud environment.
  * </p>
@@ -67,14 +67,14 @@ import java.util.Objects;
  *
  * <h3>Additional Information</h3>
  * <ul>
- *   <li>For more information about Azure AI Search Knowledge Agents, see the Azure documentation.</li>
+ *   <li>For more information about Azure AI Search Knowledge Bases, see the Azure documentation.</li>
  *   <li>For authentication details, see the Azure AI Search security documentation.</li>
  *   <li>For Azure SDK for Java guidelines, see the <a href="https://azure.github.io/azure-sdk/java_introduction.html">Azure SDK for Java Introduction</a>.</li>
  * </ul>
  *
  * @see SearchKnowledgeBaseClient
  * @see SearchKnowledgeBaseAsyncClient
- * @see com.azure.search.documents.agents
+ * @see com.azure.search.documents.knowledgebases
  */
 @ServiceClientBuilder(serviceClients = { SearchKnowledgeBaseClient.class, SearchKnowledgeBaseAsyncClient.class })
 public final class SearchKnowledgeBaseClientBuilder

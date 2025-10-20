@@ -15,15 +15,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The KnowledgeAgentOutputConfiguration model.
+ * The KnowledgeBaseOutputConfiguration model.
  */
 @Fluent
-public final class KnowledgeAgentOutputConfiguration implements JsonSerializable<KnowledgeAgentOutputConfiguration> {
+public final class KnowledgeBaseOutputConfiguration implements JsonSerializable<KnowledgeBaseOutputConfiguration> {
     /*
      * The output configuration for the agent
      */
     @Generated
-    private KnowledgeAgentOutputConfigurationModality modality;
+    private KnowledgeBaseOutputConfigurationModality modality;
 
     /*
      * Instructions considered by the knowledge agent when generating answers
@@ -45,10 +45,10 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
     private Boolean includeActivity;
 
     /**
-     * Creates an instance of KnowledgeAgentOutputConfiguration class.
+     * Creates an instance of KnowledgeBaseOutputConfiguration class.
      */
     @Generated
-    public KnowledgeAgentOutputConfiguration() {
+    public KnowledgeBaseOutputConfiguration() {
     }
 
     /**
@@ -57,7 +57,7 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
      * @return the modality value.
      */
     @Generated
-    public KnowledgeAgentOutputConfigurationModality getModality() {
+    public KnowledgeBaseOutputConfigurationModality getModality() {
         return this.modality;
     }
 
@@ -65,10 +65,10 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
      * Set the modality property: The output configuration for the agent.
      * 
      * @param modality the modality value to set.
-     * @return the KnowledgeAgentOutputConfiguration object itself.
+     * @return the KnowledgeBaseOutputConfiguration object itself.
      */
     @Generated
-    public KnowledgeAgentOutputConfiguration setModality(KnowledgeAgentOutputConfigurationModality modality) {
+    public KnowledgeBaseOutputConfiguration setModality(KnowledgeBaseOutputConfigurationModality modality) {
         this.modality = modality;
         return this;
     }
@@ -87,10 +87,10 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
      * Set the answerInstructions property: Instructions considered by the knowledge agent when generating answers.
      * 
      * @param answerInstructions the answerInstructions value to set.
-     * @return the KnowledgeAgentOutputConfiguration object itself.
+     * @return the KnowledgeBaseOutputConfiguration object itself.
      */
     @Generated
-    public KnowledgeAgentOutputConfiguration setAnswerInstructions(String answerInstructions) {
+    public KnowledgeBaseOutputConfiguration setAnswerInstructions(String answerInstructions) {
         this.answerInstructions = answerInstructions;
         return this;
     }
@@ -111,10 +111,10 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
      * message as a direct query to the knowledge sources, bypassing the model calls.
      * 
      * @param attemptFastPath the attemptFastPath value to set.
-     * @return the KnowledgeAgentOutputConfiguration object itself.
+     * @return the KnowledgeBaseOutputConfiguration object itself.
      */
     @Generated
-    public KnowledgeAgentOutputConfiguration setAttemptFastPath(Boolean attemptFastPath) {
+    public KnowledgeBaseOutputConfiguration setAttemptFastPath(Boolean attemptFastPath) {
         this.attemptFastPath = attemptFastPath;
         return this;
     }
@@ -133,10 +133,10 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
      * Set the includeActivity property: Indicates retrieval results should include activity information.
      * 
      * @param includeActivity the includeActivity value to set.
-     * @return the KnowledgeAgentOutputConfiguration object itself.
+     * @return the KnowledgeBaseOutputConfiguration object itself.
      */
     @Generated
-    public KnowledgeAgentOutputConfiguration setIncludeActivity(Boolean includeActivity) {
+    public KnowledgeBaseOutputConfiguration setIncludeActivity(Boolean includeActivity) {
         this.includeActivity = includeActivity;
         return this;
     }
@@ -156,39 +156,39 @@ public final class KnowledgeAgentOutputConfiguration implements JsonSerializable
     }
 
     /**
-     * Reads an instance of KnowledgeAgentOutputConfiguration from the JsonReader.
+     * Reads an instance of KnowledgeBaseOutputConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KnowledgeAgentOutputConfiguration if the JsonReader was pointing to an instance of it, or
+     * @return An instance of KnowledgeBaseOutputConfiguration if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the KnowledgeAgentOutputConfiguration.
+     * @throws IOException If an error occurs while reading the KnowledgeBaseOutputConfiguration.
      */
     @Generated
-    public static KnowledgeAgentOutputConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static KnowledgeBaseOutputConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KnowledgeAgentOutputConfiguration deserializedKnowledgeAgentOutputConfiguration
-                = new KnowledgeAgentOutputConfiguration();
+            KnowledgeBaseOutputConfiguration deserializedKnowledgeBaseOutputConfiguration
+                = new KnowledgeBaseOutputConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("modality".equals(fieldName)) {
-                    deserializedKnowledgeAgentOutputConfiguration.modality
-                        = KnowledgeAgentOutputConfigurationModality.fromString(reader.getString());
+                    deserializedKnowledgeBaseOutputConfiguration.modality
+                        = KnowledgeBaseOutputConfigurationModality.fromString(reader.getString());
                 } else if ("answerInstructions".equals(fieldName)) {
-                    deserializedKnowledgeAgentOutputConfiguration.answerInstructions = reader.getString();
+                    deserializedKnowledgeBaseOutputConfiguration.answerInstructions = reader.getString();
                 } else if ("attemptFastPath".equals(fieldName)) {
-                    deserializedKnowledgeAgentOutputConfiguration.attemptFastPath
+                    deserializedKnowledgeBaseOutputConfiguration.attemptFastPath
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeActivity".equals(fieldName)) {
-                    deserializedKnowledgeAgentOutputConfiguration.includeActivity
+                    deserializedKnowledgeBaseOutputConfiguration.includeActivity
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedKnowledgeAgentOutputConfiguration;
+            return deserializedKnowledgeBaseOutputConfiguration;
         });
     }
 }

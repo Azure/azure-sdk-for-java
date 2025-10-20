@@ -8,4 +8,4 @@
  * Package containing the implementations for KnowledgeBaseRetrievalClient.
  * Client that can be used to query an knowledge base.
  */
-package com.azure.search.documents.agents.implementation;
+package com.azure.search.documents.knowledgebases.implementation;

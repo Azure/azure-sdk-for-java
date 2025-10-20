@@ -13,48 +13,48 @@ import java.util.Collection;
 /**
  * The output configuration for the agent.
  */
-public final class KnowledgeAgentOutputConfigurationModality
-    extends ExpandableStringEnum<KnowledgeAgentOutputConfigurationModality> {
+public final class KnowledgeBaseOutputConfigurationModality
+    extends ExpandableStringEnum<KnowledgeBaseOutputConfigurationModality> {
     /**
      * Synthesize an answer for the response payload.
      */
     @Generated
-    public static final KnowledgeAgentOutputConfigurationModality ANSWER_SYNTHESIS = fromString("answerSynthesis");
+    public static final KnowledgeBaseOutputConfigurationModality ANSWER_SYNTHESIS = fromString("answerSynthesis");
 
     /**
      * Return data from the knowledge sources directly without generative alteration.
      */
     @Generated
-    public static final KnowledgeAgentOutputConfigurationModality EXTRACTIVE_DATA = fromString("extractiveData");
+    public static final KnowledgeBaseOutputConfigurationModality EXTRACTIVE_DATA = fromString("extractiveData");
 
     /**
-     * Creates a new instance of KnowledgeAgentOutputConfigurationModality value.
+     * Creates a new instance of KnowledgeBaseOutputConfigurationModality value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public KnowledgeAgentOutputConfigurationModality() {
+    public KnowledgeBaseOutputConfigurationModality() {
     }
 
     /**
-     * Creates or finds a KnowledgeAgentOutputConfigurationModality from its string representation.
+     * Creates or finds a KnowledgeBaseOutputConfigurationModality from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding KnowledgeAgentOutputConfigurationModality.
+     * @return the corresponding KnowledgeBaseOutputConfigurationModality.
      */
     @Generated
-    public static KnowledgeAgentOutputConfigurationModality fromString(String name) {
-        return fromString(name, KnowledgeAgentOutputConfigurationModality.class);
+    public static KnowledgeBaseOutputConfigurationModality fromString(String name) {
+        return fromString(name, KnowledgeBaseOutputConfigurationModality.class);
     }
 
     /**
-     * Gets known KnowledgeAgentOutputConfigurationModality values.
+     * Gets known KnowledgeBaseOutputConfigurationModality values.
      * 
-     * @return known KnowledgeAgentOutputConfigurationModality values.
+     * @return known KnowledgeBaseOutputConfigurationModality values.
      */
     @Generated
-    public static Collection<KnowledgeAgentOutputConfigurationModality> values() {
-        return values(KnowledgeAgentOutputConfigurationModality.class);
+    public static Collection<KnowledgeBaseOutputConfigurationModality> values() {
+        return values(KnowledgeBaseOutputConfigurationModality.class);
     }
 }

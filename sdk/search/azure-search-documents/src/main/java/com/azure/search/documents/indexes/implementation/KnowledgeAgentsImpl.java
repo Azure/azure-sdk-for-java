@@ -30,20 +30,20 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
-import com.azure.search.documents.indexes.implementation.models.ListKnowledgeAgentsResult;
+import com.azure.search.documents.indexes.implementation.models.ListKnowledgeBasesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in KnowledgeAgents.
+ * An instance of this class provides access to all the operations defined in KnowledgeBases.
  */
-public final class KnowledgeAgentsImpl {
+public final class KnowledgeBasesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final KnowledgeAgentsService service;
+    private final KnowledgeBasesService service;
 
     /**
      * The service client containing this operation class.
@@ -51,44 +51,44 @@ public final class KnowledgeAgentsImpl {
     private final SearchServiceClientImpl client;
 
     /**
-     * Initializes an instance of KnowledgeAgentsImpl.
+     * Initializes an instance of KnowledgeBasesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    KnowledgeAgentsImpl(SearchServiceClientImpl client) {
+    KnowledgeBasesImpl(SearchServiceClientImpl client) {
         this.service
-            = RestProxy.create(KnowledgeAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(KnowledgeBasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SearchServiceClientKnowledgeAgents to be used by the proxy service to
+     * The interface defining all the services for SearchServiceClientKnowledgeBases to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientKnowledgeAgents")
-    public interface KnowledgeAgentsService {
-        @Put("/agents('{agentName}')")
+    @ServiceInterface(name = "SearchServiceClientKnowledgeBases")
+    public interface KnowledgeBasesService {
+        @Put("/knowledgebases('{agentName}')")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgent>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<KnowledgeBase>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeAgent knowledgeAgent,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeBase knowledgeBase,
             Context context);
 
-        @Put("/agents('{agentName}')")
+        @Put("/knowledgebases('{agentName}')")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgent> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<KnowledgeBase> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeAgent knowledgeAgent,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") KnowledgeBase knowledgeBase,
             Context context);
 
-        @Delete("/agents('{agentName}')")
+        @Delete("/knowledgebases('{agentName}')")
         @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("agentName") String agentName,
@@ -96,7 +96,7 @@ public final class KnowledgeAgentsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Delete("/agents('{agentName}')")
+        @Delete("/knowledgebases('{agentName}')")
         @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("agentName") String agentName,
@@ -104,56 +104,56 @@ public final class KnowledgeAgentsImpl {
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents('{agentName}')")
+        @Get("/knowledgebases('{agentName}')")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgent>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<KnowledgeBase>> get(@HostParam("endpoint") String endpoint,
             @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents('{agentName}')")
+        @Get("/knowledgebases('{agentName}')")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgent> getSync(@HostParam("endpoint") String endpoint,
+        Response<KnowledgeBase> getSync(@HostParam("endpoint") String endpoint,
             @PathParam("agentName") String agentName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents")
+        @Get("/knowledgebases")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ListKnowledgeAgentsResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ListKnowledgeBasesResult>> list(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/agents")
+        @Get("/knowledgebases")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<ListKnowledgeAgentsResult> listSync(@HostParam("endpoint") String endpoint,
+        Response<ListKnowledgeBasesResult> listSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Post("/agents")
+        @Post("/knowledgebases")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<KnowledgeAgent>> create(@HostParam("endpoint") String endpoint,
+        Mono<Response<KnowledgeBase>> create(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KnowledgeAgent knowledgeAgent, Context context);
+            @BodyParam("application/json") KnowledgeBase knowledgeBase, Context context);
 
-        @Post("/agents")
+        @Post("/knowledgebases")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<KnowledgeAgent> createSync(@HostParam("endpoint") String endpoint,
+        Response<KnowledgeBase> createSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KnowledgeAgent knowledgeAgent, Context context);
+            @BodyParam("application/json") KnowledgeBase knowledgeBase, Context context);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      * 
      * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -165,9 +165,9 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateWithResponseAsync(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch,
+    public Mono<Response<KnowledgeBase>> createOrUpdateWithResponseAsync(String agentName,
+        KnowledgeBase knowledgeBase, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(agentName, knowledgeBase, ifMatch,
             ifNoneMatch, requestOptions, context));
     }
 
@@ -175,7 +175,7 @@ public final class KnowledgeAgentsImpl {
      * Creates a new agent or updates an agent if it already exists.
      * 
      * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -188,8 +188,8 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateWithResponseAsync(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
+    public Mono<Response<KnowledgeBase>> createOrUpdateWithResponseAsync(String agentName,
+        KnowledgeBase knowledgeBase, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
         Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
@@ -199,14 +199,14 @@ public final class KnowledgeAgentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdate(this.client.getEndpoint(), agentName, xMsClientRequestId, ifMatch, ifNoneMatch,
-            prefer, this.client.getApiVersion(), accept, knowledgeAgent, context);
+            prefer, this.client.getApiVersion(), accept, knowledgeBase, context);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      * 
      * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -218,9 +218,9 @@ public final class KnowledgeAgentsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateAsync(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public Mono<KnowledgeBase> createOrUpdateAsync(String agentName, KnowledgeBase knowledgeBase, String ifMatch,
         String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, ifNoneMatch, requestOptions)
+        return createOrUpdateWithResponseAsync(agentName, knowledgeBase, ifMatch, ifNoneMatch, requestOptions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -228,7 +228,7 @@ public final class KnowledgeAgentsImpl {
      * Creates a new agent or updates an agent if it already exists.
      * 
      * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -241,9 +241,9 @@ public final class KnowledgeAgentsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateAsync(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public Mono<KnowledgeBase> createOrUpdateAsync(String agentName, KnowledgeBase knowledgeBase, String ifMatch,
         String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, ifNoneMatch, requestOptions, context)
+        return createOrUpdateWithResponseAsync(agentName, knowledgeBase, ifMatch, ifNoneMatch, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -251,7 +251,7 @@ public final class KnowledgeAgentsImpl {
      * Creates a new agent or updates an agent if it already exists.
      * 
      * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -264,7 +264,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createOrUpdateWithResponse(String agentName, KnowledgeAgent knowledgeAgent,
+    public Response<KnowledgeBase> createOrUpdateWithResponse(String agentName, KnowledgeBase knowledgeBase,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
@@ -274,14 +274,14 @@ public final class KnowledgeAgentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createOrUpdateSync(this.client.getEndpoint(), agentName, xMsClientRequestId, ifMatch,
-            ifNoneMatch, prefer, this.client.getApiVersion(), accept, knowledgeAgent, context);
+            ifNoneMatch, prefer, this.client.getApiVersion(), accept, knowledgeBase, context);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      * 
      * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
@@ -293,9 +293,9 @@ public final class KnowledgeAgentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent createOrUpdate(String agentName, KnowledgeAgent knowledgeAgent, String ifMatch,
+    public KnowledgeBase createOrUpdate(String agentName, KnowledgeBase knowledgeBase, String ifMatch,
         String ifNoneMatch, RequestOptions requestOptions) {
-        return createOrUpdateWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
+        return createOrUpdateWithResponse(agentName, knowledgeBase, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
             .getValue();
     }
 
@@ -447,7 +447,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> getWithResponseAsync(String agentName, RequestOptions requestOptions) {
+    public Mono<Response<KnowledgeBase>> getWithResponseAsync(String agentName, RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> getWithResponseAsync(agentName, requestOptions, context));
     }
 
@@ -463,7 +463,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> getWithResponseAsync(String agentName, RequestOptions requestOptions,
+    public Mono<Response<KnowledgeBase>> getWithResponseAsync(String agentName, RequestOptions requestOptions,
         Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -486,7 +486,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> getAsync(String agentName, RequestOptions requestOptions) {
+    public Mono<KnowledgeBase> getAsync(String agentName, RequestOptions requestOptions) {
         return getWithResponseAsync(agentName, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -502,7 +502,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> getAsync(String agentName, RequestOptions requestOptions, Context context) {
+    public Mono<KnowledgeBase> getAsync(String agentName, RequestOptions requestOptions, Context context) {
         return getWithResponseAsync(agentName, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -519,7 +519,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> getWithResponse(String agentName, RequestOptions requestOptions, Context context) {
+    public Response<KnowledgeBase> getWithResponse(String agentName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -541,12 +541,12 @@ public final class KnowledgeAgentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent get(String agentName, RequestOptions requestOptions) {
+    public KnowledgeBase get(String agentName, RequestOptions requestOptions) {
         return getWithResponse(agentName, requestOptions, Context.NONE).getValue();
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -555,7 +555,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KnowledgeAgent>> listSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<KnowledgeBase>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -566,11 +566,11 @@ public final class KnowledgeAgentsImpl {
             .withContext(context -> service.list(this.client.getEndpoint(), xMsClientRequestId,
                 this.client.getApiVersion(), accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getKnowledgeAgents(), null, null));
+                res.getValue().getKnowledgeBases(), null, null));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -580,7 +580,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KnowledgeAgent>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<KnowledgeBase>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -589,11 +589,11 @@ public final class KnowledgeAgentsImpl {
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.list(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getKnowledgeAgents(), null, null));
+                res.getValue().getKnowledgeBases(), null, null));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -602,12 +602,12 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KnowledgeAgent> listAsync(RequestOptions requestOptions) {
+    public PagedFlux<KnowledgeBase> listAsync(RequestOptions requestOptions) {
         return new PagedFlux<>(() -> listSinglePageAsync(requestOptions));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -617,12 +617,12 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KnowledgeAgent> listAsync(RequestOptions requestOptions, Context context) {
+    public PagedFlux<KnowledgeBase> listAsync(RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(requestOptions, context));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,21 +631,21 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KnowledgeAgent> listSinglePage(RequestOptions requestOptions) {
+    public PagedResponse<KnowledgeBase> listSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        Response<ListKnowledgeAgentsResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
+        Response<ListKnowledgeBasesResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
             this.client.getApiVersion(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getKnowledgeAgents(), null, null);
+            res.getValue().getKnowledgeBases(), null, null);
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -655,21 +655,21 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KnowledgeAgent> listSinglePage(RequestOptions requestOptions, Context context) {
+    public PagedResponse<KnowledgeBase> listSinglePage(RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        Response<ListKnowledgeAgentsResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
+        Response<ListKnowledgeBasesResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
             this.client.getApiVersion(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getKnowledgeAgents(), null, null);
+            res.getValue().getKnowledgeBases(), null, null);
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,12 +678,12 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions) {
+    public PagedIterable<KnowledgeBase> list(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listSinglePage(requestOptions));
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -693,14 +693,14 @@ public final class KnowledgeAgentsImpl {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeAgent> list(RequestOptions requestOptions, Context context) {
+    public PagedIterable<KnowledgeBase> list(RequestOptions requestOptions, Context context) {
         return new PagedIterable<>(() -> listSinglePage(requestOptions, context));
     }
 
     /**
      * Creates a new agent.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -708,15 +708,15 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createWithResponseAsync(KnowledgeAgent knowledgeAgent,
+    public Mono<Response<KnowledgeBase>> createWithResponseAsync(KnowledgeBase knowledgeBase,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> createWithResponseAsync(knowledgeAgent, requestOptions, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(knowledgeBase, requestOptions, context));
     }
 
     /**
      * Creates a new agent.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -725,7 +725,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createWithResponseAsync(KnowledgeAgent knowledgeAgent,
+    public Mono<Response<KnowledgeBase>> createWithResponseAsync(KnowledgeBase knowledgeBase,
         RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -734,13 +734,13 @@ public final class KnowledgeAgentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.create(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
-            knowledgeAgent, context);
+            knowledgeBase, context);
     }
 
     /**
      * Creates a new agent.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -748,14 +748,14 @@ public final class KnowledgeAgentsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createAsync(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions) {
-        return createWithResponseAsync(knowledgeAgent, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<KnowledgeBase> createAsync(KnowledgeBase knowledgeBase, RequestOptions requestOptions) {
+        return createWithResponseAsync(knowledgeBase, requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new agent.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -764,16 +764,16 @@ public final class KnowledgeAgentsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createAsync(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions,
+    public Mono<KnowledgeBase> createAsync(KnowledgeBase knowledgeBase, RequestOptions requestOptions,
         Context context) {
-        return createWithResponseAsync(knowledgeAgent, requestOptions, context)
+        return createWithResponseAsync(knowledgeBase, requestOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new agent.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -782,7 +782,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createWithResponse(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions,
+    public Response<KnowledgeBase> createWithResponse(KnowledgeBase knowledgeBase, RequestOptions requestOptions,
         Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -791,13 +791,13 @@ public final class KnowledgeAgentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.createSync(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
-            knowledgeAgent, context);
+            knowledgeBase, context);
     }
 
     /**
      * Creates a new agent.
      * 
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -805,7 +805,7 @@ public final class KnowledgeAgentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent create(KnowledgeAgent knowledgeAgent, RequestOptions requestOptions) {
-        return createWithResponse(knowledgeAgent, requestOptions, Context.NONE).getValue();
+    public KnowledgeBase create(KnowledgeBase knowledgeBase, RequestOptions requestOptions) {
+        return createWithResponse(knowledgeBase, requestOptions, Context.NONE).getValue();
     }
 }

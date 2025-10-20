@@ -1542,35 +1542,35 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new agent.
      *
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeAgent) {
-        return createKnowledgeBaseWithResponse(knowledgeAgent).map(Response::getValue);
+    public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createKnowledgeBaseWithResponse(knowledgeBase).map(Response::getValue);
     }
 
     /**
      * Creates a new agent.
      *
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBase The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent) {
-        return withContext(context -> createKnowledgeBaseWithResponse(knowledgeAgent, context));
+    public Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase) {
+        return withContext(context -> createKnowledgeBaseWithResponse(knowledgeBase, context));
     }
 
-    Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent, Context context) {
+    Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase, Context context) {
         try {
             return restClient.getKnowledgeBases()
-                .createWithResponseAsync(knowledgeAgent, null, context)
+                .createWithResponseAsync(knowledgeBase, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1580,21 +1580,21 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeAgent) {
-        return createOrUpdateKnowledgeBaseWithResponse(knowledgeAgent, null).map(Response::getValue);
+    public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createOrUpdateKnowledgeBaseWithResponse(knowledgeBase, null).map(Response::getValue);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBase The definition of the agent to create or update.
      * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
      * conditions will be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1603,19 +1603,19 @@ public final class SearchIndexAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent,
+    public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
         MatchConditions matchConditions) {
         return withContext(
-            context -> createOrUpdateKnowledgeBaseWithResponse(knowledgeAgent, matchConditions, context));
+            context -> createOrUpdateKnowledgeBaseWithResponse(knowledgeBase, matchConditions, context));
     }
 
-    Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent,
+    Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
         MatchConditions matchConditions, Context context) {
         try {
             String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
             String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
             return restClient.getKnowledgeBases()
-                .createOrUpdateWithResponseAsync(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null,
+                .createOrUpdateWithResponseAsync(knowledgeBase.getName(), knowledgeBase, ifMatch, ifNoneMatch, null,
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
@@ -1662,7 +1662,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

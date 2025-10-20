@@ -13,22 +13,22 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.agents.SearchKnowledgeAgentAsyncClient;
-import com.azure.search.documents.agents.SearchKnowledgeAgentClient;
-import com.azure.search.documents.agents.models.KnowledgeAgentMessage;
-import com.azure.search.documents.agents.models.KnowledgeAgentMessageTextContent;
-import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalRequest;
-import com.azure.search.documents.agents.models.KnowledgeAgentRetrievalResponse;
+import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseAsyncClient;
+import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseClient;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
-import com.azure.search.documents.indexes.models.KnowledgeAgentAzureOpenAIModel;
-import com.azure.search.documents.indexes.models.KnowledgeAgentModel;
-import com.azure.search.documents.indexes.models.KnowledgeAgentOutputConfiguration;
-import com.azure.search.documents.indexes.models.KnowledgeAgentOutputConfigurationModality;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
+import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
+import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
+import com.azure.search.documents.indexes.models.KnowledgeBaseOutputConfiguration;
+import com.azure.search.documents.indexes.models.KnowledgeBaseOutputConfigurationModality;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
@@ -68,18 +68,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests for Knowledge Agent operations.
+ * Tests for Knowledge Base operations.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-public class KnowledgeAgentTests extends SearchTestBase {
+public class KnowledgeBaseTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME = "shared-knowledge-agent-index";
     private static final String HOTEL_KNOWLEDGE_SOURCE_NAME = "shared-knowledge-agent-source";
-    private static final KnowledgeAgentAzureOpenAIModel OPEN_AI_AGENT_MODEL = new KnowledgeAgentAzureOpenAIModel(
+    private static final KnowledgeBaseAzureOpenAIModel OPEN_AI_AGENT_MODEL = new KnowledgeBaseAzureOpenAIModel(
         new AzureOpenAIVectorizerParameters().setModelName(AzureOpenAIModelName.fromString(OPENAI_MODEL_NAME))
             .setDeploymentName(OPENAI_DEPLOYMENT_NAME)
             .setResourceUrl(OPENAI_ENDPOINT)
             .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY)));
-    private static final List<KnowledgeAgentModel> KNOWLEDGE_AGENT_MODELS
+    private static final List<KnowledgeBaseModel> KNOWLEDGE_AGENT_MODELS
         = Collections.singletonList(OPEN_AI_AGENT_MODEL);
     private static final List<KnowledgeSourceReference> KNOWLEDGE_SOURCE_REFERENCES
         = Collections.singletonList(new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME));
@@ -117,9 +117,9 @@ public class KnowledgeAgentTests extends SearchTestBase {
     @AfterEach
     public void cleanup() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            // Delete Knowledge Agents created during tests.
-            searchIndexClient.listKnowledgeAgents()
-                .forEach(agent -> searchIndexClient.deleteKnowledgeAgent(agent.getName()));
+            // Delete Knowledge Bases created during tests.
+            searchIndexClient.listKnowledgeBases()
+                .forEach(agent -> searchIndexClient.deleteKnowledgeBase(agent.getName()));
         }
     }
 
@@ -127,9 +127,9 @@ public class KnowledgeAgentTests extends SearchTestBase {
     protected static void cleanupClass() {
         // Clean up any resources after all tests.
         if (TEST_MODE != TestMode.PLAYBACK) {
-            // Delete all knowledge agents.
-            searchIndexClient.listKnowledgeAgents()
-                .forEach(agent -> searchIndexClient.deleteKnowledgeAgent(agent.getName()));
+            // Delete all knowledge knowledgebases.
+            searchIndexClient.listKnowledgeBases()
+                .forEach(agent -> searchIndexClient.deleteKnowledgeBase(agent.getName()));
 
             // Delete the knowledge source created for the tests.
             searchIndexClient.deleteKnowledgeSource(HOTEL_KNOWLEDGE_SOURCE_NAME);
@@ -145,18 +145,18 @@ public class KnowledgeAgentTests extends SearchTestBase {
     }
 
     @Test
-    public void createKnowledgeAgentSync() {
+    public void createKnowledgeBaseSync() {
         // Test creating a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        KnowledgeAgent created = searchIndexClient.createKnowledgeAgent(knowledgeAgent);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        assertEquals(knowledgeAgent.getName(), created.getName());
+        assertEquals(knowledgeBase.getName(), created.getName());
 
         assertEquals(1, created.getModels().size());
-        KnowledgeAgentAzureOpenAIModel createdModel
-            = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, created.getModels().get(0));
+        KnowledgeBaseAzureOpenAIModel createdModel
+            = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, created.getModels().get(0));
         if (interceptorManager.isLiveMode()) {
             assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                 createdModel.getAzureOpenAIParameters().getDeploymentName());
@@ -171,18 +171,18 @@ public class KnowledgeAgentTests extends SearchTestBase {
     }
 
     @Test
-    public void createKnowledgeAgentAsync() {
+    public void createKnowledgeBaseAsync() {
         // Test creating a knowledge agent.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
 
-        StepVerifier.create(searchIndexClient.createKnowledgeAgent(knowledgeAgent)).assertNext(created -> {
-            assertEquals(knowledgeAgent.getName(), created.getName());
+        StepVerifier.create(searchIndexClient.createKnowledgeBase(knowledgeBase)).assertNext(created -> {
+            assertEquals(knowledgeBase.getName(), created.getName());
 
             assertEquals(1, created.getModels().size());
-            KnowledgeAgentAzureOpenAIModel createdModel
-                = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, created.getModels().get(0));
+            KnowledgeBaseAzureOpenAIModel createdModel
+                = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, created.getModels().get(0));
             if (interceptorManager.isLiveMode()) {
                 assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                     createdModel.getAzureOpenAIParameters().getDeploymentName());
@@ -198,19 +198,19 @@ public class KnowledgeAgentTests extends SearchTestBase {
     }
 
     @Test
-    public void getKnowledgeAgentSync() {
+    public void getKnowledgeBaseSync() {
         // Test getting a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        KnowledgeAgent retrieved = searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName());
-        assertEquals(knowledgeAgent.getName(), retrieved.getName());
+        KnowledgeBase retrieved = searchIndexClient.getKnowledgeBase(knowledgeBase.getName());
+        assertEquals(knowledgeBase.getName(), retrieved.getName());
 
         assertEquals(1, retrieved.getModels().size());
-        KnowledgeAgentAzureOpenAIModel retrievedModel
-            = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, retrieved.getModels().get(0));
+        KnowledgeBaseAzureOpenAIModel retrievedModel
+            = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, retrieved.getModels().get(0));
         if (interceptorManager.isLiveMode()) {
             assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                 retrievedModel.getAzureOpenAIParameters().getDeploymentName());
@@ -225,21 +225,21 @@ public class KnowledgeAgentTests extends SearchTestBase {
     }
 
     @Test
-    public void getKnowledgeAgentAsync() {
+    public void getKnowledgeBaseAsync() {
         // Test getting a knowledge agent.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
 
-        Mono<KnowledgeAgent> createAndGet = searchIndexClient.createKnowledgeAgent(knowledgeAgent)
-            .flatMap(created -> searchIndexClient.getKnowledgeAgent(created.getName()));
+        Mono<KnowledgeBase> createAndGet = searchIndexClient.createKnowledgeBase(knowledgeBase)
+            .flatMap(created -> searchIndexClient.getKnowledgeBase(created.getName()));
 
         StepVerifier.create(createAndGet).assertNext(retrieved -> {
-            assertEquals(knowledgeAgent.getName(), retrieved.getName());
+            assertEquals(knowledgeBase.getName(), retrieved.getName());
 
             assertEquals(1, retrieved.getModels().size());
-            KnowledgeAgentAzureOpenAIModel retrievedModel
-                = assertInstanceOf(KnowledgeAgentAzureOpenAIModel.class, retrieved.getModels().get(0));
+            KnowledgeBaseAzureOpenAIModel retrievedModel
+                = assertInstanceOf(KnowledgeBaseAzureOpenAIModel.class, retrieved.getModels().get(0));
             if (interceptorManager.isLiveMode()) {
                 assertEquals(OPEN_AI_AGENT_MODEL.getAzureOpenAIParameters().getDeploymentName(),
                     retrievedModel.getAzureOpenAIParameters().getDeploymentName());
@@ -255,112 +255,112 @@ public class KnowledgeAgentTests extends SearchTestBase {
     }
 
     @Test
-    public void listKnowledgeAgentsSync() {
-        // Test listing knowledge agents.
+    public void listKnowledgeBasesSync() {
+        // Test listing knowledge knowledgebases.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        long currentCount = searchIndexClient.listKnowledgeAgents().stream().count();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        KnowledgeAgent knowledgeAgent2
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent);
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent2);
-        Map<String, KnowledgeAgent> knowledgeAgentsByName = searchIndexClient.listKnowledgeAgents()
+        long currentCount = searchIndexClient.listKnowledgeBases().stream().count();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase2
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+        searchIndexClient.createKnowledgeBase(knowledgeBase2);
+        Map<String, KnowledgeBase> knowledgeBasesByName = searchIndexClient.listKnowledgeBases()
             .stream()
-            .collect(Collectors.toMap(KnowledgeAgent::getName, Function.identity()));
+            .collect(Collectors.toMap(KnowledgeBase::getName, Function.identity()));
 
-        assertEquals(2, knowledgeAgentsByName.size() - currentCount);
-        KnowledgeAgent listedAgent1 = knowledgeAgentsByName.get(knowledgeAgent.getName());
+        assertEquals(2, knowledgeBasesByName.size() - currentCount);
+        KnowledgeBase listedAgent1 = knowledgeBasesByName.get(knowledgeBase.getName());
         assertNotNull(listedAgent1);
-        KnowledgeAgent listedAgent2 = knowledgeAgentsByName.get(knowledgeAgent2.getName());
+        KnowledgeBase listedAgent2 = knowledgeBasesByName.get(knowledgeBase2.getName());
         assertNotNull(listedAgent2);
     }
 
     @Test
-    public void listKnowledgeAgentsAsync() {
-        // Test listing knowledge agents.
+    public void listKnowledgeBasesAsync() {
+        // Test listing knowledge knowledgebases.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        KnowledgeAgent knowledgeAgent2
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase2
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
 
-        Mono<Tuple2<Long, Map<String, KnowledgeAgent>>> tuple2Mono = searchIndexClient.listKnowledgeAgents()
+        Mono<Tuple2<Long, Map<String, KnowledgeBase>>> tuple2Mono = searchIndexClient.listKnowledgeBases()
             .count()
             .flatMap(currentCount -> Mono
-                .when(searchIndexClient.createKnowledgeAgent(knowledgeAgent),
-                    searchIndexClient.createKnowledgeAgent(knowledgeAgent2))
-                .then(searchIndexClient.listKnowledgeAgents().collectMap(KnowledgeAgent::getName))
+                .when(searchIndexClient.createKnowledgeBase(knowledgeBase),
+                    searchIndexClient.createKnowledgeBase(knowledgeBase2))
+                .then(searchIndexClient.listKnowledgeBases().collectMap(KnowledgeBase::getName))
                 .map(map -> Tuples.of(currentCount, map)));
 
         StepVerifier.create(tuple2Mono).assertNext(tuple -> {
-            Map<String, KnowledgeAgent> knowledgeAgentsByName = tuple.getT2();
-            assertEquals(2, knowledgeAgentsByName.size() - tuple.getT1());
-            KnowledgeAgent listedAgent1 = knowledgeAgentsByName.get(knowledgeAgent.getName());
+            Map<String, KnowledgeBase> knowledgeBasesByName = tuple.getT2();
+            assertEquals(2, knowledgeBasesByName.size() - tuple.getT1());
+            KnowledgeBase listedAgent1 = knowledgeBasesByName.get(knowledgeBase.getName());
             assertNotNull(listedAgent1);
-            KnowledgeAgent listedAgent2 = knowledgeAgentsByName.get(knowledgeAgent2.getName());
+            KnowledgeBase listedAgent2 = knowledgeBasesByName.get(knowledgeBase2.getName());
             assertNotNull(listedAgent2);
         }).verifyComplete();
     }
 
     @Test
-    public void deleteKnowledgeAgentSync() {
+    public void deleteKnowledgeBaseSync() {
         // Test deleting a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        assertEquals(knowledgeAgent.getName(), searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName()).getName());
-        searchIndexClient.deleteKnowledgeAgent(knowledgeAgent.getName());
-        assertThrows(HttpResponseException.class, () -> searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName()));
+        assertEquals(knowledgeBase.getName(), searchIndexClient.getKnowledgeBase(knowledgeBase.getName()).getName());
+        searchIndexClient.deleteKnowledgeBase(knowledgeBase.getName());
+        assertThrows(HttpResponseException.class, () -> searchIndexClient.getKnowledgeBase(knowledgeBase.getName()));
     }
 
     @Test
-    public void deleteKnowledgeAgentAsync() {
+    public void deleteKnowledgeBaseAsync() {
         // Test deleting a knowledge agent.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
 
-        Mono<KnowledgeAgent> createAndGetMono = searchIndexClient.createKnowledgeAgent(knowledgeAgent)
-            .flatMap(created -> searchIndexClient.getKnowledgeAgent(created.getName()));
+        Mono<KnowledgeBase> createAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
+            .flatMap(created -> searchIndexClient.getKnowledgeBase(created.getName()));
 
         StepVerifier.create(createAndGetMono)
-            .assertNext(retrieved -> assertEquals(knowledgeAgent.getName(), retrieved.getName()))
+            .assertNext(retrieved -> assertEquals(knowledgeBase.getName(), retrieved.getName()))
             .verifyComplete();
 
-        StepVerifier.create(searchIndexClient.deleteKnowledgeAgent(knowledgeAgent.getName())).verifyComplete();
+        StepVerifier.create(searchIndexClient.deleteKnowledgeBase(knowledgeBase.getName())).verifyComplete();
 
-        StepVerifier.create(searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName()))
+        StepVerifier.create(searchIndexClient.getKnowledgeBase(knowledgeBase.getName()))
             .verifyError(HttpResponseException.class);
     }
 
     @Test
-    public void updateKnowledgeAgentSync() {
+    public void updateKnowledgeBaseSync() {
         // Test updating a knowledge agent.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
         String newDescription = "Updated description";
-        knowledgeAgent.setDescription(newDescription);
-        searchIndexClient.createOrUpdateKnowledgeAgent(knowledgeAgent);
-        KnowledgeAgent retrieved = searchIndexClient.getKnowledgeAgent(knowledgeAgent.getName());
+        knowledgeBase.setDescription(newDescription);
+        searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
+        KnowledgeBase retrieved = searchIndexClient.getKnowledgeBase(knowledgeBase.getName());
         assertEquals(newDescription, retrieved.getDescription());
     }
 
     @Test
-    public void updateKnowledgeAgentAsync() {
+    public void updateKnowledgeBaseAsync() {
         // Test updating a knowledge agent.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
         String newDescription = "Updated description";
 
-        Mono<KnowledgeAgent> createUpdateAndGetMono = searchIndexClient.createKnowledgeAgent(knowledgeAgent)
-            .flatMap(created -> searchIndexClient.createOrUpdateKnowledgeAgent(created.setDescription(newDescription)))
-            .flatMap(updated -> searchIndexClient.getKnowledgeAgent(updated.getName()));
+        Mono<KnowledgeBase> createUpdateAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
+            .flatMap(created -> searchIndexClient.createOrUpdateKnowledgeBase(created.setDescription(newDescription)))
+            .flatMap(updated -> searchIndexClient.getKnowledgeBase(updated.getName()));
 
         StepVerifier.create(createUpdateAndGetMono)
             .assertNext(retrieved -> assertEquals(newDescription, retrieved.getDescription()))
@@ -372,21 +372,21 @@ public class KnowledgeAgentTests extends SearchTestBase {
     public void basicRetrievalSync() {
         // Test knowledge agent retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        SearchKnowledgeAgentClient knowledgeAgentClient
-            = getSearchKnowledgeAgentClientBuilder(true).agentName(knowledgeAgent.getName()).buildClient();
+        SearchKnowledgeBaseClient knowledgeBaseClient
+            = getSearchKnowledgeBaseClientBuilder(true).agentName(knowledgeBase.getName()).buildClient();
 
-        KnowledgeAgentMessageTextContent messageTextContent
-            = new KnowledgeAgentMessageTextContent("What are the pet policies at the hotel?");
-        KnowledgeAgentMessage message
-            = new KnowledgeAgentMessage(Collections.singletonList(messageTextContent)).setRole("user");
-        KnowledgeAgentRetrievalRequest retrievalRequest
-            = new KnowledgeAgentRetrievalRequest(Collections.singletonList(message));
+        KnowledgeBaseMessageTextContent messageTextContent
+            = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
+        KnowledgeBaseMessage message
+            = new KnowledgeBaseMessage(Collections.singletonList(messageTextContent)).setRole("user");
+        KnowledgeBaseRetrievalRequest retrievalRequest
+            = new KnowledgeBaseRetrievalRequest(Collections.singletonList(message));
 
-        KnowledgeAgentRetrievalResponse response = knowledgeAgentClient.retrieve(retrievalRequest, null);
+        KnowledgeBaseRetrievalResponse response = knowledgeBaseClient.retrieve(retrievalRequest, null);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
@@ -396,22 +396,22 @@ public class KnowledgeAgentTests extends SearchTestBase {
     public void basicRetrievalAsync() {
         // Test knowledge agent retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);
 
-        Mono<KnowledgeAgentRetrievalResponse> createAndRetrieveMono
-            = searchIndexClient.createKnowledgeAgent(knowledgeAgent).flatMap(created -> {
-                SearchKnowledgeAgentAsyncClient knowledgeAgentClient
-                    = getSearchKnowledgeAgentClientBuilder(false).agentName(created.getName()).buildAsyncClient();
+        Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                SearchKnowledgeBaseAsyncClient knowledgeBaseClient
+                    = getSearchKnowledgeBaseClientBuilder(false).agentName(created.getName()).buildAsyncClient();
 
-                KnowledgeAgentMessageTextContent messageTextContent
-                    = new KnowledgeAgentMessageTextContent("What are the pet policies at the hotel?");
-                KnowledgeAgentMessage message
-                    = new KnowledgeAgentMessage(Collections.singletonList(messageTextContent)).setRole("user");
-                KnowledgeAgentRetrievalRequest retrievalRequest
-                    = new KnowledgeAgentRetrievalRequest(Collections.singletonList(message));
+                KnowledgeBaseMessageTextContent messageTextContent
+                    = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
+                KnowledgeBaseMessage message
+                    = new KnowledgeBaseMessage(Collections.singletonList(messageTextContent)).setRole("user");
+                KnowledgeBaseRetrievalRequest retrievalRequest
+                    = new KnowledgeBaseRetrievalRequest(Collections.singletonList(message));
 
-                return knowledgeAgentClient.retrieve(retrievalRequest, null);
+                return knowledgeBaseClient.retrieve(retrievalRequest, null);
             });
 
         StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
@@ -425,27 +425,27 @@ public class KnowledgeAgentTests extends SearchTestBase {
     public void answerSynthesisRetrievalSync() {
         // Test knowledge agent retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES)
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES)
                 .setRetrievalInstructions("Only include well reviewed hotels.")
-                .setOutputConfiguration(new KnowledgeAgentOutputConfiguration()
-                    .setModality(KnowledgeAgentOutputConfigurationModality.ANSWER_SYNTHESIS)
+                .setOutputConfiguration(new KnowledgeBaseOutputConfiguration()
+                    .setModality(KnowledgeBaseOutputConfigurationModality.ANSWER_SYNTHESIS)
                     .setAnswerInstructions("Provide a concise answer based on the provided information.")
                     .setAttemptFastPath(true)
                     .setIncludeActivity(true));
-        searchIndexClient.createKnowledgeAgent(knowledgeAgent);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
 
-        SearchKnowledgeAgentClient knowledgeAgentClient
-            = getSearchKnowledgeAgentClientBuilder(true).agentName(knowledgeAgent.getName()).buildClient();
+        SearchKnowledgeBaseClient knowledgeBaseClient
+            = getSearchKnowledgeBaseClientBuilder(true).agentName(knowledgeBase.getName()).buildClient();
 
-        KnowledgeAgentMessageTextContent messageTextContent
-            = new KnowledgeAgentMessageTextContent("What are the pet policies at the hotel?");
-        KnowledgeAgentMessage message
-            = new KnowledgeAgentMessage(Collections.singletonList(messageTextContent)).setRole("user");
-        KnowledgeAgentRetrievalRequest retrievalRequest
-            = new KnowledgeAgentRetrievalRequest(Collections.singletonList(message));
+        KnowledgeBaseMessageTextContent messageTextContent
+            = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
+        KnowledgeBaseMessage message
+            = new KnowledgeBaseMessage(Collections.singletonList(messageTextContent)).setRole("user");
+        KnowledgeBaseRetrievalRequest retrievalRequest
+            = new KnowledgeBaseRetrievalRequest(Collections.singletonList(message));
 
-        KnowledgeAgentRetrievalResponse response = knowledgeAgentClient.retrieve(retrievalRequest, null);
+        KnowledgeBaseRetrievalResponse response = knowledgeBaseClient.retrieve(retrievalRequest, null);
         assertNotNull(response);
         assertNotNull(response.getResponse());
         assertNotNull(response.getActivity());
@@ -456,28 +456,28 @@ public class KnowledgeAgentTests extends SearchTestBase {
     public void answerSynthesisRetrievalAsync() {
         // Test knowledge agent retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeAgent knowledgeAgent
-            = new KnowledgeAgent(randomKnowledgeAgentName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES)
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES)
                 .setRetrievalInstructions("Only include well reviewed hotels.")
-                .setOutputConfiguration(new KnowledgeAgentOutputConfiguration()
-                    .setModality(KnowledgeAgentOutputConfigurationModality.ANSWER_SYNTHESIS)
+                .setOutputConfiguration(new KnowledgeBaseOutputConfiguration()
+                    .setModality(KnowledgeBaseOutputConfigurationModality.ANSWER_SYNTHESIS)
                     .setAnswerInstructions("Provide a concise answer based on the provided information.")
                     .setAttemptFastPath(true)
                     .setIncludeActivity(true));
 
-        Mono<KnowledgeAgentRetrievalResponse> createAndRetrieveMono
-            = searchIndexClient.createKnowledgeAgent(knowledgeAgent).flatMap(created -> {
-                SearchKnowledgeAgentAsyncClient knowledgeAgentClient
-                    = getSearchKnowledgeAgentClientBuilder(false).agentName(created.getName()).buildAsyncClient();
+        Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                SearchKnowledgeBaseAsyncClient knowledgeBaseClient
+                    = getSearchKnowledgeBaseClientBuilder(false).agentName(created.getName()).buildAsyncClient();
 
-                KnowledgeAgentMessageTextContent messageTextContent
-                    = new KnowledgeAgentMessageTextContent("What are the pet policies at the hotel?");
-                KnowledgeAgentMessage message
-                    = new KnowledgeAgentMessage(Collections.singletonList(messageTextContent)).setRole("user");
-                KnowledgeAgentRetrievalRequest retrievalRequest
-                    = new KnowledgeAgentRetrievalRequest(Collections.singletonList(message));
+                KnowledgeBaseMessageTextContent messageTextContent
+                    = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
+                KnowledgeBaseMessage message
+                    = new KnowledgeBaseMessage(Collections.singletonList(messageTextContent)).setRole("user");
+                KnowledgeBaseRetrievalRequest retrievalRequest
+                    = new KnowledgeBaseRetrievalRequest(Collections.singletonList(message));
 
-                return knowledgeAgentClient.retrieve(retrievalRequest, null);
+                return knowledgeBaseClient.retrieve(retrievalRequest, null);
             });
 
         StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
@@ -487,7 +487,7 @@ public class KnowledgeAgentTests extends SearchTestBase {
         }).verifyComplete();
     }
 
-    private String randomKnowledgeAgentName() {
+    private String randomKnowledgeBaseName() {
         // Generate a random name for the knowledge agent.
         return testResourceNamer.randomName("knowledge-agent-", 63);
     }

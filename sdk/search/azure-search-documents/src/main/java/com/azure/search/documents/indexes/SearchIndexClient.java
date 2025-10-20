@@ -1679,7 +1679,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1692,7 +1692,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

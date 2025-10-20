@@ -8,4 +8,4 @@
  * Package containing the data models for KnowledgeBaseRetrievalClient.
  * Client that can be used to query an knowledge base.
  */
-package com.azure.search.documents.agents.models;
+package com.azure.search.documents.knowledgebases.models;

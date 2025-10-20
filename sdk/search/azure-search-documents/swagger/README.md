@@ -109,7 +109,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d1da9e72acfda60af3d5ca9aa5498a9af8d061d3/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeAgentsResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeBasesResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -161,7 +161,7 @@ directive:
 These settings apply only when `--tag=knowledgebase` is specified on the commandSearchServiceCounters line.
 
 ``` yaml $(tag) == 'knowledgebase'
-namespace: com.azure.search.documents.KnowledgeBases
+namespace: com.azure.search.documents.knowledgebases
 input-file: 
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d1da9e72acfda60af3d5ca9aa5498a9af8d061d3/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/knowledgebase.json
 models-subpackage: models
@@ -490,13 +490,13 @@ directive:
     $.required = $.required.filter((required) => required !== "name");
 ```
 
-### Remove `KnowledgeAgentOutputOptimization`
+### Remove `KnowledgeBaseOutputOptimization`
 ```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
     transform: >
-      delete $.KnowledgeAgentOutputOptimization;
+      delete $.KnowledgeBaseOutputOptimization;
 ```
 
 ### Retain `rerankWithOriginalVectors` and `defaultOversampling` in `VectorSearchCompressionConfiguration`

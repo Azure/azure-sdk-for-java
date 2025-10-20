@@ -13,41 +13,41 @@ import java.util.Collection;
 /**
  * The AI model to be used for query planning.
  */
-public final class KnowledgeAgentModelKind extends ExpandableStringEnum<KnowledgeAgentModelKind> {
+public final class KnowledgeBaseModelKind extends ExpandableStringEnum<KnowledgeBaseModelKind> {
     /**
      * Use Azure Open AI models for query planning.
      */
     @Generated
-    public static final KnowledgeAgentModelKind AZURE_OPEN_AI = fromString("azureOpenAI");
+    public static final KnowledgeBaseModelKind AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /**
-     * Creates a new instance of KnowledgeAgentModelKind value.
+     * Creates a new instance of KnowledgeBaseModelKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public KnowledgeAgentModelKind() {
+    public KnowledgeBaseModelKind() {
     }
 
     /**
-     * Creates or finds a KnowledgeAgentModelKind from its string representation.
+     * Creates or finds a KnowledgeBaseModelKind from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding KnowledgeAgentModelKind.
+     * @return the corresponding KnowledgeBaseModelKind.
      */
     @Generated
-    public static KnowledgeAgentModelKind fromString(String name) {
-        return fromString(name, KnowledgeAgentModelKind.class);
+    public static KnowledgeBaseModelKind fromString(String name) {
+        return fromString(name, KnowledgeBaseModelKind.class);
     }
 
     /**
-     * Gets known KnowledgeAgentModelKind values.
+     * Gets known KnowledgeBaseModelKind values.
      * 
-     * @return known KnowledgeAgentModelKind values.
+     * @return known KnowledgeBaseModelKind values.
      */
     @Generated
-    public static Collection<KnowledgeAgentModelKind> values() {
-        return values(KnowledgeAgentModelKind.class);
+    public static Collection<KnowledgeBaseModelKind> values() {
+        return values(KnowledgeBaseModelKind.class);
     }
 }

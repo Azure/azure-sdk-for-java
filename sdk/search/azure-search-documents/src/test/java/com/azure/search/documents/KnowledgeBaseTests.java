@@ -13,12 +13,12 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.agents.SearchKnowledgeBaseAsyncClient;
-import com.azure.search.documents.agents.SearchKnowledgeBaseClient;
-import com.azure.search.documents.agents.models.KnowledgeBaseMessage;
-import com.azure.search.documents.agents.models.KnowledgeBaseMessageTextContent;
-import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalRequest;
-import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseAsyncClient;
+import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseClient;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessage;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseMessageTextContent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -68,7 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests for Knowledge Agent operations.
+ * Tests for Knowledge Base operations.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class KnowledgeBaseTests extends SearchTestBase {
@@ -117,7 +117,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @AfterEach
     public void cleanup() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            // Delete Knowledge Agents created during tests.
+            // Delete Knowledge Bases created during tests.
             searchIndexClient.listKnowledgeBases()
                 .forEach(agent -> searchIndexClient.deleteKnowledgeBase(agent.getName()));
         }
@@ -127,7 +127,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
     protected static void cleanupClass() {
         // Clean up any resources after all tests.
         if (TEST_MODE != TestMode.PLAYBACK) {
-            // Delete all knowledge agents.
+            // Delete all knowledge knowledgebases.
             searchIndexClient.listKnowledgeBases()
                 .forEach(agent -> searchIndexClient.deleteKnowledgeBase(agent.getName()));
 
@@ -256,7 +256,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void listKnowledgeBasesSync() {
-        // Test listing knowledge agents.
+        // Test listing knowledge knowledgebases.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         long currentCount = searchIndexClient.listKnowledgeBases().stream().count();
         KnowledgeBase knowledgeBase
@@ -278,7 +278,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     public void listKnowledgeBasesAsync() {
-        // Test listing knowledge agents.
+        // Test listing knowledge knowledgebases.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         KnowledgeBase knowledgeBase
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_AGENT_MODELS, KNOWLEDGE_SOURCE_REFERENCES);

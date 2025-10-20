@@ -12,39 +12,39 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * The ListKnowledgeAgentsResult model.
+ * The ListKnowledgeBasesResult model.
  */
 @Immutable
-public final class ListKnowledgeAgentsResult implements JsonSerializable<ListKnowledgeAgentsResult> {
+public final class ListKnowledgeBasesResult implements JsonSerializable<ListKnowledgeBasesResult> {
     /*
      * The value property.
      */
     @Generated
-    private final List<KnowledgeAgent> knowledgeAgents;
+    private final List<KnowledgeBase> knowledgeBases;
 
     /**
-     * Creates an instance of ListKnowledgeAgentsResult class.
+     * Creates an instance of ListKnowledgeBasesResult class.
      * 
-     * @param knowledgeAgents the knowledgeAgents value to set.
+     * @param knowledgeBases the knowledgeBases value to set.
      */
     @Generated
-    public ListKnowledgeAgentsResult(List<KnowledgeAgent> knowledgeAgents) {
-        this.knowledgeAgents = knowledgeAgents;
+    public ListKnowledgeBasesResult(List<KnowledgeBase> knowledgeBases) {
+        this.knowledgeBases = knowledgeBases;
     }
 
     /**
-     * Get the knowledgeAgents property: The value property.
+     * Get the knowledgeBases property: The value property.
      * 
-     * @return the knowledgeAgents value.
+     * @return the knowledgeBases value.
      */
     @Generated
-    public List<KnowledgeAgent> getKnowledgeAgents() {
-        return this.knowledgeAgents;
+    public List<KnowledgeBase> getKnowledgeBases() {
+        return this.knowledgeBases;
     }
 
     /**
@@ -54,37 +54,37 @@ public final class ListKnowledgeAgentsResult implements JsonSerializable<ListKno
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.knowledgeAgents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.knowledgeBases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ListKnowledgeAgentsResult from the JsonReader.
+     * Reads an instance of ListKnowledgeBasesResult from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ListKnowledgeAgentsResult if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of ListKnowledgeBasesResult if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ListKnowledgeAgentsResult.
+     * @throws IOException If an error occurs while reading the ListKnowledgeBasesResult.
      */
     @Generated
-    public static ListKnowledgeAgentsResult fromJson(JsonReader jsonReader) throws IOException {
+    public static ListKnowledgeBasesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean knowledgeAgentsFound = false;
-            List<KnowledgeAgent> knowledgeAgents = null;
+            boolean knowledgeBasesFound = false;
+            List<KnowledgeBase> knowledgeBases = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    knowledgeAgents = reader.readArray(reader1 -> KnowledgeAgent.fromJson(reader1));
-                    knowledgeAgentsFound = true;
+                    knowledgeBases = reader.readArray(reader1 -> KnowledgeBase.fromJson(reader1));
+                    knowledgeBasesFound = true;
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (knowledgeAgentsFound) {
-                return new ListKnowledgeAgentsResult(knowledgeAgents);
+            if (knowledgeBasesFound) {
+                return new ListKnowledgeBasesResult(knowledgeBases);
             }
             throw new IllegalStateException("Missing required property: value");
         });

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.agents;
+package com.azure.search.documents.knowledgebases;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -13,16 +13,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
-import com.azure.search.documents.agents.implementation.KnowledgeBaseRetrievalClientImpl;
-import com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl;
-import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalRequest;
-import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalClientImpl;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeRetrievalsImpl;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
 import com.azure.search.documents.implementation.util.MappingUtils;
 
 import reactor.core.publisher.Mono;
 
 /**
- * This class provides an asynchronous client for interacting with Azure AI Search Knowledge Agents, enabling retrieval of knowledge and data from various configured backing stores.
+ * This class provides an asynchronous client for interacting with Azure AI Search Knowledge Bases, enabling retrieval of knowledge and data from various configured backing stores.
  *
  * <h2>Overview</h2>
  * <p>
@@ -41,14 +41,14 @@ import reactor.core.publisher.Mono;
  *
  * <h2>Additional Information</h2>
  * <ul>
- *   <li>For more information about Azure AI Search Knowledge Agents, see the Azure documentation.</li>
+ *   <li>For more information about Azure AI Search Knowledge Bases, see the Azure documentation.</li>
  *   <li>For authentication details, see the Azure AI Search security documentation.</li>
  *   <li>For Azure SDK for Java guidelines, see the <a href="https://azure.github.io/azure-sdk/java_introduction.html">Azure SDK for Java Introduction</a>.</li>
  * </ul>
  *
  * @see SearchKnowledgeBaseClientBuilder
  * @see SearchKnowledgeBaseClient
- * @see com.azure.search.documents.agents
+ * @see com.azure.search.documents.knowledgebases
  */
 @ServiceClient(builder = SearchKnowledgeBaseClientBuilder.class, isAsync = true)
 public final class SearchKnowledgeBaseAsyncClient {

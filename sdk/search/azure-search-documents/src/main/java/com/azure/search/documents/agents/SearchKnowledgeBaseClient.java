@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.agents;
+package com.azure.search.documents.knowledgebases;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -10,17 +10,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
-import com.azure.search.documents.agents.implementation.KnowledgeBaseRetrievalClientImpl;
-import com.azure.search.documents.agents.implementation.KnowledgeRetrievalsImpl;
-import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalRequest;
-import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalClientImpl;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeRetrievalsImpl;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
 
 /**
  * This class provides a client that contains the operations for retrieving knowledge from an Azure AI Search agent.
  *
  * <h2>Overview</h2>
  * <p>
- *     The {@code SearchKnowledgeBaseClient} provides a synchronous API for interacting with Azure AI Search knowledge agents. This client enables you to send retrieval requests to a knowledge agent, which can aggregate and return relevant data from various backing stores configured in your Azure AI Search instance.
+ *     The {@code SearchKnowledgeBaseClient} provides a synchronous API for interacting with Azure AI Search knowledge knowledgebases. This client enables you to send retrieval requests to a knowledge agent, which can aggregate and return relevant data from various backing stores configured in your Azure AI Search instance.
  * </p>
  *
  * <p>
@@ -39,7 +39,7 @@ import com.azure.search.documents.agents.models.KnowledgeBaseRetrievalResponse;
  *
  * <h2>Additional Information</h2>
  * <p>
- *     For more information about Azure AI Search knowledge agents, see the Azure documentation. For advanced scenarios, such as customizing the HTTP pipeline or integrating with other Azure SDK components, refer to the Azure SDK for Java design guidelines and the documentation for {@link SearchKnowledgeBaseClientBuilder}.
+ *     For more information about Azure AI Search knowledge knowledgebases, see the Azure documentation. For advanced scenarios, such as customizing the HTTP pipeline or integrating with other Azure SDK components, refer to the Azure SDK for Java design guidelines and the documentation for {@link SearchKnowledgeBaseClientBuilder}.
  * </p>
  *
  * @see SearchKnowledgeBaseClientBuilder

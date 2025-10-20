@@ -62,14 +62,14 @@
 ### Features Added
 
 - Support for `2025-08-01-Preview` service version.
-  - Added support for Knowledge Agent knowledge sources.
-  - Added support for Knowledge Agent answer synthesis.
+  - Added support for Knowledge Base knowledge sources.
+  - Added support for Knowledge Base answer synthesis.
   - Added `VectorFilterMode.STRICT_POST_FILTER`.
 
 ### Breaking Changes
 
 - Dropped support for `2025-05-01-Preview` service version.
-- Knowledge Agent target indexes were removed as `2025-08-01-Preview` replaced that concept with knowledge sources,
+- Knowledge Base target indexes were removed as `2025-08-01-Preview` replaced that concept with knowledge sources,
   a richer concept that allows for knowledge agent to consume information from more than just Search indexes.
 
 ## 11.7.9 (2025-08-21)
@@ -106,7 +106,7 @@
 
 ### Features Added
 
-- Added new `KnowledgeAgent` apis to index clients and introduced new `SearchKnowledgeAgentClient` for managing and querying Knowledge Agents,
+- Added new `KnowledgeBase` apis to index clients and introduced new `SearchKnowledgeBaseClient` for managing and querying Knowledge Bases,
 enabling multi-index grounding for agentic retrieval.
 - Added a method overloads for search client operations to include the `querySourceAuthentication` parameter, allowing users to specify the authentication method for the query source.
 - Added a `resync` method to indexer clients to resync selective options from the data source to be re-ingested by the indexer.
