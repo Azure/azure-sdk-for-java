@@ -181,6 +181,8 @@ public class PartitionProcessorImplTests {
         @SuppressWarnings("unchecked") ChangeFeedObserver<JsonNode> observerMock =
             (ChangeFeedObserver<JsonNode>) Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+
+        // Setup change feed request to throw parsing exception
         Mockito
             .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(),
                 Mockito.any()))
@@ -211,6 +213,7 @@ public class PartitionProcessorImplTests {
         StepVerifier.create(partitionProcessor.run(new CancellationTokenSource().getToken()))
             .verifyComplete();
 
+        // Verify that the PartitionProcessorImpl completed with the expected parsing exception
         RuntimeException runtimeException = partitionProcessor.getResultException();
         assertThat(runtimeException).isNotNull();
         assertThat(runtimeException.getCause()).isInstanceOf(CosmosException.class);

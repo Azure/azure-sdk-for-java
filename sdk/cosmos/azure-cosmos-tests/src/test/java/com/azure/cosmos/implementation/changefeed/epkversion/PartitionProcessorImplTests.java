@@ -197,6 +197,7 @@ public class PartitionProcessorImplTests {
 
         String lastContinuationToken = initialChangeFeedState.toString();
 
+        // Setup change feed request to throw parsing exception
         Mockito
             .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Flux.error(parsingException));
@@ -221,6 +222,7 @@ public class PartitionProcessorImplTests {
             .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
             .verifyComplete();
 
+        // Verify that the PartitionProcessorImpl completed with the expected parsing exception
         RuntimeException runtimeException = partitionProcessor.getResultException();
         assertThat(runtimeException).isNotNull();
         assertThat(runtimeException.getCause()).isInstanceOf(CosmosException.class);
