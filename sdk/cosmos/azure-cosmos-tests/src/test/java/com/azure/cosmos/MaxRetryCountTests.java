@@ -73,7 +73,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private final static Boolean notSpecifiedWhetherIdempotentWriteRetriesAreEnabled = null;
     private final static ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
     private final static Duration defaultNetworkRequestTimeoutDuration = Duration.ofSeconds(5);
-    private final static Duration minNetworkRequestTimeoutDuration = Duration.ofSeconds(1);
+    private final static Duration minNetworkRequestTimeoutDuration = Duration.ofSeconds(6);
     private final static ThrottlingRetryOptions defaultThrottlingRetryOptions = new ThrottlingRetryOptions();
 
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =

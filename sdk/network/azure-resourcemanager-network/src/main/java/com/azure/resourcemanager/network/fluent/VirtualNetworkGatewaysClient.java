@@ -19,6 +19,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestD
 import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
+import com.azure.resourcemanager.network.fluent.models.RadiusAuthServerListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
@@ -1240,6 +1241,63 @@ public interface VirtualNetworkGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     String supportedVpnDevices(String resourceGroupName, String virtualNetworkGatewayName);
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RadiusAuthServerListResultInner> listRadiusSecretsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName);
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RadiusAuthServerListResultInner> listRadiusSecretsWithResponse(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context);
+
+    /**
+     * List all Radius servers with respective radius secrets from virtual network gateway VpnClientConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RadiusAuthServerListResultInner listRadiusSecrets(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from

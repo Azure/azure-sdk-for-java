@@ -289,9 +289,11 @@ public interface Cluster {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The identity of the cluster, if configured..
+             * Specifies the identity property: The identity of the cluster, if configured. Setting this property will
+             * override the existing identity configuration of the cluster..
              * 
-             * @param identity The identity of the cluster, if configured.
+             * @param identity The identity of the cluster, if configured. Setting this property will override the
+             * existing identity configuration of the cluster.
              * @return the next definition stage.
              */
             Update withIdentity(ClusterIdentity identity);

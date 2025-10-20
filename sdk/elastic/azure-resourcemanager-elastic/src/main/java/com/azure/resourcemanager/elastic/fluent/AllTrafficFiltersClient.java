@@ -15,7 +15,8 @@ import com.azure.resourcemanager.elastic.fluent.models.ElasticTrafficFilterRespo
  */
 public interface AllTrafficFiltersClient {
     /**
-     * Get the list of all traffic filters for the account.
+     * List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic
+     * control.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -23,21 +24,22 @@ public interface AllTrafficFiltersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all traffic filters for the account along with {@link Response}.
+     * @return list of elastic traffic filters in the account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ElasticTrafficFilterResponseInner> listWithResponse(String resourceGroupName, String monitorName,
         Context context);
 
     /**
-     * Get the list of all traffic filters for the account.
+     * List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic
+     * control.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all traffic filters for the account.
+     * @return list of elastic traffic filters in the account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ElasticTrafficFilterResponseInner list(String resourceGroupName, String monitorName);

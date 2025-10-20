@@ -1,5 +1,197 @@
 # Release History
 
+## 1.1.0 (2025-10-15)
+
+- Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.MongoClusterRestoreParameters` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ShardingProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterReplicaParameters` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PromoteReplicaRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AdministratorProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ComputeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.HighAvailabilityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BackupProperties` was modified
+
+* `validate()` was removed
+
+#### `models.StorageProperties` was modified
+
+* `validate()` was removed
+
+#### `models.FirewallRuleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `validate()` was removed
+
+#### `models.ReplicationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionString` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.MongoClusterUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.KeyEncryptionKeyIdentity` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.DatabaseRole` was added
+
+* `models.IdentityProvider` was added
+
+* `models.User` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.EntraIdentityProviderProperties` was added
+
+* `models.User$UpdateStages` was added
+
+* `models.StorageType` was added
+
+* `models.UserProperties` was added
+
+* `models.CustomerManagedKeyEncryptionProperties` was added
+
+* `models.EntraPrincipalType` was added
+
+* `models.EntraIdentityProvider` was added
+
+* `models.DataApiMode` was added
+
+* `models.KeyEncryptionKeyIdentityType` was added
+
+* `models.User$DefinitionStages` was added
+
+* `models.UserRole` was added
+
+* `models.User$Definition` was added
+
+* `models.EncryptionProperties` was added
+
+* `models.AuthenticationMode` was added
+
+* `models.Users` was added
+
+* `models.IdentityProviderType` was added
+
+* `models.AuthConfigProperties` was added
+
+* `models.DataApiProperties` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.User$Update` was added
+
+#### `models.MongoCluster$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.MongoClusterProperties` was modified
+
+* `withEncryption(models.EncryptionProperties)` was added
+* `authConfig()` was added
+* `dataApi()` was added
+* `withAuthConfig(models.AuthConfigProperties)` was added
+* `withDataApi(models.DataApiProperties)` was added
+* `encryption()` was added
+
+#### `models.MongoClusterUpdate` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+#### `models.StorageProperties` was modified
+
+* `type()` was added
+* `withType(models.StorageType)` was added
+
+#### `MongoClusterManager` was modified
+
+* `users()` was added
+
+#### `models.MongoCluster` was modified
+
+* `identity()` was added
+
+#### `models.MongoCluster$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.MongoClusterUpdateProperties` was modified
+
+* `withAuthConfig(models.AuthConfigProperties)` was added
+* `dataApi()` was added
+* `authConfig()` was added
+* `encryption()` was added
+* `withDataApi(models.DataApiProperties)` was added
+* `withEncryption(models.EncryptionProperties)` was added
+
 ## 1.1.0-beta.2 (2025-09-29)
 
 - Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

@@ -57,11 +57,11 @@ public interface VolumeQuotaRule {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
+     * Gets the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
      */
-    ProvisioningState provisioningState();
+    NetAppProvisioningState provisioningState();
 
     /**
      * Gets the quotaSizeInKiBs property: Size of quota.

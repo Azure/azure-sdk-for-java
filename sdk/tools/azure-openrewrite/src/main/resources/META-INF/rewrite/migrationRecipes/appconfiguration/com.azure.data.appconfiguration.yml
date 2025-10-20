@@ -1,0 +1,41 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.data.appconfiguration
+displayName: Migrate from azure.data.appconfiguration to next generation stack
+description: This recipe migrates the azure.data.appconfiguration package to the next generation stack.
+recipeList:
+
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationAsyncClient
+  # --------------------------------------------------------------------
+
+
+
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationClient
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.ConfigurationClient
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.ConfigurationClient
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationClientBuilder
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.ConfigurationClientBuilder
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.ConfigurationClientBuilder
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationServiceVersion
+  # --------------------------------------------------------------------
+
+

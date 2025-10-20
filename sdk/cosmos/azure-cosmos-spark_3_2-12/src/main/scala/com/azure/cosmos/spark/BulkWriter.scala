@@ -172,7 +172,7 @@ private class BulkWriter
 
   private val operationContext = initializeOperationContext()
   private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemBulkUpdate =>
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists | ItemWriteStrategy.ItemBulkUpdate =>
         Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
     case _ => None
   }
@@ -757,7 +757,12 @@ private class BulkWriter
             case _ =>  new CosmosBulkItemRequestOptions()
           },
           operationContext)
-      case ItemWriteStrategy.ItemPatch => getPatchItemOperation(operationContext.itemId, partitionKeyValue, partitionKeyDefinition, objectNode, operationContext)
+      case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => getPatchItemOperation(
+        operationContext.itemId,
+        partitionKeyValue,
+        partitionKeyDefinition,
+        objectNode,
+        operationContext)
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
@@ -1272,6 +1277,7 @@ private class BulkWriter
   private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
     val returnValue = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
+      case ItemWriteStrategy.ItemPatchIfExists => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
         Exceptions.isPreconditionFailedException(statusCode)
