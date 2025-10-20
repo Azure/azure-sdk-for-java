@@ -227,7 +227,7 @@ public class PartitionProcessorImplTests {
         assertThat(runtimeException).isNotNull();
         assertThat(runtimeException.getCause()).isInstanceOf(CosmosException.class);
         CosmosException cosmosException = (CosmosException) runtimeException.getCause();
-        assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+        assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
         assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
     }
 

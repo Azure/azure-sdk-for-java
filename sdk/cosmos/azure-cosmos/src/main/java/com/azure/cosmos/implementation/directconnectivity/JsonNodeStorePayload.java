@@ -59,7 +59,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                 IllegalStateException innerException = new IllegalStateException("Unable to parse JSON.", e);
 
                 throw Utils.createCosmosException(
-                    HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                    HttpConstants.StatusCodes.BADREQUEST,
                     HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
                     innerException,
                     responseHeaders);
@@ -90,7 +90,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
                 e);
 
             throw Utils.createCosmosException(
-                HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
                 nestedException,
                 responseHeaders);

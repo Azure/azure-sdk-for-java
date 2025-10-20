@@ -79,7 +79,7 @@ public class MalformedResponseTests extends TestSuiteBase {
             cosmosAsyncContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class).block();
             fail("The read operation should have failed");
         } catch (CosmosException cosmosException) {
-            assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+            assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
             assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
             assertThat(cosmosException.getDiagnostics()).isNotNull();
             assertThat(cosmosException.getResponseHeaders()).isNotNull();
