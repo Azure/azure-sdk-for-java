@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.GetInboundRoutesParameters;
 public final class VirtualHubsGetInboundRoutesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/GetInboundRoutes.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/GetInboundRoutes.json
      */
     /**
      * Sample code: Inbound Routes for the Virtual Hub on a Particular Connection.

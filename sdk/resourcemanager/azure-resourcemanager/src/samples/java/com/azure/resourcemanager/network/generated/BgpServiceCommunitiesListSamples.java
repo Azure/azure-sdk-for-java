@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class BgpServiceCommunitiesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ServiceCommunityList.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/ServiceCommunityList.json
      */
     /**
      * Sample code: ServiceCommunityList.

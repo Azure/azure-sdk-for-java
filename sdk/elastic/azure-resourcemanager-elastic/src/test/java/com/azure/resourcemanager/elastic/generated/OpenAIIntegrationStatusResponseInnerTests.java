@@ -13,16 +13,16 @@ public final class OpenAIIntegrationStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OpenAIIntegrationStatusResponseInner model
-            = BinaryData.fromString("{\"properties\":{\"status\":\"vsovmyokac\"}}")
+            = BinaryData.fromString("{\"properties\":{\"status\":\"nabckhsmtx\"}}")
                 .toObject(OpenAIIntegrationStatusResponseInner.class);
-        Assertions.assertEquals("vsovmyokac", model.properties().status());
+        Assertions.assertEquals("nabckhsmtx", model.properties().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OpenAIIntegrationStatusResponseInner model = new OpenAIIntegrationStatusResponseInner()
-            .withProperties(new OpenAIIntegrationStatusResponseProperties().withStatus("vsovmyokac"));
+            .withProperties(new OpenAIIntegrationStatusResponseProperties().withStatus("nabckhsmtx"));
         model = BinaryData.fromObject(model).toObject(OpenAIIntegrationStatusResponseInner.class);
-        Assertions.assertEquals("vsovmyokac", model.properties().status());
+        Assertions.assertEquals("nabckhsmtx", model.properties().status());
     }
 }

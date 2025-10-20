@@ -22,7 +22,7 @@ public final class AccessPolicyAssignmentsCreateUpdateMockTests {
     @Test
     public void testCreateUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"vzunluthnnprnxi\",\"user\":{\"objectId\":\"ilpjzuaejxdult\"}},\"id\":\"kzbbtd\",\"name\":\"umveekgpwozuhkf\",\"type\":\"bsjyofdx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"mvb\",\"user\":{\"objectId\":\"yjsflhhcaalnji\"}},\"id\":\"isxyawjoyaqcslyj\",\"name\":\"kiidzyex\",\"type\":\"nelixhnrztfo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class AccessPolicyAssignmentsCreateUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessPolicyAssignment response = manager.accessPolicyAssignments()
-            .define("bexrmcq")
-            .withExistingDatabase("mtsavjcbpwxqp", "rknftguvriuhprwm", "yvxqtayriwwroy")
-            .withAccessPolicyName("nojvknmefqsg")
-            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ah"))
+            .define("ultskzbbtdz")
+            .withExistingDatabase("vawjvzunlu", "hnnpr", "xipeilpjzuaejx")
+            .withAccessPolicyName("ekg")
+            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ozuhkfp"))
             .create();
 
-        Assertions.assertEquals("vzunluthnnprnxi", response.accessPolicyName());
-        Assertions.assertEquals("ilpjzuaejxdult", response.user().objectId());
+        Assertions.assertEquals("mvb", response.accessPolicyName());
+        Assertions.assertEquals("yjsflhhcaalnji", response.user().objectId());
     }
 }

@@ -1,4 +1,6 @@
 parameters:
+  - name: CosmosEndpointMsi
+    type: string
   - name: CosmosEndpoint
     type: string
   - name: CosmosKey
@@ -25,10 +27,16 @@ parameters:
     type: string
   - name: CosmosDatabaseName
     type: string
-
+  - name: AvoidDBFS
+    type: boolean
+    default: false
+  - name: JarStorageAccountKey
+    type: string
+  - name: JarReadOnlySasUri
+    type: string
 stages:
   - stage:
-    displayName: 'Spark Databricks integration ${{ parameters.SparkVersion }}'
+    displayName: 'Spark Databricks integration ${{ parameters.ClusterName }} - ${{ parameters.SparkVersion }}'
     dependsOn: []
     jobs:
     - job:
@@ -55,19 +63,24 @@ stages:
         inputs:
           versionSpec: $(PythonVersion)
       - task: Bash@3
+        displayName: Install setuptools and wheel
+        inputs:
+          targetType: inline
+          script: python -m pip install --upgrade pip setuptools wheel
+      - task: Bash@3
         displayName: Install Databricks CLI
         inputs:
           targetType: inline
-          script: python -m pip install --upgrade pip setuptools wheel databricks-cli
+          script: |
+            curl -fsSL curl https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+            databricks -v
       - task: Bash@3
         displayName: 'Connect to Databricks workspace $(DatabricksEndpoint)'
         inputs:
           targetType: inline
           script: >-
-            databricks configure --token <<EOF
-
-            $DATABRICKSENDPOINT
-
+            databricks configure --token --profile DEFAULT --host $DATABRICKSENDPOINT <<EOF
+          
             $DATABRICKSTOKEN
 
             EOF
@@ -78,9 +91,50 @@ stages:
         displayName: Importing Jars
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-jar-install.sh
-          arguments: '${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target'
+          arguments: '${{ parameters.ClusterName }} ${{ parameters.AvoidDBFS }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target ${{ parameters.JarStorageAccountKey }}'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-notebooks-install.sh
-          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}
+          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpointMsi }} ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}
+      - task: Bash@3
+        displayName: 'Validating Checksum'
+        inputs:
+          targetType: inline
+          script: >-
+            if [[ "${AVOID_DBFS,,}" == "true" ]]; then
+              TMP_FILE="/tmp/${JAR_NAME}.$$"
+              echo "[init] Downloading $JAR_NAME to validate checksum..."
+              # Download with retries; fail non-zero on HTTP errors
+              if command -v curl >/dev/null 2>&1; then
+                curl -fL --retry 8 --retry-connrefused --retry-delay 2 --max-time 600 \
+                  "$JAR_URL" -o "$TMP_FILE"
+              elif command -v wget >/dev/null 2>&1; then
+                wget --tries=10 --timeout=60 -O "$TMP_FILE" "$JAR_URL"
+              else
+                echo "[init][error] Neither curl nor wget is available." >&2
+                exit 1
+              fi
+
+              chmod 0644 "$TMP_FILE"
+
+              CHECKSUM_AFTER_EXECUTION="$(sha256sum -- "$TMP_FILE")" || {
+                echo "ERROR: checksum failed for $TMP_FILE" >&2
+                exit 1
+              }
+              CHECKSUM_AFTER_EXECUTION="${CHECKSUM_AFTER_EXECUTION%% *}"
+              echo "CheckSum of JAR build on this agent: $JAR_CHECK_SUM"
+              echo "CheckSum of jar after notebook execution: $CHECKSUM_AFTER_EXECUTION"
+            
+              if [[ "$CHECKSUM_AFTER_EXECUTION" != "$(JarCheckSum)" ]]; then
+                echo "Checksum mismatch — failing." >&2
+                exit 1
+              fi
+            else
+              echo "Skipping checksum validation for runtimes still installing jars from DBFS"
+            fi
+        env:
+          JAR_URL: '${{ parameters.JarReadOnlySasUri }}'
+          JAR_NAME: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
+          JAR_CHECK_SUM: $(JarCheckSum)
+          AVOID_DBFS:  ${{ parameters.AvoidDBFS }}

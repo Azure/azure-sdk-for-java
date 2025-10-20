@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyAssignmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyAssignmentProperties model = BinaryData
-            .fromString(
-                "{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"aierhhb\",\"user\":{\"objectId\":\"glu\"}}")
+        AccessPolicyAssignmentProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"njampm\",\"user\":{\"objectId\":\"nzscxa\"}}")
             .toObject(AccessPolicyAssignmentProperties.class);
-        Assertions.assertEquals("aierhhb", model.accessPolicyName());
-        Assertions.assertEquals("glu", model.user().objectId());
+        Assertions.assertEquals("njampm", model.accessPolicyName());
+        Assertions.assertEquals("nzscxa", model.user().objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyAssignmentProperties model = new AccessPolicyAssignmentProperties().withAccessPolicyName("aierhhb")
-            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("glu"));
+        AccessPolicyAssignmentProperties model = new AccessPolicyAssignmentProperties().withAccessPolicyName("njampm")
+            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("nzscxa"));
         model = BinaryData.fromObject(model).toObject(AccessPolicyAssignmentProperties.class);
-        Assertions.assertEquals("aierhhb", model.accessPolicyName());
-        Assertions.assertEquals("glu", model.user().objectId());
+        Assertions.assertEquals("njampm", model.accessPolicyName());
+        Assertions.assertEquals("nzscxa", model.user().objectId());
     }
 }
