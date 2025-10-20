@@ -2472,7 +2472,7 @@ private object CosmosThroughputControlConfig {
         }
     }
 
-  private def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+  private[spark] def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
     val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
     assert(
