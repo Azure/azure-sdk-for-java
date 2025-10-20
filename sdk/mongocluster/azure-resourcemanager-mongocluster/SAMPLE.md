@@ -55,7 +55,7 @@ import com.azure.resourcemanager.mongocluster.models.FirewallRuleProperties;
  */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_FirewallRuleCreate.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_FirewallRuleCreate.json
      */
     /**
      * Sample code: Creates a firewall rule on a Mongo Cluster resource.
@@ -82,7 +82,7 @@ public final class FirewallRulesCreateOrUpdateSamples {
  */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_FirewallRuleDelete.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_FirewallRuleDelete.json
      */
     /**
      * Sample code: Deletes a firewall rule on a Mongo Cluster resource.
@@ -104,7 +104,7 @@ public final class FirewallRulesDeleteSamples {
  */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_FirewallRuleGet.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_FirewallRuleGet.json
      */
     /**
      * Sample code: Gets a firewall rule on a Mongo Cluster resource.
@@ -127,7 +127,7 @@ public final class FirewallRulesGetSamples {
  */
 public final class FirewallRulesListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_FirewallRuleList.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_FirewallRuleList.json
      */
     /**
      * Sample code: List the firewall rules on a Mongo Cluster resource.
@@ -151,7 +151,7 @@ import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityReques
  */
 public final class MongoClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_NameAvailability.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_NameAvailability.json
      */
     /**
      * Sample code: Checks and confirms the Mongo Cluster name is availability for use.
@@ -166,7 +166,7 @@ public final class MongoClustersCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_NameAvailability_AlreadyExists.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_NameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: Checks and returns that the Mongo Cluster name is already in-use.
@@ -217,7 +217,7 @@ import java.util.Map;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Create_SSDv2.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Create_SSDv2.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource with Premium SSDv2 storage.
@@ -245,7 +245,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_CreateGeoReplica_CMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreateGeoReplica_CMK.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource with Customer Managed Key encryption from a source
@@ -278,7 +278,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Create_CMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Create_CMK.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource with Customer Managed Key encryption.
@@ -313,7 +313,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_CreateGeoReplica.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreateGeoReplica.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource from a source resource.
@@ -334,7 +334,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_CreatePITR.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore.
@@ -358,7 +358,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_CreatePITR_EntraAuth.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR_EntraAuth.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore with Microsoft Entra ID authentication
@@ -383,7 +383,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Create.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Create.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource.
@@ -411,7 +411,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_CreatePITR_CMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR_CMK.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource with Customer Managed Key encryption from a point in time restore.
@@ -465,7 +465,7 @@ public final class MongoClustersCreateOrUpdateSamples {
  */
 public final class MongoClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Delete.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Delete.json
      */
     /**
      * Sample code: Deletes a Mongo Cluster resource.
@@ -487,7 +487,7 @@ public final class MongoClustersDeleteSamples {
  */
 public final class MongoClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Get.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Get.json
      */
     /**
      * Sample code: Gets a Mongo Cluster resource.
@@ -509,7 +509,7 @@ public final class MongoClustersGetByResourceGroupSamples {
  */
 public final class MongoClustersListSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_List.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_List.json
      */
     /**
      * Sample code: Lists the Mongo Cluster resources in a subscription.
@@ -531,7 +531,7 @@ public final class MongoClustersListSamples {
  */
 public final class MongoClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ListByResourceGroup.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists the Mongo Cluster resources in a resource group.
@@ -553,7 +553,7 @@ public final class MongoClustersListByResourceGroupSamples {
  */
 public final class MongoClustersListConnectionStringsSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ListConnectionStrings.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_ListConnectionStrings.json
      */
     /**
      * Sample code: List the available connection strings for the Mongo Cluster resource.
@@ -580,7 +580,7 @@ import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
  */
 public final class MongoClustersPromoteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ForcePromoteReplica.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_ForcePromoteReplica.json
      */
     /**
      * Sample code: Promotes a replica Mongo Cluster resource to a primary role.
@@ -630,7 +630,7 @@ import java.util.Map;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchEnableEntraIDAuth.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchEnableEntraIDAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
@@ -650,7 +650,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -669,7 +669,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchCMK.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchCMK.json
      */
     /**
      * Sample code: Updates the customer managed encryption key on a mongo cluster resource.
@@ -697,7 +697,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDisableNativeAuth.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDisableNativeAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to remove Native authentication.
@@ -716,7 +716,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -734,7 +734,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
      * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
@@ -752,7 +752,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchSSDv2.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchSSDv2.json
      */
     /**
      * Sample code: Updates the Premium SSDv2 size on a Mongo Cluster resource.
@@ -771,7 +771,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PatchDataApi.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDataApi.json
      */
     /**
      * Sample code: Enables data API on a mongo cluster resource.
@@ -790,7 +790,7 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_Update.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_Update.json
      */
     /**
      * Sample code: Updates a Mongo Cluster resource.
@@ -840,7 +840,7 @@ public final class MongoClustersUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-09-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -865,7 +865,7 @@ import com.azure.resourcemanager.mongocluster.models.PrivateLinkServiceConnectio
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionPut.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateEndpointConnectionPut.json
      */
     /**
      * Sample code: Approves a private endpoint connection on a Mongo Cluster resource.
@@ -893,7 +893,7 @@ public final class PrivateEndpointConnectionsCreateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Delete a private endpoint connection on a Mongo Cluster resource.
@@ -917,7 +917,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionGet.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Get a private endpoint connection on a Mongo Cluster resource.
@@ -941,7 +941,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PrivateEndpointConnectionList.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Lists the private endpoint connection resources on a Mongo Cluster resource.
@@ -964,7 +964,7 @@ public final class PrivateEndpointConnectionsListByMongoClusterSamples {
  */
 public final class PrivateLinksListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_PrivateLinkResourceList.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateLinkResourceList.json
      */
     /**
      * Sample code: Lists the private link resources available on a Mongo Cluster resource.
@@ -986,7 +986,7 @@ public final class PrivateLinksListByMongoClusterSamples {
  */
 public final class ReplicasListByParentSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_ReplicaList.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_ReplicaList.json
      */
     /**
      * Sample code: List the replicas linked to a Mongo Cluster resource.
@@ -1016,7 +1016,7 @@ import java.util.Arrays;
  */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserCreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_UserCreateOrUpdate.json
      */
     /**
      * Sample code: Creates a user on a Mongo Cluster resource.
@@ -1045,7 +1045,7 @@ public final class UsersCreateOrUpdateSamples {
  */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserDelete.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_UserDelete.json
      */
     /**
      * Sample code: Deletes a user on a Mongo Cluster resource.
@@ -1069,7 +1069,7 @@ public final class UsersDeleteSamples {
  */
 public final class UsersGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserGet.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_UserGet.json
      */
     /**
      * Sample code: Gets a user on a Mongo Cluster resource.
@@ -1093,7 +1093,7 @@ public final class UsersGetSamples {
  */
 public final class UsersListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/MongoClusters_UserList.json
+     * x-ms-original-file: 2025-09-01/MongoClusters_UserList.json
      */
     /**
      * Sample code: List the users on a Mongo Cluster resource.
