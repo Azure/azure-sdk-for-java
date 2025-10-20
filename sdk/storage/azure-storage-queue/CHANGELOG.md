@@ -1,6 +1,6 @@
 # Release History
 
-## 12.27.0 (2025-10-20)
+## 12.27.0 (2025-10-21)
 
 ### Features Added
 - Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
