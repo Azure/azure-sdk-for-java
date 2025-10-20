@@ -396,7 +396,8 @@ public class RxDocumentClientImplTest {
             @Override
             public CollectionRoutingMap tryCombine(
                 List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
-                String changeFeedIfNoneMatch) {
+                String changeFeedIfNoneMatch,
+                String collectionRid) {
                 return null;
             }
 

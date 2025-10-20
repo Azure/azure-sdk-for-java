@@ -7,8 +7,10 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InCompleteRoutingMapException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -64,8 +66,13 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
         return routingMapCache.getAsync(
                 collectionRid,
-                routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue,
-                    properties), currentValue -> shouldForceRefresh(previousValue, currentValue))
+                routingMap ->
+                    getRoutingMapForCollectionWithRetry(
+                        metaDataDiagnosticsContext,
+                        collectionRid,
+                        previousValue,
+                        properties),
+                currentValue -> shouldForceRefresh(previousValue, currentValue))
             .map(Utils.ValueHolder::new)
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
@@ -171,7 +178,13 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties) {
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
             collectionRid,
-            routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties), forceRefresh -> false).map(Utils.ValueHolder::new);
+            routingMap ->
+                getRoutingMapForCollectionWithRetry(
+                    metaDataDiagnosticsContext,
+                    collectionRid,
+                    null,
+                    properties),
+            forceRefresh -> false).map(Utils.ValueHolder::new);
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
@@ -200,6 +213,30 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             null
         ).flatMap(collectionRoutingMapValueHolder -> tryLookupAsync(metaDataDiagnosticsContext, collectionRid,
             collectionRoutingMapValueHolder.v, null));
+    }
+
+    private Mono<CollectionRoutingMap> getRoutingMapForCollectionWithRetry(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String collectionRid,
+        CollectionRoutingMap previousRoutingMap,
+        Map<String, Object> properties) {
+
+        return ObservableHelper.inlineIfPossible(
+                () -> getRoutingMapForCollectionAsync(
+                    metaDataDiagnosticsContext,
+                    collectionRid,
+                    previousRoutingMap,
+                    properties),
+                new InCompleteRoutingMapRetryPolicy())
+            .onErrorResume(throwable -> {
+                if (throwable instanceof InCompleteRoutingMapException) {
+                    return Mono.error(
+                        new NotFoundException(
+                            String.format("GetRoutingMapForCollectionAsync(collectionRid: {%s}), RANGE information either doesn't exist or is not complete.", collectionRid)));
+                }
+
+                return Mono.error(throwable);
+            });
     }
 
     private Mono<CollectionRoutingMap> getRoutingMapForCollectionAsync(
@@ -236,10 +273,6 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             .flatMap(allResults -> {
                 CollectionRoutingMap updatedMap =
                     updateRoutingMap(collectionRid, previousRoutingMap, ranges, continuationToken.get());
-
-                if (updatedMap == null) {
-                    return Mono.error(new NotFoundException(String.format("GetRoutingMapForCollectionAsync(collectionRid: {%s}), RANGE information either doesn't exist or is not complete.", collectionRid)));
-                }
 
                 return Mono.just(updatedMap);
             })
@@ -284,7 +317,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         }
         else
         {
-            routingMap = previousRoutingMap.tryCombine(rangesTuples, changeFeedNextIfNoneMatch);
+            routingMap = previousRoutingMap.tryCombine(rangesTuples, changeFeedNextIfNoneMatch, collectionRid);
         }
 
         return routingMap;

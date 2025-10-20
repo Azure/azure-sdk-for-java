@@ -201,7 +201,7 @@ public class InMemoryCollectionRoutingMapTest {
                         ImmutableList.of("0")
                     ),
                     null)
-            ), null);
+            ), null, "test");
 
         assertThat(newRoutingMap).isNotNull();
 
@@ -242,7 +242,7 @@ public class InMemoryCollectionRoutingMapTest {
                         ImmutableList.of("0", "5")
                     ),
                     null)
-            ), null);
+            ), null, "test");
 
         assertThat(newRoutingMap).isNotNull();
 
@@ -256,7 +256,7 @@ public class InMemoryCollectionRoutingMapTest {
                         ImmutableList.of("0", "4", "6")
                     ),
                     null)
-            ), "2");
+            ), "2", "test");
 
         assertThat(newRoutingMap).isNull();
     }
