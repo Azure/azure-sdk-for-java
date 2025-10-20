@@ -15,29 +15,32 @@ public final class LogRulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogRules model = BinaryData.fromString(
-            "{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"ttmrywnuzoqf\",\"value\":\"yqzrnkcqvyxlw\",\"action\":\"Exclude\"}]}")
+            "{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[{\"name\":\"puozmyzydag\",\"value\":\"axbezyiuo\",\"action\":\"Exclude\"},{\"name\":\"hrdxwzywqsmbs\",\"value\":\"exim\",\"action\":\"Include\"},{\"name\":\"cfsf\",\"value\":\"ymddys\",\"action\":\"Include\"},{\"name\":\"uxh\",\"value\":\"udxorrqn\",\"action\":\"Include\"}]}")
             .toObject(LogRules.class);
-        Assertions.assertEquals(true, model.sendAadLogs());
-        Assertions.assertEquals(false, model.sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.sendActivityLogs());
-        Assertions.assertEquals("ttmrywnuzoqf", model.filteringTags().get(0).name());
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.filteringTags().get(0).value());
+        Assertions.assertFalse(model.sendAadLogs());
+        Assertions.assertFalse(model.sendSubscriptionLogs());
+        Assertions.assertFalse(model.sendActivityLogs());
+        Assertions.assertEquals("puozmyzydag", model.filteringTags().get(0).name());
+        Assertions.assertEquals("axbezyiuo", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogRules model = new LogRules().withSendAadLogs(true)
+        LogRules model = new LogRules().withSendAadLogs(false)
             .withSendSubscriptionLogs(false)
-            .withSendActivityLogs(true)
+            .withSendActivityLogs(false)
             .withFilteringTags(Arrays.asList(
-                new FilteringTag().withName("ttmrywnuzoqf").withValue("yqzrnkcqvyxlw").withAction(TagAction.EXCLUDE)));
+                new FilteringTag().withName("puozmyzydag").withValue("axbezyiuo").withAction(TagAction.EXCLUDE),
+                new FilteringTag().withName("hrdxwzywqsmbs").withValue("exim").withAction(TagAction.INCLUDE),
+                new FilteringTag().withName("cfsf").withValue("ymddys").withAction(TagAction.INCLUDE),
+                new FilteringTag().withName("uxh").withValue("udxorrqn").withAction(TagAction.INCLUDE)));
         model = BinaryData.fromObject(model).toObject(LogRules.class);
-        Assertions.assertEquals(true, model.sendAadLogs());
-        Assertions.assertEquals(false, model.sendSubscriptionLogs());
-        Assertions.assertEquals(true, model.sendActivityLogs());
-        Assertions.assertEquals("ttmrywnuzoqf", model.filteringTags().get(0).name());
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.filteringTags().get(0).value());
+        Assertions.assertFalse(model.sendAadLogs());
+        Assertions.assertFalse(model.sendSubscriptionLogs());
+        Assertions.assertFalse(model.sendActivityLogs());
+        Assertions.assertEquals("puozmyzydag", model.filteringTags().get(0).name());
+        Assertions.assertEquals("axbezyiuo", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
     }
 }

@@ -1,14 +1,98 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2025-10-20)
 
-### Features Added
+- Azure Resource Manager Elastic client library for Java. This package contains Microsoft Azure SDK for Elastic Management SDK.  Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.MonitorProperties` was modified
 
-### Other Changes
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.MonitoringTagRulesProperties` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+### Features Added
+
+* `models.MonitoredSubscriptionProperties$Definition` was added
+
+* `models.ConfigurationType` was added
+
+* `models.MonitoredSubscription` was added
+
+* `models.ResubscribeProperties` was added
+
+* `models.ProjectType` was added
+
+* `models.MonitoredSubscriptionProperties` was added
+
+* `models.MonitoredSubscriptionPropertiesList` was added
+
+* `models.MonitoredSubscriptionProperties$Update` was added
+
+* `models.MonitoredSubscriptionProperties$DefinitionStages` was added
+
+* `models.HostingType` was added
+
+* `models.MonitoredSubscriptionProperties$UpdateStages` was added
+
+* `models.ProjectDetails` was added
+
+* `models.MonitoredSubscriptions` was added
+
+* `models.Status` was added
+
+* `models.SubscriptionList` was added
+
+* `models.Operation` was added
+
+#### `models.ConnectedPartnerResourceProperties` was modified
+
+* `withType(java.lang.String)` was added
+* `type()` was added
+
+#### `models.MarketplaceSaaSInfoMarketplaceSubscription` was modified
+
+* `withOfferId(java.lang.String)` was added
+* `offerId()` was added
+* `publisherId()` was added
+* `withPublisherId(java.lang.String)` was added
+
+#### `models.DeploymentInfoResponse` was modified
+
+* `projectType()` was added
+* `configurationType()` was added
+
+#### `models.ElasticMonitorResource` was modified
+
+* `kind()` was added
+
+#### `models.MonitorProperties` was modified
+
+* `hostingType()` was added
+* `withProjectDetails(models.ProjectDetails)` was added
+* `withHostingType(models.HostingType)` was added
+* `projectDetails()` was added
+
+#### `ElasticManager` was modified
+
+* `monitoredSubscriptions()` was added
+
+#### `models.OpenAIIntegrationProperties` was modified
+
+* `withOpenAIConnectorId(java.lang.String)` was added
+* `openAIConnectorId()` was added
+
+#### `models.Organizations` was modified
+
+* `resubscribe(java.lang.String,java.lang.String)` was added
+* `resubscribe(java.lang.String,java.lang.String,models.ResubscribeProperties,com.azure.core.util.Context)` was added
+
+#### `models.ElasticMonitorResource$Definition` was modified
+
+* `withKind(java.lang.String)` was added
 
 ## 1.0.0 (2024-10-21)
 
