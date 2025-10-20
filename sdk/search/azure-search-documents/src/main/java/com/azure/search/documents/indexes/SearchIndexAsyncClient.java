@@ -27,7 +27,7 @@ import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -1549,8 +1549,8 @@ public final class SearchIndexAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
-        return createKnowledgeAgentWithResponse(knowledgeAgent).map(Response::getValue);
+    public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeAgent) {
+        return createKnowledgeBaseWithResponse(knowledgeAgent).map(Response::getValue);
     }
 
     /**
@@ -1563,13 +1563,13 @@ public final class SearchIndexAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent) {
-        return withContext(context -> createKnowledgeAgentWithResponse(knowledgeAgent, context));
+    public Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent) {
+        return withContext(context -> createKnowledgeBaseWithResponse(knowledgeAgent, context));
     }
 
-    Mono<Response<KnowledgeAgent>> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent, Context context) {
+    Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent, Context context) {
         try {
-            return restClient.getKnowledgeAgents()
+            return restClient.getKnowledgeBases()
                 .createWithResponseAsync(knowledgeAgent, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
@@ -1587,8 +1587,8 @@ public final class SearchIndexAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
-        return createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, null).map(Response::getValue);
+    public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeAgent) {
+        return createOrUpdateKnowledgeBaseWithResponse(knowledgeAgent, null).map(Response::getValue);
     }
 
     /**
@@ -1603,18 +1603,18 @@ public final class SearchIndexAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+    public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent,
         MatchConditions matchConditions) {
         return withContext(
-            context -> createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, matchConditions, context));
+            context -> createOrUpdateKnowledgeBaseWithResponse(knowledgeAgent, matchConditions, context));
     }
 
-    Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+    Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeAgent,
         MatchConditions matchConditions, Context context) {
         try {
             String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
             String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
-            return restClient.getKnowledgeAgents()
+            return restClient.getKnowledgeBases()
                 .createOrUpdateWithResponseAsync(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null,
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper);
@@ -1633,8 +1633,8 @@ public final class SearchIndexAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> getKnowledgeAgent(String agentName) {
-        return getKnowledgeAgentWithResponse(agentName).map(Response::getValue);
+    public Mono<KnowledgeBase> getKnowledgeBase(String agentName) {
+        return getKnowledgeBaseWithResponse(agentName).map(Response::getValue);
     }
 
     /**
@@ -1647,13 +1647,13 @@ public final class SearchIndexAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> getKnowledgeAgentWithResponse(String agentName) {
-        return withContext(context -> getKnowledgeAgentWithResponse(agentName, context));
+    public Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String agentName) {
+        return withContext(context -> getKnowledgeBaseWithResponse(agentName, context));
     }
 
-    Mono<Response<KnowledgeAgent>> getKnowledgeAgentWithResponse(String agentName, Context context) {
+    Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String agentName, Context context) {
         try {
-            return restClient.getKnowledgeAgents()
+            return restClient.getKnowledgeBases()
                 .getWithResponseAsync(agentName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
@@ -1670,9 +1670,9 @@ public final class SearchIndexAsyncClient {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KnowledgeAgent> listKnowledgeAgents() {
+    public PagedFlux<KnowledgeBase> listKnowledgeBases() {
         try {
-            return restClient.getKnowledgeAgents().listAsync(null, Context.NONE);
+            return restClient.getKnowledgeBases().listAsync(null, Context.NONE);
         } catch (RuntimeException ex) {
             RuntimeException mappedException = (RuntimeException) MappingUtils.exceptionMapper(ex);
             return pagedFluxError(LOGGER, mappedException);
@@ -1689,8 +1689,8 @@ public final class SearchIndexAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeAgent(String agentName) {
-        return deleteKnowledgeAgentWithResponse(agentName, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteKnowledgeBase(String agentName) {
+        return deleteKnowledgeBaseWithResponse(agentName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1705,16 +1705,16 @@ public final class SearchIndexAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, MatchConditions matchConditions) {
-        return withContext(context -> deleteKnowledgeAgentWithResponse(agentName, matchConditions, context));
+    public Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String agentName, MatchConditions matchConditions) {
+        return withContext(context -> deleteKnowledgeBaseWithResponse(agentName, matchConditions, context));
     }
 
-    Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, MatchConditions matchConditions,
+    Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String agentName, MatchConditions matchConditions,
         Context context) {
         try {
             String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
             String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
-            return restClient.getKnowledgeAgents()
+            return restClient.getKnowledgeBases()
                 .deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
