@@ -3,7 +3,10 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -22,6 +25,8 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.FeedResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -29,7 +34,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -54,7 +61,7 @@ public class PartitionProcessorImplTests {
         boolean shouldDoCheckpoint) {
         ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
-        
+
         // Setup initial state with continuation token
         ChangeFeedStateV1 initialChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
 
@@ -117,7 +124,6 @@ public class PartitionProcessorImplTests {
         }
     }
 
-
     @Test(groups = "unit")
     public void partitionSplitHappenOnFirstRequest() {
         @SuppressWarnings("unchecked")  ChangeFeedObserver<ChangeFeedProcessorItem> observerMock =
@@ -161,6 +167,68 @@ public class PartitionProcessorImplTests {
         assertThat(feedRangeGoneException.getLastContinuation()).isEqualTo(leaseMock.getContinuationToken());
     }
 
+    @Test(groups = "unit")
+    public void partitionProcessingErrorWhenInternalServerErrorIsHit() {
+
+        CosmosException parsingException = BridgeInternal.createCosmosException(
+            "A parsing error occurred.",
+            new IOException("An error occurred."),
+            new HashMap<>(),
+            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+            null);
+
+        BridgeInternal.setSubStatusCode(parsingException, HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
+
+        ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+
+        // Setup initial state with continuation token
+        ChangeFeedStateV1 initialChangeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+
+        CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+        ProcessorSettings processorSettings = new ProcessorSettings(initialChangeFeedState, containerMock);
+        processorSettings.withMaxItemCount(10);
+
+        // Setup lease and checkpointer mocks
+        Lease leaseMock = Mockito.mock(ServiceItemLeaseV1.class);
+        Mockito.when(leaseMock.getContinuationToken()).thenReturn(initialChangeFeedState.toString());
+
+        PartitionCheckpointer partitionCheckpointer = Mockito.mock(PartitionCheckpointerImpl.class);
+
+        String lastContinuationToken = initialChangeFeedState.toString();
+
+        Mockito
+            .when(changeFeedContextClientMock.createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(Flux.error(parsingException));
+
+        // Checkpointing mock setup
+        final ChangeFeedState continuationState = ChangeFeedState.fromString(lastContinuationToken);
+        Mockito.when(partitionCheckpointer.checkpointPartition(continuationState))
+            .thenReturn(Mono.empty());
+
+        // Create processor
+        PartitionProcessorImpl<ChangeFeedProcessorItem> partitionProcessor = new PartitionProcessorImpl<>(
+            observerMock,
+            changeFeedContextClientMock,
+            processorSettings,
+            partitionCheckpointer,
+            leaseMock,
+            ChangeFeedProcessorItem.class,
+            ChangeFeedMode.INCREMENTAL,
+            null);
+
+        StepVerifier
+            .create(partitionProcessor.run(new CancellationTokenSource().getToken()))
+            .verifyComplete();
+
+        RuntimeException runtimeException = partitionProcessor.getResultException();
+        assertThat(runtimeException).isNotNull();
+        assertThat(runtimeException.getCause()).isInstanceOf(CosmosException.class);
+        CosmosException cosmosException = (CosmosException) runtimeException.getCause();
+        assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+        assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
+    }
+
     private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {
         String containerRid = "/cols/" + UUID.randomUUID();
         String pkRangeId = UUID.randomUUID().toString();
@@ -184,7 +252,7 @@ public class PartitionProcessorImplTests {
 
         continuationBuilder.append("],")
             .append("\"PKRangeId\":\"").append(pkRangeId).append("\"}");
-        
+
         String continuationJson = continuationBuilder.toString();
 
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
