@@ -498,6 +498,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
+                logger.error("Non-network failure", exception);
                 dce = (CosmosException) exception;
             }
 
