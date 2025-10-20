@@ -59,7 +59,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     private volatile boolean hasMoreResults;
     private volatile boolean hasServerContinuationTokenChange;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
-    private Instant lastProcessedTime;
+    private volatile Instant lastProcessedTime;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
