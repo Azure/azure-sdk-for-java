@@ -126,7 +126,7 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setContainerName(String containerName) {
-        this.containerName = Utility.urlEncode(Utility.urlDecode(containerName));
+        this.containerName = containerName;
         return this;
     }
 

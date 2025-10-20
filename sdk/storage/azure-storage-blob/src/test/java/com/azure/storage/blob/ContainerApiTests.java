@@ -1711,16 +1711,18 @@ public class ContainerApiTests extends BlobTestBase {
         BlobContainerClient client = primaryBlobServiceClient.getBlobContainerClient(originalContainerName);
         assertEquals(originalContainerName, client.getBlobContainerName());
 
-
         // see if the container name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalContainerName);
-        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName).getBlobContainerUrl().contains(encodedName));
+        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName)
+            .getBlobContainerUrl()
+            .contains(encodedName));
     }
 
     @Test
     public void getNonEncodedContainerClient() {
         String originalContainerName = "test%test";
-        BlobContainerClientBuilder blobContainerClientBuilder = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl());
+        BlobContainerClientBuilder blobContainerClientBuilder
+            = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl());
         blobContainerClientBuilder.containerName(originalContainerName);
 
         BlobContainerClient blobContainerClient = blobContainerClientBuilder.buildClient();
@@ -1728,7 +1730,9 @@ public class ContainerApiTests extends BlobTestBase {
 
         // see if the container name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalContainerName);
-        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName).getBlobContainerUrl().contains(encodedName));
+        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName)
+            .getBlobContainerUrl()
+            .contains(encodedName));
     }
 
     @Test
