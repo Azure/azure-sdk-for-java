@@ -593,6 +593,93 @@ class SparkE2EWriteITest
       quark.get("id").asText() shouldEqual "Quark"
       quark.get("car").get("carType").asText() shouldEqual "X5"
     }
+
+    it should s"support patch and skip non-existing records with bulkEnabled = $bulkEnabled defaultOperationType = $patchDefaultOperationType columnConfigString = $patchColumnConfigString patchConditionFilter = $patchConditionFilter " in {
+      val cosmosEndpoint = TestConfigurations.HOST
+      val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+      val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+      )
+
+      val cfgPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemPatchIfExists.toString,
+        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
+        "spark.cosmos.write.patch.defaultOperationType" -> patchDefaultOperationType.toString,
+        "spark.cosmos.write.patch.columnConfigs" -> patchColumnConfigString
+      )
+
+      val newSpark = getSpark
+
+      // scalastyle:off underscore.import
+      // scalastyle:off import.grouping
+      import spark.implicits._
+      val spark = newSpark
+      // scalastyle:on underscore.import
+      // scalastyle:on import.grouping
+
+      val dfWithJson = Seq(
+        ("Quark", "Quark", "Red", 1.0 / 2, "", "{ \"manufacturer\": \"BMW\", \"carType\": \"X3\" }")
+      ).toDF("particle name", "id", "color", "spin", "empty", "childNodeJson")
+
+      val df = dfWithJson
+        .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, nullable = true), StructField("carType", StringType, nullable = true)))))
+        .drop("childNodeJson")
+      df.show(false)
+      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be persisted based on the upsert config
+      var quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      var quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("car").get("carType").asText() shouldEqual "X3"
+
+      val patchDf = if (patchColumnConfigString.endsWith(".rawJson]")) {
+        Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"), ("NonExistingId", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
+          .toDF("id", "car")
+      } else {
+        Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"), ("NonExistingId", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
+          .toDF("id", "childNodeJson")
+          .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, nullable = true), StructField("carType", StringType, nullable = true)))))
+          .drop("childNodeJson")
+      }
+
+      logInfo(s"Schema of patchDf: ${patchDf.schema}")
+
+      patchDf.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
+
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be persisted based on the upsert config
+      quarks = queryItems("SELECT * FROM r where r.id = 'NonExistingId'").toArray
+      quarks should have size 0
+
+
+      quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      logInfo(s"JSON returned from query: ${quarks(0)}")
+
+      quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("car").get("carType").asText() shouldEqual "X5"
+    }
   }
 
   private case class PatchBulkUpdateParameterTest(bulkEnabled: Boolean, patchColumnConfigString: String)

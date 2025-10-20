@@ -11,16 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MarketplaceSaaSInfoMarketplaceSubscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceSaaSInfoMarketplaceSubscription model = BinaryData.fromString("{\"id\":\"jampmngnzscxaqw\"}")
-            .toObject(MarketplaceSaaSInfoMarketplaceSubscription.class);
-        Assertions.assertEquals("jampmngnzscxaqw", model.id());
+        MarketplaceSaaSInfoMarketplaceSubscription model
+            = BinaryData.fromString("{\"id\":\"ow\",\"publisherId\":\"shwankixzbinje\",\"offerId\":\"ttmrywnuzoqf\"}")
+                .toObject(MarketplaceSaaSInfoMarketplaceSubscription.class);
+        Assertions.assertEquals("ow", model.id());
+        Assertions.assertEquals("shwankixzbinje", model.publisherId());
+        Assertions.assertEquals("ttmrywnuzoqf", model.offerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceSaaSInfoMarketplaceSubscription model
-            = new MarketplaceSaaSInfoMarketplaceSubscription().withId("jampmngnzscxaqw");
+        MarketplaceSaaSInfoMarketplaceSubscription model = new MarketplaceSaaSInfoMarketplaceSubscription().withId("ow")
+            .withPublisherId("shwankixzbinje")
+            .withOfferId("ttmrywnuzoqf");
         model = BinaryData.fromObject(model).toObject(MarketplaceSaaSInfoMarketplaceSubscription.class);
-        Assertions.assertEquals("jampmngnzscxaqw", model.id());
+        Assertions.assertEquals("ow", model.id());
+        Assertions.assertEquals("shwankixzbinje", model.publisherId());
+        Assertions.assertEquals("ttmrywnuzoqf", model.offerId());
     }
 }

@@ -35,9 +35,13 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -122,6 +126,63 @@ public class PartitionProcessorImplTests {
                 .verify(partitionCheckpointer, Mockito.times(0))
                 .checkpointPartition(Mockito.any());
         }
+    }
+
+    @Test(groups = "unit")
+    public void processedTimeSetAfterProcessing() {
+        // Arrange
+        ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
+
+        ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
+        CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+
+        ChangeFeedStateV1 startState = getChangeFeedStateWithContinuationTokens(1);
+        ProcessorSettings settings = new ProcessorSettings(startState, containerMock);
+        settings.withMaxItemCount(10);
+
+        Lease leaseMock = Mockito.mock(ServiceItemLeaseV1.class);
+        Mockito.when(leaseMock.getContinuationToken()).thenReturn(startState.toString());
+
+        PartitionCheckpointer checkpointerMock = Mockito.mock(PartitionCheckpointerImpl.class);
+
+        // Create a feed response with one mocked result
+        @SuppressWarnings("unchecked") FeedResponse<ChangeFeedProcessorItem> feedResponseMock = Mockito.mock(FeedResponse.class);
+        List<ChangeFeedProcessorItem> results = new ArrayList<>();
+        results.add(Mockito.mock(ChangeFeedProcessorItem.class));
+        AtomicInteger counter = new AtomicInteger(0);
+        Mockito.when(feedResponseMock.getResults()).thenAnswer(invocation -> {
+            Thread.sleep(500);
+            return counter.getAndIncrement() < 10 ? results : new ArrayList<>();
+        });
+        ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationTokens(1);
+        Mockito.when(feedResponseMock.getContinuationToken()).thenReturn(changeFeedState.toString());
+
+        // The processor will continuously fetch, but we will cancel shortly after first batch
+        Mockito.doReturn(Flux.just(feedResponseMock))
+            .when(changeFeedContextClientMock)
+            .createDocumentChangeFeedQuery(Mockito.any(), Mockito.any(), Mockito.any());
+
+        PartitionProcessorImpl<ChangeFeedProcessorItem> processor = new PartitionProcessorImpl<>(
+            observerMock,
+            changeFeedContextClientMock,
+            settings,
+            checkpointerMock,
+            leaseMock,
+            ChangeFeedProcessorItem.class,
+            ChangeFeedMode.INCREMENTAL,
+            null);
+        Instant initialTime = processor.getLastProcessedTime();
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        Mono<Void> runMono = processor.run(cts.getToken());
+
+        StepVerifier.create(runMono)
+            .thenAwait(Duration.ofMillis(800))
+            .then(cts::cancel)
+            .verifyComplete();
+
+        assertThat(processor.getLastProcessedTime()).isAfter(initialTime);
     }
 
     @Test(groups = "unit")

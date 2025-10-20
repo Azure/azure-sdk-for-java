@@ -12,7 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface VMIngestions {
     /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+     * optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -26,7 +27,8 @@ public interface VMIngestions {
         Context context);
 
     /**
-     * List the vm ingestion details that will be monitored by the Elastic monitor resource.
+     * List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+     * optimal observability and performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
