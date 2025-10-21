@@ -67,6 +67,18 @@ public final class BlockedWhileRescheduleOperation extends RescheduleOperationCo
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        if (timeRanges() != null) {
+            timeRanges().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

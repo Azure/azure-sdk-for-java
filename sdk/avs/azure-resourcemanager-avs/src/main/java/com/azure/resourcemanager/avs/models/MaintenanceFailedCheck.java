@@ -52,6 +52,17 @@ public final class MaintenanceFailedCheck implements JsonSerializable<Maintenanc
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (impactedResources() != null) {
+            impactedResources().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

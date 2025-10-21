@@ -195,6 +195,23 @@ public final class MaintenanceProperties implements JsonSerializable<Maintenance
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (state() != null) {
+            state().validate();
+        }
+        if (operations() != null) {
+            operations().forEach(e -> e.validate());
+        }
+        if (maintenanceReadiness() != null) {
+            maintenanceReadiness().validate();
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

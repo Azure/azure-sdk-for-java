@@ -52,6 +52,17 @@ public final class ImpactedMaintenanceResource implements JsonSerializable<Impac
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (errors() != null) {
+            errors().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

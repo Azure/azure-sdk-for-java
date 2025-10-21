@@ -96,6 +96,17 @@ public final class MaintenanceReadiness implements JsonSerializable<MaintenanceR
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (failedChecks() != null) {
+            failedChecks().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

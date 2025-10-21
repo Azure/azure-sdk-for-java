@@ -4,196 +4,6 @@
 
 - Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-### Breaking Changes
-
-#### `models.WorkloadNetworkSegmentPortVif` was modified
-
-* `validate()` was removed
-
-#### `models.ScriptStringExecutionParameter` was modified
-
-* `validate()` was removed
-
-#### `models.PureStoragePolicyProperties` was modified
-
-* `validate()` was removed
-
-#### `models.ResourceSkuRestrictionInfo` was modified
-
-* `validate()` was removed
-
-#### `models.WorkloadNetworkDhcpRelay` was modified
-
-* `validate()` was removed
-
-#### `models.SpecializedHostProperties` was modified
-
-* `validate()` was removed
-
-#### `models.ResourceSkuLocationInfo` was modified
-
-* `validate()` was removed
-
-#### `models.WorkloadNetworkSegmentSubnet` was modified
-
-* `validate()` was removed
-
-#### `models.AvailabilityProperties` was modified
-
-* `validate()` was removed
-
-#### `models.DiskPoolVolume` was modified
-
-* `validate()` was removed
-
-#### `models.GeneralHostProperties` was modified
-
-* `validate()` was removed
-
-#### `models.WorkloadNetworkDhcpEntity` was modified
-
-* `validate()` was removed
-
-#### `models.OperationDisplay` was modified
-
-* `validate()` was removed
-
-#### `models.AddonArcProperties` was modified
-
-* `validate()` was removed
-
-#### `models.VmPlacementPolicyProperties` was modified
-
-* `validate()` was removed
-
-#### `models.EncryptionKeyVaultProperties` was modified
-
-* `validate()` was removed
-
-#### `models.HostProperties` was modified
-
-* `validate()` was removed
-
-#### `models.ClusterZone` was modified
-
-* `validate()` was removed
-
-#### `models.AddonVrProperties` was modified
-
-* `validate()` was removed
-
-#### `models.ResourceSkuZoneDetails` was modified
-
-* `validate()` was removed
-
-#### `models.ScriptParameter` was modified
-
-* `validate()` was removed
-
-#### `models.IdentitySource` was modified
-
-* `validate()` was removed
-
-#### `models.PlacementPolicyUpdate` was modified
-
-* `validate()` was removed
-
-#### `models.AddonProperties` was modified
-
-* `validate()` was removed
-
-#### `models.ResourceSkuRestrictions` was modified
-
-* `validate()` was removed
-
-#### `models.Encryption` was modified
-
-* `validate()` was removed
-
-#### `models.NetAppVolume` was modified
-
-* `validate()` was removed
-
-#### `models.ManagementCluster` was modified
-
-* `validate()` was removed
-
-#### `models.VmHostPlacementPolicyProperties` was modified
-
-* `validate()` was removed
-
-#### `models.PureStorageVolume` was modified
-
-* `validate()` was removed
-
-#### `models.PrivateCloudUpdate` was modified
-
-* `validate()` was removed
-
-#### `models.ScriptSecureStringExecutionParameter` was modified
-
-* `validate()` was removed
-
-#### `models.ResourceSkuCapabilities` was modified
-
-* `validate()` was removed
-
-#### `models.AddonHcxProperties` was modified
-
-* `validate()` was removed
-
-#### `models.Endpoints` was modified
-
-* `validate()` was removed
-
-#### `models.ProvisionedNetworkProperties` was modified
-
-* `validate()` was removed
-
-#### `models.ElasticSanVolume` was modified
-
-* `validate()` was removed
-
-#### `models.PlacementPolicyProperties` was modified
-
-* `validate()` was removed
-
-#### `models.PSCredentialExecutionParameter` was modified
-
-* `validate()` was removed
-
-#### `models.PrivateCloudIdentity` was modified
-
-* `validate()` was removed
-
-#### `models.ClusterUpdate` was modified
-
-* `validate()` was removed
-
-#### `models.VirtualMachineRestrictMovement` was modified
-
-* `validate()` was removed
-
-#### `models.Sku` was modified
-
-* `validate()` was removed
-
-#### `models.ScriptExecutionParameter` was modified
-
-* `validate()` was removed
-
-#### `models.AddonSrmProperties` was modified
-
-* `validate()` was removed
-
-#### `models.Circuit` was modified
-
-* `validate()` was removed
-
-#### `models.WorkloadNetworkDhcpServer` was modified
-
-* `validate()` was removed
-
 ### Features Added
 
 * `models.ImpactedMaintenanceResource` was added
@@ -296,13 +106,13 @@
 
 #### `models.PrivateClouds` was modified
 
-* `getVcfLicenseWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `getVcfLicense(java.lang.String,java.lang.String)` was added
+* `getVcfLicenseWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `AvsManager` was modified
 
-* `maintenances()` was added
 * `licenses()` was added
+* `maintenances()` was added
 
 #### `models.PrivateCloud$Definition` was modified
 
@@ -311,8 +121,8 @@
 #### `models.PrivateCloud` was modified
 
 * `getVcfLicense()` was added
-* `getVcfLicenseWithResponse(com.azure.core.util.Context)` was added
 * `vcfLicense()` was added
+* `getVcfLicenseWithResponse(com.azure.core.util.Context)` was added
 
 ## 1.3.0 (2025-07-08)
 
