@@ -477,18 +477,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
             if (!(unwrappedException instanceof Exception)) {
                 // fatal error
-                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                logger.error("Unexpected failure " + unwrappedException.getMessage(), unwrappedException);
                 return Mono.error(unwrappedException);
             }
 
             Exception exception = (Exception) unwrappedException;
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
-                // wrap in CosmosException
-                logger.warn("Network failure", exception);
-
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
+
+                    // wrap in CosmosException
+                    logger.error("Network failure", exception);
+
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {
                         statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
                     } else {
@@ -499,6 +500,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
+                logger.error("Non-network failure", exception);
                 dce = (CosmosException) exception;
             }
 

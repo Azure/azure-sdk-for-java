@@ -70,7 +70,7 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
             }
             finally {
                 try {
