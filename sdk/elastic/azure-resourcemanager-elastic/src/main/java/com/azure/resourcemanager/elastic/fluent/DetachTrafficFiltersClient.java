@@ -15,7 +15,8 @@ import com.azure.core.util.polling.SyncPoller;
  */
 public interface DetachTrafficFiltersClient {
     /**
-     * Detach traffic filter for the given deployment.
+     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
+     * capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -28,7 +29,8 @@ public interface DetachTrafficFiltersClient {
     SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String monitorName);
 
     /**
-     * Detach traffic filter for the given deployment.
+     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
+     * capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -44,7 +46,8 @@ public interface DetachTrafficFiltersClient {
         Context context);
 
     /**
-     * Detach traffic filter for the given deployment.
+     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
+     * capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -56,7 +59,8 @@ public interface DetachTrafficFiltersClient {
     void update(String resourceGroupName, String monitorName);
 
     /**
-     * Detach traffic filter for the given deployment.
+     * Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
+     * capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

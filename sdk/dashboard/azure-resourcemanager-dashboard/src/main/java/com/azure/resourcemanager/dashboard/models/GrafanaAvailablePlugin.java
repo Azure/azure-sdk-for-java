@@ -26,6 +26,16 @@ public final class GrafanaAvailablePlugin implements JsonSerializable<GrafanaAva
      */
     private String name;
 
+    /*
+     * Grafana plugin type
+     */
+    private String type;
+
+    /*
+     * Grafana plugin author/publisher name
+     */
+    private String author;
+
     /**
      * Creates an instance of GrafanaAvailablePlugin class.
      */
@@ -48,6 +58,24 @@ public final class GrafanaAvailablePlugin implements JsonSerializable<GrafanaAva
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the type property: Grafana plugin type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the author property: Grafana plugin author/publisher name.
+     * 
+     * @return the author value.
+     */
+    public String author() {
+        return this.author;
     }
 
     /**
@@ -78,6 +106,10 @@ public final class GrafanaAvailablePlugin implements JsonSerializable<GrafanaAva
                     deserializedGrafanaAvailablePlugin.pluginId = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedGrafanaAvailablePlugin.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGrafanaAvailablePlugin.type = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedGrafanaAvailablePlugin.author = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

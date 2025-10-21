@@ -251,7 +251,9 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the sharedKey property: SharedKey for the vpn connection.
+     * Get the sharedKey property: SharedKey for the vpn link connection. We will no longer return sharedKey in any
+     * Create/Update/Get/List/UpdateTags VpnGateway/VpnConnection/VpnLinkConnection APIs response. Please use 'Vpn Link
+     * Connections - List Default Shared Key' API to fetch Vpn link connection sharedKey.
      * 
      * @return the sharedKey value.
      */
@@ -260,7 +262,9 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     }
 
     /**
-     * Set the sharedKey property: SharedKey for the vpn connection.
+     * Set the sharedKey property: SharedKey for the vpn link connection. We will no longer return sharedKey in any
+     * Create/Update/Get/List/UpdateTags VpnGateway/VpnConnection/VpnLinkConnection APIs response. Please use 'Vpn Link
+     * Connections - List Default Shared Key' API to fetch Vpn link connection sharedKey.
      * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnSiteLinkConnectionInner object itself.

@@ -65,7 +65,7 @@ public final class VpnConnectionProperties implements JsonSerializable<VpnConnec
     private Integer connectionBandwidth;
 
     /*
-     * SharedKey for the vpn connection.
+     * Deprecated: SharedKey for the vpn connection. This is no more used.
      */
     private String sharedKey;
 
@@ -254,7 +254,7 @@ public final class VpnConnectionProperties implements JsonSerializable<VpnConnec
     }
 
     /**
-     * Get the sharedKey property: SharedKey for the vpn connection.
+     * Get the sharedKey property: Deprecated: SharedKey for the vpn connection. This is no more used.
      * 
      * @return the sharedKey value.
      */
@@ -263,7 +263,7 @@ public final class VpnConnectionProperties implements JsonSerializable<VpnConnec
     }
 
     /**
-     * Set the sharedKey property: SharedKey for the vpn connection.
+     * Set the sharedKey property: Deprecated: SharedKey for the vpn connection. This is no more used.
      * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnConnectionProperties object itself.
