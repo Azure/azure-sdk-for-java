@@ -7878,10 +7878,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (isPerPartitionAutomaticFailoverEnabledAsMandatedByService != null) {
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabledAsMandatedByService);
-        } else {
-            boolean isPerPartitionAutomaticFailoverOptedIntoByClient
-                = Configs.isPerPartitionAutomaticFailoverEnabled().equalsIgnoreCase("true");
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.resetPerPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverOptedIntoByClient);
         }
     }
 

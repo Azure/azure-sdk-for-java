@@ -938,14 +938,6 @@ public class Configs {
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
-    public static String isPerPartitionAutomaticFailoverEnabled() {
-        return System.getProperty(
-            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-            firstNonNull(
-                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
-                DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED));
-    }
-
     public static boolean isSessionTokenFalseProgressMergeEnabled() {
         String isSessionTokenFalseProgressMergeDisabledAsString =
             System.getProperty(
