@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
  */
 public final class CodeSigningAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-09-30-preview/CodeSigningAccounts_Get.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Get.json
      */
     /**
      * Sample code: Get a Trusted Signing Account.

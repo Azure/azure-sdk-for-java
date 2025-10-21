@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
@@ -17,7 +18,7 @@ import java.util.Map;
 public final class RedisEnterpriseUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
      * RedisEnterpriseUpdate.json
      */
     /**
@@ -32,6 +33,7 @@ public final class RedisEnterpriseUpdateSamples {
         resource.update()
             .withTags(mapOf("tag1", "value1"))
             .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(9))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .apply();
     }

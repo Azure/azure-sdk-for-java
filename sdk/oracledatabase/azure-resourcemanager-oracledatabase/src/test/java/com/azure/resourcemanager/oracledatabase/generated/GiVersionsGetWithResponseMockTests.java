@@ -21,7 +21,7 @@ public final class GiVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"totiowlxteqdptjg\"},\"id\":\"tgukranblwphql\",\"name\":\"ccuzgygq\",\"type\":\"ahoiulwgni\"}";
+            = "{\"properties\":{\"version\":\"tjo\"},\"id\":\"cvovjufyc\",\"name\":\"jmlbemyejiriux\",\"type\":\"gthortudaw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class GiVersionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        GiVersion response
-            = manager.giVersions().getWithResponse("sl", "iiiovgqcgxuugq", com.azure.core.util.Context.NONE).getValue();
+        GiVersion response = manager.giVersions()
+            .getWithResponse("yltcoqcuj", "dsxzakuejkmvb", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("totiowlxteqdptjg", response.properties().version());
+        Assertions.assertEquals("tjo", response.properties().version());
     }
 }

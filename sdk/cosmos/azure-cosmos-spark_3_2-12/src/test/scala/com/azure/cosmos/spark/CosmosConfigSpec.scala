@@ -1529,6 +1529,25 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     }
   }
 
+  "UserAgentFormat" should "propagate to throughput control account config" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.userAgent.format" -> "NoSparkEnv",
+      "spark.cosmos.throughputControl.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.throughputControl.accountKey" -> "xyz",
+      "spark.cosmos.throughputControl.enabled" -> "true"
+    )
+
+    val originalEndpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    val throughputEndpointConfig = CosmosThroughputControlConfig.parseThroughputControlAccountConfig(userConfig)
+
+    originalEndpointConfig.endpoint shouldEqual sampleProdEndpoint
+    originalEndpointConfig.userAgentFormat shouldEqual UserAgentFormat.NoSparkEnv
+    throughputEndpointConfig.endpoint shouldEqual sampleProdEndpoint
+    throughputEndpointConfig.userAgentFormat shouldEqual UserAgentFormat.NoSparkEnv
+  }
+
   private case class PatchColumnConfigParameterTest
   (
    isValid: Boolean,

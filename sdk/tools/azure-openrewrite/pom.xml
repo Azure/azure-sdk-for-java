@@ -168,15 +168,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.18.4.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>2.18.4.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
         </dependency>
         <!-- Jackson Dataformat Smile -->
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-smile</artifactId>
-            <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-smile</artifactId>
+          <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
         </dependency>
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -223,7 +223,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -276,6 +276,12 @@
           <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-core;dependency} -->
           <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-data-appconfiguration;dependency} -->
+          <scope>test</scope>
+        </dependency>
       </dependencies>
     </profile>
 
@@ -287,7 +293,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -370,6 +376,12 @@
           <groupId>com.azure.v2</groupId>
           <artifactId>azure-identity</artifactId>
           <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-identity;dependency} -->
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.v2</groupId>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-data-appconfiguration;dependency} -->
           <scope>provided</scope>
         </dependency>
       </dependencies>

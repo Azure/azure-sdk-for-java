@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class ExadbVmClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01/ExadbVmClusters_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-09-01/ExadbVmClusters_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExadbVmClusters_Delete_MaximumSet.
@@ -18,6 +18,19 @@ public final class ExadbVmClustersDeleteSamples {
      */
     public static void
         exadbVmClustersDeleteMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exadbVmClusters().delete("rgopenapi", "vmClusterName", com.azure.core.util.Context.NONE);
+        manager.exadbVmClusters().delete("rgopenapi", "exadaVmClusterName1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-09-01/ExadbVmClusters_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_Delete_MinimumSet.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        exadbVmClustersDeleteMinimumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exadbVmClusters().delete("rgopenapi", "exadaVmClusterName1", com.azure.core.util.Context.NONE);
     }
 }
