@@ -37,6 +37,7 @@ import java.time.ZoneOffset;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,7 +81,7 @@ public class HelperTests extends BlobTestBase {
             "path/to]a blob,path/to]a blob",
             "path%2Fto%5Da%20blob,path/to]a blob",
             "斑點,斑點",
-            "%E6%96%91%E9%BB%9E,斑點" })
+            "%E6%96%91%E9%BB%9E,斑點"})
     public void urlParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
         BlobUrlParts parts = BlobUrlParts.parse(new URL(
             "http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION
@@ -203,5 +204,50 @@ public class HelperTests extends BlobTestBase {
 
         assertEquals(2, pageList.getPageRange().size());
         assertEquals(1, pageList.getClearRange().size());
+    }
+
+    // Tests that container names are properly URL decoded when retrieved from BlobUrlParts. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void containerNameDecodingOnGet() {
+        BlobUrlParts parts = new BlobUrlParts()
+            .setScheme("http")
+            .setHost("host")
+            .setContainerName("my%20container");
+        assertEquals("my container", parts.getBlobContainerName());
+        // URL should retain the encoded form supplied by caller
+        assertTrue(parts.toUrl().toString().contains("my%20container"));
+    }
+
+    // Tests that blob names are not automatically URL encoded when set in BlobUrlParts.
+    @Test
+    public void setBlobNameUnencodedPreserved() {
+        BlobUrlParts parts = new BlobUrlParts()
+            .setScheme("http")
+            .setHost("host")
+            .setContainerName("container")
+            .setBlobName("my blob");
+        // New behavior: value is not auto-encoded
+        assertEquals("my blob", parts.getBlobName());
+        String url = parts.toUrl().toString();
+        assertTrue(url.contains("/container/my blob"));
+        // Ensure no accidental encoding
+        assertFalse(url.contains("%20"));
+    }
+
+    // Tests that blob names are properly URL decoded when retrieved from BlobUrlParts.
+    @Test
+    public void setBlobNameEncodedNotDoubleEncoded() {
+        BlobUrlParts parts = new BlobUrlParts()
+            .setScheme("http")
+            .setHost("host")
+            .setContainerName("container")
+            .setBlobName("my%20blob");
+        // Getter decodes
+        assertEquals("my blob", parts.getBlobName());
+        String url = parts.toUrl().toString();
+        // Path should contain the original encoded segment exactly once
+        assertTrue(url.contains("/container/my%20blob"));
+        assertFalse(url.contains("%2520"));
     }
 }

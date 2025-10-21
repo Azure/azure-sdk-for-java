@@ -2095,6 +2095,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         });
     }
 
+    // Tests that the container name is URL encoded. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
     @Test
     public void getBlobContainerUrlEncodesContainerName() {
         String containerName = generateContainerName() + "enc!";
