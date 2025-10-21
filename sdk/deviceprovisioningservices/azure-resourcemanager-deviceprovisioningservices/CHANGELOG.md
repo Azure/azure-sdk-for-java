@@ -1,14 +1,171 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-10-20)
 
-### Features Added
+- Azure Resource Manager IotDps client library for Java. This package contains Microsoft Azure SDK for IotDps Management SDK. API for using the Azure IoT Hub Device Provisioning Service features. Package api-version 2025-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ProvisioningServiceDescriptionListResult` was removed
 
-### Other Changes
+#### `models.PrivateLinkResources` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.CertificateListDescription` was removed
+
+#### `models.IotDpsSkuDefinitionListResult` was removed
+
+#### `models.SharedAccessSignatureAuthorizationRuleListResult` was removed
+
+#### `models.ProvisioningServiceDescription$DefinitionStages` was modified
+
+* `withExistingResourceGroup(java.lang.String)` was removed in stage 2
+
+#### `models.TagsResource` was modified
+
+* `validate()` was removed
+
+#### `models.IotHubDefinitionDescription` was modified
+
+* `validate()` was removed
+
+#### `models.IotDpsSkuInfo` was modified
+
+* `validate()` was removed
+
+#### `models.GroupIdInformationProperties` was modified
+
+* `GroupIdInformationProperties()` was changed to private access
+* `withRequiredZoneNames(java.util.List)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `validate()` was removed
+* `withRequiredMembers(java.util.List)` was removed
+
+#### `models.IpFilterRule` was modified
+
+* `validate()` was removed
+
+#### `models.ErrorDetails` was modified
+
+* `ErrorDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.IotDpsPropertiesDescription` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VerificationCodeResponseProperties` was modified
+
+* `VerificationCodeResponseProperties()` was changed to private access
+* `withUpdated(java.lang.String)` was removed
+* `validate()` was removed
+* `withExpiry(java.lang.String)` was removed
+* `withIsVerified(java.lang.Boolean)` was removed
+* `withCertificate(byte[])` was removed
+* `withThumbprint(java.lang.String)` was removed
+* `withSubject(java.lang.String)` was removed
+* `withCreated(java.lang.String)` was removed
+* `withVerificationCode(java.lang.String)` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationInputs` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.DpsCertificates` was modified
+
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.CertificateListDescription list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
+
+#### `models.ProvisioningServiceDescription$Definition` was modified
+
+* `withExistingResourceGroup(java.lang.String)` was removed
+
+#### `models.VerificationCodeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.IotDpsResources` was modified
+
+* `listPrivateLinkResourcesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.PrivateLinkResources listPrivateLinkResources(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listPrivateLinkResources(java.lang.String,java.lang.String)`
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.ErrorMessage` was modified
+
+* `ErrorMessage()` was changed to private access
+* `withDetails(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+* `validate()` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `IotDpsManager` was modified
+
+* `fluent.IotDpsClient serviceClient()` -> `fluent.IotDpsManagementClient serviceClient()`
+
+### Features Added
+
+* `models.DeviceRegistryNamespaceDescription` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.DeviceRegistryNamespaceAuthenticationType` was added
+
+#### `models.GroupIdInformation` was modified
+
+* `systemData()` was added
+
+#### `models.IotDpsPropertiesDescription` was modified
+
+* `deviceRegistryNamespace()` was added
+* `portalOperationsHostName()` was added
+* `withDeviceRegistryNamespace(models.DeviceRegistryNamespaceDescription)` was added
+* `withPortalOperationsHostName(java.lang.String)` was added
+
+#### `models.ProvisioningServiceDescription` was modified
+
+* `subscriptionid()` was added
+* `resourceGroup()` was added
+* `identity()` was added
+
+#### `models.DpsCertificates` was modified
+
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ProvisioningServiceDescription$Definition` was modified
+
+* `withSubscriptionid(java.lang.String)` was added
+* `withExistingResourceGroup(java.lang.String)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withResourceGroup(java.lang.String)` was added
+
+#### `models.IotDpsResources` was modified
+
+* `listPrivateLinkResources(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.1.0 (2025-01-03)
 
