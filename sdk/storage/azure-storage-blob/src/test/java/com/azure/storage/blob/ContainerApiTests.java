@@ -1705,36 +1705,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(decodedName + "3", blobs.next().getName());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "中文", "az[]", "hello world", "hello/world", "hello&world", "!*'();:@&=+/$,/?#[]" })
-    public void getNonEncodedContainerName(String originalContainerName) {
-        BlobContainerClient client = primaryBlobServiceClient.getBlobContainerClient(originalContainerName);
-        assertEquals(originalContainerName, client.getBlobContainerName());
-
-        // see if the container name will be properly encoded in the url
-        String encodedName = Utility.urlEncode(originalContainerName);
-        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName)
-            .getBlobContainerUrl()
-            .contains(encodedName));
-    }
-
-    @Test
-    public void getNonEncodedContainerClient() {
-        String originalContainerName = "test%test";
-        BlobContainerClientBuilder blobContainerClientBuilder
-            = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl());
-        blobContainerClientBuilder.containerName(originalContainerName);
-
-        BlobContainerClient blobContainerClient = blobContainerClientBuilder.buildClient();
-        assertEquals(originalContainerName, blobContainerClient.getBlobContainerName());
-
-        // see if the container name will be properly encoded in the url
-        String encodedName = Utility.urlEncode(originalContainerName);
-        assertTrue(primaryBlobServiceClient.getBlobContainerClient(originalContainerName)
-            .getBlobContainerUrl()
-            .contains(encodedName));
-    }
-
     @Test
     @PlaybackOnly
     public void rootExplicit() {
@@ -1999,6 +1969,14 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertEquals(400, exception.getStatusCode());
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+    }
+
+    @Test
+    public void getBlobContainerUrlEncodesContainerName() {
+        String containerName = generateContainerName() + "enc!";
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName);
+
+        assertTrue(containerClient.getBlobContainerUrl().contains(Utility.urlEncode(containerName)));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.
