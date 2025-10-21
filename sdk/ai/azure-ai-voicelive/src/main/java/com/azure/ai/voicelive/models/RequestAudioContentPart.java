@@ -15,7 +15,7 @@ import java.io.IOException;
  * An audio content part for a request.
  */
 @Fluent
-public final class RequestAudioContentPart extends ContentPart {
+public final class RequestAudioContentPart extends VoiceLiveContentPart {
     /*
      * The type property.
      */

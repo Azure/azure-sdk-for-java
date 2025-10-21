@@ -34,7 +34,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
      * The session property.
      */
     @Generated
-    private final RequestSession session;
+    private final VoiceLiveSessionOptions session;
 
     /**
      * Creates an instance of ClientEventSessionUpdate class.
@@ -42,7 +42,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
      * @param session the session value to set.
      */
     @Generated
-    public ClientEventSessionUpdate(RequestSession session) {
+    public ClientEventSessionUpdate(VoiceLiveSessionOptions session) {
         this.session = session;
     }
 
@@ -63,7 +63,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
      * @return the session value.
      */
     @Generated
-    public RequestSession getSession() {
+    public VoiceLiveSessionOptions getSession() {
         return this.session;
     }
 
@@ -103,7 +103,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
     public static ClientEventSessionUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            RequestSession session = null;
+            VoiceLiveSessionOptions session = null;
             ClientEventType type = ClientEventType.SESSION_UPDATE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,7 +112,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
                 if ("event_id".equals(fieldName)) {
                     eventId = reader.getString();
                 } else if ("session".equals(fieldName)) {
-                    session = RequestSession.fromJson(reader);
+                    session = VoiceLiveSessionOptions.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ClientEventType.fromString(reader.getString());
                 } else {

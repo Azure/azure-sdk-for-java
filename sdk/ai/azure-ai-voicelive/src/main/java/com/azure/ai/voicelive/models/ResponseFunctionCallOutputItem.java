@@ -15,7 +15,7 @@ import java.io.IOException;
  * A function call output item within a conversation.
  */
 @Immutable
-public final class ResponseFunctionCallOutputItem extends ResponseItem {
+public final class ResponseFunctionCallOutputItem extends SessionResponseItem {
     /*
      * The type property.
      */

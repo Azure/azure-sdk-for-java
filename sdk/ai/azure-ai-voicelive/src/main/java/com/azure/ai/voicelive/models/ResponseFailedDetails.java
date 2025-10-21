@@ -21,7 +21,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
      * The type property.
      */
     @Generated
-    private ResponseStatus type = ResponseStatus.FAILED;
+    private SessionResponseStatus type = SessionResponseStatus.FAILED;
 
     /*
      * The error property.
@@ -46,7 +46,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
      */
     @Generated
     @Override
-    public ResponseStatus getType() {
+    public SessionResponseStatus getType() {
         return this.type;
     }
 
@@ -86,7 +86,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
     public static ResponseFailedDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData error = null;
-            ResponseStatus type = ResponseStatus.FAILED;
+            SessionResponseStatus type = SessionResponseStatus.FAILED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -94,7 +94,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
                 if ("error".equals(fieldName)) {
                     error = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
-                    type = ResponseStatus.fromString(reader.getString());
+                    type = SessionResponseStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

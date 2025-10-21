@@ -77,11 +77,11 @@ public class EouDetection implements JsonSerializable<EouDetection> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("semantic_detection_v1".equals(discriminatorValue)) {
-                    return AzureSemanticDetection.fromJson(readerToUse.reset());
+                    return AzureSemanticEouDetection.fromJson(readerToUse.reset());
                 } else if ("semantic_detection_v1_en".equals(discriminatorValue)) {
-                    return AzureSemanticDetectionEn.fromJson(readerToUse.reset());
+                    return AzureSemanticEouDetectionEn.fromJson(readerToUse.reset());
                 } else if ("semantic_detection_v1_multilingual".equals(discriminatorValue)) {
-                    return AzureSemanticDetectionMultilingual.fromJson(readerToUse.reset());
+                    return AzureSemanticEouDetectionMultilingual.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

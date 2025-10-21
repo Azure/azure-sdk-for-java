@@ -15,7 +15,7 @@ import java.io.IOException;
  * A function call item within a conversation.
  */
 @Immutable
-public final class ResponseFunctionCallItem extends ResponseItem {
+public final class ResponseFunctionCallItem extends SessionResponseItem {
     /*
      * The type property.
      */
@@ -44,7 +44,7 @@ public final class ResponseFunctionCallItem extends ResponseItem {
      * The status property.
      */
     @Generated
-    private final ResponseItemStatus status;
+    private final SessionResponseItemStatus status;
 
     /**
      * Creates an instance of ResponseFunctionCallItem class.
@@ -55,7 +55,7 @@ public final class ResponseFunctionCallItem extends ResponseItem {
      * @param status the status value to set.
      */
     @Generated
-    private ResponseFunctionCallItem(String name, String callId, String arguments, ResponseItemStatus status) {
+    private ResponseFunctionCallItem(String name, String callId, String arguments, SessionResponseItemStatus status) {
         this.name = name;
         this.callId = callId;
         this.arguments = arguments;
@@ -109,7 +109,7 @@ public final class ResponseFunctionCallItem extends ResponseItem {
      * @return the status value.
      */
     @Generated
-    public ResponseItemStatus getStatus() {
+    public SessionResponseItemStatus getStatus() {
         return this.status;
     }
 
@@ -147,7 +147,7 @@ public final class ResponseFunctionCallItem extends ResponseItem {
             String name = null;
             String callId = null;
             String arguments = null;
-            ResponseItemStatus status = null;
+            SessionResponseItemStatus status = null;
             ItemType type = ItemType.FUNCTION_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -164,7 +164,7 @@ public final class ResponseFunctionCallItem extends ResponseItem {
                 } else if ("arguments".equals(fieldName)) {
                     arguments = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ResponseItemStatus.fromString(reader.getString());
+                    status = SessionResponseItemStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = ItemType.fromString(reader.getString());
                 } else {

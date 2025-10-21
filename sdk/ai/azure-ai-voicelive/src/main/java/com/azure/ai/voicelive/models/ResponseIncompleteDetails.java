@@ -20,7 +20,7 @@ public final class ResponseIncompleteDetails extends ResponseStatusDetails {
      * The type property.
      */
     @Generated
-    private ResponseStatus type = ResponseStatus.INCOMPLETE;
+    private SessionResponseStatus type = SessionResponseStatus.INCOMPLETE;
 
     /*
      * The reason property.
@@ -45,7 +45,7 @@ public final class ResponseIncompleteDetails extends ResponseStatusDetails {
      */
     @Generated
     @Override
-    public ResponseStatus getType() {
+    public SessionResponseStatus getType() {
         return this.type;
     }
 
@@ -84,7 +84,7 @@ public final class ResponseIncompleteDetails extends ResponseStatusDetails {
     public static ResponseIncompleteDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponseIncompleteDetailsReason reason = null;
-            ResponseStatus type = ResponseStatus.INCOMPLETE;
+            SessionResponseStatus type = SessionResponseStatus.INCOMPLETE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,7 +92,7 @@ public final class ResponseIncompleteDetails extends ResponseStatusDetails {
                 if ("reason".equals(fieldName)) {
                     reason = ResponseIncompleteDetailsReason.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    type = ResponseStatus.fromString(reader.getString());
+                    type = SessionResponseStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

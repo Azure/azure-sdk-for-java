@@ -13,6 +13,11 @@ import java.io.IOException;
  * Base type for the different voice providers supported by the VoiceLive service.
  */
 public abstract class VoiceProvider {
+    static final String TYPE_OPENAI = "openai";
+    static final String TYPE_AZURE_CUSTOM = "azure-custom";
+    static final String TYPE_AZURE_STANDARD = "azure-standard";
+    static final String TYPE_AZURE_PERSONAL = "azure-personal";
+
     /**
      * Creates a new instance of {@link VoiceProvider}.
      * <p>
@@ -69,12 +74,12 @@ public abstract class VoiceProvider {
         // Pass 2: replay for the subtype
         JsonReader replay = snapshot.bufferObject();
         switch (type) {
-            case "openai":
+            case VoiceProvider.TYPE_OPENAI:
                 return OpenAIVoice.fromJson(replay);
 
-            case "azure-custom":
-            case "azure-standard":
-            case "azure-personal":
+            case VoiceProvider.TYPE_AZURE_CUSTOM:
+            case VoiceProvider.TYPE_AZURE_STANDARD:
+            case VoiceProvider.TYPE_AZURE_PERSONAL:
                 return AzureVoice.fromJson(replay);
 
             default:

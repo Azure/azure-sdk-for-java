@@ -22,45 +22,46 @@ public final class VideoCrop implements JsonSerializable<VideoCrop> {
      * Top-left corner of the crop region. Array of [x, y], must be non-negative integers.
      */
     @Generated
-    private final List<Integer> topLeft;
+    private final List<Integer> topLeftInternal;
 
     /*
      * Bottom-right corner of the crop region. Array of [x, y], must be non-negative integers.
      */
     @Generated
-    private final List<Integer> bottomRight;
+    private final List<Integer> bottomRightInternal;
 
     /**
      * Creates an instance of VideoCrop class.
      * 
-     * @param topLeft the topLeft value to set.
-     * @param bottomRight the bottomRight value to set.
+     * @param topLeftInternal the topLeftInternal value to set.
+     * @param bottomRightInternal the bottomRightInternal value to set.
      */
     @Generated
-    public VideoCrop(List<Integer> topLeft, List<Integer> bottomRight) {
-        this.topLeft = topLeft;
-        this.bottomRight = bottomRight;
+    public VideoCrop(List<Integer> topLeftInternal, List<Integer> bottomRightInternal) {
+        this.topLeftInternal = topLeftInternal;
+        this.bottomRightInternal = bottomRightInternal;
     }
 
     /**
-     * Get the topLeft property: Top-left corner of the crop region. Array of [x, y], must be non-negative integers.
-     * 
-     * @return the topLeft value.
-     */
-    @Generated
-    public List<Integer> getTopLeft() {
-        return this.topLeft;
-    }
-
-    /**
-     * Get the bottomRight property: Bottom-right corner of the crop region. Array of [x, y], must be non-negative
+     * Get the topLeftInternal property: Top-left corner of the crop region. Array of [x, y], must be non-negative
      * integers.
      * 
-     * @return the bottomRight value.
+     * @return the topLeftInternal value.
      */
     @Generated
-    public List<Integer> getBottomRight() {
-        return this.bottomRight;
+    public List<Integer> getTopLeftInternal() {
+        return this.topLeftInternal;
+    }
+
+    /**
+     * Get the bottomRightInternal property: Bottom-right corner of the crop region. Array of [x, y], must be
+     * non-negative integers.
+     * 
+     * @return the bottomRightInternal value.
+     */
+    @Generated
+    public List<Integer> getBottomRightInternal() {
+        return this.bottomRightInternal;
     }
 
     /**
@@ -70,8 +71,9 @@ public final class VideoCrop implements JsonSerializable<VideoCrop> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("top_left", this.topLeft, (writer, element) -> writer.writeInt(element));
-        jsonWriter.writeArrayField("bottom_right", this.bottomRight, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("top_left", this.topLeftInternal, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("bottom_right", this.bottomRightInternal,
+            (writer, element) -> writer.writeInt(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -87,21 +89,21 @@ public final class VideoCrop implements JsonSerializable<VideoCrop> {
     @Generated
     public static VideoCrop fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<Integer> topLeft = null;
-            List<Integer> bottomRight = null;
+            List<Integer> topLeftInternal = null;
+            List<Integer> bottomRightInternal = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("top_left".equals(fieldName)) {
-                    topLeft = reader.readArray(reader1 -> reader1.getInt());
+                    topLeftInternal = reader.readArray(reader1 -> reader1.getInt());
                 } else if ("bottom_right".equals(fieldName)) {
-                    bottomRight = reader.readArray(reader1 -> reader1.getInt());
+                    bottomRightInternal = reader.readArray(reader1 -> reader1.getInt());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new VideoCrop(topLeft, bottomRight);
+            return new VideoCrop(topLeftInternal, bottomRightInternal);
         });
     }
 }

@@ -71,9 +71,11 @@ public final class VoiceLiveClientBuilder {
     public VoiceLiveClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         try {
-            this.endpoint = new URI(endpoint);
-        } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'endpoint' must be a valid URI", e));
+            URI parsed = new URI(endpoint);
+            this.endpoint = parsed;
+        } catch (URISyntaxException ex) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(String.format("Invalid endpoint URI: '%s'", endpoint), ex));
         }
         return this;
     }

@@ -49,7 +49,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * set this to ["text"].
      */
     @Generated
-    private List<Modality> modalities;
+    private List<InteractionModality> modalities;
 
     /*
      * The default system instructions (i.e. system message) prepended to model
@@ -84,7 +84,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * Tools (functions) available to the model.
      */
     @Generated
-    private List<Tool> tools;
+    private List<VoiceLiveToolDefinition> tools;
 
     /*
      * How the model chooses tools. Options are `auto`, `none`, `required`, or
@@ -216,7 +216,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * @return the modalities value.
      */
     @Generated
-    public List<Modality> getModalities() {
+    public List<InteractionModality> getModalities() {
         return this.modalities;
     }
 
@@ -228,7 +228,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * @return the ResponseCreateParams object itself.
      */
     @Generated
-    public ResponseCreateParams setModalities(List<Modality> modalities) {
+    public ResponseCreateParams setModalities(List<InteractionModality> modalities) {
         this.modalities = modalities;
         return this;
     }
@@ -327,7 +327,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * @return the tools value.
      */
     @Generated
-    public List<Tool> getTools() {
+    public List<VoiceLiveToolDefinition> getTools() {
         return this.tools;
     }
 
@@ -338,7 +338,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * @return the ResponseCreateParams object itself.
      */
     @Generated
-    public ResponseCreateParams setTools(List<Tool> tools) {
+    public ResponseCreateParams setTools(List<VoiceLiveToolDefinition> tools) {
         this.tools = tools;
         return this;
     }
@@ -477,7 +477,8 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                         = reader.readArray(reader1 -> ConversationRequestItem.fromJson(reader1));
                     deserializedResponseCreateParams.inputItems = inputItems;
                 } else if ("modalities".equals(fieldName)) {
-                    List<Modality> modalities = reader.readArray(reader1 -> Modality.fromString(reader1.getString()));
+                    List<InteractionModality> modalities
+                        = reader.readArray(reader1 -> InteractionModality.fromString(reader1.getString()));
                     deserializedResponseCreateParams.modalities = modalities;
                 } else if ("instructions".equals(fieldName)) {
                     deserializedResponseCreateParams.instructions = reader.getString();
@@ -488,7 +489,8 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                     deserializedResponseCreateParams.outputAudioFormat
                         = OutputAudioFormat.fromString(reader.getString());
                 } else if ("tools".equals(fieldName)) {
-                    List<Tool> tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
+                    List<VoiceLiveToolDefinition> tools
+                        = reader.readArray(reader1 -> VoiceLiveToolDefinition.fromJson(reader1));
                     deserializedResponseCreateParams.tools = tools;
                 } else if ("tool_choice".equals(fieldName)) {
                     deserializedResponseCreateParams.toolChoice = reader.getString();

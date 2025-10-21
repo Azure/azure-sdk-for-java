@@ -4,7 +4,7 @@
 package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
-import com.azure.ai.voicelive.models.RequestSession;
+import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -102,56 +102,57 @@ public final class VoiceLiveAsyncClient {
         Objects.requireNonNull(sessionOptions.getModel(), "'model' in sessionOptions cannot be null");
 
         return startSession(sessionOptions.getModel()).flatMap(session -> {
-            RequestSession requestSession = convertToRequestSession(sessionOptions);
-            ClientEventSessionUpdate sessionUpdateEvent = new ClientEventSessionUpdate(requestSession);
+            VoiceLiveSessionOptions voiceLiveSessionOptions = convertToVoiceLiveSessionOptions(sessionOptions);
+            ClientEventSessionUpdate sessionUpdateEvent = new ClientEventSessionUpdate(voiceLiveSessionOptions);
             return session.sendCommand(sessionUpdateEvent).thenReturn(session);
         });
     }
 
     /**
-     * Converts VoiceLiveSessionOptions to RequestSession.
+     * Converts VoiceLiveSessionOptions to VoiceLiveSessionOptions.
      *
      * @param options The session options to convert.
-     * @return A RequestSession instance.
+     * @return A VoiceLiveSessionOptions instance.
      */
-    private RequestSession convertToRequestSession(VoiceLiveSessionOptions options) {
-        RequestSession requestSession = new RequestSession();
+    private VoiceLiveSessionOptions convertToVoiceLiveSessionOptions(VoiceLiveSessionOptions options) {
+        VoiceLiveSessionOptions voiceLiveSessionOptions = new VoiceLiveSessionOptions();
 
         if (options.getModel() != null) {
-            requestSession.setModel(options.getModel());
+            voiceLiveSessionOptions.setModel(options.getModel());
         }
         if (options.getModalities() != null) {
-            requestSession.setModalities(options.getModalities());
+            voiceLiveSessionOptions.setModalities(options.getModalities());
         }
         if (options.getInstructions() != null) {
-            requestSession.setInstructions(options.getInstructions());
+            voiceLiveSessionOptions.setInstructions(options.getInstructions());
         }
         if (options.getVoice() != null) {
-            requestSession.setVoice(options.getVoice());
+            voiceLiveSessionOptions.setVoice(options.getVoice());
         }
         if (options.getInputAudioFormat() != null) {
-            requestSession.setInputAudioFormat(options.getInputAudioFormat());
+            voiceLiveSessionOptions.setInputAudioFormat(options.getInputAudioFormat());
         }
         if (options.getOutputAudioFormat() != null) {
-            requestSession.setOutputAudioFormat(options.getOutputAudioFormat());
+            voiceLiveSessionOptions.setOutputAudioFormat(options.getOutputAudioFormat());
         }
         if (options.getTurnDetection() != null) {
-            requestSession.setTurnDetection(options.getTurnDetection());
+            voiceLiveSessionOptions.setTurnDetection(options.getTurnDetection());
         }
         if (options.getTools() != null) {
-            requestSession.setTools(options.getTools());
+            voiceLiveSessionOptions.setTools(options.getTools());
         }
         if (options.getToolChoice() != null) {
-            requestSession.setToolChoice(BinaryData.fromString(options.getToolChoice()));
+            voiceLiveSessionOptions.setToolChoice(options.getToolChoice());
         }
         if (options.getTemperature() != null) {
-            requestSession.setTemperature(options.getTemperature());
+            voiceLiveSessionOptions.setTemperature(options.getTemperature());
         }
         if (options.getMaxResponseOutputTokens() != null) {
-            requestSession.setMaxResponseOutputTokens(BinaryData.fromObject(options.getMaxResponseOutputTokens()));
+            voiceLiveSessionOptions
+                .setMaxResponseOutputTokens(BinaryData.fromObject(options.getMaxResponseOutputTokens()));
         }
 
-        return requestSession;
+        return voiceLiveSessionOptions;
     }
 
     /**
@@ -203,7 +204,7 @@ public final class VoiceLiveAsyncClient {
 
             String path = httpEndpoint.getPath();
             if (!path.endsWith("/realtime")) {
-                path = path.replaceAll("/$", "") + "/voice-agent/realtime";
+                path = path.replaceAll("/$", "") + "/voice-live/realtime";
             }
 
             // Build query string

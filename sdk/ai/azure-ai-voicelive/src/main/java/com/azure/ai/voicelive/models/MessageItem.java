@@ -27,7 +27,7 @@ public class MessageItem extends ConversationRequestItem {
      * The role of the message origionator.
      */
     @Generated
-    private MessageRole role = MessageRole.fromString("message");
+    private ResponseMessageRole role = ResponseMessageRole.fromString("message");
 
     /*
      * The content parts of the message.
@@ -68,7 +68,7 @@ public class MessageItem extends ConversationRequestItem {
      * @return the role value.
      */
     @Generated
-    public MessageRole getRole() {
+    public ResponseMessageRole getRole() {
         return this.role;
     }
 
@@ -173,7 +173,7 @@ public class MessageItem extends ConversationRequestItem {
         return jsonReader.readObject(reader -> {
             String id = null;
             List<MessageContentPart> content = null;
-            MessageRole role = MessageRole.fromString("message");
+            ResponseMessageRole role = ResponseMessageRole.fromString("message");
             ItemParamStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -184,7 +184,7 @@ public class MessageItem extends ConversationRequestItem {
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> MessageContentPart.fromJson(reader1));
                 } else if ("role".equals(fieldName)) {
-                    role = MessageRole.fromString(reader.getString());
+                    role = ResponseMessageRole.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = ItemParamStatus.fromString(reader.getString());
                 } else {

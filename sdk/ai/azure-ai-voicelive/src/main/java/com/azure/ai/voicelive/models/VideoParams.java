@@ -45,7 +45,7 @@ public final class VideoParams implements JsonSerializable<VideoParams> {
      * Optional background settings for the video. Allows specifying either a solid color or an image URL.
      */
     @Generated
-    private Background background;
+    private VideoBackground background;
 
     /*
      * Group of Pictures (GOP) size for video encoding. Controls the interval between keyframes, affecting compression
@@ -156,7 +156,7 @@ public final class VideoParams implements JsonSerializable<VideoParams> {
      * @return the background value.
      */
     @Generated
-    public Background getBackground() {
+    public VideoBackground getBackground() {
         return this.background;
     }
 
@@ -168,7 +168,7 @@ public final class VideoParams implements JsonSerializable<VideoParams> {
      * @return the VideoParams object itself.
      */
     @Generated
-    public VideoParams setBackground(Background background) {
+    public VideoParams setBackground(VideoBackground background) {
         this.background = background;
         return this;
     }
@@ -238,7 +238,7 @@ public final class VideoParams implements JsonSerializable<VideoParams> {
                 } else if ("resolution".equals(fieldName)) {
                     deserializedVideoParams.resolution = VideoResolution.fromJson(reader);
                 } else if ("background".equals(fieldName)) {
-                    deserializedVideoParams.background = Background.fromJson(reader);
+                    deserializedVideoParams.background = VideoBackground.fromJson(reader);
                 } else if ("gop_size".equals(fieldName)) {
                     deserializedVideoParams.gopSize = reader.getNullable(JsonReader::getInt);
                 } else {

@@ -48,7 +48,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Creates an instance of FunctionCallItem class.
-     * 
+     *
      * @param name the name value to set.
      * @param callId the callId value to set.
      * @param arguments the arguments value to set.
@@ -62,7 +62,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -73,7 +73,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Get the name property: The name property.
-     * 
+     *
      * @return the name value.
      */
     @Generated
@@ -83,7 +83,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Get the callId property: The call_id property.
-     * 
+     *
      * @return the callId value.
      */
     @Generated
@@ -93,7 +93,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Get the arguments property: The arguments property.
-     * 
+     *
      * @return the arguments value.
      */
     @Generated
@@ -103,7 +103,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Get the status property: The status property.
-     * 
+     *
      * @return the status value.
      */
     @Generated
@@ -113,7 +113,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Set the status property: The status property.
-     * 
+     *
      * @param status the status value to set.
      * @return the FunctionCallItem object itself.
      */
@@ -151,7 +151,7 @@ public final class FunctionCallItem extends ConversationRequestItem {
 
     /**
      * Reads an instance of FunctionCallItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FunctionCallItem if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

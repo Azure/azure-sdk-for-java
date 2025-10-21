@@ -45,7 +45,7 @@ public final class AzureCustomVoice extends AzureVoice {
      * The custom_lexicon_url property.
      */
     @Generated
-    private String customLexiconUrl;
+    private String customLexiconUri;
 
     /*
      * The prefer_locales property.
@@ -149,24 +149,24 @@ public final class AzureCustomVoice extends AzureVoice {
     }
 
     /**
-     * Get the customLexiconUrl property: The custom_lexicon_url property.
+     * Get the customLexiconUri property: The custom_lexicon_url property.
      * 
-     * @return the customLexiconUrl value.
+     * @return the customLexiconUri value.
      */
     @Generated
-    public String getCustomLexiconUrl() {
-        return this.customLexiconUrl;
+    public String getCustomLexiconUri() {
+        return this.customLexiconUri;
     }
 
     /**
-     * Set the customLexiconUrl property: The custom_lexicon_url property.
+     * Set the customLexiconUri property: The custom_lexicon_url property.
      * 
-     * @param customLexiconUrl the customLexiconUrl value to set.
+     * @param customLexiconUri the customLexiconUri value to set.
      * @return the AzureCustomVoice object itself.
      */
     @Generated
-    public AzureCustomVoice setCustomLexiconUrl(String customLexiconUrl) {
-        this.customLexiconUrl = customLexiconUrl;
+    public AzureCustomVoice setCustomLexiconUri(String customLexiconUri) {
+        this.customLexiconUri = customLexiconUri;
         return this;
     }
 
@@ -313,7 +313,7 @@ public final class AzureCustomVoice extends AzureVoice {
         jsonWriter.writeStringField("endpoint_id", this.endpointId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("temperature", this.temperature);
-        jsonWriter.writeStringField("custom_lexicon_url", this.customLexiconUrl);
+        jsonWriter.writeStringField("custom_lexicon_url", this.customLexiconUri);
         jsonWriter.writeArrayField("prefer_locales", this.preferLocales,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("locale", this.locale);
@@ -340,7 +340,7 @@ public final class AzureCustomVoice extends AzureVoice {
             String endpointId = null;
             AzureVoiceType type = AzureVoiceType.AZURE_CUSTOM;
             Double temperature = null;
-            String customLexiconUrl = null;
+            String customLexiconUri = null;
             List<String> preferLocales = null;
             String locale = null;
             String style = null;
@@ -360,7 +360,7 @@ public final class AzureCustomVoice extends AzureVoice {
                 } else if ("temperature".equals(fieldName)) {
                     temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("custom_lexicon_url".equals(fieldName)) {
-                    customLexiconUrl = reader.getString();
+                    customLexiconUri = reader.getString();
                 } else if ("prefer_locales".equals(fieldName)) {
                     preferLocales = reader.readArray(reader1 -> reader1.getString());
                 } else if ("locale".equals(fieldName)) {
@@ -380,7 +380,7 @@ public final class AzureCustomVoice extends AzureVoice {
             AzureCustomVoice deserializedAzureCustomVoice = new AzureCustomVoice(name, endpointId);
             deserializedAzureCustomVoice.type = type;
             deserializedAzureCustomVoice.temperature = temperature;
-            deserializedAzureCustomVoice.customLexiconUrl = customLexiconUrl;
+            deserializedAzureCustomVoice.customLexiconUri = customLexiconUri;
             deserializedAzureCustomVoice.preferLocales = preferLocales;
             deserializedAzureCustomVoice.locale = locale;
             deserializedAzureCustomVoice.style = style;

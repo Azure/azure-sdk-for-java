@@ -27,7 +27,7 @@ public final class AssistantMessageItem extends MessageItem {
      * The role of the message origionator.
      */
     @Generated
-    private MessageRole role = MessageRole.ASSISTANT;
+    private ResponseMessageRole role = ResponseMessageRole.ASSISTANT;
 
     /**
      * Creates an instance of AssistantMessageItem class.
@@ -57,7 +57,7 @@ public final class AssistantMessageItem extends MessageItem {
      */
     @Generated
     @Override
-    public MessageRole getRole() {
+    public ResponseMessageRole getRole() {
         return this.role;
     }
 
@@ -111,7 +111,7 @@ public final class AssistantMessageItem extends MessageItem {
             List<MessageContentPart> content = null;
             String id = null;
             ItemParamStatus status = null;
-            MessageRole role = MessageRole.ASSISTANT;
+            ResponseMessageRole role = ResponseMessageRole.ASSISTANT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -123,7 +123,7 @@ public final class AssistantMessageItem extends MessageItem {
                 } else if ("status".equals(fieldName)) {
                     status = ItemParamStatus.fromString(reader.getString());
                 } else if ("role".equals(fieldName)) {
-                    role = MessageRole.fromString(reader.getString());
+                    role = ResponseMessageRole.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

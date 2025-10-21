@@ -15,7 +15,7 @@ import java.io.IOException;
  * A text content part for a response.
  */
 @Fluent
-public final class ResponseTextContentPart extends ContentPart {
+public final class ResponseTextContentPart extends VoiceLiveContentPart {
     /*
      * The type property.
      */

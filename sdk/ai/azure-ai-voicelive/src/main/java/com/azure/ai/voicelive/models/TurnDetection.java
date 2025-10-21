@@ -77,13 +77,13 @@ public class TurnDetection implements JsonSerializable<TurnDetection> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("server_vad".equals(discriminatorValue)) {
-                    return ServerVad.fromJson(readerToUse.reset());
+                    return ServerVadTurnDetection.fromJson(readerToUse.reset());
                 } else if ("azure_semantic_vad".equals(discriminatorValue)) {
-                    return AzureSemanticVad.fromJson(readerToUse.reset());
+                    return AzureSemanticVadTurnDetection.fromJson(readerToUse.reset());
                 } else if ("azure_semantic_vad_en".equals(discriminatorValue)) {
-                    return AzureSemanticVadEn.fromJson(readerToUse.reset());
+                    return AzureSemanticVadTurnDetectionEn.fromJson(readerToUse.reset());
                 } else if ("azure_semantic_vad_multilingual".equals(discriminatorValue)) {
-                    return AzureSemanticVadMultilingual.fromJson(readerToUse.reset());
+                    return AzureSemanticVadTurnDetectionMultilingual.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

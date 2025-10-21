@@ -21,7 +21,7 @@ public class ResponseStatusDetails implements JsonSerializable<ResponseStatusDet
      * The type property.
      */
     @Generated
-    private ResponseStatus type = ResponseStatus.fromString("ResponseStatusDetails");
+    private SessionResponseStatus type = SessionResponseStatus.fromString("ResponseStatusDetails");
 
     /**
      * Creates an instance of ResponseStatusDetails class.
@@ -36,7 +36,7 @@ public class ResponseStatusDetails implements JsonSerializable<ResponseStatusDet
      * @return the type value.
      */
     @Generated
-    public ResponseStatus getType() {
+    public SessionResponseStatus getType() {
         return this.type;
     }
 
@@ -98,7 +98,7 @@ public class ResponseStatusDetails implements JsonSerializable<ResponseStatusDet
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedResponseStatusDetails.type = ResponseStatus.fromString(reader.getString());
+                    deserializedResponseStatusDetails.type = SessionResponseStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

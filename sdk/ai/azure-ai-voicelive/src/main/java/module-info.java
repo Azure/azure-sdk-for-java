@@ -12,6 +12,5 @@ module com.azure.ai.voicelive {
     exports com.azure.ai.voicelive;
     exports com.azure.ai.voicelive.models;
 
-    opens com.azure.ai.voicelive to com.azure.core;
     opens com.azure.ai.voicelive.models to com.azure.core;
 }

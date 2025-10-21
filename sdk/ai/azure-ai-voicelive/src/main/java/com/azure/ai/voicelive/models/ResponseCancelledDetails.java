@@ -20,7 +20,7 @@ public final class ResponseCancelledDetails extends ResponseStatusDetails {
      * The type property.
      */
     @Generated
-    private ResponseStatus type = ResponseStatus.CANCELLED;
+    private SessionResponseStatus type = SessionResponseStatus.CANCELLED;
 
     /*
      * The reason property.
@@ -45,7 +45,7 @@ public final class ResponseCancelledDetails extends ResponseStatusDetails {
      */
     @Generated
     @Override
-    public ResponseStatus getType() {
+    public SessionResponseStatus getType() {
         return this.type;
     }
 
@@ -84,7 +84,7 @@ public final class ResponseCancelledDetails extends ResponseStatusDetails {
     public static ResponseCancelledDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResponseCancelledDetailsReason reason = null;
-            ResponseStatus type = ResponseStatus.CANCELLED;
+            SessionResponseStatus type = SessionResponseStatus.CANCELLED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,7 +92,7 @@ public final class ResponseCancelledDetails extends ResponseStatusDetails {
                 if ("reason".equals(fieldName)) {
                     reason = ResponseCancelledDetailsReason.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    type = ResponseStatus.fromString(reader.getString());
+                    type = SessionResponseStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

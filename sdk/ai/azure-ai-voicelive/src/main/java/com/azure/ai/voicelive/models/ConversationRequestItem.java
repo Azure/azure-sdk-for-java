@@ -38,7 +38,7 @@ public class ConversationRequestItem implements JsonSerializable<ConversationReq
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -48,7 +48,7 @@ public class ConversationRequestItem implements JsonSerializable<ConversationReq
 
     /**
      * Get the id property: The id property.
-     * 
+     *
      * @return the id value.
      */
     @Generated
@@ -58,7 +58,7 @@ public class ConversationRequestItem implements JsonSerializable<ConversationReq
 
     /**
      * Set the id property: The id property.
-     * 
+     *
      * @param id the id value to set.
      * @return the ConversationRequestItem object itself.
      */
@@ -82,7 +82,7 @@ public class ConversationRequestItem implements JsonSerializable<ConversationReq
 
     /**
      * Reads an instance of ConversationRequestItem from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConversationRequestItem if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
