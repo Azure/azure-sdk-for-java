@@ -3,6 +3,7 @@
 ### 4.75.0-beta.1 (Unreleased)
 
 #### Features Added
+* Enabled `Cosmos(Async)Client` to support per-partition automatic failover dynamically without the need to restart the application. - See [PR 46477](https://github.com/Azure/azure-sdk-for-java/pull/46477)
 * AAD Auth: Added a fallback mechanism for AAD audience scope. - [PR 46637](https://github.com/Azure/azure-sdk-for-java/pull/46637)
 
 #### Breaking Changes
@@ -25,6 +26,7 @@
 
 #### Features Added
 * Added `ThroughputBucket` support for throughput control. - [PR 46042](https://github.com/Azure/azure-sdk-for-java/pull/46042)
+* AAD Auth: Adds a fallback mechanism for AAD audience scope. - [PR 46637](https://github.com/Azure/azure-sdk-for-java/pull/46637)
 
 #### Bugs Fixed
 * Fixed 404/1002 for query when container recreated with same name. - [PR 45930](https://github.com/Azure/azure-sdk-for-java/pull/45930)
