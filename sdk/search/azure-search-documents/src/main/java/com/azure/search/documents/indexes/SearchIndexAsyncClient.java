@@ -1605,8 +1605,7 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
         MatchConditions matchConditions) {
-        return withContext(
-            context -> createOrUpdateKnowledgeBaseWithResponse(knowledgeBase, matchConditions, context));
+        return withContext(context -> createOrUpdateKnowledgeBaseWithResponse(knowledgeBase, matchConditions, context));
     }
 
     Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
