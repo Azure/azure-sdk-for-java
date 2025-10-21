@@ -1,12 +1,18 @@
 # Release History
 
-## 12.27.0-beta.2 (Unreleased)
+## 12.27.0 (2025-10-21)
 
 ### Features Added
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added `QueueProperties.ApproximateMessagesCountLong` to replace `QueueProperties.ApproximateMessagesCount`. This property will correctly handle approximate message counts greater than max int.
+- Added support for service version 2025-11-05.
 
-### Breaking Changes
+### Other Changes
 
-### Bugs Fixed
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
 
 ## 12.26.3 (2025-09-25)
 
@@ -53,7 +59,7 @@
 ## 12.27.0-beta.1 (2025-07-09)
 
 ### Features Added
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added `QueueProperties.ApproximateMessagesCountLong` to replace `QueueProperties.ApproximateMessagesCount`.  This property will correctly handle approximate message counts greater than max int.
 - Added support for service version 2025-11-05.
 
