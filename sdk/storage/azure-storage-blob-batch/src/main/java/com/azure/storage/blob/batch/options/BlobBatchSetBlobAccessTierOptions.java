@@ -27,7 +27,7 @@ public class BlobBatchSetBlobAccessTierOptions {
     /**
      * Creates a new instance of {@link BlobBatchSetBlobAccessTierOptions}.
      *
-     * @param blobUrl Url of the blob to set access tier. Blob and container names must be encoded to UTF-8.
+     * @param blobUrl Url of the blob to set access tier. Blob names must be encoded to UTF-8.
      * @param tier {@link AccessTier} to set on each blob.
      * @throws NullPointerException If {@code blobUrl} or {@code tier} is null.
      */
