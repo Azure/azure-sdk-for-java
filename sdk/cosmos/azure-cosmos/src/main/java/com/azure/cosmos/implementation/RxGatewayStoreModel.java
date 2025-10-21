@@ -24,6 +24,8 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -475,18 +477,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
             if (!(unwrappedException instanceof Exception)) {
                 // fatal error
-                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                logger.error("Unexpected failure " + unwrappedException.getMessage(), unwrappedException);
                 return Mono.error(unwrappedException);
             }
 
             Exception exception = (Exception) unwrappedException;
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
-                // wrap in CosmosException
-                logger.error("Network failure", exception);
-
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
+
+                    // wrap in CosmosException
+                    logger.error("Network failure", exception);
+
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {
                         statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
                     } else {
@@ -497,6 +500,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
+                logger.error("Non-network failure", exception);
                 dce = (CosmosException) exception;
             }
 
@@ -547,6 +551,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
             if (httpRequest.reactorNettyRequestRecord() != null) {
 
+                OperationCancelledException oce = new  OperationCancelledException("", httpRequest.uri());
+
                 ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
 
                 RequestTimeline requestTimeline = reactorNettyRequestRecord.takeTimelineSnapshot();
@@ -555,6 +561,35 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 GatewayRequestTimelineContext gatewayRequestTimelineContext = new GatewayRequestTimelineContext(requestTimeline, transportRequestId);
 
                 request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
+
+                if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
+
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
+                        request.requestContext.getCrossRegionAvailabilityContext();
+
+                    if (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled() && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()) {
+
+                        BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                        ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .setFaultInjectionRuleId(
+                                oce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(transportRequestId));
+
+                        ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .setFaultInjectionEvaluationResults(
+                                oce,
+                                request.faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(transportRequestId));
+
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, oce, globalEndpointManager);
+                    }
+                }
             }
         });
     }
