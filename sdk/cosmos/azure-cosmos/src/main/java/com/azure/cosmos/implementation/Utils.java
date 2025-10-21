@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -44,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -813,5 +813,20 @@ public class Utils {
         } else {
             return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
         }
+    }
+
+    public static CosmosException createCosmosException(int statusCode, int substatusCode, Exception nestedException, Map<String, String> responseHeaders) {
+
+        // TODO: Review adding resource address
+        CosmosException exceptionToThrow = BridgeInternal.createCosmosException(
+            nestedException.getMessage(),
+            nestedException,
+            responseHeaders,
+            statusCode,
+            Strings.Emtpy);
+
+        BridgeInternal.setSubStatusCode(exceptionToThrow, substatusCode);
+
+        return exceptionToThrow;
     }
 }
