@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ScriptExecutionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ScriptExecutions_CreateOrUpdate.json
+     * x-ms-original-file: 2024-09-01/ScriptExecutions_CreateOrUpdate.json
      */
     /**
      * Sample code: ScriptExecutions_CreateOrUpdate.

@@ -20,7 +20,7 @@ public final class ClustersListZonesWithResponseMockTests {
     @Test
     public void testListZonesWithResponse() throws Exception {
         String responseStr
-            = "{\"zones\":[{\"hosts\":[\"gqjxgpnrhgovfgp\",\"kqmhhaowjr\",\"zvuporqzdfuydz\"],\"zone\":\"fvxcnqmxqpswo\"},{\"hosts\":[\"khlg\",\"dhbemzqkzszu\",\"iwtglxxhljfpg\"],\"zone\":\"crmnzhrgmqgjs\"},{\"hosts\":[\"qcbfrmbodths\",\"qgvriibakcla\",\"jfrnxousxauzlwv\",\"gmwohqfzizvu\"],\"zone\":\"mk\"},{\"hosts\":[\"thnwpzte\"],\"zone\":\"vmribiat\"}]}";
+            = "{\"zones\":[{\"hosts\":[\"cof\"],\"zone\":\"e\"},{\"hosts\":[\"hgbjkvrelje\",\"murvzm\",\"ov\"],\"zone\":\"nashcxlp\"},{\"hosts\":[\"rbdkelvidiz\",\"zsdbccxjmon\"],\"zone\":\"gnwncypuuwwlt\"},{\"hosts\":[\"jctzenkei\",\"zzhmkd\",\"svflyhbxcudch\"],\"zone\":\"srboldforobw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ClustersListZonesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterZoneList response = manager.clusters()
-            .listZonesWithResponse("zvuqdflvon", "yp", "pubcpzgpxtivhjk", com.azure.core.util.Context.NONE)
+            .listZonesWithResponse("khgn", "nzonzl", "piqywnc", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -12,8 +12,8 @@ public final class ProvisionedNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedNetworkListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"addressPrefix\":\"slyzrpzbchckqq\",\"networkType\":\"vsan\"},\"id\":\"xiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"},{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"zyh\",\"networkType\":\"vmotion\"},\"id\":\"mypyynpcdpu\",\"name\":\"nzgmwznmabik\",\"type\":\"sorgj\"}],\"nextLink\":\"bldtlww\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"addressPrefix\":\"ygmi\",\"networkType\":\"hcxUplink\"},\"id\":\"zdnds\",\"name\":\"gnayqigynduh\",\"type\":\"vhqlkthumaqo\"}],\"nextLink\":\"gycdu\"}")
             .toObject(ProvisionedNetworkListResult.class);
-        Assertions.assertEquals("bldtlww", model.nextLink());
+        Assertions.assertEquals("gycdu", model.nextLink());
     }
 }

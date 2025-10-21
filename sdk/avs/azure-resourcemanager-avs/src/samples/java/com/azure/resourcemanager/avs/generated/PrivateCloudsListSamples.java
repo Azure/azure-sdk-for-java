@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class PrivateCloudsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_ListInSubscription.json
+     * x-ms-original-file: 2024-09-01/PrivateClouds_ListInSubscription.json
      */
     /**
      * Sample code: PrivateClouds_ListInSubscription.
@@ -21,7 +21,7 @@ public final class PrivateCloudsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateClouds_ListInSubscription_Stretched.json
+     * x-ms-original-file: 2024-09-01/PrivateClouds_ListInSubscription_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_ListInSubscription_Stretched.

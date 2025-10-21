@@ -27,8 +27,7 @@ public final class WorkloadNetworksDeletePublicIpMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.workloadNetworks()
-            .deletePublicIp("zlehgcvkbcknjolg", "y", "xpvelszerqzevxo", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deletePublicIp("dwwnl", "a", "wxudgn", com.azure.core.util.Context.NONE);
 
     }
 }

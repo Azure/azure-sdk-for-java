@@ -13,21 +13,21 @@ public final class ManagementClusterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementCluster model = BinaryData.fromString(
-            "{\"clusterSize\":1748485864,\"provisioningState\":\"Cancelled\",\"clusterId\":1250108412,\"hosts\":[\"agxti\",\"qdxbxwa\",\"bogqxndlkzgxhu\"],\"vsanDatastoreName\":\"plbpodxun\"}")
+            "{\"clusterSize\":1098465372,\"provisioningState\":\"Succeeded\",\"clusterId\":1151262260,\"hosts\":[\"hjdauwhvylwz\",\"tdhxujznbmpowuwp\"],\"vsanDatastoreName\":\"qlveualupjmkh\"}")
             .toObject(ManagementCluster.class);
-        Assertions.assertEquals(1748485864, model.clusterSize());
-        Assertions.assertEquals("agxti", model.hosts().get(0));
-        Assertions.assertEquals("plbpodxun", model.vsanDatastoreName());
+        Assertions.assertEquals(1098465372, model.clusterSize());
+        Assertions.assertEquals("hjdauwhvylwz", model.hosts().get(0));
+        Assertions.assertEquals("qlveualupjmkh", model.vsanDatastoreName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementCluster model = new ManagementCluster().withClusterSize(1748485864)
-            .withHosts(Arrays.asList("agxti", "qdxbxwa", "bogqxndlkzgxhu"))
-            .withVsanDatastoreName("plbpodxun");
+        ManagementCluster model = new ManagementCluster().withClusterSize(1098465372)
+            .withHosts(Arrays.asList("hjdauwhvylwz", "tdhxujznbmpowuwp"))
+            .withVsanDatastoreName("qlveualupjmkh");
         model = BinaryData.fromObject(model).toObject(ManagementCluster.class);
-        Assertions.assertEquals(1748485864, model.clusterSize());
-        Assertions.assertEquals("agxti", model.hosts().get(0));
-        Assertions.assertEquals("plbpodxun", model.vsanDatastoreName());
+        Assertions.assertEquals(1098465372, model.clusterSize());
+        Assertions.assertEquals("hjdauwhvylwz", model.hosts().get(0));
+        Assertions.assertEquals("qlveualupjmkh", model.vsanDatastoreName());
     }
 }

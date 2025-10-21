@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.AdminCredentialsInner;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
-import com.azure.resourcemanager.avs.fluent.models.VcfLicenseInner;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 
 /**
@@ -402,32 +401,4 @@ public interface PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AdminCredentialsInner listAdminCredentials(String resourceGroupName, String privateCloudName);
-
-    /**
-     * Get the license for the private cloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the license for the private cloud along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VcfLicenseInner> getVcfLicenseWithResponse(String resourceGroupName, String privateCloudName,
-        Context context);
-
-    /**
-     * Get the license for the private cloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the license for the private cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VcfLicenseInner getVcfLicense(String resourceGroupName, String privateCloudName);
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
  */
 public final class VirtualMachinesRestrictMovementSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualMachines_RestrictMovement.json
+     * x-ms-original-file: 2024-09-01/VirtualMachines_RestrictMovement.json
      */
     /**
      * Sample code: VirtualMachines_RestrictMovement.

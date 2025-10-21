@@ -26,7 +26,7 @@ import java.util.List;
  * The properties of a private cloud resource.
  */
 @Fluent
-public final class PrivateCloudPropertiesInner implements JsonSerializable<PrivateCloudPropertiesInner> {
+public final class PrivateCloudProperties implements JsonSerializable<PrivateCloudProperties> {
     /*
      * The default cluster used for management
      */
@@ -144,15 +144,10 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      */
     private DnsZoneType dnsZoneType;
 
-    /*
-     * The private cloud license
-     */
-    private VcfLicenseInner vcfLicense;
-
     /**
-     * Creates an instance of PrivateCloudPropertiesInner class.
+     * Creates an instance of PrivateCloudProperties class.
      */
-    public PrivateCloudPropertiesInner() {
+    public PrivateCloudProperties() {
     }
 
     /**
@@ -168,9 +163,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the managementCluster property: The default cluster used for management.
      * 
      * @param managementCluster the managementCluster value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withManagementCluster(ManagementCluster managementCluster) {
+    public PrivateCloudProperties withManagementCluster(ManagementCluster managementCluster) {
         this.managementCluster = managementCluster;
         return this;
     }
@@ -188,9 +183,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the internet property: Connectivity to internet is enabled or disabled.
      * 
      * @param internet the internet value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withInternet(InternetEnum internet) {
+    public PrivateCloudProperties withInternet(InternetEnum internet) {
         this.internet = internet;
         return this;
     }
@@ -208,9 +203,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the identitySources property: vCenter Single Sign On Identity Sources.
      * 
      * @param identitySources the identitySources value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withIdentitySources(List<IdentitySource> identitySources) {
+    public PrivateCloudProperties withIdentitySources(List<IdentitySource> identitySources) {
         this.identitySources = identitySources;
         return this;
     }
@@ -228,9 +223,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the availability property: Properties describing how the cloud is distributed across availability zones.
      * 
      * @param availability the availability value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withAvailability(AvailabilityProperties availability) {
+    public PrivateCloudProperties withAvailability(AvailabilityProperties availability) {
         this.availability = availability;
         return this;
     }
@@ -248,9 +243,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the encryption property: Customer managed key encryption, can be enabled or disabled.
      * 
      * @param encryption the encryption value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withEncryption(Encryption encryption) {
+    public PrivateCloudProperties withEncryption(Encryption encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -276,9 +271,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * (A.B.C.D/X).
      * 
      * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+    public PrivateCloudProperties withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
         this.extendedNetworkBlocks = extendedNetworkBlocks;
         return this;
     }
@@ -305,9 +300,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the circuit property: An ExpressRoute Circuit.
      * 
      * @param circuit the circuit value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withCircuit(Circuit circuit) {
+    public PrivateCloudProperties withCircuit(Circuit circuit) {
         this.circuit = circuit;
         return this;
     }
@@ -338,9 +333,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * A,B,C,D are between 0 and 255, and X is between 0 and 22.
      * 
      * @param networkBlock the networkBlock value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withNetworkBlock(String networkBlock) {
+    public PrivateCloudProperties withNetworkBlock(String networkBlock) {
         this.networkBlock = networkBlock;
         return this;
     }
@@ -385,9 +380,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
      * 
      * @param vcenterPassword the vcenterPassword value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withVcenterPassword(String vcenterPassword) {
+    public PrivateCloudProperties withVcenterPassword(String vcenterPassword) {
         this.vcenterPassword = vcenterPassword;
         return this;
     }
@@ -405,9 +400,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
      * 
      * @param nsxtPassword the nsxtPassword value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withNsxtPassword(String nsxtPassword) {
+    public PrivateCloudProperties withNsxtPassword(String nsxtPassword) {
         this.nsxtPassword = nsxtPassword;
         return this;
     }
@@ -454,9 +449,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * stretched private cloud.
      * 
      * @param secondaryCircuit the secondaryCircuit value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withSecondaryCircuit(Circuit secondaryCircuit) {
+    public PrivateCloudProperties withSecondaryCircuit(Circuit secondaryCircuit) {
         this.secondaryCircuit = secondaryCircuit;
         return this;
     }
@@ -485,9 +480,9 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the virtualNetworkId property: Azure resource ID of the virtual network.
      * 
      * @param virtualNetworkId the virtualNetworkId value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withVirtualNetworkId(String virtualNetworkId) {
+    public PrivateCloudProperties withVirtualNetworkId(String virtualNetworkId) {
         this.virtualNetworkId = virtualNetworkId;
         return this;
     }
@@ -505,30 +500,10 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
      * Set the dnsZoneType property: The type of DNS zone to use.
      * 
      * @param dnsZoneType the dnsZoneType value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
+     * @return the PrivateCloudProperties object itself.
      */
-    public PrivateCloudPropertiesInner withDnsZoneType(DnsZoneType dnsZoneType) {
+    public PrivateCloudProperties withDnsZoneType(DnsZoneType dnsZoneType) {
         this.dnsZoneType = dnsZoneType;
-        return this;
-    }
-
-    /**
-     * Get the vcfLicense property: The private cloud license.
-     * 
-     * @return the vcfLicense value.
-     */
-    public VcfLicenseInner vcfLicense() {
-        return this.vcfLicense;
-    }
-
-    /**
-     * Set the vcfLicense property: The private cloud license.
-     * 
-     * @param vcfLicense the vcfLicense value to set.
-     * @return the PrivateCloudPropertiesInner object itself.
-     */
-    public PrivateCloudPropertiesInner withVcfLicense(VcfLicenseInner vcfLicense) {
-        this.vcfLicense = vcfLicense;
         return this;
     }
 
@@ -553,84 +528,81 @@ public final class PrivateCloudPropertiesInner implements JsonSerializable<Priva
         jsonWriter.writeJsonField("secondaryCircuit", this.secondaryCircuit);
         jsonWriter.writeStringField("virtualNetworkId", this.virtualNetworkId);
         jsonWriter.writeStringField("dnsZoneType", this.dnsZoneType == null ? null : this.dnsZoneType.toString());
-        jsonWriter.writeJsonField("vcfLicense", this.vcfLicense);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of PrivateCloudPropertiesInner from the JsonReader.
+     * Reads an instance of PrivateCloudProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateCloudPropertiesInner if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of PrivateCloudProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PrivateCloudPropertiesInner.
+     * @throws IOException If an error occurs while reading the PrivateCloudProperties.
      */
-    public static PrivateCloudPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+    public static PrivateCloudProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PrivateCloudPropertiesInner deserializedPrivateCloudPropertiesInner = new PrivateCloudPropertiesInner();
+            PrivateCloudProperties deserializedPrivateCloudProperties = new PrivateCloudProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("managementCluster".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.managementCluster = ManagementCluster.fromJson(reader);
+                    deserializedPrivateCloudProperties.managementCluster = ManagementCluster.fromJson(reader);
                 } else if ("networkBlock".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.networkBlock = reader.getString();
+                    deserializedPrivateCloudProperties.networkBlock = reader.getString();
                 } else if ("internet".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.internet = InternetEnum.fromString(reader.getString());
+                    deserializedPrivateCloudProperties.internet = InternetEnum.fromString(reader.getString());
                 } else if ("identitySources".equals(fieldName)) {
                     List<IdentitySource> identitySources
                         = reader.readArray(reader1 -> IdentitySource.fromJson(reader1));
-                    deserializedPrivateCloudPropertiesInner.identitySources = identitySources;
+                    deserializedPrivateCloudProperties.identitySources = identitySources;
                 } else if ("availability".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.availability = AvailabilityProperties.fromJson(reader);
+                    deserializedPrivateCloudProperties.availability = AvailabilityProperties.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.encryption = Encryption.fromJson(reader);
+                    deserializedPrivateCloudProperties.encryption = Encryption.fromJson(reader);
                 } else if ("extendedNetworkBlocks".equals(fieldName)) {
                     List<String> extendedNetworkBlocks = reader.readArray(reader1 -> reader1.getString());
-                    deserializedPrivateCloudPropertiesInner.extendedNetworkBlocks = extendedNetworkBlocks;
+                    deserializedPrivateCloudProperties.extendedNetworkBlocks = extendedNetworkBlocks;
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.provisioningState
+                    deserializedPrivateCloudProperties.provisioningState
                         = PrivateCloudProvisioningState.fromString(reader.getString());
                 } else if ("circuit".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.circuit = Circuit.fromJson(reader);
+                    deserializedPrivateCloudProperties.circuit = Circuit.fromJson(reader);
                 } else if ("endpoints".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.endpoints = Endpoints.fromJson(reader);
+                    deserializedPrivateCloudProperties.endpoints = Endpoints.fromJson(reader);
                 } else if ("managementNetwork".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.managementNetwork = reader.getString();
+                    deserializedPrivateCloudProperties.managementNetwork = reader.getString();
                 } else if ("provisioningNetwork".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.provisioningNetwork = reader.getString();
+                    deserializedPrivateCloudProperties.provisioningNetwork = reader.getString();
                 } else if ("vmotionNetwork".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.vmotionNetwork = reader.getString();
+                    deserializedPrivateCloudProperties.vmotionNetwork = reader.getString();
                 } else if ("vcenterPassword".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.vcenterPassword = reader.getString();
+                    deserializedPrivateCloudProperties.vcenterPassword = reader.getString();
                 } else if ("nsxtPassword".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.nsxtPassword = reader.getString();
+                    deserializedPrivateCloudProperties.nsxtPassword = reader.getString();
                 } else if ("vcenterCertificateThumbprint".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.vcenterCertificateThumbprint = reader.getString();
+                    deserializedPrivateCloudProperties.vcenterCertificateThumbprint = reader.getString();
                 } else if ("nsxtCertificateThumbprint".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.nsxtCertificateThumbprint = reader.getString();
+                    deserializedPrivateCloudProperties.nsxtCertificateThumbprint = reader.getString();
                 } else if ("externalCloudLinks".equals(fieldName)) {
                     List<String> externalCloudLinks = reader.readArray(reader1 -> reader1.getString());
-                    deserializedPrivateCloudPropertiesInner.externalCloudLinks = externalCloudLinks;
+                    deserializedPrivateCloudProperties.externalCloudLinks = externalCloudLinks;
                 } else if ("secondaryCircuit".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.secondaryCircuit = Circuit.fromJson(reader);
+                    deserializedPrivateCloudProperties.secondaryCircuit = Circuit.fromJson(reader);
                 } else if ("nsxPublicIpQuotaRaised".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.nsxPublicIpQuotaRaised
+                    deserializedPrivateCloudProperties.nsxPublicIpQuotaRaised
                         = NsxPublicIpQuotaRaisedEnum.fromString(reader.getString());
                 } else if ("virtualNetworkId".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.virtualNetworkId = reader.getString();
+                    deserializedPrivateCloudProperties.virtualNetworkId = reader.getString();
                 } else if ("dnsZoneType".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.dnsZoneType = DnsZoneType.fromString(reader.getString());
-                } else if ("vcfLicense".equals(fieldName)) {
-                    deserializedPrivateCloudPropertiesInner.vcfLicense = VcfLicenseInner.fromJson(reader);
+                    deserializedPrivateCloudProperties.dnsZoneType = DnsZoneType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPrivateCloudPropertiesInner;
+            return deserializedPrivateCloudProperties;
         });
     }
 }

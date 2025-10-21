@@ -12,8 +12,8 @@ public final class WorkloadNetworkGatewayInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"wmbtmvpdvjdhtt\",\"path\":\"efedxihchrphkm\"},\"id\":\"jdqnsdfzpbgt\",\"name\":\"kylkdghrj\",\"type\":\"uutlwxezwzhok\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"mag\",\"path\":\"cyohpfkyrkdbd\"},\"id\":\"ogsjkmnwqjno\",\"name\":\"aiy\",\"type\":\"ddviacegfnmntfpm\"}")
             .toObject(WorkloadNetworkGatewayInner.class);
-        Assertions.assertEquals("wmbtmvpdvjdhtt", model.displayName());
+        Assertions.assertEquals("mag", model.displayName());
     }
 }

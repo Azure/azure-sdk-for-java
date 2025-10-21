@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ScriptExecutionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ScriptExecutions_Get.json
+     * x-ms-original-file: 2024-09-01/ScriptExecutions_Get.json
      */
     /**
      * Sample code: ScriptExecutions_Get.

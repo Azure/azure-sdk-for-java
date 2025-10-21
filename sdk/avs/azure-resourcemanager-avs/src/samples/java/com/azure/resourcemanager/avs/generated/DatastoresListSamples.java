@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Datastores_List.json
+     * x-ms-original-file: 2024-09-01/Datastores_List.json
      */
     /**
      * Sample code: Datastores_List.

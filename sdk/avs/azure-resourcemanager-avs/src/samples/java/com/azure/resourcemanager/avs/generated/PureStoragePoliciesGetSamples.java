@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class PureStoragePoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PureStoragePolicies_Get.json
+     * x-ms-original-file: 2024-09-01/PureStoragePolicies_Get.json
      */
     /**
      * Sample code: PureStoragePolicies_Get.

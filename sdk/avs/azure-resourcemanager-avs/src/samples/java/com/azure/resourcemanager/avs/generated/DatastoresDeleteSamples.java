@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class DatastoresDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Datastores_Delete.json
+     * x-ms-original-file: 2024-09-01/Datastores_Delete.json
      */
     /**
      * Sample code: Datastores_Delete.

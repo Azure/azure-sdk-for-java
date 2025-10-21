@@ -23,7 +23,7 @@ public final class ClustersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterSize\":596306222,\"provisioningState\":\"Deleting\",\"clusterId\":1901330199,\"hosts\":[\"rwsdp\",\"ra\"],\"vsanDatastoreName\":\"vzbglbyvi\"},\"sku\":{\"name\":\"tctbrxkjzwrgxffm\",\"tier\":\"Basic\",\"size\":\"fbkgozxwopdby\",\"family\":\"izqaclnapxbiyg\",\"capacity\":966053961},\"id\":\"knfsmfcttuxuuyil\",\"name\":\"lq\",\"type\":\"iquvrehm\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterSize\":1725340246,\"provisioningState\":\"Updating\",\"clusterId\":1837991897,\"hosts\":[\"ibph\",\"qzmiza\"],\"vsanDatastoreName\":\"kan\"},\"sku\":{\"name\":\"jpdn\",\"tier\":\"Free\",\"size\":\"joylh\",\"family\":\"muoyxprimr\",\"capacity\":2035956497},\"id\":\"eecjmeis\",\"name\":\"stvasylwxdzaumw\",\"type\":\"oohgu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ClustersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Cluster> response
-            = manager.clusters().list("qxpxiwfcngjsaa", "iixtmkzj", com.azure.core.util.Context.NONE);
+            = manager.clusters().list("qtgdqohmcwsl", "riz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tctbrxkjzwrgxffm", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().sku().tier());
-        Assertions.assertEquals("fbkgozxwopdby", response.iterator().next().sku().size());
-        Assertions.assertEquals("izqaclnapxbiyg", response.iterator().next().sku().family());
-        Assertions.assertEquals(966053961, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(596306222, response.iterator().next().clusterSize());
-        Assertions.assertEquals("rwsdp", response.iterator().next().hosts().get(0));
-        Assertions.assertEquals("vzbglbyvi", response.iterator().next().vsanDatastoreName());
+        Assertions.assertEquals("jpdn", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
+        Assertions.assertEquals("joylh", response.iterator().next().sku().size());
+        Assertions.assertEquals("muoyxprimr", response.iterator().next().sku().family());
+        Assertions.assertEquals(2035956497, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(1725340246, response.iterator().next().clusterSize());
+        Assertions.assertEquals("ibph", response.iterator().next().hosts().get(0));
+        Assertions.assertEquals("kan", response.iterator().next().vsanDatastoreName());
     }
 }

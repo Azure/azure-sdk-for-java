@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksUpdateSegmentsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_UpdateSegments.json
+     * x-ms-original-file: 2024-09-01/WorkloadNetworks_UpdateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateSegments.

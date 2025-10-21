@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class LocationsCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01/Locations_CheckQuotaAvailability.json
+     * x-ms-original-file: 2024-09-01/Locations_CheckQuotaAvailability.json
      */
     /**
      * Sample code: Locations_CheckQuotaAvailability.

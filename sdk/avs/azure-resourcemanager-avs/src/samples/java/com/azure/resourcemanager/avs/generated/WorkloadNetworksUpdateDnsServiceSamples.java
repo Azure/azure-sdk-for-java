@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksUpdateDnsServiceSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_UpdateDnsService.json
+     * x-ms-original-file: 2024-09-01/WorkloadNetworks_UpdateDnsService.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsService.

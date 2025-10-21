@@ -117,25 +117,11 @@ public interface AvsClient {
     IscsiPathsClient getIscsiPaths();
 
     /**
-     * Gets the LicensesClient object to access its operations.
-     * 
-     * @return the LicensesClient object.
-     */
-    LicensesClient getLicenses();
-
-    /**
      * Gets the LocationsClient object to access its operations.
      * 
      * @return the LocationsClient object.
      */
     LocationsClient getLocations();
-
-    /**
-     * Gets the MaintenancesClient object to access its operations.
-     * 
-     * @return the MaintenancesClient object.
-     */
-    MaintenancesClient getMaintenances();
 
     /**
      * Gets the PlacementPoliciesClient object to access its operations.
@@ -185,13 +171,6 @@ public interface AvsClient {
      * @return the ScriptPackagesClient object.
      */
     ScriptPackagesClient getScriptPackages();
-
-    /**
-     * Gets the ServiceComponentsClient object to access its operations.
-     * 
-     * @return the ServiceComponentsClient object.
-     */
-    ServiceComponentsClient getServiceComponents();
 
     /**
      * Gets the SkusClient object to access its operations.

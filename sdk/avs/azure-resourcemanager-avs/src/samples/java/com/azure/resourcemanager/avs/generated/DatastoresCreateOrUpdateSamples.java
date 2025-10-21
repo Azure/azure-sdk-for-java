@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.NetAppVolume;
  */
 public final class DatastoresCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Datastores_CreateOrUpdate.json
+     * x-ms-original-file: 2024-09-01/Datastores_CreateOrUpdate.json
      */
     /**
      * Sample code: Datastores_CreateOrUpdate.

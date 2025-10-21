@@ -13,13 +13,13 @@ public final class WorkloadNetworkPortMirroringListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPortMirroringList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"ifhpf\",\"direction\":\"EGRESS\",\"source\":\"vgcxtx\",\"destination\":\"sheafid\",\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":9216614435431791768},\"id\":\"kssjhoiftxfk\",\"name\":\"wegprh\",\"type\":\"tillucbiqtg\"},{\"properties\":{\"displayName\":\"hm\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"drizetpwbr\",\"destination\":\"llibphbqzmizak\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":907050390570708707},\"id\":\"jzhajoy\",\"name\":\"hjlmu\",\"type\":\"y\"}],\"nextLink\":\"rimrs\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"uvsj\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"myst\",\"destination\":\"uqypfcvle\",\"status\":\"SUCCESS\",\"provisioningState\":\"Updating\",\"revision\":9009611952751182933},\"id\":\"jbabwidf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"},{\"properties\":{\"displayName\":\"rihpfhoq\",\"direction\":\"EGRESS\",\"source\":\"wdaomdjvlpjxxkzb\",\"destination\":\"sgeivsiy\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":5725396811649484374},\"id\":\"onbzoggculapzwy\",\"name\":\"pgogtqxepny\",\"type\":\"b\"},{\"properties\":{\"displayName\":\"jlyjtlvofq\",\"direction\":\"EGRESS\",\"source\":\"cib\",\"destination\":\"mowuxrk\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":5188181400019760142},\"id\":\"iivwzjbhyzsxjrka\",\"name\":\"btrnegvm\",\"type\":\"vuqeqvldspast\"},{\"properties\":{\"displayName\":\"kdmflvestmjlx\",\"direction\":\"EGRESS\",\"source\":\"ozapeew\",\"destination\":\"pxlktwkuziycsl\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":8005330080335789430},\"id\":\"tyh\",\"name\":\"tqedcgzulwm\",\"type\":\"rqzz\"}],\"nextLink\":\"jvpglydzgk\"}")
             .toObject(WorkloadNetworkPortMirroringList.class);
-        Assertions.assertEquals("ifhpf", model.value().get(0).displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, model.value().get(0).direction());
-        Assertions.assertEquals("vgcxtx", model.value().get(0).source());
-        Assertions.assertEquals("sheafid", model.value().get(0).destination());
-        Assertions.assertEquals(9216614435431791768L, model.value().get(0).revision());
-        Assertions.assertEquals("rimrs", model.nextLink());
+        Assertions.assertEquals("uvsj", model.value().get(0).displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, model.value().get(0).direction());
+        Assertions.assertEquals("myst", model.value().get(0).source());
+        Assertions.assertEquals("uqypfcvle", model.value().get(0).destination());
+        Assertions.assertEquals(9009611952751182933L, model.value().get(0).revision());
+        Assertions.assertEquals("jvpglydzgk", model.nextLink());
     }
 }

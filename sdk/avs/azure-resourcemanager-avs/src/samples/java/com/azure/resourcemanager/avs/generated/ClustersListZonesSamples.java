@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ClustersListZonesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Clusters_ListZones.json
+     * x-ms-original-file: 2024-09-01/Clusters_ListZones.json
      */
     /**
      * Sample code: Clusters_ListZones.
@@ -21,7 +21,7 @@ public final class ClustersListZonesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/Clusters_ListZones_Stretched.json
+     * x-ms-original-file: 2024-09-01/Clusters_ListZones_Stretched.json
      */
     /**
      * Sample code: Clusters_ListZones_Stretched.

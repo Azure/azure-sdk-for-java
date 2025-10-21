@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class HostsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Hosts_Get.json
+     * x-ms-original-file: 2024-09-01/Hosts_Get.json
      */
     /**
      * Sample code: Hosts_Get.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetPortMirroringSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_GetPortMirroring.json
+     * x-ms-original-file: 2024-09-01/WorkloadNetworks_GetPortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_GetPortMirroring.

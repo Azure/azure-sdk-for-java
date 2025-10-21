@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class AuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Authorizations_Delete.json
+     * x-ms-original-file: 2024-09-01/Authorizations_Delete.json
      */
     /**
      * Sample code: Authorizations_Delete.

@@ -11,7 +11,7 @@ public final class ScriptPackageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackageInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"mw\",\"version\":\"nbsazejjoqkag\",\"company\":\"sxtta\",\"uri\":\"zxnfaaz\"},\"id\":\"dtnkdmkq\",\"name\":\"jlwuenvrkp\",\"type\":\"ou\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"w\",\"version\":\"r\",\"company\":\"swibyr\",\"uri\":\"l\"},\"id\":\"shfwpracstwity\",\"name\":\"hevxcced\",\"type\":\"pnmdyodnwzxltjcv\"}")
             .toObject(ScriptPackageInner.class);
     }
 }

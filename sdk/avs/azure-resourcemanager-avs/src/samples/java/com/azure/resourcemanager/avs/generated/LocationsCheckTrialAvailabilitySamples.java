@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.Sku;
  */
 public final class LocationsCheckTrialAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01/Locations_CheckTrialAvailability.json
+     * x-ms-original-file: 2024-09-01/Locations_CheckTrialAvailability.json
      */
     /**
      * Sample code: Locations_CheckTrialAvailability.
@@ -23,7 +23,7 @@ public final class LocationsCheckTrialAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/Locations_CheckTrialAvailabilityWithSku.json
+     * x-ms-original-file: 2024-09-01/Locations_CheckTrialAvailabilityWithSku.json
      */
     /**
      * Sample code: Locations_CheckTrialAvailabilityWithSku.

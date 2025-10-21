@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class PlacementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlacementPolicies_CreateOrUpdate.json
+     * x-ms-original-file: 2024-09-01/PlacementPolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: PlacementPolicies_CreateOrUpdate.

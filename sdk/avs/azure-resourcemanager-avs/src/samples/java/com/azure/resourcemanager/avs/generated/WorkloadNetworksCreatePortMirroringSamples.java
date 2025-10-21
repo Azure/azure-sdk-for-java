@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
  */
 public final class WorkloadNetworksCreatePortMirroringSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_CreatePortMirroring.json
+     * x-ms-original-file: 2024-09-01/WorkloadNetworks_CreatePortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_CreatePortMirroring.

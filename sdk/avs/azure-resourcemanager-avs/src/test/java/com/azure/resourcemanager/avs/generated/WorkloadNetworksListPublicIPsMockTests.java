@@ -22,7 +22,7 @@ public final class WorkloadNetworksListPublicIPsMockTests {
     @Test
     public void testListPublicIPs() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"iiy\",\"numberOfPublicIPs\":2920049481955409333,\"publicIPBlock\":\"izbcufqbvntnr\",\"provisioningState\":\"Canceled\"},\"id\":\"orhc\",\"name\":\"kxgnlykmxcpwzvmd\",\"type\":\"ksqd\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"sqxfxjelgcmpz\",\"numberOfPublicIPs\":914834746894077658,\"publicIPBlock\":\"qxuwyvca\",\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"bsizus\",\"type\":\"szlbscm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class WorkloadNetworksListPublicIPsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkloadNetworkPublicIp> response
-            = manager.workloadNetworks().listPublicIPs("ssoljom", "vtfycnlbvgjcodk", com.azure.core.util.Context.NONE);
+            = manager.workloadNetworks().listPublicIPs("ralcxpjbyypsj", "qcjenkyhf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iiy", response.iterator().next().displayName());
-        Assertions.assertEquals(2920049481955409333L, response.iterator().next().numberOfPublicIPs());
+        Assertions.assertEquals("sqxfxjelgcmpz", response.iterator().next().displayName());
+        Assertions.assertEquals(914834746894077658L, response.iterator().next().numberOfPublicIPs());
     }
 }

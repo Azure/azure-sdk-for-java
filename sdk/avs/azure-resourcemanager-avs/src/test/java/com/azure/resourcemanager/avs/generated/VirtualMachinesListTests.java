@@ -12,8 +12,8 @@ public final class VirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"yxccyb\",\"moRefId\":\"ayakkudzpx\",\"folderPath\":\"jplmagstcy\",\"restrictMovement\":\"Disabled\"},\"id\":\"kyrk\",\"name\":\"bdgiogsjk\",\"type\":\"nwqjnoba\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"viacegfnmntfpmv\",\"moRefId\":\"mfnczd\",\"folderPath\":\"vbalxlllc\",\"restrictMovement\":\"Disabled\"},\"id\":\"bzevwrd\",\"name\":\"hfuk\",\"type\":\"vsjcswsmystuluqy\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"er\",\"moRefId\":\"pqbmfpjbab\",\"folderPath\":\"dfc\",\"restrictMovement\":\"Disabled\"},\"id\":\"uunnoxyhkxgqdd\",\"name\":\"i\",\"type\":\"pfhoqcaaewdao\"}],\"nextLink\":\"jvlpjxxkzbr\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"ddhcratizzr\",\"moRefId\":\"asxifto\",\"folderPath\":\"yzhftwesgogczh\",\"restrictMovement\":\"Disabled\"},\"id\":\"krlgnyhm\",\"name\":\"ssxkkgthr\",\"type\":\"gh\"}],\"nextLink\":\"bdhqxvcxgf\"}")
             .toObject(VirtualMachinesList.class);
-        Assertions.assertEquals("jvlpjxxkzbr", model.nextLink());
+        Assertions.assertEquals("bdhqxvcxgf", model.nextLink());
     }
 }
