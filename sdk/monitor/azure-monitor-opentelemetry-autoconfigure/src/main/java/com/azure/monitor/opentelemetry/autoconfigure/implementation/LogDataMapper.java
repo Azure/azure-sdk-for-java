@@ -11,6 +11,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.Mes
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.CodeAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.CodeIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.ThreadIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime;
@@ -67,6 +68,13 @@ public class LogDataMapper {
             .exactString(CodeIncubatingAttributes.CODE_NAMESPACE, "ClassName")
             .exactString(CodeIncubatingAttributes.CODE_FUNCTION, "MethodName")
             .exactLong(CodeIncubatingAttributes.CODE_LINENO, "LineNumber")
+            .exactString(CodeAttributes.CODE_FILE_PATH, "FileName")
+            .exactLong(CodeAttributes.CODE_LINE_NUMBER, "LineNumber")
+            .exact(CodeAttributes.CODE_FUNCTION_NAME.getKey(), (telemetryBuilder, value) -> {
+                if (value instanceof String) {
+                    addFunctionNameProperties(telemetryBuilder, (String) value);
+                }
+            })
             .exactString(LOG4J_MARKER, "Marker")
             .exactStringArray(LOGBACK_MARKER, "Marker");
 
@@ -193,6 +201,25 @@ public class LogDataMapper {
         String operationName = attributes.get(AiSemanticAttributes.OPERATION_NAME);
         if (operationName != null) {
             telemetryBuilder.addTag(ContextTagKeys.AI_OPERATION_NAME.toString(), operationName);
+        }
+    }
+
+    private static void addFunctionNameProperties(AbstractTelemetryBuilder telemetryBuilder, String functionName) {
+        int separatorIndex = functionName.lastIndexOf('.');
+
+        if (separatorIndex == -1) {
+            telemetryBuilder.addProperty("MethodName", functionName);
+            return;
+        }
+
+        String methodName = functionName.substring(separatorIndex + 1);
+        if (!methodName.isEmpty()) {
+            telemetryBuilder.addProperty("MethodName", methodName);
+        }
+
+        String className = functionName.substring(0, separatorIndex);
+        if (!className.isEmpty()) {
+            telemetryBuilder.addProperty("ClassName", className);
         }
     }
 
