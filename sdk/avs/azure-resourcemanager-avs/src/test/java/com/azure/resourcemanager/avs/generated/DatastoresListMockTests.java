@@ -23,7 +23,7 @@ public final class DatastoresListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"netAppVolume\":{\"id\":\"mfp\"},\"diskPoolVolume\":{\"targetId\":\"ojeevy\",\"lunName\":\"yhsgz\",\"mountOption\":\"ATTACH\",\"path\":\"gomfgbeglq\"},\"elasticSanVolume\":{\"targetId\":\"eohibet\"},\"pureStorageVolume\":{\"storagePoolId\":\"uankrrfxeeeb\",\"sizeGb\":400321103},\"status\":\"LostCommunication\"},\"id\":\"cvbmqzb\",\"name\":\"q\",\"type\":\"lajrnwxacevehj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"netAppVolume\":{\"id\":\"kqtob\"},\"diskPoolVolume\":{\"targetId\":\"uxofshfphwpnulai\",\"lunName\":\"wzejywhslw\",\"mountOption\":\"ATTACH\",\"path\":\"llndnpd\"},\"elasticSanVolume\":{\"targetId\":\"pqafgfugsnnfhy\"},\"pureStorageVolume\":{\"storagePoolId\":\"efy\",\"sizeGb\":525012311},\"status\":\"Inaccessible\"},\"id\":\"tfjgt\",\"name\":\"xrjvzuyturmlm\",\"type\":\"owolbaui\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class DatastoresListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Datastore> response
-            = manager.datastores().list("tfnmdx", "tngfdgugeyzihgr", "yui", com.azure.core.util.Context.NONE);
+            = manager.datastores().list("hppubowsepdfgkmt", "herngb", "c", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mfp", response.iterator().next().netAppVolume().id());
-        Assertions.assertEquals("ojeevy", response.iterator().next().diskPoolVolume().targetId());
-        Assertions.assertEquals("yhsgz", response.iterator().next().diskPoolVolume().lunName());
+        Assertions.assertEquals("kqtob", response.iterator().next().netAppVolume().id());
+        Assertions.assertEquals("uxofshfphwpnulai", response.iterator().next().diskPoolVolume().targetId());
+        Assertions.assertEquals("wzejywhslw", response.iterator().next().diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, response.iterator().next().diskPoolVolume().mountOption());
-        Assertions.assertEquals("eohibet", response.iterator().next().elasticSanVolume().targetId());
-        Assertions.assertEquals("uankrrfxeeeb", response.iterator().next().pureStorageVolume().storagePoolId());
-        Assertions.assertEquals(400321103, response.iterator().next().pureStorageVolume().sizeGb());
+        Assertions.assertEquals("pqafgfugsnnfhy", response.iterator().next().elasticSanVolume().targetId());
+        Assertions.assertEquals("efy", response.iterator().next().pureStorageVolume().storagePoolId());
+        Assertions.assertEquals(525012311, response.iterator().next().pureStorageVolume().sizeGb());
     }
 }
