@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2025-10-15)
+## 1.1.0 (2025-10-21)
 
 - Azure Resource Manager Mongo Cluster client library for Java. This package contains Microsoft Azure SDK for Mongo Cluster Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure Cosmos DB for MongoDB vCore resources including clusters and firewall rules. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -154,22 +154,22 @@
 
 #### `models.MongoClusterProperties` was modified
 
-* `withEncryption(models.EncryptionProperties)` was added
-* `authConfig()` was added
-* `dataApi()` was added
+* `encryption()` was added
 * `withAuthConfig(models.AuthConfigProperties)` was added
 * `withDataApi(models.DataApiProperties)` was added
-* `encryption()` was added
+* `authConfig()` was added
+* `dataApi()` was added
+* `withEncryption(models.EncryptionProperties)` was added
 
 #### `models.MongoClusterUpdate` was modified
 
-* `withIdentity(models.ManagedServiceIdentity)` was added
 * `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 #### `models.StorageProperties` was modified
 
-* `type()` was added
 * `withType(models.StorageType)` was added
+* `type()` was added
 
 #### `MongoClusterManager` was modified
 
@@ -185,12 +185,12 @@
 
 #### `models.MongoClusterUpdateProperties` was modified
 
+* `withDataApi(models.DataApiProperties)` was added
+* `authConfig()` was added
 * `withAuthConfig(models.AuthConfigProperties)` was added
 * `dataApi()` was added
-* `authConfig()` was added
-* `encryption()` was added
-* `withDataApi(models.DataApiProperties)` was added
 * `withEncryption(models.EncryptionProperties)` was added
+* `encryption()` was added
 
 ## 1.1.0-beta.2 (2025-09-29)
 
