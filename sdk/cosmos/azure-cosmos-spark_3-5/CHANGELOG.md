@@ -1,5 +1,5 @@
 ## Release History
-### 1.0.0-beta.1 (Unreleased)
+### 0.0.1-beta.1 (Unreleased)
 This maven-package will never be released - it is just used to share code between
 the child projects for specific Spark versions.
 

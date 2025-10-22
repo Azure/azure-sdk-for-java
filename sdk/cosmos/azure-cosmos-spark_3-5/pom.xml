@@ -10,37 +10,12 @@
     <relativePath>../azure-cosmos-spark_3</relativePath>
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
-  <artifactId>azure-cosmos-spark_3-4_2-12</artifactId>
-  <version>4.41.0</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;current} -->
-  <packaging>jar</packaging>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-4_2-12</url>
-  <name>OLTP Spark 3.4 Connector for Azure Cosmos DB SQL API</name>
-  <description>OLTP Spark 3.4 Connector for Azure Cosmos DB SQL API</description>
-  <scm>
-    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_3-4_2-12</connection>
-    <developerConnection></developerConnection>
-    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-4_2-12</url>
-  </scm>
-  <organization>
-    <name>Microsoft Corporation</name>
-    <url>http://microsoft.com</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>The MIT License (MIT)</name>
-      <url>http://opensource.org/licenses/MIT</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft Corporation</name>
-    </developer>
-  </developers>
+  <artifactId>azure-cosmos-spark_3-5</artifactId>
+  <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+  <packaging>pom</packaging>
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
-    <cosmos-spark-version>3.4</cosmos-spark-version>
+    <cosmos-spark-version>3.5</cosmos-spark-version>
     <spotless.skip>true</spotless.skip>
   </properties>
 
@@ -60,7 +35,7 @@
             <configuration>
               <sources>
                 <source>${basedir}/../azure-cosmos-spark_3/src/main/scala</source>
-                <source>${basedir}/src/main/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3-5/src/main/scala</source>
               </sources>
             </configuration>
           </execution>
@@ -73,7 +48,7 @@
             <configuration>
               <sources>
                 <source>${basedir}/../azure-cosmos-spark_3/src/test/scala</source>
-                <source>${basedir}/src/test/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3-5/src/test/scala</source>
               </sources>
             </configuration>
           </execution>
@@ -86,7 +61,7 @@
             <configuration>
               <resources>
                 <resource><directory>${basedir}/../azure-cosmos-spark_3/src/main/resources</directory></resource>
-                <resource><directory>${basedir}/src/main/resources</directory></resource>
+                <resource><directory>${basedir}/../azure-cosmos-spark_3-5/src/main/resources</directory></resource>
               </resources>
             </configuration>
           </execution>
@@ -102,13 +77,13 @@
   <profiles>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>spark-e2e_3-4</id>
+      <id>spark-e2e_3-5</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
         </file>
         <property>
-          <name>spark-e2e_3-4</name>
+          <name>spark-e2e_3-5</name>
         </property>
       </activation>
       <build>
@@ -154,7 +129,7 @@
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
-      <version>3.4.0</version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <version>3.5.0</version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -170,7 +145,7 @@
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.12</artifactId>
-      <version>3.4.0</version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <version>3.5.0</version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
