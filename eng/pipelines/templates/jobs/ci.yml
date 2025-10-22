@@ -79,6 +79,7 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+
     # Only run CG and codeql on internal build job
     ${{ if eq(variables['System.TeamProject'], 'internal') }}:
       templateContext:
