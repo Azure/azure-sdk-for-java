@@ -79,7 +79,6 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
-
     # Only run CG and codeql on internal build job
     ${{ if eq(variables['System.TeamProject'], 'internal') }}:
       templateContext:
@@ -443,56 +442,56 @@ jobs:
           SbomEnabled: false
           CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
-  # - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
-  #   parameters:
-  #     JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-  #     OsVmImage: $(LINUXVMIMAGE)
-  #     Pool: $(LINUXPOOL)
-  #     Os: linux
-  #     MatrixConfigs:
-  #       - ${{ each config in parameters.MatrixConfigs }}:
-  #         - ${{ config }}
-  #       - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-  #         - ${{ config }}
-  #     ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
-  #       EnablePRGeneration: true
-  #       PRMatrixSparseIndirect: true
-  #       # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
-  #       # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
-  #       # Overall, using a large batch size reduces overall CI time.
-  #       PRJobBatchSize: 50
-  #       # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
-  #       PRMatrixKey: 'Name'
-  #       SparseCheckoutPaths:
-  #         - '**/*.xml'
-  #         - '**/*.md'
-  #         - '**/ci*.yml' # necessary for save-package-properties.yml
-  #         - "**/*matrix*.json" # necessary for test matrix generation
-  #       PreGenerationSteps:
-  #         - task: UsePythonVersion@0
-  #           displayName: 'Use Python $(PythonVersion)'
-  #           inputs:
-  #             versionSpec: $(PythonVersion)
-  #         - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-  #           parameters:
-  #             ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #             ExcludePaths: ${{parameters.ExcludePaths}}
-  #     MatrixFilters: ${{ parameters.MatrixFilters }}
-  #     MatrixReplace: ${{ parameters.MatrixReplace }}
-  #     CloudConfig:
-  #       Cloud: Public
-  #     AdditionalParameters:
-  #       SDKType: ${{ parameters.SDKType }}
-  #       ServiceDirectory: ${{ parameters.ServiceDirectory }}
-  #       ExcludePaths: ${{ parameters.ExcludePaths }}
-  #       TestPipeline: ${{ parameters.TestPipeline }}
-  #       PreTestSteps: ${{ parameters.PreTestSteps }}
-  #       PreBuildSteps: ${{ parameters.PreBuildSteps }}
-  #       TestGoals: ${{ parameters.TestGoals }}
-  #       TestOptions: ${{ parameters.TestOptions }}
-  #       TestParallelization: ${{ parameters.TestParallelization }}
-  #       BuildParallelization: ${{ parameters.BuildParallelization }}
-  #       AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-  #       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-  #       EnvVars: ${{ parameters.EnvVars }}
-  #       VersionOverride: ${{ parameters.VersionOverride }}
+  - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+    parameters:
+      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+      OsVmImage: $(LINUXVMIMAGE)
+      Pool: $(LINUXPOOL)
+      Os: linux
+      MatrixConfigs:
+        - ${{ each config in parameters.MatrixConfigs }}:
+          - ${{ config }}
+        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+          - ${{ config }}
+      ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+        EnablePRGeneration: true
+        PRMatrixSparseIndirect: true
+        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+        # Overall, using a large batch size reduces overall CI time.
+        PRJobBatchSize: 50
+        # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
+        PRMatrixKey: 'Name'
+        SparseCheckoutPaths:
+          - '**/*.xml'
+          - '**/*.md'
+          - '**/ci*.yml' # necessary for save-package-properties.yml
+          - "**/*matrix*.json" # necessary for test matrix generation
+        PreGenerationSteps:
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(PythonVersion)'
+            inputs:
+              versionSpec: $(PythonVersion)
+          - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+            parameters:
+              ServiceDirectory: ${{parameters.ServiceDirectory}}
+              ExcludePaths: ${{parameters.ExcludePaths}}
+      MatrixFilters: ${{ parameters.MatrixFilters }}
+      MatrixReplace: ${{ parameters.MatrixReplace }}
+      CloudConfig:
+        Cloud: Public
+      AdditionalParameters:
+        SDKType: ${{ parameters.SDKType }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        ExcludePaths: ${{ parameters.ExcludePaths }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        PreTestSteps: ${{ parameters.PreTestSteps }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        TestGoals: ${{ parameters.TestGoals }}
+        TestOptions: ${{ parameters.TestOptions }}
+        TestParallelization: ${{ parameters.TestParallelization }}
+        BuildParallelization: ${{ parameters.BuildParallelization }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+        EnvVars: ${{ parameters.EnvVars }}
+        VersionOverride: ${{ parameters.VersionOverride }}
