@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.76.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.75.0 (2025-10-21)
 
 #### Features Added
