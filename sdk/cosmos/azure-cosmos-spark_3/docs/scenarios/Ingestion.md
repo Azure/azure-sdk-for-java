@@ -60,7 +60,7 @@ df \
 
 ### Write strategies
 
-Different write strategies in the `spark.cosmos.write.strategy` configuration parameter can be used to determine what activity shoudl be processed for the records in the DataFrame "written" to Cosmos DB.
+Different write strategies in the `spark.cosmos.write.strategy` configuration parameter can be used to determine what activity should be processed for the records in the DataFrame "written" to Cosmos DB.
 
 - `ItemOverwrite` (the default write strategy): All items of the source DataFrame will be inserted or updated. If the Cosmos DB container contains a document with the same pk+id, it will be updated otherwise a new documented will be created. Existing documents will be replaced independent of when they have been last updated or if the content would actually change.
 - `ItemAppend`: For all items in the source DataFrame an attempt will be made to insert a  new document - if a document with the same pk+id exists already, the 409/Conflict response will be ignore and the existing document will not be modified.
