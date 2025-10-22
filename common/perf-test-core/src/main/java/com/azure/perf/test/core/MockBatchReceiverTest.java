@@ -61,7 +61,7 @@ public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.M
 
         /**
          * Get the Min Message count.
-         * @return the Min
+         * @return the minimum message count
          */
         public int getMinMessageCount() {
             return minMessageCount;

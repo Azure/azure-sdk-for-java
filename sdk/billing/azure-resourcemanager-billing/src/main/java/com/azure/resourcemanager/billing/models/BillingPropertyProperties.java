@@ -156,7 +156,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /*
      * Specifies if the billing account for the subscription is transitioned from a Microsoft Online Service Program to
-     * a Microsoft Customer Agreement (MCA) account. Will be present and value will be true if its a transitioned
+     * a Microsoft Customer Agreement (MCA) account. Will be present and value will be true if it's a transitioned
      * billing account.
      */
     private Boolean isTransitionedBillingAccount;
@@ -226,7 +226,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountAgreementType property: The type of agreement.
-     * 
+     *
      * @return the billingAccountAgreementType value.
      */
     public AgreementType billingAccountAgreementType() {
@@ -235,7 +235,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountDisplayName property: The name of the billing account.
-     * 
+     *
      * @return the billingAccountDisplayName value.
      */
     public String billingAccountDisplayName() {
@@ -244,7 +244,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountId property: The fully qualified ID that uniquely identifies a billing account.
-     * 
+     *
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
@@ -254,7 +254,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the accountAdminNotificationEmailAddress property: Notification email address for legacy account. Available
      * for agreement type Microsoft Online Services Program.
-     * 
+     *
      * @return the accountAdminNotificationEmailAddress value.
      */
     public String accountAdminNotificationEmailAddress() {
@@ -264,7 +264,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the billingAccountSoldToCountry property: The country of the individual or organization that is responsible
      * for the billing account.
-     * 
+     *
      * @return the billingAccountSoldToCountry value.
      */
     public String billingAccountSoldToCountry() {
@@ -273,7 +273,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountStatus property: The current status of the billing account.
-     * 
+     *
      * @return the billingAccountStatus value.
      */
     public AccountStatus billingAccountStatus() {
@@ -282,7 +282,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountStatusReasonCode property: Reason for the specified billing account status.
-     * 
+     *
      * @return the billingAccountStatusReasonCode value.
      */
     public BillingAccountStatusReasonCode billingAccountStatusReasonCode() {
@@ -291,7 +291,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountType property: The type of customer.
-     * 
+     *
      * @return the billingAccountType value.
      */
     public AccountType billingAccountType() {
@@ -300,7 +300,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingAccountSubType property: The tier of the account.
-     * 
+     *
      * @return the billingAccountSubType value.
      */
     public AccountSubType billingAccountSubType() {
@@ -310,7 +310,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the billingCurrency property: The billing currency for the subscription. Available for billing accounts with
      * agreement type Enterprise Agreement.
-     * 
+     *
      * @return the billingCurrency value.
      */
     public String billingCurrency() {
@@ -319,7 +319,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingProfileDisplayName property: The name of the billing profile.
-     * 
+     *
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
@@ -328,7 +328,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
-     * 
+     *
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -337,7 +337,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingProfileSpendingLimit property: The billing profile spending limit.
-     * 
+     *
      * @return the billingProfileSpendingLimit value.
      */
     public SpendingLimit billingProfileSpendingLimit() {
@@ -346,7 +346,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingProfileSpendingLimitDetails property: The details of billing profile spending limit.
-     * 
+     *
      * @return the billingProfileSpendingLimitDetails value.
      */
     public List<SpendingLimitDetails> billingProfileSpendingLimitDetails() {
@@ -355,7 +355,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingProfileStatus property: The status of the billing profile.
-     * 
+     *
      * @return the billingProfileStatus value.
      */
     public BillingProfileStatus billingProfileStatus() {
@@ -364,7 +364,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingProfileStatusReasonCode property: Reason for the specified billing profile status.
-     * 
+     *
      * @return the billingProfileStatusReasonCode value.
      */
     public BillingProfileStatusReasonCode billingProfileStatusReasonCode() {
@@ -374,7 +374,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the billingProfilePaymentMethodFamily property: The payment method family of the primary payment method for
      * the billing profile.
-     * 
+     *
      * @return the billingProfilePaymentMethodFamily value.
      */
     public PaymentMethodFamily billingProfilePaymentMethodFamily() {
@@ -384,7 +384,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the billingProfilePaymentMethodType property: The payment method type of the primary payment method for the
      * billing profile.
-     * 
+     *
      * @return the billingProfilePaymentMethodType value.
      */
     public String billingProfilePaymentMethodType() {
@@ -393,7 +393,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the billingTenantId property: The Azure AD tenant ID of the billing account for the subscription.
-     * 
+     *
      * @return the billingTenantId value.
      */
     public String billingTenantId() {
@@ -403,7 +403,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the costCenter property: The cost center applied to the subscription. Available for agreement type Microsoft
      * Customer Agreement and Microsoft Partner Agreement. This property can be updated via patch.
-     * 
+     *
      * @return the costCenter value.
      */
     public String costCenter() {
@@ -413,7 +413,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Set the costCenter property: The cost center applied to the subscription. Available for agreement type Microsoft
      * Customer Agreement and Microsoft Partner Agreement. This property can be updated via patch.
-     * 
+     *
      * @param costCenter the costCenter value to set.
      * @return the BillingPropertyProperties object itself.
      */
@@ -424,7 +424,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the customerDisplayName property: The name of the customer.
-     * 
+     *
      * @return the customerDisplayName value.
      */
     public String customerDisplayName() {
@@ -433,7 +433,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the customerId property: The fully qualified ID that uniquely identifies a customer.
-     * 
+     *
      * @return the customerId value.
      */
     public String customerId() {
@@ -443,7 +443,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the customerStatus property: Identifies the status of an customer. This is an upcoming property that will be
      * populated in the future.
-     * 
+     *
      * @return the customerStatus value.
      */
     public CustomerStatus customerStatus() {
@@ -452,7 +452,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the invoiceSectionDisplayName property: The name of the invoice section.
-     * 
+     *
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
@@ -461,7 +461,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
-     * 
+     *
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
@@ -470,7 +470,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the invoiceSectionStatus property: Identifies the status of an invoice section.
-     * 
+     *
      * @return the invoiceSectionStatus value.
      */
     public InvoiceSectionState invoiceSectionStatus() {
@@ -479,7 +479,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the invoiceSectionStatusReasonCode property: Reason for the specified invoice section status.
-     * 
+     *
      * @return the invoiceSectionStatusReasonCode value.
      */
     public InvoiceSectionStateReasonCode invoiceSectionStatusReasonCode() {
@@ -489,8 +489,8 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the isTransitionedBillingAccount property: Specifies if the billing account for the subscription is
      * transitioned from a Microsoft Online Service Program to a Microsoft Customer Agreement (MCA) account. Will be
-     * present and value will be true if its a transitioned billing account.
-     * 
+     * present and value will be true if it's a transitioned billing account.
+     *
      * @return the isTransitionedBillingAccount value.
      */
     public Boolean isTransitionedBillingAccount() {
@@ -499,7 +499,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the skuDescription property: The sku description.
-     * 
+     *
      * @return the skuDescription value.
      */
     public String skuDescription() {
@@ -508,7 +508,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the skuId property: The ID that uniquely identifies a sku.
-     * 
+     *
      * @return the skuId value.
      */
     public String skuId() {
@@ -517,7 +517,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the subscriptionBillingStatus property: The subscription status.
-     * 
+     *
      * @return the subscriptionBillingStatus value.
      */
     public BillingSubscriptionStatus subscriptionBillingStatus() {
@@ -526,7 +526,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the subscriptionBillingStatusDetails property: The reason codes for the subscription status.
-     * 
+     *
      * @return the subscriptionBillingStatusDetails value.
      */
     public List<BillingSubscriptionStatusDetails> subscriptionBillingStatusDetails() {
@@ -535,7 +535,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the subscriptionBillingType property: The type of billing subscription.
-     * 
+     *
      * @return the subscriptionBillingType value.
      */
     public SubscriptionBillingType subscriptionBillingType() {
@@ -546,7 +546,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
      * Get the subscriptionServiceUsageAddress property: The address of the individual or organization where service
      * subscription is being used. Available for agreement type Microsoft Online Services Program. This property can be
      * updated via patch.
-     * 
+     *
      * @return the subscriptionServiceUsageAddress value.
      */
     public BillingPropertyPropertiesSubscriptionServiceUsageAddress subscriptionServiceUsageAddress() {
@@ -557,7 +557,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
      * Set the subscriptionServiceUsageAddress property: The address of the individual or organization where service
      * subscription is being used. Available for agreement type Microsoft Online Services Program. This property can be
      * updated via patch.
-     * 
+     *
      * @param subscriptionServiceUsageAddress the subscriptionServiceUsageAddress value to set.
      * @return the BillingPropertyProperties object itself.
      */
@@ -569,7 +569,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the subscriptionWorkloadType property: The Azure workload type of the subscription.
-     * 
+     *
      * @return the subscriptionWorkloadType value.
      */
     public SubscriptionWorkloadType subscriptionWorkloadType() {
@@ -579,7 +579,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Get the enrollmentDetails property: The enrollment details for the subscription. Available for billing accounts
      * with agreement type Enterprise Agreement.
-     * 
+     *
      * @return the enrollmentDetails value.
      */
     public BillingPropertyPropertiesEnrollmentDetails enrollmentDetails() {
@@ -589,7 +589,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
     /**
      * Set the enrollmentDetails property: The enrollment details for the subscription. Available for billing accounts
      * with agreement type Enterprise Agreement.
-     * 
+     *
      * @param enrollmentDetails the enrollmentDetails value to set.
      * @return the BillingPropertyProperties object itself.
      */
@@ -601,7 +601,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the isAccountAdmin property: Indicates whether user is the account admin.
-     * 
+     *
      * @return the isAccountAdmin value.
      */
     public Boolean isAccountAdmin() {
@@ -610,7 +610,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the productId property: The ID that uniquely identifies a product.
-     * 
+     *
      * @return the productId value.
      */
     public String productId() {
@@ -619,7 +619,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Get the productName property: The ID that uniquely identifies a product.
-     * 
+     *
      * @return the productName value.
      */
     public String productName() {
@@ -628,7 +628,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -660,7 +660,7 @@ public final class BillingPropertyProperties implements JsonSerializable<Billing
 
     /**
      * Reads an instance of BillingPropertyProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BillingPropertyProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

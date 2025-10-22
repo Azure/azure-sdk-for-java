@@ -65,7 +65,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      * Creates an instance of the Http Based Performance test.
      *
      * @param options the performance test options to use while running the test.
-     * @throws IllegalStateException if an errors is encountered with building ssl context.
+     * @throws IllegalStateException if an error is encountered with building ssl context.
      */
     public ApiPerfTestBase(TOptions options) {
         super(options);
@@ -462,7 +462,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     /**
      * Records responses and starts tests in playback mode.
      *
-     * @return
+     * @return An empty {@link Mono}.
      */
     @Override
     Mono<Void> postSetupAsync() {

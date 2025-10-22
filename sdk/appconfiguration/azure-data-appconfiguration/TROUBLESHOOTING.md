@@ -1,8 +1,8 @@
 # Troubleshooting App Configuration issues
 
-This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure 
-App Configuration Java client library, and mitigation steps to resolve these errors. The frequently asked question can 
-be found in [FAQ][faq] and common best practice sample can be found in [Best Practice Samples][best_practice_samples].
+This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure
+App Configuration Java client library, and mitigation steps to resolve these errors. Frequently asked questions can
+be found in [FAQ][faq] and common best practice samples can be found in [Best Practice Samples][best_practice_samples].
 
 ## Table of Contents
 

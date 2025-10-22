@@ -9,12 +9,12 @@ Arguments to run the tool in this mode.
 		 2. The BOM file which is the initial POM file.
 		 3. InputDependencies file to override the inputs from the version_client.txt. This is an optional file.
 
-        -outputDir=<location_of_outputput_directory>
+        -outputDir=<location_of_output_directory>
         This generates the following files in the location.
 		1. Report log.
 		2. Newly created BOM file
 
-2. Analyze mode - When run in this mode the tool validates the BOM. 
+2. Analyze mode - When run in this mode the tool validates the BOM.
 Arguments to run the tool in this mode.
-        -mode=analyze -inputDir=<location_to_inputDir)>
+        -mode=analyze -inputDir=<location_to_inputDir>
 		This location includes the pom file for the BOM or any library.
