@@ -38,6 +38,9 @@ stages:
           image: $(WINDOWSVMIMAGE)
           os: windows
         steps:
+          - checkout: self
+            fetchDepth: 1
+            path: azure-sdk-for-java
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
 
@@ -236,6 +239,9 @@ stages:
           steps:
             - checkout: azure-sdk-build-tools
               path: azure-sdk-build-tools
+            - checkout: self
+              path: azure-sdk-for-java
+              fetchDepth: 1
             - download: current
               displayName: 'Download Artifacts'
               artifact: packages-signed
