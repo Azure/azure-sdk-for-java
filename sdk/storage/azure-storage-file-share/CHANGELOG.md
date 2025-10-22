@@ -1,14 +1,33 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.29.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.28.0 (2025-10-21)
+
+### Features Added
+- Added support for bearer token challenges.
+- Added `ShareErrorCode.ShareSnapshotNotFound`.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added support for service version 2025-11-05.
+
+### Bugs Fixed
 - Fixed a bug where `ShareDirectoryClient.exists` and `ShareFileClient.exists` did not properly handle 404's with the error
   code `ParentNotFound`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
 
 ## 12.27.3 (2025-09-25)
 
@@ -58,7 +77,7 @@
 ### Features Added
 - Added support for bearer token challenges.
 - Added `ShareErrorCode.ShareSnapshotNotFound`.
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added support for service version 2025-11-05.
 
 ## 12.26.1 (2025-06-19)

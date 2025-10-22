@@ -33,7 +33,6 @@ public final class QueueProperties {
      * @param metadata Metadata associated with the queue.
      * @param approximateMessagesCount Approximate number of messages contained in the queue.
      */
-
     public QueueProperties(Map<String, String> metadata, long approximateMessagesCount) {
         this.metadata = metadata;
         this.approximateMessagesCount = approximateMessagesCount;
