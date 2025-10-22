@@ -109,8 +109,14 @@ stages:
             os: linux
 
           steps:
-            - checkout: self
-              fetchDepth: 1
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                Paths:
+                  - 'sdk/${{ parameters.ServiceDirectory }}'
+                  - '**/*.xml'
+                  - '!sdk/**/test-recordings'
+                  - '!sdk/**/session-records'
+
             - download: current
               displayName: 'Download Artifact: packages'
               artifact: packages-signed
@@ -181,8 +187,7 @@ stages:
             image: $(WINDOWSVMIMAGE)
             os: windows
           steps:
-            - checkout: self
-              fetchDepth: 1
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             - template: /eng/common/pipelines/templates/steps/retain-run.yml
             # No pattern, just download everything that's been signed
             - download: current
@@ -239,9 +244,13 @@ stages:
           steps:
             - checkout: azure-sdk-build-tools
               path: azure-sdk-build-tools
-            - checkout: self
-              path: azure-sdk-for-java
-              fetchDepth: 1
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                SkipCheckoutNone: true
+                Repositories:
+                  - Name: Azure/azure-sdk-for-java
+                    Commitish: $(Build.SourceVersion)
+                    WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
             - download: current
               displayName: 'Download Artifacts'
               artifact: packages-signed
@@ -452,8 +461,11 @@ stages:
           image: $(LINUXVMIMAGE)
           os: linux
         steps:
-          - checkout: self
-            fetchDepth: 1
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - sdk/${{ parameters.ServiceDirectory }}/**/*.md
+                - '!**/pom*.xml'
           - download: current
             displayName: 'Download Artifacts'
             artifact: packages
