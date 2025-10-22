@@ -7,14 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.time.Instant;
 import java.util.Map;
 
 import io.opentelemetry.api.trace.SpanContext;
-import io.opentelemetry.api.trace.SpanId;
-import io.opentelemetry.api.trace.TraceFlags;
-import io.opentelemetry.api.trace.TraceId;
-import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
 import io.opentelemetry.sdk.logs.data.Body;
 import io.opentelemetry.sdk.logs.data.LogRecordData;
@@ -35,58 +30,9 @@ import io.opentelemetry.sdk.resources.Resource;
 class LogDataMapperTest {
     @Test
     void testCustomEventName() {
-        LogRecordData logRecordData = new LogRecordData() {
-            @Override
-            public Resource getResource() {
-                return Resource.empty();
-            }
+        Attributes attributes = Attributes.builder().put("microsoft.custom_event.name", "TestEvent").build();
 
-            @Override
-            public Attributes getAttributes() {
-                return Attributes.builder().put("microsoft.custom_event.name", "TestEvent").build();
-            }
-
-            @Override
-            public InstrumentationScopeInfo getInstrumentationScopeInfo() {
-                return InstrumentationScopeInfo.create("TestScope", null, null);
-            }
-
-            @Override
-            public long getTimestampEpochNanos() {
-                return Instant.now().toEpochMilli() * 1_000_000; // Convert millis to nanos
-            }
-
-            @Override
-            public long getObservedTimestampEpochNanos() {
-                return Instant.now().toEpochMilli() * 1_000_000;
-            }
-
-            @Override
-            public SpanContext getSpanContext() {
-                return SpanContext.create(TraceId.fromLongs(12345L, 67890L), SpanId.fromLong(12345L),
-                    TraceFlags.getDefault(), TraceState.getDefault());
-            }
-
-            @Override
-            public Severity getSeverity() {
-                return Severity.INFO;
-            }
-
-            @Override
-            public String getSeverityText() {
-                return "INFO";
-            }
-
-            @Override
-            public Body getBody() {
-                return Body.string("Test log message");
-            }
-
-            @Override
-            public int getTotalAttributeCount() {
-                return 1;
-            }
-        };
+        LogRecordData logRecordData = new SimpleLogRecordData(attributes);
 
         LogDataMapper logDataMapper = new LogDataMapper(true, true, (b, r) -> {
             // Initialize telemetry builder with resource
@@ -167,12 +113,11 @@ class LogDataMapperTest {
     }
 
     private static final class SimpleLogRecordData implements LogRecordData {
+
         private final Attributes attributes;
-        private final long timestamp;
 
         private SimpleLogRecordData(Attributes attributes) {
             this.attributes = attributes;
-            this.timestamp = Instant.now().toEpochMilli() * 1_000_000;
         }
 
         @Override
@@ -192,12 +137,12 @@ class LogDataMapperTest {
 
         @Override
         public long getTimestampEpochNanos() {
-            return timestamp;
+            return 0;
         }
 
         @Override
         public long getObservedTimestampEpochNanos() {
-            return timestamp;
+            return 0;
         }
 
         @Override
@@ -212,12 +157,12 @@ class LogDataMapperTest {
 
         @Override
         public String getSeverityText() {
-            return "INFO";
+            return Severity.INFO.name();
         }
 
         @Override
         public Body getBody() {
-            return Body.string("Test log message");
+            return Body.empty();
         }
 
         @Override
