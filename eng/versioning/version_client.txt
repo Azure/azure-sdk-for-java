@@ -302,7 +302,7 @@ com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.5.0;1.6.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.5.0;1.6.0
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.2.0;1.3.0-beta.2
