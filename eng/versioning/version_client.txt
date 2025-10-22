@@ -292,7 +292,7 @@ com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-search;2.54.2;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sql;2.53.3;2.54.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-storage;2.54.1;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-storage;2.55.0;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.53.3;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.2;2.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.4.0;2.5.0-beta.1
@@ -302,7 +302,7 @@ com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.5.0;1.6.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.5.0;1.6.0
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.2.0;1.3.0-beta.2
@@ -465,7 +465,7 @@ com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0-beta.1
