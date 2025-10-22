@@ -480,7 +480,7 @@
                 <transformationSet>
                   <dir>${project.basedir}</dir>
                   <includes>dependency-reduced-pom.xml</includes>
-                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3_2-12/stripDependencyReducedPom.xsl</stylesheet>
+                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3/stripDependencyReducedPom.xsl</stylesheet>
                   <outputDir>${project.basedir}</outputDir>
                   <skipDefaultExcludes>true</skipDefaultExcludes>
                   <addedToClasspath>false</addedToClasspath>

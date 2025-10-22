@@ -68,7 +68,7 @@ else
   	databricks libraries uninstall --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"$library\"}]}"
   done
 
-  bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
+  bash sdk/cosmos/azure-cosmos-spark_3/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
   # For older runtimes: Use DBFS path
   echo "Using DBFS library installation for DBR $DBR_VERSION"
@@ -82,4 +82,4 @@ else
   databricks libraries install --json "{\"cluster_id\": \"$CLUSTER_ID\", \"libraries\": [{\"jar\": \"dbfs:/tmp/libraries/$JARFILE\"}]}"
 fi
 
-bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
+bash sdk/cosmos/azure-cosmos-spark_3/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
