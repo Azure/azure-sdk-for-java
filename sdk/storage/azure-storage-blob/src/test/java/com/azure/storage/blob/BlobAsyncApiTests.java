@@ -2882,4 +2882,19 @@ public class BlobAsyncApiTests extends BlobTestBase {
         deleteFileShareWithoutDependency(shareName);
     }
 
+    @Test
+    public void blobNameEncodingOnGetBlobUrl() {
+        BlobClient blobClient = cc.getBlobClient("my blob");
+        String expectedEncodedBlobName = "my%20blob";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedBlobName));
+    }
+
+    @Test
+    void containerNameEncodingOnGetBlobUrl() {
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient("my container");
+        BlobClient blobClient = containerClient.getBlobClient(generateBlobName());
+        String expectedEncodedContainerName = "my%20container";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
+    }
+
 }
