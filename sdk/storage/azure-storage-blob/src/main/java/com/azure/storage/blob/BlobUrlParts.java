@@ -110,7 +110,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the decoded container name.
+     * Gets the decoded container name that will be used as part of the URL path.
      *
      * @return the container name.
      */
@@ -130,7 +130,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Gets the decoded blob name.
+     * Gets the decoded blob name that will be used as part of the URL path.
      *
      * @return the decoded blob name.
      */

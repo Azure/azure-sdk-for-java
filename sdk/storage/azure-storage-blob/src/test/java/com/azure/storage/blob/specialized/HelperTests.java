@@ -81,7 +81,7 @@ public class HelperTests extends BlobTestBase {
             "path/to]a blob,path/to]a blob",
             "path%2Fto%5Da%20blob,path/to]a blob",
             "斑點,斑點",
-            "%E6%96%91%E9%BB%9E,斑點"})
+            "%E6%96%91%E9%BB%9E,斑點" })
     public void urlParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
         BlobUrlParts parts = BlobUrlParts.parse(new URL(
             "http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION
@@ -210,44 +210,57 @@ public class HelperTests extends BlobTestBase {
     // by the service, however, the names should still be encoded.
     @Test
     public void containerNameDecodingOnGet() {
-        BlobUrlParts parts = new BlobUrlParts()
-            .setScheme("http")
-            .setHost("host")
-            .setContainerName("my%20container");
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my%20container");
         assertEquals("my container", parts.getBlobContainerName());
         // URL should retain the encoded form supplied by caller
         assertTrue(parts.toUrl().toString().contains("my%20container"));
     }
 
+    @Test
+    public void blobNameDecodingOnGet() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("my%20blob");
+        assertEquals("my blob", parts.getBlobName());
+        // URL should retain the encoded form supplied by caller
+        assertTrue(parts.toUrl().toString().contains("my%20blob"));
+    }
+
     // Tests that blob names are not automatically URL encoded when set in BlobUrlParts.
     @Test
     public void setBlobNameUnencodedPreserved() {
-        BlobUrlParts parts = new BlobUrlParts()
-            .setScheme("http")
-            .setHost("host")
-            .setContainerName("container")
-            .setBlobName("my blob");
-        // New behavior: value is not auto-encoded
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("my blob");
         assertEquals("my blob", parts.getBlobName());
         String url = parts.toUrl().toString();
-        assertTrue(url.contains("/container/my blob"));
-        // Ensure no accidental encoding
+        assertTrue(url.contains("my blob"));
+        assertFalse(url.contains("%20"));
+    }
+
+    // Tests that container names are not automatically URL encoded when set in BlobUrlParts.
+    @Test
+    public void setContainerNameUnencodedPreserved() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my container");
+        assertEquals("my container", parts.getBlobContainerName());
+        String url = parts.toUrl().toString();
+        assertTrue(url.contains("my container"));
         assertFalse(url.contains("%20"));
     }
 
     // Tests that blob names are properly URL decoded when retrieved from BlobUrlParts.
     @Test
     public void setBlobNameEncodedNotDoubleEncoded() {
-        BlobUrlParts parts = new BlobUrlParts()
-            .setScheme("http")
-            .setHost("host")
-            .setContainerName("container")
-            .setBlobName("my%20blob");
-        // Getter decodes
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setBlobName("my%20blob");
         assertEquals("my blob", parts.getBlobName());
         String url = parts.toUrl().toString();
-        // Path should contain the original encoded segment exactly once
-        assertTrue(url.contains("/container/my%20blob"));
+        assertTrue(url.contains("my%20blob"));
+        assertFalse(url.contains("%2520"));
+    }
+
+    // Tests that container names are properly URL decoded when retrieved from BlobUrlParts.
+    @Test
+    public void setContainerNameEncodedNotDoubleEncoded() {
+        BlobUrlParts parts = new BlobUrlParts().setScheme("http").setHost("host").setContainerName("my%20container");
+        assertEquals("my container", parts.getBlobContainerName());
+        String url = parts.toUrl().toString();
+        assertTrue(url.contains("my%20container"));
         assertFalse(url.contains("%2520"));
     }
 }
