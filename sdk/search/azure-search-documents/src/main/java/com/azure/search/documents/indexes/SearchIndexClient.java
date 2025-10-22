@@ -1650,22 +1650,22 @@ public final class SearchIndexClient {
     /**
      * Retrieves an agent definition.
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBase getKnowledgeBase(String agentName) {
-        return getKnowledgeBaseWithResponse(agentName, Context.NONE).getValue();
+    public KnowledgeBase getKnowledgeBase(String knowledgeBaseName) {
+        return getKnowledgeBaseWithResponse(knowledgeBaseName, Context.NONE).getValue();
 
     }
 
     /**
      * Retrieves an agent definition.
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1673,9 +1673,9 @@ public final class SearchIndexClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeBase> getKnowledgeBaseWithResponse(String agentName, Context context) {
+    public Response<KnowledgeBase> getKnowledgeBaseWithResponse(String knowledgeBaseName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getKnowledgeBases().getWithResponse(agentName, null, context), LOGGER);
+            () -> restClient.getKnowledgeBases().getWithResponse(knowledgeBaseName, null, context), LOGGER);
     }
 
     /**
@@ -1709,20 +1709,20 @@ public final class SearchIndexClient {
     /**
      * Deletes an existing agent.
      *
-     * @param agentName The name of the agent to delete.
+     * @param knowledgeBaseName The name of the agent to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeBase(String agentName) {
-        deleteKnowledgeBaseWithResponse(agentName, null, Context.NONE).getValue();
+    public void deleteKnowledgeBase(String knowledgeBaseName) {
+        deleteKnowledgeBaseWithResponse(knowledgeBaseName, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes an existing agent.
      *
-     * @param agentName The name of the agent to delete.
+     * @param knowledgeBaseName The name of the agent to delete.
      * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
      * conditions will be applied.
      * @param context The context to associate with this operation.
@@ -1732,13 +1732,12 @@ public final class SearchIndexClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteKnowledgeBaseWithResponse(String agentName, MatchConditions matchConditions,
+    public Response<Void> deleteKnowledgeBaseWithResponse(String knowledgeBaseName, MatchConditions matchConditions,
         Context context) {
         String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
         String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
-        return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getKnowledgeBases().deleteWithResponse(agentName, ifMatch, ifNoneMatch, null, context),
-            LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeBases()
+            .deleteWithResponse(knowledgeBaseName, ifMatch, ifNoneMatch, null, context), LOGGER);
     }
 
     /**

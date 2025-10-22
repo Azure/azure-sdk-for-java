@@ -1625,35 +1625,35 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves an agent definition.
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBase> getKnowledgeBase(String agentName) {
-        return getKnowledgeBaseWithResponse(agentName).map(Response::getValue);
+    public Mono<KnowledgeBase> getKnowledgeBase(String knowledgeBaseName) {
+        return getKnowledgeBaseWithResponse(knowledgeBaseName).map(Response::getValue);
     }
 
     /**
      * Retrieves an agent definition.
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String agentName) {
-        return withContext(context -> getKnowledgeBaseWithResponse(agentName, context));
+    public Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String knowledgeBaseName) {
+        return withContext(context -> getKnowledgeBaseWithResponse(knowledgeBaseName, context));
     }
 
-    Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String agentName, Context context) {
+    Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String knowledgeBaseName, Context context) {
         try {
             return restClient.getKnowledgeBases()
-                .getWithResponseAsync(agentName, null, context)
+                .getWithResponseAsync(knowledgeBaseName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1681,21 +1681,21 @@ public final class SearchIndexAsyncClient {
     /**
      * Deletes an existing agent.
      *
-     * @param agentName The name of the agent to delete.
+     * @param knowledgeBaseName The name of the agent to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeBase(String agentName) {
-        return deleteKnowledgeBaseWithResponse(agentName, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteKnowledgeBase(String knowledgeBaseName) {
+        return deleteKnowledgeBaseWithResponse(knowledgeBaseName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an existing agent.
      *
-     * @param agentName The name of the agent to delete.
+     * @param knowledgeBaseName The name of the agent to delete.
      * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
      * conditions will be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1704,17 +1704,18 @@ public final class SearchIndexAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String agentName, MatchConditions matchConditions) {
-        return withContext(context -> deleteKnowledgeBaseWithResponse(agentName, matchConditions, context));
+    public Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String knowledgeBaseName,
+        MatchConditions matchConditions) {
+        return withContext(context -> deleteKnowledgeBaseWithResponse(knowledgeBaseName, matchConditions, context));
     }
 
-    Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String agentName, MatchConditions matchConditions,
+    Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String knowledgeBaseName, MatchConditions matchConditions,
         Context context) {
         try {
             String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
             String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
             return restClient.getKnowledgeBases()
-                .deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, null, context)
+                .deleteWithResponseAsync(knowledgeBaseName, ifMatch, ifNoneMatch, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

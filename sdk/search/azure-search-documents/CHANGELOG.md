@@ -62,8 +62,8 @@
 ### Features Added
 
 - Support for `2025-08-01-Preview` service version.
-  - Added support for Knowledge Base knowledge sources.
-  - Added support for Knowledge Base answer synthesis.
+  - Added support for Knowledge Agent knowledge sources.
+  - Added support for Knowledge Agent answer synthesis.
   - Added `VectorFilterMode.STRICT_POST_FILTER`.
 
 ### Breaking Changes

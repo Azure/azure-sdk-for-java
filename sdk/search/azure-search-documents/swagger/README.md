@@ -480,14 +480,24 @@ directive:
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
 ```
 
-### Make `SearchIndexerStatus.name` optional
+### Make `SearchIndexerStatus.name` and `.runtime` optional
 
 ```yaml $(tag) == 'searchservice'
 directive:
 - from: swagger-document
   where: $.definitions.SearchIndexerStatus
   transform: >
-    $.required = $.required.filter((required) => required !== "name");
+    $.required = $.required.filter((required) => required !== "name" && required !== "runtime");
+```
+
+### Make `SearchServiceStatistics.indexersRuntime` optional
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.ServiceStatistics
+  transform: >
+    $.required = $.required.filter((required) => required !== "indexersRuntime");
 ```
 
 ### Remove `KnowledgeBaseOutputOptimization`

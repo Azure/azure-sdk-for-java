@@ -377,7 +377,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         SearchKnowledgeBaseClient knowledgeBaseClient
-            = getSearchKnowledgeBaseClientBuilder(true).agentName(knowledgeBase.getName()).buildClient();
+            = getSearchKnowledgeBaseClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
 
         KnowledgeBaseMessageTextContent messageTextContent
             = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
@@ -402,7 +402,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 SearchKnowledgeBaseAsyncClient knowledgeBaseClient
-                    = getSearchKnowledgeBaseClientBuilder(false).agentName(created.getName()).buildAsyncClient();
+                    = getSearchKnowledgeBaseClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
 
                 KnowledgeBaseMessageTextContent messageTextContent
                     = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
@@ -436,7 +437,7 @@ public class KnowledgeBaseTests extends SearchTestBase {
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         SearchKnowledgeBaseClient knowledgeBaseClient
-            = getSearchKnowledgeBaseClientBuilder(true).agentName(knowledgeBase.getName()).buildClient();
+            = getSearchKnowledgeBaseClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
 
         KnowledgeBaseMessageTextContent messageTextContent
             = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
@@ -468,7 +469,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
                 SearchKnowledgeBaseAsyncClient knowledgeBaseClient
-                    = getSearchKnowledgeBaseClientBuilder(false).agentName(created.getName()).buildAsyncClient();
+                    = getSearchKnowledgeBaseClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
 
                 KnowledgeBaseMessageTextContent messageTextContent
                     = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
