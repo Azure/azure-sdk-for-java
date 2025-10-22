@@ -412,15 +412,9 @@ stages:
         steps:
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            SkipCheckoutNone: true
-            Repositories:
-              - Name: Azure/azure-sdk-for-java
-                Commitish: $(Build.SourceVersion)
-                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-
-        - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+        - checkout: self
+          path: azure-sdk-for-java
+          fetchDepth: 1
 
         - download: current
           displayName: 'Download Artifact: packages-signed'
@@ -458,11 +452,8 @@ stages:
           image: $(LINUXVMIMAGE)
           os: linux
         steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              Paths:
-                - sdk/${{ parameters.ServiceDirectory }}/**/*.md
-                - '!**/pom*.xml'
+          - checkout: self
+            fetchDepth: 1
           - download: current
             displayName: 'Download Artifacts'
             artifact: packages
