@@ -868,7 +868,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             Throwable cause = e.getCause();
             if (cause instanceof BlobStorageException
                 && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) cause).getErrorCode())) {
-                throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new NoSuchFileException(path.toString()));
+                throw new NoSuchFileException(path.toString());
             } else {
                 throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, e);
             }
