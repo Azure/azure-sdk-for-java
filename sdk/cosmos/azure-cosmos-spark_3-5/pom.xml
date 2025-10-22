@@ -14,9 +14,16 @@
   <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5;current} -->
   <packaging>pom</packaging>
   <properties>
-    <cosmos.spark.skip>true</cosmos.spark.skip>
-    <cosmos-spark-version>3.5</cosmos-spark-version>
+    <jacoco.skip>true</jacoco.skip>
+    <codesnippet.skip>true</codesnippet.skip>
+    <revapi.skip>true</revapi.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
     <spotless.skip>true</spotless.skip>
+    <cosmos.spark.skip>true</cosmos.spark.skip>
+    <maven.main.skip>${cosmos.spark.skip}</maven.main.skip>
+    <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
+    <cosmos-spark-version>3.5</cosmos-spark-version>
   </properties>
 
   <build>
