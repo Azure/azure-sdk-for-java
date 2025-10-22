@@ -14,6 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
+
 // scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeInternal {
