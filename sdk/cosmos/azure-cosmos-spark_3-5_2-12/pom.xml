@@ -39,6 +39,7 @@
     </developer>
   </developers>
   <properties>
+    <cosmos.spark.skip>false</cosmos.spark.skip>
   </properties>
   <profiles>
     <profile>

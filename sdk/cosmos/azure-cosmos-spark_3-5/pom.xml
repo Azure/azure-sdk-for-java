@@ -14,7 +14,7 @@
   <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5;current} -->
   <packaging>pom</packaging>
   <properties>
-    <cosmos.spark.skip>false</cosmos.spark.skip>
+    <cosmos.spark.skip>true</cosmos.spark.skip>
     <cosmos-spark-version>3.5</cosmos-spark-version>
     <spotless.skip>true</spotless.skip>
   </properties>
