@@ -554,11 +554,3 @@ directive:
   transform: >
     $.properties["enableRescoring"]["x-ms-client-name"] = "rescoringEnabled";
 ```
-```yaml $(tag) == 'searchservice'
-directive:
-  - from: swagger-spec-file.json
-    where: $.definitions.ListKnowledgeBasesResult
-    transform: >
-      $["x-ms-client-name"] = "ListKnowledgeBasesResult";
-      $["x-accessibility"] = "internal";
-```
