@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Response from a get service statistics request. If successful, it includes service level counters and limits.
+ * Response from a get service statistics request. If successful, it includes service level counters, indexer runtime
+ * information, and limits.
  */
 @Immutable
 public final class SearchServiceStatistics implements JsonSerializable<SearchServiceStatistics> {
@@ -26,6 +27,12 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      */
     @Generated
     private final SearchServiceCounters counters;
+
+    /*
+     * Service level indexers runtime information.
+     */
+    @Generated
+    private final ServiceIndexersRuntime indexersRuntime;
 
     /*
      * Service level general limits.
@@ -37,11 +44,14 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      * Creates an instance of SearchServiceStatistics class.
      * 
      * @param counters the counters value to set.
+     * @param indexersRuntime the indexersRuntime value to set.
      * @param limits the limits value to set.
      */
     @Generated
-    public SearchServiceStatistics(SearchServiceCounters counters, SearchServiceLimits limits) {
+    public SearchServiceStatistics(SearchServiceCounters counters, ServiceIndexersRuntime indexersRuntime,
+        SearchServiceLimits limits) {
         this.counters = counters;
+        this.indexersRuntime = indexersRuntime;
         this.limits = limits;
     }
 
@@ -53,6 +63,16 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
     @Generated
     public SearchServiceCounters getCounters() {
         return this.counters;
+    }
+
+    /**
+     * Get the indexersRuntime property: Service level indexers runtime information.
+     * 
+     * @return the indexersRuntime value.
+     */
+    @Generated
+    public ServiceIndexersRuntime getIndexersRuntime() {
+        return this.indexersRuntime;
     }
 
     /**
@@ -73,6 +93,7 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("counters", this.counters);
+        jsonWriter.writeJsonField("indexersRuntime", this.indexersRuntime);
         jsonWriter.writeJsonField("limits", this.limits);
         return jsonWriter.writeEndObject();
     }
@@ -91,6 +112,8 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
         return jsonReader.readObject(reader -> {
             boolean countersFound = false;
             SearchServiceCounters counters = null;
+            boolean indexersRuntimeFound = false;
+            ServiceIndexersRuntime indexersRuntime = null;
             boolean limitsFound = false;
             SearchServiceLimits limits = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -100,6 +123,9 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
                 if ("counters".equals(fieldName)) {
                     counters = SearchServiceCounters.fromJson(reader);
                     countersFound = true;
+                } else if ("indexersRuntime".equals(fieldName)) {
+                    indexersRuntime = ServiceIndexersRuntime.fromJson(reader);
+                    indexersRuntimeFound = true;
                 } else if ("limits".equals(fieldName)) {
                     limits = SearchServiceLimits.fromJson(reader);
                     limitsFound = true;
@@ -107,12 +133,15 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
                     reader.skipChildren();
                 }
             }
-            if (countersFound && limitsFound) {
-                return new SearchServiceStatistics(counters, limits);
+            if (countersFound && indexersRuntimeFound && limitsFound) {
+                return new SearchServiceStatistics(counters, indexersRuntime, limits);
             }
             List<String> missingProperties = new ArrayList<>();
             if (!countersFound) {
                 missingProperties.add("counters");
+            }
+            if (!indexersRuntimeFound) {
+                missingProperties.add("indexersRuntime");
             }
             if (!limitsFound) {
                 missingProperties.add("limits");

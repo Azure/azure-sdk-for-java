@@ -23,12 +23,6 @@ import java.util.Map;
 @Fluent
 public final class AzureBlobKnowledgeSourceParameters implements JsonSerializable<AzureBlobKnowledgeSourceParameters> {
     /*
-     * An explicit identity to use for this knowledge source.
-     */
-    @Generated
-    private SearchIndexerDataIdentity identity;
-
-    /*
      * Key-based connection string or the ResourceId format if using a managed identity.
      */
     @Generated
@@ -47,34 +41,22 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     private String folderPath;
 
     /*
-     * Optional vectorizer configuration for vectorizing content.
+     * Set to true if connecting to an ADLS Gen2 storage account. Default is false.
      */
     @Generated
-    private VectorSearchVectorizer embeddingModel;
+    private Boolean isAdlsGen2;
 
     /*
-     * Optional chat completion model for image verbalization or context extraction.
+     * Consolidates all general ingestion settings.
      */
     @Generated
-    private KnowledgeAgentModel chatCompletionModel;
-
-    /*
-     * Optional schedule for data ingestion.
-     */
-    @Generated
-    private IndexingSchedule ingestionSchedule;
+    private KnowledgeSourceIngestionParameters ingestionParameters;
 
     /*
      * Resources created by the knowledge source.
      */
     @Generated
     private Map<String, String> createdResources;
-
-    /*
-     * Indicates whether image verbalization should be disabled.
-     */
-    @Generated
-    private Boolean disableImageVerbalization;
 
     /**
      * Creates an instance of AzureBlobKnowledgeSourceParameters class.
@@ -86,28 +68,6 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     public AzureBlobKnowledgeSourceParameters(String connectionString, String containerName) {
         this.connectionString = connectionString;
         this.containerName = containerName;
-    }
-
-    /**
-     * Get the identity property: An explicit identity to use for this knowledge source.
-     * 
-     * @return the identity value.
-     */
-    @Generated
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit identity to use for this knowledge source.
-     * 
-     * @param identity the identity value to set.
-     * @return the AzureBlobKnowledgeSourceParameters object itself.
-     */
-    @Generated
-    public AzureBlobKnowledgeSourceParameters setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**
@@ -154,70 +114,47 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     }
 
     /**
-     * Get the embeddingModel property: Optional vectorizer configuration for vectorizing content.
+     * Get the isAdlsGen2 property: Set to true if connecting to an ADLS Gen2 storage account. Default is false.
      * 
-     * @return the embeddingModel value.
+     * @return the isAdlsGen2 value.
      */
     @Generated
-    public VectorSearchVectorizer getEmbeddingModel() {
-        return this.embeddingModel;
+    public Boolean isAdlsGen2() {
+        return this.isAdlsGen2;
     }
 
     /**
-     * Set the embeddingModel property: Optional vectorizer configuration for vectorizing content.
+     * Set the isAdlsGen2 property: Set to true if connecting to an ADLS Gen2 storage account. Default is false.
      * 
-     * @param embeddingModel the embeddingModel value to set.
+     * @param isAdlsGen2 the isAdlsGen2 value to set.
      * @return the AzureBlobKnowledgeSourceParameters object itself.
      */
     @Generated
-    public AzureBlobKnowledgeSourceParameters setEmbeddingModel(VectorSearchVectorizer embeddingModel) {
-        this.embeddingModel = embeddingModel;
+    public AzureBlobKnowledgeSourceParameters setIsAdlsGen2(Boolean isAdlsGen2) {
+        this.isAdlsGen2 = isAdlsGen2;
         return this;
     }
 
     /**
-     * Get the chatCompletionModel property: Optional chat completion model for image verbalization or context
-     * extraction.
+     * Get the ingestionParameters property: Consolidates all general ingestion settings.
      * 
-     * @return the chatCompletionModel value.
+     * @return the ingestionParameters value.
      */
     @Generated
-    public KnowledgeAgentModel getChatCompletionModel() {
-        return this.chatCompletionModel;
+    public KnowledgeSourceIngestionParameters getIngestionParameters() {
+        return this.ingestionParameters;
     }
 
     /**
-     * Set the chatCompletionModel property: Optional chat completion model for image verbalization or context
-     * extraction.
+     * Set the ingestionParameters property: Consolidates all general ingestion settings.
      * 
-     * @param chatCompletionModel the chatCompletionModel value to set.
+     * @param ingestionParameters the ingestionParameters value to set.
      * @return the AzureBlobKnowledgeSourceParameters object itself.
      */
     @Generated
-    public AzureBlobKnowledgeSourceParameters setChatCompletionModel(KnowledgeAgentModel chatCompletionModel) {
-        this.chatCompletionModel = chatCompletionModel;
-        return this;
-    }
-
-    /**
-     * Get the ingestionSchedule property: Optional schedule for data ingestion.
-     * 
-     * @return the ingestionSchedule value.
-     */
-    @Generated
-    public IndexingSchedule getIngestionSchedule() {
-        return this.ingestionSchedule;
-    }
-
-    /**
-     * Set the ingestionSchedule property: Optional schedule for data ingestion.
-     * 
-     * @param ingestionSchedule the ingestionSchedule value to set.
-     * @return the AzureBlobKnowledgeSourceParameters object itself.
-     */
-    @Generated
-    public AzureBlobKnowledgeSourceParameters setIngestionSchedule(IndexingSchedule ingestionSchedule) {
-        this.ingestionSchedule = ingestionSchedule;
+    public AzureBlobKnowledgeSourceParameters
+        setIngestionParameters(KnowledgeSourceIngestionParameters ingestionParameters) {
+        this.ingestionParameters = ingestionParameters;
         return this;
     }
 
@@ -232,28 +169,6 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
     }
 
     /**
-     * Get the disableImageVerbalization property: Indicates whether image verbalization should be disabled.
-     * 
-     * @return the disableImageVerbalization value.
-     */
-    @Generated
-    public Boolean isDisableImageVerbalization() {
-        return this.disableImageVerbalization;
-    }
-
-    /**
-     * Set the disableImageVerbalization property: Indicates whether image verbalization should be disabled.
-     * 
-     * @param disableImageVerbalization the disableImageVerbalization value to set.
-     * @return the AzureBlobKnowledgeSourceParameters object itself.
-     */
-    @Generated
-    public AzureBlobKnowledgeSourceParameters setDisableImageVerbalization(Boolean disableImageVerbalization) {
-        this.disableImageVerbalization = disableImageVerbalization;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -262,12 +177,9 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("connectionString", this.connectionString);
         jsonWriter.writeStringField("containerName", this.containerName);
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("folderPath", this.folderPath);
-        jsonWriter.writeJsonField("embeddingModel", this.embeddingModel);
-        jsonWriter.writeJsonField("chatCompletionModel", this.chatCompletionModel);
-        jsonWriter.writeJsonField("ingestionSchedule", this.ingestionSchedule);
-        jsonWriter.writeBooleanField("disableImageVerbalization", this.disableImageVerbalization);
+        jsonWriter.writeBooleanField("isADLSGen2", this.isAdlsGen2);
+        jsonWriter.writeJsonField("ingestionParameters", this.ingestionParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -287,13 +199,10 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             String connectionString = null;
             boolean containerNameFound = false;
             String containerName = null;
-            SearchIndexerDataIdentity identity = null;
             String folderPath = null;
-            VectorSearchVectorizer embeddingModel = null;
-            KnowledgeAgentModel chatCompletionModel = null;
-            IndexingSchedule ingestionSchedule = null;
+            Boolean isAdlsGen2 = null;
+            KnowledgeSourceIngestionParameters ingestionParameters = null;
             Map<String, String> createdResources = null;
-            Boolean disableImageVerbalization = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -304,20 +213,14 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
                 } else if ("containerName".equals(fieldName)) {
                     containerName = reader.getString();
                     containerNameFound = true;
-                } else if ("identity".equals(fieldName)) {
-                    identity = SearchIndexerDataIdentity.fromJson(reader);
                 } else if ("folderPath".equals(fieldName)) {
                     folderPath = reader.getString();
-                } else if ("embeddingModel".equals(fieldName)) {
-                    embeddingModel = VectorSearchVectorizer.fromJson(reader);
-                } else if ("chatCompletionModel".equals(fieldName)) {
-                    chatCompletionModel = KnowledgeAgentModel.fromJson(reader);
-                } else if ("ingestionSchedule".equals(fieldName)) {
-                    ingestionSchedule = IndexingSchedule.fromJson(reader);
+                } else if ("isADLSGen2".equals(fieldName)) {
+                    isAdlsGen2 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ingestionParameters".equals(fieldName)) {
+                    ingestionParameters = KnowledgeSourceIngestionParameters.fromJson(reader);
                 } else if ("createdResources".equals(fieldName)) {
                     createdResources = reader.readMap(reader1 -> reader1.getString());
-                } else if ("disableImageVerbalization".equals(fieldName)) {
-                    disableImageVerbalization = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -325,13 +228,10 @@ public final class AzureBlobKnowledgeSourceParameters implements JsonSerializabl
             if (connectionStringFound && containerNameFound) {
                 AzureBlobKnowledgeSourceParameters deserializedAzureBlobKnowledgeSourceParameters
                     = new AzureBlobKnowledgeSourceParameters(connectionString, containerName);
-                deserializedAzureBlobKnowledgeSourceParameters.identity = identity;
                 deserializedAzureBlobKnowledgeSourceParameters.folderPath = folderPath;
-                deserializedAzureBlobKnowledgeSourceParameters.embeddingModel = embeddingModel;
-                deserializedAzureBlobKnowledgeSourceParameters.chatCompletionModel = chatCompletionModel;
-                deserializedAzureBlobKnowledgeSourceParameters.ingestionSchedule = ingestionSchedule;
+                deserializedAzureBlobKnowledgeSourceParameters.isAdlsGen2 = isAdlsGen2;
+                deserializedAzureBlobKnowledgeSourceParameters.ingestionParameters = ingestionParameters;
                 deserializedAzureBlobKnowledgeSourceParameters.createdResources = createdResources;
-                deserializedAzureBlobKnowledgeSourceParameters.disableImageVerbalization = disableImageVerbalization;
 
                 return deserializedAzureBlobKnowledgeSourceParameters;
             }

@@ -107,4 +107,23 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version>
+        <configuration>
+          <oldArtifacts>
+            <artifact>com.azure:azure-search-documents:11.8.0-beta.9</artifact>
+          </oldArtifacts>
+          <newArtifacts>
+            <artifact>${project.groupId}:${project.artifactId}:${project.version}</artifact>
+          </newArtifacts>
+          <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

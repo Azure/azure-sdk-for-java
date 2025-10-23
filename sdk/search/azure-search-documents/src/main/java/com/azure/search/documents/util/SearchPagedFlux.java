@@ -10,8 +10,13 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
 import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticErrorReason;
+import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResults;
+import com.azure.search.documents.models.SemanticSearchResultsType;
+
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -127,4 +132,61 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
             return Mono.just(metaData.getFirstPageResponse().getDebugInfo());
         });
     }
+
+    /**
+     * The query answers that can be used to further explore your search results.
+     *
+     * @return The query answers that can be used to further explore your search results.
+     */
+    public Mono<List<QueryAnswerResult>> getQueryAnswers() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getQueryAnswers() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getQueryAnswers());
+        });
+    }
+
+    /**
+     * The semantic error reason if the semantic search request failed.
+     *
+     * @return The semantic error reason if the semantic search request failed, otherwise an empty Mono.
+     */
+    public Mono<SemanticErrorReason> getSemanticErrorReason() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getSemanticErrorReason() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getSemanticErrorReason());
+        });
+    }
+
+    /**
+     * The semantic search results type if semantic search was requested.
+     *
+     * @return The semantic search results type if semantic search was requested, otherwise an empty Mono.
+     */
+    public Mono<SemanticSearchResultsType> getSemanticSearchResultsType() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getSemanticSearchResultsType() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getSemanticSearchResultsType());
+        });
+    }
+
+    /**
+     * The semantic query rewrites result type if semantic search was requested.
+     *
+     * @return The semantic query rewrites result type if semantic search was requested, otherwise an empty Mono.
+     */
+    public Mono<SemanticQueryRewritesResultType> getSemanticQueryRewritesResultType() {
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getSemanticQueryRewritesResultType() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getSemanticQueryRewritesResultType());
+        });
+    }
+
 }

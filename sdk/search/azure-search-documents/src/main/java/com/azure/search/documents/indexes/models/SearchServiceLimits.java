@@ -50,6 +50,12 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     @Generated
     private Long maxStoragePerIndexInBytes;
 
+    /*
+     * The maximum cumulative runtime in seconds allowed for all indexers in the service over the current UTC period.
+     */
+    @Generated
+    private Long maxCumulativeIndexerRuntimeSeconds;
+
     /**
      * Creates an instance of SearchServiceLimits class.
      */
@@ -175,6 +181,30 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     }
 
     /**
+     * Get the maxCumulativeIndexerRuntimeSeconds property: The maximum cumulative runtime in seconds allowed for all
+     * indexers in the service over the current UTC period.
+     * 
+     * @return the maxCumulativeIndexerRuntimeSeconds value.
+     */
+    @Generated
+    public Long getMaxCumulativeIndexerRuntimeSeconds() {
+        return this.maxCumulativeIndexerRuntimeSeconds;
+    }
+
+    /**
+     * Set the maxCumulativeIndexerRuntimeSeconds property: The maximum cumulative runtime in seconds allowed for all
+     * indexers in the service over the current UTC period.
+     * 
+     * @param maxCumulativeIndexerRuntimeSeconds the maxCumulativeIndexerRuntimeSeconds value to set.
+     * @return the SearchServiceLimits object itself.
+     */
+    @Generated
+    public SearchServiceLimits setMaxCumulativeIndexerRuntimeSeconds(Long maxCumulativeIndexerRuntimeSeconds) {
+        this.maxCumulativeIndexerRuntimeSeconds = maxCumulativeIndexerRuntimeSeconds;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -187,6 +217,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
         jsonWriter.writeNumberField("maxComplexObjectsInCollectionsPerDocument",
             this.maxComplexObjectsInCollectionsPerDocument);
         jsonWriter.writeNumberField("maxStoragePerIndex", this.maxStoragePerIndexInBytes);
+        jsonWriter.writeNumberField("maxCumulativeIndexerRuntimeSeconds", this.maxCumulativeIndexerRuntimeSeconds);
         return jsonWriter.writeEndObject();
     }
 
@@ -219,6 +250,9 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("maxStoragePerIndex".equals(fieldName)) {
                     deserializedSearchServiceLimits.maxStoragePerIndexInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("maxCumulativeIndexerRuntimeSeconds".equals(fieldName)) {
+                    deserializedSearchServiceLimits.maxCumulativeIndexerRuntimeSeconds
+                        = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
