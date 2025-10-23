@@ -24,7 +24,7 @@ package com.azure.xml.implementation.aalto.in;
  * and to a lesser degree performance. Both are achieved for short
  * Strings by avoiding another level of indirection (via quad arrays)
  */
-public final class PNameN extends ByteBasedPName {
+public final class PNameN extends PName {
     final int[] mQuads;
     final int mQuadLen;
 

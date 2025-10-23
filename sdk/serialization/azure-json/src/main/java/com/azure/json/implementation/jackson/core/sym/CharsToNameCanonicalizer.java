@@ -668,9 +668,9 @@ public final class CharsToNameCanonicalizer {
      * @since 2.1
      */
     private void _reportTooManyCollisions() {
-        throw new IllegalStateException("Longest collision chain in symbol table (of size " + _size
-            + ") now exceeds maximum, " + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH
-            + " -- suspect a DoS attack based on hash collisions");
+        throw new IllegalStateException(
+            "Longest collision chain in symbol table (of size " + _size + ") now exceeds maximum, "
+                + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH + " -- suspect a DoS attack based on hash collisions");
     }
 
     // since 2.10, for tests only

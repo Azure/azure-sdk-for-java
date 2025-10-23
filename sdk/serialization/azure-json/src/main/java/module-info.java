@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 module com.azure.json {
-    requires com.azure.json;
     exports com.azure.json;
     exports com.azure.json.models;
 

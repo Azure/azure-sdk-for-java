@@ -220,8 +220,8 @@ public final class ByteSourceJsonBootstrapper {
              * (which is ok for larger input; not so hot for smaller; but this is not a common case)
              */
             ByteQuadsCanonicalizer can = rootByteSymbols.makeChild();
-            return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr,
-                _inputEnd, bytesProcessed, _bufferRecyclable);
+            return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr, _inputEnd,
+                bytesProcessed, _bufferRecyclable);
         }
         return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), rootCharSymbols.makeChild());
     }

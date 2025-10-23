@@ -16,17 +16,16 @@
 
 package com.azure.xml.implementation.aalto.out;
 
-import java.io.*;
-import java.text.MessageFormat;
-import java.util.Objects;
-
-import javax.xml.stream.*;
-
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
 import com.azure.xml.implementation.aalto.util.CharsetNames;
 import com.azure.xml.implementation.aalto.util.XmlChars;
 import com.azure.xml.implementation.aalto.util.XmlConsts;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Objects;
 
 /**
  * Base class for output type / encoding-specific serializers
@@ -35,7 +34,7 @@ import com.azure.xml.implementation.aalto.util.XmlConsts;
  * checks directly related to encoding (including optional validity
  * checks for xml content) are implemented.
  */
-public abstract class XmlWriter extends WNameFactory {
+public abstract class XmlWriter implements WNameFactory {
     protected final static int SURR1_FIRST = 0xD800;
     protected final static int SURR2_FIRST = 0xDC00;
     protected final static int SURR2_LAST = 0xDFFF;
@@ -94,18 +93,6 @@ public abstract class XmlWriter extends WNameFactory {
         _copyBuffer = cfg.allocMediumCBuffer(DEFAULT_COPYBUFFER_LEN);
         _copyBufferLen = _copyBuffer.length;
     }
-
-    /*
-    /**********************************************************************
-    /* Abstract methods for WNameFactory
-    /**********************************************************************
-     */
-
-    @Override
-    public abstract WName constructName(String localName) throws XMLStreamException;
-
-    @Override
-    public abstract WName constructName(String prefix, String localName) throws XMLStreamException;
 
     /*
     /**********************************************************************
@@ -178,26 +165,6 @@ public abstract class XmlWriter extends WNameFactory {
     public abstract void writeSpace(String data) throws IOException, XMLStreamException;
 
     public abstract void writeSpace(char[] cbuf, int offset, int len) throws IOException, XMLStreamException;
-
-    /**
-     * Method that will try to output the content as specified. If
-     * the content passed in has embedded "--" in it, it will either
-     * add an intervening space between consequtive hyphens (if content
-     * fixing is enabled), or return the offset of the first hyphen in
-     * multi-hyphen sequence.
-     */
-    public abstract int writeComment(String data) throws IOException, XMLStreamException;
-
-    /**
-     * Older "legacy" output method for outputting DOCTYPE declaration.
-     * Assumes that the passed-in String contains a complete DOCTYPE
-     * declaration properly quoted.
-     */
-    public abstract void writeDTD(String data) throws IOException, XMLStreamException;
-
-    public abstract void writeEntityReference(WName name) throws IOException, XMLStreamException;
-
-    public abstract int writePI(WName target, String data) throws IOException, XMLStreamException;
 
     public abstract void writeRaw(String str, int offset, int len) throws IOException, XMLStreamException;
 
@@ -344,7 +311,7 @@ public abstract class XmlWriter extends WNameFactory {
         try {
             flush();
         } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
+            throw new StreamExceptionBase(ioe);
         }
 
         if (c == 0) {
@@ -378,7 +345,7 @@ public abstract class XmlWriter extends WNameFactory {
         try {
             flush();
         } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
+            throw new StreamExceptionBase(ioe);
         }
         throw new XMLStreamException(msg);
     }

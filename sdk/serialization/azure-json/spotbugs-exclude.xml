@@ -14,20 +14,16 @@
     </Or>
   </Match>
   <Match>
+    <Bug pattern="MS_MUTABLE_ARRAY" />
+    <Class name="com.azure.json.implementation.jackson.core.JsonGenerator" />
+  </Match>
+  <Match>
     <Bug pattern="MS_PKGPROTECT" />
     <Or>
       <Class name="com.azure.json.implementation.jackson.core.json.ReaderBasedJsonParser" />
       <Class name="com.azure.json.implementation.jackson.core.json.UTF8StreamJsonParser" />
       <Class name="com.azure.json.implementation.jackson.core.json.WriterBasedJsonGenerator" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="OBL_UNSATISFIED_OBLIGATION" />
-    <Class name="com.azure.json.implementation.jackson.core.JsonFactory" />
-  </Match>
-  <Match>
-    <Bug pattern="SE_BAD_FIELD" />
-    <Class name="com.azure.json.implementation.jackson.core.JsonFactory" />
   </Match>
   <Match>
     <Bug pattern="SF_SWITCH_FALLTHROUGH" />

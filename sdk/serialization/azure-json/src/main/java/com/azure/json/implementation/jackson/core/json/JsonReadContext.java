@@ -89,8 +89,7 @@ public final class JsonReadContext extends JsonStreamContext {
     public JsonReadContext createChildArrayContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
-            _child
-                = ctxt = new JsonReadContext(this, TYPE_ARRAY, lineNr, colNr);
+            _child = ctxt = new JsonReadContext(this, TYPE_ARRAY, lineNr, colNr);
         } else {
             ctxt.reset(TYPE_ARRAY, lineNr, colNr);
         }
@@ -100,8 +99,7 @@ public final class JsonReadContext extends JsonStreamContext {
     public JsonReadContext createChildObjectContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
-            _child
-                = ctxt = new JsonReadContext(this, TYPE_OBJECT, lineNr, colNr);
+            _child = ctxt = new JsonReadContext(this, TYPE_OBJECT, lineNr, colNr);
             return ctxt;
         }
         ctxt.reset(TYPE_OBJECT, lineNr, colNr);

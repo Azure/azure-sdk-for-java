@@ -18,12 +18,9 @@ import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
  *
  * @author Tatu Saloranta
  */
-public final class Base64Variant implements java.io.Serializable {
+public final class Base64Variant {
 
     private final static int INT_SPACE = 0x20;
-
-    // We'll only serialize name
-    private static final long serialVersionUID = 1L;
 
     /**
      * Marker used to denote ascii characters that do not correspond
@@ -91,14 +88,6 @@ public final class Base64Variant implements java.io.Serializable {
      * /* Public accessors
      * /**********************************************************
      */
-
-    public boolean usesPaddingChar(char c) {
-        return c == '=';
-    }
-
-    public boolean usesPaddingChar(int ch) {
-        return ch == (int) '=';
-    }
 
     public int getMaxLineLength() {
         return Integer.MAX_VALUE;
@@ -252,7 +241,7 @@ public final class Base64Variant implements java.io.Serializable {
             int decodedData = bits;
             // then second base64 char; can't get padding yet, nor ws
             if (ptr >= len) {
-                _reportBase64EOF();
+                throw new IllegalArgumentException(missingPaddingMessage());
             }
             ch = str.charAt(ptr++);
             bits = decodeBase64Char(ch);
@@ -263,7 +252,7 @@ public final class Base64Variant implements java.io.Serializable {
             // third base64 char; can be padding, but not ws
             if (ptr >= len) {
                 // but as per [JACKSON-631] can be end-of-input, iff padding is not required
-                _reportBase64EOF();
+                throw new IllegalArgumentException(missingPaddingMessage());
             }
             ch = str.charAt(ptr++);
             bits = decodeBase64Char(ch);
@@ -275,10 +264,10 @@ public final class Base64Variant implements java.io.Serializable {
                 }
                 // Ok, must get padding
                 if (ptr >= len) {
-                    _reportBase64EOF();
+                    throw new IllegalArgumentException(missingPaddingMessage());
                 }
                 ch = str.charAt(ptr++);
-                if (!usesPaddingChar(ch)) {
+                if (ch != '=') {
                     _reportInvalidBase64(ch, 3, "expected padding character '='");
                 }
                 // Got 12 bits, only need 8, need to shift
@@ -291,7 +280,7 @@ public final class Base64Variant implements java.io.Serializable {
             // fourth and last base64 char; can be padding, but not ws
             if (ptr >= len) {
                 // but as per [JACKSON-631] can be end-of-input, iff padding on read is not required
-                _reportBase64EOF();
+                throw new IllegalArgumentException(missingPaddingMessage());
             }
             ch = str.charAt(ptr++);
             bits = decodeBase64Char(ch);
@@ -351,7 +340,7 @@ public final class Base64Variant implements java.io.Serializable {
         if (ch <= INT_SPACE) {
             base = "Illegal white space character (code 0x" + Integer.toHexString(ch) + ") as character #"
                 + (bindex + 1) + " of 4-char base64 unit: can only used between units";
-        } else if (usesPaddingChar(ch)) {
+        } else if (ch == '=') {
             base = "Unexpected padding character ('=') as character #" + (bindex + 1)
                 + " of 4-char base64 unit: padding only legal as 3rd or 4th character";
         } else if (!Character.isDefined(ch) || Character.isISOControl(ch)) {
@@ -366,10 +355,6 @@ public final class Base64Variant implements java.io.Serializable {
         throw new IllegalArgumentException(base);
     }
 
-    private void _reportBase64EOF() throws IllegalArgumentException {
-        throw new IllegalArgumentException(missingPaddingMessage());
-    }
-
     /**
      * Helper method that will construct a message to use in exceptions for cases where input ends
      * prematurely in place where padding would be expected.
@@ -378,7 +363,7 @@ public final class Base64Variant implements java.io.Serializable {
      *
      * @since 2.10
      */
-    public String missingPaddingMessage() { // !!! TODO: why is this 'public'?
+    public static String missingPaddingMessage() { // !!! TODO: why is this 'public'?
         return "Unexpected end of base64-encoded String: base64 variant 'MIME-NO-LINEFEEDS' expects padding "
             + "(one or more '=' characters) at the end. This Base64Variant might have been incorrectly configured";
     }

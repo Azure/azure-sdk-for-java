@@ -1768,7 +1768,7 @@ public class ReaderBasedJsonParser extends JsonParser {
                         decodedData >>= 4;
                         builder.append(decodedData);
                         --_inputPtr; // to keep parser state bit more consistent
-                        _handleBase64MissingPadding(b64variant);
+                        _handleBase64MissingPadding();
                         return builder.toByteArray();
                     }
                     bits = _decodeBase64Escape(b64variant, ch, 2);
@@ -1779,9 +1779,9 @@ public class ReaderBasedJsonParser extends JsonParser {
                         _loadMoreGuaranteed();
                     }
                     ch = _inputBuffer[_inputPtr++];
-                    if (!b64variant.usesPaddingChar(ch)) {
+                    if (ch != '=') {
                         if (_decodeBase64Escape(b64variant, ch, 3) != Base64Variant.BASE64_VALUE_PADDING) {
-                            throw reportInvalidBase64Char(b64variant, ch, 3, "expected padding character '='");
+                            throw reportInvalidBase64Char(ch, 3, "expected padding character '='");
                         }
                     }
                     // Got 12 bits, only need 8, need to shift
@@ -1806,7 +1806,7 @@ public class ReaderBasedJsonParser extends JsonParser {
                         decodedData >>= 2;
                         builder.appendTwoBytes(decodedData);
                         --_inputPtr; // to keep parser state bit more consistent
-                        _handleBase64MissingPadding(b64variant);
+                        _handleBase64MissingPadding();
                         return builder.toByteArray();
                     }
                     bits = _decodeBase64Escape(b64variant, ch, 3);

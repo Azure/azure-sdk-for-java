@@ -529,7 +529,7 @@ public class UTF8JsonGenerator extends JsonGenerator {
                 break;
 
             case JsonWriteContext.STATUS_OK_AFTER_SPACE: // root-value separator
-                _writeBytes();
+                _writeSpace();
                 return;
 
             case JsonWriteContext.STATUS_EXPECT_NAME:
@@ -621,13 +621,12 @@ public class UTF8JsonGenerator extends JsonGenerator {
      * /**********************************************************
      */
 
-    private void _writeBytes() throws IOException {
-        final int len = JsonGenerator.BYTES_SPACE.length;
-        if ((_outputTail + len) > _outputEnd) {
+    private void _writeSpace() throws IOException {
+        if ((_outputTail + 1) > _outputEnd) {
             _flushBuffer();
         }
-        System.arraycopy(JsonGenerator.BYTES_SPACE, 0, _outputBuffer, _outputTail, len);
-        _outputTail += len;
+        _outputBuffer[_outputTail] = ' ';
+        _outputTail += 1;
     }
 
     /*

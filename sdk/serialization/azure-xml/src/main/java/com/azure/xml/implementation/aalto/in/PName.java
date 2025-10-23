@@ -36,16 +36,24 @@ public abstract class PName {
      */
     protected NsBinding _namespaceBinding = null;
 
+    /**
+     * Since the hash is calculated different from the way eventual
+     * String's hash will be (bit faster, not significantly worse
+     * hashing uniformness), we need to store that hash here.
+     */
+    protected final int mHash;
+
     /*
     /**********************************************************************
     /* Life-cycle
     /**********************************************************************
      */
 
-    protected PName(String pname, String prefix, String ln) {
+    protected PName(String pname, String prefix, String ln, int hash) {
         _prefixedName = pname;
         _prefix = prefix;
         _localName = ln;
+        mHash = hash;
     }
 
     public abstract PName createBoundName(NsBinding nsb);
@@ -174,9 +182,14 @@ public abstract class PName {
         return _prefixedName;
     }
 
+    /**
+     * Whether we should use internal hash, or the hash of prefixed
+     * name string itself is an open question. For now, let's use
+     * former.
+     */
     @Override
     public int hashCode() {
-        return _prefixedName.hashCode();
+        return mHash;
     }
 
     @Override
@@ -210,4 +223,11 @@ public abstract class PName {
 
     public abstract int getQuad(int index);
 
+    public abstract boolean equals(int quad1, int quad2);
+
+    public abstract boolean equals(int[] quads, int qlen);
+
+    public abstract boolean hashEquals(int h, int quad1, int quad2);
+
+    public abstract boolean hashEquals(int h, int[] quads, int qlen);
 }

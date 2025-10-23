@@ -23,7 +23,7 @@ import com.azure.xml.implementation.aalto.util.NameTable;
  * <code>PNames</code>, specifically, instances of
  * ({@link PNameC}).
  */
-public class CharBasedPNameTable extends NameTable {
+public class CharBasedPNameTable implements NameTable {
     final static int MIN_HASH_SIZE = 16;
 
     /*
@@ -338,7 +338,7 @@ public class CharBasedPNameTable extends NameTable {
      * This class is a symbol table entry. Each entry acts as a node
      * in a linked list.
      */
-    final static class Bucket {
+    protected final static class Bucket {
         private final PNameC mSymbol;
         private final Bucket mNext;
 

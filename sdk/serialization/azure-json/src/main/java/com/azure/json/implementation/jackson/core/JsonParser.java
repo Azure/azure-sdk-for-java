@@ -1392,8 +1392,8 @@ public abstract class JsonParser implements Closeable {
 
     // @since 2.10
     private void reportOverflowInt(String numDesc, JsonToken inputType) throws IOException {
-        String msg = String.format("Numeric value (%s) out of range of int (%d - %s)",
-            _longIntegerDesc(numDesc), Integer.MIN_VALUE, Integer.MAX_VALUE);
+        String msg = String.format("Numeric value (%s) out of range of int (%d - %s)", _longIntegerDesc(numDesc),
+            Integer.MIN_VALUE, Integer.MAX_VALUE);
         throw new InputCoercionException(this, msg, inputType, Integer.TYPE);
     }
 
@@ -1410,8 +1410,8 @@ public abstract class JsonParser implements Closeable {
 
     // @since 2.10
     private void reportOverflowLong(String numDesc) throws IOException {
-        String msg = String.format("Numeric value (%s) out of range of long (%d - %s)",
-            _longIntegerDesc(numDesc), Long.MIN_VALUE, Long.MAX_VALUE);
+        String msg = String.format("Numeric value (%s) out of range of long (%d - %s)", _longIntegerDesc(numDesc),
+            Long.MIN_VALUE, Long.MAX_VALUE);
         throw new InputCoercionException(this, msg, _currToken, Long.TYPE);
     }
 
@@ -1592,7 +1592,7 @@ public abstract class JsonParser implements Closeable {
     protected final int _decodeBase64Escape(Base64Variant b64variant, int ch, int index) throws IOException {
         // 17-May-2011, tatu: As per [JACKSON-xxx], need to handle escaped chars
         if (ch != '\\') {
-            throw reportInvalidBase64Char(b64variant, ch, index);
+            throw reportInvalidBase64Char(ch, index);
         }
         int unescaped = _decodeEscaped();
         // if white space, skip if first triplet; otherwise errors
@@ -1605,7 +1605,7 @@ public abstract class JsonParser implements Closeable {
         int bits = b64variant.decodeBase64Char(unescaped);
         if (bits < 0) {
             if (bits != Base64Variant.BASE64_VALUE_PADDING) {
-                throw reportInvalidBase64Char(b64variant, unescaped, index);
+                throw reportInvalidBase64Char(unescaped, index);
             }
         }
         return bits;
@@ -1613,7 +1613,7 @@ public abstract class JsonParser implements Closeable {
 
     protected final int _decodeBase64Escape(Base64Variant b64variant, char ch, int index) throws IOException {
         if (ch != '\\') {
-            throw reportInvalidBase64Char(b64variant, ch, index);
+            throw reportInvalidBase64Char(ch, index);
         }
         char unescaped = _decodeEscaped();
         // if white space, skip if first triplet; otherwise errors
@@ -1627,29 +1627,28 @@ public abstract class JsonParser implements Closeable {
         if (bits < 0) {
             // second check since padding can only be 3rd or 4th byte (index #2 or #3)
             if ((bits != Base64Variant.BASE64_VALUE_PADDING) || (index < 2)) {
-                throw reportInvalidBase64Char(b64variant, unescaped, index);
+                throw reportInvalidBase64Char(unescaped, index);
             }
         }
         return bits;
     }
 
-    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex)
-        throws IllegalArgumentException {
-        return reportInvalidBase64Char(b64variant, ch, bindex, null);
+    protected IllegalArgumentException reportInvalidBase64Char(int ch, int bindex) throws IllegalArgumentException {
+        return reportInvalidBase64Char(ch, bindex, null);
     }
 
     /*
      * @param bindex Relative index within base64 character unit; between 0
      * and 3 (as unit has exactly 4 characters)
      */
-    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex, String msg)
+    protected IllegalArgumentException reportInvalidBase64Char(int ch, int bindex, String msg)
         throws IllegalArgumentException {
         String base;
         if (ch <= INT_SPACE) {
             base = String.format(
                 "Illegal white space character (code 0x%s) as character #%d of 4-char base64 unit: can only used between units",
                 Integer.toHexString(ch), (bindex + 1));
-        } else if (b64variant.usesPaddingChar(ch)) {
+        } else if (ch == '=') {
             base = "Unexpected padding character ('=') as character #" + (bindex + 1)
                 + " of 4-char base64 unit: padding only legal as 3rd or 4th character";
         } else if (!Character.isDefined(ch) || Character.isISOControl(ch)) {
@@ -1665,8 +1664,8 @@ public abstract class JsonParser implements Closeable {
     }
 
     // since 2.9.8
-    protected void _handleBase64MissingPadding(Base64Variant b64variant) throws IOException {
-        _reportError(b64variant.missingPaddingMessage());
+    protected void _handleBase64MissingPadding() throws IOException {
+        _reportError(Base64Variant.missingPaddingMessage());
     }
 
     /*

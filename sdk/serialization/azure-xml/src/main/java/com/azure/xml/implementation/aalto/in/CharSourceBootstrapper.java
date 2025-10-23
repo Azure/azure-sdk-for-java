@@ -16,17 +16,14 @@
 
 package com.azure.xml.implementation.aalto.in;
 
-import java.io.*;
-import java.text.MessageFormat;
+import com.azure.xml.implementation.aalto.impl.LocationImpl;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
+import com.azure.xml.implementation.aalto.util.XmlConsts;
 
 import javax.xml.stream.Location;
-import javax.xml.stream.XMLReporter;
 import javax.xml.stream.XMLStreamException;
-
-import com.azure.xml.implementation.aalto.impl.ErrorConsts;
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
-import com.azure.xml.implementation.aalto.impl.LocationImpl;
-import com.azure.xml.implementation.aalto.util.CharsetNames;
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Class that takes care of bootstrapping main document input from
@@ -98,7 +95,7 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
         try {
             return doBootstrap();
         } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
+            throw new StreamExceptionBase(ioe);
         } finally {
             _config.freeSmallCBuffer(mKeyword);
         }
@@ -134,7 +131,7 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
                     readXmlDeclaration();
 
                     if (mFoundEncoding != null) {
-                        normEnc = verifyXmlEncoding(mFoundEncoding);
+                        normEnc = mFoundEncoding;
                     }
                 }
             } else {
@@ -150,7 +147,7 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
                  * inform about the problem right away.
                  */
                 if (c == 0xEF) {
-                    throw new IoStreamException(
+                    throw new StreamExceptionBase(
                         "Unexpected first character (char code 0xEF), not valid in xml document: could be mangled UTF-8 BOM marker. Make sure that the Reader uses correct encoding or pass an InputStream instead");
                 }
             }
@@ -158,33 +155,6 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
         _config.setActualEncoding(normEnc);
         _config.setXmlDeclInfo(mDeclaredXmlVersion, mFoundEncoding, mStandalone);
         return new ReaderScanner(_config, _in, _inputBuffer, _inputPtr, _inputLast);
-    }
-
-    /*
-    ////////////////////////////////////////////////////
-    // Internal methods, main xml decl processing
-    ////////////////////////////////////////////////////
-     */
-
-    /**
-     * @return Normalized encoding name
-     */
-    private String verifyXmlEncoding(String enc) throws XMLStreamException {
-        String charset = CharsetNames.normalize(enc);
-
-        // Probably no point in comparing at all... is there?
-        // But we can report a possible problem?
-        String extEnc = _config.getExternalEncoding();
-        if (extEnc != null && charset != null && !extEnc.equalsIgnoreCase(charset)) {
-            XMLReporter rep = _config.getXMLReporter();
-            if (rep != null) {
-                Location loc = getLocation();
-                rep.report(MessageFormat.format(ErrorConsts.W_MIXED_ENCODINGS, extEnc, enc), ErrorConsts.WT_XML_DECL,
-                    this, loc);
-            }
-        }
-
-        return enc;
     }
 
     /*
@@ -251,12 +221,12 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
         while (true) {
             char c = (_inputPtr < _inputLast) ? _inputBuffer[_inputPtr++] : nextChar();
 
-            if (c > CHAR_SPACE) {
+            if (c > XmlConsts.CHAR_SPACE) {
                 return c;
             }
-            if (c == CHAR_CR || c == CHAR_LF) {
+            if (c == XmlConsts.CHAR_CR || c == XmlConsts.CHAR_LF) {
                 skipCRLF(c);
-            } else if (c == CHAR_NULL) {
+            } else if (c == XmlConsts.CHAR_NULL) {
                 reportNull();
             }
         }
@@ -276,12 +246,12 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
             if (c != exp.charAt(ptr)) {
                 return c;
             }
-            if (c == CHAR_NULL) {
+            if (c == XmlConsts.CHAR_NULL) {
                 reportNull();
             }
         }
 
-        return CHAR_NULL;
+        return XmlConsts.CHAR_NULL;
     }
 
     @Override
@@ -291,9 +261,9 @@ public final class CharSourceBootstrapper extends InputBootstrapper {
 
         while (true) {
             char c = (_inputPtr < _inputLast) ? _inputBuffer[_inputPtr++] : nextChar();
-            if (c == CHAR_CR || c == CHAR_LF) {
+            if (c == XmlConsts.CHAR_CR || c == XmlConsts.CHAR_LF) {
                 skipCRLF(c);
-            } else if (c == CHAR_NULL) {
+            } else if (c == XmlConsts.CHAR_NULL) {
                 reportNull();
             }
             if (c == quoteChar) {

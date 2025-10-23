@@ -41,8 +41,6 @@ public abstract class JsonGenerator implements Closeable, Flushable {
     public final static int SURR2_FIRST = 0xDC00;
     public final static int SURR2_LAST = 0xDFFF;
 
-    protected static final byte[] BYTES_SPACE = new byte[] { ' ' };
-
     // // // Constants for validation messages (since 2.6)
 
     protected final static String WRITE_BINARY = "write a binary value";

@@ -23,11 +23,6 @@ package com.azure.xml.implementation.aalto.in;
  * to know details of concrete implementations.
  */
 public final class ByteBasedPNameFactory {
-    /**
-     * Can be set to false for debugging (for example, to test memory
-     * usage)
-     */
-    private final static boolean DO_INTERN = true;
 
     /*
     /**********************************************************************
@@ -50,12 +45,10 @@ public final class ByteBasedPNameFactory {
     /**********************************************************************
      */
 
-    public ByteBasedPName constructPName(int hash, String pname, int colonIx, int[] quads, int qlen) {
+    public PName constructPName(int hash, String pname, int colonIx, int[] quads, int qlen) {
         if (qlen < 4) { // Need to check for 3 quad one, can do others too
             if (colonIx < 0) { // no prefix
-                if (DO_INTERN) {
-                    pname = pname.intern();
-                }
+                pname = pname.intern();
                 if (qlen == 3) {
                     return new PName3(pname, null, pname, hash, quads);
                 } else if (qlen == 2) {
@@ -65,10 +58,8 @@ public final class ByteBasedPNameFactory {
             }
             String prefix = pname.substring(0, colonIx);
             String ln = pname.substring(colonIx + 1);
-            if (DO_INTERN) {
-                ln = ln.intern();
-                prefix = prefix.intern();
-            }
+            ln = ln.intern();
+            prefix = prefix.intern();
             if (qlen == 3) {
                 return new PName3(pname, prefix, ln, hash, quads);
             } else if (qlen == 2) {
@@ -80,9 +71,7 @@ public final class ByteBasedPNameFactory {
         int[] buf = new int[qlen];
         System.arraycopy(quads, 0, buf, 0, qlen);
         if (colonIx < 0) { // no prefix, simpler
-            if (DO_INTERN) {
-                pname = pname.intern();
-            }
+            pname = pname.intern();
             return new PNameN(pname, null, pname, hash, buf, qlen);
         }
         /* !!! TODO: cache prefix intern() calls, since they are bound
@@ -90,10 +79,8 @@ public final class ByteBasedPNameFactory {
          */
         String prefix = pname.substring(0, colonIx);
         String ln = pname.substring(colonIx + 1);
-        if (DO_INTERN) {
-            ln = ln.intern();
-            prefix = prefix.intern();
-        }
+        ln = ln.intern();
+        prefix = prefix.intern();
         return new PNameN(pname, prefix, ln, hash, buf, qlen);
     }
 }
