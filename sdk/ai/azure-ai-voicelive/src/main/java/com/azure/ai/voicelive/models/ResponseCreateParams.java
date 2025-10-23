@@ -6,7 +6,6 @@ package com.azure.ai.voicelive.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -60,7 +59,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * into your voice", "laugh frequently"). The instructions are not guaranteed
      * to be followed by the model, but they provide guidance to the model on the
      * desired behavior.
-     * 
+     *
      * Note that the server sets default instructions which will be used if this
      * field is not set and are visible in the `session.created` event at the
      * start of the session.
@@ -72,7 +71,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * supported voice identifiers and configurations.
      */
     @Generated
-    private BinaryData voice;
+    private VoiceProvider voice;
 
     /*
      * The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
@@ -106,7 +105,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * given model. Defaults to `inf`.
      */
     @Generated
-    private BinaryData maxOutputTokens;
+    private MaxOutputTokens maxOutputTokens;
 
     /**
      * Creates an instance of ResponseCreateParams class.
@@ -117,7 +116,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Get the commit property: Whether to commit the response to the conversation. Defaults to true.
-     * 
+     *
      * @return the commit value.
      */
     @Generated
@@ -127,7 +126,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Set the commit property: Whether to commit the response to the conversation. Defaults to true.
-     * 
+     *
      * @param commit the commit value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -140,7 +139,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Get the cancelPrevious property: Whether to cancel any ongoing generation before starting this one. Defaults to
      * true.
-     * 
+     *
      * @return the cancelPrevious value.
      */
     @Generated
@@ -151,7 +150,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Set the cancelPrevious property: Whether to cancel any ongoing generation before starting this one. Defaults to
      * true.
-     * 
+     *
      * @param cancelPrevious the cancelPrevious value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -164,7 +163,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Get the appendInputItems property: Input items to append to the conversation context before generating a
      * response.
-     * 
+     *
      * @return the appendInputItems value.
      */
     @Generated
@@ -175,7 +174,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Set the appendInputItems property: Input items to append to the conversation context before generating a
      * response.
-     * 
+     *
      * @param appendInputItems the appendInputItems value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -188,7 +187,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Get the inputItems property: Input items to be used as the context for this response.
      * An empty array clears previous context.
-     * 
+     *
      * @return the inputItems value.
      */
     @Generated
@@ -199,7 +198,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Set the inputItems property: Input items to be used as the context for this response.
      * An empty array clears previous context.
-     * 
+     *
      * @param inputItems the inputItems value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -212,7 +211,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Get the modalities property: The set of modalities the model can respond with. To disable audio,
      * set this to ["text"].
-     * 
+     *
      * @return the modalities value.
      */
     @Generated
@@ -223,7 +222,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Set the modalities property: The set of modalities the model can respond with. To disable audio,
      * set this to ["text"].
-     * 
+     *
      * @param modalities the modalities value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -242,11 +241,11 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * into your voice", "laugh frequently"). The instructions are not guaranteed
      * to be followed by the model, but they provide guidance to the model on the
      * desired behavior.
-     * 
+     *
      * Note that the server sets default instructions which will be used if this
      * field is not set and are visible in the `session.created` event at the
      * start of the session.
-     * 
+     *
      * @return the instructions value.
      */
     @Generated
@@ -263,11 +262,11 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * into your voice", "laugh frequently"). The instructions are not guaranteed
      * to be followed by the model, but they provide guidance to the model on the
      * desired behavior.
-     * 
+     *
      * Note that the server sets default instructions which will be used if this
      * field is not set and are visible in the `session.created` event at the
      * start of the session.
-     * 
+     *
      * @param instructions the instructions value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -279,29 +278,29 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Get the voice property: supported voice identifiers and configurations.
-     * 
+     *
      * @return the voice value.
      */
     @Generated
-    public BinaryData getVoice() {
+    public VoiceProvider getVoice() {
         return this.voice;
     }
 
     /**
      * Set the voice property: supported voice identifiers and configurations.
-     * 
+     *
      * @param voice the voice value to set.
      * @return the ResponseCreateParams object itself.
      */
     @Generated
-    public ResponseCreateParams setVoice(BinaryData voice) {
+    public ResponseCreateParams setVoice(VoiceProvider voice) {
         this.voice = voice;
         return this;
     }
 
     /**
      * Get the outputAudioFormat property: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-     * 
+     *
      * @return the outputAudioFormat value.
      */
     @Generated
@@ -311,7 +310,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Set the outputAudioFormat property: The format of output audio. Options are `pcm16`, `g711_ulaw`, or `g711_alaw`.
-     * 
+     *
      * @param outputAudioFormat the outputAudioFormat value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -323,7 +322,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Get the tools property: Tools (functions) available to the model.
-     * 
+     *
      * @return the tools value.
      */
     @Generated
@@ -333,7 +332,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Set the tools property: Tools (functions) available to the model.
-     * 
+     *
      * @param tools the tools value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -346,7 +345,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Get the toolChoice property: How the model chooses tools. Options are `auto`, `none`, `required`, or
      * specify a function, like `{"type": "function", "function": {"name": "my_function"}}`.
-     * 
+     *
      * @return the toolChoice value.
      */
     @Generated
@@ -357,7 +356,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
     /**
      * Set the toolChoice property: How the model chooses tools. Options are `auto`, `none`, `required`, or
      * specify a function, like `{"type": "function", "function": {"name": "my_function"}}`.
-     * 
+     *
      * @param toolChoice the toolChoice value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -369,7 +368,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Get the temperature property: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
-     * 
+     *
      * @return the temperature value.
      */
     @Generated
@@ -379,7 +378,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
 
     /**
      * Set the temperature property: Sampling temperature for the model, limited to [0.6, 1.2]. Defaults to 0.8.
-     * 
+     *
      * @param temperature the temperature value to set.
      * @return the ResponseCreateParams object itself.
      */
@@ -394,11 +393,11 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * inclusive of tool calls. Provide an integer between 1 and 4096 to
      * limit output tokens, or `inf` for the maximum available tokens for a
      * given model. Defaults to `inf`.
-     * 
+     *
      * @return the maxOutputTokens value.
      */
     @Generated
-    public BinaryData getMaxOutputTokens() {
+    public MaxOutputTokens getMaxOutputTokens() {
         return this.maxOutputTokens;
     }
 
@@ -407,12 +406,12 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
      * inclusive of tool calls. Provide an integer between 1 and 4096 to
      * limit output tokens, or `inf` for the maximum available tokens for a
      * given model. Defaults to `inf`.
-     * 
+     *
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the ResponseCreateParams object itself.
      */
     @Generated
-    public ResponseCreateParams setMaxOutputTokens(BinaryData maxOutputTokens) {
+    public ResponseCreateParams setMaxOutputTokens(MaxOutputTokens maxOutputTokens) {
         this.maxOutputTokens = maxOutputTokens;
         return this;
     }
@@ -434,23 +433,20 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
         jsonWriter.writeStringField("instructions", this.instructions);
         if (this.voice != null) {
             jsonWriter.writeFieldName("voice");
-            this.voice.writeTo(jsonWriter);
+            this.voice.toJson(jsonWriter);
         }
         jsonWriter.writeStringField("output_audio_format",
             this.outputAudioFormat == null ? null : this.outputAudioFormat.toString());
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("tool_choice", this.toolChoice);
         jsonWriter.writeNumberField("temperature", this.temperature);
-        if (this.maxOutputTokens != null) {
-            jsonWriter.writeFieldName("max_output_tokens");
-            this.maxOutputTokens.writeTo(jsonWriter);
-        }
+        jsonWriter.writeJsonField("max_output_tokens", this.maxOutputTokens);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ResponseCreateParams from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResponseCreateParams if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -483,8 +479,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                 } else if ("instructions".equals(fieldName)) {
                     deserializedResponseCreateParams.instructions = reader.getString();
                 } else if ("voice".equals(fieldName)) {
-                    deserializedResponseCreateParams.voice
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedResponseCreateParams.voice = VoiceProvider.fromJson(reader);
                 } else if ("output_audio_format".equals(fieldName)) {
                     deserializedResponseCreateParams.outputAudioFormat
                         = OutputAudioFormat.fromString(reader.getString());
@@ -497,8 +492,7 @@ public final class ResponseCreateParams implements JsonSerializable<ResponseCrea
                 } else if ("temperature".equals(fieldName)) {
                     deserializedResponseCreateParams.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("max_output_tokens".equals(fieldName)) {
-                    deserializedResponseCreateParams.maxOutputTokens
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedResponseCreateParams.maxOutputTokens = MaxOutputTokens.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -7,7 +7,6 @@ import com.azure.ai.voicelive.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -45,7 +44,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         if (endpoint != null && apiKey != null) {
             client = new VoiceLiveClientBuilder().endpoint(endpoint)
                 .credential(new AzureKeyCredential(apiKey))
-                .buildClient();
+                .buildAsyncClient();
         }
     }
 
@@ -57,7 +56,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         // Arrange
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
             .setInstructions("You are a test assistant. Respond with 'Hello from VoiceLive SDK test!'")
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         // Act & Assert
@@ -80,7 +79,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
             .setInstructions("You are a test assistant.")
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ECHO)))
+            .setVoice(new OpenAIVoice(OpenAIVoiceName.ECHO))
             .setTurnDetection(turnDetection)
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
@@ -89,7 +88,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
             assertNotNull(session);
             // Test that we can receive events
             AtomicBoolean receivedEvent = new AtomicBoolean(false);
-            session.receiveUpdates()
+            session.receiveEvents()
                 .take(1) // Take only the first event to avoid infinite stream
                 .subscribe(event -> {
                     assertNotNull(event);
@@ -113,7 +112,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         VoiceLiveAsyncClient invalidClient
             = new VoiceLiveClientBuilder().endpoint("https://invalid.cognitiveservices.azure.com")
                 .credential(new AzureKeyCredential("invalid-key"))
-                .buildClient();
+                .buildAsyncClient();
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview");
 
@@ -135,7 +134,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         // Test various configuration options
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
             .setInstructions("Test instructions")
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.SHIMMER)))
+            .setVoice(new OpenAIVoice(OpenAIVoiceName.SHIMMER))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
             .setInputAudioSamplingRate(24000)
@@ -155,7 +154,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         // Arrange
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
             .setInstructions("You are a test assistant. Say hello when the session starts.")
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         AtomicReference<String> firstEventType = new AtomicReference<>();
@@ -165,7 +164,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
             assertNotNull(session);
 
             // Subscribe to events and capture the first one
-            session.receiveUpdates().take(1).subscribe(event -> {
+            session.receiveEvents().take(1).subscribe(event -> {
                 String eventString = event.toString();
                 if (eventString.contains("\"type\":")) {
                     // Extract event type for verification
@@ -195,7 +194,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         // Arrange - Test with Azure voice instead of OpenAI
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
             .setInstructions("You are a test assistant using Azure voice.")
-            .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-JennyNeural")))
+            .setVoice(new AzureStandardVoice("en-US-JennyNeural"))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         // Act & Assert

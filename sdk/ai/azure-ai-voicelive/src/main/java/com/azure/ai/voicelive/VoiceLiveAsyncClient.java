@@ -9,8 +9,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +27,6 @@ public final class VoiceLiveAsyncClient {
     private final URI endpoint;
     private final AzureKeyCredential keyCredential;
     private final TokenCredential tokenCredential;
-    private final HttpPipeline pipeline;
     private final String apiVersion;
     private final HttpHeaders additionalHeaders;
 
@@ -38,16 +35,14 @@ public final class VoiceLiveAsyncClient {
      *
      * @param endpoint The service endpoint.
      * @param keyCredential The API key credential.
-     * @param pipeline The HTTP pipeline.
      * @param apiVersion The API version.
      * @param additionalHeaders Additional headers to include in requests.
      */
-    VoiceLiveAsyncClient(URI endpoint, AzureKeyCredential keyCredential, HttpPipeline pipeline, String apiVersion,
+    VoiceLiveAsyncClient(URI endpoint, AzureKeyCredential keyCredential, String apiVersion,
         HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
-        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null");
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null");
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
     }
@@ -57,16 +52,14 @@ public final class VoiceLiveAsyncClient {
      *
      * @param endpoint The service endpoint.
      * @param tokenCredential The token credential.
-     * @param pipeline The HTTP pipeline.
      * @param apiVersion The API version.
      * @param additionalHeaders Additional headers to include in requests.
      */
-    VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, HttpPipeline pipeline, String apiVersion,
+    VoiceLiveAsyncClient(URI endpoint, TokenCredential tokenCredential, String apiVersion,
         HttpHeaders additionalHeaders) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
-        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null");
         this.apiVersion = Objects.requireNonNull(apiVersion, "'apiVersion' cannot be null");
         this.additionalHeaders = additionalHeaders != null ? additionalHeaders : new HttpHeaders();
     }
@@ -83,9 +76,9 @@ public final class VoiceLiveAsyncClient {
         return Mono.fromCallable(() -> convertToWebSocketEndpoint(endpoint, model)).flatMap(wsEndpoint -> {
             VoiceLiveSession session;
             if (keyCredential != null) {
-                session = new VoiceLiveSession(this, wsEndpoint, keyCredential);
+                session = new VoiceLiveSession(wsEndpoint, keyCredential);
             } else {
-                session = new VoiceLiveSession(this, wsEndpoint, tokenCredential);
+                session = new VoiceLiveSession(wsEndpoint, tokenCredential);
             }
             return session.connect(additionalHeaders).thenReturn(session);
         });
@@ -102,57 +95,9 @@ public final class VoiceLiveAsyncClient {
         Objects.requireNonNull(sessionOptions.getModel(), "'model' in sessionOptions cannot be null");
 
         return startSession(sessionOptions.getModel()).flatMap(session -> {
-            VoiceLiveSessionOptions voiceLiveSessionOptions = convertToVoiceLiveSessionOptions(sessionOptions);
-            ClientEventSessionUpdate sessionUpdateEvent = new ClientEventSessionUpdate(voiceLiveSessionOptions);
-            return session.sendCommand(sessionUpdateEvent).thenReturn(session);
+            ClientEventSessionUpdate sessionUpdateEvent = new ClientEventSessionUpdate(sessionOptions);
+            return session.sendEvent(sessionUpdateEvent).thenReturn(session);
         });
-    }
-
-    /**
-     * Converts VoiceLiveSessionOptions to VoiceLiveSessionOptions.
-     *
-     * @param options The session options to convert.
-     * @return A VoiceLiveSessionOptions instance.
-     */
-    private VoiceLiveSessionOptions convertToVoiceLiveSessionOptions(VoiceLiveSessionOptions options) {
-        VoiceLiveSessionOptions voiceLiveSessionOptions = new VoiceLiveSessionOptions();
-
-        if (options.getModel() != null) {
-            voiceLiveSessionOptions.setModel(options.getModel());
-        }
-        if (options.getModalities() != null) {
-            voiceLiveSessionOptions.setModalities(options.getModalities());
-        }
-        if (options.getInstructions() != null) {
-            voiceLiveSessionOptions.setInstructions(options.getInstructions());
-        }
-        if (options.getVoice() != null) {
-            voiceLiveSessionOptions.setVoice(options.getVoice());
-        }
-        if (options.getInputAudioFormat() != null) {
-            voiceLiveSessionOptions.setInputAudioFormat(options.getInputAudioFormat());
-        }
-        if (options.getOutputAudioFormat() != null) {
-            voiceLiveSessionOptions.setOutputAudioFormat(options.getOutputAudioFormat());
-        }
-        if (options.getTurnDetection() != null) {
-            voiceLiveSessionOptions.setTurnDetection(options.getTurnDetection());
-        }
-        if (options.getTools() != null) {
-            voiceLiveSessionOptions.setTools(options.getTools());
-        }
-        if (options.getToolChoice() != null) {
-            voiceLiveSessionOptions.setToolChoice(options.getToolChoice());
-        }
-        if (options.getTemperature() != null) {
-            voiceLiveSessionOptions.setTemperature(options.getTemperature());
-        }
-        if (options.getMaxResponseOutputTokens() != null) {
-            voiceLiveSessionOptions
-                .setMaxResponseOutputTokens(BinaryData.fromObject(options.getMaxResponseOutputTokens()));
-        }
-
-        return voiceLiveSessionOptions;
     }
 
     /**

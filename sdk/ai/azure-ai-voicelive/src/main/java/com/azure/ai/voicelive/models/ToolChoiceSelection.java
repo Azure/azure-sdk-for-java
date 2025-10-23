@@ -7,7 +7,6 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.io.IOException;
  * A base representation for a voicelive tool_choice selecting a named tool.
  */
 @Immutable
-public class ToolChoiceSelection implements JsonSerializable<ToolChoiceSelection> {
+public class ToolChoiceSelection extends ToolChoice {
     /*
      * The type property.
      */
@@ -61,28 +60,11 @@ public class ToolChoiceSelection implements JsonSerializable<ToolChoiceSelection
      */
     @Generated
     public static ToolChoiceSelection fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("function".equals(discriminatorValue)) {
-                    return ToolChoiceFunctionSelection.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
+        ToolChoice result = ToolChoice.fromJson(jsonReader);
+        if (result instanceof ToolChoiceSelection) {
+            return (ToolChoiceSelection) result;
+        }
+        return null;
     }
 
     @Generated

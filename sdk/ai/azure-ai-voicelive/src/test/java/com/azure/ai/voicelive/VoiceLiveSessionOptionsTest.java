@@ -4,7 +4,6 @@
 package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.*;
-import com.azure.core.util.BinaryData;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,11 +68,11 @@ class VoiceLiveSessionOptionsTest {
         OpenAIVoice voice = new OpenAIVoice(OpenAIVoiceName.ALLOY);
 
         // Act
-        VoiceLiveSessionOptions result = sessionOptions.setVoice(BinaryData.fromObject(voice));
+        VoiceLiveSessionOptions result = sessionOptions.setVoice(voice);
 
         // Assert
         assertSame(sessionOptions, result);
-        assertEquals(BinaryData.fromObject(voice).toString(), sessionOptions.getVoice().toString());
+        assertEquals(voice, sessionOptions.getVoice());
     }
 
     @Test
@@ -155,14 +154,14 @@ class VoiceLiveSessionOptionsTest {
     @Test
     void testSetAndGetToolChoice() {
         // Arrange
-        ToolChoiceLiteral toolChoice = ToolChoiceLiteral.AUTO;
+        ToolChoice toolChoice = ToolChoice.fromLiteral(ToolChoiceLiteral.AUTO);
 
         // Act
-        VoiceLiveSessionOptions result = sessionOptions.setToolChoice(BinaryData.fromObject(toolChoice));
+        VoiceLiveSessionOptions result = sessionOptions.setToolChoice(toolChoice);
 
         // Assert
         assertSame(sessionOptions, result);
-        assertEquals(toolChoice, sessionOptions.getToolChoice().toObject(ToolChoiceLiteral.class));
+        assertEquals(toolChoice, sessionOptions.getToolChoice());
     }
 
     @Test
@@ -192,13 +191,14 @@ class VoiceLiveSessionOptionsTest {
     void testSetAndGetMaxResponseOutputTokens() {
         // Arrange
         Integer maxTokens = 1000;
+        MaxOutputTokens maxOutputTokens = MaxOutputTokens.of(maxTokens);
 
         // Act
-        VoiceLiveSessionOptions result = sessionOptions.setMaxResponseOutputTokens(BinaryData.fromObject(maxTokens));
+        VoiceLiveSessionOptions result = sessionOptions.setMaxResponseOutputTokens(maxOutputTokens);
 
         // Assert
         assertSame(sessionOptions, result);
-        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().toObject(Integer.class));
+        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().getValue());
     }
 
     @Test
@@ -212,26 +212,27 @@ class VoiceLiveSessionOptionsTest {
         ServerVadTurnDetection turnDetection = new ServerVadTurnDetection();
         Double temperature = 0.8;
         Integer maxTokens = 500;
+        MaxOutputTokens maxOutputTokens = MaxOutputTokens.of(maxTokens);
 
         // Act & Assert
         VoiceLiveSessionOptions result = sessionOptions.setInstructions(instructions)
-            .setVoice(BinaryData.fromObject(voice))
+            .setVoice(voice)
             .setInputAudioFormat(inputFormat)
             .setOutputAudioFormat(outputFormat)
             .setModalities(modalities)
             .setTurnDetection(turnDetection)
             .setTemperature(temperature)
-            .setMaxResponseOutputTokens(BinaryData.fromObject(maxTokens));
+            .setMaxResponseOutputTokens(maxOutputTokens);
 
         assertSame(sessionOptions, result);
         assertEquals(instructions, sessionOptions.getInstructions());
-        assertEquals(BinaryData.fromObject(voice).toString(), sessionOptions.getVoice().toString());
+        assertEquals(voice, sessionOptions.getVoice());
         assertEquals(inputFormat, sessionOptions.getInputAudioFormat());
         assertEquals(outputFormat, sessionOptions.getOutputAudioFormat());
         assertEquals(modalities, sessionOptions.getModalities());
         assertEquals(turnDetection, sessionOptions.getTurnDetection());
         assertEquals(temperature, sessionOptions.getTemperature());
-        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().toObject(Integer.class));
+        assertEquals(maxTokens, sessionOptions.getMaxResponseOutputTokens().getValue());
     }
 
     @Test

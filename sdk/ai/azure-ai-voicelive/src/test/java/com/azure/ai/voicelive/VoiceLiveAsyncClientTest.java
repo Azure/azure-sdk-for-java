@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
@@ -41,8 +42,7 @@ class VoiceLiveAsyncClientTest {
     @BeforeEach
     void setUp() throws Exception {
         testEndpoint = new URI("https://test.cognitiveservices.azure.com");
-        client = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, mockPipeline, "2024-10-01-preview",
-            mockHeaders);
+        client = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, "2024-10-01-preview", mockHeaders);
     }
 
     @Test
@@ -55,7 +55,7 @@ class VoiceLiveAsyncClientTest {
     void testConstructorWithNullEndpoint() {
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(null, mockKeyCredential, mockPipeline, "2024-10-01-preview", mockHeaders);
+            new VoiceLiveAsyncClient(null, mockKeyCredential, "2024-10-01-preview", mockHeaders);
         });
     }
 
@@ -63,23 +63,14 @@ class VoiceLiveAsyncClientTest {
     void testConstructorWithNullCredential() {
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(testEndpoint, (AzureKeyCredential) null, mockPipeline, "2024-10-01-preview",
-                mockHeaders);
-        });
-    }
-
-    @Test
-    void testConstructorWithNullPipeline() {
-        // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, null, "2024-10-01-preview", mockHeaders);
+            new VoiceLiveAsyncClient(testEndpoint, (AzureKeyCredential) null, "2024-10-01-preview", mockHeaders);
         });
     }
 
     @Test
     void testStartSessionWithValidOptions() {
         // Arrange
-        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("");
+        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview");
 
         // Act & Assert
         // Note: This test might need to be adjusted based on actual implementation
@@ -133,5 +124,51 @@ class VoiceLiveAsyncClientTest {
         assertTrue(true, "Client should maintain endpoint configuration");
         assertTrue(true, "Client should maintain credential configuration");
         assertTrue(true, "Client should maintain pipeline configuration");
+    }
+
+    @Test
+    void testOptimizedConnectMethods() {
+        // Test that the optimized connect methods return VoiceLiveSession
+
+        // Test startSession with model string
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSession> result = client.startSession("gpt-4o-realtime-preview");
+            assertNotNull(result);
+        });
+
+        // Test startSession with session options
+        VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview");
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSession> result = client.startSession(sessionOptions);
+            assertNotNull(result);
+        });
+
+        // Test null parameter validation for startSession methods
+        assertThrows(NullPointerException.class, () -> {
+            client.startSession((String) null);
+        });
+
+        assertThrows(NullPointerException.class, () -> {
+            client.startSession((VoiceLiveSessionOptions) null);
+        });
+    }
+
+    @Test
+    void testReturnTypeOptimization() {
+        // Test that connect methods return the session for direct use
+        String model = "gpt-4o-realtime-preview";
+
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSession> sessionMono = client.startSession(model);
+            assertNotNull(sessionMono);
+            // The returned Mono should contain a VoiceLiveSession when subscribed
+        });
+
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel(model);
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSession> sessionMono = client.startSession(options);
+            assertNotNull(sessionMono);
+            // The returned Mono should contain a VoiceLiveSession when subscribed
+        });
     }
 }

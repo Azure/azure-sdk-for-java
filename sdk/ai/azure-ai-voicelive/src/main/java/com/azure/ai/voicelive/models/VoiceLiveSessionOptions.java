@@ -6,7 +6,6 @@ package com.azure.ai.voicelive.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,7 +40,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
      * The voice configuration for the session.
      */
     @Generated
-    private BinaryData voice;
+    private VoiceProvider voice;
 
     /*
      * Optional instructions to guide the model's behavior throughout the session.
@@ -51,9 +50,9 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /*
      * Input audio sampling rate in Hz. Available values:
-     * 
+     *
      * - For pcm16: 8000, 16000, 24000
-     * 
+     *
      * - For g711_alaw/g711_ulaw: 8000
      */
     @Generated
@@ -117,7 +116,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
      * Specifies which tools the model is allowed to call during the session.
      */
     @Generated
-    private BinaryData toolChoice;
+    private ToolChoice toolChoice;
 
     /*
      * Controls the randomness of the model's output. Range: 0.0 to 1.0. Default is 0.7.
@@ -129,7 +128,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
      * Maximum number of tokens to generate in the response. Default is unlimited.
      */
     @Generated
-    private BinaryData maxResponseOutputTokens;
+    private MaxOutputTokens maxResponseOutputTokens;
 
     /**
      * Creates an instance of VoiceLiveSessionOptions class.
@@ -140,7 +139,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the model property: The model for the session.
-     * 
+     *
      * @return the model value.
      */
     @Generated
@@ -150,7 +149,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the model property: The model for the session.
-     * 
+     *
      * @param model the model value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -162,7 +161,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the modalities property: The modalities to be used in the session.
-     * 
+     *
      * @return the modalities value.
      */
     @Generated
@@ -172,7 +171,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the modalities property: The modalities to be used in the session.
-     * 
+     *
      * @param modalities the modalities value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -184,7 +183,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the animation property: The animation configuration for the session.
-     * 
+     *
      * @return the animation value.
      */
     @Generated
@@ -194,7 +193,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the animation property: The animation configuration for the session.
-     * 
+     *
      * @param animation the animation value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -206,29 +205,29 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the voice property: The voice configuration for the session.
-     * 
+     *
      * @return the voice value.
      */
     @Generated
-    public BinaryData getVoice() {
+    public VoiceProvider getVoice() {
         return this.voice;
     }
 
     /**
      * Set the voice property: The voice configuration for the session.
-     * 
+     *
      * @param voice the voice value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
     @Generated
-    public VoiceLiveSessionOptions setVoice(BinaryData voice) {
+    public VoiceLiveSessionOptions setVoice(VoiceProvider voice) {
         this.voice = voice;
         return this;
     }
 
     /**
      * Get the instructions property: Optional instructions to guide the model's behavior throughout the session.
-     * 
+     *
      * @return the instructions value.
      */
     @Generated
@@ -238,7 +237,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the instructions property: Optional instructions to guide the model's behavior throughout the session.
-     * 
+     *
      * @param instructions the instructions value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -250,11 +249,11 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the inputAudioSamplingRate property: Input audio sampling rate in Hz. Available values:
-     * 
+     *
      * - For pcm16: 8000, 16000, 24000
-     * 
+     *
      * - For g711_alaw/g711_ulaw: 8000.
-     * 
+     *
      * @return the inputAudioSamplingRate value.
      */
     @Generated
@@ -264,11 +263,11 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the inputAudioSamplingRate property: Input audio sampling rate in Hz. Available values:
-     * 
+     *
      * - For pcm16: 8000, 16000, 24000
-     * 
+     *
      * - For g711_alaw/g711_ulaw: 8000.
-     * 
+     *
      * @param inputAudioSamplingRate the inputAudioSamplingRate value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -280,7 +279,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the inputAudioFormat property: Input audio format. Default is 'pcm16'.
-     * 
+     *
      * @return the inputAudioFormat value.
      */
     @Generated
@@ -290,7 +289,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the inputAudioFormat property: Input audio format. Default is 'pcm16'.
-     * 
+     *
      * @param inputAudioFormat the inputAudioFormat value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -302,7 +301,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the outputAudioFormat property: Output audio format. Default is 'pcm16'.
-     * 
+     *
      * @return the outputAudioFormat value.
      */
     @Generated
@@ -312,7 +311,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the outputAudioFormat property: Output audio format. Default is 'pcm16'.
-     * 
+     *
      * @param outputAudioFormat the outputAudioFormat value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -324,7 +323,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the turnDetection property: Type of turn detection to use.
-     * 
+     *
      * @return the turnDetection value.
      */
     @Generated
@@ -334,7 +333,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the turnDetection property: Type of turn detection to use.
-     * 
+     *
      * @param turnDetection the turnDetection value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -346,7 +345,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the inputAudioNoiseReduction property: Configuration for input audio noise reduction.
-     * 
+     *
      * @return the inputAudioNoiseReduction value.
      */
     @Generated
@@ -356,7 +355,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the inputAudioNoiseReduction property: Configuration for input audio noise reduction.
-     * 
+     *
      * @param inputAudioNoiseReduction the inputAudioNoiseReduction value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -369,7 +368,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     /**
      * Get the inputAudioEchoCancellation property: Configuration for echo cancellation during server-side audio
      * processing.
-     * 
+     *
      * @return the inputAudioEchoCancellation value.
      */
     @Generated
@@ -380,7 +379,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     /**
      * Set the inputAudioEchoCancellation property: Configuration for echo cancellation during server-side audio
      * processing.
-     * 
+     *
      * @param inputAudioEchoCancellation the inputAudioEchoCancellation value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -392,7 +391,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the avatar property: Configuration for avatar streaming and behavior during the session.
-     * 
+     *
      * @return the avatar value.
      */
     @Generated
@@ -402,7 +401,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the avatar property: Configuration for avatar streaming and behavior during the session.
-     * 
+     *
      * @param avatar the avatar value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -414,7 +413,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the inputAudioTranscription property: Configuration for input audio transcription.
-     * 
+     *
      * @return the inputAudioTranscription value.
      */
     @Generated
@@ -424,7 +423,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the inputAudioTranscription property: Configuration for input audio transcription.
-     * 
+     *
      * @param inputAudioTranscription the inputAudioTranscription value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -436,7 +435,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the outputAudioTimestampTypes property: Types of timestamps to include in audio response content.
-     * 
+     *
      * @return the outputAudioTimestampTypes value.
      */
     @Generated
@@ -446,7 +445,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the outputAudioTimestampTypes property: Types of timestamps to include in audio response content.
-     * 
+     *
      * @param outputAudioTimestampTypes the outputAudioTimestampTypes value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -458,7 +457,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the tools property: Configuration for tools to be used during the session, if applicable.
-     * 
+     *
      * @return the tools value.
      */
     @Generated
@@ -468,7 +467,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the tools property: Configuration for tools to be used during the session, if applicable.
-     * 
+     *
      * @param tools the tools value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -480,29 +479,29 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Get the toolChoice property: Specifies which tools the model is allowed to call during the session.
-     * 
+     *
      * @return the toolChoice value.
      */
     @Generated
-    public BinaryData getToolChoice() {
+    public ToolChoice getToolChoice() {
         return this.toolChoice;
     }
 
     /**
      * Set the toolChoice property: Specifies which tools the model is allowed to call during the session.
-     * 
+     *
      * @param toolChoice the toolChoice value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
     @Generated
-    public VoiceLiveSessionOptions setToolChoice(BinaryData toolChoice) {
+    public VoiceLiveSessionOptions setToolChoice(ToolChoice toolChoice) {
         this.toolChoice = toolChoice;
         return this;
     }
 
     /**
      * Get the temperature property: Controls the randomness of the model's output. Range: 0.0 to 1.0. Default is 0.7.
-     * 
+     *
      * @return the temperature value.
      */
     @Generated
@@ -512,7 +511,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
 
     /**
      * Set the temperature property: Controls the randomness of the model's output. Range: 0.0 to 1.0. Default is 0.7.
-     * 
+     *
      * @param temperature the temperature value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
@@ -525,23 +524,23 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     /**
      * Get the maxResponseOutputTokens property: Maximum number of tokens to generate in the response. Default is
      * unlimited.
-     * 
+     *
      * @return the maxResponseOutputTokens value.
      */
     @Generated
-    public BinaryData getMaxResponseOutputTokens() {
+    public MaxOutputTokens getMaxResponseOutputTokens() {
         return this.maxResponseOutputTokens;
     }
 
     /**
      * Set the maxResponseOutputTokens property: Maximum number of tokens to generate in the response. Default is
      * unlimited.
-     * 
+     *
      * @param maxResponseOutputTokens the maxResponseOutputTokens value to set.
      * @return the VoiceLiveSessionOptions object itself.
      */
     @Generated
-    public VoiceLiveSessionOptions setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
+    public VoiceLiveSessionOptions setMaxResponseOutputTokens(MaxOutputTokens maxResponseOutputTokens) {
         this.maxResponseOutputTokens = maxResponseOutputTokens;
         return this;
     }
@@ -559,7 +558,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
         jsonWriter.writeJsonField("animation", this.animation);
         if (this.voice != null) {
             jsonWriter.writeFieldName("voice");
-            this.voice.writeTo(jsonWriter);
+            this.voice.toJson(jsonWriter);
         }
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeNumberField("input_audio_sampling_rate", this.inputAudioSamplingRate);
@@ -577,19 +576,16 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         if (this.toolChoice != null) {
             jsonWriter.writeFieldName("tool_choice");
-            this.toolChoice.writeTo(jsonWriter);
+            this.toolChoice.toJson(jsonWriter);
         }
         jsonWriter.writeNumberField("temperature", this.temperature);
-        if (this.maxResponseOutputTokens != null) {
-            jsonWriter.writeFieldName("max_response_output_tokens");
-            this.maxResponseOutputTokens.writeTo(jsonWriter);
-        }
+        jsonWriter.writeJsonField("max_response_output_tokens", this.maxResponseOutputTokens);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of VoiceLiveSessionOptions from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VoiceLiveSessionOptions if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -612,8 +608,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("animation".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.animation = AnimationOptions.fromJson(reader);
                 } else if ("voice".equals(fieldName)) {
-                    deserializedVoiceLiveSessionOptions.voice
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedVoiceLiveSessionOptions.voice = VoiceProvider.fromJson(reader);
                 } else if ("instructions".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.instructions = reader.getString();
                 } else if ("input_audio_sampling_rate".equals(fieldName)) {
@@ -646,12 +641,11 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                     deserializedVoiceLiveSessionOptions.tools = tools;
                 } else if ("tool_choice".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.toolChoice
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                        = reader.getNullable(nonNullReader -> ToolChoice.fromJson(nonNullReader));
                 } else if ("temperature".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("max_response_output_tokens".equals(fieldName)) {
-                    deserializedVoiceLiveSessionOptions.maxResponseOutputTokens
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedVoiceLiveSessionOptions.maxResponseOutputTokens = MaxOutputTokens.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -31,7 +31,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
 
     /**
      * Creates an instance of ResponseFailedDetails class.
-     * 
+     *
      * @param error the error value to set.
      */
     @Generated
@@ -41,7 +41,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
 
     /**
      * Get the type property: The type property.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -52,7 +52,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
 
     /**
      * Get the error property: The error property.
-     * 
+     *
      * @return the error value.
      */
     @Generated
@@ -75,7 +75,7 @@ public final class ResponseFailedDetails extends ResponseStatusDetails {
 
     /**
      * Reads an instance of ResponseFailedDetails from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResponseFailedDetails if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

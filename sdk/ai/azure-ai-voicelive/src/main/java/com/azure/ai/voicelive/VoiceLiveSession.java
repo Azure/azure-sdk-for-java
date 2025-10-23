@@ -5,6 +5,10 @@ package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.ClientEvent;
 import com.azure.ai.voicelive.models.ClientEventInputAudioBufferAppend;
+import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -22,6 +26,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.websocket.WebsocketInbound;
 import reactor.netty.http.websocket.WebsocketOutbound;
@@ -40,13 +45,18 @@ import java.util.concurrent.atomic.AtomicReference;
  * This class abstracts bidirectional communication between the caller and service,
  * simultaneously sending and receiving WebSocket messages.
  * </p>
+ * <p>
+ * Users can obtain a VoiceLiveSession instance from {@link VoiceLiveAsyncClient#startSession(String)} or
+ * {@link VoiceLiveAsyncClient#startSession(VoiceLiveSessionOptions)} and work directly with it for optimal performance.
+ * Alternatively, users can use the convenience methods on {@link VoiceLiveAsyncClient} which delegate to
+ * the internal session.
+ * </p>
  */
 public final class VoiceLiveSession implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveSession.class);
     private static final int AUDIO_BUFFER_SIZE = 16 * 1024; // 16KB chunks
     private static final String COGNITIVE_SERVICES_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
-    private final VoiceLiveAsyncClient parentClient;
     private final URI endpoint;
     private final AzureKeyCredential keyCredential;
     private final TokenCredential tokenCredential;
@@ -69,12 +79,10 @@ public final class VoiceLiveSession implements AutoCloseable {
     /**
      * Creates a new VoiceLiveSession with API key authentication.
      *
-     * @param parentClient The parent VoiceLiveAsyncClient.
      * @param endpoint The WebSocket endpoint.
      * @param keyCredential The API key credential.
      */
-    VoiceLiveSession(VoiceLiveAsyncClient parentClient, URI endpoint, AzureKeyCredential keyCredential) {
-        this.parentClient = Objects.requireNonNull(parentClient, "'parentClient' cannot be null");
+    VoiceLiveSession(URI endpoint, AzureKeyCredential keyCredential) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
@@ -84,12 +92,10 @@ public final class VoiceLiveSession implements AutoCloseable {
     /**
      * Creates a new VoiceLiveSession with token authentication.
      *
-     * @param parentClient The parent VoiceLiveAsyncClient.
      * @param endpoint The WebSocket endpoint.
      * @param tokenCredential The token credential.
      */
-    VoiceLiveSession(VoiceLiveAsyncClient parentClient, URI endpoint, TokenCredential tokenCredential) {
-        this.parentClient = Objects.requireNonNull(parentClient, "'parentClient' cannot be null");
+    VoiceLiveSession(URI endpoint, TokenCredential tokenCredential) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
@@ -108,7 +114,7 @@ public final class VoiceLiveSession implements AutoCloseable {
         }
 
         return getAuthorizationHeaders().flatMap(authHeaders -> {
-            HttpClient httpClient = HttpClient.create();
+            HttpClient httpClient = HttpClient.create().followRedirect(true);
 
             return httpClient.headers(headers -> {
                 // Add authentication headers
@@ -164,12 +170,12 @@ public final class VoiceLiveSession implements AutoCloseable {
     }
 
     /**
-     * Sends input audio from a stream to the service.
+     * Sends audio from a stream to the service.
      *
      * @param audioStream The audio input stream.
      * @return A Mono that completes when all audio has been sent.
      */
-    public Mono<Void> sendInputAudio(InputStream audioStream) {
+    public Mono<Void> sendAudio(InputStream audioStream) {
         Objects.requireNonNull(audioStream, "'audioStream' cannot be null");
         throwIfNotConnected();
 
@@ -201,39 +207,36 @@ public final class VoiceLiveSession implements AutoCloseable {
             } catch (IOException e) {
                 sink.error(e);
             }
-        })
-            .flatMap(event -> sendCommand((ClientEvent) event))
-            .then()
-            .doFinally(signal -> isSendingAudioStream.set(false));
+        }).flatMap(event -> sendEvent((ClientEvent) event)).then().doFinally(signal -> isSendingAudioStream.set(false));
     }
 
     /**
-     * Sends a command event to the service.
+     * Sends an event to the service.
      *
-     * @param command The client event to send.
+     * @param event The client event to send.
      * @return A Mono that completes when the command is sent.
      */
-    public Mono<Void> sendCommand(ClientEvent command) {
-        Objects.requireNonNull(command, "'command' cannot be null");
+    public Mono<Void> sendEvent(ClientEvent event) {
+        Objects.requireNonNull(event, "'event' cannot be null");
         throwIfNotConnected();
 
         return Mono.fromCallable(() -> {
             try {
-                String json = serializer.serialize(command, SerializerEncoding.JSON);
+                String json = serializer.serialize(event, SerializerEncoding.JSON);
                 return BinaryData.fromString(json);
             } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize command", e));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize event", e));
             }
-        }).flatMap(this::sendCommand);
+        }).flatMap(this::send);
     }
 
     /**
-     * Sends raw binary data to the service.
+     * Sends binary data to the service.
      *
      * @param data The binary data to send.
      * @return A Mono that completes when the data is sent.
      */
-    public Mono<Void> sendCommand(BinaryData data) {
+    public Mono<Void> send(BinaryData data) {
         Objects.requireNonNull(data, "'data' cannot be null");
         throwIfNotConnected();
 
@@ -251,13 +254,59 @@ public final class VoiceLiveSession implements AutoCloseable {
     }
 
     /**
-     * Receives updates from the service as a stream of binary data.
+     * Receives parsed events from the service as strongly-typed SessionUpdate objects.
+     * <p>
+     * This method provides a higher-level alternative to {@link #receive()} by automatically
+     * parsing the raw BinaryData into the appropriate SessionUpdate subclass based on the
+     * event type. This enables type-safe event handling and better developer experience.
+     * </p>
+     * <p>
+     * Events that cannot be parsed will be logged and skipped, ensuring the stream continues
+     * to operate even if unknown event types are received.
+     * </p>
+     *
+     * @return A Flux of SessionUpdate objects representing parsed server events.
+     */
+    public Flux<SessionUpdate> receiveEvents() {
+        throwIfNotConnected();
+        return receive().flatMap(this::parseToSessionUpdate)
+            .doOnError(error -> LOGGER.error("Failed to parse session update", error))
+            .onErrorResume(error -> {
+                LOGGER.warning("Skipping unparseable event due to error: {}", error.getMessage());
+                return Flux.empty();
+            });
+    }
+
+    /**
+     * Receives messages from the service as a stream of binary data.
      *
      * @return A Flux of BinaryData representing server events.
      */
-    public Flux<BinaryData> receiveUpdates() {
+    private Flux<BinaryData> receive() {
         throwIfNotConnected();
         return receiveSink.asFlux();
+    }
+
+    /**
+     * Parses raw BinaryData into a SessionUpdate object.
+     *
+     * @param data The raw binary data from the service.
+     * @return A Mono containing the parsed SessionUpdate.
+     */
+    private Mono<SessionUpdate> parseToSessionUpdate(BinaryData data) {
+        return Mono.fromCallable(() -> {
+            try {
+                String jsonString = data.toString();
+                LOGGER.verbose("Parsing session update: {}", jsonString);
+
+                // Use the existing SessionUpdate.fromJson method for polymorphic deserialization
+                try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
+                    return SessionUpdate.fromJson(jsonReader);
+                }
+            } catch (Exception e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse SessionUpdate", e));
+            }
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -270,7 +319,7 @@ public final class VoiceLiveSession implements AutoCloseable {
     }
 
     /**
-     * Closes the WebSocket connection gracefully.
+     * Closes the session gracefully.
      *
      * @return A Mono that completes when the connection is closed.
      */
@@ -296,7 +345,7 @@ public final class VoiceLiveSession implements AutoCloseable {
 
     @Override
     public void close() {
-        closeAsync().block();
+        this.closeAsync().block();
     }
 
     /**
