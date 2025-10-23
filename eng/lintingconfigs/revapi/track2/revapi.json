@@ -637,6 +637,24 @@
           "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
         },
         {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Double com.azure.search.documents.util.SearchPagedResponse::getCoverage()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.util.Map<java.lang.String, java.util.List<com.azure.search.documents.models.FacetResult>> com.azure.search.documents.util.SearchPagedResponse::getFacets()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
           "code": "java.field.enumConstantOrderChanged",
           "old": {
             "matcher": "regex",

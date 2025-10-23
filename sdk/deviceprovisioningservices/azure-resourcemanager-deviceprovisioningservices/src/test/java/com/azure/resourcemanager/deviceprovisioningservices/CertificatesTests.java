@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -41,13 +43,14 @@ public class CertificatesTests extends DeviceProvisioningTestBase {
                 .createOrUpdate(resourceGroup.name(), provisioningServiceDescription.name(), Constants.Certificate.NAME,
                     certificateInner);
 
-            CertificateListDescriptionInner certificateListDescription = iotDpsManager.serviceClient()
+            PagedIterable<CertificateResponseInner> certificates = iotDpsManager.serviceClient()
                 .getDpsCertificates()
                 .list(resourceGroup.name(), provisioningServiceDescription.name());
 
-            assertEquals(1, certificateListDescription.value().size());
+            List<CertificateResponseInner> certificateList = certificates.stream().collect(Collectors.toList());
+            assertEquals(1, certificateList.size());
 
-            CertificateResponseInner certificate = certificateListDescription.value().get(0);
+            CertificateResponseInner certificate = certificateList.get(0);
             assertFalse(certificate.properties().isVerified());
             assertEquals(Constants.Certificate.SUBJECT, certificate.properties().subject());
             assertEquals(Constants.Certificate.THUMBPRINT, certificate.properties().thumbprint());
@@ -67,11 +70,12 @@ public class CertificatesTests extends DeviceProvisioningTestBase {
                     certificate.name());
 
             // verify that the certificate isn't listed anymore
-            certificateListDescription = iotDpsManager.serviceClient()
+            certificates = iotDpsManager.serviceClient()
                 .getDpsCertificates()
                 .list(resourceGroup.name(), provisioningServiceDescription.name());
 
-            assertEquals(0, certificateListDescription.value().size());
+            certificateList = certificates.stream().collect(Collectors.toList());
+            assertEquals(0, certificateList.size());
 
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
