@@ -71,7 +71,7 @@ spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.oltp TBLP
 
 When creating containers with the Catalog API you can set the throughput and [partition key path](https://docs.microsoft.com/azure/cosmos-db/partitioning-overview#choose-partitionkey) for the container to be created.
 
-For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md) documentation.
+For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3/docs/catalog-api.md) documentation.
 
 ### Ingesting data
 

@@ -11,8 +11,8 @@
   </parent>
 
   <groupId>com.azure.cosmos.spark</groupId>
-  <artifactId>azure-cosmos-spark_3_2-12</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;current} -->
+  <artifactId>azure-cosmos-spark_3</artifactId>
+  <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3;current} -->
   <packaging>pom</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
@@ -721,7 +721,7 @@
                 <transformationSet>
                   <dir>${project.basedir}</dir>
                   <includes>dependency-reduced-pom.xml</includes>
-                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3_2-12/stripDependencyReducedPom.xsl</stylesheet>
+                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3/stripDependencyReducedPom.xsl</stylesheet>
                   <outputDir>${project.basedir}</outputDir>
                   <skipDefaultExcludes>true</skipDefaultExcludes>
                   <addedToClasspath>false</addedToClasspath>
