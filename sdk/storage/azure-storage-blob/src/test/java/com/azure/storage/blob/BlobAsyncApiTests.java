@@ -2891,7 +2891,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     void containerNameEncodingOnGetBlobUrl() {
-        BlobContainerAsyncClient containerClient = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("my container");
+        BlobContainerAsyncClient containerClient
+            = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("my container");
         BlobAsyncClient blobClient = containerClient.getBlobAsyncClient(generateBlobName());
         String expectedEncodedContainerName = "my%20container";
         assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));

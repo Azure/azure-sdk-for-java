@@ -52,9 +52,9 @@ public class AzuriteTests extends BlobTestBase {
     }
 
     private static void validateBlobClient(BlobClientBase client, String blobUrl) {
-        assertEquals(client.getAccountName(), "devstoreaccount1");
-        assertEquals(client.getContainerName(), "container");
-        assertEquals(client.getBlobName(), "blob");
+        assertEquals("devstoreaccount1", client.getAccountName());
+        assertEquals("container", client.getContainerName());
+        assertEquals("blob", client.getBlobName());
         assertEquals(client.getBlobUrl(), blobUrl);
     }
 
@@ -64,12 +64,32 @@ public class AzuriteTests extends BlobTestBase {
         String blobContainerName, String blobName, String expectedUrl) throws MalformedURLException {
         BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
-        assertEquals(parts.getScheme(), scheme);
-        assertEquals(parts.getHost(), host);
-        assertEquals(parts.getAccountName(), accountName);
-        assertEquals(parts.getBlobContainerName(), blobContainerName);
-        assertEquals(parts.getBlobName(), blobName);
-        assertEquals(parts.toUrl().toString(), expectedUrl);
+        assertEquals(scheme, parts.getScheme());
+        assertEquals(host, parts.getHost());
+        assertEquals(accountName, parts.getAccountName());
+        assertEquals(blobContainerName, parts.getBlobContainerName());
+        assertEquals(blobName, parts.getBlobName());
+        assertEquals(expectedUrl, parts.toUrl().toString());
+    }
+
+    @Test
+    public void testParse() throws MalformedURLException {
+        String endpoint = "http://localhost:10000/devstoreaccount1/container/path/to]a blob";
+        String scheme = "http";
+        String host = "localhost:10000";
+        String accountName = "devstoreaccount1";
+        String blobContainerName = "container";
+        String blobName = "path/to]a blob";
+        String expectedUrl = "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob";
+
+        BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
+
+        assertEquals(scheme, parts.getScheme());
+        assertEquals(host, parts.getHost());
+        assertEquals(accountName, parts.getAccountName());
+        assertEquals(blobContainerName, parts.getBlobContainerName());
+        assertEquals(blobName, parts.getBlobName());
+        assertEquals(expectedUrl, parts.toUrl().toString());
     }
 
     private static Stream<Arguments> azuriteURLParserSupplier() {
@@ -107,7 +127,6 @@ public class AzuriteTests extends BlobTestBase {
             Arguments.of("http://azure-storage-emulator-azurite:10000/devstoreaccount1/container/blob", "http",
                 "azure-storage-emulator-azurite:10000", "devstoreaccount1", "container", "blob",
                 "http://azure-storage-emulator-azurite:10000/devstoreaccount1/container/blob"));
-
     }
 
     @ParameterizedTest
@@ -121,8 +140,8 @@ public class AzuriteTests extends BlobTestBase {
                 .httpClient(getHttpClient())
                 .buildClient();
 
-        assertEquals(serviceClient.getAccountUrl(), AZURITE_ENDPOINTS[index]);
-        assertEquals(serviceClient.getAccountName(), "devstoreaccount1");
+        assertEquals(AZURITE_ENDPOINTS[index], serviceClient.getAccountUrl());
+        assertEquals("devstoreaccount1", serviceClient.getAccountName());
 
         // cleanup:
         if (originalUseDevelopmentStorage != null) {
@@ -137,8 +156,8 @@ public class AzuriteTests extends BlobTestBase {
     public void azuriteURLConstructingServiceClient(int index) {
         BlobServiceClient serviceClient = getAzuriteServiceClient(AZURITE_ENDPOINTS[index]);
 
-        assertEquals(serviceClient.getAccountUrl(), AZURITE_ENDPOINTS[index]);
-        assertEquals(serviceClient.getAccountName(), "devstoreaccount1");
+        assertEquals(AZURITE_ENDPOINTS[index], serviceClient.getAccountUrl());
+        assertEquals("devstoreaccount1", serviceClient.getAccountName());
     }
 
     @ParameterizedTest
@@ -147,9 +166,9 @@ public class AzuriteTests extends BlobTestBase {
         BlobContainerClient containerClient
             = getAzuriteServiceClient(AZURITE_ENDPOINTS[index]).getBlobContainerClient("container");
 
-        assertEquals(containerClient.getAccountName(), "devstoreaccount1");
-        assertEquals(containerClient.getBlobContainerName(), "container");
-        assertEquals(containerClient.getBlobContainerUrl(), AZURITE_ENDPOINTS[index] + "/container");
+        assertEquals("devstoreaccount1", containerClient.getAccountName());
+        assertEquals("container", containerClient.getBlobContainerName());
+        assertEquals(AZURITE_ENDPOINTS[index] + "/container", containerClient.getBlobContainerUrl());
     }
 
     @ParameterizedTest
@@ -161,9 +180,9 @@ public class AzuriteTests extends BlobTestBase {
                 .httpClient(getHttpClient())
                 .buildClient();
 
-        assertEquals(containerClient.getAccountName(), "devstoreaccount1");
-        assertEquals(containerClient.getBlobContainerName(), "container");
-        assertEquals(containerClient.getBlobContainerUrl(), AZURITE_ENDPOINTS[index] + "/container");
+        assertEquals("devstoreaccount1", containerClient.getAccountName());
+        assertEquals("container", containerClient.getBlobContainerName());
+        assertEquals(AZURITE_ENDPOINTS[index] + "/container", containerClient.getBlobContainerUrl());
     }
 
     @ParameterizedTest
@@ -175,9 +194,9 @@ public class AzuriteTests extends BlobTestBase {
                 .httpClient(getHttpClient())
                 .buildClient();
 
-        assertEquals(containerClient.getAccountName(), "devstoreaccount1");
-        assertEquals(containerClient.getBlobContainerName(), "container");
-        assertEquals(containerClient.getBlobContainerUrl(), AZURITE_ENDPOINTS[index] + "/container");
+        assertEquals("devstoreaccount1", containerClient.getAccountName());
+        assertEquals("container", containerClient.getBlobContainerName());
+        assertEquals(AZURITE_ENDPOINTS[index] + "/container", containerClient.getBlobContainerUrl());
     }
 
     @ParameterizedTest
@@ -248,13 +267,13 @@ public class AzuriteTests extends BlobTestBase {
         BlobLeaseClient containerLeaseClient
             = new BlobLeaseClientBuilder().containerClient(containerClient).buildClient();
 
-        assertEquals(containerLeaseClient.getAccountName(), "devstoreaccount1");
-        assertEquals(containerLeaseClient.getResourceUrl(), AZURITE_ENDPOINTS[index] + "/container");
+        assertEquals("devstoreaccount1", containerLeaseClient.getAccountName());
+        assertEquals(AZURITE_ENDPOINTS[index] + "/container", containerLeaseClient.getResourceUrl());
 
         BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder().blobClient(blobClient).buildClient();
 
-        assertEquals(blobLeaseClient.getAccountName(), "devstoreaccount1");
-        assertEquals(blobLeaseClient.getResourceUrl(), AZURITE_ENDPOINTS[index] + "/container/blob");
+        assertEquals("devstoreaccount1", blobLeaseClient.getAccountName());
+        assertEquals(AZURITE_ENDPOINTS[index] + "/container/blob", blobLeaseClient.getResourceUrl());
     }
 
     @Disabled("Enable once the April 2023 release of azure-core-http-netty happens")

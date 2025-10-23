@@ -125,7 +125,8 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setContainerName(String containerName) {
-        this.containerName = containerName;
+        //decodes and encodes to ensure containerName is always stored in encoded format
+        this.containerName = Utility.urlEncode(Utility.urlDecode(containerName));
         return this;
     }
 
@@ -146,7 +147,8 @@ public final class BlobUrlParts {
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {
-        this.blobName = blobName;
+        //decodes and encodes to ensure blobName is always stored in encoded format
+        this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         return this;
     }
 
@@ -458,11 +460,11 @@ public final class BlobUrlParts {
             int containerEndIndex = path.indexOf('/');
             if (containerEndIndex == -1) {
                 // path contains only a container name and no blob name
-                parts.setContainerName(path);
+                parts.setContainerName(Utility.urlDecode(path));
             } else {
                 // path contains the container name up until the slash and blob name is everything after the slash
-                parts.setContainerName(path.substring(0, containerEndIndex));
-                parts.setBlobName(path.substring(containerEndIndex + 1));
+                parts.setContainerName(Utility.urlDecode(path.substring(0, containerEndIndex)));
+                parts.setBlobName(Utility.urlDecode(path.substring(containerEndIndex + 1)));
             }
         }
 
