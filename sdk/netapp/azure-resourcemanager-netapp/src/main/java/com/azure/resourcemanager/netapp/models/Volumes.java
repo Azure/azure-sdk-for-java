@@ -316,6 +316,41 @@ public interface Volumes {
         String poolName, String volumeName, GetGroupIdListForLdapUserRequest body, Context context);
 
     /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
+
+    /**
      * Break volume replication
      * 
      * Break the replication connection on the destination volume.

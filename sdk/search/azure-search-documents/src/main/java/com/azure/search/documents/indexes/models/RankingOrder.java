@@ -24,7 +24,7 @@ public final class RankingOrder extends ExpandableStringEnum<RankingOrder> {
      * Sets sort order as ReRankerScore.
      */
     @Generated
-    public static final RankingOrder RE_RANKER_SCORE = fromString("RerankerScore");
+    public static final RankingOrder RERANKER_SCORE = fromString("RerankerScore");
 
     /**
      * Creates a new instance of RankingOrder value.

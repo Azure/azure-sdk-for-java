@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed bug where `spring.cloud.azure.appconfiguration.enabled=false` was ignored in the new major version.
+
 ### Other Changes
 
 ## 6.0.0 (2025-09-22)

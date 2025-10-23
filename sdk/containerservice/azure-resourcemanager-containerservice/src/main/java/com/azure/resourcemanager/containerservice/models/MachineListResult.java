@@ -19,28 +19,19 @@ import java.util.List;
 @Fluent
 public final class MachineListResult implements JsonSerializable<MachineListResult> {
     /*
-     * The URL to get the next set of machine results.
-     */
-    private String nextLink;
-
-    /*
      * The list of Machines in cluster.
      */
     private List<MachineInner> value;
+
+    /*
+     * The URL to get the next set of machine results.
+     */
+    private String nextLink;
 
     /**
      * Creates an instance of MachineListResult class.
      */
     public MachineListResult() {
-    }
-
-    /**
-     * Get the nextLink property: The URL to get the next set of machine results.
-     * 
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
     }
 
     /**
@@ -61,6 +52,15 @@ public final class MachineListResult implements JsonSerializable<MachineListResu
     public MachineListResult withValue(List<MachineInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Get the nextLink property: The URL to get the next set of machine results.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -99,11 +99,11 @@ public final class MachineListResult implements JsonSerializable<MachineListResu
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("nextLink".equals(fieldName)) {
-                    deserializedMachineListResult.nextLink = reader.getString();
-                } else if ("value".equals(fieldName)) {
+                if ("value".equals(fieldName)) {
                     List<MachineInner> value = reader.readArray(reader1 -> MachineInner.fromJson(reader1));
                     deserializedMachineListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedMachineListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

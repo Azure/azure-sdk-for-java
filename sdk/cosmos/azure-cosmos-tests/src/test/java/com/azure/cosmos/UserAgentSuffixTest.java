@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -53,7 +54,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
         assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent");
+        validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "TestUserAgent");
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
@@ -70,7 +71,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
         assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent's");
+        validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "TestUserAgent's");
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
@@ -87,7 +88,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
         assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("UnicodeChar_InUserAgent");
+        validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "UnicodeChar_InUserAgent");
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
@@ -104,6 +105,15 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
         assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("UserAgent with space$%_^()*&");
+        validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "UserAgent with space$%_^()*&");
+    }
+
+    private void validateUserAgentSuffix(String actualUserAgent, String expectedUserAgentSuffix) {
+
+        if (Configs.isHttp2Enabled()) {
+            expectedUserAgentSuffix = expectedUserAgentSuffix + "|F10";
+        }
+
+        assertThat(actualUserAgent).endsWith(expectedUserAgentSuffix);
     }
 }

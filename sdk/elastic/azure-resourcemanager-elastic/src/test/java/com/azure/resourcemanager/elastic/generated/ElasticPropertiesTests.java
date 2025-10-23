@@ -13,7 +13,7 @@ public final class ElasticPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticProperties model = BinaryData.fromString(
-            "{\"elasticCloudUser\":{\"emailAddress\":\"szdnr\",\"id\":\"qguhmuo\",\"elasticCloudSsoDefaultUrl\":\"f\"},\"elasticCloudDeployment\":{\"name\":\"zw\",\"deploymentId\":\"g\",\"azureSubscriptionId\":\"tnwu\",\"elasticsearchRegion\":\"gazxuf\",\"elasticsearchServiceUrl\":\"uckyf\",\"kibanaServiceUrl\":\"rfidfvzwdz\",\"kibanaSsoUrl\":\"tymw\"}}")
+            "{\"elasticCloudUser\":{\"emailAddress\":\"mnteiwao\",\"id\":\"km\",\"elasticCloudSsoDefaultUrl\":\"c\"},\"elasticCloudDeployment\":{\"name\":\"dcuf\",\"deploymentId\":\"srp\",\"azureSubscriptionId\":\"zidnsezcxtbzsgfy\",\"elasticsearchRegion\":\"sne\",\"elasticsearchServiceUrl\":\"dwzjeiach\",\"kibanaServiceUrl\":\"osfln\",\"kibanaSsoUrl\":\"sfqpteehz\"}}")
             .toObject(ElasticProperties.class);
     }
 

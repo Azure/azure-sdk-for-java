@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,17 +13,18 @@ public final class SchedulerSkuUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerSkuUpdate model
-            = BinaryData.fromString("{\"name\":\"vamih\",\"capacity\":774982264,\"redundancyState\":\"Zone\"}")
+            = BinaryData.fromString("{\"name\":\"Consumption\",\"capacity\":1389039399,\"redundancyState\":\"None\"}")
                 .toObject(SchedulerSkuUpdate.class);
-        Assertions.assertEquals("vamih", model.name());
-        Assertions.assertEquals(774982264, model.capacity());
+        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.name());
+        Assertions.assertEquals(1389039399, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchedulerSkuUpdate model = new SchedulerSkuUpdate().withName("vamih").withCapacity(774982264);
+        SchedulerSkuUpdate model
+            = new SchedulerSkuUpdate().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1389039399);
         model = BinaryData.fromObject(model).toObject(SchedulerSkuUpdate.class);
-        Assertions.assertEquals("vamih", model.name());
-        Assertions.assertEquals(774982264, model.capacity());
+        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.name());
+        Assertions.assertEquals(1389039399, model.capacity());
     }
 }

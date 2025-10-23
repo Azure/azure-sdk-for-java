@@ -1,12 +1,26 @@
 # Release History
 
-## 12.25.0-beta.2 (Unreleased)
+## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.25.0 (2025-10-21)
+
+### Features Added
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
 
 ## 12.24.3 (2025-09-25)
 
@@ -187,9 +201,9 @@
 - When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
   `DataLakeFileSystemClient.getDirectoryClient(String fileName)`, `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`
   and `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`, the path name will be stored exactly as passed in
-  and will not be URL-encoded. For example, if the path name is "test%25test" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("test%25test")`,
-  `DataLakeDirectoryClient.getDirectoryPath()` will return "test%25test" and the path's url will result in
-  “https://account.dfs.core.windows.net/filesystemname/test%25%25test”.
+  and will not be URL-encoded. For example, if the path name is "directory/blob.txt" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("directory/blob.txt")`,
+  `DataLakeDirectoryClient.getDirectoryPath()` will return "directory/blob.txt" and the path's url will result in
+  “https://account.dfs.core.windows.net/filesystemname/directory%2Fblob.txt”.
 
 ### Bugs Fixed
 - Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
@@ -222,9 +236,9 @@
 - When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
   `DataLakeFileSystemClient.getDirectoryClient(String fileName)`, `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)` 
 and `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`, the path name will be stored exactly as passed in 
-and will not be URL-encoded. For example, if the path name is "test%25test" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("test%25test")`,
-`DataLakeDirectoryClient.getDirectoryPath()` will return "test%25test" and the path's url will result in 
-“https://account.dfs.core.windows.net/filesystemname/test%25%25test”.
+and will not be URL-encoded. For example, if the path name is "directory/blob.txt" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("directory/blob.txt")`,
+`DataLakeDirectoryClient.getDirectoryPath()` will return "directory/blob.txt" and the path's url will result in 
+“https://account.dfs.core.windows.net/filesystemname/directory%2Fblob.txt”.
 
 ### Bugs Fixed
 - Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
