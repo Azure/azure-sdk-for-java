@@ -1259,8 +1259,9 @@ public final class SearchAsyncClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(
-            context -> search(request, continuationToken, firstPageResponse, querySourceAuthorization, context));
+        Boolean enableElevatedRead = (searchOptions != null) ? searchOptions.isElevatedReadEnabled() : null;
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context -> search(request,
+            continuationToken, firstPageResponse, querySourceAuthorization, enableElevatedRead, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
@@ -1269,14 +1270,16 @@ public final class SearchAsyncClient {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
+        Boolean enableElevatedRead = (searchOptions != null) ? searchOptions.isElevatedReadEnabled() : null;
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> search(request, continuationToken,
-            firstPageResponseWrapper, querySourceAuthorization, context);
+            firstPageResponseWrapper, querySourceAuthorization, enableElevatedRead, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
-        SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization,
+        Boolean enableElevatedRead, Context context) {
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
         }
@@ -1285,7 +1288,7 @@ public final class SearchAsyncClient {
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.getDocuments()
-            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, null, null, context)
+            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, enableElevatedRead, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();

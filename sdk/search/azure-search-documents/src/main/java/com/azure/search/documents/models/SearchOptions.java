@@ -144,6 +144,13 @@ public final class SearchOptions {
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
 
+    /*
+     * A value that specifies whether to enable elevated read for search requests. Elevated read allows search
+     * requests to read the latest committed index changes, reducing the latency between document upload and their
+     * availability for search. This may have a negative impact on search request performance.
+     */
+    private Boolean enableElevatedRead;
+
     /**
      * Creates an instance of {@link SearchOptions}.
      */
@@ -669,4 +676,31 @@ public final class SearchOptions {
     public VectorSearchOptions getVectorSearchOptions() {
         return this.vectorSearchOptions;
     }
+
+    /**
+     * Get the enableElevatedRead property: A value that specifies whether to enable elevated read for search
+     * requests. Elevated read allows search requests to read the latest committed index changes, reducing the latency
+     * between document upload and their availability for search. This may have a negative impact on search request
+     * performance.
+     *
+     * @return the enableElevatedRead value.
+     */
+    public Boolean isElevatedReadEnabled() {
+        return this.enableElevatedRead;
+    }
+
+    /**
+     * Set the enableElevatedRead property: A value that specifies whether to enable elevated read for search
+     * requests. Elevated read allows search requests to read the latest committed index changes, reducing the latency
+     * between document upload and their availability for search. This may have a negative impact on search request
+     * performance.
+     *
+     * @param enableElevatedRead the enableElevatedRead value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setElevatedReadEnabled(Boolean enableElevatedRead) {
+        this.enableElevatedRead = enableElevatedRead;
+        return this;
+    }
+
 }
