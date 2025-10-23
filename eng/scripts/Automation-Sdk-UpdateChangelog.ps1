@@ -333,21 +333,6 @@ try {
         Write-Host "  Downloaded to: $oldJarPath"
         Write-Host ""
         
-        # Write-Host "Step 4: Building current package..."
-        # $mvnCmd = if ($IsWindows -or $env:OS -match "Windows") { "mvn.cmd" } else { "mvn" }
-        # Push-Location $PackagePath
-        # try {
-        #     &  mvn clean package "-Dmaven.javadoc.skip" "-Dgpg.skip" "-DskipTestCompile" "-Djacoco.skip" "-Drevapi.skip" "-Dcodesnippet.skip"
-        #     if ($LASTEXITCODE -ne 0) {
-        #         throw "Maven build failed"
-        #     }
-        # }
-        # finally {
-        #     Pop-Location
-        # }
-        # Write-Host "  Build completed"
-        # Write-Host ""
-        
         Write-Host "Step 5: Locating built JAR..."
         Write-Host "  Debug - PackagePath: $PackagePath"
         Write-Host "  Debug - ArtifactId: $($artifactInfo.ArtifactId)"
