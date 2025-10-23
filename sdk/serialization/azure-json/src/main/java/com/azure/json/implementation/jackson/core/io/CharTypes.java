@@ -66,49 +66,6 @@ public final class CharTypes {
     }
 
     /**
-     * To support non-default (and -standard) unquoted field names mode,
-     * need to have alternate checking.
-     * Basically this is list of 8-bit ASCII characters that are legal
-     * as part of Javascript identifier
-     */
-    private final static int[] sInputCodesJsNames;
-    static {
-        final int[] table = new int[256];
-        // Default is "not a name char", mark ones that are
-        Arrays.fill(table, -1);
-        // Assume rules with JS same as Java (change if/as needed)
-        for (int i = 33; i < 256; ++i) {
-            if (Character.isJavaIdentifierPart((char) i)) {
-                table[i] = 0;
-            }
-        }
-        /*
-         * As per [JACKSON-267], '@', '#' and '*' are also to be accepted as well.
-         * And '-' (for hyphenated names); and '+' for sake of symmetricity...
-         */
-        table['@'] = 0;
-        table['#'] = 0;
-        table['*'] = 0;
-        table['-'] = 0;
-        table['+'] = 0;
-        sInputCodesJsNames = table;
-    }
-
-    /**
-     * This table is similar to Latin-1, except that it marks all "high-bit"
-     * code as ok. They will be validated at a later point, when decoding
-     * name
-     */
-    private final static int[] sInputCodesUtf8JsNames;
-    static {
-        final int[] table = new int[256];
-        // start with 8-bit JS names
-        System.arraycopy(sInputCodesJsNames, 0, table, 0, table.length);
-        Arrays.fill(table, 128, 128, 0);
-        sInputCodesUtf8JsNames = table;
-    }
-
-    /**
      * Decoding table used to quickly determine characters that are
      * relevant within comment content.
      */
@@ -125,30 +82,6 @@ public final class CharTypes {
         buf['\r'] = '\r';
         buf['*'] = '*'; // end marker for c-style comments
         sInputCodesComment = buf;
-    }
-
-    /**
-     * Decoding table used for skipping white space and comments.
-     *
-     * @since 2.3
-     */
-    private final static int[] sInputCodesWS;
-    static {
-        // but first: let's start with UTF-8 multi-byte markers:
-        final int[] buf = new int[256];
-        System.arraycopy(sInputCodesUTF8, 128, buf, 128, 128);
-
-        // default (0) means "not whitespace" (end); 1 "whitespace", -1 invalid,
-        // 2-4 UTF-8 multi-bytes, others marked by char itself
-        //
-        Arrays.fill(buf, 0, 32, -1); // invalid white space
-        buf[' '] = 1;
-        buf['\t'] = 1;
-        buf['\n'] = '\n'; // lf/cr need to be observed, ends cpp comment
-        buf['\r'] = '\r';
-        buf['/'] = '/'; // start marker for c/cpp comments
-        buf['#'] = '#'; // start marker for YAML comments
-        sInputCodesWS = buf;
     }
 
     /**
@@ -202,14 +135,6 @@ public final class CharTypes {
         return sInputCodesUTF8;
     }
 
-    public static int[] getInputCodeLatin1JsNames() {
-        return sInputCodesJsNames;
-    }
-
-    public static int[] getInputCodeUtf8JsNames() {
-        return sInputCodesUtf8JsNames;
-    }
-
     public static int[] getInputCodeComment() {
         return sInputCodesComment;
     }
@@ -225,24 +150,6 @@ public final class CharTypes {
      */
     public static int[] get7BitOutputEscapes() {
         return sOutputEscapes128;
-    }
-
-    /**
-     * Alternative to {@link #get7BitOutputEscapes()} when a non-standard quote character
-     * is used.
-     *
-     * @param quoteChar Character used for quoting textual values and property names;
-     *    usually double-quote but sometimes changed to single-quote (apostrophe)
-     *
-     * @return 128-entry {@code int[]} that contains escape definitions
-     *
-     * @since 2.10
-     */
-    public static int[] get7BitOutputEscapes(int quoteChar) {
-        if (quoteChar == '"') {
-            return sOutputEscapes128;
-        }
-        return AltEscapes.instance.escapesFor(quoteChar);
     }
 
     public static int charToHex(int ch) {
@@ -305,29 +212,4 @@ public final class CharTypes {
         return HB.clone();
     }
 
-    /**
-     * Helper used for lazy initialization of alternative escape (quoting)
-     * table, used for escaping content that uses non-standard quote
-     * character (usually apostrophe).
-     *
-     * @since 2.10
-     */
-    private static class AltEscapes {
-        public final static AltEscapes instance = new AltEscapes();
-
-        private final int[][] _altEscapes = new int[128][];
-
-        public int[] escapesFor(int quoteChar) {
-            int[] esc = _altEscapes[quoteChar];
-            if (esc == null) {
-                esc = Arrays.copyOf(sOutputEscapes128, 128);
-                // Only add escape setting if character does not already have it
-                if (esc[quoteChar] == 0) {
-                    esc[quoteChar] = CharacterEscapes.ESCAPE_STANDARD;
-                }
-                _altEscapes[quoteChar] = esc;
-            }
-            return esc;
-        }
-    }
 }

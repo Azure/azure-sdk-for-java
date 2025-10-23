@@ -2,9 +2,7 @@
 package com.azure.json.implementation.jackson.core.json;
 
 import com.azure.json.implementation.jackson.core.JsonEncoding;
-import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.JsonParser;
-import com.azure.json.implementation.jackson.core.ObjectCodec;
 import com.azure.json.implementation.jackson.core.io.IOContext;
 import com.azure.json.implementation.jackson.core.io.MergedStream;
 import com.azure.json.implementation.jackson.core.io.UTF32Reader;
@@ -54,21 +52,6 @@ public final class ByteSourceJsonBootstrapper {
      * after being used or not.
      */
     private final boolean _bufferRecyclable;
-
-    /*
-     * /**********************************************************
-     * /* Input location
-     * /**********************************************************
-     */
-
-    /**
-     * Current number of input units (bytes or chars) that were processed in
-     * previous blocks,
-     * before contents of current input buffer.
-     *<p>
-     * Note: includes possible BOMs, if those were part of the input.
-     */
-    // private int _inputProcessed;
 
     /*
      * /**********************************************************
@@ -225,8 +208,8 @@ public final class ByteSourceJsonBootstrapper {
         throw new RuntimeException("Internal error"); // should never get here
     }
 
-    public JsonParser constructParser(int parserFeatures, ObjectCodec codec, ByteQuadsCanonicalizer rootByteSymbols,
-        CharsToNameCanonicalizer rootCharSymbols, int factoryFeatures) throws IOException {
+    public JsonParser constructParser(int parserFeatures, ByteQuadsCanonicalizer rootByteSymbols,
+        CharsToNameCanonicalizer rootCharSymbols) throws IOException {
         int prevInputPtr = _inputPtr;
         JsonEncoding enc = detectEncoding();
         int bytesProcessed = _inputPtr - prevInputPtr;
@@ -236,21 +219,12 @@ public final class ByteSourceJsonBootstrapper {
              * and without canonicalization, byte-based approach is not performant; just use std UTF-8 reader
              * (which is ok for larger input; not so hot for smaller; but this is not a common case)
              */
-            if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
-                ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
-                return new UTF8StreamJsonParser(_context, parserFeatures, _in, codec, can, _inputBuffer, _inputPtr,
-                    _inputEnd, bytesProcessed, _bufferRecyclable);
-            }
+            ByteQuadsCanonicalizer can = rootByteSymbols.makeChild();
+            return new UTF8StreamJsonParser(_context, parserFeatures, _in, can, _inputBuffer, _inputPtr,
+                _inputEnd, bytesProcessed, _bufferRecyclable);
         }
-        return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), codec,
-            rootCharSymbols.makeChild(factoryFeatures));
+        return new ReaderBasedJsonParser(_context, parserFeatures, constructReader(), rootCharSymbols.makeChild());
     }
-
-    /*
-     * /**********************************************************
-     * /* Encoding detection for data format auto-detection
-     * /**********************************************************
-     */
 
     /*
      * /**********************************************************

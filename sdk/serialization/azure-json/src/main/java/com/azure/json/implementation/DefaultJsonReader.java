@@ -19,7 +19,7 @@ import java.io.Reader;
  * Default {@link JsonReader} implementation.
  */
 public final class DefaultJsonReader extends JsonReader {
-    private static final JsonFactory FACTORY = JsonFactory.builder().build();
+    private static final JsonFactory FACTORY = new JsonFactory();
 
     private final JsonParser parser;
     private final byte[] jsonBytes;
@@ -89,7 +89,7 @@ public final class DefaultJsonReader extends JsonReader {
         this.parser = parser;
         this.resetSupported = resetSupported;
         this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported);
-        this.parser.configure(JsonParser.Feature.ALLOW_COMMENTS, jsoncSupported);
+        this.parser.configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), jsoncSupported);
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;

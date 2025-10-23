@@ -180,96 +180,6 @@ public final class NumberInput {
         return true;
     }
 
-    public static int parseAsInt(String s, int def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        // One more thing: use integer parsing for 'simple'
-        int i = 0;
-        // skip leading sign, if any
-        final char sign = s.charAt(0);
-        if (sign == '+') { // for plus, actually physically remove
-            s = s.substring(1);
-            len = s.length();
-        } else if (sign == '-') { // minus, just skip for checks, must retain
-            i = 1;
-        }
-        for (; i < len; ++i) {
-            char c = s.charAt(i);
-            // if other symbols, parse as Double, coerce
-            if (c > '9' || c < '0') {
-                try {
-                    return (int) parseDouble(s);
-                } catch (NumberFormatException e) {
-                    return def;
-                }
-            }
-        }
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    public static long parseAsLong(String s, long def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        // One more thing: use long parsing for 'simple'
-        int i = 0;
-        // skip leading sign, if any
-        final char sign = s.charAt(0);
-        if (sign == '+') { // for plus, actually physically remove
-            s = s.substring(1);
-            len = s.length();
-        } else if (sign == '-') { // minus, just skip for checks, must retain
-            i = 1;
-        }
-        for (; i < len; ++i) {
-            char c = s.charAt(i);
-            // if other symbols, parse as Double, coerce
-            if (c > '9' || c < '0') {
-                try {
-                    return (long) parseDouble(s);
-                } catch (NumberFormatException e) {
-                    return def;
-                }
-            }
-        }
-        try {
-            return Long.parseLong(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    public static double parseAsDouble(String s, double def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        try {
-            return parseDouble(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
     public static double parseDouble(String s) throws NumberFormatException {
         // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
         /*
@@ -280,10 +190,6 @@ public final class NumberInput {
             return Double.MIN_VALUE;
         }
         return Double.parseDouble(s);
-    }
-
-    public static BigDecimal parseBigDecimal(String s) throws NumberFormatException {
-        return BigDecimalParser.parse(s);
     }
 
     public static BigDecimal parseBigDecimal(char[] ch, int off, int len) throws NumberFormatException {

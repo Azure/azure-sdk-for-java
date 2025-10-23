@@ -124,8 +124,6 @@ public final class CharsToNameCanonicalizer {
      */
     private final int _seed;
 
-    private final int _flags;
-
     /**
      * Whether any canonicalization should be attempted (whether using
      * intern or not.
@@ -234,7 +232,6 @@ public final class CharsToNameCanonicalizer {
 
         // these settings don't really matter for the bootstrap instance
         _canonicalize = true;
-        _flags = -1;
         // And we'll also set flags so no copying of buckets is needed:
         _hashShared = false; // doesn't really matter for root instance
         _longestCollisionList = 0;
@@ -247,12 +244,11 @@ public final class CharsToNameCanonicalizer {
     /**
      * Internal constructor used when creating child instances.
      */
-    private CharsToNameCanonicalizer(CharsToNameCanonicalizer parent, int flags, int seed, TableInfo parentState) {
+    private CharsToNameCanonicalizer(CharsToNameCanonicalizer parent, int seed, TableInfo parentState) {
         _parent = parent;
         _seed = seed;
         _tableInfo = null; // not used by child tables
-        _flags = flags;
-        _canonicalize = JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(flags);
+        _canonicalize = true;
 
         // Then copy shared state
         _symbols = parentState.symbols;
@@ -313,12 +309,10 @@ public final class CharsToNameCanonicalizer {
      * on which only makeChild/mergeChild are called, but instance itself
      * is not used as a symbol table.
      *
-     * @param flags Bit flags of active {@link JsonFactory.Feature}s enabled.
-     *
      * @return Actual canonicalizer instance that can be used by a parser
      */
-    public CharsToNameCanonicalizer makeChild(int flags) {
-        return new CharsToNameCanonicalizer(this, flags, _seed, _tableInfo.get());
+    public CharsToNameCanonicalizer makeChild() {
+        return new CharsToNameCanonicalizer(this, _seed, _tableInfo.get());
     }
 
     /**
@@ -467,9 +461,7 @@ public final class CharsToNameCanonicalizer {
         }
 
         String newSymbol = new String(buffer, start, len);
-        if (JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(_flags)) {
-            newSymbol = InternCache.instance.intern(newSymbol);
-        }
+        newSymbol = InternCache.instance.intern(newSymbol);
         ++_size;
         // Ok; do we need to add primary entry, or a bucket?
         if (_symbols[index] == null) {
@@ -504,9 +496,7 @@ public final class CharsToNameCanonicalizer {
         } else {
             if (_overflows.get(bucketIndex)) {
                 // Has happened once already for this bucket index, so probably not coincidental...
-                if (JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(_flags)) {
-                    _reportTooManyCollisions(MAX_COLL_CHAIN_LENGTH);
-                }
+                _reportTooManyCollisions();
                 // but even if we don't fail, we will stop canonicalizing as safety measure
                 // (so as not to cause problems with PermGen)
                 _canonicalize = false;
@@ -675,13 +665,12 @@ public final class CharsToNameCanonicalizer {
     }
 
     /**
-     * @param maxLen Maximum allowed length of collision chain
-     *
      * @since 2.1
      */
-    private void _reportTooManyCollisions(int maxLen) {
+    private void _reportTooManyCollisions() {
         throw new IllegalStateException("Longest collision chain in symbol table (of size " + _size
-            + ") now exceeds maximum, " + maxLen + " -- suspect a DoS attack based on hash collisions");
+            + ") now exceeds maximum, " + CharsToNameCanonicalizer.MAX_COLL_CHAIN_LENGTH
+            + " -- suspect a DoS attack based on hash collisions");
     }
 
     // since 2.10, for tests only

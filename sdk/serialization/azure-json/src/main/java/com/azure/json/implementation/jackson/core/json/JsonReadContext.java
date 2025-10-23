@@ -1,7 +1,9 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.json;
 
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.JsonLocation;
+import com.azure.json.implementation.jackson.core.JsonStreamContext;
+import com.azure.json.implementation.jackson.core.JsonToken;
 import com.azure.json.implementation.jackson.core.io.ContentReference;
 
 /**
@@ -16,10 +18,6 @@ public final class JsonReadContext extends JsonStreamContext {
      * Parent context for this context; null for root context.
      */
     private final JsonReadContext _parent;
-
-    // // // Optional duplicate detection
-
-    private DupDetector _dups;
 
     /*
      * /**********************************************************
@@ -39,11 +37,6 @@ public final class JsonReadContext extends JsonStreamContext {
 
     private String _currentName;
 
-    /**
-     * @since 2.5
-     */
-    private Object _currentValue;
-
     private int _lineNr;
     private int _columnNr;
 
@@ -53,10 +46,9 @@ public final class JsonReadContext extends JsonStreamContext {
      * /**********************************************************
      */
 
-    public JsonReadContext(JsonReadContext parent, DupDetector dups, int type, int lineNr, int colNr) {
+    public JsonReadContext(JsonReadContext parent, int type, int lineNr, int colNr) {
         super();
         _parent = parent;
-        _dups = dups;
         _type = type;
         _lineNr = lineNr;
         _columnNr = colNr;
@@ -82,31 +74,6 @@ public final class JsonReadContext extends JsonStreamContext {
         _lineNr = lineNr;
         _columnNr = colNr;
         _currentName = null;
-        _currentValue = null;
-        if (_dups != null) {
-            _dups.reset();
-        }
-    }
-
-    /*
-     * public void trackDups(JsonParser p) {
-     * _dups = DupDetector.rootDetector(p);
-     * }
-     */
-
-    public JsonReadContext withDupDetector(DupDetector dups) {
-        _dups = dups;
-        return this;
-    }
-
-    @Override
-    public Object getCurrentValue() {
-        return _currentValue;
-    }
-
-    @Override
-    public void setCurrentValue(Object v) {
-        _currentValue = v;
     }
 
     /*
@@ -115,15 +82,15 @@ public final class JsonReadContext extends JsonStreamContext {
      * /**********************************************************
      */
 
-    public static JsonReadContext createRootContext(DupDetector dups) {
-        return new JsonReadContext(null, dups, TYPE_ROOT, 1, 0);
+    public static JsonReadContext createRootContext() {
+        return new JsonReadContext(null, TYPE_ROOT, 1, 0);
     }
 
     public JsonReadContext createChildArrayContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
             _child
-                = ctxt = new JsonReadContext(this, (_dups == null) ? null : _dups.child(), TYPE_ARRAY, lineNr, colNr);
+                = ctxt = new JsonReadContext(this, TYPE_ARRAY, lineNr, colNr);
         } else {
             ctxt.reset(TYPE_ARRAY, lineNr, colNr);
         }
@@ -134,7 +101,7 @@ public final class JsonReadContext extends JsonStreamContext {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
             _child
-                = ctxt = new JsonReadContext(this, (_dups == null) ? null : _dups.child(), TYPE_OBJECT, lineNr, colNr);
+                = ctxt = new JsonReadContext(this, TYPE_OBJECT, lineNr, colNr);
             return ctxt;
         }
         ctxt.reset(TYPE_OBJECT, lineNr, colNr);
@@ -164,12 +131,6 @@ public final class JsonReadContext extends JsonStreamContext {
         return new JsonLocation(srcRef, totalChars, _lineNr, _columnNr);
     }
 
-    @Override
-    @Deprecated // since 2.13
-    public JsonLocation getStartLocation(Object rawSrc) {
-        return startLocation(ContentReference.rawReference(rawSrc));
-    }
-
     /*
      * /**********************************************************
      * /* Extended API
@@ -178,7 +139,6 @@ public final class JsonReadContext extends JsonStreamContext {
 
     /**
      * Method that can be used to both clear the accumulated references
-     * (specifically value set with {@link #setCurrentValue(Object)})
      * that should not be retained, and returns parent (as would
      * {@link #getParent()} do). Typically called when closing the active
      * context when encountering {@link JsonToken#END_ARRAY} or
@@ -189,13 +149,8 @@ public final class JsonReadContext extends JsonStreamContext {
      * @since 2.7
      */
     public JsonReadContext clearAndGetParent() {
-        _currentValue = null;
         // could also clear the current name, but seems cheap enough to leave?
         return _parent;
-    }
-
-    public DupDetector getDupDetector() {
-        return _dups;
     }
 
     /*
@@ -214,18 +169,7 @@ public final class JsonReadContext extends JsonStreamContext {
         return (_type != TYPE_ROOT && ix > 0);
     }
 
-    public void setCurrentName(String name) throws JsonProcessingException {
+    public void setCurrentName(String name) {
         _currentName = name;
-        if (_dups != null) {
-            _checkDup(_dups, name);
-        }
-    }
-
-    private void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
-        if (dd.isDup(name)) {
-            Object src = dd.getSource();
-            throw new JsonParseException(((src instanceof JsonParser) ? ((JsonParser) src) : null),
-                "Duplicate field '" + name + "'");
-        }
     }
 }

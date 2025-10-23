@@ -62,25 +62,6 @@ public abstract class JsonStreamContext {
     protected JsonStreamContext() {
     }
 
-    /**
-     * Copy constructor used by sub-classes for creating copies for
-     * buffering.
-     *
-     * @param base Context instance to copy type and index from
-     *
-     * @since 2.9
-     */
-    protected JsonStreamContext(JsonStreamContext base) {
-        _type = base._type;
-        _index = base._index;
-    }
-
-    // @since 2.9
-    protected JsonStreamContext(int type, int index) {
-        _type = type;
-        _index = index;
-    }
-
     /*
      * /**********************************************************
      * /* Public API, accessors
@@ -186,36 +167,6 @@ public abstract class JsonStreamContext {
     public abstract String getCurrentName();
 
     /**
-     * Method for accessing currently active value being used by data-binding
-     * (as the source of streaming data to write, or destination of data being
-     * read), at this level in hierarchy.
-     *<p>
-     * Note that "current value" is NOT populated (or used) by Streaming parser or generator;
-     * it is only used by higher-level data-binding functionality.
-     * The reason it is included here is that it can be stored and accessed hierarchically,
-     * and gets passed through data-binding.
-     *
-     * @return Currently active value, if one has been assigned.
-     *
-     * @since 2.5
-     */
-    public Object getCurrentValue() {
-        return null;
-    }
-
-    /**
-     * Method to call to pass value to be returned via {@link #getCurrentValue}; typically
-     * called indirectly through {@link JsonParser#setCurrentValue}
-     * or {@link JsonGenerator#setCurrentValue}).
-     *
-     * @param v Current value to assign to this context
-     *
-     * @since 2.5
-     */
-    public void setCurrentValue(Object v) {
-    }
-
-    /**
      * Optional method that may be used to access starting location of this context:
      * for example, in case of JSON `Object` context, offset at which `[` token was
      * read or written. Often used for error reporting purposes.
@@ -234,23 +185,10 @@ public abstract class JsonStreamContext {
     }
 
     /**
-     * @param srcRef Source reference needed to construct location instance
-     * @return Location pointing to the point where the context
-     *   start marker was found (or written); never {@code null}.
-     * @since 2.9
-     * @deprecated Since 2.13 use {@link #startLocation} instead
-     */
-    @Deprecated
-    public JsonLocation getStartLocation(Object srcRef) {
-        return JsonLocation.NA;
-    }
-
-    /**
      * Overridden to provide developer readable "JsonPath" representation
      * of the context.
      *
      * @return Simple developer-readable description this context layer
-     *   (note: NOT constructed with parents, unlike {@link #pathAsPointer})
      *
      * @since 2.9
      */

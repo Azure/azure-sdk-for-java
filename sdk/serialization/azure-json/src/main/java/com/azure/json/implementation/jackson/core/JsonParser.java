@@ -7,14 +7,23 @@
 
 package com.azure.json.implementation.jackson.core;
 
-import java.io.*;
+import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
+import com.azure.json.implementation.jackson.core.io.ContentReference;
+import com.azure.json.implementation.jackson.core.io.IOContext;
+import com.azure.json.implementation.jackson.core.io.JsonEOFException;
+import com.azure.json.implementation.jackson.core.io.NumberInput;
+import com.azure.json.implementation.jackson.core.json.JsonReadContext;
+import com.azure.json.implementation.jackson.core.util.ByteArrayBuilder;
+import com.azure.json.implementation.jackson.core.util.TextBuffer;
+
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
-import com.azure.json.implementation.jackson.core.type.TypeReference;
-import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
-import com.azure.json.implementation.jackson.core.util.RequestPayload;
+import java.util.Arrays;
 
 /**
  * Base class that defines public API for reading JSON content.
@@ -24,52 +33,109 @@ import com.azure.json.implementation.jackson.core.util.RequestPayload;
  * @author Tatu Saloranta
  */
 @SuppressWarnings("cast")
-public abstract class JsonParser implements Closeable, Versioned {
-    private final static int MIN_BYTE_I = Byte.MIN_VALUE;
-    // as per [JACKSON-804], allow range up to and including 255
-    private final static int MAX_BYTE_I = 255;
+public abstract class JsonParser implements Closeable {
+    // Control chars:
+    protected final static int INT_TAB = '\t';
+    protected final static int INT_LF = '\n';
+    protected final static int INT_CR = '\r';
+    protected final static int INT_SPACE = 0x0020;
 
-    private final static int MIN_SHORT_I = Short.MIN_VALUE;
-    private final static int MAX_SHORT_I = Short.MAX_VALUE;
+    protected final static int INT_RBRACKET = ']';
+    protected final static int INT_RCURLY = '}';
+    protected final static int INT_QUOTE = '"';
+    protected final static int INT_BACKSLASH = '\\';
+    protected final static int INT_SLASH = '/';
+    protected final static int INT_ASTERISK = '*';
+    protected final static int INT_COLON = ':';
+    protected final static int INT_COMMA = ',';
+    protected final static int INT_HASH = '#';
+
+    // Number chars
+    protected final static int INT_0 = '0';
+    protected final static int INT_9 = '9';
+    protected final static int INT_MINUS = '-';
+    protected final static int INT_PLUS = '+';
+
+    protected final static int INT_PERIOD = '.';
+    protected final static int INT_e = 'e';
+    protected final static int INT_E = 'E';
+
+    protected final static char CHAR_NULL = '\0';
 
     /**
-     * Enumeration of possible "native" (optimal) types that can be
-     * used for numbers.
+     * @since 2.9
      */
-    public enum NumberType {
-        INT, LONG, BIG_INTEGER, FLOAT, DOUBLE, BIG_DECIMAL
-    }
+    protected final static byte[] NO_BYTES = new byte[0];
+
+    /*
+     * /**********************************************************
+     * /* Constants and fields of former 'JsonNumericParserBase'
+     * /**********************************************************
+     */
+
+    protected final static int NR_UNKNOWN = 0;
+
+    // First, integer types
+
+    protected final static int NR_INT = 0x0001;
+    protected final static int NR_LONG = 0x0002;
+    protected final static int NR_BIGINT = 0x0004;
+
+    // And then floating point types
+
+    protected final static int NR_DOUBLE = 0x008;
+    protected final static int NR_BIGDECIMAL = 0x0010;
 
     /**
-     * Default set of {@link StreamReadCapability}ies that may be used as
-     * basis for format-specific readers (or as bogus instance if non-null
-     * set needs to be passed).
+     * NOTE! Not used by JSON implementation but used by many of binary codecs
      *
-     * @since 2.12
+     * @since 2.9
      */
-    protected final static JacksonFeatureSet<StreamReadCapability> DEFAULT_READ_CAPABILITIES
-        = JacksonFeatureSet.fromDefaults(StreamReadCapability.values());
+    protected final static int NR_FLOAT = 0x020;
+
+    // Also, we need some numeric constants
+
+    protected final static BigInteger BI_MIN_INT = BigInteger.valueOf(Integer.MIN_VALUE);
+    protected final static BigInteger BI_MAX_INT = BigInteger.valueOf(Integer.MAX_VALUE);
+
+    protected final static BigInteger BI_MIN_LONG = BigInteger.valueOf(Long.MIN_VALUE);
+    protected final static BigInteger BI_MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+
+    protected final static BigDecimal BD_MIN_LONG = new BigDecimal(BI_MIN_LONG);
+    protected final static BigDecimal BD_MAX_LONG = new BigDecimal(BI_MAX_LONG);
+
+    protected final static BigDecimal BD_MIN_INT = new BigDecimal(BI_MIN_INT);
+    protected final static BigDecimal BD_MAX_INT = new BigDecimal(BI_MAX_INT);
+
+    protected final static long MIN_INT_L = Integer.MIN_VALUE;
+    protected final static long MAX_INT_L = Integer.MAX_VALUE;
+
+    // These are not very accurate, but have to do... (for bounds checks)
+
+    protected final static double MIN_LONG_D = (double) Long.MIN_VALUE;
+    protected final static double MAX_LONG_D = (double) Long.MAX_VALUE;
+
+    protected final static double MIN_INT_D = Integer.MIN_VALUE;
+    protected final static double MAX_INT_D = Integer.MAX_VALUE;
+
+    /*
+     * /**********************************************************
+     * /* Misc other constants
+     * /**********************************************************
+     */
+
+    /**
+     * Maximum number of characters to include in token reported
+     * as part of error messages.
+     *
+     * @since 2.9
+     */
+    protected final static int MAX_ERROR_TOKEN_LENGTH = 256;
 
     /**
      * Enumeration that defines all on/off features for parsers.
      */
     public enum Feature {
-        // // // Low-level I/O handling features:
-
-        /**
-         * Feature that determines whether parser will automatically
-         * close underlying input source that is NOT owned by the
-         * parser. If disabled, calling application has to separately
-         * close the underlying {@link InputStream} and {@link Reader}
-         * instances used to create the parser. If enabled, parser
-         * will handle closing, as long as parser itself gets closed:
-         * this happens when end-of-input is encountered, or parser
-         * is closed by a call to {@link JsonParser#close}.
-         *<p>
-         * Feature is enabled by default.
-         */
-        AUTO_CLOSE_SOURCE(true),
-
         // // // Support for non-standard data format constructs
 
         /**
@@ -88,104 +154,6 @@ public abstract class JsonParser implements Closeable, Versioned {
          * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_JAVA_COMMENTS} instead.
          */
         ALLOW_COMMENTS(false),
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of YAML comments, ones starting with '#' and continuing
-         * until the end of the line. This commenting style is common
-         * with scripting languages as well.
-         *<p>
-         * Since JSON specification does not mention comments as legal
-         * construct,
-         * this is a non-standard feature. As such, feature is
-         * <b>disabled by default</b> for parsers and must be
-         * explicitly enabled.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_YAML_COMMENTS} instead.
-         */
-        ALLOW_YAML_COMMENTS(false),
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of unquoted field names (which is allowed by Javascript,
-         * but not by JSON specification).
-         *<p>
-         * Since JSON specification requires use of double quotes for
-         * field names,
-         * this is a non-standard feature, and as such disabled by default.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNQUOTED_FIELD_NAMES} instead.
-         */
-        ALLOW_UNQUOTED_FIELD_NAMES(false),
-
-        /**
-         * Feature that determines whether parser will allow use
-         * of single quotes (apostrophe, character '\'') for
-         * quoting Strings (names and String values). If so,
-         * this is in addition to other acceptable markers.
-         * but not by JSON specification).
-         *<p>
-         * Since JSON specification requires use of double quotes for
-         * field names,
-         * this is a non-standard feature, and as such disabled by default.
-         *<p>
-         * NOTE: while not technically deprecated, since 2.10 recommended to use
-         * {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_SINGLE_QUOTES} instead.
-         */
-        ALLOW_SINGLE_QUOTES(false),
-
-        /**
-         * Feature that determines whether parser will allow
-         * JSON Strings to contain unquoted control characters
-         * (ASCII characters with value less than 32, including
-         * tab and line feed characters) or not.
-         * If feature is set false, an exception is thrown if such a
-         * character is encountered.
-         *<p>
-         * Since JSON specification requires quoting for all control characters,
-         * this is a non-standard feature, and as such disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_UNESCAPED_CONTROL_CHARS} instead
-         */
-        @Deprecated
-        ALLOW_UNQUOTED_CONTROL_CHARS(false),
-
-        /**
-         * Feature that can be enabled to accept quoting of all character
-         * using backslash quoting mechanism: if not enabled, only characters
-         * that are explicitly listed by JSON specification can be thus
-         * escaped (see JSON spec for small list of these characters)
-         *<p>
-         * Since JSON specification requires quoting for all control characters,
-         * this is a non-standard feature, and as such disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER} instead
-         */
-        @Deprecated
-        ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER(false),
-
-        /**
-         * Feature that determines whether parser will allow
-         * JSON integral numbers to start with additional (ignorable)
-         * zeroes (like: 000001). If enabled, no exception is thrown, and extra
-         * nulls are silently ignored (and not included in textual representation
-         * exposed via {@link JsonParser#getText}).
-         *<p>
-         * Since JSON specification does not allow leading zeroes,
-         * this is a non-standard feature, and as such disabled by default.
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_LEADING_ZEROS_FOR_NUMBERS} instead
-         */
-        @Deprecated
-        ALLOW_NUMERIC_LEADING_ZEROS(false),
-
-        /**
-         * @deprecated Use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS} instead
-         */
-        @Deprecated
-        ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS(false),
 
         /**
          * Feature that allows parser to recognize set of
@@ -208,123 +176,7 @@ public abstract class JsonParser implements Closeable, Versioned {
           * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_NON_NUMERIC_NUMBERS} instead
           */
         @Deprecated
-        ALLOW_NON_NUMERIC_NUMBERS(false),
-
-        /**
-         * Feature allows the support for "missing" values in a JSON array: missing
-         * value meaning sequence of two commas, without value in-between but only
-         * optional white space.
-         * Enabling this feature will expose "missing" values as {@link JsonToken#VALUE_NULL}
-         * tokens, which typically become Java nulls in arrays and {@link java.util.Collection}
-         * in data-binding.
-         * <p>
-         * For example, enabling this feature will represent a JSON array <code>["value1",,"value3",]</code>
-         * as <code>["value1", null, "value3", null]</code>
-         * <p>
-         * Since the JSON specification does not allow missing values this is a non-compliant JSON
-         * feature and is disabled by default.
-         *
-         * @since 2.8
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_MISSING_VALUES} instead
-         */
-        @Deprecated
-        ALLOW_MISSING_VALUES(false),
-
-        /**
-         * Feature that determines whether {@link JsonParser} will allow for a single trailing
-         * comma following the final value (in an Array) or member (in an Object). These commas
-         * will simply be ignored.
-         * <p>
-         * For example, when this feature is enabled, <code>[true,true,]</code> is equivalent to
-         * <code>[true, true]</code> and <code>{"a": true,}</code> is equivalent to
-         * <code>{"a": true}</code>.
-         * <p>
-         * When combined with <code>ALLOW_MISSING_VALUES</code>, this feature takes priority, and
-         * the final trailing comma in an array declaration does not imply a missing
-         * (<code>null</code>) value. For example, when both <code>ALLOW_MISSING_VALUES</code>
-         * and <code>ALLOW_TRAILING_COMMA</code> are enabled, <code>[true,true,]</code> is
-         * equivalent to <code>[true, true]</code>, and <code>[true,true,,]</code> is equivalent to
-         * <code>[true, true, null]</code>.
-         * <p>
-         * Since the JSON specification does not permit trailing commas, this is a non-standard
-         * feature, and as such disabled by default.
-         *
-         * @since 2.9
-         *
-         * @deprecated Since 2.10 use {@link com.azure.json.implementation.jackson.core.json.JsonReadFeature#ALLOW_TRAILING_COMMA} instead
-         */
-        @Deprecated
-        ALLOW_TRAILING_COMMA(false),
-
-        // // // Validity checks
-
-        /**
-         * Feature that determines whether {@link JsonParser} will explicitly
-         * check that no duplicate JSON Object field names are encountered.
-         * If enabled, parser will check all names within context and report
-         * duplicates by throwing a {@link JsonParseException}; if disabled,
-         * parser will not do such checking. Assumption in latter case is
-         * that caller takes care of handling duplicates at a higher level:
-         * data-binding, for example, has features to specify detection to
-         * be done there.
-         *<p>
-         * Note that enabling this feature will incur performance overhead
-         * due to having to store and check additional information: this typically
-         * adds 20-30% to execution time for basic parsing.
-         *
-         * @since 2.3
-         */
-        STRICT_DUPLICATE_DETECTION(false),
-
-        /**
-         * Feature that determines what to do if the underlying data format requires knowledge
-         * of all properties to decode (usually via a Schema), and if no definition is
-         * found for a property that input content contains.
-         * Typically most textual data formats do NOT require schema information (although
-         * some do, such as CSV), whereas many binary data formats do require definitions
-         * (such as Avro, protobuf), although not all (Smile, CBOR, BSON and MessagePack do not).
-         * Further note that some formats that do require schema information will not be able
-         * to ignore undefined properties: for example, Avro is fully positional and there is
-         * no possibility of undefined data. This leaves formats like Protobuf that have identifiers
-         * that may or may not map; and as such Protobuf format does make use of this feature.
-         *<p>
-         * Note that support for this feature is implemented by individual data format
-         * module, if (and only if) it makes sense for the format in question. For JSON,
-         * for example, this feature has no effect as properties need not be pre-defined.
-         *<p>
-         * Feature is disabled by default, meaning that if the underlying data format
-         * requires knowledge of all properties to output, attempts to read an unknown
-         * property will result in a {@link JsonProcessingException}
-         *
-         * @since 2.6
-         */
-        IGNORE_UNDEFINED(false),
-
-        // // // Other
-
-        /**
-         * Feature that determines whether {@link JsonLocation} instances should be constructed
-         * with reference to source or not. If source reference is included, its type and contents
-         * are included when `toString()` method is called (most notably when printing out parse
-         * exception with that location information). If feature is disabled, no source reference
-         * is passed and source is only indicated as "UNKNOWN".
-         *<p>
-         * Most common reason for disabling this feature is to avoid leaking information about
-         * internal information; this may be done for security reasons.
-         * Note that even if source reference is included, only parts of contents are usually
-         * printed, and not the whole contents. Further, many source reference types can not
-         * necessarily access contents (like streams), so only type is indicated, not contents.
-         *<p>
-         * Feature is enabled by default, meaning that "source reference" information is passed
-         * and some or all of the source content may be included in {@link JsonLocation} information
-         * constructed either when requested explicitly, or when needed for an exception.
-         *
-         * @since 2.9
-         */
-        INCLUDE_SOURCE_IN_LOCATION(true),
-
-        ;
+        ALLOW_NON_NUMERIC_NUMBERS(false);
 
         /**
          * Whether feature is enabled or disabled by default.
@@ -369,6 +221,19 @@ public abstract class JsonParser implements Closeable, Versioned {
 
     /*
      * /**********************************************************
+     * /* Minimal generally useful state
+     * /**********************************************************
+     */
+
+    /**
+     * Last token retrieved via {@link #nextToken}, if any.
+     * Null before the first call to <code>nextToken()</code>,
+     * as well as if token has been explicitly cleared
+     */
+    protected JsonToken _currToken;
+
+    /*
+     * /**********************************************************
      * /* Minimal configuration state
      * /**********************************************************
      */
@@ -380,12 +245,199 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     protected int _features;
 
-    /**
-     * Optional container that holds the request payload which will be displayed on JSON parsing error.
-     *
-     * @since 2.8
+    /*
+     * /**********************************************************
+     * /* Generic I/O state
+     * /**********************************************************
      */
-    protected transient RequestPayload _requestPayload;
+
+    /**
+     * I/O context for this reader. It handles buffer allocation
+     * for the reader.
+     */
+    final protected IOContext _ioContext;
+
+    /**
+     * Flag that indicates whether parser is closed or not. Gets
+     * set when parser is either closed by explicit call
+     * ({@link #close}) or when end-of-input is reached.
+     */
+    protected boolean _closed;
+
+    /*
+     * /**********************************************************
+     * /* Current input data
+     * /**********************************************************
+     */
+
+    // Note: type of actual buffer depends on sub-class, can't include
+
+    /**
+     * Pointer to next available character in buffer
+     */
+    protected int _inputPtr;
+
+    /**
+     * Index of character after last available one in the buffer.
+     */
+    protected int _inputEnd;
+
+    /*
+     * /**********************************************************
+     * /* Current input location information
+     * /**********************************************************
+     */
+
+    /**
+     * Number of characters/bytes that were contained in previous blocks
+     * (blocks that were already processed prior to the current buffer).
+     */
+    protected long _currInputProcessed;
+
+    /**
+     * Current row location of current point in input buffer, starting
+     * from 1, if available.
+     */
+    protected int _currInputRow = 1;
+
+    /**
+     * Current index of the first character of the current row in input
+     * buffer. Needed to calculate column position, if necessary; benefit
+     * of not having column itself is that this only has to be updated
+     * once per line.
+     */
+    protected int _currInputRowStart;
+
+    /*
+     * /**********************************************************
+     * /* Information about starting location of event
+     * /* Reader is pointing to; updated on-demand
+     * /**********************************************************
+     */
+
+    // // // Location info at point when current token was started
+
+    /**
+     * Total number of bytes/characters read before start of current token.
+     * For big (gigabyte-sized) sizes are possible, needs to be long,
+     * unlike pointers and sizes related to in-memory buffers.
+     */
+    protected long _tokenInputTotal;
+
+    /**
+     * Input row on which current token starts, 1-based
+     */
+    protected int _tokenInputRow = 1;
+
+    /**
+     * Column on input row that current token starts; 0-based (although
+     * in the end it'll be converted to 1-based)
+     */
+    protected int _tokenInputCol;
+
+    /*
+     * /**********************************************************
+     * /* Parsing state
+     * /**********************************************************
+     */
+
+    /**
+     * Information about parser context, context in which
+     * the next token is to be parsed (root, array, object).
+     */
+    protected JsonReadContext _parsingContext;
+
+    /**
+     * Secondary token related to the next token after current one;
+     * used if its type is known. This may be value token that
+     * follows FIELD_NAME, for example.
+     */
+    protected JsonToken _nextToken;
+
+    /*
+     * /**********************************************************
+     * /* Buffer(s) for local name(s) and text content
+     * /**********************************************************
+     */
+
+    /**
+     * Buffer that contains contents of String values, including
+     * field names if necessary (name split across boundary,
+     * contains escape sequence, or access needed to char array)
+     */
+    protected final TextBuffer _textBuffer;
+
+    /**
+     * Flag set to indicate whether the field name is available
+     * from the name copy buffer or not (in addition to its String
+     * representation  being available via read context)
+     */
+    protected boolean _nameCopied;
+
+    /**
+     * ByteArrayBuilder is needed if 'getBinaryValue' is called. If so,
+     * we better reuse it for remainder of content.
+     */
+    protected ByteArrayBuilder _byteArrayBuilder;
+
+    /**
+     * We will hold on to decoded binary data, for duration of
+     * current event, so that multiple calls to
+     * {@link #getBinaryValue} will not need to decode data more
+     * than once.
+     */
+    protected byte[] _binaryValue;
+
+    // Numeric value holders: multiple fields used for
+    // for efficiency
+
+    /**
+     * Bitfield that indicates which numeric representations
+     * have been calculated for the current type
+     */
+    protected int _numTypesValid = NR_UNKNOWN;
+
+    // First primitives
+
+    protected int _numberInt;
+
+    protected long _numberLong;
+
+    protected double _numberDouble;
+
+    // And then object types
+
+    protected BigInteger _numberBigInt;
+
+    protected BigDecimal _numberBigDecimal;
+
+    // And then other information about value itself
+
+    /**
+     * Flag that indicates whether numeric value has a negative
+     * value. That is, whether its textual representation starts
+     * with minus character.
+     */
+    protected boolean _numberNegative;
+
+    /**
+     * Length of integer part of the number, in characters
+     */
+    protected int _intLength;
+
+    /**
+     * Length of the fractional part (not including decimal
+     * point or exponent), in characters.
+     * Not used for  pure integer values.
+     */
+    protected int _fractLength;
+
+    /**
+     * Length of the exponent part of the number, if any, not
+     * including 'e' marker or sign, just digits.
+     * Not used for  pure integer values.
+     */
+    protected int _expLength;
 
     /*
      * /**********************************************************
@@ -393,150 +445,12 @@ public abstract class JsonParser implements Closeable, Versioned {
      * /**********************************************************
      */
 
-    protected JsonParser() {
-    }
-
-    protected JsonParser(int features) {
+    protected JsonParser(IOContext ctxt, int features) {
+        _ioContext = ctxt;
+        _textBuffer = ctxt.constructTextBuffer();
         _features = features;
+        _parsingContext = JsonReadContext.createRootContext();
     }
-
-    /**
-     * Accessor for {@link ObjectCodec} associated with this
-     * parser, if any. Codec is used by {@link #readValueAs(Class)}
-     * method (and its variants).
-     *
-     * @return Codec assigned to this parser, if any; {@code null} if none
-     */
-    public abstract ObjectCodec getCodec();
-
-    /**
-     * Setter that allows defining {@link ObjectCodec} associated with this
-     * parser, if any. Codec is used by {@link #readValueAs(Class)}
-     * method (and its variants).
-     *
-     * @param oc Codec to assign, if any; {@code null} if none
-     */
-    public abstract void setCodec(ObjectCodec oc);
-
-    /**
-     * Method that can be used to get access to object that is used
-     * to access input being parsed; this is usually either
-     * {@link InputStream} or {@link Reader}, depending on what
-     * parser was constructed with.
-     * Note that returned value may be null in some cases; including
-     * case where parser implementation does not want to exposed raw
-     * source to caller.
-     * In cases where input has been decorated, object returned here
-     * is the decorated version; this allows some level of interaction
-     * between users of parser and decorator object.
-     *<p>
-     * In general use of this accessor should be considered as
-     * "last effort", i.e. only used if no other mechanism is applicable.
-     *
-     * @return Input source this parser was configured with
-     */
-    public Object getInputSource() {
-        return null;
-    }
-
-    /*
-     * /**********************************************************
-     * /* Format support
-     * /**********************************************************
-     */
-
-    /**
-     * Method to call to make this parser use specified schema. Method must
-     * be called before trying to parse any content, right after parser instance
-     * has been created.
-     * Note that not all parsers support schemas; and those that do usually only
-     * accept specific types of schemas: ones defined for data format parser can read.
-     *<p>
-     * If parser does not support specified schema, {@link UnsupportedOperationException}
-     * is thrown.
-     *
-     * @param schema Schema to use
-     *
-     * @throws UnsupportedOperationException if parser does not support schema
-     */
-    public void setSchema(FormatSchema schema) {
-        throw new UnsupportedOperationException("Parser of type " + getClass().getName()
-            + " does not support schema of type '" + schema.getSchemaType() + "'");
-    }
-
-    /**
-     * Method for accessing Schema that this parser uses, if any.
-     * Default implementation returns null.
-     *
-     * @return Schema in use by this parser, if any; {@code null} if none
-     *
-     * @since 2.1
-     */
-    public FormatSchema getSchema() {
-        return null;
-    }
-
-    /**
-     * Method that can be used to verify that given schema can be used with
-     * this parser (using {@link #setSchema}).
-     *
-     * @param schema Schema to check
-     *
-     * @return True if this parser can use given schema; false if not
-     */
-    public boolean canUseSchema(FormatSchema schema) {
-        return false;
-    }
-
-    /*
-     * /**********************************************************
-     * /* Capability introspection
-     * /**********************************************************
-     */
-
-    /**
-     * Method that can be called to determine if a custom
-     * {@link ObjectCodec} is needed for binding data parsed
-     * using {@link JsonParser} constructed by this factory
-     * (which typically also implies the same for serialization
-     * with {@link JsonGenerator}).
-     *
-     * @return True if format-specific codec is needed with this parser; false if a general
-     *   {@link ObjectCodec} is enough
-     *
-     * @since 2.1
-     */
-    public boolean requiresCustomCodec() {
-        return false;
-    }
-
-    /**
-     * Accessor for getting metadata on capabilities of this parser, based on
-     * underlying data format being read (directly or indirectly).
-     *
-     * @return Set of read capabilities for content to read via this parser
-     *
-     * @since 2.12
-     */
-    public JacksonFeatureSet<StreamReadCapability> getReadCapabilities() {
-        return DEFAULT_READ_CAPABILITIES;
-    }
-
-    /*
-     * /**********************************************************
-     * /* Versioned
-     * /**********************************************************
-     */
-
-    /**
-     * Accessor for getting version of the core package, given a parser instance.
-     * Left for sub-classes to implement.
-     *
-     * @return Version of this generator (derived from version declared for
-     *   {@code jackson-core} jar that contains the class
-     */
-    @Override
-    public abstract Version version();
 
     /*
      * /**********************************************************
@@ -547,8 +461,7 @@ public abstract class JsonParser implements Closeable, Versioned {
     /**
      * Closes the parser so that no further iteration or data access
      * can be made; will also close the underlying input source
-     * if parser either <b>owns</b> the input source, or feature
-     * {@link Feature#AUTO_CLOSE_SOURCE} is enabled.
+     * if parser either <b>owns</b> the input source.
      * Whether parser owns the input source depends on factory
      * method that was used to construct instance (so check
      * {@link JsonFactory} for details,
@@ -562,19 +475,20 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException if there is either an underlying I/O problem
      */
     @Override
-    public abstract void close() throws IOException;
-
-    /**
-     * Method that can be called to determine whether this parser
-     * is closed or not. If it is closed, no new tokens can be
-     * retrieved by calling {@link #nextToken} (and the underlying
-     * stream may be closed). Closing may be due to an explicit
-     * call to {@link #close} or because parser has encountered
-     * end of input.
-     *
-     * @return {@code True} if this parser instance has been closed
-     */
-    public abstract boolean isClosed();
+    public final void close() throws IOException {
+        if (!_closed) {
+            // 19-Jan-2018, tatu: as per [core#440] need to ensure no more data assumed available
+            _inputPtr = Math.max(_inputPtr, _inputEnd);
+            _closed = true;
+            try {
+                _closeInput();
+            } finally {
+                // as per [JACKSON-324], do in finally block
+                // Also, internal buffer(s) can now be released as well
+                _releaseBuffers();
+            }
+        }
+    }
 
     /*
      * /**********************************************************
@@ -594,7 +508,9 @@ public abstract class JsonParser implements Closeable, Versioned {
      *
      * @return Stream input context ({@link JsonStreamContext}) associated with this parser
      */
-    public abstract JsonStreamContext getParsingContext();
+    public final JsonReadContext getParsingContext() {
+        return _parsingContext;
+    }
 
     /**
      * Method that returns location of the last processed input unit (character
@@ -613,145 +529,16 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @since 2.13
      */
     public JsonLocation currentLocation() {
-        return getCurrentLocation();
+        int col = _inputPtr - _currInputRowStart + 1; // 1-based
+        return new JsonLocation(_contentReference(), -1L, _currInputProcessed + _inputPtr, // bytes, chars
+            _currInputRow, col);
     }
-
-    /**
-     * Method that return the <b>starting</b> location of the current
-     * (most recently returned)
-     * token; that is, the position of the first input unit (character or byte) from input
-     * that starts the current token.
-     *<p>
-     * Note that the location is not guaranteed to be accurate (although most
-     * implementation will try their best): some implementations may only
-     * return {@link JsonLocation#NA} due to not having access
-     * to input location information (when delegating actual decoding work
-     * to other library)
-     *
-     * @return Starting location of the token parser currently points to
-     *
-     * @since 2.13 (will eventually replace {@link #getTokenLocation})
-     */
-    public JsonLocation currentTokenLocation() {
-        return getTokenLocation();
-    }
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias for {@link #currentLocation()}, to be deprecated in later
-     * Jackson 2.x versions (and removed from Jackson 3.0).
-     *
-     * @return Location of the last processed input unit (byte or character)
-     */
-    public abstract JsonLocation getCurrentLocation();
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias for {@link #currentTokenLocation()}, to be deprecated in later
-     * Jackson 2.x versions (and removed from Jackson 3.0).
-     *
-     * @return Starting location of the token parser currently points to
-     */
-    public abstract JsonLocation getTokenLocation();
-
-    /**
-     * Helper method, usually equivalent to:
-     *<code>
-     *   getParsingContext().getCurrentValue();
-     *</code>
-     *<p>
-     * Note that "current value" is NOT populated (or used) by Streaming parser;
-     * it is only used by higher-level data-binding functionality.
-     * The reason it is included here is that it can be stored and accessed hierarchically,
-     * and gets passed through data-binding.
-     *
-     * @return "Current value" associated with the current input context (state) of this parser
-     *
-     * @since 2.13 (added as replacement for older {@link #getCurrentValue()}
-     */
-    public Object currentValue() {
-        // TODO: implement directly in 2.14 or later, make getCurrentValue() call this
-        return getCurrentValue();
-    }
-
-    /**
-     * Helper method, usually equivalent to:
-     *<code>
-     *   getParsingContext().setCurrentValue(v);
-     *</code>
-     *
-     * @param v Current value to assign for the current input context of this parser
-     *
-     * @since 2.13 (added as replacement for older {@link #setCurrentValue}
-     */
-    public void assignCurrentValue(Object v) {
-        // TODO: implement directly in 2.14 or later, make setCurrentValue() call this
-        setCurrentValue(v);
-    }
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias for {@link #currentValue()}, to be deprecated in later
-     * Jackson 2.x versions (and removed from Jackson 3.0).
-     *
-     * @return Location of the last processed input unit (byte or character)
-     */
-    public Object getCurrentValue() {
-        JsonStreamContext ctxt = getParsingContext();
-        return (ctxt == null) ? null : ctxt.getCurrentValue();
-    }
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias for {@link #assignCurrentValue}, to be deprecated in later
-     * Jackson 2.x versions (and removed from Jackson 3.0).
-     *
-     * @param v Current value to assign for the current input context of this parser
-     */
-    public void setCurrentValue(Object v) {
-        JsonStreamContext ctxt = getParsingContext();
-        if (ctxt != null) {
-            ctxt.setCurrentValue(v);
-        }
-    }
-
-    /*
-     * /**********************************************************
-     * /* Buffer handling
-     * /**********************************************************
-     */
 
     /*
      * /***************************************************
      * /* Public API, configuration
      * /***************************************************
      */
-
-    /**
-     * Method for enabling specified parser feature
-     * (check {@link Feature} for list of features)
-     *
-     * @param f Feature to enable
-     *
-     * @return This parser, to allow call chaining
-     */
-    public JsonParser enable(Feature f) {
-        _features |= f.getMask();
-        return this;
-    }
-
-    /**
-     * Method for disabling specified  feature
-     * (check {@link Feature} for list of features)
-     *
-     * @param f Feature to disable
-     *
-     * @return This parser, to allow call chaining
-     */
-    public JsonParser disable(Feature f) {
-        _features &= ~f.getMask();
-        return this;
-    }
 
     /**
      * Method for enabling or disabling specified feature
@@ -764,9 +551,9 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public JsonParser configure(Feature f, boolean state) {
         if (state)
-            enable(f);
+            _features |= f.getMask();
         else
-            disable(f);
+            _features &= ~f.getMask();
         return this;
     }
 
@@ -779,90 +566,6 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public boolean isEnabled(Feature f) {
         return f.enabledIn(_features);
-    }
-
-    /**
-     * Method for checking whether specified {@link Feature} is enabled.
-     *
-     * @param f Feature to check
-     *
-     * @return {@code True} if feature is enabled; {@code false} otherwise
-     *
-     * @since 2.10
-     */
-    public boolean isEnabled(StreamReadFeature f) {
-        return f.mappedFeature().enabledIn(_features);
-    }
-
-    /**
-     * Bulk access method for getting state of all standard {@link Feature}s.
-     *
-     * @return Bit mask that defines current states of all standard {@link Feature}s.
-     *
-     * @since 2.3
-     */
-    public int getFeatureMask() {
-        return _features;
-    }
-
-    /**
-     * Bulk set method for (re)setting states of all standard {@link Feature}s
-     *
-     * @param mask Bit mask that defines set of features to enable
-     *
-     * @return This parser, to allow call chaining
-     *
-     * @since 2.3
-     * @deprecated Since 2.7, use {@link #overrideStdFeatures(int, int)} instead
-     */
-    @Deprecated
-    public JsonParser setFeatureMask(int mask) {
-        _features = mask;
-        return this;
-    }
-
-    /**
-     * Bulk set method for (re)setting states of features specified by <code>mask</code>.
-     * Functionally equivalent to
-     *<code>
-     *    int oldState = getFeatureMask();
-     *    int newState = (oldState &amp; ~mask) | (values &amp; mask);
-     *    setFeatureMask(newState);
-     *</code>
-     * but preferred as this lets caller more efficiently specify actual changes made.
-     *
-     * @param values Bit mask of set/clear state for features to change
-     * @param mask Bit mask of features to change
-     *
-     * @return This parser, to allow call chaining
-     *
-     * @since 2.6
-     */
-    public JsonParser overrideStdFeatures(int values, int mask) {
-        int newState = (_features & ~mask) | (values & mask);
-        return setFeatureMask(newState);
-    }
-
-    /**
-     * Bulk set method for (re)setting states of {@link FormatFeature}s,
-     * by specifying values (set / clear) along with a mask, to determine
-     * which features to change, if any.
-     *<p>
-     * Default implementation will simply throw an exception to indicate that
-     * the parser implementation does not support any {@link FormatFeature}s.
-     *
-     * @param values Bit mask of set/clear state for features to change
-     * @param mask Bit mask of features to change
-     *
-     * @return This parser, to allow call chaining
-     *
-     * @since 2.6
-     */
-    public JsonParser overrideFormatFeatures(int values, int mask) {
-        // 08-Oct-2018, tatu: For 2.10 we actually do get `JsonReadFeature`s, although they
-        // are (for 2.x only, not for 3.x) mapper to legacy settings. So do not throw exception:
-        // throw new IllegalArgumentException("No FormatFeatures defined for parser of type "+getClass().getName());
-        return this;
     }
 
     /*
@@ -886,28 +589,6 @@ public abstract class JsonParser implements Closeable, Versioned {
     public abstract JsonToken nextToken() throws IOException;
 
     /**
-     * Iteration method that will advance stream enough
-     * to determine type of the next token that is a value type
-     * (including JSON Array and Object start/end markers).
-     * Or put another way, nextToken() will be called once,
-     * and if {@link JsonToken#FIELD_NAME} is returned, another
-     * time to get the value for the field.
-     * Method is most useful for iterating over value entries
-     * of JSON objects; field name will still be available
-     * by calling {@link #getCurrentName} when parser points to
-     * the value.
-     *
-     * @return Next non-field-name token from the stream, if any found,
-     *   or null to indicate end-of-input (or, for non-blocking
-     *   parsers, {@link JsonToken#NOT_AVAILABLE} if no tokens were
-     *   available yet)
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract JsonToken nextValue() throws IOException;
-
-    /**
      * Method that will skip all child tokens of an array or
      * object token that the parser currently points to,
      * iff stream points to
@@ -926,27 +607,67 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract JsonParser skipChildren() throws IOException;
+    public final JsonParser skipChildren() throws IOException {
+        if (_currToken != JsonToken.START_OBJECT && _currToken != JsonToken.START_ARRAY) {
+            return this;
+        }
+        int open = 1;
+
+        // Since proper matching of start/end markers is handled
+        // by nextToken(), we'll just count nesting levels here
+        while (true) {
+            JsonToken t = nextToken();
+            if (t == null) {
+                _handleEOF();
+                /*
+                 * given constraints, above should never return;
+                 * however, FindBugs doesn't know about it and
+                 * complains... so let's add dummy break here
+                 */
+                return this;
+            }
+            if (t.isStructStart()) {
+                ++open;
+            } else if (t.isStructEnd()) {
+                if (--open == 0) {
+                    return this;
+                }
+                // 23-May-2018, tatu: [core#463] Need to consider non-blocking case...
+            } else if (t == JsonToken.NOT_AVAILABLE) {
+                // Nothing much we can do except to either return `null` (which seems wrong),
+                // or, what we actually do, signal error
+                _reportError("Not enough content available for `skipChildren()`: non-blocking parser? (%s)",
+                    getClass().getName());
+            }
+        }
+    }
 
     /**
-     * Method that may be used to force full handling of the current token
-     * so that even if lazy processing is enabled, the whole contents are
-     * read for possible retrieval. This is usually used to ensure that
-     * the token end location is available, as well as token contents
-     * (similar to what calling, say {@link #getTextCharacters()}, would
-     * achieve).
-     *<p>
-     * Note that for many dataformat implementations this method
-     * will not do anything; this is the default implementation unless
-     * overridden by sub-classes.
+     * Method sub-classes need to implement for verifying that end-of-content
+     * is acceptable at current input position.
      *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.8
+     * @throws JsonParseException If end-of-content is not acceptable (for example,
+     *   missing end-object or end-array tokens)
      */
-    public void finishToken() throws IOException {
-        // nothing
+    protected final void _handleEOF() throws JsonParseException {
+        if (!_parsingContext.inRoot()) {
+            String marker = _parsingContext.inArray() ? "Array" : "Object";
+            _reportInvalidEOF(String.format(": expected close marker for %s (start marker at %s)", marker,
+                _parsingContext.startLocation(_contentReference())), null);
+        }
+    }
+
+    /**
+     * @return If no exception is thrown, {@code -1} which is used as marked for "end-of-input"
+     *
+     * @throws JsonParseException If check on {@code _handleEOF()} fails; usually because
+     *    the current context is not root context (missing end markers in content)
+     *
+     * @since 2.4
+     */
+    protected final int _eofAsNextChar() throws JsonParseException {
+        _handleEOF();
+        return -1;
     }
 
     /*
@@ -968,233 +689,15 @@ public abstract class JsonParser implements Closeable, Versioned {
      *
      * @since 2.8
      */
-    public JsonToken currentToken() {
-        return getCurrentToken();
+    public final JsonToken currentToken() {
+        return _currToken;
     }
-
-    /**
-     * Method similar to {@link #getCurrentToken()} but that returns an
-     * <code>int</code> instead of {@link JsonToken} (enum value).
-     *<p>
-     * Use of int directly is typically more efficient on switch statements,
-     * so this method may be useful when building low-overhead codecs.
-     * Note, however, that effect may not be big enough to matter: make sure
-     * to profile performance before deciding to use this method.
-     *
-     * @since 2.8
-     *
-     * @return {@code int} matching one of constants from {@link JsonTokenId}.
-     */
-    public int currentTokenId() {
-        return getCurrentTokenId();
-    }
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias for {@link #currentToken()}, may be deprecated sometime after
-     * Jackson 2.13 (will be removed from 3.0).
-     *
-     * @return Type of the token this parser currently points to,
-     *   if any: null before any tokens have been read, and
-     */
-    public abstract JsonToken getCurrentToken();
-
-    /**
-     * Deprecated alias for {@link #currentTokenId()}.
-     *
-     * @return {@code int} matching one of constants from {@link JsonTokenId}.
-     *
-     * @deprecated Since 2.12 use {@link #currentTokenId} instead
-     */
-    @Deprecated
-    public abstract int getCurrentTokenId();
-
-    /**
-     * Method for checking whether parser currently points to
-     * a token (and data for that token is available).
-     * Equivalent to check for <code>parser.getCurrentToken() != null</code>.
-     *
-     * @return True if the parser just returned a valid
-     *   token via {@link #nextToken}; false otherwise (parser
-     *   was just constructed, encountered end-of-input
-     *   and returned null from {@link #nextToken}, or the token
-     *   has been consumed)
-     */
-    public abstract boolean hasCurrentToken();
-
-    /**
-     * Method that is functionally equivalent to:
-     *<code>
-     *  return currentTokenId() == id
-     *</code>
-     * but may be more efficiently implemented.
-     *<p>
-     * Note that no traversal or conversion is performed; so in some
-     * cases calling method like {@link #isExpectedStartArrayToken()}
-     * is necessary instead.
-     *
-     * @param id Token id to match (from (@link JsonTokenId})
-     *
-     * @return {@code True} if the parser current points to specified token
-     *
-     * @since 2.5
-     */
-    public abstract boolean hasTokenId(int id);
-
-    /**
-     * Method that is functionally equivalent to:
-     *<code>
-     *  return currentToken() == t
-     *</code>
-     * but may be more efficiently implemented.
-     *<p>
-     * Note that no traversal or conversion is performed; so in some
-     * cases calling method like {@link #isExpectedStartArrayToken()}
-     * is necessary instead.
-     *
-     * @param t Token to match
-     *
-     * @return {@code True} if the parser current points to specified token
-     *
-     * @since 2.6
-     */
-    public abstract boolean hasToken(JsonToken t);
-
-    /**
-     * Specialized accessor that can be used to verify that the current
-     * token indicates start array (usually meaning that current token
-     * is {@link JsonToken#START_ARRAY}) when start array is expected.
-     * For some specialized parsers this can return true for other cases
-     * as well; this is usually done to emulate arrays in cases underlying
-     * format is ambiguous (XML, for example, has no format-level difference
-     * between Objects and Arrays; it just has elements).
-     *<p>
-     * Default implementation is equivalent to:
-     *<pre>
-     *   currentToken() == JsonToken.START_ARRAY
-     *</pre>
-     * but may be overridden by custom parser implementations.
-     *
-     * @return True if the current token can be considered as a
-     *   start-array marker (such {@link JsonToken#START_ARRAY});
-     *   {@code false} if not
-     */
-    public boolean isExpectedStartArrayToken() {
-        return currentToken() == JsonToken.START_ARRAY;
-    }
-
-    /**
-     * Similar to {@link #isExpectedStartArrayToken()}, but checks whether stream
-     * currently points to {@link JsonToken#START_OBJECT}.
-     *
-     * @return True if the current token can be considered as a
-     *   start-array marker (such {@link JsonToken#START_OBJECT});
-     *   {@code false} if not
-     *
-     * @since 2.5
-     */
-    public boolean isExpectedStartObjectToken() {
-        return currentToken() == JsonToken.START_OBJECT;
-    }
-
-    /**
-     * Similar to {@link #isExpectedStartArrayToken()}, but checks whether stream
-     * currently points to {@link JsonToken#VALUE_NUMBER_INT}.
-     *<p>
-     * The initial use case is for XML backend to efficiently (attempt to) coerce
-     * textual content into numbers.
-     *
-     * @return True if the current token can be considered as a
-     *   start-array marker (such {@link JsonToken#VALUE_NUMBER_INT});
-     *   {@code false} if not
-     *
-     * @since 2.12
-     */
-    public boolean isExpectedNumberIntToken() {
-        return currentToken() == JsonToken.VALUE_NUMBER_INT;
-    }
-
-    /**
-     * Access for checking whether current token is a numeric value token, but
-     * one that is of "not-a-number" (NaN) variety (including both "NaN" AND
-     * positive/negative infinity!): not supported by all formats,
-     * but often supported for {@link JsonToken#VALUE_NUMBER_FLOAT}.
-     * NOTE: roughly equivalent to calling <code>!Double.isFinite()</code>
-     * on value you would get from calling {@link #getDoubleValue()}.
-     *
-     * @return {@code True} if the current token is of type {@link JsonToken#VALUE_NUMBER_FLOAT}
-     *   but represents a "Not a Number"; {@code false} for other tokens and regular
-     *   floating-point numbers
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.9
-     */
-    public boolean isNaN() throws IOException {
-        return false;
-    }
-
-    /*
-     * /**********************************************************
-     * /* Public API, token state overrides
-     * /**********************************************************
-     */
-
-    /**
-     * Method called to "consume" the current token by effectively
-     * removing it so that {@link #hasCurrentToken} returns false, and
-     * {@link #getCurrentToken} null).
-     * Cleared token value can still be accessed by calling
-     * {@link #getLastClearedToken} (if absolutely needed), but
-     * usually isn't.
-     *<p>
-     * Method was added to be used by the optional data binder, since
-     * it has to be able to consume last token used for binding (so that
-     * it will not be used again).
-     */
-    public abstract void clearCurrentToken();
-
-    /**
-     * Method that can be called to get the last token that was
-     * cleared using {@link #clearCurrentToken}. This is not necessarily
-     * the latest token read.
-     * Will return null if no tokens have been cleared,
-     * or if parser has been closed.
-     *
-     * @return Last cleared token, if any; {@code null} otherwise
-     */
-    public abstract JsonToken getLastClearedToken();
-
-    /**
-     * Method that can be used to change what is considered to be
-     * the current (field) name.
-     * May be needed to support non-JSON data formats or unusual binding
-     * conventions; not needed for typical processing.
-     *<p>
-     * Note that use of this method should only be done as sort of last
-     * resort, as it is a work-around for regular operation.
-     *
-     * @param name Name to use as the current name; may be null.
-     */
-    public abstract void overrideCurrentName(String name);
 
     /*
      * /**********************************************************
      * /* Public API, access to token information, text
      * /**********************************************************
      */
-
-    // TODO: deprecate in 2.14 or later
-    /**
-     * Alias of {@link #currentName()}.
-     *
-     * @return Name of the current field in the parsing context
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract String getCurrentName() throws IOException;
 
     /**
      * Method that can be called to get the name associated with
@@ -1204,14 +707,17 @@ public abstract class JsonParser implements Closeable, Versioned {
      * and for others (array values, root-level values) null.
      *
      * @return Name of the current field in the parsing context
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
      * @since 2.10
      */
-    public String currentName() throws IOException {
-        return getCurrentName();
+    public final String currentName() {
+        // [JACKSON-395]: start markers require information from parent
+        if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
+            JsonReadContext parent = _parsingContext.getParent();
+            if (parent != null) {
+                return parent.getCurrentName();
+            }
+        }
+        return _parsingContext.getCurrentName();
     }
 
     /**
@@ -1228,238 +734,11 @@ public abstract class JsonParser implements Closeable, Versioned {
      */
     public abstract String getText() throws IOException;
 
-    /**
-     * Method to read the textual representation of the current token in chunks and
-     * pass it to the given Writer.
-     * Conceptually same as calling:
-     *<pre>
-     *  writer.write(parser.getText());
-     *</pre>
-     * but should typically be more efficient as longer content does need to
-     * be combined into a single <code>String</code> to return, and write
-     * can occur directly from intermediate buffers Jackson uses.
-     *
-     * @param writer Writer to write textual content to
-     *
-     * @return The number of characters written to the Writer
-     *
-     * @throws IOException for low-level read issues or writes using passed
-     *   {@code writer}, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.8
-     */
-    public int getText(Writer writer) throws IOException, UnsupportedOperationException {
-        String str = getText();
-        if (str == null) {
-            return 0;
-        }
-        writer.write(str);
-        return str.length();
-    }
-
-    /**
-     * Method similar to {@link #getText}, but that will return
-     * underlying (unmodifiable) character array that contains
-     * textual value, instead of constructing a String object
-     * to contain this information.
-     * Note, however, that:
-     *<ul>
-     * <li>Textual contents are not guaranteed to start at
-     *   index 0 (rather, call {@link #getTextOffset}) to
-     *   know the actual offset
-     *  </li>
-     * <li>Length of textual contents may be less than the
-     *  length of returned buffer: call {@link #getTextLength}
-     *  for actual length of returned content.
-     *  </li>
-     * </ul>
-     *<p>
-     * Note that caller <b>MUST NOT</b> modify the returned
-     * character array in any way -- doing so may corrupt
-     * current parser state and render parser instance useless.
-     *<p>
-     * The only reason to call this method (over {@link #getText})
-     * is to avoid construction of a String object (which
-     * will make a copy of contents).
-     *
-     * @return Buffer that contains the current textual value (but not necessarily
-     *    at offset 0, and not necessarily until the end of buffer)
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract char[] getTextCharacters() throws IOException;
-
-    /**
-     * Accessor used with {@link #getTextCharacters}, to know length
-     * of String stored in returned buffer.
-     *
-     * @return Number of characters within buffer returned
-     *   by {@link #getTextCharacters} that are part of
-     *   textual content of the current token.
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract int getTextLength() throws IOException;
-
-    /**
-     * Accessor used with {@link #getTextCharacters}, to know offset
-     * of the first text content character within buffer.
-     *
-     * @return Offset of the first character within buffer returned
-     *   by {@link #getTextCharacters} that is part of
-     *   textual content of the current token.
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract int getTextOffset() throws IOException;
-
-    /**
-     * Method that can be used to determine whether calling of
-     * {@link #getTextCharacters} would be the most efficient
-     * way to access textual content for the event parser currently
-     * points to.
-     *<p>
-     * Default implementation simply returns false since only actual
-     * implementation class has knowledge of its internal buffering
-     * state.
-     * Implementations are strongly encouraged to properly override
-     * this method, to allow efficient copying of content by other
-     * code.
-     *
-     * @return True if parser currently has character array that can
-     *   be efficiently returned via {@link #getTextCharacters}; false
-     *   means that it may or may not exist
-     */
-    public abstract boolean hasTextCharacters();
-
     /*
      * /**********************************************************
      * /* Public API, access to token information, numeric
      * /**********************************************************
      */
-
-    /**
-     * Generic number value accessor method that will work for
-     * all kinds of numeric values. It will return the optimal
-     * (simplest/smallest possible) wrapper object that can
-     * express the numeric value just parsed.
-     *
-     * @return Numeric value of the current token in its most optimal
-     *   representation
-     *
-     * @throws IOException Problem with access: {@link JsonParseException} if
-     *    the current token is not numeric, or if decoding of the value fails
-     *    (invalid format for numbers); plain {@link IOException} if underlying
-     *    content read fails (possible if values are extracted lazily)
-     */
-    public abstract Number getNumberValue() throws IOException;
-
-    /**
-     * Method similar to {@link #getNumberValue} with the difference that
-     * for floating-point numbers value returned may be {@link BigDecimal}
-     * if the underlying format does not store floating-point numbers using
-     * native representation: for example, textual formats represent numbers
-     * as Strings (which are 10-based), and conversion to {@link Double}
-     * is potentially lossy operation.
-     *<p>
-     * Default implementation simply returns {@link #getNumberValue()}
-     *
-     * @return Numeric value of the current token using most accurate representation
-     *
-     * @throws IOException Problem with access: {@link JsonParseException} if
-     *    the current token is not numeric, or if decoding of the value fails
-     *    (invalid format for numbers); plain {@link IOException} if underlying
-     *    content read fails (possible if values are extracted lazily)
-     *
-     * @since 2.12
-     */
-    public Number getNumberValueExact() throws IOException {
-        return getNumberValue();
-    }
-
-    /**
-     * If current token is of type
-     * {@link JsonToken#VALUE_NUMBER_INT} or
-     * {@link JsonToken#VALUE_NUMBER_FLOAT}, returns
-     * one of {@link NumberType} constants; otherwise returns null.
-     *
-     * @return Type of current number, if parser points to numeric token; {@code null} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract NumberType getNumberType() throws IOException;
-
-    /**
-     * Numeric accessor that can be called when the current
-     * token is of type {@link JsonToken#VALUE_NUMBER_INT} and
-     * it can be expressed as a value of Java byte primitive type.
-     * Note that in addition to "natural" input range of {@code [-128, 127]},
-     * this also allows "unsigned 8-bit byte" values {@code [128, 255]}:
-     * but for this range value will be translated by truncation, leading
-     * to sign change.
-     *<p>
-     * It can also be called for {@link JsonToken#VALUE_NUMBER_FLOAT};
-     * if so, it is equivalent to calling {@link #getDoubleValue}
-     * and then casting; except for possible overflow/underflow
-     * exception.
-     *<p>
-     * Note: if the resulting integer value falls outside range of
-     * {@code [-128, 255]},
-     * a {@link InputCoercionException}
-     * will be thrown to indicate numeric overflow/underflow.
-     *
-     * @return Current number value as {@code byte} (if numeric token within
-     *   range of {@code [-128, 255]}); otherwise exception thrown
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public byte getByteValue() throws IOException {
-        int value = getIntValue();
-        // So far so good: but does it fit?
-        // [JACKSON-804]: Let's actually allow range of [-128, 255], as those are uniquely mapped
-        // (instead of just signed range of [-128, 127])
-        if (value < MIN_BYTE_I || value > MAX_BYTE_I) {
-            throw new InputCoercionException(this,
-                String.format("Numeric value (%s) out of range of Java byte", getText()), JsonToken.VALUE_NUMBER_INT,
-                Byte.TYPE);
-        }
-        return (byte) value;
-    }
-
-    /**
-     * Numeric accessor that can be called when the current
-     * token is of type {@link JsonToken#VALUE_NUMBER_INT} and
-     * it can be expressed as a value of Java short primitive type.
-     * It can also be called for {@link JsonToken#VALUE_NUMBER_FLOAT};
-     * if so, it is equivalent to calling {@link #getDoubleValue}
-     * and then casting; except for possible overflow/underflow
-     * exception.
-     *<p>
-     * Note: if the resulting integer value falls outside range of
-     * Java short, a {@link InputCoercionException}
-     * will be thrown to indicate numeric overflow/underflow.
-     *
-     * @return Current number value as {@code short} (if numeric token within
-     *   Java 16-bit signed {@code short} range); otherwise exception thrown
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public short getShortValue() throws IOException {
-        int value = getIntValue();
-        if (value < MIN_SHORT_I || value > MAX_SHORT_I) {
-            throw new InputCoercionException(this,
-                String.format("Numeric value (%s) out of range of Java short", getText()), JsonToken.VALUE_NUMBER_INT,
-                Short.TYPE);
-        }
-        return (short) value;
-    }
 
     /**
      * Numeric accessor that can be called when the current
@@ -1480,7 +759,17 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract int getIntValue() throws IOException;
+    public final int getIntValue() throws IOException {
+        if ((_numTypesValid & NR_INT) == 0) {
+            if (_numTypesValid == NR_UNKNOWN) { // not parsed at all
+                return _parseIntValue();
+            }
+            if ((_numTypesValid & NR_INT) == 0) { // wasn't an int natively?
+                convertNumberToInt(); // let's make it so, if possible
+            }
+        }
+        return _numberInt;
+    }
 
     /**
      * Numeric accessor that can be called when the current
@@ -1501,24 +790,17 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract long getLongValue() throws IOException;
-
-    /**
-     * Numeric accessor that can be called when the current
-     * token is of type {@link JsonToken#VALUE_NUMBER_INT} and
-     * it can not be used as a Java long primitive type due to its
-     * magnitude.
-     * It can also be called for {@link JsonToken#VALUE_NUMBER_FLOAT};
-     * if so, it is equivalent to calling {@link #getDecimalValue}
-     * and then constructing a {@link BigInteger} from that value.
-     *
-     * @return Current number value as {@link BigInteger} (if numeric token);
-     *     otherwise exception thrown
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract BigInteger getBigIntegerValue() throws IOException;
+    public final long getLongValue() throws IOException {
+        if ((_numTypesValid & NR_LONG) == 0) {
+            if (_numTypesValid == NR_UNKNOWN) {
+                _parseNumericValue(NR_LONG);
+            }
+            if ((_numTypesValid & NR_LONG) == 0) {
+                convertNumberToLong();
+            }
+        }
+        return _numberLong;
+    }
 
     /**
      * Numeric accessor that can be called when the current
@@ -1539,7 +821,19 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract float getFloatValue() throws IOException;
+    public final float getFloatValue() throws IOException {
+        double value = getDoubleValue();
+        /*
+         * 22-Jan-2009, tatu: Bounds/range checks would be tricky
+         * here, so let's not bother even trying...
+         */
+        /*
+         * if (value < -Float.MAX_VALUE || value > MAX_FLOAT_D) {
+         * _reportError("Numeric value ("+getText()+") out of range of Java float");
+         * }
+         */
+        return (float) value;
+    }
 
     /**
      * Numeric accessor that can be called when the current
@@ -1560,21 +854,17 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract double getDoubleValue() throws IOException;
-
-    /**
-     * Numeric accessor that can be called when the current
-     * token is of type {@link JsonToken#VALUE_NUMBER_FLOAT} or
-     * {@link JsonToken#VALUE_NUMBER_INT}. No under/overflow exceptions
-     * are ever thrown.
-     *
-     * @return Current number value as {@link BigDecimal} (if numeric token);
-     *   otherwise exception thrown
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public abstract BigDecimal getDecimalValue() throws IOException;
+    public final double getDoubleValue() throws IOException {
+        if ((_numTypesValid & NR_DOUBLE) == 0) {
+            if (_numTypesValid == NR_UNKNOWN) {
+                _parseNumericValue(NR_DOUBLE);
+            }
+            if ((_numTypesValid & NR_DOUBLE) == 0) {
+                convertNumberToDouble();
+            }
+        }
+        return _numberDouble;
+    }
 
     /*
      * /**********************************************************
@@ -1597,36 +887,13 @@ public abstract class JsonParser implements Closeable, Versioned {
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public boolean getBooleanValue() throws IOException {
+    public final boolean getBooleanValue() throws IOException {
         JsonToken t = currentToken();
         if (t == JsonToken.VALUE_TRUE)
             return true;
         if (t == JsonToken.VALUE_FALSE)
             return false;
-        throw new JsonParseException(this, String.format("Current token (%s) not of boolean type", t))
-            .withRequestPayload(_requestPayload);
-    }
-
-    /**
-     * Accessor that can be called if (and only if) the current token
-     * is {@link JsonToken#VALUE_EMBEDDED_OBJECT}. For other token types,
-     * null is returned.
-     *<p>
-     * Note: only some specialized parser implementations support
-     * embedding of objects (usually ones that are facades on top
-     * of non-streaming sources, such as object trees). One exception
-     * is access to binary content (whether via base64 encoding or not)
-     * which typically is accessible using this method, as well as
-     * {@link #getBinaryValue()}.
-     *
-     * @return Embedded value (usually of "native" type supported by format)
-     *   for the current token, if any; {@code null otherwise}
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public Object getEmbeddedObject() throws IOException {
-        return null;
+        throw new JsonParseException(this, String.format("Current token (%s) not of boolean type", t));
     }
 
     /*
@@ -1651,227 +918,18 @@ public abstract class JsonParser implements Closeable, Versioned {
      * Decoded binary content, however, will be retained until
      * parser is advanced to the next event.
      *
-     * @param bv Expected variant of base64 encoded
-     *   content (see {@link Base64Variants} for definitions
-     *   of "standard" variants).
-     *
      * @return Decoded binary data
      *
      * @throws IOException for low-level read issues, or
      *   {@link JsonParseException} for decoding problems
      */
-    public abstract byte[] getBinaryValue(Base64Variant bv) throws IOException;
-
-    /**
-     * Convenience alternative to {@link #getBinaryValue(Base64Variant)}
-     * that defaults to using
-     * {@link Base64Variants#getDefaultVariant} as the default encoding.
-     *
-     * @return Decoded binary data
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public byte[] getBinaryValue() throws IOException {
-        return getBinaryValue(Base64Variants.getDefaultVariant());
-    }
-
-    /**
-     * Similar to {@link #readBinaryValue(OutputStream)} but allows explicitly
-     * specifying base64 variant to use.
-     *
-     * @param bv base64 variant to use
-     * @param out Output stream to use for passing decoded binary data
-     *
-     * @return Number of bytes that were decoded and written via {@link OutputStream}
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.1
-     */
-    public int readBinaryValue(Base64Variant bv, OutputStream out) throws IOException {
-        _reportUnsupportedOperation();
-        return 0; // never gets here
-    }
+    public abstract byte[] getBinaryValue() throws IOException;
 
     /*
      * /**********************************************************
      * /* Public API, access to token information, coercion/conversion
      * /**********************************************************
      */
-
-    /**
-     * Method that will try to convert value of current token to a
-     * Java {@code int} value.
-     * Numbers are coerced using default Java rules; booleans convert to 0 (false)
-     * and 1 (true), and Strings are parsed using default Java language integer
-     * parsing rules.
-     *<p>
-     * If representation can not be converted to an int (including structured type
-     * markers like start/end Object/Array)
-     * default value of <b>0</b> will be returned; no exceptions are thrown.
-     *
-     * @return {@code int} value current token is converted to, if possible; exception thrown
-     *    otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public int getValueAsInt() throws IOException {
-        return getValueAsInt(0);
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
-     * <b>int</b>.
-     * Numbers are coerced using default Java rules; booleans convert to 0 (false)
-     * and 1 (true), and Strings are parsed using default Java language integer
-     * parsing rules.
-     *<p>
-     * If representation can not be converted to an int (including structured type
-     * markers like start/end Object/Array)
-     * specified <b>def</b> will be returned; no exceptions are thrown.
-     *
-     * @param def Default value to return if conversion to {@code int} is not possible
-     *
-     * @return {@code int} value current token is converted to, if possible; {@code def} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public int getValueAsInt(int def) throws IOException {
-        return def;
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
-     * <b>long</b>.
-     * Numbers are coerced using default Java rules; booleans convert to 0 (false)
-     * and 1 (true), and Strings are parsed using default Java language integer
-     * parsing rules.
-     *<p>
-     * If representation can not be converted to a long (including structured type
-     * markers like start/end Object/Array)
-     * default value of <b>0L</b> will be returned; no exceptions are thrown.
-     *
-     * @return {@code long} value current token is converted to, if possible; exception thrown
-     *    otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public long getValueAsLong() throws IOException {
-        return getValueAsLong(0);
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
-     * <b>long</b>.
-     * Numbers are coerced using default Java rules; booleans convert to 0 (false)
-     * and 1 (true), and Strings are parsed using default Java language integer
-     * parsing rules.
-     *<p>
-     * If representation can not be converted to a long (including structured type
-     * markers like start/end Object/Array)
-     * specified <b>def</b> will be returned; no exceptions are thrown.
-     *
-     * @param def Default value to return if conversion to {@code long} is not possible
-     *
-     * @return {@code long} value current token is converted to, if possible; {@code def} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public long getValueAsLong(long def) throws IOException {
-        return def;
-    }
-
-    /**
-     * Method that will try to convert value of current token to a Java
-     * <b>double</b>.
-     * Numbers are coerced using default Java rules; booleans convert to 0.0 (false)
-     * and 1.0 (true), and Strings are parsed using default Java language floating
-     * point parsing rules.
-     *<p>
-     * If representation can not be converted to a double (including structured types
-     * like Objects and Arrays),
-     * default value of <b>0.0</b> will be returned; no exceptions are thrown.
-     *
-     * @return {@code double} value current token is converted to, if possible; exception thrown
-     *    otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public double getValueAsDouble() throws IOException {
-        return getValueAsDouble(0.0);
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
-     * Java <b>double</b>.
-     * Numbers are coerced using default Java rules; booleans convert to 0.0 (false)
-     * and 1.0 (true), and Strings are parsed using default Java language floating
-     * point parsing rules.
-     *<p>
-     * If representation can not be converted to a double (including structured types
-     * like Objects and Arrays),
-     * specified <b>def</b> will be returned; no exceptions are thrown.
-     *
-     * @param def Default value to return if conversion to {@code double} is not possible
-     *
-     * @return {@code double} value current token is converted to, if possible; {@code def} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public double getValueAsDouble(double def) throws IOException {
-        return def;
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
-     * <b>boolean</b>.
-     * JSON booleans map naturally; integer numbers other than 0 map to true, and
-     * 0 maps to false
-     * and Strings 'true' and 'false' map to corresponding values.
-     *<p>
-     * If representation can not be converted to a boolean value (including structured types
-     * like Objects and Arrays),
-     * default value of <b>false</b> will be returned; no exceptions are thrown.
-     *
-     * @return {@code boolean} value current token is converted to, if possible; exception thrown
-     *    otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public boolean getValueAsBoolean() throws IOException {
-        return getValueAsBoolean(false);
-    }
-
-    /**
-     * Method that will try to convert value of current token to a
-     * <b>boolean</b>.
-     * JSON booleans map naturally; integer numbers other than 0 map to true, and
-     * 0 maps to false
-     * and Strings 'true' and 'false' map to corresponding values.
-     *<p>
-     * If representation can not be converted to a boolean value (including structured types
-     * like Objects and Arrays),
-     * specified <b>def</b> will be returned; no exceptions are thrown.
-     *
-     * @param def Default value to return if conversion to {@code boolean} is not possible
-     *
-     * @return {@code boolean} value current token is converted to, if possible; {@code def} otherwise
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     */
-    public boolean getValueAsBoolean(boolean def) throws IOException {
-        return def;
-    }
 
     /**
      * Method that will try to convert value of current token to a
@@ -1902,7 +960,7 @@ public abstract class JsonParser implements Closeable, Versioned {
      * like Objects and Arrays and {@code null} token), specified default value
      * will be returned; no exceptions are thrown.
      *
-     * @param def Default value to return if conversion to {@code String} is not possible
+     * @param defaultValue Default value to return if conversion to {@code String} is not possible
      *
      * @return {@link String} value current token is converted to, if possible; {@code def} otherwise
      *
@@ -1911,176 +969,17 @@ public abstract class JsonParser implements Closeable, Versioned {
      *
      * @since 2.1
      */
-    public abstract String getValueAsString(String def) throws IOException;
-
-    /*
-     * /**********************************************************
-     * /* Public API, Native Ids (type, object)
-     * /**********************************************************
-     */
-
-    /**
-     * Introspection method that may be called to see if the underlying
-     * data format supports some kind of Object Ids natively (many do not;
-     * for example, JSON doesn't).
-     *<p>
-     * Default implementation returns true; overridden by data formats
-     * that do support native Object Ids. Caller is expected to either
-     * use a non-native notation (explicit property or such), or fail,
-     * in case it can not use native object ids.
-     *
-     * @return {@code True} if the format being read supports native Object Ids;
-     *    {@code false} if not
-     *
-     * @since 2.3
-     */
-    public boolean canReadObjectId() {
-        return false;
-    }
-
-    /**
-     * Introspection method that may be called to see if the underlying
-     * data format supports some kind of Type Ids natively (many do not;
-     * for example, JSON doesn't).
-     *<p>
-     * Default implementation returns true; overridden by data formats
-     * that do support native Type Ids. Caller is expected to either
-     * use a non-native notation (explicit property or such), or fail,
-     * in case it can not use native type ids.
-     *
-     * @return {@code True} if the format being read supports native Type Ids;
-     *    {@code false} if not
-     *
-     * @since 2.3
-     */
-    public boolean canReadTypeId() {
-        return false;
-    }
-
-    /**
-     * Method that can be called to check whether current token
-     * (one that was just read) has an associated Object id, and if
-     * so, return it.
-     * Note that while typically caller should check with {@link #canReadObjectId}
-     * first, it is not illegal to call this method even if that method returns
-     * true; but if so, it will return null. This may be used to simplify calling
-     * code.
-     *<p>
-     * Default implementation will simply return null.
-     *
-     * @return Native Object id associated with the current token, if any; {@code null} if none
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.3
-     */
-    public Object getObjectId() throws IOException {
-        return null;
-    }
-
-    /**
-     * Method that can be called to check whether current token
-     * (one that was just read) has an associated type id, and if
-     * so, return it.
-     * Note that while typically caller should check with {@link #canReadTypeId}
-     * first, it is not illegal to call this method even if that method returns
-     * true; but if so, it will return null. This may be used to simplify calling
-     * code.
-     *<p>
-     * Default implementation will simply return null.
-     *
-     * @return Native Type Id associated with the current token, if any; {@code null} if none
-     *
-     * @throws IOException for low-level read issues, or
-     *   {@link JsonParseException} for decoding problems
-     *
-     * @since 2.3
-     */
-    public Object getTypeId() throws IOException {
-        return null;
-    }
-
-    /*
-     * /**********************************************************
-     * /* Public API, optional data binding functionality
-     * /**********************************************************
-     */
-
-    /**
-     * Method to deserialize JSON content into a non-container
-     * type (it can be an array type, however): typically a bean, array
-     * or a wrapper type (like {@link Boolean}).
-     * <b>Note</b>: method can only be called if the parser has
-     * an object codec assigned; this is true for parsers constructed
-     * by <code>MappingJsonFactory</code> (from "jackson-databind" jar)
-     * but not for {@link JsonFactory} (unless its <code>setCodec</code>
-     * method has been explicitly called).
-     *<p>
-     * This method may advance the event stream, for structured types
-     * the current token will be the closing end marker (END_ARRAY,
-     * END_OBJECT) of the bound structure. For non-structured Json types
-     * (and for {@link JsonToken#VALUE_EMBEDDED_OBJECT})
-     * stream is not advanced.
-     *<p>
-     * Note: this method should NOT be used if the result type is a
-     * container ({@link java.util.Collection} or {@link java.util.Map}.
-     * The reason is that due to type erasure, key and value types
-     * can not be introspected when using this method.
-     *
-     * @param <T> Nominal type parameter for value type
-     *
-     * @param valueType Java type to read content as (passed to ObjectCodec that
-     *    deserializes content)
-     *
-     * @return Java value read from content
-     *
-     * @throws IOException if there is either an underlying I/O problem or decoding
-     *    issue at format layer
-     */
-    public <T> T readValueAs(Class<T> valueType) throws IOException {
-        return _codec().readValue(this, valueType);
-    }
-
-    /**
-     * Method to deserialize JSON content into a Java type, reference
-     * to which is passed as argument. Type is passed using so-called
-     * "super type token"
-     * and specifically needs to be used if the root type is a
-     * parameterized (generic) container type.
-     * <b>Note</b>: method can only be called if the parser has
-     * an object codec assigned; this is true for parsers constructed
-     * by <code>MappingJsonFactory</code> (defined in 'jackson-databind' bundle)
-     * but not for {@link JsonFactory} (unless its <code>setCodec</code>
-     * method has been explicitly called).
-     *<p>
-     * This method may advance the event stream, for structured types
-     * the current token will be the closing end marker (END_ARRAY,
-     * END_OBJECT) of the bound structure. For non-structured Json types
-     * (and for {@link JsonToken#VALUE_EMBEDDED_OBJECT})
-     * stream is not advanced.
-     *
-     * @param <T> Nominal type parameter for value type
-     *
-     * @param valueTypeRef Java type to read content as (passed to ObjectCodec that
-     *    deserializes content)
-     *
-     * @return Java value read from content
-     *
-     * @throws IOException if there is either an underlying I/O problem or decoding
-     *    issue at format layer
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T readValueAs(TypeReference<?> valueTypeRef) throws IOException {
-        return (T) _codec().readValue(this, valueTypeRef);
-    }
-
-    protected ObjectCodec _codec() {
-        ObjectCodec c = getCodec();
-        if (c == null) {
-            throw new IllegalStateException("No ObjectCodec defined for parser, needed for deserialization");
+    public String getValueAsString(String defaultValue) throws IOException {
+        if (_currToken == JsonToken.VALUE_STRING) {
+            return getText();
         }
-        return c;
+        if (_currToken == JsonToken.FIELD_NAME) {
+            return currentName();
+        }
+        if (_currToken == null || _currToken == JsonToken.VALUE_NULL || !_currToken.isScalarValue()) {
+            return defaultValue;
+        }
+        return getText();
     }
 
     /*
@@ -2097,18 +996,712 @@ public abstract class JsonParser implements Closeable, Versioned {
      *
      * @return {@link JsonParseException} constructed
      */
-    protected JsonParseException _constructError(String msg) {
-        return new JsonParseException(this, msg).withRequestPayload(_requestPayload);
+    protected final JsonParseException _constructError(String msg) {
+        return new JsonParseException(this, msg);
+    }
+
+    /*
+     * /**********************************************************
+     * /* Base64 decoding
+     * /**********************************************************
+     */
+
+    /**
+     * Helper method that can be used for base64 decoding in cases where
+     * encoded content has already been read as a String.
+     *
+     * @param str String to decode
+     * @param builder Builder used to buffer binary content decoded
+     * @throws IOException for low-level read issues, or
+     *   {@link JsonParseException} for decoding problems
+     */
+    protected final void _decodeBase64(String str, ByteArrayBuilder builder) throws IOException {
+        try {
+            Base64Variants.getDefaultVariant().decode(str, builder);
+        } catch (IllegalArgumentException e) {
+            _reportError(e.getMessage());
+        }
+    }
+
+    /*
+     * /**********************************************************
+     * /* Abstract methods for sub-classes to implement
+     * /**********************************************************
+     */
+
+    protected abstract void _closeInput() throws IOException;
+
+    /*
+     * /**********************************************************
+     * /* Low-level reading, other
+     * /**********************************************************
+     */
+
+    /**
+     * Method called to release internal buffers owned by the base
+     * reader. This may be called along with {@link #_closeInput} (for
+     * example, when explicitly closing this reader instance), or
+     * separately (if need be).
+     *
+     * @throws IOException Not thrown by base implementation but could be thrown
+     *   by sub-classes
+     */
+    protected void _releaseBuffers() throws IOException {
+        _textBuffer.releaseBuffers();
+    }
+
+    /*
+     * /**********************************************************
+     * /* Internal/package methods: shared/reusable builders
+     * /**********************************************************
+     */
+
+    public final ByteArrayBuilder _getByteArrayBuilder() {
+        if (_byteArrayBuilder == null) {
+            _byteArrayBuilder = new ByteArrayBuilder();
+        } else {
+            _byteArrayBuilder.reset();
+        }
+        return _byteArrayBuilder;
+    }
+
+    /*
+     * /**********************************************************
+     * /* Methods from former JsonNumericParserBase
+     * /**********************************************************
+     */
+
+    // // // Life-cycle of number-parsing
+
+    protected final JsonToken reset(boolean negative, int intLen, int fractLen, int expLen) {
+        if (fractLen < 1 && expLen < 1) { // integer
+            return resetInt(negative, intLen);
+        }
+        return resetFloat(negative, intLen, fractLen, expLen);
+    }
+
+    protected final JsonToken resetInt(boolean negative, int intLen) {
+        _numberNegative = negative;
+        _intLength = intLen;
+        _fractLength = 0;
+        _expLength = 0;
+        _numTypesValid = NR_UNKNOWN; // to force parsing
+        return JsonToken.VALUE_NUMBER_INT;
+    }
+
+    protected final JsonToken resetFloat(boolean negative, int intLen, int fractLen, int expLen) {
+        _numberNegative = negative;
+        _intLength = intLen;
+        _fractLength = fractLen;
+        _expLength = expLen;
+        _numTypesValid = NR_UNKNOWN; // to force parsing
+        return JsonToken.VALUE_NUMBER_FLOAT;
+    }
+
+    protected final JsonToken resetAsNaN(String valueStr, double value) {
+        _textBuffer.resetWithString(valueStr);
+        _numberDouble = value;
+        _numTypesValid = NR_DOUBLE;
+        return JsonToken.VALUE_NUMBER_FLOAT;
+    }
+
+    /*
+     * /**********************************************************
+     * /* Conversion from textual to numeric representation
+     * /**********************************************************
+     */
+
+    /**
+     * Method that will parse actual numeric value out of a syntactically
+     * valid number value. Type it will parse into depends on whether
+     * it is a floating point number, as well as its magnitude: smallest
+     * legal type (of ones available) is used for efficiency.
+     *
+     * @param expType Numeric type that we will immediately need, if any;
+     *   mostly necessary to optimize handling of floating point numbers
+     *
+     * @throws IOException If there are problems reading content
+     * @throws JsonParseException If there are problems decoding number value
+     */
+    private void _parseNumericValue(int expType) throws IOException {
+        // 12-Jun-2020, tatu: Sanity check to prevent more cryptic error for this case.
+        // (note: could alternatively see if TextBuffer has aggregated contents, avoid
+        // exception -- but that might be more confusing)
+        if (_closed) {
+            _reportError("Internal error: _parseNumericValue called when parser instance closed");
+        }
+
+        // Int or float?
+        if (_currToken == JsonToken.VALUE_NUMBER_INT) {
+            final int len = _intLength;
+            // First: optimization for simple int
+            if (len <= 9) {
+                _numberInt = _textBuffer.contentsAsInt(_numberNegative);
+                _numTypesValid = NR_INT;
+                return;
+            }
+            if (len <= 18) { // definitely fits AND is easy to parse using 2 int parse calls
+                long l = _textBuffer.contentsAsLong(_numberNegative);
+                // Might still fit in int, need to check
+                if (len == 10) {
+                    if (_numberNegative) {
+                        if (l >= MIN_INT_L) {
+                            _numberInt = (int) l;
+                            _numTypesValid = NR_INT;
+                            return;
+                        }
+                    } else {
+                        if (l <= MAX_INT_L) {
+                            _numberInt = (int) l;
+                            _numTypesValid = NR_INT;
+                            return;
+                        }
+                    }
+                }
+                _numberLong = l;
+                _numTypesValid = NR_LONG;
+                return;
+            }
+            _parseSlowInt(expType);
+            return;
+        }
+        if (_currToken == JsonToken.VALUE_NUMBER_FLOAT) {
+            _parseSlowFloat(expType);
+            return;
+        }
+        _reportError("Current token (%s) not numeric, can not use numeric value accessors", _currToken);
+    }
+
+    // @since 2.6
+    private int _parseIntValue() throws IOException {
+        // 12-Jun-2020, tatu: Sanity check to prevent more cryptic error for this case.
+        // (note: could alternatively see if TextBuffer has aggregated contents, avoid
+        // exception -- but that might be more confusing)
+        if (_closed) {
+            _reportError("Internal error: _parseNumericValue called when parser instance closed");
+        }
+        // Inlined variant of: _parseNumericValue(NR_INT)
+        if (_currToken == JsonToken.VALUE_NUMBER_INT) {
+            if (_intLength <= 9) {
+                int i = _textBuffer.contentsAsInt(_numberNegative);
+                _numberInt = i;
+                _numTypesValid = NR_INT;
+                return i;
+            }
+        }
+        // if not optimizable, use more generic
+        _parseNumericValue(NR_INT);
+        if ((_numTypesValid & NR_INT) == 0) {
+            convertNumberToInt();
+        }
+        return _numberInt;
+    }
+
+    private void _parseSlowFloat(int expType) throws IOException {
+        /*
+         * Nope: floating point. Here we need to be careful to get
+         * optimal parsing strategy: choice is between accurate but
+         * slow (BigDecimal) and lossy but fast (Double). For now
+         * let's only use BD when explicitly requested -- it can
+         * still be constructed correctly at any point since we do
+         * retain textual representation
+         */
+        try {
+            if (expType == NR_BIGDECIMAL) {
+                _numberBigDecimal = _textBuffer.contentsAsDecimal();
+                _numTypesValid = NR_BIGDECIMAL;
+            } else {
+                // Otherwise double has to do
+                _numberDouble = _textBuffer.contentsAsDouble();
+                _numTypesValid = NR_DOUBLE;
+            }
+        } catch (NumberFormatException nex) {
+            // Can this ever occur? Due to overflow, maybe?
+            _wrapError("Malformed numeric value (" + _longNumberDesc(_textBuffer.contentsAsString()) + ")", nex);
+        }
+    }
+
+    private void _parseSlowInt(int expType) throws IOException {
+        String numStr = _textBuffer.contentsAsString();
+        try {
+            int len = _intLength;
+            char[] buf = _textBuffer.getTextBuffer();
+            int offset = _textBuffer.getTextOffset();
+            if (_numberNegative) {
+                ++offset;
+            }
+            // Some long cases still...
+            if (NumberInput.inLongRange(buf, offset, len, _numberNegative)) {
+                // Probably faster to construct a String, call parse, than to use BigInteger
+                _numberLong = Long.parseLong(numStr);
+                _numTypesValid = NR_LONG;
+            } else {
+                // 16-Oct-2018, tatu: Need to catch "too big" early due to [jackson-core#488]
+                if ((expType == NR_INT) || (expType == NR_LONG)) {
+                    _reportTooLongIntegral(expType, numStr);
+                }
+                if ((expType == NR_DOUBLE) || (expType == NR_FLOAT)) {
+                    _numberDouble = NumberInput.parseDouble(numStr);
+                    _numTypesValid = NR_DOUBLE;
+                } else {
+                    // nope, need the heavy guns... (rare case)
+                    _numberBigInt = new BigInteger(numStr);
+                    _numTypesValid = NR_BIGINT;
+                }
+            }
+        } catch (NumberFormatException nex) {
+            // Can this ever occur? Due to overflow, maybe?
+            _wrapError("Malformed numeric value (" + _longNumberDesc(numStr) + ")", nex);
+        }
+    }
+
+    // @since 2.9.8
+    private void _reportTooLongIntegral(int expType, String rawNum) throws IOException {
+        if (expType == NR_INT) {
+            reportOverflowInt(rawNum);
+        } else {
+            reportOverflowLong(rawNum);
+        }
+    }
+
+    /*
+     * /**********************************************************
+     * /* Numeric conversions
+     * /**********************************************************
+     */
+
+    private void convertNumberToInt() throws IOException {
+        // First, converting from long ought to be easy
+        if ((_numTypesValid & NR_LONG) != 0) {
+            // Let's verify it's lossless conversion by simple roundtrip
+            int result = (int) _numberLong;
+            if (((long) result) != _numberLong) {
+                reportOverflowInt(getText(), currentToken());
+            }
+            _numberInt = result;
+        } else if ((_numTypesValid & NR_BIGINT) != 0) {
+            if (BI_MIN_INT.compareTo(_numberBigInt) > 0 || BI_MAX_INT.compareTo(_numberBigInt) < 0) {
+                reportOverflowInt();
+            }
+            _numberInt = _numberBigInt.intValue();
+        } else if ((_numTypesValid & NR_DOUBLE) != 0) {
+            // Need to check boundaries
+            if (_numberDouble < MIN_INT_D || _numberDouble > MAX_INT_D) {
+                reportOverflowInt();
+            }
+            _numberInt = (int) _numberDouble;
+        } else if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
+            if (BD_MIN_INT.compareTo(_numberBigDecimal) > 0 || BD_MAX_INT.compareTo(_numberBigDecimal) < 0) {
+                reportOverflowInt();
+            }
+            _numberInt = _numberBigDecimal.intValue();
+        } else {
+            _throwInternal();
+        }
+        _numTypesValid |= NR_INT;
+    }
+
+    private void convertNumberToLong() throws IOException {
+        if ((_numTypesValid & NR_INT) != 0) {
+            _numberLong = _numberInt;
+        } else if ((_numTypesValid & NR_BIGINT) != 0) {
+            if (BI_MIN_LONG.compareTo(_numberBigInt) > 0 || BI_MAX_LONG.compareTo(_numberBigInt) < 0) {
+                reportOverflowLong();
+            }
+            _numberLong = _numberBigInt.longValue();
+        } else if ((_numTypesValid & NR_DOUBLE) != 0) {
+            // Need to check boundaries
+            if (_numberDouble < MIN_LONG_D || _numberDouble > MAX_LONG_D) {
+                reportOverflowLong();
+            }
+            _numberLong = (long) _numberDouble;
+        } else if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
+            if (BD_MIN_LONG.compareTo(_numberBigDecimal) > 0 || BD_MAX_LONG.compareTo(_numberBigDecimal) < 0) {
+                reportOverflowLong();
+            }
+            _numberLong = _numberBigDecimal.longValue();
+        } else {
+            _throwInternal();
+        }
+        _numTypesValid |= NR_LONG;
+    }
+
+    private void convertNumberToDouble() {
+        /*
+         * 05-Aug-2008, tatus: Important note: this MUST start with
+         * more accurate representations, since we don't know which
+         * value is the original one (others get generated when
+         * requested)
+         */
+
+        if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
+            _numberDouble = _numberBigDecimal.doubleValue();
+        } else if ((_numTypesValid & NR_BIGINT) != 0) {
+            _numberDouble = _numberBigInt.doubleValue();
+        } else if ((_numTypesValid & NR_LONG) != 0) {
+            _numberDouble = (double) _numberLong;
+        } else if ((_numTypesValid & NR_INT) != 0) {
+            _numberDouble = _numberInt;
+        } else {
+            _throwInternal();
+        }
+        _numTypesValid |= NR_DOUBLE;
+    }
+
+    /*
+     * /**********************************************************
+     * /* Error reporting
+     * /**********************************************************
+     */
+
+    protected final void reportUnexpectedNumberChar(int ch, String comment) throws JsonParseException {
+        String msg = "Unexpected character (" + _getCharDesc(ch) + ") in numeric value";
+        if (comment != null) {
+            msg += ": " + comment;
+        }
+        _reportError(msg);
     }
 
     /**
-     * Helper method to call for operations that are not supported by
-     * parser implementation.
+     * Method called to throw an exception for input token that looks like a number
+     * based on first character(s), but is not valid according to rules of format.
+     * In case of JSON this also includes invalid forms like positive sign and
+     * leading zeroes.
      *
-     * @since 2.1
+     * @throws JsonParseException Exception that describes problem with number validity
      */
-    protected void _reportUnsupportedOperation() {
-        throw new UnsupportedOperationException("Operation not supported by parser of type " + getClass().getName());
+    protected final void reportInvalidNumber() throws JsonParseException {
+        _reportError("Invalid numeric value: Leading zeroes not allowed");
     }
 
+    /**
+     * Method called to throw an exception for integral (not floating point) input
+     * token with value outside of Java signed 32-bit range when requested as {@code int}.
+     * Result will be {@link InputCoercionException} being thrown.
+     *
+     * @throws JsonParseException Exception that describes problem with number range validity
+     */
+    private void reportOverflowInt() throws IOException {
+        reportOverflowInt(getText());
+    }
+
+    // @since 2.10
+    private void reportOverflowInt(String numDesc) throws IOException {
+        reportOverflowInt(numDesc, currentToken());
+    }
+
+    // @since 2.10
+    private void reportOverflowInt(String numDesc, JsonToken inputType) throws IOException {
+        String msg = String.format("Numeric value (%s) out of range of int (%d - %s)",
+            _longIntegerDesc(numDesc), Integer.MIN_VALUE, Integer.MAX_VALUE);
+        throw new InputCoercionException(this, msg, inputType, Integer.TYPE);
+    }
+
+    /**
+     * Method called to throw an exception for integral (not floating point) input
+     * token with value outside of Java signed 64-bit range when requested as {@code long}.
+     * Result will be {@link InputCoercionException} being thrown.
+     *
+     * @throws JsonParseException Exception that describes problem with number range validity
+     */
+    private void reportOverflowLong() throws IOException {
+        reportOverflowLong(getText());
+    }
+
+    // @since 2.10
+    private void reportOverflowLong(String numDesc) throws IOException {
+        String msg = String.format("Numeric value (%s) out of range of long (%d - %s)",
+            _longIntegerDesc(numDesc), Long.MIN_VALUE, Long.MAX_VALUE);
+        throw new InputCoercionException(this, msg, _currToken, Long.TYPE);
+    }
+
+    // @since 2.9.8
+    private String _longIntegerDesc(String rawNum) {
+        int rawLen = rawNum.length();
+        if (rawLen < 1000) {
+            return rawNum;
+        }
+        if (rawNum.startsWith("-")) {
+            rawLen -= 1;
+        }
+        return String.format("[Integer with %d digits]", rawLen);
+    }
+
+    // @since 2.9.8
+    private String _longNumberDesc(String rawNum) {
+        int rawLen = rawNum.length();
+        if (rawLen < 1000) {
+            return rawNum;
+        }
+        if (rawNum.startsWith("-")) {
+            rawLen -= 1;
+        }
+        return String.format("[number with %d characters]", rawLen);
+    }
+
+    protected void _reportUnexpectedChar(int ch, String comment) throws JsonParseException {
+        if (ch < 0) { // sanity check
+            _reportInvalidEOF();
+        }
+        String msg = String.format("Unexpected character (%s)", _getCharDesc(ch));
+        if (comment != null) {
+            msg += ": " + comment;
+        }
+        _reportError(msg);
+    }
+
+    protected void _reportInvalidEOF() throws JsonParseException {
+        _reportInvalidEOF(" in " + _currToken, _currToken);
+    }
+
+    // @since 2.8
+    protected void _reportInvalidEOFInValue(JsonToken type) throws JsonParseException {
+        String msg;
+        if (type == JsonToken.VALUE_STRING) {
+            msg = " in a String value";
+        } else if ((type == JsonToken.VALUE_NUMBER_INT) || (type == JsonToken.VALUE_NUMBER_FLOAT)) {
+            msg = " in a Number value";
+        } else {
+            msg = " in a value";
+        }
+        _reportInvalidEOF(msg, type);
+    }
+
+    // @since 2.8
+    protected void _reportInvalidEOF(String msg, JsonToken currToken) throws JsonParseException {
+        throw new JsonEOFException(this, currToken, "Unexpected end-of-input" + msg);
+    }
+
+    protected void _reportMissingRootWS(int ch) throws JsonParseException {
+        _reportUnexpectedChar(ch, "Expected space separating root-level values");
+    }
+
+    protected void _throwInvalidSpace(int i) throws JsonParseException {
+        char c = (char) i;
+        String msg = "Illegal character (" + _getCharDesc(c)
+            + "): only regular white space (\\r, \\n, \\t) is allowed between tokens";
+        _reportError(msg);
+    }
+
+    /*
+     * /**********************************************************
+     * /* Error reporting, generic
+     * /**********************************************************
+     */
+
+    private static String _getCharDesc(int ch) {
+        char c = (char) ch;
+        if (Character.isISOControl(c)) {
+            return "(CTRL-CHAR, code " + ch + ")";
+        }
+        if (ch > 255) {
+            return "'" + c + "' (code " + ch + " / 0x" + Integer.toHexString(ch) + ")";
+        }
+        return "'" + c + "' (code " + ch + ")";
+    }
+
+    protected final void _reportError(String msg) throws JsonParseException {
+        throw _constructError(msg);
+    }
+
+    // @since 2.9
+    protected final void _reportError(String msg, Object arg) throws JsonParseException {
+        throw _constructError(String.format(msg, arg));
+    }
+
+    // @since 2.9
+    protected final void _reportError(Object arg1, Object arg2) throws JsonParseException {
+        throw _constructError(String.format("Unrecognized token '%s': was expecting %s", arg1, arg2));
+    }
+
+    private void _wrapError(String msg, Throwable t) throws JsonParseException {
+        throw _constructError(msg, t);
+    }
+
+    private static void _throwInternal() {
+        throw new RuntimeException("Internal error: this code path should never get executed");
+    }
+
+    private JsonParseException _constructError(String msg, Throwable t) {
+        return new JsonParseException(this, msg, t);
+    }
+
+    protected void _reportMismatchedEndMarker(int actCh, char expCh) throws JsonParseException {
+        JsonReadContext ctxt = getParsingContext();
+        _reportError(String.format("Unexpected close marker '%s': expected '%c' (for %s starting at %s)", (char) actCh,
+            expCh, ctxt.typeDesc(), ctxt.startLocation(_contentReference())));
+    }
+
+    protected char _handleUnrecognizedCharacterEscape(char ch) throws JsonProcessingException {
+        _reportError("Unrecognized character escape " + _getCharDesc(ch));
+        return ch;
+    }
+
+    /**
+     * Method called to report a problem with unquoted control character..
+     *
+     * @param i Invalid control character
+     * @param ctxtDesc Addition description of context to use in exception message
+     *
+     * @throws JsonParseException explaining the problem
+     */
+    protected void _throwUnquotedSpace(int i, String ctxtDesc) throws JsonParseException {
+        // JACKSON-208; possible to allow unquoted control chars:
+        if (i > INT_SPACE) {
+            char c = (char) i;
+            String msg = "Illegal unquoted character (" + _getCharDesc(c)
+                + "): has to be escaped using backslash to be included in " + ctxtDesc;
+            _reportError(msg);
+        }
+    }
+
+    /**
+     * @return Description to use as "valid JSON values" in an exception message about
+     *    invalid (unrecognized) JSON value: called when parser finds something that
+     *    does not look like a value or separator.
+     *
+     * @since 2.10
+     */
+    @SuppressWarnings("deprecation")
+    protected String _validJsonValueList() {
+        if (isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
+            return "(JSON String, Number (or 'NaN'/'Infinity'/'+Infinity'/'-Infinity'), Array, Object or token 'null', 'true' or 'false')";
+        }
+        return "(JSON String, Number, Array, Object or token 'null', 'true' or 'false')";
+    }
+
+    /*
+     * /**********************************************************
+     * /* Base64 handling support
+     * /**********************************************************
+     */
+
+    /**
+     * Method that sub-classes must implement to support escaped sequences
+     * in base64-encoded sections.
+     * Sub-classes that do not need base64 support can leave this as is
+     *
+     * @return Character decoded, if any
+     *
+     * @throws IOException If escape decoding fails
+     */
+    protected char _decodeEscaped() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    protected final int _decodeBase64Escape(Base64Variant b64variant, int ch, int index) throws IOException {
+        // 17-May-2011, tatu: As per [JACKSON-xxx], need to handle escaped chars
+        if (ch != '\\') {
+            throw reportInvalidBase64Char(b64variant, ch, index);
+        }
+        int unescaped = _decodeEscaped();
+        // if white space, skip if first triplet; otherwise errors
+        if (unescaped <= INT_SPACE) {
+            if (index == 0) { // whitespace only allowed to be skipped between triplets
+                return -1;
+            }
+        }
+        // otherwise try to find actual triplet value
+        int bits = b64variant.decodeBase64Char(unescaped);
+        if (bits < 0) {
+            if (bits != Base64Variant.BASE64_VALUE_PADDING) {
+                throw reportInvalidBase64Char(b64variant, unescaped, index);
+            }
+        }
+        return bits;
+    }
+
+    protected final int _decodeBase64Escape(Base64Variant b64variant, char ch, int index) throws IOException {
+        if (ch != '\\') {
+            throw reportInvalidBase64Char(b64variant, ch, index);
+        }
+        char unescaped = _decodeEscaped();
+        // if white space, skip if first triplet; otherwise errors
+        if (unescaped <= INT_SPACE) {
+            if (index == 0) { // whitespace only allowed to be skipped between triplets
+                return -1;
+            }
+        }
+        // otherwise try to find actual triplet value
+        int bits = b64variant.decodeBase64Char(unescaped);
+        if (bits < 0) {
+            // second check since padding can only be 3rd or 4th byte (index #2 or #3)
+            if ((bits != Base64Variant.BASE64_VALUE_PADDING) || (index < 2)) {
+                throw reportInvalidBase64Char(b64variant, unescaped, index);
+            }
+        }
+        return bits;
+    }
+
+    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex)
+        throws IllegalArgumentException {
+        return reportInvalidBase64Char(b64variant, ch, bindex, null);
+    }
+
+    /*
+     * @param bindex Relative index within base64 character unit; between 0
+     * and 3 (as unit has exactly 4 characters)
+     */
+    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex, String msg)
+        throws IllegalArgumentException {
+        String base;
+        if (ch <= INT_SPACE) {
+            base = String.format(
+                "Illegal white space character (code 0x%s) as character #%d of 4-char base64 unit: can only used between units",
+                Integer.toHexString(ch), (bindex + 1));
+        } else if (b64variant.usesPaddingChar(ch)) {
+            base = "Unexpected padding character ('=') as character #" + (bindex + 1)
+                + " of 4-char base64 unit: padding only legal as 3rd or 4th character";
+        } else if (!Character.isDefined(ch) || Character.isISOControl(ch)) {
+            // Not sure if we can really get here... ? (most illegal xml chars are caught at lower level)
+            base = "Illegal character (code 0x" + Integer.toHexString(ch) + ") in base64 content";
+        } else {
+            base = "Illegal character '" + ((char) ch) + "' (code 0x" + Integer.toHexString(ch) + ") in base64 content";
+        }
+        if (msg != null) {
+            base = base + ": " + msg;
+        }
+        return new IllegalArgumentException(base);
+    }
+
+    // since 2.9.8
+    protected void _handleBase64MissingPadding(Base64Variant b64variant) throws IOException {
+        _reportError(b64variant.missingPaddingMessage());
+    }
+
+    /*
+     * /**********************************************************
+     * /* Internal/package methods: other
+     * /**********************************************************
+     */
+
+    /**
+     * Helper method used to encapsulate logic of including (or not) of
+     * "content reference" when constructing {@link JsonLocation} instances.
+     *
+     * @return Source reference object, if any; {@code null} if none
+     *
+     * @since 2.13
+     */
+    protected ContentReference _contentReference() {
+        return _ioContext.contentReference();
+    }
+
+    protected static int[] growArrayBy(int[] arr, int more) {
+        if (arr == null) {
+            return new int[more];
+        }
+        return Arrays.copyOf(arr, arr.length + more);
+    }
+
+    /*
+     * /**********************************************************
+     * /* Stuff that was abstract and required before 2.8, but that
+     * /* is not mandatory in 2.8 or above.
+     * /**********************************************************
+     */
+
+    // Can't declare as deprecated, for now, but shouldn't be needed
+    protected void _finishString() throws IOException {
+    }
 }
