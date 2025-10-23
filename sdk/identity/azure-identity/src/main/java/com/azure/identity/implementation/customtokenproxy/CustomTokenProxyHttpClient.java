@@ -3,6 +3,7 @@ package com.azure.identity.implementation.customtokenproxy;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -86,7 +87,10 @@ public class CustomTokenProxyHttpClient implements HttpClient {
         if (request.getBodyAsBinaryData() != null) {
             byte[] bytes = request.getBodyAsBinaryData().toBytes();
             if (bytes != null && bytes.length > 0) {
-                connection.getOutputStream().write(bytes);
+                try (OutputStream os = connection.getOutputStream()) {
+                    os.write(bytes);
+                    os.flush();
+                }
             }
         }
 

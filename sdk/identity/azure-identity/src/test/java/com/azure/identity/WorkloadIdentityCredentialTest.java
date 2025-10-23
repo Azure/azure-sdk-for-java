@@ -35,6 +35,10 @@ import static org.mockito.Mockito.when;
 public class WorkloadIdentityCredentialTest {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String ENV_PROXY_URL = "AZURE_KUBERNETES_TOKEN_PROXY";
+    private static final String ENV_CA_FILE = "AZURE_KUBERNETES_CA_FILE";
+    private static final String ENV_CA_DATA = "AZURE_KUBERNETES_CA_DATA";
+    private static final String ENV_SNI_NAME = "AZURE_KUBERNETES_SNI_NAME";
 
     @Test
     public void testWorkloadIdentityFlow(@TempDir Path tempDir) throws IOException {
@@ -192,4 +196,302 @@ public class WorkloadIdentityCredentialTest {
             assertTrue(error.getCause() instanceof IOException);  // Original IOException from Files.readAllBytes
         }).verify();
     }
+
+    @Test
+    public void testProxyEnabledWithProxyUrlGetsToken(@TempDir Path tempDir) throws IOException {
+        // setup
+        String endpoint = "https://localhost";
+        String token1 = "token1";
+        String proxyUrl = "https://token-proxy.example.com";
+
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, proxyUrl));
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            })) {
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+
+            assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testProxyEnabledWithoutProxyUrlGetsToken(@TempDir Path tempDir) throws IOException {
+        // setup
+        String endpoint = "https://localhost";
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            })) {
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+
+            assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testProxyEnabledInvalidProxyUrlSchemeFailure(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://localhost";
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "http://not-https.example.com"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+        });
+    }
+
+    @Test
+    public void testProxyUrlWithQueryFailure(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "https://proxy.example.com?x=y"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+        });
+    }
+
+    @Test
+    public void testProxyUrlWithFragmentFailure(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "https://proxy.example.com#frag"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+        });
+    }
+
+    @Test
+    public void testProxyUrlWithUserInfoFailure(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "https://user:pass@proxy.example.com"));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+        });
+    }
+
+    @Test
+    public void testCaFileAndCaDataPresentFailure(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Path caFile = tempDir.resolve("ca.crt");
+        Files.write(caFile,
+            "-----BEGIN CERTIFICATE-----\nMIIB...==\n-----END CERTIFICATE-----\n".getBytes(StandardCharsets.UTF_8));
+
+        String caData = "-----BEGIN CERTIFICATE-----\nMIIB...==\n-----END CERTIFICATE-----";
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "https://proxy.example.com")
+                .put(ENV_CA_FILE, caFile.toString())
+                .put(ENV_CA_DATA, caData));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+        });
+    }
+
+    @Test
+    public void testProxyEnabledWithProxyUrlGetsTokenSync(@TempDir Path tempDir) throws IOException {
+        // setup
+        String endpoint = "https://localhost";
+        String token1 = "token1";
+        String proxyUrl = "https://token-proxy.example.com";
+
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, proxyUrl));
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        try (MockedConstruction<IdentitySyncClient> identitySyncClientMock
+            = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any()))
+                    .thenThrow(new IllegalStateException("Test"));
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
+                    .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+            })) {
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+
+            AccessToken token = credential.getTokenSync(request1);
+
+            assertTrue(token1.equals(token.getToken()));
+            assertTrue(expiresAt.getSecond() == token.getExpiresAt().getSecond());
+            assertNotNull(identitySyncClientMock);
+        }
+    }
+
+    @Test
+    public void testProxyUrlWithCaDataAcquiresToken(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        String token1 = "token-ca-data";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        String caData = "-----BEGIN CERTIFICATE-----\nMIIB...==\n-----END CERTIFICATE-----";
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "https://token-proxy.example.com")
+                .put(ENV_CA_DATA, caData));
+
+        try (MockedConstruction<IdentityClient> mocked
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            })) {
+            WorkloadIdentityCredential cred = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+
+            StepVerifier.create(cred.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && token.getExpiresAt().getSecond() == expiresAt.getSecond())
+                .verifyComplete();
+
+            assertNotNull(mocked);
+        }
+    }
+
+    @Test
+    public void testProxyUrlWithCaFileGetsToken(@TempDir Path tempDir) throws IOException {
+        String endpoint = "https://login.microsoftonline.com";
+        String token1 = "tok-ca-file";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+        Path caFile = tempDir.resolve("ca.crt");
+        Files.write(caFile,
+            "-----BEGIN CERTIFICATE-----\nMIIB...==\n-----END CERTIFICATE-----\n".getBytes(StandardCharsets.UTF_8));
+
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, "https://token-proxy.example.com")
+                .put(ENV_CA_FILE, caFile.toString()));
+
+        try (MockedConstruction<IdentityClient> mocked
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            })) {
+            WorkloadIdentityCredential cred = new WorkloadIdentityCredentialBuilder().tenantId("tenant")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+
+            StepVerifier.create(cred.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && token.getExpiresAt().getSecond() == expiresAt.getSecond())
+                .verifyComplete();
+
+            assertNotNull(mocked);
+        }
+    }
+
 }

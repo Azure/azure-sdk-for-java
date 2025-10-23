@@ -37,14 +37,14 @@ public class CustomTokenProxyConfiguration {
             if (!CoreUtils.isNullOrEmpty(sniName)
                 || !CoreUtils.isNullOrEmpty(caFile)
                 || !CoreUtils.isNullOrEmpty(caData)) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "AZURE_KUBERNETES_TOKEN_PROXY is not set but other custom endpoint-related environment variables are present"));
             }
             return null;
         }
 
         if (!CoreUtils.isNullOrEmpty(caFile) && !CoreUtils.isNullOrEmpty(caData)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Only one of AZURE_KUBERNETES_CA_FILE or AZURE_KUBERNETES_CA_DATA can be set."));
         }
 

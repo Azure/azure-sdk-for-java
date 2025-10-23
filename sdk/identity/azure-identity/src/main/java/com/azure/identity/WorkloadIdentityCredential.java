@@ -93,12 +93,10 @@ public class WorkloadIdentityCredential implements TokenCredential {
         String tempClientId = null;
 
         if (identityClientOptions.isKubernetesTokenProxyEnabled()) {
-            if (!CustomTokenProxyConfiguration.isConfigured(configuration)) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Kubernetes token proxy is enabled but not configured."));
+            if (CustomTokenProxyConfiguration.isConfigured(configuration)) {
+                ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
+                identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
             }
-            ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
-            identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
         }
 
         if (!(CoreUtils.isNullOrEmpty(tenantIdInput)

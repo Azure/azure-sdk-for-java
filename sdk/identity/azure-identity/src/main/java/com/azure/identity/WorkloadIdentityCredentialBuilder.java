@@ -67,8 +67,8 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         return this;
     }
 
-    public WorkloadIdentityCredentialBuilder enableKubernetesTokenProxy(boolean enable) {
-        this.enableTokenProxy = enable;
+    public WorkloadIdentityCredentialBuilder enableKubernetesTokenProxy() {
+        this.enableTokenProxy = true;
         return this;
     }
 
