@@ -17,6 +17,7 @@
     <module>sdk/anomalydetector</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
+    <module>sdk/app</module>
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/appconfiguration-v2</module>

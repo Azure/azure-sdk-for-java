@@ -6,7 +6,7 @@
 app:
   service: appcontainers
 app/Microsoft.App/ContainerApps:
-  service: appcontainers
+  service: app
 appplatform:
   suffix: generated
 authorization:
