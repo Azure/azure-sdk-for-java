@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class SchemaVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Delete_SchemaVersion.json
+     * x-ms-original-file: 2025-10-01/Delete_SchemaVersion.json
      */
     /**
      * Sample code: Delete_SchemaVersion.
@@ -18,7 +18,6 @@ public final class SchemaVersionsDeleteSamples {
      */
     public static void deleteSchemaVersion(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.schemaVersions()
-            .deleteWithResponse("myResourceGroup", "my-schema-registry", "my-schema", "1",
-                com.azure.core.util.Context.NONE);
+            .delete("myResourceGroup", "my-schema-registry", "my-schema", "1", com.azure.core.util.Context.NONE);
     }
 }

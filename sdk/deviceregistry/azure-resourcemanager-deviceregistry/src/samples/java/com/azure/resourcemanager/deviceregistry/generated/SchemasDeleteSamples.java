@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class SchemasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Delete_Schema.json
+     * x-ms-original-file: 2025-10-01/Delete_Schema.json
      */
     /**
      * Sample code: Delete_Schema.
@@ -18,6 +18,6 @@ public final class SchemasDeleteSamples {
      */
     public static void deleteSchema(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.schemas()
-            .deleteWithResponse("myResourceGroup", "my-schema-registry", "my-schema", com.azure.core.util.Context.NONE);
+            .delete("myResourceGroup", "my-schema-registry", "my-schema", com.azure.core.util.Context.NONE);
     }
 }

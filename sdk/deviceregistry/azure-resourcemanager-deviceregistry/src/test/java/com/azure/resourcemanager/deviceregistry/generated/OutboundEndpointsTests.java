@@ -15,30 +15,29 @@ public final class OutboundEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEndpoints model = BinaryData.fromString(
-            "{\"assigned\":{\"hcohfwdsjnk\":{\"endpointType\":\"uvxzxclvi\",\"address\":\"hhqzonosgg\"},\"pnppfuf\":{\"endpointType\":\"jutiiswacff\",\"address\":\"dkzzewkfvhqcrail\"},\"bcvkcvqvpkeq\":{\"endpointType\":\"wdmhdlxyjrxs\",\"address\":\"gafcnihgwqapnedg\"}},\"unassigned\":{\"opcjwvnhd\":{\"endpointType\":\"rhvoods\",\"address\":\"tbobz\"},\"rpkhjwn\":{\"endpointType\":\"wmgxcxrsl\",\"address\":\"mutwuoe\"}}}")
+            "{\"assigned\":{\"btkuwhh\":{\"endpointType\":\"uqerpqlpqwc\",\"address\":\"iuqgbdbutauv\"},\"h\":{\"endpointType\":\"ykojoxafnndlpic\",\"address\":\"koymkcd\"},\"syrsndsytgadgvra\":{\"endpointType\":\"kkpwdreqnovvq\",\"address\":\"ovljxywsu\"}},\"unassigned\":{\"wlquuijfqkace\":{\"endpointType\":\"e\",\"address\":\"nzar\"}}}")
             .toObject(OutboundEndpoints.class);
-        Assertions.assertEquals("uvxzxclvi", model.assigned().get("hcohfwdsjnk").endpointType());
-        Assertions.assertEquals("hhqzonosgg", model.assigned().get("hcohfwdsjnk").address());
-        Assertions.assertEquals("rhvoods", model.unassigned().get("opcjwvnhd").endpointType());
-        Assertions.assertEquals("tbobz", model.unassigned().get("opcjwvnhd").address());
+        Assertions.assertEquals("uqerpqlpqwc", model.assigned().get("btkuwhh").endpointType());
+        Assertions.assertEquals("iuqgbdbutauv", model.assigned().get("btkuwhh").address());
+        Assertions.assertEquals("e", model.unassigned().get("wlquuijfqkace").endpointType());
+        Assertions.assertEquals("nzar", model.unassigned().get("wlquuijfqkace").address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundEndpoints model = new OutboundEndpoints()
-            .withAssigned(mapOf("hcohfwdsjnk",
-                new DeviceMessagingEndpoint().withEndpointType("uvxzxclvi").withAddress("hhqzonosgg"), "pnppfuf",
-                new DeviceMessagingEndpoint().withEndpointType("jutiiswacff").withAddress("dkzzewkfvhqcrail"),
-                "bcvkcvqvpkeq",
-                new DeviceMessagingEndpoint().withEndpointType("wdmhdlxyjrxs").withAddress("gafcnihgwqapnedg")))
+            .withAssigned(mapOf("btkuwhh",
+                new DeviceMessagingEndpoint().withEndpointType("uqerpqlpqwc").withAddress("iuqgbdbutauv"), "h",
+                new DeviceMessagingEndpoint().withEndpointType("ykojoxafnndlpic").withAddress("koymkcd"),
+                "syrsndsytgadgvra",
+                new DeviceMessagingEndpoint().withEndpointType("kkpwdreqnovvq").withAddress("ovljxywsu")))
             .withUnassigned(
-                mapOf("opcjwvnhd", new DeviceMessagingEndpoint().withEndpointType("rhvoods").withAddress("tbobz"),
-                    "rpkhjwn", new DeviceMessagingEndpoint().withEndpointType("wmgxcxrsl").withAddress("mutwuoe")));
+                mapOf("wlquuijfqkace", new DeviceMessagingEndpoint().withEndpointType("e").withAddress("nzar")));
         model = BinaryData.fromObject(model).toObject(OutboundEndpoints.class);
-        Assertions.assertEquals("uvxzxclvi", model.assigned().get("hcohfwdsjnk").endpointType());
-        Assertions.assertEquals("hhqzonosgg", model.assigned().get("hcohfwdsjnk").address());
-        Assertions.assertEquals("rhvoods", model.unassigned().get("opcjwvnhd").endpointType());
-        Assertions.assertEquals("tbobz", model.unassigned().get("opcjwvnhd").address());
+        Assertions.assertEquals("uqerpqlpqwc", model.assigned().get("btkuwhh").endpointType());
+        Assertions.assertEquals("iuqgbdbutauv", model.assigned().get("btkuwhh").address());
+        Assertions.assertEquals("e", model.unassigned().get("wlquuijfqkace").endpointType());
+        Assertions.assertEquals("nzar", model.unassigned().get("wlquuijfqkace").address());
     }
 
     // Use "Map.of" if available
