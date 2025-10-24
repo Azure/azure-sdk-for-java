@@ -109,12 +109,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.31.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.32.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.74.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.75.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

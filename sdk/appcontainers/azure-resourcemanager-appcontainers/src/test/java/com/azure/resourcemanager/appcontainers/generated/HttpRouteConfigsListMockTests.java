@@ -23,7 +23,7 @@ public final class HttpRouteConfigsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"provisioningErrors\":[{\"timestamp\":\"2021-08-29T07:28:41Z\",\"message\":\"ihbymjjvtpne\"},{\"timestamp\":\"2021-10-10T13:12:49Z\",\"message\":\"eazr\"},{\"timestamp\":\"2021-02-05T11:35:01Z\",\"message\":\"hbimyiie\"}],\"fqdn\":\"mcthtpqgf\",\"customDomains\":[{\"name\":\"sizkdiuvflg\",\"bindingType\":\"Disabled\",\"certificateId\":\"jg\"},{\"name\":\"ahcrxofgrutv\",\"bindingType\":\"Auto\",\"certificateId\":\"xzivxp\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"hhkvnnjdtujqz\"}],\"routes\":[{},{}],\"description\":\"vp\"},{\"targets\":[{\"containerApp\":\"htmzstqlfxolrwv\"}],\"routes\":[{},{},{}],\"description\":\"yfjswequf\"}]},\"id\":\"yyopoaytwwgw\",\"name\":\"ubotbvufrkw\",\"type\":\"iemimdtn\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningErrors\":[{\"timestamp\":\"2021-05-09T06:58:48Z\",\"message\":\"riwgybjp\"}],\"fqdn\":\"ok\",\"customDomains\":[{\"name\":\"gllixdgbyfgwew\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"xprwpxs\"},{\"name\":\"ohutxlcsk\",\"bindingType\":\"Auto\",\"certificateId\":\"uugggzlfbgrd\"},{\"name\":\"gubsrtmdylpe\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"ttjzg\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"fpfbodetres\"}],\"routes\":[{},{}],\"description\":\"shuvftwaivmuqkev\"}]},\"id\":\"jypanhxmpdxxzet\",\"name\":\"wzjwotnxlkfhg\",\"type\":\"h\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,17 @@ public final class HttpRouteConfigsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HttpRouteConfig> response
-            = manager.httpRouteConfigs().list("ectsmwpgweoqh", "jqlqfbleruf", com.azure.core.util.Context.NONE);
+            = manager.httpRouteConfigs().list("btdphti", "sffofwanmhksca", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sizkdiuvflg", response.iterator().next().properties().customDomains().get(0).name());
-        Assertions.assertEquals(BindingType.DISABLED,
+        Assertions.assertEquals("gllixdgbyfgwew",
+            response.iterator().next().properties().customDomains().get(0).name());
+        Assertions.assertEquals(BindingType.SNI_ENABLED,
             response.iterator().next().properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("jg", response.iterator().next().properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("hhkvnnjdtujqz",
+        Assertions.assertEquals("xprwpxs",
+            response.iterator().next().properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("fpfbodetres",
             response.iterator().next().properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("vp", response.iterator().next().properties().rules().get(0).description());
+        Assertions.assertEquals("shuvftwaivmuqkev",
+            response.iterator().next().properties().rules().get(0).description());
     }
 }

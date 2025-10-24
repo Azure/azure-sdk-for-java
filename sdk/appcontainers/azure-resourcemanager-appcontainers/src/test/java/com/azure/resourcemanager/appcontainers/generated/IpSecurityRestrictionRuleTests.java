@@ -13,25 +13,24 @@ public final class IpSecurityRestrictionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpSecurityRestrictionRule model = BinaryData
-            .fromString(
-                "{\"name\":\"ygqukyhejh\",\"description\":\"sx\",\"ipAddressRange\":\"fpel\",\"action\":\"Deny\"}")
+            .fromString("{\"name\":\"eli\",\"description\":\"nr\",\"ipAddressRange\":\"tfolhbnx\",\"action\":\"Deny\"}")
             .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("ygqukyhejh", model.name());
-        Assertions.assertEquals("sx", model.description());
-        Assertions.assertEquals("fpel", model.ipAddressRange());
+        Assertions.assertEquals("eli", model.name());
+        Assertions.assertEquals("nr", model.description());
+        Assertions.assertEquals("tfolhbnx", model.ipAddressRange());
         Assertions.assertEquals(Action.DENY, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("ygqukyhejh")
-            .withDescription("sx")
-            .withIpAddressRange("fpel")
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("eli")
+            .withDescription("nr")
+            .withIpAddressRange("tfolhbnx")
             .withAction(Action.DENY);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("ygqukyhejh", model.name());
-        Assertions.assertEquals("sx", model.description());
-        Assertions.assertEquals("fpel", model.ipAddressRange());
+        Assertions.assertEquals("eli", model.name());
+        Assertions.assertEquals("nr", model.description());
+        Assertions.assertEquals("tfolhbnx", model.ipAddressRange());
         Assertions.assertEquals(Action.DENY, model.action());
     }
 }

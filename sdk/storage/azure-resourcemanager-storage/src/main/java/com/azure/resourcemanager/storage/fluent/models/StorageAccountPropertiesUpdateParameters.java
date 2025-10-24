@@ -16,6 +16,7 @@ import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DnsEndpointType;
 import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
+import com.azure.resourcemanager.storage.models.GeoPriorityReplicationStatus;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
@@ -162,6 +163,11 @@ public final class StorageAccountPropertiesUpdateParameters
      * DNS Zone identifier.
      */
     private DnsEndpointType dnsEndpointType;
+
+    /*
+     * Status indicating whether Geo Priority Replication is enabled for the account.
+     */
+    private GeoPriorityReplicationStatus geoPriorityReplicationStatus;
 
     /**
      * Creates an instance of StorageAccountPropertiesUpdateParameters class.
@@ -684,6 +690,29 @@ public final class StorageAccountPropertiesUpdateParameters
     }
 
     /**
+     * Get the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @return the geoPriorityReplicationStatus value.
+     */
+    public GeoPriorityReplicationStatus geoPriorityReplicationStatus() {
+        return this.geoPriorityReplicationStatus;
+    }
+
+    /**
+     * Set the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @param geoPriorityReplicationStatus the geoPriorityReplicationStatus value to set.
+     * @return the StorageAccountPropertiesUpdateParameters object itself.
+     */
+    public StorageAccountPropertiesUpdateParameters
+        withGeoPriorityReplicationStatus(GeoPriorityReplicationStatus geoPriorityReplicationStatus) {
+        this.geoPriorityReplicationStatus = geoPriorityReplicationStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -715,6 +744,9 @@ public final class StorageAccountPropertiesUpdateParameters
         }
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
+        }
+        if (geoPriorityReplicationStatus() != null) {
+            geoPriorityReplicationStatus().validate();
         }
     }
 
@@ -752,6 +784,7 @@ public final class StorageAccountPropertiesUpdateParameters
             this.allowedCopyScope == null ? null : this.allowedCopyScope.toString());
         jsonWriter.writeStringField("dnsEndpointType",
             this.dnsEndpointType == null ? null : this.dnsEndpointType.toString());
+        jsonWriter.writeJsonField("geoPriorityReplicationStatus", this.geoPriorityReplicationStatus);
         return jsonWriter.writeEndObject();
     }
 
@@ -836,6 +869,9 @@ public final class StorageAccountPropertiesUpdateParameters
                 } else if ("dnsEndpointType".equals(fieldName)) {
                     deserializedStorageAccountPropertiesUpdateParameters.dnsEndpointType
                         = DnsEndpointType.fromString(reader.getString());
+                } else if ("geoPriorityReplicationStatus".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesUpdateParameters.geoPriorityReplicationStatus
+                        = GeoPriorityReplicationStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
