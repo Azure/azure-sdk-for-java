@@ -33,6 +33,8 @@
 * Wrap JSON parsing exceptions as `CosmosException` to provide better context. - [PR 47040](https://github.com/Azure/azure-sdk-for-java/pull/47040)
 
 ### 4.71.2-hotfix (2025-10-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to use at least version 4.75.0 or 4.71.2-hotfix of `azure-cosmos`.
 
 #### Bugs Fixed
 * Fixed issue with change feed processor logs not showing exceptions. - [PR 46918](https://github.com/Azure/azure-sdk-for-java/pull/46918)
