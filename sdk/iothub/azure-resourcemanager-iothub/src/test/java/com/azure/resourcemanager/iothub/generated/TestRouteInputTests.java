@@ -29,7 +29,7 @@ public final class TestRouteInputTests {
         Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.route().source());
         Assertions.assertEquals("swacffgdkzz", model.route().condition());
         Assertions.assertEquals("kfvhqcrailvpn", model.route().endpointNames().get(0));
-        Assertions.assertEquals(false, model.route().isEnabled());
+        Assertions.assertFalse(model.route().isEnabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -53,7 +53,7 @@ public final class TestRouteInputTests {
         Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.route().source());
         Assertions.assertEquals("swacffgdkzz", model.route().condition());
         Assertions.assertEquals("kfvhqcrailvpn", model.route().endpointNames().get(0));
-        Assertions.assertEquals(false, model.route().isEnabled());
+        Assertions.assertFalse(model.route().isEnabled());
     }
 
     // Use "Map.of" if available

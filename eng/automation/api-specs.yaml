@@ -72,6 +72,8 @@ hybridaks:
   service: hybridcontainerservice
 informatica:
   service: informaticadatamanagement
+iothub/Microsoft.Devices/IoTHub:
+  service: iothub
 keyvault:
   suffix: generated
 kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
