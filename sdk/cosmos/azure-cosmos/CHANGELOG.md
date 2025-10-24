@@ -11,6 +11,8 @@
 #### Other Changes
 
 ### 4.75.0 (2025-10-21)
+> [!IMPORTANT]
+> We strongly recommend our customers to use at least version 4.75.0 of `azure-cosmos`.
 
 #### Features Added
 * Enabled `Cosmos(Async)Client` to support per-partition automatic failover dynamically without the need to restart the application. - See [PR 46477](https://github.com/Azure/azure-sdk-for-java/pull/46477)
