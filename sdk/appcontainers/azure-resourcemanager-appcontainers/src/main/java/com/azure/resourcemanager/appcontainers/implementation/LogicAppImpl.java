@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.LogicAppInner;
 import com.azure.resourcemanager.appcontainers.models.LogicApp;
-import com.azure.resourcemanager.appcontainers.models.WorkflowArtifacts;
 import com.azure.resourcemanager.appcontainers.models.WorkflowEnvelope;
 
 public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicApp.Update {
@@ -27,10 +26,6 @@ public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicA
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public Object properties() {
-        return this.innerModel().properties();
     }
 
     public SystemData systemData() {
@@ -130,16 +125,6 @@ public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicA
         return this;
     }
 
-    public Response<Void> deployWorkflowArtifactsWithResponse(WorkflowArtifacts workflowArtifacts, Context context) {
-        return serviceManager.logicApps()
-            .deployWorkflowArtifactsWithResponse(resourceGroupName, containerAppName, logicAppName, workflowArtifacts,
-                context);
-    }
-
-    public void deployWorkflowArtifacts() {
-        serviceManager.logicApps().deployWorkflowArtifacts(resourceGroupName, containerAppName, logicAppName);
-    }
-
     public Response<WorkflowEnvelope> listWorkflowsConnectionsWithResponse(Context context) {
         return serviceManager.logicApps()
             .listWorkflowsConnectionsWithResponse(resourceGroupName, containerAppName, logicAppName, context);
@@ -147,10 +132,5 @@ public final class LogicAppImpl implements LogicApp, LogicApp.Definition, LogicA
 
     public WorkflowEnvelope listWorkflowsConnections() {
         return serviceManager.logicApps().listWorkflowsConnections(resourceGroupName, containerAppName, logicAppName);
-    }
-
-    public LogicAppImpl withProperties(Object properties) {
-        this.innerModel().withProperties(properties);
-        return this;
     }
 }
