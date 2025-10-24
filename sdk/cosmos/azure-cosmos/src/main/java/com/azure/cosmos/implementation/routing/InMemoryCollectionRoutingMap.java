@@ -3,10 +3,13 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.implementation.InCompleteRoutingMapException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,23 +21,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
  * Used internally to cache partition key ranges of a collection in the Azure Cosmos DB database service.
  */
 public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
+    private static final Logger logger = LoggerFactory.getLogger(InMemoryCollectionRoutingMap.class);
+
     private final Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> rangeById;
     private final List<PartitionKeyRange> orderedPartitionKeyRanges;
     private final List<Range<String>> orderedRanges;
 
     private final Set<String> goneRanges;
+    private final AtomicReference<String> changeFeedNextIfNoneMatch = new AtomicReference<>(null);
 
     private String collectionUniqueId;
 
     private InMemoryCollectionRoutingMap(Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> rangeById,
                                          List<PartitionKeyRange> orderedPartitionKeyRanges,
-                                         String collectionUniqueId) {
+                                         String collectionUniqueId,
+                                         String changeFeedNextIfNoneMatch) {
         this.rangeById = rangeById;
         this.orderedPartitionKeyRanges = orderedPartitionKeyRanges;
         this.orderedRanges = orderedPartitionKeyRanges.stream().map(
@@ -47,11 +55,13 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
 
         this.collectionUniqueId = collectionUniqueId;
         this.goneRanges = new HashSet<>(orderedPartitionKeyRanges.stream().flatMap(r -> CollectionUtils.emptyIfNull(r.getParents()).stream()).collect(Collectors.toSet()));
-
+        this.changeFeedNextIfNoneMatch.set(changeFeedNextIfNoneMatch);
     }
 
     public static InMemoryCollectionRoutingMap tryCreateCompleteRoutingMap(
-            Iterable<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges, String collectionUniqueId) {
+            Iterable<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
+            String collectionUniqueId,
+            String changeFeedNextIfNoneMatch) {
 
         Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> rangeById =
             new HashMap<>();
@@ -64,15 +74,13 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
         Collections.sort(sortedRanges, new MinPartitionKeyPairComparator());
         List<PartitionKeyRange> orderedRanges = sortedRanges.stream().map(range -> range.left).collect(Collectors.toList());
 
-        if (!isCompleteSetOfRanges(orderedRanges)) {
-            return null;
-        }
+        validateIsCompleteSetOfRanges(orderedRanges, collectionUniqueId);
 
-        return new InMemoryCollectionRoutingMap(rangeById, orderedRanges, collectionUniqueId);
+        return new InMemoryCollectionRoutingMap(rangeById, orderedRanges, collectionUniqueId, changeFeedNextIfNoneMatch);
     }
 
-    private static boolean isCompleteSetOfRanges(List<PartitionKeyRange> orderedRanges) {
-        boolean isComplete = false;
+    private static void validateIsCompleteSetOfRanges(List<PartitionKeyRange> orderedRanges, String collectionRid) {
+        boolean isComplete;
         if (orderedRanges.size() > 0) {
             PartitionKeyRange firstRange = orderedRanges.get(0);
             PartitionKeyRange lastRange = orderedRanges.get(orderedRanges.size() - 1);
@@ -81,6 +89,16 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
             isComplete &= lastRange.getMaxExclusive()
                     .compareTo(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY) == 0;
 
+            if (!isComplete) {
+                throw new InCompleteRoutingMapException(
+                    String.format(
+                        "Ranges incomplete for collectionRid %s, min inclusive [%s], max exclusive [%s]",
+                        collectionRid,
+                        firstRange.getMinInclusive(),
+                        lastRange.getMaxExclusive())
+                );
+            }
+
             for (int i = 1; i < orderedRanges.size(); i++) {
                 PartitionKeyRange previousRange = orderedRanges.get(i - 1);
                 PartitionKeyRange currentRange = orderedRanges.get(i);
@@ -88,15 +106,26 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
 
                 if (!isComplete) {
                     if (previousRange.getMaxExclusive().compareTo(currentRange.getMinInclusive()) > 0) {
-                        throw new IllegalStateException("Ranges overlap");
+                        throw new InCompleteRoutingMapException(
+                            String.format(
+                                "Ranges overlap for collectionRid %s, previous range [%s], current range [%s]",
+                                collectionRid,
+                                previousRange.toRange(),
+                                currentRange.toRange()));
                     }
 
-                    break;
+                    throw new InCompleteRoutingMapException(
+                        String.format(
+                            "Ranges incomplete for collectionRid %s, previous range [%s], current range [%s]",
+                            collectionRid,
+                            previousRange.toRange(),
+                            currentRange.toRange()));
                 }
             }
+        } else {
+            throw new InCompleteRoutingMapException(
+                String.format("Empty ranges for collectionRid %s", collectionRid));
         }
-
-        return isComplete;
     }
 
     public String getCollectionUniqueId() {
@@ -210,7 +239,9 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
 
 
     public CollectionRoutingMap tryCombine(
-        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges) {
+        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
+        String changeFeedNextIfNoneMatch,
+        String collectionRid) {
         Set<String> newGoneRanges = new HashSet<>(ranges.stream().flatMap(tuple -> CollectionUtils.emptyIfNull(tuple.getLeft().getParents()).stream()).collect(Collectors.toSet()));
         newGoneRanges.addAll(this.goneRanges);
 
@@ -228,10 +259,17 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
 
         List<PartitionKeyRange> newOrderedRanges = sortedRanges.stream().map(range -> range.left).collect(Collectors.toList());
 
-        if (!isCompleteSetOfRanges(newOrderedRanges)) {
-            return null;
-        }
+        validateIsCompleteSetOfRanges(newOrderedRanges, collectionRid);
 
-        return new InMemoryCollectionRoutingMap(newRangeById, newOrderedRanges, this.getCollectionUniqueId());
+        return new InMemoryCollectionRoutingMap(
+            newRangeById,
+            newOrderedRanges,
+            this.getCollectionUniqueId(),
+            changeFeedNextIfNoneMatch);
+    }
+
+    @Override
+    public String getChangeFeedNextIfNoneMatch() {
+        return this.changeFeedNextIfNoneMatch.get();
     }
 }
