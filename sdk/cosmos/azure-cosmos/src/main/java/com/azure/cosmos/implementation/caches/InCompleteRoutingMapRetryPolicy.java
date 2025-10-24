@@ -26,10 +26,16 @@ public class InCompleteRoutingMapRetryPolicy implements IRetryPolicy {
             if (this.currentAttemptCount < MAX_RETRIES) {
                 this.currentAttemptCount++;
 
-                logger.warn("Operation will be retried for InCompleteRoutingMapException.", e);
+                logger.warn(
+                    "Operation will be retried for InCompleteRoutingMapException. Current attempt {}",
+                    this.currentAttemptCount,
+                    e);
                 return Mono.just(ShouldRetryResult.RETRY_NOW);
             } else {
-                logger.error("All retries exhausted, operation will NOT be retried for InCompleteRoutingMapException", e);
+                logger.error(
+                    "Retried {} times. All retries exhausted, operation will NOT be retried for InCompleteRoutingMapException",
+                    this.currentAttemptCount,
+                    e);
                 return Mono.just(ShouldRetryResult.NO_RETRY);
             }
         } else {
