@@ -8,6 +8,9 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.slf4j.Logger;
 
+/**
+ * Code customization after code generation.
+ */
 public class KeyVaultCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
@@ -17,6 +20,11 @@ public class KeyVaultCustomization extends Customization {
         customizeResourceBaseClass(fluentModelsPackage.getClass("ManagedHsmInner"));
     }
 
+    /**
+     * Customize the base class to be "com.azure.core.management.Resource".
+     *
+     * @param customization the customization for class
+     */
     private static void customizeResourceBaseClass(ClassCustomization customization) {
         customization.customizeAst(ast -> {
             ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
