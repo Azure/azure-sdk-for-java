@@ -18,3 +18,9 @@ recipeList:
       methodPattern: "com.azure.v2.identity.ClientCertificateCredentialBuilder pemCertificate(..)"
       newMethodName: "clientCertificate"
 
+  # --------------------------------------------------------------------
+  # NEED TO MOVE IT OUT FROM HERE
+  # --------------------------------------------------------------------
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.identity.DefaultAzureCredentialBuilder
+      newFullyQualifiedTypeName: com.azure.v2.identity.DefaultAzureCredentialBuilder

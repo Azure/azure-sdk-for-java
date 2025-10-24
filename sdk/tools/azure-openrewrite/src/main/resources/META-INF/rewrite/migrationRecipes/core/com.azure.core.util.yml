@@ -406,7 +406,7 @@ recipeList:
   # --------------------------------------------------------------------
   # NoopMeter
   # --------------------------------------------------------------------
-  
+
   # paging
 
   # --------------------------------------------------------------------
@@ -499,6 +499,10 @@ recipeList:
   # LongRunningOperationStatus
   # --------------------------------------------------------------------
 
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.polling.LongRunningOperationStatus
+      newFullyQualifiedTypeName: com.azure.v2.core.http.polling.LongRunningOperationStatus
+
   # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
@@ -516,6 +520,10 @@ recipeList:
   # --------------------------------------------------------------------
   # PollResponse
   # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.polling.PollResponse
+      newFullyQualifiedTypeName: com.azure.v2.core.http.polling.PollResponse
 
   # TODO: API Removed. Triage replacement
 
@@ -594,6 +602,10 @@ recipeList:
   # --------------------------------------------------------------------
   # SyncPoller
   # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.util.polling.SyncPoller
+      newFullyQualifiedTypeName: com.azure.v2.core.http.polling.Poller
 
   # TODO: API Removed. Triage replacement
 
