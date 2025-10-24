@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UserOwnedAmlWorkspaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserOwnedAmlWorkspace model
-            = BinaryData.fromString("{\"resourceId\":\"nmayhuybb\",\"identityClientId\":\"odepoogin\"}")
-                .toObject(UserOwnedAmlWorkspace.class);
-        Assertions.assertEquals("nmayhuybb", model.resourceId());
-        Assertions.assertEquals("odepoogin", model.identityClientId());
+        UserOwnedAmlWorkspace model = BinaryData.fromString("{\"resourceId\":\"s\",\"identityClientId\":\"zgvfcjrwz\"}")
+            .toObject(UserOwnedAmlWorkspace.class);
+        Assertions.assertEquals("s", model.resourceId());
+        Assertions.assertEquals("zgvfcjrwz", model.identityClientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserOwnedAmlWorkspace model
-            = new UserOwnedAmlWorkspace().withResourceId("nmayhuybb").withIdentityClientId("odepoogin");
+        UserOwnedAmlWorkspace model = new UserOwnedAmlWorkspace().withResourceId("s").withIdentityClientId("zgvfcjrwz");
         model = BinaryData.fromObject(model).toObject(UserOwnedAmlWorkspace.class);
-        Assertions.assertEquals("nmayhuybb", model.resourceId());
-        Assertions.assertEquals("odepoogin", model.identityClientId());
+        Assertions.assertEquals("s", model.resourceId());
+        Assertions.assertEquals("zgvfcjrwz", model.identityClientId());
     }
 }

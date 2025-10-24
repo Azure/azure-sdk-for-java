@@ -35,13 +35,6 @@ public interface RaiBlocklistItem {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the etag property: Resource Etag.
      * 
      * @return the etag value.
@@ -61,6 +54,13 @@ public interface RaiBlocklistItem {
      * @return the properties value.
      */
     RaiBlocklistItemProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the name of the resource group.
