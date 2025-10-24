@@ -29,10 +29,27 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      */
     private final String message;
 
-    private ResultInformation(Integer code, Integer subCode, String message) {
+    /*
+     * Sip response from SBC. This can be helpful to troubleshoot PSTN call if this result was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     */
+    private SipDiagnosticInfo sipDetails;
+
+    /*
+     * Q850 cause from SBC. This can be helpful to troubleshoot call issues if this result was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     */
+    private SipDiagnosticInfo q850Details;
+
+    private ResultInformation(Integer code, Integer subCode, String message, SipDiagnosticInfo sipDetails,
+        SipDiagnosticInfo q850Details) {
         this.code = code;
         this.subCode = subCode;
         this.message = message;
+        this.sipDetails = sipDetails;
+        this.q850Details = q850Details;
     }
 
     /**
@@ -63,6 +80,30 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
+     * Get the sipDetails property: Sip response from SBC. This can be helpful to troubleshoot PSTN call if this result
+     * was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * 
+     * @return the sipDetails value.
+     */
+    public SipDiagnosticInfo getSipDetails() {
+        return this.sipDetails;
+    }
+
+    /**
+     * Get the q850Details property: Q850 cause from SBC. This can be helpful to troubleshoot call issues if this result
+     * was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * 
+     * @return the q850Details value.
+     */
+    public SipDiagnosticInfo getQ850Details() {
+        return this.q850Details;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -87,6 +128,8 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
             Integer code = null;
             Integer subCode = null;
             String message = null;
+            SipDiagnosticInfo sipDetails = null;
+            SipDiagnosticInfo q850Details = null;
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -96,11 +139,15 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
                     subCode = reader.getNullable(JsonReader::getInt);
                 } else if ("message".equals(fieldName)) {
                     message = reader.getString();
+                } else if ("sipDetails".equals(fieldName)) {
+                    sipDetails = SipDiagnosticInfo.fromJson(reader);
+                } else if ("q850Details".equals(fieldName)) {
+                    q850Details = SipDiagnosticInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ResultInformation(code, subCode, message);
+            return new ResultInformation(code, subCode, message, sipDetails, q850Details);
         });
     }
 }

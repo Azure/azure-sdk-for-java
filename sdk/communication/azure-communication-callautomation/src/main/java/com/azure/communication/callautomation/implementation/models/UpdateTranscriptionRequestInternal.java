@@ -42,6 +42,24 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     @Generated
     private String operationCallbackUri;
 
+    /*
+     * PII redaction configuration options.
+     */
+    @Generated
+    private PiiRedactionOptionsInternal piiRedactionOptions;
+
+    /*
+     * Indicating if sentiment analysis should be used.
+     */
+    @Generated
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * Summarization configuration options.
+     */
+    @Generated
+    private SummarizationOptionsInternal summarizationOptions;
+
     /**
      * Creates an instance of UpdateTranscriptionRequestInternal class.
      */
@@ -142,6 +160,73 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    @Generated
+    public PiiRedactionOptionsInternal getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
+     * Set the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @param piiRedactionOptions the piiRedactionOptions value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    @Generated
+    public UpdateTranscriptionRequestInternal setPiiRedactionOptions(PiiRedactionOptionsInternal piiRedactionOptions) {
+        this.piiRedactionOptions = piiRedactionOptions;
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    @Generated
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    @Generated
+    public UpdateTranscriptionRequestInternal setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
+     * Get the summarizationOptions property: Summarization configuration options.
+     * 
+     * @return the summarizationOptions value.
+     */
+    @Generated
+    public SummarizationOptionsInternal getSummarizationOptions() {
+        return this.summarizationOptions;
+    }
+
+    /**
+     * Set the summarizationOptions property: Summarization configuration options.
+     * 
+     * @param summarizationOptions the summarizationOptions value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    @Generated
+    public UpdateTranscriptionRequestInternal
+        setSummarizationOptions(SummarizationOptionsInternal summarizationOptions) {
+        this.summarizationOptions = summarizationOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -152,6 +237,9 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
         jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
+        jsonWriter.writeJsonField("piiRedactionOptions", this.piiRedactionOptions);
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
+        jsonWriter.writeJsonField("summarizationOptions", this.summarizationOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -180,6 +268,15 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
                     deserializedUpdateTranscriptionRequestInternal.operationContext = reader.getString();
                 } else if ("operationCallbackUri".equals(fieldName)) {
                     deserializedUpdateTranscriptionRequestInternal.operationCallbackUri = reader.getString();
+                } else if ("piiRedactionOptions".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.piiRedactionOptions
+                        = PiiRedactionOptionsInternal.fromJson(reader);
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.enableSentimentAnalysis
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("summarizationOptions".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.summarizationOptions
+                        = SummarizationOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

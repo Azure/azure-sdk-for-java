@@ -53,6 +53,12 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
 
+    /*
+     * Enables loopback audio functionality for the call.
+     */
+    @Generated
+    private Boolean enableLoopbackAudio;
+
     /**
      * Creates an instance of ConnectRequestInternal class.
      */
@@ -193,6 +199,28 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    @Generated
+    public Boolean isEnableLoopbackAudio() {
+        return this.enableLoopbackAudio;
+    }
+
+    /**
+     * Set the enableLoopbackAudio property: Enables loopback audio functionality for the call.
+     * 
+     * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+     * @return the ConnectRequestInternal object itself.
+     */
+    @Generated
+    public ConnectRequestInternal setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -205,6 +233,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
         jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
+        jsonWriter.writeBooleanField("enableLoopbackAudio", this.enableLoopbackAudio);
         return jsonWriter.writeEndObject();
     }
 
@@ -240,6 +269,8 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
                 } else if ("transcriptionOptions".equals(fieldName)) {
                     deserializedConnectRequestInternal.transcriptionOptions
                         = TranscriptionOptionsInternal.fromJson(reader);
+                } else if ("enableLoopbackAudio".equals(fieldName)) {
+                    deserializedConnectRequestInternal.enableLoopbackAudio = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

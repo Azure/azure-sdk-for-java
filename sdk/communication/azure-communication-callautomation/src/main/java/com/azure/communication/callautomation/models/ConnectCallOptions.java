@@ -40,6 +40,11 @@ public final class ConnectCallOptions {
     private TranscriptionOptions transcriptionOptions;
 
     /**
+     * Enables loopback audio functionality for the call.
+     */
+    private Boolean enableLoopbackAudio;
+
+    /**
      * Creates a new instance of ConnectCallOptions
      * @param callLocator - The CallLocator
      * @param callbackUrl - The CallbackUrl
@@ -77,6 +82,16 @@ public final class ConnectCallOptions {
     }
 
     /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    public Boolean isEnableLoopbackAudio() {
+        return this.enableLoopbackAudio;
+    }
+
+    /**
      * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
      * @return the callIntelligenceOptions value.
@@ -104,6 +119,18 @@ public final class ConnectCallOptions {
     */
     public ConnectCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public ConnectCallOptions setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
         return this;
     }
 

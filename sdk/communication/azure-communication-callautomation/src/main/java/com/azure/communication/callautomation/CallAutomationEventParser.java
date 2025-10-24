@@ -63,6 +63,7 @@ import com.azure.communication.callautomation.models.events.TranscriptionResumed
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
+import com.azure.communication.callautomation.models.events.TranscriptionCallSummaryUpdated;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
@@ -207,6 +208,8 @@ public final class CallAutomationEventParser {
                 ret = TranscriptionStopped.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
                 ret = TranscriptionUpdated.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionCallSummaryUpdated")) {
+                ret = TranscriptionCallSummaryUpdated.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AnswerFailed")) {
                 ret = AnswerFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {

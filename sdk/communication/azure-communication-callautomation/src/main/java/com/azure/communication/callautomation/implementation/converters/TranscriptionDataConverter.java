@@ -3,12 +3,14 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
+import java.io.IOException;
+import java.util.List;
+
+import com.azure.communication.callautomation.models.SentimentAnalysisResult;
+import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.WordData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * The TranscriptionDataInternal model.
@@ -54,6 +56,16 @@ public final class TranscriptionDataConverter {
      * Status of the result of transcription
      */
     private String resultStatus;
+
+    /**
+    * The SentimentAnalysisResult model.
+    */
+    private SentimentAnalysisResult sentimentAnalysisResult;
+
+    /**
+    * Creates an instance of {@link ChoiceResult}.
+    */
+    private String languageIdentified;
 
     /**
      * Get the text property.
@@ -128,6 +140,26 @@ public final class TranscriptionDataConverter {
     }
 
     /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis
+     * result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    public SentimentAnalysisResult getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
+    /**
+     * Get the languageIdentified property: The identified language for a spoken
+     * phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
+    /**
      * Reads an instance of TranscriptionDataConverter from the JsonReader.
      *<p>
      * Note: TranscriptionDataConverter does not have to implement JsonSerializable, model is only used in deserialization
@@ -160,6 +192,10 @@ public final class TranscriptionDataConverter {
                     converter.participantRawID = reader.getString();
                 } else if ("resultStatus".equals(fieldName)) {
                     converter.resultStatus = reader.getString();
+                } else if ("sentimentAnalysisResult".equals(fieldName)) {
+                    converter.sentimentAnalysisResult = SentimentAnalysisResult.fromJson(reader);
+                } else if ("languageIdentified".equals(fieldName)) {
+                    converter.languageIdentified = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -3,10 +3,12 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
+import java.io.IOException;
+
+import com.azure.communication.callautomation.implementation.accesshelpers.PiiRedactionOptionsContructorProxy;
+import com.azure.communication.callautomation.models.PiiRedactionOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-
-import java.io.IOException;
 
 /**
  * The TranscriptionMetadataInternal model.
@@ -32,6 +34,16 @@ public final class TranscriptionMetadataConverter {
      * correlation Id
      */
     private String correlationId;
+
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * PII redaction configuration options.
+     */
+    private PiiRedactionOptions piiRedactionOptions;
 
     /**
      * Get the transcriptionSubscriptionId property.
@@ -70,6 +82,25 @@ public final class TranscriptionMetadataConverter {
     }
 
     /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean getEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
      * Reads an instance of TranscriptionMetadataConverter from the JsonReader.
      *<p>
      * Note: TranscriptionMetadataConverter does not have to implement JsonSerializable, model is only used in deserialization
@@ -94,6 +125,11 @@ public final class TranscriptionMetadataConverter {
                     converter.callConnectionId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     converter.correlationId = reader.getString();
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    converter.enableSentimentAnalysis = reader.getBoolean();
+                } else if ("piiRedactionOptions".equals(fieldName)) {
+                    converter.piiRedactionOptions
+                        = PiiRedactionOptionsContructorProxy.create(PiiRedactionOptionsConverter.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

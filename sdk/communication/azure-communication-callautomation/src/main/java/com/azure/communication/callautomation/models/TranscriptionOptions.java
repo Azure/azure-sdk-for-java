@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.List;
+
 import com.azure.core.annotation.Fluent;
 
 /** The TranscriptionOptions model. */
@@ -37,6 +39,27 @@ public final class TranscriptionOptions {
      * Enables intermediate results for the transcribed speech.
      */
     private Boolean enableIntermediateResults;
+
+    /*
+     * PII redaction configuration options.
+     */
+    private PiiRedactionOptions piiRedactionOptions;
+
+    /*
+     * Indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * List of locales for Language Identification.
+     * Supports upto 4 locales in the format: ["en-us", "fr-fr", "hi-in"] etc.
+     */
+    private List<String> locales;
+
+    /*
+     * Summarization configuration options.
+     */
+    private SummarizationOptions summarizationOptions;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -126,6 +149,88 @@ public final class TranscriptionOptions {
      */
     public TranscriptionOptions setEnableIntermediateResults(Boolean enableIntermediateResults) {
         this.enableIntermediateResults = enableIntermediateResults;
+        return this;
+    }
+
+    /**
+    * Get the piiRedactionOptions property: PII redaction configuration options.
+    * 
+    * @return the piiRedactionOptions value.
+    */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
+     * Set the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @param piiRedactionOptions the piiRedactionOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setPiiRedactionOptions(PiiRedactionOptions piiRedactionOptions) {
+        this.piiRedactionOptions = piiRedactionOptions;
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis
+     * should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis
+     * should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
+     * Get the locales property: List of languages for Language Identification.
+     * 
+     * @return the locales value.
+     */
+    public List<String> getLocales() {
+        return this.locales;
+    }
+
+    /**
+    * Get the locales property: List of languages for Language Identification.
+    * 
+    * @param locales - Get the locales property: List of languages for Language Identification.
+    * @return the locales value.
+    */
+    public TranscriptionOptions setLocales(List<String> locales) {
+        this.locales = locales;
+        return this;
+    }
+
+    /**
+     * Get the summarizationOptions property: Summarization configuration options.
+     * 
+     * @return the summarizationOptions value.
+     */
+    public SummarizationOptions getSummarizationOptions() {
+        return this.summarizationOptions;
+    }
+
+    /**
+     * Set the summarizationOptions property: Summarization configuration options.
+     * 
+     * @param summarizationOptions the summarizationOptions value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setSummarizationOptions(SummarizationOptions summarizationOptions) {
+        this.summarizationOptions = summarizationOptions;
         return this;
     }
 }

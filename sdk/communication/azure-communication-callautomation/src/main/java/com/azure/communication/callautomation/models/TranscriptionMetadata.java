@@ -31,6 +31,16 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     private final String correlationId;
 
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private final Boolean enableSentimentAnalysis;
+
+    /*
+     * PII redaction configuration options.
+     */
+    private final PiiRedactionOptions piiRedactionOptions;
+
     static {
         TranscriptionMetadataContructorProxy
             .setAccessor(new TranscriptionMetadataContructorProxy.TranscriptionMetadataContructorProxyAccessor() {
@@ -50,6 +60,8 @@ public final class TranscriptionMetadata extends StreamingData {
         this.locale = internalData.getLocale();
         this.callConnectionId = internalData.getCallConnectionId();
         this.correlationId = internalData.getCorrelationId();
+        this.enableSentimentAnalysis = internalData.getEnableSentimentAnalysis();
+        this.piiRedactionOptions = internalData.getPiiRedactionOptions();
     }
 
     /**
@@ -60,6 +72,8 @@ public final class TranscriptionMetadata extends StreamingData {
         this.locale = null;
         this.callConnectionId = null;
         this.correlationId = null;
+        this.enableSentimentAnalysis = null;
+        this.piiRedactionOptions = null;
     }
 
     /**
@@ -96,5 +110,24 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean getEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
     }
 }

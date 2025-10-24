@@ -32,7 +32,7 @@ autorest README.md --java --v4
 tag: package-2024-09-01-preview
 use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/1a08384511e96c42aaf18edd646baf01e5e5fc84/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/97209ee6c07fbb540b4afdfed2e1ebb2fa384169/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -221,11 +221,23 @@ directive:
     from: RecordingStorageKind
     to: RecordingStorageType
 - rename-model:
+    from: PiiRedactionOptions
+    to: PiiRedactionOptionsInternal
+- rename-model:
+    from: SummarizationOptions
+    to: SummarizationOptionsInternal
+- rename-model:
+    from: SentimentAnalysisResult
+    to: SentimentAnalysisResultInternal
+- rename-model:
     from: CallSessionEndReason
     to: CallSessionEndReasonInternal
 - rename-model:
     from: RecordingStorageInfo
     to: RecordingStorageInfoInternal
+- rename-model:
+    from: SummarizeCallRequest
+    to: SummarizeCallRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -566,6 +578,16 @@ directive:
   where: $.definitions.AudioFormat["x-ms-enum"]
   transform: >
     $.name = "AudioFormatInternal";
+```
+
+### Rename RedactionType to RedactionTypeInternal
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RedactionType["x-ms-enum"]
+  transform: >
+    $.name = "RedactionTypeInternal";
 ```
 
 ### Configure participantRawId to skip path encoding

@@ -29,6 +29,12 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     @Generated
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
+    /*
+     * Optional message providing additional context about the transcription update.
+     */
+    @Generated
+    private String transcriptionMessage;
+
     /**
      * Creates an instance of TranscriptionUpdate class.
      */
@@ -81,6 +87,30 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
+     * Get the transcriptionMessage property: Optional message providing additional context about the transcription
+     * update.
+     * 
+     * @return the transcriptionMessage value.
+     */
+    @Generated
+    public String getTranscriptionMessage() {
+        return this.transcriptionMessage;
+    }
+
+    /**
+     * Set the transcriptionMessage property: Optional message providing additional context about the transcription
+     * update.
+     * 
+     * @param transcriptionMessage the transcriptionMessage value to set.
+     * @return the TranscriptionUpdate object itself.
+     */
+    @Generated
+    public TranscriptionUpdate setTranscriptionMessage(String transcriptionMessage) {
+        this.transcriptionMessage = transcriptionMessage;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -91,6 +121,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
             this.transcriptionStatus == null ? null : this.transcriptionStatus.toString());
         jsonWriter.writeStringField("transcriptionStatusDetails",
             this.transcriptionStatusDetails == null ? null : this.transcriptionStatusDetails.toString());
+        jsonWriter.writeStringField("transcriptionMessage", this.transcriptionMessage);
         return jsonWriter.writeEndObject();
     }
 
@@ -116,6 +147,8 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
                 } else if ("transcriptionStatusDetails".equals(fieldName)) {
                     deserializedTranscriptionUpdate.transcriptionStatusDetails
                         = TranscriptionStatusDetails.fromString(reader.getString());
+                } else if ("transcriptionMessage".equals(fieldName)) {
+                    deserializedTranscriptionUpdate.transcriptionMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

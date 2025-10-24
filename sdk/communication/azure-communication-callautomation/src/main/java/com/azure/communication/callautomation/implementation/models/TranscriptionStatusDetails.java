@@ -108,6 +108,18 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
         = fromString("transcriptionLocaleUpdated");
 
     /**
+     * Static value callSummarySuccess for TranscriptionStatusDetails.
+     */
+    @Generated
+    public static final TranscriptionStatusDetails CALL_SUMMARY_SUCCESS = fromString("callSummarySuccess");
+
+    /**
+     * Static value callSummaryFailure for TranscriptionStatusDetails.
+     */
+    @Generated
+    public static final TranscriptionStatusDetails CALL_SUMMARY_FAILURE = fromString("callSummaryFailure");
+
+    /**
      * Creates a new instance of TranscriptionStatusDetails value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
