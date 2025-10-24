@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiContentFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiContentFilterProperties model
-            = BinaryData.fromString("{\"name\":\"tnwxy\",\"isMultiLevelFilter\":true,\"source\":\"Completion\"}")
-                .toObject(RaiContentFilterProperties.class);
-        Assertions.assertEquals("tnwxy", model.name());
-        Assertions.assertTrue(model.isMultiLevelFilter());
+        RaiContentFilterProperties model = BinaryData
+            .fromString("{\"name\":\"wltlwtjjguktalh\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"}")
+            .toObject(RaiContentFilterProperties.class);
+        Assertions.assertEquals("wltlwtjjguktalh", model.name());
+        Assertions.assertFalse(model.isMultiLevelFilter());
         Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiContentFilterProperties model = new RaiContentFilterProperties().withName("tnwxy")
-            .withIsMultiLevelFilter(true)
+        RaiContentFilterProperties model = new RaiContentFilterProperties().withName("wltlwtjjguktalh")
+            .withIsMultiLevelFilter(false)
             .withSource(RaiPolicyContentSource.COMPLETION);
         model = BinaryData.fromObject(model).toObject(RaiContentFilterProperties.class);
-        Assertions.assertEquals("tnwxy", model.name());
-        Assertions.assertTrue(model.isMultiLevelFilter());
+        Assertions.assertEquals("wltlwtjjguktalh", model.name());
+        Assertions.assertFalse(model.isMultiLevelFilter());
         Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 }

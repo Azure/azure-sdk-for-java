@@ -26,6 +26,13 @@ public final class ModelDeprecationInfo implements JsonSerializable<ModelDepreca
      */
     private String inference;
 
+    /*
+     * Indicates whether the deprecation date is a confirmed planned end-of-life date or an estimated deprecation date.
+     * When 'Planned', the deprecation date represents a confirmed and communicated model end-of-life date. When
+     * 'Tentative', the deprecation date is an estimated timeline that may be subject to change.
+     */
+    private DeprecationStatus deprecationStatus;
+
     /**
      * Creates an instance of ModelDeprecationInfo class.
      */
@@ -73,6 +80,32 @@ public final class ModelDeprecationInfo implements JsonSerializable<ModelDepreca
     }
 
     /**
+     * Get the deprecationStatus property: Indicates whether the deprecation date is a confirmed planned end-of-life
+     * date or an estimated deprecation date. When 'Planned', the deprecation date represents a confirmed and
+     * communicated model end-of-life date. When 'Tentative', the deprecation date is an estimated timeline that may be
+     * subject to change.
+     * 
+     * @return the deprecationStatus value.
+     */
+    public DeprecationStatus deprecationStatus() {
+        return this.deprecationStatus;
+    }
+
+    /**
+     * Set the deprecationStatus property: Indicates whether the deprecation date is a confirmed planned end-of-life
+     * date or an estimated deprecation date. When 'Planned', the deprecation date represents a confirmed and
+     * communicated model end-of-life date. When 'Tentative', the deprecation date is an estimated timeline that may be
+     * subject to change.
+     * 
+     * @param deprecationStatus the deprecationStatus value to set.
+     * @return the ModelDeprecationInfo object itself.
+     */
+    public ModelDeprecationInfo withDeprecationStatus(DeprecationStatus deprecationStatus) {
+        this.deprecationStatus = deprecationStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +121,8 @@ public final class ModelDeprecationInfo implements JsonSerializable<ModelDepreca
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("fineTune", this.fineTune);
         jsonWriter.writeStringField("inference", this.inference);
+        jsonWriter.writeStringField("deprecationStatus",
+            this.deprecationStatus == null ? null : this.deprecationStatus.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +145,9 @@ public final class ModelDeprecationInfo implements JsonSerializable<ModelDepreca
                     deserializedModelDeprecationInfo.fineTune = reader.getString();
                 } else if ("inference".equals(fieldName)) {
                     deserializedModelDeprecationInfo.inference = reader.getString();
+                } else if ("deprecationStatus".equals(fieldName)) {
+                    deserializedModelDeprecationInfo.deprecationStatus
+                        = DeprecationStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

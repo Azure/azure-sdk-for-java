@@ -23,7 +23,7 @@ public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"nkfm\",\"principalId\":\"cqtwmlmhjnqtq\",\"userAssignedIdentities\":{\"gpokddxejhhkvgu\":{\"principalId\":\"e\",\"clientId\":\"r\"}}},\"tags\":{\"voffbkkwvdxae\":\"tbkewkqynspg\",\"bn\":\"qokmyrljial\"},\"location\":\"rqlpbcjtrpz\",\"properties\":{\"provisioningState\":\"Accepted\",\"displayName\":\"vbxnhsqeaeonqe\",\"description\":\"gdhuruz\",\"endpoints\":{\"wmpinmzv\":\"arogatmolji\"},\"isDefault\":true},\"etag\":\"erzztrkn\",\"id\":\"j\",\"name\":\"lugdybnhrxlelf\",\"type\":\"hkeizcp\"}]}";
+            = "{\"value\":[{\"identity\":{\"type\":\"None\",\"tenantId\":\"qzusitoq\",\"principalId\":\"hf\",\"userAssignedIdentities\":{\"lntfxxcrq\":{\"principalId\":\"mlree\",\"clientId\":\"fwsszvlcwlis\"},\"zabulnvgsk\":{\"principalId\":\"pfjwfo\",\"clientId\":\"izmshxxba\"},\"znvhxqqmq\":{\"principalId\":\"o\",\"clientId\":\"dzjs\"},\"fshksnyzmspamwb\":{\"principalId\":\"aydhf\",\"clientId\":\"ocxm\"}}},\"tags\":{\"qdktwtkvihlp\":\"nlslcef\"},\"location\":\"iwoynguu\",\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"adpcmhjhausy\",\"description\":\"ekymffztsilscvqs\",\"endpoints\":{\"fymkouih\":\"i\",\"zhogsmgbvmtdw\":\"eseuugci\",\"jnfveg\":\"qbe\"},\"isDefault\":false},\"etag\":\"vkbiw\",\"id\":\"htfgficudyhizpac\",\"name\":\"muhbcakznho\",\"type\":\"hoitwhrjsdmmaz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,12 @@ public final class ProjectsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Project> response
-            = manager.projects().list("yejuwyqwdqigmghg", "nztxlujkh", com.azure.core.util.Context.NONE);
+            = manager.projects().list("lmtrlxcznnhz", "bnbmxlxm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
-        Assertions.assertEquals("tbkewkqynspg", response.iterator().next().tags().get("voffbkkwvdxae"));
-        Assertions.assertEquals("rqlpbcjtrpz", response.iterator().next().location());
-        Assertions.assertEquals("vbxnhsqeaeonqe", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("gdhuruz", response.iterator().next().properties().description());
+        Assertions.assertEquals(ResourceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("nlslcef", response.iterator().next().tags().get("qdktwtkvihlp"));
+        Assertions.assertEquals("iwoynguu", response.iterator().next().location());
+        Assertions.assertEquals("adpcmhjhausy", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("ekymffztsilscvqs", response.iterator().next().properties().description());
     }
 }

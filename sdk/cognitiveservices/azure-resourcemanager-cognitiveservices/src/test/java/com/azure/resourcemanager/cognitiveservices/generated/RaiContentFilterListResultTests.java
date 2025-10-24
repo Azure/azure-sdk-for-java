@@ -16,28 +16,25 @@ public final class RaiContentFilterListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"pthjoxo\",\"value\":[{\"properties\":{\"name\":\"sbpimlq\",\"isMultiLevelFilter\":true,\"source\":\"Completion\"},\"id\":\"cgxxlxs\",\"name\":\"fgcviz\",\"type\":\"zdwlvwlyoupfgfb\"},{\"properties\":{\"name\":\"bdyhgkfminsgowz\",\"isMultiLevelFilter\":true,\"source\":\"Completion\"},\"id\":\"t\",\"name\":\"tlahbq\",\"type\":\"ctxtgzukxi\"}]}")
+            "{\"nextLink\":\"joxslhvnhla\",\"value\":[{\"properties\":{\"name\":\"kzjcjbtrgae\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"xjjs\",\"name\":\"oqbeitpkxzt\",\"type\":\"oobklftidgfcwq\"}]}")
             .toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("pthjoxo", model.nextLink());
-        Assertions.assertEquals("sbpimlq", model.value().get(0).properties().name());
-        Assertions.assertTrue(model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.value().get(0).properties().source());
+        Assertions.assertEquals("joxslhvnhla", model.nextLink());
+        Assertions.assertEquals("kzjcjbtrgae", model.value().get(0).properties().name());
+        Assertions.assertFalse(model.value().get(0).properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.value().get(0).properties().source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiContentFilterListResult model = new RaiContentFilterListResult().withNextLink("pthjoxo")
+        RaiContentFilterListResult model = new RaiContentFilterListResult().withNextLink("joxslhvnhla")
             .withValue(Arrays.asList(
-                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("sbpimlq")
-                    .withIsMultiLevelFilter(true)
-                    .withSource(RaiPolicyContentSource.COMPLETION)),
-                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("bdyhgkfminsgowz")
-                    .withIsMultiLevelFilter(true)
-                    .withSource(RaiPolicyContentSource.COMPLETION))));
+                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("kzjcjbtrgae")
+                    .withIsMultiLevelFilter(false)
+                    .withSource(RaiPolicyContentSource.PROMPT))));
         model = BinaryData.fromObject(model).toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("pthjoxo", model.nextLink());
-        Assertions.assertEquals("sbpimlq", model.value().get(0).properties().name());
-        Assertions.assertTrue(model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.value().get(0).properties().source());
+        Assertions.assertEquals("joxslhvnhla", model.nextLink());
+        Assertions.assertEquals("kzjcjbtrgae", model.value().get(0).properties().name());
+        Assertions.assertFalse(model.value().get(0).properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.value().get(0).properties().source());
     }
 }

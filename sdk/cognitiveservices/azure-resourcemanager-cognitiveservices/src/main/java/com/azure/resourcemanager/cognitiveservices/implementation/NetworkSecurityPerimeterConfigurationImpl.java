@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.NetworkSecurityPerimeterConfigurationInner;
 import com.azure.resourcemanager.cognitiveservices.models.NetworkSecurityPerimeterConfiguration;
 import com.azure.resourcemanager.cognitiveservices.models.NetworkSecurityPerimeterConfigurationProperties;
@@ -33,6 +34,10 @@ public final class NetworkSecurityPerimeterConfigurationImpl implements NetworkS
 
     public NetworkSecurityPerimeterConfigurationProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public NetworkSecurityPerimeterConfigurationInner innerModel() {
