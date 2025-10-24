@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration;
-
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
+import com.azure.v2.core.http.polling.Poller;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.security.keyvault.administration.KeyVaultBackupClient;
+import com.azure.v2.security.keyvault.administration.KeyVaultBackupClientBuilder;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultBackupOperation;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreResult;
 
 /**
  * This sample demonstrates how to fully backup and restore a key vault synchronously.
@@ -21,7 +21,7 @@ public class BackupAndRestoreHelloWorld {
      */
     public static void main(String[] args) {
         KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl("<your-managed-hsm-url>")
+            .endpoint("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         /* Instantiate a KeyVaultBackupClient that will be used to call the service. Notice that the client is using
@@ -44,7 +44,7 @@ public class BackupAndRestoreHelloWorld {
         settings, or any way that works for your application. */
         String blobStorageUrl = "<blob-storage-url>";
         String sasToken = "<sas-token>";
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller = backupClient.beginBackup(blobStorageUrl, sasToken);
+        Poller<KeyVaultBackupOperation, String> backupPoller = backupClient.beginBackup(blobStorageUrl, sasToken);
 
         backupPoller.waitForCompletion();
 
@@ -52,7 +52,7 @@ public class BackupAndRestoreHelloWorld {
         location the backup, as well as Shared Access Signature for accessing it. */
         String backupFolderUrl = backupPoller.getFinalResult();
 
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+        Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
             backupClient.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
