@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,6 +23,11 @@ public final class CapabilityHostInner extends ProxyResource {
      * [Required] Additional attributes of the entity.
      */
     private CapabilityHostProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -62,6 +68,15 @@ public final class CapabilityHostInner extends ProxyResource {
     public CapabilityHostInner withProperties(CapabilityHostProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -144,6 +159,8 @@ public final class CapabilityHostInner extends ProxyResource {
                     deserializedCapabilityHostInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCapabilityHostInner.properties = CapabilityHostProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCapabilityHostInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
