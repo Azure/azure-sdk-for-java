@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.implementation.InCompleteRoutingMapException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class InMemoryCollectionRoutingMapTest {
 
@@ -91,7 +93,7 @@ public class InMemoryCollectionRoutingMapTest {
         assertThat("2").isEqualTo(iterator1.next().getId());
     }
 
-    @Test(groups = { "unit" }, expectedExceptions = IllegalStateException.class)
+    @Test(groups = { "unit" }, expectedExceptions = InCompleteRoutingMapException.class)
     public void invalidRoutingMap() {
         InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(Arrays.asList(
                 new ImmutablePair<>(new PartitionKeyRange("1", "0000000020", "0000000030"),
@@ -104,19 +106,25 @@ public class InMemoryCollectionRoutingMapTest {
 
     @Test(groups = { "unit" })
     public void incompleteRoutingMap() {
-        InMemoryCollectionRoutingMap routingMap = InMemoryCollectionRoutingMap
+        try {
+            InMemoryCollectionRoutingMap
                 .tryCreateCompleteRoutingMap(
                     Arrays.asList(
                         new ImmutablePair<>(new PartitionKeyRange("2", "", "0000000030"),
-                                            ServerIdentityImp.of(2)),
+                            ServerIdentityImp.of(2)),
                         new ImmutablePair<>(new PartitionKeyRange("3", "0000000031", "FF"),
-                                            ServerIdentityImp.of(2))),
+                            ServerIdentityImp.of(2))),
                     StringUtils.EMPTY,
                     "2");
+            fail("Should have failed with InCompleteRoutingMapException");
 
-        assertThat(routingMap).isNull();
+        } catch (InCompleteRoutingMapException e) {
+            assertThat(
+                e.getMessage()
+                    .equals("Ranges incomplete for collectionRid , previous range [{\"min\":\"\",\"max\":\"0000000030\"}], current range [{\"min\":\"0000000031\",\"max\":\"FF\"}]")).isTrue();
+        }
 
-        routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
+        InMemoryCollectionRoutingMap routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
             Arrays.asList(
                 new ImmutablePair<>(new PartitionKeyRange("2", "", "0000000030"), ServerIdentityImp.of(2)),
                 new ImmutablePair<>(new PartitionKeyRange("3", "0000000030", "FF"), ServerIdentityImp.of(2))),
@@ -246,18 +254,23 @@ public class InMemoryCollectionRoutingMapTest {
 
         assertThat(newRoutingMap).isNotNull();
 
-        newRoutingMap = routingMap.tryCombine(
-            ImmutableList.<ImmutablePair<PartitionKeyRange, IServerIdentity>>of(
-                new ImmutablePair<>(
-                    new PartitionKeyRange(
-                        "10",
-                        "",
-                        "0000000002",
-                        ImmutableList.of("0", "4", "6")
-                    ),
-                    null)
-            ), "2", "test");
+        try {
+            routingMap.tryCombine(
+                ImmutableList.<ImmutablePair<PartitionKeyRange, IServerIdentity>>of(
+                    new ImmutablePair<>(
+                        new PartitionKeyRange(
+                            "10",
+                            "",
+                            "0000000002",
+                            ImmutableList.of("0", "4", "6")
+                        ),
+                        null)
+                ), "2", "test");
 
-        assertThat(newRoutingMap).isNull();
+            fail("Should have failed with InCompleteRoutingMapException");
+
+        } catch (InCompleteRoutingMapException e) {
+            assertThat(e.getMessage().equals("Ranges incomplete for collectionRid test, previous range [{\"min\":\"\",\"max\":\"0000000002\"}], current range [{\"min\":\"0000000030\",\"max\":\"0000000050\"}]")).isTrue();
+        }
     }
 }
