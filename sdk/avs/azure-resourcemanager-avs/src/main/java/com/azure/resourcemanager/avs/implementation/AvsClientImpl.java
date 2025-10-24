@@ -36,7 +36,9 @@ import com.azure.resourcemanager.avs.fluent.GlobalReachConnectionsClient;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.HostsClient;
 import com.azure.resourcemanager.avs.fluent.IscsiPathsClient;
+import com.azure.resourcemanager.avs.fluent.LicensesClient;
 import com.azure.resourcemanager.avs.fluent.LocationsClient;
+import com.azure.resourcemanager.avs.fluent.MaintenancesClient;
 import com.azure.resourcemanager.avs.fluent.OperationsClient;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
@@ -287,6 +289,20 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
+     * The LicensesClient object to access its operations.
+     */
+    private final LicensesClient licenses;
+
+    /**
+     * Gets the LicensesClient object to access its operations.
+     * 
+     * @return the LicensesClient object.
+     */
+    public LicensesClient getLicenses() {
+        return this.licenses;
+    }
+
+    /**
      * The LocationsClient object to access its operations.
      */
     private final LocationsClient locations;
@@ -298,6 +314,20 @@ public final class AvsClientImpl implements AvsClient {
      */
     public LocationsClient getLocations() {
         return this.locations;
+    }
+
+    /**
+     * The MaintenancesClient object to access its operations.
+     */
+    private final MaintenancesClient maintenances;
+
+    /**
+     * Gets the MaintenancesClient object to access its operations.
+     * 
+     * @return the MaintenancesClient object.
+     */
+    public MaintenancesClient getMaintenances() {
+        return this.maintenances;
     }
 
     /**
@@ -457,7 +487,7 @@ public final class AvsClientImpl implements AvsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-09-01";
+        this.apiVersion = "2025-09-01";
         this.operations = new OperationsClientImpl(this);
         this.addons = new AddonsClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);
@@ -468,7 +498,9 @@ public final class AvsClientImpl implements AvsClient {
         this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
         this.hosts = new HostsClientImpl(this);
         this.iscsiPaths = new IscsiPathsClientImpl(this);
+        this.licenses = new LicensesClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.maintenances = new MaintenancesClientImpl(this);
         this.placementPolicies = new PlacementPoliciesClientImpl(this);
         this.privateClouds = new PrivateCloudsClientImpl(this);
         this.provisionedNetworks = new ProvisionedNetworksClientImpl(this);
