@@ -1,16 +1,20 @@
 ## Release History
 
-### 4.41.0-beta.1 (Unreleased)
+### 4.42.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added support `spark.cosmos.write.strategy` value `ItemPatchIfExists` which allows gracefully ignoring documents/patch-instructions when the document does not exist (anymore). - See [47034](https://github.com/Azure/azure-sdk-for-java/pull/47034)
-* Added support to optionally omit info about spark environment and/or machine-info for driver/executors from `UserAgent` header via new config `spark.cosmos.userAgent.format` (allowed values are `SparkEnvAndWorkers` (default value), `OnlySparkEnv` and `NoSparkEnv`.  - See [47047](https://github.com/Azure/azure-sdk-for-java/pull/47047) 
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.41.0 (2025-10-21)
+
+#### Features Added
+* Added support `spark.cosmos.write.strategy` value `ItemPatchIfExists` which allows gracefully ignoring documents/patch-instructions when the document does not exist (anymore). - See [47034](https://github.com/Azure/azure-sdk-for-java/pull/47034)
+* Added support to optionally omit info about spark environment and/or machine-info for driver/executors from `UserAgent` header via new config `spark.cosmos.userAgent.format` (allowed values are `SparkEnvAndWorkers` (default value), `OnlySparkEnv` and `NoSparkEnv`.  - See [47047](https://github.com/Azure/azure-sdk-for-java/pull/47047) 
 
 ### 4.40.0 (2025-09-27)
 

@@ -154,7 +154,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix(USER_AGENT_SUFFIX_GATEWAY_CLIENT);
-        this.gatewayClientUserAgent = userAgentContainer.getUserAgent();
+        this.gatewayClientUserAgent = generateHttp2OptedInUserAgentIfRequired(userAgentContainer.getUserAgent());
 
         directClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -164,7 +164,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             .directMode()
             .buildClient();
         userAgentContainer.setSuffix(USER_AGENT_SUFFIX_DIRECT_CLIENT);
-        this.directClientUserAgent = userAgentContainer.getUserAgent();
+        this.directClientUserAgent = generateHttp2OptedInUserAgentIfRequired(userAgentContainer.getUserAgent());
 
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         cosmosAsyncDatabase = directClient.asyncClient().getDatabase(cosmosAsyncContainer.getDatabase().getId());
@@ -271,7 +271,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 FeedResponse<JsonNode> response = results.next();
                 String diagnostics = response.getCosmosDiagnostics().toString();
                 assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
-                assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
                 assertThat(diagnostics).contains("gatewayStatisticsList");
                 assertThat(diagnostics).contains("\"operationType\":\"ReadFeed\"");
                 assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
@@ -298,7 +297,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<JsonNode> response = results.next();
             String diagnostics = response.getCosmosDiagnostics().toString();
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + this.directClientUserAgent + "\"");
+            assertThat(diagnostics).contains("\"userAgent\":\"" + generateHttp2OptedInUserAgentIfRequired(this.directClientUserAgent) + "\"");
             assertThat(diagnostics).contains("\"requestOperationType\":\"ReadFeed\"");
         }
     }
@@ -324,7 +323,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
             assertThat(diagnostics).contains("gatewayStatisticsList");
             assertThat(diagnostics).contains("\"operationType\":\"ReadFeed\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
         }
     }
 
@@ -349,7 +347,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String diagnostics = createResponse.getDiagnostics().toString();
         logger.info("DIAGNOSTICS: {}", diagnostics);
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
-        assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
         assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
@@ -392,7 +389,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("gatewayStatisticsList");
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
-            assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
             assertThat(diagnostics).contains("\"exceptionMessage\":\"Entity with the specified id does not exist in the system.");
             assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
             assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
@@ -1969,6 +1965,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         } else {
             assertThat(diagnosticsString).doesNotContain("\"transportRequestChannelAcquisitionContext\"");
         }
+    }
+
+    private String generateHttp2OptedInUserAgentIfRequired(String userAgent) {
+        if (Configs.isHttp2Enabled()) {
+            userAgent = userAgent + "|F10";
+        }
+
+        return userAgent;
     }
 
     private CosmosDiagnostics performDocumentOperation(

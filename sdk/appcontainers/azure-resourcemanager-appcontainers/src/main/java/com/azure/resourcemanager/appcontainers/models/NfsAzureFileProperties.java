@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class NfsAzureFileProperties implements JsonSerializable<NfsAzureFileProperties> {
     /*
-     * Server for NFS azure file.
+     * Server for NFS azure file. Specify the Azure storage account server address.
      */
     private String server;
 
@@ -38,7 +38,7 @@ public final class NfsAzureFileProperties implements JsonSerializable<NfsAzureFi
     }
 
     /**
-     * Get the server property: Server for NFS azure file.
+     * Get the server property: Server for NFS azure file. Specify the Azure storage account server address.
      * 
      * @return the server value.
      */
@@ -47,7 +47,7 @@ public final class NfsAzureFileProperties implements JsonSerializable<NfsAzureFi
     }
 
     /**
-     * Set the server property: Server for NFS azure file.
+     * Set the server property: Server for NFS azure file. Specify the Azure storage account server address.
      * 
      * @param server the server value to set.
      * @return the NfsAzureFileProperties object itself.

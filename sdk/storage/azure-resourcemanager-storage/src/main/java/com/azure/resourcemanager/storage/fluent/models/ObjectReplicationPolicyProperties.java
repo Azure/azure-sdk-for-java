@@ -12,6 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesMetrics;
+import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesPriorityReplication;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -51,6 +52,11 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
      * Optional. The object replication policy metrics feature options.
      */
     private ObjectReplicationPolicyPropertiesMetrics metrics;
+
+    /*
+     * Optional. The object replication policy priority replication feature options.
+     */
+    private ObjectReplicationPolicyPropertiesPriorityReplication priorityReplication;
 
     /**
      * Creates an instance of ObjectReplicationPolicyProperties class.
@@ -161,6 +167,29 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
     }
 
     /**
+     * Get the priorityReplication property: Optional. The object replication policy priority replication feature
+     * options.
+     * 
+     * @return the priorityReplication value.
+     */
+    public ObjectReplicationPolicyPropertiesPriorityReplication priorityReplication() {
+        return this.priorityReplication;
+    }
+
+    /**
+     * Set the priorityReplication property: Optional. The object replication policy priority replication feature
+     * options.
+     * 
+     * @param priorityReplication the priorityReplication value to set.
+     * @return the ObjectReplicationPolicyProperties object itself.
+     */
+    public ObjectReplicationPolicyProperties
+        withPriorityReplication(ObjectReplicationPolicyPropertiesPriorityReplication priorityReplication) {
+        this.priorityReplication = priorityReplication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -182,6 +211,9 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
         if (metrics() != null) {
             metrics().validate();
         }
+        if (priorityReplication() != null) {
+            priorityReplication().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ObjectReplicationPolicyProperties.class);
@@ -196,6 +228,7 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
         jsonWriter.writeStringField("destinationAccount", this.destinationAccount);
         jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("metrics", this.metrics);
+        jsonWriter.writeJsonField("priorityReplication", this.priorityReplication);
         return jsonWriter.writeEndObject();
     }
 
@@ -232,6 +265,9 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
                 } else if ("metrics".equals(fieldName)) {
                     deserializedObjectReplicationPolicyProperties.metrics
                         = ObjectReplicationPolicyPropertiesMetrics.fromJson(reader);
+                } else if ("priorityReplication".equals(fieldName)) {
+                    deserializedObjectReplicationPolicyProperties.priorityReplication
+                        = ObjectReplicationPolicyPropertiesPriorityReplication.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -66,10 +66,6 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
 
     private String sourceControlName;
 
-    private String createXMsGithubAuxiliary;
-
-    private String updateXMsGithubAuxiliary;
-
     public SourceControlImpl withExistingContainerApp(String resourceGroupName, String containerAppName) {
         this.resourceGroupName = resourceGroupName;
         this.containerAppName = containerAppName;
@@ -79,16 +75,14 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     public SourceControl create() {
         this.innerObject = serviceManager.serviceClient()
             .getContainerAppsSourceControls()
-            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(),
-                createXMsGithubAuxiliary, Context.NONE);
+            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SourceControl create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getContainerAppsSourceControls()
-            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(),
-                createXMsGithubAuxiliary, context);
+            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(), context);
         return this;
     }
 
@@ -96,27 +90,23 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
         this.innerObject = new SourceControlInner();
         this.serviceManager = serviceManager;
         this.sourceControlName = name;
-        this.createXMsGithubAuxiliary = null;
     }
 
     public SourceControlImpl update() {
-        this.updateXMsGithubAuxiliary = null;
         return this;
     }
 
     public SourceControl apply() {
         this.innerObject = serviceManager.serviceClient()
             .getContainerAppsSourceControls()
-            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(),
-                updateXMsGithubAuxiliary, Context.NONE);
+            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SourceControl apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getContainerAppsSourceControls()
-            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(),
-                updateXMsGithubAuxiliary, context);
+            .createOrUpdate(resourceGroupName, containerAppName, sourceControlName, this.innerModel(), context);
         return this;
     }
 
@@ -158,19 +148,5 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     public SourceControlImpl withGithubActionConfiguration(GithubActionConfiguration githubActionConfiguration) {
         this.innerModel().withGithubActionConfiguration(githubActionConfiguration);
         return this;
-    }
-
-    public SourceControlImpl withXMsGithubAuxiliary(String xMsGithubAuxiliary) {
-        if (isInCreateMode()) {
-            this.createXMsGithubAuxiliary = xMsGithubAuxiliary;
-            return this;
-        } else {
-            this.updateXMsGithubAuxiliary = xMsGithubAuxiliary;
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

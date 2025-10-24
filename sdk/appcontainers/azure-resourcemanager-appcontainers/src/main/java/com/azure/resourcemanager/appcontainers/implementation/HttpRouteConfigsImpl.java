@@ -48,13 +48,12 @@ public final class HttpRouteConfigsImpl implements HttpRouteConfigs {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String httpRouteName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, httpRouteName, context);
-    }
-
     public void delete(String resourceGroupName, String environmentName, String httpRouteName) {
         this.serviceClient().delete(resourceGroupName, environmentName, httpRouteName);
+    }
+
+    public void delete(String resourceGroupName, String environmentName, String httpRouteName, Context context) {
+        this.serviceClient().delete(resourceGroupName, environmentName, httpRouteName, context);
     }
 
     public PagedIterable<HttpRouteConfig> list(String resourceGroupName, String environmentName) {
@@ -122,10 +121,10 @@ public final class HttpRouteConfigsImpl implements HttpRouteConfigs {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'httpRouteConfigs'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, environmentName, httpRouteName, Context.NONE);
+        this.delete(resourceGroupName, environmentName, httpRouteName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -141,7 +140,7 @@ public final class HttpRouteConfigsImpl implements HttpRouteConfigs {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'httpRouteConfigs'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, environmentName, httpRouteName, context);
+        this.delete(resourceGroupName, environmentName, httpRouteName, context);
     }
 
     private HttpRouteConfigsClient serviceClient() {
