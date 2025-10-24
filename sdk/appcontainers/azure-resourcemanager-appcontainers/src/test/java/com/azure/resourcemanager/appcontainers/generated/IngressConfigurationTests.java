@@ -6,36 +6,30 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
-import com.azure.resourcemanager.appcontainers.models.IngressConfigurationScale;
 import org.junit.jupiter.api.Assertions;
 
 public final class IngressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IngressConfiguration model = BinaryData.fromString(
-            "{\"workloadProfileName\":\"elyetndnbf\",\"scale\":{\"minReplicas\":1479609341,\"maxReplicas\":28298400},\"terminationGracePeriodSeconds\":823563374,\"headerCountLimit\":1402188323,\"requestIdleTimeout\":1468230412}")
+            "{\"workloadProfileName\":\"wn\",\"terminationGracePeriodSeconds\":268742670,\"headerCountLimit\":1188867128,\"requestIdleTimeout\":792325056}")
             .toObject(IngressConfiguration.class);
-        Assertions.assertEquals("elyetndnbf", model.workloadProfileName());
-        Assertions.assertEquals(1479609341, model.scale().minReplicas());
-        Assertions.assertEquals(28298400, model.scale().maxReplicas());
-        Assertions.assertEquals(823563374, model.terminationGracePeriodSeconds());
-        Assertions.assertEquals(1402188323, model.headerCountLimit());
-        Assertions.assertEquals(1468230412, model.requestIdleTimeout());
+        Assertions.assertEquals("wn", model.workloadProfileName());
+        Assertions.assertEquals(268742670, model.terminationGracePeriodSeconds());
+        Assertions.assertEquals(1188867128, model.headerCountLimit());
+        Assertions.assertEquals(792325056, model.requestIdleTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IngressConfiguration model = new IngressConfiguration().withWorkloadProfileName("elyetndnbf")
-            .withScale(new IngressConfigurationScale().withMinReplicas(1479609341).withMaxReplicas(28298400))
-            .withTerminationGracePeriodSeconds(823563374)
-            .withHeaderCountLimit(1402188323)
-            .withRequestIdleTimeout(1468230412);
+        IngressConfiguration model = new IngressConfiguration().withWorkloadProfileName("wn")
+            .withTerminationGracePeriodSeconds(268742670)
+            .withHeaderCountLimit(1188867128)
+            .withRequestIdleTimeout(792325056);
         model = BinaryData.fromObject(model).toObject(IngressConfiguration.class);
-        Assertions.assertEquals("elyetndnbf", model.workloadProfileName());
-        Assertions.assertEquals(1479609341, model.scale().minReplicas());
-        Assertions.assertEquals(28298400, model.scale().maxReplicas());
-        Assertions.assertEquals(823563374, model.terminationGracePeriodSeconds());
-        Assertions.assertEquals(1402188323, model.headerCountLimit());
-        Assertions.assertEquals(1468230412, model.requestIdleTimeout());
+        Assertions.assertEquals("wn", model.workloadProfileName());
+        Assertions.assertEquals(268742670, model.terminationGracePeriodSeconds());
+        Assertions.assertEquals(1188867128, model.headerCountLimit());
+        Assertions.assertEquals(792325056, model.requestIdleTimeout());
     }
 }

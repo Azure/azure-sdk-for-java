@@ -13,23 +13,22 @@ public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model = BinaryData
-            .fromString(
-                "{\"status\":\"Pending\",\"description\":\"lcqxypokk\",\"actionsRequired\":\"inqcymczngnbdxxe\"}")
+            .fromString("{\"status\":\"Approved\",\"description\":\"iut\",\"actionsRequired\":\"apzhyrpetoge\"}")
             .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("lcqxypokk", model.description());
-        Assertions.assertEquals("inqcymczngnbdxxe", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("iut", model.description());
+        Assertions.assertEquals("apzhyrpetoge", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                .withDescription("lcqxypokk")
-                .withActionsRequired("inqcymczngnbdxxe");
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                .withDescription("iut")
+                .withActionsRequired("apzhyrpetoge");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("lcqxypokk", model.description());
-        Assertions.assertEquals("inqcymczngnbdxxe", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("iut", model.description());
+        Assertions.assertEquals("apzhyrpetoge", model.actionsRequired());
     }
 }
