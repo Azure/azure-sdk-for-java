@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.certificates;
-
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.certificates.CertificateClient;
+import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -62,7 +62,7 @@ public class ListOperations {
 
         // Let's create a certificate signed by our issuer.
         certificateClient.beginCreateCertificate("myCertificate",
-            new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
+                new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), true, tags)
             .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
 

@@ -1,0 +1,71 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.security.keyvault.keys.models
+displayName: Migrate from azure.security.keyvault.keys.models to next generation stack
+description: This recipe migrates the azure.security.keyvault.keys.models package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # CreateRsaKeyOptions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.CreateRsaKeyOptions
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.CreateRsaKeyOptions
+
+  # --------------------------------------------------------------------
+  # DeletedKey
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.DeletedKey
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.DeletedKey
+
+  # --------------------------------------------------------------------
+  # KeyVaultKey
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.KeyVaultKey
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.KeyVaultKey
+
+  # --------------------------------------------------------------------
+  # KeyRotationLifetimeAction
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.KeyRotationLifetimeAction
+
+  # --------------------------------------------------------------------
+  # KeyRotationPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.KeyRotationPolicy
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.KeyRotationPolicy
+
+  # --------------------------------------------------------------------
+  # KeyRotationPolicyAction
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.KeyRotationPolicyAction
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.KeyRotationPolicyAction
+
+  # --------------------------------------------------------------------
+  # CreateEcKeyOptions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.CreateEcKeyOptions
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.CreateEcKeyOptions
+
+  # --------------------------------------------------------------------
+  # KeyProperties
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.security.keyvault.keys.models.KeyProperties
+      newFullyQualifiedTypeName: com.azure.v2.security.keyvault.keys.models.KeyProperties
