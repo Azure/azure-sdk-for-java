@@ -37,7 +37,7 @@ default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12', 'com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12', 'com.azure.cosmos.spark:azure-cosmos-spark_3-5', 'com.azure.cosmos.spark:azure-cosmos-spark_3', 'io.clientcore:clientcore-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3-5', 'com.azure.cosmos.spark:azure-cosmos-spark_3', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
 parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'io.clientcore:clientcore-parent']
