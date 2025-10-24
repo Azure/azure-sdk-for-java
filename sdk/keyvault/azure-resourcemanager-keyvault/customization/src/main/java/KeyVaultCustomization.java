@@ -12,6 +12,7 @@ public class KeyVaultCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization fluentModelsPackage = customization.getPackage("com.azure.resourcemanager.keyvault.fluent.models");
+        // change base class from `ProxyResource` to `Resource`, to avoid breaking changes and compilation errors
         customizeResourceBaseClass(fluentModelsPackage.getClass("VaultInner"));
         customizeResourceBaseClass(fluentModelsPackage.getClass("ManagedHsmInner"));
     }
