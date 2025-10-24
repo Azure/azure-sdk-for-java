@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appcontainers.models.CertificateProperties;
  */
 public final class ConnectedEnvironmentsCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ConnectedEnvironmentsCertificate_CreateOrUpdate.json
      */
     /**

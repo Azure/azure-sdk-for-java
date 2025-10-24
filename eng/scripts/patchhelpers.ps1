@@ -73,7 +73,7 @@ function UpdateDependencies($ArtifactInfos) {
         $sdkVersion = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
         $groupPath = $ArtifactInfos[$artifactId].GroupId -replace '\.', '/'
         $pomFileUri = "https://repo1.maven.org/maven2/$groupPath/$artifactId/$sdkVersion/$artifactId-$sdkVersion.pom"
-        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri
+        $webResponseObj = Invoke-WebRequest -Uri $pomFileUri -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
         $dependencies = ([xml]$webResponseObj.Content).project.dependencies.dependency | Where-Object { (([String]::IsNullOrWhiteSpace($_.scope)) -or ($_.scope -eq 'compile')) }
         $dependencies | ForEach-Object { $deps[$_.artifactId] = $_.version }
         $ArtifactInfos[$artifactId].Dependencies = $deps

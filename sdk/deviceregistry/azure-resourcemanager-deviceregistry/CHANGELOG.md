@@ -1,14 +1,391 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2025-10-23)
 
-### Features Added
+- Azure Resource Manager Device Registry client library for Java. This package contains Microsoft Azure SDK for Device Registry Management SDK. Microsoft.DeviceRegistry Resource Provider management API. Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.AssetEndpointProfileStatus` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.Authentication` was modified
+
+* `validate()` was removed
+
+#### `models.AssetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.X509Credentials` was modified
+
+* `validate()` was removed
+
+#### `models.AssetEndpointProfileStatusError` was modified
+
+* `validate()` was removed
+
+#### `models.AssetEndpointProfileUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.Dataset` was modified
+
+* `validate()` was removed
+
+#### `models.Event` was modified
+
+* `validate()` was removed
+
+#### `models.AssetStatus` was modified
+
+* `validate()` was removed
+
+#### `models.DataPointBase` was modified
+
+* `validate()` was removed
+
+#### `models.EventBase` was modified
+
+* `validate()` was removed
+
+#### `models.AssetStatusError` was modified
+
+* `validate()` was removed
+
+#### `models.AssetUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.AssetEndpointProfileProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AssetUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AssetStatusDataset` was modified
+
+* `validate()` was removed
+
+#### `models.UsernamePasswordCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.ExtendedLocation` was modified
+
+* `validate()` was removed
+
+#### `models.AssetStatusEvent` was modified
+
+* `validate()` was removed
+
+#### `models.AssetEndpointProfileUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.BillingContainerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.MessageSchemaReference` was modified
+
+* `validate()` was removed
+
+#### `models.DataPoint` was modified
+
+* `validate()` was removed
+
+#### `models.Topic` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.Namespace$DefinitionStages` was added
+
+* `models.StatusConfig` was added
+
+* `models.NamespaceAssetStatusEvent` was added
+
+* `models.Schema` was added
+
+* `models.InboundEndpoints` was added
+
+* `models.Namespace$Update` was added
+
+* `models.NamespaceAsset$DefinitionStages` was added
+
+* `models.NamespaceDiscoveredDatasetDataPoint` was added
+
+* `models.Scope` was added
+
+* `models.SystemAssignedServiceIdentityType` was added
+
+* `models.OutboundEndpoints` was added
+
+* `models.NamespaceAssetUpdateProperties` was added
+
+* `models.SchemaRegistry$Definition` was added
+
+* `models.EventMqttDestination` was added
+
+* `models.ManagementAction` was added
+
+* `models.DiscoveredOutboundEndpoints` was added
+
+* `models.Namespaces` was added
+
+* `models.BrokerStateStoreDestinationConfiguration` was added
+
+* `models.NamespaceDiscoveredAsset$DefinitionStages` was added
+
+* `models.StorageDestinationConfiguration` was added
+
+* `models.Format` was added
+
+* `models.NamespaceAssetStatusStream` was added
+
+* `models.NamespaceAsset$Update` was added
+
+* `models.NamespaceDiscoveredManagementGroup` was added
+
+* `models.NamespaceAssetUpdate` was added
+
+* `models.Namespace$Definition` was added
+
+* `models.EventDestinationTarget` was added
+
+* `models.NamespaceDevice$DefinitionStages` was added
+
+* `models.NamespaceDiscoveredDeviceUpdate` was added
+
+* `models.NamespaceStream` was added
+
+* `models.NamespaceMessageSchemaReference` was added
+
+* `models.SchemaVersion$DefinitionStages` was added
+
+* `models.NamespaceMigrateResponse` was added
+
+* `models.SchemaVersionProperties` was added
+
+* `models.StreamMqttDestination` was added
+
+* `models.DatasetDestinationTarget` was added
+
+* `models.NamespaceAssetStatusManagementAction` was added
+
+* `models.DatasetMqttDestination` was added
+
+* `models.Namespace$UpdateStages` was added
+
+* `models.NamespaceDiscoveredStream` was added
+
+* `models.DatasetStorageDestination` was added
+
+* `models.NamespaceAsset$UpdateStages` was added
+
+* `models.NamespaceAssetStatus` was added
+
+* `models.NamespaceDiscoveredEvent` was added
+
+* `models.NamespaceMigrateRequest` was added
+
+* `models.SchemaRegistry$UpdateStages` was added
+
+* `models.NamespaceDiscoveredAssetUpdate` was added
+
+* `models.NamespaceDiscoveredDevice$Update` was added
+
+* `models.NamespaceAssetStatusDataset` was added
+
+* `models.NamespaceAssetStatusEventGroup` was added
+
+* `models.NamespaceDiscoveredAssetUpdateProperties` was added
+
+* `models.NamespaceDiscoveredDataset` was added
+
+* `models.SchemaType` was added
+
+* `models.SchemaRegistries` was added
+
+* `models.NamespaceDiscoveredDevice$DefinitionStages` was added
+
+* `models.Schema$Definition` was added
+
+* `models.DatasetBrokerStateStoreDestination` was added
+
+* `models.Schemas` was added
+
+* `models.NamespaceDiscoveredAssetProperties` was added
+
+* `models.NamespaceDiscoveredDevice` was added
+
+* `models.SchemaRegistry$DefinitionStages` was added
+
+* `models.NamespaceDevice$Definition` was added
+
+* `models.SchemaVersions` was added
+
+* `models.NamespaceEventGroup` was added
+
+* `models.NamespaceDiscoveredDeviceProperties` was added
+
+* `models.MessagingEndpoint` was added
+
+* `models.NamespaceDiscoveredAsset` was added
+
+* `models.DeviceMessagingEndpoint` was added
+
+* `models.MqttDestinationConfiguration` was added
+
+* `models.NamespaceDeviceUpdate` was added
+
+* `models.DiscoveredInboundEndpoints` was added
+
+* `models.Messaging` was added
+
+* `models.NamespaceDiscoveredAsset$UpdateStages` was added
+
+* `models.SchemaProperties` was added
+
+* `models.DatasetDestination` was added
+
+* `models.NamespaceDeviceProperties` was added
+
+* `models.NamespaceDataset` was added
+
+* `models.TrustSettings` was added
+
+* `models.NamespaceDiscoveredAsset$Update` was added
+
+* `models.StreamStorageDestination` was added
+
+* `models.NamespaceDiscoveredDevice$UpdateStages` was added
+
+* `models.ErrorDetails` was added
+
+* `models.DeviceStatusEndpoints` was added
+
+* `models.DeviceRef` was added
+
+* `models.NamespaceAssets` was added
+
+* `models.NamespaceDatasetDataPoint` was added
+
+* `models.StreamDestinationTarget` was added
+
+* `models.ManagementGroup` was added
+
+* `models.SchemaVersion` was added
+
+* `models.Namespace` was added
+
+* `models.NamespaceAsset$Definition` was added
+
+* `models.NamespaceDiscoveredDeviceUpdateProperties` was added
+
+* `models.Schema$DefinitionStages` was added
+
+* `models.DeviceStatus` was added
+
+* `models.MessagingEndpoints` was added
+
+* `models.HostAuthentication` was added
+
+* `models.SchemaRegistryUpdateProperties` was added
+
+* `models.EventStorageDestination` was added
+
+* `models.NamespaceDeviceUpdateProperties` was added
+
+* `models.SystemAssignedServiceIdentity` was added
+
+* `models.NamespaceDiscoveredAsset$Definition` was added
+
+* `models.SchemaRegistryProperties` was added
+
+* `models.Error` was added
+
+* `models.NamespaceAssetStatusManagementGroup` was added
+
+* `models.MigrateResultType` was added
+
+* `models.X509CertificateCredentials` was added
+
+* `models.NamespaceDiscoveredManagementAction` was added
+
+* `models.NamespaceAssetProperties` was added
+
+* `models.EventDestination` was added
+
+* `models.ManagementActionType` was added
+
+* `models.MigrateResult` was added
+
+* `models.NamespaceDevices` was added
+
+* `models.NamespaceUpdateProperties` was added
+
+* `models.StatusError` was added
+
+* `models.NamespaceProperties` was added
+
+* `models.NamespaceEvent` was added
+
+* `models.SchemaRegistry$Update` was added
+
+* `models.SchemaRegistryUpdate` was added
+
+* `models.MqttDestinationQos` was added
+
+* `models.NamespaceAsset` was added
+
+* `models.SchemaVersion$Definition` was added
+
+* `models.StreamDestination` was added
+
+* `models.DeviceStatusEndpoint` was added
+
+* `models.NamespaceDiscoveredManagementActionType` was added
+
+* `models.NamespaceDiscoveredAssets` was added
+
+* `models.NamespaceDiscoveredDevices` was added
+
+* `models.SchemaRegistry` was added
+
+* `models.NamespaceDevice$UpdateStages` was added
+
+* `models.NamespaceDevice` was added
+
+* `models.DiscoveredMessagingEndpoints` was added
+
+* `models.NamespaceDevice$Update` was added
+
+* `models.NamespaceDiscoveredEventGroup` was added
+
+* `models.NamespaceUpdate` was added
+
+* `models.NamespaceDiscoveredDevice$Definition` was added
+
+#### `DeviceRegistryManager` was modified
+
+* `schemaVersions()` was added
+* `namespaceDevices()` was added
+* `namespaceDiscoveredAssets()` was added
+* `namespaceDiscoveredDevices()` was added
+* `schemaRegistries()` was added
+* `namespaceAssets()` was added
+* `schemas()` was added
+* `namespaces()` was added
 
 ## 1.0.0 (2025-02-21)
 

@@ -26,10 +26,9 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
     private String name;
 
     /*
-     * The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the
-     * asset.
+     * Reference to a data source for a given event.
      */
-    private String eventNotifier;
+    private String dataSource;
 
     /*
      * Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include
@@ -46,11 +45,6 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
      * URI or type definition ID.
      */
     private String typeRef;
-
-    /*
-     * Array of data points that are part of the event. Each data point can have a per-data point configuration.
-     */
-    private List<NamespaceDiscoveredEventDataPoint> dataPoints;
 
     /*
      * UTC timestamp indicating when the event was added or modified.
@@ -84,24 +78,22 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
     }
 
     /**
-     * Get the eventNotifier property: The address of the notifier of the event in the asset (e.g. URL) so that a client
-     * can access the event on the asset.
+     * Get the dataSource property: Reference to a data source for a given event.
      * 
-     * @return the eventNotifier value.
+     * @return the dataSource value.
      */
-    public String eventNotifier() {
-        return this.eventNotifier;
+    public String dataSource() {
+        return this.dataSource;
     }
 
     /**
-     * Set the eventNotifier property: The address of the notifier of the event in the asset (e.g. URL) so that a client
-     * can access the event on the asset.
+     * Set the dataSource property: Reference to a data source for a given event.
      * 
-     * @param eventNotifier the eventNotifier value to set.
+     * @param dataSource the dataSource value to set.
      * @return the NamespaceDiscoveredEvent object itself.
      */
-    public NamespaceDiscoveredEvent withEventNotifier(String eventNotifier) {
-        this.eventNotifier = eventNotifier;
+    public NamespaceDiscoveredEvent withDataSource(String dataSource) {
+        this.dataSource = dataSource;
         return this;
     }
 
@@ -168,28 +160,6 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
     }
 
     /**
-     * Get the dataPoints property: Array of data points that are part of the event. Each data point can have a per-data
-     * point configuration.
-     * 
-     * @return the dataPoints value.
-     */
-    public List<NamespaceDiscoveredEventDataPoint> dataPoints() {
-        return this.dataPoints;
-    }
-
-    /**
-     * Set the dataPoints property: Array of data points that are part of the event. Each data point can have a per-data
-     * point configuration.
-     * 
-     * @param dataPoints the dataPoints value to set.
-     * @return the NamespaceDiscoveredEvent object itself.
-     */
-    public NamespaceDiscoveredEvent withDataPoints(List<NamespaceDiscoveredEventDataPoint> dataPoints) {
-        this.dataPoints = dataPoints;
-        return this;
-    }
-
-    /**
      * Get the lastUpdatedOn property: UTC timestamp indicating when the event was added or modified.
      * 
      * @return the lastUpdatedOn value.
@@ -216,11 +186,10 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("eventNotifier", this.eventNotifier);
+        jsonWriter.writeStringField("dataSource", this.dataSource);
         jsonWriter.writeStringField("eventConfiguration", this.eventConfiguration);
         jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("typeRef", this.typeRef);
-        jsonWriter.writeArrayField("dataPoints", this.dataPoints, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("lastUpdatedOn",
             this.lastUpdatedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedOn));
         return jsonWriter.writeEndObject();
@@ -244,8 +213,8 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
 
                 if ("name".equals(fieldName)) {
                     deserializedNamespaceDiscoveredEvent.name = reader.getString();
-                } else if ("eventNotifier".equals(fieldName)) {
-                    deserializedNamespaceDiscoveredEvent.eventNotifier = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredEvent.dataSource = reader.getString();
                 } else if ("eventConfiguration".equals(fieldName)) {
                     deserializedNamespaceDiscoveredEvent.eventConfiguration = reader.getString();
                 } else if ("destinations".equals(fieldName)) {
@@ -254,10 +223,6 @@ public final class NamespaceDiscoveredEvent implements JsonSerializable<Namespac
                     deserializedNamespaceDiscoveredEvent.destinations = destinations;
                 } else if ("typeRef".equals(fieldName)) {
                     deserializedNamespaceDiscoveredEvent.typeRef = reader.getString();
-                } else if ("dataPoints".equals(fieldName)) {
-                    List<NamespaceDiscoveredEventDataPoint> dataPoints
-                        = reader.readArray(reader1 -> NamespaceDiscoveredEventDataPoint.fromJson(reader1));
-                    deserializedNamespaceDiscoveredEvent.dataPoints = dataPoints;
                 } else if ("lastUpdatedOn".equals(fieldName)) {
                     deserializedNamespaceDiscoveredEvent.lastUpdatedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

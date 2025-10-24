@@ -23,7 +23,7 @@ public final class ServicesListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"fyaloowwzizzny\",\"sku\":{\"name\":\"qz\",\"family\":\"ifgufyjfdkqiyv\",\"size\":\"jokgwesymzqh\",\"tier\":\"p\"},\"capacity\":{\"minimum\":1190353630,\"maximum\":24105077,\"default\":403924911,\"scaleType\":\"none\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"aklwzlwee\",\"sku\":{\"name\":\"ejzltka\",\"family\":\"fjsxscbduxapg\",\"size\":\"qebmvrdjomlnwsb\",\"tier\":\"dls\"},\"capacity\":{\"minimum\":273265714,\"maximum\":1977635745,\"default\":1430405428,\"scaleType\":\"automatic\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ServicesListSkusMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AvailableServiceSku> response
-            = manager.services().listSkus("upkcbkfukdljqnvt", "dydshk", com.azure.core.util.Context.NONE);
+            = manager.services().listSkus("wrqkza", "bun", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fyaloowwzizzny", response.iterator().next().resourceType());
-        Assertions.assertEquals("qz", response.iterator().next().sku().name());
-        Assertions.assertEquals("ifgufyjfdkqiyv", response.iterator().next().sku().family());
-        Assertions.assertEquals("jokgwesymzqh", response.iterator().next().sku().size());
-        Assertions.assertEquals("p", response.iterator().next().sku().tier());
-        Assertions.assertEquals(1190353630, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(24105077, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(403924911, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals("aklwzlwee", response.iterator().next().resourceType());
+        Assertions.assertEquals("ejzltka", response.iterator().next().sku().name());
+        Assertions.assertEquals("fjsxscbduxapg", response.iterator().next().sku().family());
+        Assertions.assertEquals("qebmvrdjomlnwsb", response.iterator().next().sku().size());
+        Assertions.assertEquals("dls", response.iterator().next().sku().tier());
+        Assertions.assertEquals(273265714, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(1977635745, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(1430405428, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, response.iterator().next().capacity().scaleType());
     }
 }

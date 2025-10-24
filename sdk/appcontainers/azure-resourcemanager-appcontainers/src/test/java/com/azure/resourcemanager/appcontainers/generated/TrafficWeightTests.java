@@ -12,24 +12,24 @@ public final class TrafficWeightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficWeight model = BinaryData.fromString(
-            "{\"revisionName\":\"dwmsweypqwd\",\"weight\":1064810748,\"latestRevision\":true,\"label\":\"cnxqhuexmkttlst\"}")
+            "{\"revisionName\":\"kelnsmvbxwyjsf\",\"weight\":23472999,\"latestRevision\":false,\"label\":\"lnjixisxya\"}")
             .toObject(TrafficWeight.class);
-        Assertions.assertEquals("dwmsweypqwd", model.revisionName());
-        Assertions.assertEquals(1064810748, model.weight());
-        Assertions.assertTrue(model.latestRevision());
-        Assertions.assertEquals("cnxqhuexmkttlst", model.label());
+        Assertions.assertEquals("kelnsmvbxwyjsf", model.revisionName());
+        Assertions.assertEquals(23472999, model.weight());
+        Assertions.assertFalse(model.latestRevision());
+        Assertions.assertEquals("lnjixisxya", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficWeight model = new TrafficWeight().withRevisionName("dwmsweypqwd")
-            .withWeight(1064810748)
-            .withLatestRevision(true)
-            .withLabel("cnxqhuexmkttlst");
+        TrafficWeight model = new TrafficWeight().withRevisionName("kelnsmvbxwyjsf")
+            .withWeight(23472999)
+            .withLatestRevision(false)
+            .withLabel("lnjixisxya");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("dwmsweypqwd", model.revisionName());
-        Assertions.assertEquals(1064810748, model.weight());
-        Assertions.assertTrue(model.latestRevision());
-        Assertions.assertEquals("cnxqhuexmkttlst", model.label());
+        Assertions.assertEquals("kelnsmvbxwyjsf", model.revisionName());
+        Assertions.assertEquals(23472999, model.weight());
+        Assertions.assertFalse(model.latestRevision());
+        Assertions.assertEquals("lnjixisxya", model.label());
     }
 }

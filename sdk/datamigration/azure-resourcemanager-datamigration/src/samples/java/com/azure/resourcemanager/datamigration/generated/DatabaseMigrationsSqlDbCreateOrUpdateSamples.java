@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class DatabaseMigrationsSqlDbCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -50,7 +50,7 @@ public final class DatabaseMigrationsSqlDbCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2025-06-30/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
