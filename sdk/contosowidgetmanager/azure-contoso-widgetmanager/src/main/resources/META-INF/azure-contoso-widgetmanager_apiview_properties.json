@@ -1,0 +1,30 @@
+{
+  "flavor": "azure", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient": "Azure.Contoso.WidgetManager.Widgets",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.beginCreateOrUpdateWidget": "Azure.Contoso.WidgetManager.Widgets.createOrUpdateWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.beginCreateOrUpdateWidgetWithModel": "Azure.Contoso.WidgetManager.Widgets.createOrUpdateWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.beginDeleteWidget": "Azure.Contoso.WidgetManager.Widgets.deleteWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.beginDeleteWidgetWithModel": "Azure.Contoso.WidgetManager.Widgets.deleteWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.getWidget": "Azure.Contoso.WidgetManager.Widgets.getWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.getWidgetOperationStatus": "Azure.Contoso.WidgetManager.Widgets.getWidgetOperationStatus",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.getWidgetOperationStatusWithResponse": "Azure.Contoso.WidgetManager.Widgets.getWidgetOperationStatus",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.getWidgetWithResponse": "Azure.Contoso.WidgetManager.Widgets.getWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerAsyncClient.listWidgets": "Azure.Contoso.WidgetManager.Widgets.listWidgets",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient": "Azure.Contoso.WidgetManager.Widgets",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.beginCreateOrUpdateWidget": "Azure.Contoso.WidgetManager.Widgets.createOrUpdateWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.beginCreateOrUpdateWidgetWithModel": "Azure.Contoso.WidgetManager.Widgets.createOrUpdateWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.beginDeleteWidget": "Azure.Contoso.WidgetManager.Widgets.deleteWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.beginDeleteWidgetWithModel": "Azure.Contoso.WidgetManager.Widgets.deleteWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.getWidget": "Azure.Contoso.WidgetManager.Widgets.getWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.getWidgetOperationStatus": "Azure.Contoso.WidgetManager.Widgets.getWidgetOperationStatus",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.getWidgetOperationStatusWithResponse": "Azure.Contoso.WidgetManager.Widgets.getWidgetOperationStatus",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.getWidgetWithResponse": "Azure.Contoso.WidgetManager.Widgets.getWidget",
+    "com.azure.contoso.widgetmanager.WidgetManagerClient.listWidgets": "Azure.Contoso.WidgetManager.Widgets.listWidgets",
+    "com.azure.contoso.widgetmanager.WidgetManagerClientBuilder": "Azure.Contoso.WidgetManager",
+    "com.azure.contoso.widgetmanager.models.FakedSharedModel": "FakedSharedModel",
+    "com.azure.contoso.widgetmanager.models.OperationState": "Azure.Core.Foundations.OperationState",
+    "com.azure.contoso.widgetmanager.models.ResourceOperationStatusWidgetSuiteWidgetSuiteError": "Azure.Core.ResourceOperationStatus",
+    "com.azure.contoso.widgetmanager.models.WidgetSuite": "Azure.Contoso.WidgetManager.WidgetSuite"
+  }
+}
