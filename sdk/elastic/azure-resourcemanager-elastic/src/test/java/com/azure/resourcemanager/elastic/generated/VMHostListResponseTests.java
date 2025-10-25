@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class VMHostListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMHostListResponse model
-            = BinaryData.fromString("{\"value\":[{\"vmResourceId\":\"zko\"}],\"nextLink\":\"cukoklyaxuconu\"}")
-                .toObject(VMHostListResponse.class);
-        Assertions.assertEquals("zko", model.value().get(0).vmResourceId());
-        Assertions.assertEquals("cukoklyaxuconu", model.nextLink());
+        VMHostListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"vmResourceId\":\"kuwbcrnwb\"},{\"vmResourceId\":\"hhseyv\"}],\"nextLink\":\"srtslhspkdeem\"}")
+            .toObject(VMHostListResponse.class);
+        Assertions.assertEquals("kuwbcrnwb", model.value().get(0).vmResourceId());
+        Assertions.assertEquals("srtslhspkdeem", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMHostListResponse model
-            = new VMHostListResponse().withValue(Arrays.asList(new VMResourcesInner().withVmResourceId("zko")))
-                .withNextLink("cukoklyaxuconu");
+            = new VMHostListResponse().withValue(Arrays.asList(new VMResourcesInner().withVmResourceId("kuwbcrnwb"),
+                new VMResourcesInner().withVmResourceId("hhseyv"))).withNextLink("srtslhspkdeem");
         model = BinaryData.fromObject(model).toObject(VMHostListResponse.class);
-        Assertions.assertEquals("zko", model.value().get(0).vmResourceId());
-        Assertions.assertEquals("cukoklyaxuconu", model.nextLink());
+        Assertions.assertEquals("kuwbcrnwb", model.value().get(0).vmResourceId());
+        Assertions.assertEquals("srtslhspkdeem", model.nextLink());
     }
 }
