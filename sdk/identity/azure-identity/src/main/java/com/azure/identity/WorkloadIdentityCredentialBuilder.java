@@ -47,6 +47,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
 public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
     private String tokenFilePath;
+    private boolean enableTokenProxy = false;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
@@ -63,6 +64,11 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      */
     public WorkloadIdentityCredentialBuilder tokenFilePath(String tokenFilePath) {
         this.tokenFilePath = tokenFilePath;
+        return this;
+    }
+
+    public WorkloadIdentityCredentialBuilder enableKubernetesTokenProxy(boolean enable) {
+        this.enableTokenProxy = enable;
         return this;
     }
 
@@ -87,6 +93,8 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
 
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
+
+        identityClientOptions.setEnableKubernetesTokenProxy(this.enableTokenProxy);
 
         return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
             identityClientOptions.clone());
