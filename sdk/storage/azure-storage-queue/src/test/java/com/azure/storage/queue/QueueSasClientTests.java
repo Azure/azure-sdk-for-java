@@ -268,7 +268,7 @@ public class QueueSasClientTests extends QueueTestBase {
     }
 
     protected UserDelegationKey getUserDelegationInfo() {
-        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
+        UserDelegationKey key = getOAuthQueueServiceClient().getUserDelegationKey(testResourceNamer.now().minusDays(1),
             testResourceNamer.now().plusDays(1));
         String keyOid = testResourceNamer.recordValueFromConfig(key.getSignedObjectId());
         key.setSignedObjectId(keyOid);

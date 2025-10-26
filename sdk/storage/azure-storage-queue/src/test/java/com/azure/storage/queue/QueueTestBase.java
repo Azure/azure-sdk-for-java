@@ -169,22 +169,4 @@ public class QueueTestBase extends TestProxyTestBase {
         // Final attempt (5th try)
         runnable.run();
     }
-
-    protected QueueServiceClient getOAuthServiceClient() {
-        QueueServiceClientBuilder builder
-            = new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
-    }
-
-    protected QueueServiceAsyncClient getOAuthServiceAsyncClient() {
-        QueueServiceClientBuilder builder
-            = new QueueServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
-    }
 }

@@ -806,7 +806,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
-        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsyncSharedKey(
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(
             new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareDirectoryAsyncClient dirClient
             = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(generatePathName());

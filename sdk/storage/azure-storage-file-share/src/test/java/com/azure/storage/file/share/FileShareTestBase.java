@@ -53,6 +53,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class FileShareTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
@@ -364,21 +366,11 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     protected ShareServiceClient getOAuthServiceClient() {
-        ShareServiceClientBuilder builder
-            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+        return getOAuthServiceClient(null);
     }
 
     protected ShareServiceAsyncClient getOAuthServiceAsyncClient() {
-        ShareServiceClientBuilder builder
-            = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+        return getOAuthServiceAsyncClient(null);
     }
 
     protected ShareServiceClient getOAuthPremiumServiceClient(ShareServiceClientBuilder builder) {
@@ -403,17 +395,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
-    protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
-    }
-
     protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
@@ -423,21 +404,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
-    }
-
-    protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
-    }
-
-    protected ShareClient getOAuthShareClient(ShareClientBuilder builder) {
-        return getOAuthShareClientBuilder(builder).buildClient();
     }
 
     protected ShareClientBuilder getOAuthShareClientBuilder(ShareClientBuilder builder) {
@@ -514,18 +480,17 @@ public class FileShareTestBase extends TestProxyTestBase {
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
      * random and can really only be checked as not null.
-     * @param headers The object (may be headers object or response object) that has properties which expose these
+     * @param headers The object (can be headers object or response object) that has properties which expose these
      * common headers.
-     * @return Whether or not the header values are appropriate.
      */
-    protected boolean validateBasicHeaders(HttpHeaders headers) {
-        return headers.getValue(HttpHeaderName.ETAG) != null
+    protected void validateBasicHeaders(HttpHeaders headers) {
+        assertTrue(headers.getValue(HttpHeaderName.ETAG) != null
             // Quotes should be scrubbed from etag header values
             && !headers.getValue(HttpHeaderName.ETAG).contains("\"")
             && headers.getValue(HttpHeaderName.LAST_MODIFIED) != null
             && headers.getValue(X_MS_REQUEST_ID) != null
             && headers.getValue(X_MS_VERSION) != null
-            && headers.getValue(HttpHeaderName.DATE) != null;
+            && headers.getValue(HttpHeaderName.DATE) != null);
     }
 
     protected String setupShareLeaseCondition(ShareClient sc, String leaseID) {
@@ -541,7 +506,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     protected Mono<String> setupShareLeaseAsyncCondition(ShareAsyncClient sc, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseClient(sc).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1))
-                .map(response -> response.getValue());
+                .map(Response::getValue);
         } else {
             return Mono.just(leaseID);
         }
