@@ -494,4 +494,44 @@ public class WorkloadIdentityCredentialTest {
         }
     }
 
+    @Test
+    public void testProxyEnabledWithSniNameGetsToken(@TempDir Path tempDir) throws IOException {
+        // setup
+        String endpoint = "https://localhost";
+        String token1 = "token1";
+        String proxyUrl = "https://token-proxy.example.com";
+        String sniName = "615f3b8ad7eb011a09ed3b762e404de43ebc7ade0802a34c9fd322b688c3a655.ests.aks";
+
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint)
+                .put(ENV_PROXY_URL, proxyUrl)
+                .put(ENV_SNI_NAME, sniName));
+
+        Path tokenFile = tempDir.resolve("token.txt");
+        Files.write(tokenFile, "dummy-token".getBytes(StandardCharsets.UTF_8));
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            })) {
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder().tenantId("dummy-tenantid")
+                .clientId(CLIENT_ID)
+                .tokenFilePath(tokenFile.toString())
+                .configuration(configuration)
+                .enableKubernetesTokenProxy()
+                .build();
+
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+
+            assertNotNull(identityClientMock);
+        }
+    }
+
 }
