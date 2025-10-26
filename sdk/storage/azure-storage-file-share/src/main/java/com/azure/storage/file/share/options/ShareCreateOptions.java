@@ -26,7 +26,6 @@ public class ShareCreateOptions {
     private Long paidBurstingMaxBandwidthMibps;
     private Long provisionedMaxIops;
     private Long provisionedMaxBandwidthMibps;
-    private Boolean enableSmbDirectoryLease;
 
     /**
      * Creates a new instance of {@link ShareCreateOptions}.
@@ -276,30 +275,6 @@ public class ShareCreateOptions {
      */
     public ShareCreateOptions setProvisionedMaxBandwidthMibps(Long provisionedMaxBandwidthMibps) {
         this.provisionedMaxBandwidthMibps = provisionedMaxBandwidthMibps;
-        return this;
-    }
-
-    /**
-     * Optional, default value is true. Only applicable to SMB shares.
-     * Specifies whether granting of new directory leases for directories present in a share are to be enabled or disabled.
-     * An input of true specifies that granting of new directory leases is to be allowed.
-     * An input of false specifies that granting of new directory leases is to be blocked.
-     * @return the enableSmbDirectoryLease value.
-     */
-    public Boolean isSmbDirectoryLeaseEnabled() {
-        return enableSmbDirectoryLease;
-    }
-
-    /**
-     * Optional, default value is true. Only applicable to SMB shares.
-     * Specifies whether granting of new directory leases for directories present in a share are to be enabled or disabled.
-     * An input of true specifies that granting of new directory leases is to be allowed.
-     * An input of false specifies that granting of new directory leases is to be blocked.
-     * @param enableSmbDirectoryLease the enableSmbDirectoryLease value to set.
-     * @return the ShareCreateOptions object itself.
-     */
-    public ShareCreateOptions setSmbDirectoryLeaseEnabled(Boolean enableSmbDirectoryLease) {
-        this.enableSmbDirectoryLease = enableSmbDirectoryLease;
         return this;
     }
 }
