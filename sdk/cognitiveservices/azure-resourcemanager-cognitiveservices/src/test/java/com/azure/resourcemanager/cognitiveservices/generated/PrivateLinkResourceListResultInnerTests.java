@@ -15,17 +15,17 @@ public final class PrivateLinkResourceListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"acewiipfpubjibw\",\"requiredMembers\":[\"tohqkvpuvksgp\"],\"requiredZoneNames\":[\"kn\",\"n\",\"synljphuopxodl\",\"iyntorzihle\"],\"displayName\":\"jswsrmslyz\"},\"id\":\"pzbchck\",\"name\":\"qzqioxiysuiizy\",\"type\":\"ked\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"frxtrthzvaytdwk\",\"requiredMembers\":[\"qu\",\"paxh\",\"xiilivpdtiirqt\",\"qoaxoruzfgs\"],\"requiredZoneNames\":[\"fxrxxle\",\"tramxjez\"],\"displayName\":\"wnwxuqlcvyd\"},\"id\":\"atdooaojkniod\",\"name\":\"oo\",\"type\":\"bw\"}]}")
             .toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("kn", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("fxrxxle", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceListResultInner model = new PrivateLinkResourceListResultInner()
-            .withValue(Arrays.asList(new PrivateLinkResource().withProperties(new PrivateLinkResourceProperties()
-                .withRequiredZoneNames(Arrays.asList("kn", "n", "synljphuopxodl", "iyntorzihle")))));
+        PrivateLinkResourceListResultInner model
+            = new PrivateLinkResourceListResultInner().withValue(Arrays.asList(new PrivateLinkResource().withProperties(
+                new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList("fxrxxle", "tramxjez")))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("kn", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("fxrxxle", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

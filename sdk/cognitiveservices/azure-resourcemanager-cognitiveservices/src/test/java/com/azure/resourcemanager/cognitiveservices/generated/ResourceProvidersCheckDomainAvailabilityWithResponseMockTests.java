@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
     @Test
     public void testCheckDomainAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isSubdomainAvailable\":false,\"reason\":\"fwmkoisqcssffxui\",\"subdomainName\":\"csypobkdqzrdzsyl\",\"type\":\"lgtrczzy\",\"kind\":\"xzji\"}";
+            = "{\"isSubdomainAvailable\":false,\"reason\":\"bctvivuzqym\",\"subdomainName\":\"owog\",\"type\":\"it\",\"kind\":\"hzvb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,17 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainAvailability response = manager.resourceProviders()
-            .checkDomainAvailabilityWithResponse(new CheckDomainAvailabilityParameter().withSubdomainName("kgmnsghpxyc")
-                .withType("hdrwjjkh")
-                .withKind("omacluzvxnqmhr"), com.azure.core.util.Context.NONE)
+            .checkDomainAvailabilityWithResponse(
+                new CheckDomainAvailabilityParameter().withSubdomainName("anniyopetxivcnr")
+                    .withType("yxnu")
+                    .withKind("ephblkwqpatvbqs"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertFalse(response.isSubdomainAvailable());
-        Assertions.assertEquals("fwmkoisqcssffxui", response.reason());
-        Assertions.assertEquals("csypobkdqzrdzsyl", response.subdomainName());
-        Assertions.assertEquals("lgtrczzy", response.type());
-        Assertions.assertEquals("xzji", response.kind());
+        Assertions.assertEquals("bctvivuzqym", response.reason());
+        Assertions.assertEquals("owog", response.subdomainName());
+        Assertions.assertEquals("it", response.type());
+        Assertions.assertEquals("hzvb", response.kind());
     }
 }

@@ -15,8 +15,7 @@ import java.util.Arrays;
  */
 public final class JavaComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * JavaComponents_CreateOrUpdate_ServiceBind.json
      */
     /**
@@ -42,8 +41,7 @@ public final class JavaComponentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * JavaComponents_CreateOrUpdate.json
      */
     /**

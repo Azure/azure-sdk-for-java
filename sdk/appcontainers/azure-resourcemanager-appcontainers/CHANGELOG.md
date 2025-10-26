@@ -1,14 +1,231 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0 (2025-10-24)
 
-### Features Added
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. Logic app is an extension resource on container app and the extension resource enables logic specific operations on the container app through the APIs listed. Package tag package-2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ConnectedEnvironmentsStorages` was modified
 
-### Other Changes
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironmentsDaprComponents` was modified
+
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironment$Update` was modified
+
+* `withCustomDomainConfiguration(models.CustomDomainConfiguration)` was removed
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+* `withStaticIp(java.lang.String)` was removed
+* `withDaprAIConnectionString(java.lang.String)` was removed
+
+#### `models.ConnectedEnvironmentsCertificates` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.ConnectedEnvironments` was modified
+
+* `update(java.lang.String,java.lang.String)` was removed
+* `updateWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.IngressConfiguration` was added
+
+* `models.LogicApp$Definition` was added
+
+* `models.HttpRouteProvisioningErrors` was added
+
+* `models.ManagedEnvironmentPrivateEndpointConnections` was added
+
+* `models.WorkflowState` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.HttpRouteConfigProperties` was added
+
+* `models.ConnectedEnvironmentPatchResource` was added
+
+* `models.HttpRouteConfig$Definition` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.LogicApps` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.DaprComponentProvisioningState` was added
+
+* `models.SecretKeyVaultProperties` was added
+
+* `models.MaintenanceConfigurationResource` was added
+
+* `models.HttpRouteConfig$DefinitionStages` was added
+
+* `models.ConnectedEnvironmentStorageProvisioningState` was added
+
+* `models.MaintenanceConfigurations` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.DaprAppHealth` was added
+
+* `models.HttpRouteConfigs` was added
+
+* `models.WorkflowEnvelopeProperties` was added
+
+* `models.WorkflowHealthState` was added
+
+* `models.HttpRouteConfig` was added
+
+* `models.MaintenanceConfigurationResource$DefinitionStages` was added
+
+* `models.MaintenanceConfigurationResource$UpdateStages` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.WorkflowEnvelopeCollection` was added
+
+* `models.PrivateEndpointConnection$Update` was added
+
+* `models.ErrorEntity` was added
+
+* `models.LogicApp$UpdateStages` was added
+
+* `models.MaintenanceConfigurationResource$Update` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.WorkflowHealth` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.HttpRouteConfig$Update` was added
+
+* `models.HttpRouteMatch` was added
+
+* `models.WorkflowEnvelope` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.WorkflowKind` was added
+
+* `models.HttpRouteAction` was added
+
+* `models.WeekDay` was added
+
+* `models.ManagedEnvironmentPrivateLinkResources` was added
+
+* `models.MaintenanceConfigurationResource$Definition` was added
+
+* `models.HttpRouteConfig$UpdateStages` was added
+
+* `models.ScheduledEntry` was added
+
+* `models.LogicApp` was added
+
+* `models.HttpRouteConfigCollection` was added
+
+* `models.MaintenanceConfigurationCollection` was added
+
+* `models.PrivateEndpointConnection$UpdateStages` was added
+
+* `models.HttpRouteTarget` was added
+
+* `models.HttpRouteProvisioningState` was added
+
+* `models.HttpRouteRule` was added
+
+* `models.ResourceTags` was added
+
+* `models.Kind` was added
+
+* `models.HttpRoute` was added
+
+* `models.LogicApp$Update` was added
+
+* `models.LogicApp$DefinitionStages` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withIngressConfiguration(models.IngressConfiguration)` was added
+
+#### `models.ConnectedEnvironmentsStorages` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ConnectedEnvironmentsDaprComponents` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ConnectedEnvironmentStorageProperties` was modified
+
+* `deploymentErrors()` was added
+* `provisioningState()` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withIngressConfiguration(models.IngressConfiguration)` was added
+
+#### `models.DaprComponent` was modified
+
+* `provisioningState()` was added
+* `deploymentErrors()` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `ingressConfiguration()` was added
+* `publicNetworkAccess()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.AzureFileProperties` was modified
+
+* `accountKeyVaultProperties()` was added
+* `withAccountKeyVaultProperties(models.SecretKeyVaultProperties)` was added
+
+#### `models.ConnectedEnvironmentsCertificates` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CertificateProperties` was modified
+
+* `deploymentErrors()` was added
+
+#### `models.ContainerApp` was modified
+
+* `kind()` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `managedEnvironmentPrivateEndpointConnections()` was added
+* `httpRouteConfigs()` was added
+* `maintenanceConfigurations()` was added
+* `managedEnvironmentPrivateLinkResources()` was added
+* `logicApps()` was added
+
+#### `models.ContainerApp$Definition` was modified
+
+* `withKind(models.Kind)` was added
+
+#### `models.Dapr` was modified
+
+* `maxConcurrency()` was added
+* `withAppHealth(models.DaprAppHealth)` was added
+* `withMaxConcurrency(java.lang.Integer)` was added
+* `appHealth()` was added
 
 ## 1.2.0-beta.1 (2025-09-16)
 

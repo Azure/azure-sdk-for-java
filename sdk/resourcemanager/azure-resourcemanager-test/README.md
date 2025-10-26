@@ -144,6 +144,25 @@ ContainerAppsApiManager manager = ContainerAppsApiManager
 // instead of ContainerAppsApiManager.authenticate(httpPipeline, profile);
 ```
 
+## Record test
+
+When updating SDK for service api-version upgrade, you may want to run recording tests and update test recordings.
+
+### Run tests in recording mode
+
+Make sure you have `AZURE_TEST_MODE`, `AZURE_TENANT_ID` and `AZURE_SUBSCRIPTION_ID` environment variables properly set.
+
+Either run mvn command:
+```
+mvn test -f sdk/<service>/azure-resourcemanager-<service>/pom.xml -DAZURE_TEST_MODE=RECORD -DAZURE_TENANT_ID=<tenant-id> -DAZURE_SUBSCRIPTION_ID=<subscription-id>
+```
+
+Or individual tests in your IDE. Local test recordings will be automatically updated.
+
+### Push test recordings update
+
+To update recording file (assets.json), refer to [Update test recordings](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/README.md#update-test-recordings).
+
 ## Troubleshooting
 
 ### Common Issues
