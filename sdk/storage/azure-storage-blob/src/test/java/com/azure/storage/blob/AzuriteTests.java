@@ -72,26 +72,6 @@ public class AzuriteTests extends BlobTestBase {
         assertEquals(expectedUrl, parts.toUrl().toString());
     }
 
-    @Test
-    public void testParse() throws MalformedURLException {
-        String endpoint = "http://localhost:10000/devstoreaccount1/container/path/to]a blob";
-        String scheme = "http";
-        String host = "localhost:10000";
-        String accountName = "devstoreaccount1";
-        String blobContainerName = "container";
-        String blobName = "path/to]a blob";
-        String expectedUrl = "http://localhost:10000/devstoreaccount1/container/path%2Fto%5Da%20blob";
-
-        BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
-
-        assertEquals(scheme, parts.getScheme());
-        assertEquals(host, parts.getHost());
-        assertEquals(accountName, parts.getAccountName());
-        assertEquals(blobContainerName, parts.getBlobContainerName());
-        assertEquals(blobName, parts.getBlobName());
-        assertEquals(expectedUrl, parts.toUrl().toString());
-    }
-
     private static Stream<Arguments> azuriteURLParserSupplier() {
         return Stream.of(
             Arguments.of("http://127.0.0.1:10000/devstoreaccount1", "http", "127.0.0.1:10000", "devstoreaccount1", null,

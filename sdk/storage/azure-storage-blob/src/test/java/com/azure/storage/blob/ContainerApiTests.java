@@ -43,7 +43,6 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
-import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
