@@ -460,11 +460,11 @@ public final class BlobUrlParts {
             int containerEndIndex = path.indexOf('/');
             if (containerEndIndex == -1) {
                 // path contains only a container name and no blob name
-                parts.setContainerName(Utility.urlDecode(path));
+                parts.setContainerName(path);
             } else {
                 // path contains the container name up until the slash and blob name is everything after the slash
-                parts.setContainerName(Utility.urlDecode(path.substring(0, containerEndIndex)));
-                parts.setBlobName(Utility.urlDecode(path.substring(containerEndIndex + 1)));
+                parts.setContainerName(path.substring(0, containerEndIndex));
+                parts.setBlobName(path.substring(containerEndIndex + 1));
             }
         }
 
