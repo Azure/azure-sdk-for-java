@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsCertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ConnectedEnvironmentsCertificate_Delete.json
      */
     /**
@@ -19,7 +19,6 @@ public final class ConnectedEnvironmentsCertificatesDeleteSamples {
      */
     public static void deleteCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.connectedEnvironmentsCertificates()
-            .deleteWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
-                com.azure.core.util.Context.NONE);
+            .delete("examplerg", "testcontainerenv", "certificate-firendly-name", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.25.0-beta.2 (Unreleased)
+## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.25.0 (2025-10-21)
+
+### Features Added
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
+
+## 12.24.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-storage-blob` from `12.31.2` to version `12.31.3`.
 
 ## 12.24.2 (2025-08-21)
 
@@ -20,7 +42,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 - Upgraded `azure-storage-blob` from `12.31.1` to version `12.31.2`.
 
-
 ## 12.24.1 (2025-07-29)
 
 ### Other Changes
@@ -30,7 +51,6 @@
 - Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
 - Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0-beta.2`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
-
 
 ## 12.24.0 (2025-07-16)
 
@@ -181,9 +201,9 @@
 - When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
   `DataLakeFileSystemClient.getDirectoryClient(String fileName)`, `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`
   and `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`, the path name will be stored exactly as passed in
-  and will not be URL-encoded. For example, if the path name is "test%25test" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("test%25test")`,
-  `DataLakeDirectoryClient.getDirectoryPath()` will return "test%25test" and the path's url will result in
-  “https://account.dfs.core.windows.net/filesystemname/test%25%25test”.
+  and will not be URL-encoded. For example, if the path name is "directory/blob.txt" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("directory/blob.txt")`,
+  `DataLakeDirectoryClient.getDirectoryPath()` will return "directory/blob.txt" and the path's url will result in
+  “https://account.dfs.core.windows.net/filesystemname/directory%2Fblob.txt”.
 
 ### Bugs Fixed
 - Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
@@ -196,7 +216,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
-
 ## 12.18.4 (2024-04-23)
 
 ### Other Changes
@@ -206,7 +225,6 @@
 - Upgraded `azure-storage-blob` from `12.25.3` to version `12.25.4`.
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
-
 
 ## 12.19.0-beta.1 (2024-04-15)
 
@@ -218,9 +236,9 @@
 - When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
   `DataLakeFileSystemClient.getDirectoryClient(String fileName)`, `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)` 
 and `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`, the path name will be stored exactly as passed in 
-and will not be URL-encoded. For example, if the path name is "test%25test" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("test%25test")`,
-`DataLakeDirectoryClient.getDirectoryPath()` will return "test%25test" and the path's url will result in 
-“https://account.dfs.core.windows.net/filesystemname/test%25%25test”.
+and will not be URL-encoded. For example, if the path name is "directory/blob.txt" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("directory/blob.txt")`,
+`DataLakeDirectoryClient.getDirectoryPath()` will return "directory/blob.txt" and the path's url will result in 
+“https://account.dfs.core.windows.net/filesystemname/directory%2Fblob.txt”.
 
 ### Bugs Fixed
 - Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
@@ -235,7 +253,6 @@ and will not be URL-encoded. For example, if the path name is "test%25test" and 
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `azure-storage-blob` from `12.25.2` to version `12.25.3`.
 
-
 ## 12.18.2 (2024-02-22)
 
 ### Other Changes
@@ -245,8 +262,6 @@ and will not be URL-encoded. For example, if the path name is "test%25test" and 
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-storage-blob` from `12.25.1` to version `12.25.2`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
-
-
 
 ## 12.18.1 (2023-12-04)
 

@@ -28,7 +28,7 @@ public final class ManagedEnvironmentsStoragesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.managedEnvironmentsStorages()
-            .deleteWithResponse("angp", "bfaxyxzlbc", "phmsexroq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("fsn", "skiioshjgczetybn", "gztlcgc", com.azure.core.util.Context.NONE);
 
     }
 }

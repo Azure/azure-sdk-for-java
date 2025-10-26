@@ -12,8 +12,8 @@ public final class TargetTypeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetTypeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"ohgwxrtfudxepxg\",\"description\":\"agvrvmnpkuk\",\"propertiesSchema\":\"i\",\"resourceTypes\":[\"lxgwimfnjhf\",\"xw\"]},\"id\":\"zk\",\"name\":\"foqreyfkzik\",\"type\":\"jawneaiv\"},{\"properties\":{\"displayName\":\"czelpcirel\",\"description\":\"eae\",\"propertiesSchema\":\"abfatkl\",\"resourceTypes\":[\"bjhwuaan\",\"zjosp\",\"youlp\",\"rvxaglrvimjwosy\"]},\"id\":\"itc\",\"name\":\"kfcktqum\",\"type\":\"ekkezzikhlyfjh\"},{\"properties\":{\"displayName\":\"qgge\",\"description\":\"unygaeqid\",\"propertiesSchema\":\"fatpxllrxcyjmoa\",\"resourceTypes\":[\"varmywdmj\",\"jqbjhhy\",\"xrwlyc\",\"duhpk\"]},\"id\":\"gymare\",\"name\":\"n\",\"type\":\"jxqugjhky\"}],\"nextLink\":\"beddgssofw\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"eedndrdvstkwqqtc\",\"description\":\"alm\",\"propertiesSchema\":\"tdaaygdvwvg\",\"resourceTypes\":[\"hgwxrtfudx\",\"pxgy\",\"agvrvmnpkuk\",\"himdbl\"]},\"id\":\"wi\",\"name\":\"fnjhfjxwmszkkfo\",\"type\":\"rey\"},{\"properties\":{\"displayName\":\"zi\",\"description\":\"jawneaiv\",\"propertiesSchema\":\"czelpcirel\",\"resourceTypes\":[\"aenwabf\"]},\"id\":\"kl\",\"name\":\"dxbjhwuaanozj\",\"type\":\"sphyoulpjrvxa\"},{\"properties\":{\"displayName\":\"rvimjwosytxitcsk\",\"description\":\"k\",\"propertiesSchema\":\"umiekkezzi\",\"resourceTypes\":[\"yf\"]},\"id\":\"dgqggebdu\",\"name\":\"ygaeqidbqfatpxl\",\"type\":\"rxcyjmoad\"},{\"properties\":{\"displayName\":\"varmywdmj\",\"description\":\"q\",\"propertiesSchema\":\"hhyxxrw\",\"resourceTypes\":[\"oduhp\"]},\"id\":\"kgymareqnajxqug\",\"name\":\"hky\",\"type\":\"ubeddg\"}],\"nextLink\":\"ofwq\"}")
             .toObject(TargetTypeListResult.class);
-        Assertions.assertEquals("beddgssofw", model.nextLink());
+        Assertions.assertEquals("ofwq", model.nextLink());
     }
 }

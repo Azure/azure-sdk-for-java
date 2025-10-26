@@ -12,10 +12,10 @@ public final class WorkloadNetworkDhcpListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"lzl\",\"segments\":[\"rifkwm\",\"vktsizntocipao\",\"ajpsquc\"],\"provisioningState\":\"Failed\",\"revision\":7945913025837652918},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"}],\"nextLink\":\"zyf\"}")
+            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"dshf\",\"segments\":[\"rbgyefry\"],\"provisioningState\":\"Succeeded\",\"revision\":8721260312586763684},\"id\":\"mwn\",\"name\":\"otmrfhir\",\"type\":\"tymoxoftp\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"wycz\",\"segments\":[\"a\",\"pqjlihhyusps\"],\"provisioningState\":\"Canceled\",\"revision\":5972606310193139455},\"id\":\"fwdgzxulucvp\",\"name\":\"mrsreuzvxurisjnh\",\"type\":\"ytxifqjzgxmrh\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"wp\",\"segments\":[\"utr\",\"jupauut\"],\"provisioningState\":\"Deleting\",\"revision\":6134480009559710202},\"id\":\"ejqgw\",\"name\":\"pnfqntcyp\",\"type\":\"xjvfoimwksl\"}],\"nextLink\":\"cizjxvydfceacvl\"}")
             .toObject(WorkloadNetworkDhcpList.class);
-        Assertions.assertEquals("lzl", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(7945913025837652918L, model.value().get(0).properties().revision());
-        Assertions.assertEquals("zyf", model.nextLink());
+        Assertions.assertEquals("dshf", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(8721260312586763684L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("cizjxvydfceacvl", model.nextLink());
     }
 }

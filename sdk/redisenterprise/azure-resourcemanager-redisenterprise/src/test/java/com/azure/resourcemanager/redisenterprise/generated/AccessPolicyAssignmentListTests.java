@@ -15,19 +15,19 @@ public final class AccessPolicyAssignmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessPolicyAssignmentList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"xobnbdxkqpxok\",\"user\":{\"objectId\":\"ionpimexg\"}},\"id\":\"txgcpodgmaajr\",\"name\":\"vdjwzrlovm\",\"type\":\"lwhijcoejctbzaq\"}],\"nextLink\":\"sycbkbfk\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"accessPolicyName\":\"pkvlrxn\",\"user\":{\"objectId\":\"ase\"}},\"id\":\"pheoflokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}],\"nextLink\":\"masxazjpqyegu\"}")
             .toObject(AccessPolicyAssignmentList.class);
-        Assertions.assertEquals("xobnbdxkqpxok", model.value().get(0).accessPolicyName());
-        Assertions.assertEquals("ionpimexg", model.value().get(0).user().objectId());
+        Assertions.assertEquals("pkvlrxn", model.value().get(0).accessPolicyName());
+        Assertions.assertEquals("ase", model.value().get(0).user().objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccessPolicyAssignmentList model = new AccessPolicyAssignmentList()
-            .withValue(Arrays.asList(new AccessPolicyAssignmentInner().withAccessPolicyName("xobnbdxkqpxok")
-                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ionpimexg"))));
+            .withValue(Arrays.asList(new AccessPolicyAssignmentInner().withAccessPolicyName("pkvlrxn")
+                .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("ase"))));
         model = BinaryData.fromObject(model).toObject(AccessPolicyAssignmentList.class);
-        Assertions.assertEquals("xobnbdxkqpxok", model.value().get(0).accessPolicyName());
-        Assertions.assertEquals("ionpimexg", model.value().get(0).user().objectId());
+        Assertions.assertEquals("pkvlrxn", model.value().get(0).accessPolicyName());
+        Assertions.assertEquals("ase", model.value().get(0).user().objectId());
     }
 }

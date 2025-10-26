@@ -35,13 +35,19 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     breaking: bool = False
     changelog: str = ""
     breaking_change_items = []
+
+    # the fallback logic is only enabled when this automation is run for specs PR validation
+    # we do not want to delete code from user for SDK generation
+    fallback_generate_from_clean_folder_enabled = "runMode" in config and (
+        config["runMode"] == "spec-pull-request" or config["runMode"] == "batch"
+    )
     clean_sdk_folder_succeeded = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url
     )
 
-    if not succeeded:
+    if not succeeded and fallback_generate_from_clean_folder_enabled:
         # error in emitter
         # fallback to generate from a clean folder
         clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
@@ -52,7 +58,6 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             )
 
     if succeeded:
-        # TODO (weidxu): move to typespec-java
         stable_version, current_version = set_or_default_version(sdk_root, GROUP_ID, module)
         if require_sdk_integration:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
@@ -71,7 +76,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 current_version,
                 module,
             )
-        else:
+        elif fallback_generate_from_clean_folder_enabled:
             # error in compile
             # fallback to generate from a clean folder
             clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)

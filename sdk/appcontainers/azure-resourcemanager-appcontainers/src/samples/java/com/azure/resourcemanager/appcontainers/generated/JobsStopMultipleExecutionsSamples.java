@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsStopMultipleExecutionsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_Stop_Multiple.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Job_Stop_Multiple.json
      */
     /**
      * Sample code: Terminate Multiple Container Apps Job.

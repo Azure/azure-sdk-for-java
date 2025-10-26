@@ -1,10 +1,20 @@
 ## Release History
 
-### 2.6.0-beta.1 (Unreleased)
+### 2.7.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 2.6.0 (2025-10-21)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.75.0`.
+
+### 2.5.1 (2025-08-22)
 
 #### Bugs Fixed
 * Fixed an issue where `CosmosSourceConnector` got stuck when restart - See [PR 46378](https://github.com/Azure/azure-sdk-for-java/pull/46378)

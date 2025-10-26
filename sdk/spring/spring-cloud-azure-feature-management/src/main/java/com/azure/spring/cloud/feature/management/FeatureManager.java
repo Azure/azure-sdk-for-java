@@ -6,6 +6,7 @@ import static com.azure.spring.cloud.feature.management.implementation.FeatureMa
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ import com.azure.spring.cloud.feature.management.implementation.FeatureManagemen
 import com.azure.spring.cloud.feature.management.models.Allocation;
 import com.azure.spring.cloud.feature.management.models.Conditions;
 import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
-import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
@@ -186,13 +187,13 @@ public class FeatureManager {
 
     private Mono<EvaluationEvent> checkFeature(String featureName, Object featureContext)
         throws FilterNotFoundException {
-        List<Feature> featureFlags = featureManagementConfigurations.getFeatureFlags();
+        List<FeatureDefinition> featureFlags = featureManagementConfigurations.getFeatureFlags();
 
         if (featureFlags == null) {
             return Mono.just(new EvaluationEvent(null));
         }
 
-        Feature featureFlag = featureFlags.stream()
+        FeatureDefinition featureFlag = featureFlags.stream()
             .filter(feature -> feature.getId().equals(featureName)).findAny().orElse(null);
 
         EvaluationEvent event = new EvaluationEvent(featureFlag);
@@ -226,13 +227,13 @@ public class FeatureManager {
         if (telemetryPublisher != null && event.getFeature() != null
             && event.getFeature().getTelemetry() != null
             && event.getFeature().getTelemetry().isEnabled()) {
-            telemetryPublisher.publishTelemetry(event);
+            telemetryPublisher.publish(event);
         }
     }
 
     private Mono<EvaluationEvent> assignAllocation(Mono<EvaluationEvent> monoEvent) {
         return monoEvent.map(event -> {
-            Feature featureFlag = event.getFeature();
+            FeatureDefinition featureFlag = event.getFeature();
 
             if (featureFlag.getVariants() == null || featureFlag.getAllocation() == null) {
                 return event;
@@ -248,7 +249,7 @@ public class FeatureManager {
     }
 
     private void assignDefaultDisabledReason(EvaluationEvent event) {
-        Feature featureFlag = event.getFeature();
+        FeatureDefinition featureFlag = event.getFeature();
         event.setReason(VariantAssignmentReason.DEFAULT_WHEN_DISABLED);
         if (event.getFeature().getAllocation() == null) {
             return;
@@ -269,7 +270,7 @@ public class FeatureManager {
         }
         this.assignVariantOverride(event.getFeature().getVariants(),
             event.getFeature().getAllocation().getDefaultWhenEnabled(), true, event);
-        Feature featureFlag = event.getFeature();
+        FeatureDefinition featureFlag = event.getFeature();
 
         if (featureFlag.getAllocation() != null) {
             event.setVariant(
@@ -279,7 +280,7 @@ public class FeatureManager {
     }
 
     private void assignVariant(EvaluationEvent event) {
-        Feature featureFlag = event.getFeature();
+        FeatureDefinition featureFlag = event.getFeature();
         if (featureFlag.getVariants().size() == 0 || featureFlag.getAllocation() == null) {
             return;
         }
@@ -291,7 +292,7 @@ public class FeatureManager {
         List<String> groups = targetingContext.getGroups();
         String variantName = null;
 
-        if (StringUtils.hasText(targetingContext.getUserId())) {
+        if (StringUtils.hasText(targetingContext.getUserId()) && allocation.getUser() != null) {
             // Loop through all user allocations
             for (UserAllocation userAllocation : allocation.getUser()) {
                 if (!evaluationOptions.isIgnoreCase()
@@ -307,7 +308,7 @@ public class FeatureManager {
                 }
             }
         }
-        if (variantName == null) {
+        if (variantName == null && allocation.getGroup() != null) {
             for (GroupAllocation groupAllocation : allocation.getGroup()) {
                 for (String allocationGroup : groupAllocation.getGroups()) {
                     if (!evaluationOptions.isIgnoreCase() && groups.contains(allocationGroup)) {
@@ -375,7 +376,7 @@ public class FeatureManager {
     }
 
     private Mono<EvaluationEvent> checkFeatureFilters(EvaluationEvent event, Object featureContext) {
-        Feature featureFlag = event.getFeature();
+        FeatureDefinition featureFlag = event.getFeature();
         Conditions conditions = featureFlag.getConditions();
         List<FeatureFilterEvaluationContext> featureFilters = conditions.getClientFilters();
 
@@ -404,7 +405,7 @@ public class FeatureManager {
         return Flux.merge(filterResults).reduce((a, b) -> a || b).single().map(result -> event.setEnabled(result));
     }
 
-    private Variant variantNameToVariant(Feature featureFlag, String variantName) {
+    private Variant variantNameToVariant(FeatureDefinition featureFlag, String variantName) {
         for (VariantReference variant : featureFlag.getVariants()) {
             if (variant.getName().equals(variantName)) {
                 return new Variant(variantName, variant.getConfigurationValue());
@@ -429,6 +430,9 @@ public class FeatureManager {
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
+        if (featureManagementConfigurations == null || featureManagementConfigurations.getFeatureFlags() == null) {
+            return Collections.emptySet();
+        }
         return new HashSet<String>(
             featureManagementConfigurations.getFeatureFlags().stream().map(feature -> feature.getId()).toList());
     }

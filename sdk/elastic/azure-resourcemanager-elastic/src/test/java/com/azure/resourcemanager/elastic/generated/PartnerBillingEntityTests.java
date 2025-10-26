@@ -12,20 +12,20 @@ public final class PartnerBillingEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerBillingEntity model
-            = BinaryData.fromString("{\"id\":\"zdmohctbqvu\",\"name\":\"xdn\",\"partnerEntityUri\":\"vo\"}")
+            = BinaryData.fromString("{\"id\":\"epcyvahfnlj\",\"name\":\"qxj\",\"partnerEntityUri\":\"ujqgidok\"}")
                 .toObject(PartnerBillingEntity.class);
-        Assertions.assertEquals("zdmohctbqvu", model.id());
-        Assertions.assertEquals("xdn", model.name());
-        Assertions.assertEquals("vo", model.partnerEntityUri());
+        Assertions.assertEquals("epcyvahfnlj", model.id());
+        Assertions.assertEquals("qxj", model.name());
+        Assertions.assertEquals("ujqgidok", model.partnerEntityUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerBillingEntity model
-            = new PartnerBillingEntity().withId("zdmohctbqvu").withName("xdn").withPartnerEntityUri("vo");
+            = new PartnerBillingEntity().withId("epcyvahfnlj").withName("qxj").withPartnerEntityUri("ujqgidok");
         model = BinaryData.fromObject(model).toObject(PartnerBillingEntity.class);
-        Assertions.assertEquals("zdmohctbqvu", model.id());
-        Assertions.assertEquals("xdn", model.name());
-        Assertions.assertEquals("vo", model.partnerEntityUri());
+        Assertions.assertEquals("epcyvahfnlj", model.id());
+        Assertions.assertEquals("qxj", model.name());
+        Assertions.assertEquals("ujqgidok", model.partnerEntityUri());
     }
 }

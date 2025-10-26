@@ -21,7 +21,7 @@ public final class VirtualMachinesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"krkjjjavf\",\"moRefId\":\"vhnqo\",\"folderPath\":\"dogiyetesyp\",\"restrictMovement\":\"Disabled\"},\"id\":\"ztjhqtfbovnynkbw\",\"name\":\"tnjuhpsprkzyaupi\",\"type\":\"ccxnafbwqroohtuo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"fbpcmsplb\",\"moRefId\":\"rueqthwm\",\"folderPath\":\"mbscbbx\",\"restrictMovement\":\"Disabled\"},\"id\":\"xiidloped\",\"name\":\"wdpyq\",\"type\":\"ybxubmdna\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class VirtualMachinesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VirtualMachine> response
-            = manager.virtualMachines().list("ecvo", "ygzyvneezaifght", "oqqtl", com.azure.core.util.Context.NONE);
+            = manager.virtualMachines().list("lrrcz", "zkhhltnjadhqo", "wjqo", com.azure.core.util.Context.NONE);
 
     }
 }

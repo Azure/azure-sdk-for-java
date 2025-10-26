@@ -232,7 +232,7 @@ public final class QueueServiceSasSignatureValues {
      * Gets the name of the access policy on the queue this SAS references if any.
      *
      * @return the name of the access policy on the queue this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      * @deprecated Please use {@link #getIdentifier()}
      */
@@ -245,7 +245,7 @@ public final class QueueServiceSasSignatureValues {
      * Sets the name of the access policy on the queue this SAS references if any.
      *
      * @return the name of the access policy on the queue this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {
@@ -254,7 +254,7 @@ public final class QueueServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the queue this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      *
      * @param identifier Name of the access policy

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -63,6 +64,7 @@ import reactor.core.publisher.Mono;
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2716,6 +2718,20 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         };
     }
 
+    @DataProvider(name = "tinyTimeoutOperationTypes")
+    public Object[][] tinyTimeoutOperationTypes() {
+        return new Object[][] {
+            { OperationType.Read, false },
+            { OperationType.Query, false },   // interpreted as queryItems (single query)
+            { OperationType.Query, true },   // interpreted as readMany (single query)
+            { OperationType.Create, false },
+            { OperationType.Replace, false },
+            { OperationType.Delete, false },
+            { OperationType.Patch, false },
+            { OperationType.Batch, false }
+        };
+    }
+
     @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "miscellaneousOpTestConfigsDirect", timeOut = 4 * TIMEOUT)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsDirect(
         String testId,
@@ -4096,6 +4112,131 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
          }
      }
 
+    /**
+     * Executes each listed operation type under a deliberately tiny (10 ms) end-to-end latency policy
+     * while a Gateway response delay fault (1s) is injected, asserting every operation times out with
+     * 408 / 20008 (CLIENT_OPERATION_TIMEOUT).
+     *
+     */
+    @Test(groups = { "circuit-breaker-misc-gateway" }, dataProvider = "tinyTimeoutOperationTypes", timeOut = 2 * TIMEOUT)
+    public void validateHandlingOnNullPartitionKeyRangeOnSmallE2ETimeout_allOps(OperationType operationType, boolean isReadMany) {
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        // Tiny E2E timeout
+        CosmosEndToEndOperationLatencyPolicyConfig tinyTimeoutCfg =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofMillis(5)).build();
+
+        try (CosmosAsyncClient tinyTimeoutClient =
+                 getClientBuilder()
+                     .buildAsyncClient()) {
+
+            CosmosAsyncContainer container = tinyTimeoutClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            // Seed item where required (Create doesn't need pre-existing, but harmless if present)
+            TestObject baseItem = TestObject.create(); // id == pk
+
+            CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(tinyTimeoutCfg);
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(tinyTimeoutCfg);
+            CosmosReadManyRequestOptions readManyRequestOptions = new CosmosReadManyRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(tinyTimeoutCfg);
+            CosmosItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(tinyTimeoutCfg);
+
+            FaultInjectionRuleParamsWrapper paramsWrapper = new FaultInjectionRuleParamsWrapper()
+                .withFaultInjectionOperationType(FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES)
+                .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                .withFaultInjectionConnectionType(FaultInjectionConnectionType.GATEWAY)
+                .withResponseDelay(Duration.ofSeconds(1))          // far beyond 10 ms e2e timeout
+                .withFaultInjectionDuration(Duration.ofSeconds(5))
+                .withHitLimit(1);
+
+            List<FaultInjectionRule> rules = buildGwConnectionDelayInjectionRulesNotScopedToOpType(paramsWrapper);
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, rules).block();
+
+            // Execute operation & assert timeout
+            try {
+                switch (operationType) {
+                    case Read:
+                        container.readItem(baseItem.getId(), new PartitionKey(baseItem.getId()), itemRequestOptions, TestObject.class)
+                            .block();
+                        break;
+                    case Query:
+
+                        if (isReadMany) {
+
+                            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(baseItem.getId()), baseItem.getId());
+                            container.readMany(Arrays.asList(cosmosItemIdentity, cosmosItemIdentity), readManyRequestOptions, TestObject.class)
+                                .block();
+                        } else {
+                            container.queryItems("SELECT * FROM c WHERE c.id = '" + baseItem.getId() + "'",
+                                    queryRequestOptions, TestObject.class)
+                                .collectList()
+                                .block();
+                        }
+
+                        break;
+                    case Create:
+                        container.createItem(TestObject.create(),
+                            new PartitionKey(baseItem.getId()),
+                            itemRequestOptions).block();
+                        break;
+                    case Replace: {
+                        // Simple replace: modify a property
+                        baseItem.setStringProp("updated-" + baseItem.getId());
+                        container.replaceItem(baseItem, baseItem.getId(), new PartitionKey(baseItem.getId()), itemRequestOptions).block();
+                        break;
+                    }
+                    case Delete:
+                        container.deleteItem(baseItem, itemRequestOptions).block();
+                        break;
+                    case Patch: {
+                        CosmosPatchOperations ops = CosmosPatchOperations.create().add("/patched", "v1");
+                        container.patchItem(baseItem.getId(), new PartitionKey(baseItem.getId()), ops, (CosmosPatchItemRequestOptions) patchItemRequestOptions, TestObject.class).block();
+                        break;
+                    }
+
+                    // todo: utilize e2e timeout on CosmosBatchItemRequestOptions when available
+                    case Batch: {
+                        try (CosmosAsyncClient backupClient = getClientBuilder().endToEndOperationLatencyPolicyConfig(tinyTimeoutCfg).buildAsyncClient()) {
+                            CosmosAsyncContainer backupContainer = backupClient
+                                .getDatabase(this.sharedAsyncDatabaseId)
+                                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+                            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(baseItem.getId()));
+                            batch.readItemOperation(baseItem.getId());
+                            batch.upsertItemOperation(TestObject.create());
+                            backupContainer.executeCosmosBatch(batch).block();
+                        }
+
+                        break;
+                    }
+                    default:
+                        fail("Unsupported operation type in test: " + operationType);
+                }
+                fail("Expected a CosmosException (408/20008) for operationType=" + operationType);
+            } catch (CosmosException ce) {
+                assertThat(ce.getStatusCode())
+                    .as("Status should be 408 for operationType=" + operationType)
+                    .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(ce.getSubStatusCode())
+                    .as("Substatus should be 20008 (CLIENT_OPERATION_TIMEOUT) for operationType=" + operationType)
+                    .isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+            } finally {
+                System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            }
+        }
+    }
+
     private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(FaultInjectionOperationType faultInjectionOperationType) {
 
         switch (faultInjectionOperationType) {
@@ -4730,6 +4871,46 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(paramsWrapper.getResponseDelay())
+            .suppressServiceRequests(true)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
+                .connectionType(FaultInjectionConnectionType.GATEWAY)
+                .region(applicableRegion);
+
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("response-delay-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult);
+
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildGwConnectionDelayInjectionRulesNotScopedToOpType(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
             .delay(paramsWrapper.getResponseDelay())
             .suppressServiceRequests(false)
             .build();

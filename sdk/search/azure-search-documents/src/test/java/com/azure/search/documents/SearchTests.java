@@ -5,11 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
-import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -190,9 +189,9 @@ public class SearchTests extends SearchTestBase {
             = hotels.stream().collect(Collectors.toMap(h -> h.get("HotelId").toString(), Function.identity()));
 
         for (SearchPagedResponse response : client.search("*").iterableByPage()) {
-            assertNull(SearchPagedResponseAccessHelper.getCount(response));
-            assertNull(SearchPagedResponseAccessHelper.getCoverage(response));
-            assertNull(SearchPagedResponseAccessHelper.getFacets(response));
+            assertNull(response.getCount());
+            assertNull(response.getCoverage());
+            assertNull(response.getFacets());
 
             response.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
@@ -218,9 +217,9 @@ public class SearchTests extends SearchTestBase {
             = hotels.stream().collect(Collectors.toMap(h -> h.get("HotelId").toString(), Function.identity()));
 
         StepVerifier.create(asyncClient.search("*").byPage()).thenConsumeWhile(response -> {
-            assertNull(SearchPagedResponseAccessHelper.getCount(response));
-            assertNull(SearchPagedResponseAccessHelper.getCoverage(response));
-            assertNull(SearchPagedResponseAccessHelper.getFacets(response));
+            assertNull(response.getCount());
+            assertNull(response.getCoverage());
+            assertNull(response.getFacets());
 
             response.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
@@ -357,9 +356,9 @@ public class SearchTests extends SearchTestBase {
             .collect(Collectors.toMap(Hotel::hotelId, Function.identity()));
 
         for (SearchPagedResponse response : client.search("*", new SearchOptions(), Context.NONE).iterableByPage()) {
-            assertNull(SearchPagedResponseAccessHelper.getCount(response));
-            assertNull(SearchPagedResponseAccessHelper.getCoverage(response));
-            assertNull(SearchPagedResponseAccessHelper.getFacets(response));
+            assertNull(response.getCount());
+            assertNull(response.getCoverage());
+            assertNull(response.getFacets());
 
             response.getElements().forEach(sr -> {
                 assertEquals(1, sr.getScore(), 0);
@@ -385,9 +384,9 @@ public class SearchTests extends SearchTestBase {
             .collect(Collectors.toMap(Hotel::hotelId, Function.identity()));
 
         StepVerifier.create(asyncClient.search("*", new SearchOptions()).byPage()).thenConsumeWhile(response -> {
-            assertNull(SearchPagedResponseAccessHelper.getCount(response));
-            assertNull(SearchPagedResponseAccessHelper.getCoverage(response));
-            assertNull(SearchPagedResponseAccessHelper.getFacets(response));
+            assertNull(response.getCount());
+            assertNull(response.getCoverage());
+            assertNull(response.getFacets());
 
             response.getElements().forEach(sr -> {
                 assertEquals(1, sr.getScore(), 0);
@@ -722,7 +721,7 @@ public class SearchTests extends SearchTestBase {
 
         for (SearchPagedResponse response : client.search("*", getSearchOptionsForRangeFacets(), Context.NONE)
             .iterableByPage()) {
-            Map<String, List<FacetResult>> facets = SearchPagedResponseAccessHelper.getFacets(response);
+            Map<String, List<FacetResult>> facets = response.getFacets();
             assertNotNull(facets);
 
             List<RangeFacetResult<String>> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
@@ -745,7 +744,7 @@ public class SearchTests extends SearchTestBase {
 
         StepVerifier.create(asyncClient.search("*", getSearchOptionsForRangeFacets()).byPage())
             .thenConsumeWhile(response -> {
-                Map<String, List<FacetResult>> facets = SearchPagedResponseAccessHelper.getFacets(response);
+                Map<String, List<FacetResult>> facets = response.getFacets();
                 assertNotNull(facets);
 
                 List<RangeFacetResult<String>> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
@@ -768,7 +767,7 @@ public class SearchTests extends SearchTestBase {
 
         for (SearchPagedResponse response : client.search("*", getSearchOptionsForValueFacets(), Context.NONE)
             .iterableByPage()) {
-            Map<String, List<FacetResult>> facets = SearchPagedResponseAccessHelper.getFacets(response);
+            Map<String, List<FacetResult>> facets = response.getFacets();
             assertNotNull(facets);
 
             canSearchWithValueFacetsValidateResponse(response, hotels, facets);
@@ -783,7 +782,7 @@ public class SearchTests extends SearchTestBase {
 
         StepVerifier.create(asyncClient.search("*", getSearchOptionsForValueFacets()).byPage())
             .thenConsumeWhile(response -> {
-                Map<String, List<FacetResult>> facets = SearchPagedResponseAccessHelper.getFacets(response);
+                Map<String, List<FacetResult>> facets = response.getFacets();
                 assertNotNull(facets);
 
                 canSearchWithValueFacetsValidateResponse(response, hotels, facets);
@@ -928,11 +927,11 @@ public class SearchTests extends SearchTestBase {
 
         SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalCount(true), Context.NONE);
         assertNotNull(results);
-        assertEquals(hotels.size(), results.getTotalCount().intValue());
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
+        SearchPagedResponse page = iterator.next();
+        assertEquals(hotels.size(), page.getCount().intValue());
 
-        assertNotNull(iterator.next());
         assertFalse(iterator.hasNext());
     }
 
@@ -942,7 +941,7 @@ public class SearchTests extends SearchTestBase {
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
 
         StepVerifier.create(asyncClient.search("*", new SearchOptions().setIncludeTotalCount(true)).byPage())
-            .assertNext(response -> assertEquals(hotels.size(), SearchPagedResponseAccessHelper.getCount(response)))
+            .assertNext(response -> assertEquals(hotels.size(), response.getCount()))
             .verifyComplete();
     }
 
@@ -1108,7 +1107,7 @@ public class SearchTests extends SearchTestBase {
             .iterator()
             .next();
 
-        assertEquals(100.0, SearchPagedResponseAccessHelper.getCoverage(response), 0);
+        assertEquals(100.0, response.getCoverage(), 0);
     }
 
     @Test
@@ -1116,7 +1115,7 @@ public class SearchTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         StepVerifier.create(asyncClient.search("*", new SearchOptions().setMinimumCoverage(50.0)).byPage())
-            .assertNext(response -> assertEquals(100.0, SearchPagedResponseAccessHelper.getCoverage(response)))
+            .assertNext(response -> assertEquals(100.0, response.getCoverage()))
             .verifyComplete();
     }
 
@@ -1142,7 +1141,7 @@ public class SearchTests extends SearchTestBase {
             assertEquals(1, documents.size());
 
             Map<String, List<String>> highlights = documents.get(0).getHighlights();
-            assertEquals(2, highlights.keySet().size());
+            assertEquals(2, highlights.size());
             assertTrue(highlights.containsKey(description));
             assertTrue(highlights.containsKey(category));
 
@@ -1176,7 +1175,7 @@ public class SearchTests extends SearchTestBase {
 
             assertEquals(1, documents.size());
             Map<String, List<String>> highlights = documents.get(0).getHighlights();
-            assertEquals(2, highlights.keySet().size());
+            assertEquals(2, highlights.size());
             assertTrue(highlights.containsKey(description));
             assertTrue(highlights.containsKey(category));
 

@@ -17,7 +17,7 @@ public final class HttpSettingsTests {
         HttpSettings model = BinaryData.fromString(
             "{\"requireHttps\":true,\"routes\":{\"apiPrefix\":\"chboosflnrosf\"},\"forwardProxy\":{\"convention\":\"Custom\",\"customHostHeaderName\":\"hzzvypyq\",\"customProtoHeaderName\":\"mzinpvswjdk\"}}")
             .toObject(HttpSettings.class);
-        Assertions.assertEquals(true, model.requireHttps());
+        Assertions.assertTrue(model.requireHttps());
         Assertions.assertEquals("chboosflnrosf", model.routes().apiPrefix());
         Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.forwardProxy().convention());
         Assertions.assertEquals("hzzvypyq", model.forwardProxy().customHostHeaderName());
@@ -32,7 +32,7 @@ public final class HttpSettingsTests {
                 .withCustomHostHeaderName("hzzvypyq")
                 .withCustomProtoHeaderName("mzinpvswjdk"));
         model = BinaryData.fromObject(model).toObject(HttpSettings.class);
-        Assertions.assertEquals(true, model.requireHttps());
+        Assertions.assertTrue(model.requireHttps());
         Assertions.assertEquals("chboosflnrosf", model.routes().apiPrefix());
         Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.forwardProxy().convention());
         Assertions.assertEquals("hzzvypyq", model.forwardProxy().customHostHeaderName());

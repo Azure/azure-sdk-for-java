@@ -202,7 +202,7 @@ public final class ProgrammableConnectivityMgmtClientImpl implements Programmabl
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-01-15-preview";
+        this.apiVersion = "2025-03-30-preview";
         this.operations = new OperationsClientImpl(this);
         this.gateways = new GatewaysClientImpl(this);
         this.operatorApiConnections = new OperatorApiConnectionsClientImpl(this);

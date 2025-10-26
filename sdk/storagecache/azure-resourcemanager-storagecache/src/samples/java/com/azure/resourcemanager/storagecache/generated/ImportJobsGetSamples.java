@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storagecache.generated;
 public final class ImportJobsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/importJobs_Get.json
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/importJobs_Get.json
      */
     /**
      * Sample code: importJobs_Get.

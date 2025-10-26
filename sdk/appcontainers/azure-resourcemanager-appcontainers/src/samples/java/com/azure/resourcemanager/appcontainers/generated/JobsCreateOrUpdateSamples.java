@@ -38,8 +38,8 @@ import java.util.Map;
  */
 public final class JobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_CreateorUpdate_EventTrigger.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * Job_CreateorUpdate_EventTrigger.json
      */
     /**
      * Sample code: Create or Update Container Apps Job With Event Driven Trigger.
@@ -85,7 +85,7 @@ public final class JobsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_CreateorUpdate.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Job_CreateorUpdate.json
      */
     /**
      * Sample code: Create or Update Container Apps Job.

@@ -14,22 +14,22 @@ public final class DynamicPoolConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicPoolConfiguration model = BinaryData.fromString(
-            "{\"lifecycleConfiguration\":{\"lifecycleType\":\"Timed\",\"cooldownPeriodInSeconds\":1523309198,\"maxAlivePeriodInSeconds\":1600818034}}")
+            "{\"lifecycleConfiguration\":{\"lifecycleType\":\"OnContainerExit\",\"cooldownPeriodInSeconds\":844827245,\"maxAlivePeriodInSeconds\":884050511}}")
             .toObject(DynamicPoolConfiguration.class);
-        Assertions.assertEquals(LifecycleType.TIMED, model.lifecycleConfiguration().lifecycleType());
-        Assertions.assertEquals(1523309198, model.lifecycleConfiguration().cooldownPeriodInSeconds());
-        Assertions.assertEquals(1600818034, model.lifecycleConfiguration().maxAlivePeriodInSeconds());
+        Assertions.assertEquals(LifecycleType.ON_CONTAINER_EXIT, model.lifecycleConfiguration().lifecycleType());
+        Assertions.assertEquals(844827245, model.lifecycleConfiguration().cooldownPeriodInSeconds());
+        Assertions.assertEquals(884050511, model.lifecycleConfiguration().maxAlivePeriodInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicPoolConfiguration model = new DynamicPoolConfiguration()
-            .withLifecycleConfiguration(new LifecycleConfiguration().withLifecycleType(LifecycleType.TIMED)
-                .withCooldownPeriodInSeconds(1523309198)
-                .withMaxAlivePeriodInSeconds(1600818034));
+            .withLifecycleConfiguration(new LifecycleConfiguration().withLifecycleType(LifecycleType.ON_CONTAINER_EXIT)
+                .withCooldownPeriodInSeconds(844827245)
+                .withMaxAlivePeriodInSeconds(884050511));
         model = BinaryData.fromObject(model).toObject(DynamicPoolConfiguration.class);
-        Assertions.assertEquals(LifecycleType.TIMED, model.lifecycleConfiguration().lifecycleType());
-        Assertions.assertEquals(1523309198, model.lifecycleConfiguration().cooldownPeriodInSeconds());
-        Assertions.assertEquals(1600818034, model.lifecycleConfiguration().maxAlivePeriodInSeconds());
+        Assertions.assertEquals(LifecycleType.ON_CONTAINER_EXIT, model.lifecycleConfiguration().lifecycleType());
+        Assertions.assertEquals(844827245, model.lifecycleConfiguration().cooldownPeriodInSeconds());
+        Assertions.assertEquals(884050511, model.lifecycleConfiguration().maxAlivePeriodInSeconds());
     }
 }

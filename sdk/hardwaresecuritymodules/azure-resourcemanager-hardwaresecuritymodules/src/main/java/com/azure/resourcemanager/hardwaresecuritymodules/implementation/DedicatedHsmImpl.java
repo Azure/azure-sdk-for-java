@@ -46,6 +46,10 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         }
     }
 
+    public DedicatedHsmProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public Sku sku() {
         return this.innerModel().sku();
     }
@@ -57,10 +61,6 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public DedicatedHsmProperties properties() {
-        return this.innerModel().properties();
     }
 
     public SystemData systemData() {
@@ -172,13 +172,13 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         return this;
     }
 
-    public DedicatedHsmImpl withSku(Sku sku) {
-        this.innerModel().withSku(sku);
+    public DedicatedHsmImpl withProperties(DedicatedHsmProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public DedicatedHsmImpl withProperties(DedicatedHsmProperties properties) {
-        this.innerModel().withProperties(properties);
+    public DedicatedHsmImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 

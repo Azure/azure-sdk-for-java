@@ -120,7 +120,7 @@ public class AzureAppConfigDataLocationResolver
 
         for (ConfigStore store : properties.getStores()) {
             locations.add(
-                new AzureAppConfigDataResource(store, profiles, START_UP.get(), properties.getRefreshInterval()));
+                new AzureAppConfigDataResource(properties.isEnabled(), store, profiles, START_UP.get(), properties.getRefreshInterval()));
         }
         START_UP.set(false);
         return locations;
@@ -142,6 +142,7 @@ public class AzureAppConfigDataLocationResolver
         ReplicaLookUp replicaLookup = null;
         try {
             replicaLookup = new ReplicaLookUp(properties);
+            replicaLookup.updateAutoFailoverEndpoints();
             context.getBootstrapContext().registerIfAbsent(ReplicaLookUp.class, InstanceSupplier.of(replicaLookup));
         } catch (NamingException e) {
             LOGGER.info("Failed to find DNS Entry for config store while looking for replicas.");

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/List_Operations.json
+     * x-ms-original-file: 2025-10-01/List_Operations.json
      */
     /**
      * Sample code: List_Operations.

@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
@@ -1067,22 +1066,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkInner>> getWithResponseAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1120,24 +1103,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkInner> getWithResponse(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, privateCloudName, accept, context);
@@ -1172,22 +1137,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1225,24 +1174,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
@@ -1264,24 +1195,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkInner> listSinglePage(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
@@ -1337,22 +1250,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDhcpInner>> listDhcpSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDhcp(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1391,24 +1288,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDhcpInner> listDhcpSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDhcpList> res
             = service.listDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1431,24 +1310,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDhcpInner> listDhcpSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDhcpList> res
             = service.listDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1505,25 +1366,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDhcpInner>> getDhcpWithResponseAsync(String resourceGroupName, String dhcpId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDhcp(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1564,28 +1406,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkDhcpInner> getDhcpWithResponse(String resourceGroupName, String dhcpId,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, dhcpId, privateCloudName, accept, context);
@@ -1622,31 +1442,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDhcpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1671,34 +1466,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1722,34 +1489,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1897,31 +1636,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDhcpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1946,34 +1660,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1997,34 +1683,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
-        if (workloadNetworkDhcp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDhcp is required and cannot be null."));
-        } else {
-            workloadNetworkDhcp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2171,25 +1829,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDhcpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dhcpId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deleteDhcp(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, context))
@@ -2210,28 +1849,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
         return service.deleteDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, Context.NONE);
     }
@@ -2251,28 +1868,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDhcpWithResponse(String resourceGroupName, String privateCloudName,
         String dhcpId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dhcpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dhcpId is required and cannot be null."));
-        }
         return service.deleteDhcpSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dhcpId, context);
     }
@@ -2396,22 +1991,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsServiceInner>> listDnsServicesSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDnsServices(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2451,24 +2030,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsServiceInner> listDnsServicesSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsServicesList> res
             = service.listDnsServicesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2491,24 +2052,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsServiceInner> listDnsServicesSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsServicesList> res
             = service.listDnsServicesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2568,25 +2111,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDnsServiceInner>> getDnsServiceWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dnsServiceId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDnsService(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2627,28 +2151,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkDnsServiceInner> getDnsServiceWithResponse(String resourceGroupName,
         String privateCloudName, String dnsServiceId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsServiceId, accept, context);
@@ -2686,31 +2188,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDnsServiceWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2735,35 +2212,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDnsServiceWithResponse(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2787,35 +2235,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDnsServiceWithResponse(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2965,31 +2384,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDnsServiceWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3014,35 +2408,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDnsServiceWithResponse(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3066,35 +2431,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDnsServiceWithResponse(String resourceGroupName, String privateCloudName,
         String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsService == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkDnsService is required and cannot be null."));
-        } else {
-            workloadNetworkDnsService.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3243,25 +2579,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDnsServiceWithResponseAsync(String resourceGroupName,
         String dnsServiceId, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deleteDnsService(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, context))
@@ -3282,28 +2599,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDnsServiceWithResponse(String resourceGroupName, String dnsServiceId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
     }
@@ -3323,28 +2618,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDnsServiceWithResponse(String resourceGroupName, String dnsServiceId,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsServiceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsServiceId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteDnsServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, dnsServiceId, privateCloudName, context);
     }
@@ -3470,22 +2743,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsZoneInner>> listDnsZonesSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDnsZones(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3525,24 +2782,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsZoneInner> listDnsZonesSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsZonesList> res
             = service.listDnsZonesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3565,24 +2804,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsZoneInner> listDnsZonesSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsZonesList> res
             = service.listDnsZonesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3639,25 +2860,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkDnsZoneInner>> getDnsZoneWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dnsZoneId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDnsZone(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3698,28 +2900,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkDnsZoneInner> getDnsZoneWithResponse(String resourceGroupName,
         String privateCloudName, String dnsZoneId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, dnsZoneId, accept, context);
@@ -3756,31 +2936,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createDnsZoneWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3805,34 +2960,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3856,34 +2983,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4032,31 +3131,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateDnsZoneWithResponseAsync(String resourceGroupName,
         String privateCloudName, String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4081,34 +3155,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4132,34 +3178,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
         String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (workloadNetworkDnsZone == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkDnsZone is required and cannot be null."));
-        } else {
-            workloadNetworkDnsZone.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4307,25 +3325,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteDnsZoneWithResponseAsync(String resourceGroupName, String dnsZoneId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deleteDnsZone(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, context))
@@ -4346,28 +3345,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDnsZoneWithResponse(String resourceGroupName, String dnsZoneId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
     }
@@ -4387,28 +3364,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteDnsZoneWithResponse(String resourceGroupName, String dnsZoneId,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsZoneId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsZoneId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteDnsZoneSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, dnsZoneId, privateCloudName, context);
     }
@@ -4533,22 +3488,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkGatewayInner>> listGatewaysSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listGateways(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4588,24 +3527,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkGatewayInner> listGatewaysSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkGatewayList> res
             = service.listGatewaysSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4628,24 +3549,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkGatewayInner> listGatewaysSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkGatewayList> res
             = service.listGatewaysSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4702,25 +3605,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkGatewayInner>> getGatewayWithResponseAsync(String resourceGroupName,
         String privateCloudName, String gatewayId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (gatewayId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getGateway(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4761,28 +3645,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkGatewayInner> getGatewayWithResponse(String resourceGroupName,
         String privateCloudName, String gatewayId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (gatewayId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter gatewayId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getGatewaySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, gatewayId, accept, context);
@@ -4818,22 +3680,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>>
         listPortMirroringSinglePageAsync(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPortMirroring(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4874,24 +3720,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPortMirroringInner> listPortMirroringSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPortMirroringList> res
             = service.listPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4914,24 +3742,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPortMirroringInner> listPortMirroringSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPortMirroringList> res
             = service.listPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -4991,26 +3801,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkPortMirroringInner>>
         getPortMirroringWithResponseAsync(String resourceGroupName, String privateCloudName, String portMirroringId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPortMirroring(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5051,28 +3841,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkPortMirroringInner> getPortMirroringWithResponse(String resourceGroupName,
         String privateCloudName, String portMirroringId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, portMirroringId, accept, context);
@@ -5112,32 +3880,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     private Mono<Response<Flux<ByteBuffer>>> createPortMirroringWithResponseAsync(String resourceGroupName,
         String privateCloudName, String portMirroringId,
         WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -5162,35 +3904,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createPortMirroringWithResponse(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5214,35 +3927,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createPortMirroringWithResponse(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createPortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5393,32 +4077,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     private Mono<Response<Flux<ByteBuffer>>> updatePortMirroringWithResponseAsync(String resourceGroupName,
         String privateCloudName, String portMirroringId,
         WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -5443,35 +4101,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updatePortMirroringWithResponse(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updatePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5495,35 +4124,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updatePortMirroringWithResponse(String resourceGroupName, String privateCloudName,
         String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (workloadNetworkPortMirroring == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter workloadNetworkPortMirroring is required and cannot be null."));
-        } else {
-            workloadNetworkPortMirroring.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updatePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5672,26 +4272,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePortMirroringWithResponseAsync(String resourceGroupName,
         String portMirroringId, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deletePortMirroring(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, context))
@@ -5712,28 +4292,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePortMirroringWithResponse(String resourceGroupName, String portMirroringId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deletePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
     }
@@ -5753,28 +4311,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePortMirroringWithResponse(String resourceGroupName, String portMirroringId,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (portMirroringId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter portMirroringId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deletePortMirroringSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, portMirroringId, privateCloudName, context);
     }
@@ -5902,22 +4438,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPublicIpInner>> listPublicIPsSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPublicIPs(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5957,24 +4477,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPublicIpInner> listPublicIPsSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPublicIPsList> res
             = service.listPublicIPsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -5997,24 +4499,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPublicIpInner> listPublicIPsSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPublicIPsList> res
             = service.listPublicIPsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6074,25 +4558,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String publicIPId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (publicIPId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publicIPId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6133,28 +4598,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkPublicIpInner> getPublicIpWithResponse(String resourceGroupName,
         String privateCloudName, String publicIPId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (publicIPId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIPId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getPublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, accept, context);
@@ -6192,31 +4635,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createPublicIpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (publicIPId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publicIPId is required and cannot be null."));
-        }
-        if (workloadNetworkPublicIp == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkPublicIp is required and cannot be null."));
-        } else {
-            workloadNetworkPublicIp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -6241,34 +4659,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createPublicIpWithResponse(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (publicIPId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIPId is required and cannot be null."));
-        }
-        if (workloadNetworkPublicIp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkPublicIp is required and cannot be null."));
-        } else {
-            workloadNetworkPublicIp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createPublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6292,34 +4682,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createPublicIpWithResponse(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (publicIPId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIPId is required and cannot be null."));
-        }
-        if (workloadNetworkPublicIp == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkPublicIp is required and cannot be null."));
-        } else {
-            workloadNetworkPublicIp.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createPublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6467,25 +4829,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePublicIpWithResponseAsync(String resourceGroupName,
         String publicIpId, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicIpId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publicIpId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deletePublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, context))
@@ -6506,28 +4849,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePublicIpWithResponse(String resourceGroupName, String publicIpId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicIpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIpId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deletePublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, Context.NONE);
     }
@@ -6547,28 +4868,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deletePublicIpWithResponse(String resourceGroupName, String publicIpId,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicIpId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter publicIpId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deletePublicIpSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicIpId, privateCloudName, context);
     }
@@ -6693,22 +4992,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkSegmentInner>> listSegmentsSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSegments(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6748,24 +5031,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkSegmentInner> listSegmentsSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkSegmentsList> res
             = service.listSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6788,24 +5053,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkSegmentInner> listSegmentsSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkSegmentsList> res
             = service.listSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6862,25 +5109,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkSegmentInner>> getSegmentWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSegment(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -6921,28 +5149,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkSegmentInner> getSegmentWithResponse(String resourceGroupName,
         String privateCloudName, String segmentId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSegmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, context);
@@ -6979,31 +5185,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createSegmentsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -7028,34 +5209,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createSegmentsWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7079,34 +5232,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createSegmentsWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7255,31 +5380,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateSegmentsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -7304,34 +5404,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateSegmentsWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7355,34 +5427,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateSegmentsWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
-        if (workloadNetworkSegment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkSegment is required and cannot be null."));
-        } else {
-            workloadNetworkSegment.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSegmentsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7530,25 +5574,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteSegmentWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deleteSegment(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, context))
@@ -7569,28 +5594,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteSegmentWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
         return service.deleteSegmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, Context.NONE);
     }
@@ -7610,28 +5613,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteSegmentWithResponse(String resourceGroupName, String privateCloudName,
         String segmentId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (segmentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter segmentId is required and cannot be null."));
-        }
         return service.deleteSegmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, context);
     }
@@ -7756,22 +5737,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVirtualMachineInner>>
         listVirtualMachinesSinglePageAsync(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVirtualMachines(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7812,24 +5777,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVirtualMachineInner> listVirtualMachinesSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVirtualMachinesList> res
             = service.listVirtualMachinesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7852,24 +5799,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVirtualMachineInner> listVirtualMachinesSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVirtualMachinesList> res
             = service.listVirtualMachinesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7929,26 +5858,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkVirtualMachineInner>>
         getVirtualMachineWithResponseAsync(String resourceGroupName, String privateCloudName, String virtualMachineId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVirtualMachine(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -7990,28 +5899,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkVirtualMachineInner> getVirtualMachineWithResponse(String resourceGroupName,
         String privateCloudName, String virtualMachineId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (virtualMachineId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter virtualMachineId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getVirtualMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, virtualMachineId, accept, context);
@@ -8049,22 +5936,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVMGroupInner>> listVMGroupsSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVMGroups(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8104,24 +5975,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVMGroupInner> listVMGroupsSinglePage(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVMGroupsList> res
             = service.listVMGroupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8144,24 +5997,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVMGroupInner> listVMGroupsSinglePage(String resourceGroupName,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVMGroupsList> res
             = service.listVMGroupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8218,25 +6053,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadNetworkVMGroupInner>> getVMGroupWithResponseAsync(String resourceGroupName,
         String privateCloudName, String vmGroupId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVMGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8277,28 +6093,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadNetworkVMGroupInner> getVMGroupWithResponse(String resourceGroupName,
         String privateCloudName, String vmGroupId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, vmGroupId, accept, context);
@@ -8335,31 +6129,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createVMGroupWithResponseAsync(String resourceGroupName,
         String privateCloudName, String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -8384,34 +6153,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVMGroupWithResponse(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8435,34 +6176,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createVMGroupWithResponse(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8611,31 +6324,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateVMGroupWithResponseAsync(String resourceGroupName,
         String privateCloudName, String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -8660,34 +6348,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateVMGroupWithResponse(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8711,34 +6371,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateVMGroupWithResponse(String resourceGroupName, String privateCloudName,
         String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (workloadNetworkVMGroup == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workloadNetworkVMGroup is required and cannot be null."));
-        } else {
-            workloadNetworkVMGroup.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -8886,25 +6518,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteVMGroupWithResponseAsync(String resourceGroupName, String vmGroupId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.deleteVMGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, context))
@@ -8925,28 +6538,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteVMGroupWithResponse(String resourceGroupName, String vmGroupId,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
     }
@@ -8966,28 +6557,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteVMGroupWithResponse(String resourceGroupName, String vmGroupId,
         String privateCloudName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmGroupId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vmGroupId is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         return service.deleteVMGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, vmGroupId, privateCloudName, context);
     }
@@ -9110,13 +6679,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<WorkloadNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -9135,15 +6697,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9163,15 +6716,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -9190,13 +6734,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDhcpInner>> listDhcpNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDhcpNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9216,15 +6753,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDhcpInner> listDhcpNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDhcpList> res
             = service.listDhcpNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9244,15 +6772,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDhcpInner> listDhcpNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDhcpList> res
             = service.listDhcpNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9272,13 +6791,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsServiceInner>> listDnsServicesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDnsServicesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9298,15 +6810,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsServiceInner> listDnsServicesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsServicesList> res
             = service.listDnsServicesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9327,15 +6830,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsServiceInner> listDnsServicesNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsServicesList> res
             = service.listDnsServicesNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9355,13 +6849,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkDnsZoneInner>> listDnsZonesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDnsZonesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9381,15 +6868,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsZoneInner> listDnsZonesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsZonesList> res
             = service.listDnsZonesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9409,15 +6887,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkDnsZoneInner> listDnsZonesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkDnsZonesList> res
             = service.listDnsZonesNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9437,13 +6906,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkGatewayInner>> listGatewaysNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listGatewaysNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9463,15 +6925,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkGatewayInner> listGatewaysNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkGatewayList> res
             = service.listGatewaysNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9491,15 +6944,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkGatewayInner> listGatewaysNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkGatewayList> res
             = service.listGatewaysNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9520,13 +6964,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>>
         listPortMirroringNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPortMirroringNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9546,15 +6983,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPortMirroringInner> listPortMirroringNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPortMirroringList> res
             = service.listPortMirroringNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9575,15 +7003,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPortMirroringInner> listPortMirroringNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPortMirroringList> res
             = service.listPortMirroringNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9603,13 +7022,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkPublicIpInner>> listPublicIPsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPublicIPsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9629,15 +7041,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPublicIpInner> listPublicIPsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPublicIPsList> res
             = service.listPublicIPsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9657,15 +7060,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkPublicIpInner> listPublicIPsNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkPublicIPsList> res
             = service.listPublicIPsNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9685,13 +7079,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkSegmentInner>> listSegmentsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSegmentsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9711,15 +7098,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkSegmentInner> listSegmentsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkSegmentsList> res
             = service.listSegmentsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9739,15 +7117,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkSegmentInner> listSegmentsNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkSegmentsList> res
             = service.listSegmentsNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9768,13 +7137,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVirtualMachineInner>>
         listVirtualMachinesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -9795,15 +7157,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVirtualMachineInner> listVirtualMachinesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVirtualMachinesList> res
             = service.listVirtualMachinesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9824,15 +7177,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVirtualMachineInner> listVirtualMachinesNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVirtualMachinesList> res
             = service.listVirtualMachinesNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -9852,13 +7196,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadNetworkVMGroupInner>> listVMGroupsNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVMGroupsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -9878,15 +7215,6 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVMGroupInner> listVMGroupsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVMGroupsList> res
             = service.listVMGroupsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -9906,21 +7234,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadNetworkVMGroupInner> listVMGroupsNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<WorkloadNetworkVMGroupsList> res
             = service.listVMGroupsNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WorkloadNetworksClientImpl.class);
 }

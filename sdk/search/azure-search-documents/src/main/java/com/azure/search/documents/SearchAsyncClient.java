@@ -1069,12 +1069,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * searchPagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
@@ -1126,12 +1122,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * searchPagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
@@ -1186,12 +1178,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * pagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
@@ -1244,12 +1232,8 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * pagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
-     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *             return true;
-     *         &#125;
-     *
-     *         return false;
+     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
      *     &#125;&#41;
      *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
@@ -1293,9 +1277,6 @@ public final class SearchAsyncClient {
 
     private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
         SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
-        }
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
@@ -1304,13 +1285,7 @@ public final class SearchAsyncClient {
             .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
-                SearchDocumentsResult result = response.getValue();
-
-                SearchPagedResponse page
-                    = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                        createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                        result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                        result.getSemanticPartialResponseType());
+                SearchPagedResponse page = mapToSearchPagedResponse(response, serializer, serviceVersion);
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1328,6 +1303,16 @@ public final class SearchAsyncClient {
     static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
+    }
+
+    static SearchPagedResponse mapToSearchPagedResponse(Response<SearchDocumentsResult> response,
+        JsonSerializer serializer, SearchServiceVersion serviceVersion) {
+        SearchDocumentsResult result = response.getValue();
+        return new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
+            createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+            result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+            result.getSemanticPartialResponseType(), result.getDebugInfo(),
+            result.getSemanticQueryRewritesResultType());
     }
 
     /**
@@ -1518,7 +1503,7 @@ public final class SearchAsyncClient {
             .setTop(options.getTop())
             .setQueryLanguage(options.getQueryLanguage())
             .setSpeller(options.getSpeller())
-            .setDebug(options.getDebug());
+            .setDebug(options.getDebugMode());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {

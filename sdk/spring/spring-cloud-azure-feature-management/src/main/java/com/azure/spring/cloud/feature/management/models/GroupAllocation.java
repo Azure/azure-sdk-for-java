@@ -45,9 +45,11 @@ public class GroupAllocation {
      * This should match a valid variant name defined in the feature flag configuration.
      * 
      * @param variant the variant name to assign to the groups
+     * @return the updated GroupAllocation object
      */
-    public void setVariant(String variant) {
+    public GroupAllocation setVariant(String variant) {
         this.variant = variant;
+        return this;
     }
 
     /**
@@ -67,9 +69,11 @@ public class GroupAllocation {
      * this variant during feature flag evaluation.
      * 
      * @param groups the list of group identifiers to associate with this variant
+     * @return the updated GroupAllocation object
      */
-    public void setGroups(List<String> groups) {
+    public GroupAllocation setGroups(List<String> groups) {
         this.groups = groups;
+        return this;
     }
 
 }

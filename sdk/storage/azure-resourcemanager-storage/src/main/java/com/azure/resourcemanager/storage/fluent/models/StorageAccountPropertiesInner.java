@@ -16,8 +16,10 @@ import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DnsEndpointType;
+import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
+import com.azure.resourcemanager.storage.models.GeoPriorityReplicationStatus;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyCreationTime;
@@ -183,6 +185,11 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
     private RoutingPreference routingPreference;
 
     /*
+     * Maintains information about the Internet protocol opted by the user.
+     */
+    private DualStackEndpointPreference dualStackEndpointPreference;
+
+    /*
      * Blob restore status
      */
     private BlobRestoreStatusInner blobRestoreStatus;
@@ -262,6 +269,11 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
      * If customer initiated account migration is in progress, the value will be true else it will be null.
      */
     private Boolean accountMigrationInProgress;
+
+    /*
+     * Status indicating whether Geo Priority Replication is enabled for the account.
+     */
+    private GeoPriorityReplicationStatus geoPriorityReplicationStatus;
 
     /**
      * Creates an instance of StorageAccountPropertiesInner class.
@@ -620,6 +632,29 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
     }
 
     /**
+     * Get the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @return the dualStackEndpointPreference value.
+     */
+    public DualStackEndpointPreference dualStackEndpointPreference() {
+        return this.dualStackEndpointPreference;
+    }
+
+    /**
+     * Set the dualStackEndpointPreference property: Maintains information about the Internet protocol opted by the
+     * user.
+     * 
+     * @param dualStackEndpointPreference the dualStackEndpointPreference value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner
+        withDualStackEndpointPreference(DualStackEndpointPreference dualStackEndpointPreference) {
+        this.dualStackEndpointPreference = dualStackEndpointPreference;
+        return this;
+    }
+
+    /**
      * Get the blobRestoreStatus property: Blob restore status.
      * 
      * @return the blobRestoreStatus value.
@@ -901,6 +936,29 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
     }
 
     /**
+     * Get the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @return the geoPriorityReplicationStatus value.
+     */
+    public GeoPriorityReplicationStatus geoPriorityReplicationStatus() {
+        return this.geoPriorityReplicationStatus;
+    }
+
+    /**
+     * Set the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @param geoPriorityReplicationStatus the geoPriorityReplicationStatus value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner
+        withGeoPriorityReplicationStatus(GeoPriorityReplicationStatus geoPriorityReplicationStatus) {
+        this.geoPriorityReplicationStatus = geoPriorityReplicationStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -942,6 +1000,9 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
         if (routingPreference() != null) {
             routingPreference().validate();
         }
+        if (dualStackEndpointPreference() != null) {
+            dualStackEndpointPreference().validate();
+        }
         if (blobRestoreStatus() != null) {
             blobRestoreStatus().validate();
         }
@@ -950,6 +1011,9 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
         }
         if (storageAccountSkuConversionStatus() != null) {
             storageAccountSkuConversionStatus().validate();
+        }
+        if (geoPriorityReplicationStatus() != null) {
+            geoPriorityReplicationStatus().validate();
         }
     }
 
@@ -968,6 +1032,7 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
         jsonWriter.writeStringField("largeFileSharesState",
             this.largeFileSharesState == null ? null : this.largeFileSharesState.toString());
         jsonWriter.writeJsonField("routingPreference", this.routingPreference);
+        jsonWriter.writeJsonField("dualStackEndpointPreference", this.dualStackEndpointPreference);
         jsonWriter.writeBooleanField("allowBlobPublicAccess", this.allowBlobPublicAccess);
         jsonWriter.writeStringField("minimumTlsVersion",
             this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
@@ -983,6 +1048,7 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
         jsonWriter.writeJsonField("storageAccountSkuConversionStatus", this.storageAccountSkuConversionStatus);
         jsonWriter.writeStringField("dnsEndpointType",
             this.dnsEndpointType == null ? null : this.dnsEndpointType.toString());
+        jsonWriter.writeJsonField("geoPriorityReplicationStatus", this.geoPriorityReplicationStatus);
         return jsonWriter.writeEndObject();
     }
 
@@ -1071,6 +1137,9 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
                     deserializedStorageAccountPropertiesInner.privateEndpointConnections = privateEndpointConnections;
                 } else if ("routingPreference".equals(fieldName)) {
                     deserializedStorageAccountPropertiesInner.routingPreference = RoutingPreference.fromJson(reader);
+                } else if ("dualStackEndpointPreference".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.dualStackEndpointPreference
+                        = DualStackEndpointPreference.fromJson(reader);
                 } else if ("blobRestoreStatus".equals(fieldName)) {
                     deserializedStorageAccountPropertiesInner.blobRestoreStatus
                         = BlobRestoreStatusInner.fromJson(reader);
@@ -1112,6 +1181,9 @@ public final class StorageAccountPropertiesInner implements JsonSerializable<Sto
                 } else if ("accountMigrationInProgress".equals(fieldName)) {
                     deserializedStorageAccountPropertiesInner.accountMigrationInProgress
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("geoPriorityReplicationStatus".equals(fieldName)) {
+                    deserializedStorageAccountPropertiesInner.geoPriorityReplicationStatus
+                        = GeoPriorityReplicationStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

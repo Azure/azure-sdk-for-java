@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class JavaComponentServiceBindTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JavaComponentServiceBind model
-            = BinaryData.fromString("{\"name\":\"hahzvechndbnwi\",\"serviceId\":\"olewjwi\"}")
-                .toObject(JavaComponentServiceBind.class);
-        Assertions.assertEquals("hahzvechndbnwi", model.name());
-        Assertions.assertEquals("olewjwi", model.serviceId());
+        JavaComponentServiceBind model = BinaryData.fromString("{\"name\":\"lsismjqfrd\",\"serviceId\":\"amqu\"}")
+            .toObject(JavaComponentServiceBind.class);
+        Assertions.assertEquals("lsismjqfrd", model.name());
+        Assertions.assertEquals("amqu", model.serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaComponentServiceBind model
-            = new JavaComponentServiceBind().withName("hahzvechndbnwi").withServiceId("olewjwi");
+        JavaComponentServiceBind model = new JavaComponentServiceBind().withName("lsismjqfrd").withServiceId("amqu");
         model = BinaryData.fromObject(model).toObject(JavaComponentServiceBind.class);
-        Assertions.assertEquals("hahzvechndbnwi", model.name());
-        Assertions.assertEquals("olewjwi", model.serviceId());
+        Assertions.assertEquals("lsismjqfrd", model.name());
+        Assertions.assertEquals("amqu", model.serviceId());
     }
 }

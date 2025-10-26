@@ -1,6 +1,6 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
+## 12.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.31.0 (2025-10-21)
+
+### Features Added
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
+
+## 12.30.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
 ## 12.30.2 (2025-08-21)
 
@@ -19,7 +40,6 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 
-
 ## 12.30.1 (2025-07-29)
 
 ### Other Changes
@@ -28,7 +48,6 @@
 
 - Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
-
 
 ## 12.30.0 (2025-07-16)
 
@@ -44,7 +63,7 @@
 ## 12.31.0-beta.1 (2025-07-09)
 
 ### Features Added
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added support for service version 2025-11-05.
 
 ## 12.29.1 (2025-06-19)
@@ -162,7 +181,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
-
 ## 12.24.4 (2024-04-23)
 
 ### Other Changes
@@ -171,7 +189,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
-
 
 ## 12.25.0-beta.1 (2024-04-15)
 
@@ -190,7 +207,6 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
-
 ## 12.24.2 (2024-02-22)
 
 ### Other Changes
@@ -199,7 +215,6 @@
 
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
-
 
 ## 12.24.1 (2023-12-04)
 
@@ -545,7 +560,6 @@ server timeout interval elapses before the service has finished processing the r
 - Updated azure-core dependency.
 
 ## 12.7.0-beta.1 (2020-06-08)
-
 
 ## 12.6.1 (2020-05-06)
 - Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.

@@ -22,7 +22,7 @@ public final class PureStoragePoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"storagePolicyDefinition\":\"chkhufm\",\"storagePoolId\":\"qumq\",\"provisioningState\":\"Canceled\"},\"id\":\"dzulo\",\"name\":\"saeuzanhsfnhsenw\",\"type\":\"hpzfngqj\"}]}";
+            = "{\"value\":[{\"properties\":{\"storagePolicyDefinition\":\"ug\",\"storagePoolId\":\"nnfhyetefypo\",\"provisioningState\":\"Succeeded\"},\"id\":\"fjgtixrjvzuy\",\"name\":\"urmlmuo\",\"type\":\"olbauirop\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class PureStoragePoliciesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PureStoragePolicy> response
-            = manager.pureStoragePolicies().list("vw", "qcs", com.azure.core.util.Context.NONE);
+            = manager.pureStoragePolicies().list("llndnpd", "rpqaf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("chkhufm", response.iterator().next().properties().storagePolicyDefinition());
-        Assertions.assertEquals("qumq", response.iterator().next().properties().storagePoolId());
+        Assertions.assertEquals("ug", response.iterator().next().properties().storagePolicyDefinition());
+        Assertions.assertEquals("nnfhyetefypo", response.iterator().next().properties().storagePoolId());
     }
 }
