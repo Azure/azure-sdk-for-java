@@ -1,6 +1,6 @@
 # Azure EventGrid Namespaces client library for Java
 
-Azure Event Grid  allows you to easily build applications with event-based architectures. The Event Grid service fully manages all routing of events from any source, to any destination, for any application. Azure service events and custom events can be published directly to the service, where the events can then be filtered and sent to various recipients, such as built-in handlers or custom webhooks. To learn more about Azure Event Grid: [What is Event Grid?](https://learn.microsoft.com/azure/event-grid/overview)
+Azure Event Grid  allows you to easily build applications with event-based architectures. The Event Grid service fully manages all routing of events from any source, to any destination, for any application. Azure service events and custom events can be published directly to the service, where the events can then be filtered and sent to various recipients, such as built-in handlers or custom webhooks. To learn more about Azure Event Grid: [What is Event Grid?](https://docs.microsoft.com/azure/event-grid/overview)
 
 Use the client library for Azure Event Grid to:
 - Publish events to Event Grid topics using the Cloud Event schema
@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-namespaces</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.1.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -203,7 +203,7 @@ If you encounter any bugs with these SDKs, please file issues via [Issues](https
 
 ## Next steps
 
-- [Azure Java SDKs](https://learn.microsoft.com/java/azure/)
+- [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
 - If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
 ## Contributing
@@ -218,13 +218,13 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [product_documentation]: https://azure.microsoft.com/services/
-[cli]: https://learn.microsoft.com/cli/azure
+[cli]: https://docs.microsoft.com/cli/azure
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [portal]: https://ms.portal.azure.com/
-[service_docs]: https://learn.microsoft.com/azure/event-grid/
+[service_docs]: https://docs.microsoft.com/azure/event-grid/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-namespaces%2FREADME.png)

@@ -20,17 +20,16 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.data.appconfiguration.models.SettingLabelSelector;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedClass;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -51,34 +51,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ParameterizedClass
-@MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAsyncClientTest.class);
+
+    private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);
     private static final String NO_LABEL = null;
-
-    private final HttpClient httpClient;
-    private final ConfigurationServiceVersion serviceVersion;
-
     private ConfigurationAsyncClient client;
-
-    public ConfigurationAsyncClientTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        this.httpClient = httpClient;
-        this.serviceVersion = serviceVersion;
-    }
 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
     }
 
     @Override
     protected void afterTest() {
-        LOGGER.info("Cleaning up created key values.");
+        logger.info("Cleaning up created key values.");
         client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*"))
             .flatMap(configurationSetting -> {
-                LOGGER.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(),
+                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(),
                     configurationSetting.getLabel(), configurationSetting.isReadOnly());
                 Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly()
                     ? client.setReadOnlyWithResponse(configurationSetting, false)
@@ -87,7 +76,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             })
             .blockLast();
 
-        LOGGER.info("Finished cleaning up values.");
+        logger.info("Finished cleaning up values.");
     }
 
     private ConfigurationAsyncClient getConfigurationAsyncClient(HttpClient httpClient,
@@ -129,23 +118,30 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label
      * identifier.
      */
-    @Test
-    public void addConfigurationSetting() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
 
-    @Test
-    public void addConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addConfigurationSettingRunner((expected) -> StepVerifier.create(client.addConfigurationSetting(expected))
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete());
     }
 
-    @Test
-    public void addFeatureFlagConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addFeatureFlagConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
@@ -153,8 +149,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete());
     }
 
-    @Test
-    public void addSecretReferenceConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addSecretReferenceConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
@@ -165,8 +164,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
-    @Test
-    public void addConfigurationSettingEmptyKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addConfigurationSettingEmptyKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.addConfigurationSetting("", null, "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
@@ -174,8 +175,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we can add configuration settings when value is not null or an empty string.
      */
-    @Test
-    public void addConfigurationSettingEmptyValue() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addConfigurationSettingEmptyValueRunner((setting) -> {
             StepVerifier
                 .create(client.addConfigurationSetting(setting.getKey(), setting.getLabel(), setting.getValue()))
@@ -191,8 +194,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
-    public void addConfigurationSettingNullKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.addConfigurationSetting(null, null, "A Value"))
             .expectError(IllegalArgumentException.class)
             .verify();
@@ -205,8 +210,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
-    @Test
-    public void addExistingSetting() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addExistingSettingRunner((expected) -> StepVerifier
             .create(client.addConfigurationSettingWithResponse(expected)
                 .then(client.addConfigurationSettingWithResponse(expected)))
@@ -218,24 +225,31 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration is able to be added or updated with set.
      * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
-    @Test
-    public void setConfigurationSetting() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
 
-    @Test
-    public void setConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
 
-    @Test
-    public void setFeatureFlagConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setFeatureFlagConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
                 .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
@@ -243,8 +257,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete());
     }
 
-    @Test
-    public void featureFlagConfigurationSettingUnknownAttributesArePreserved() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void featureFlagConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         featureFlagConfigurationSettingUnknownAttributesArePreservedRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
@@ -268,8 +285,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void setSecretReferenceConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setSecretReferenceConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
                 .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
@@ -277,8 +297,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete());
     }
 
-    @Test
-    public void secretReferenceConfigurationSettingUnknownAttributesArePreserved() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
@@ -307,8 +330,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * ETag. If the set ETag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
      */
-    @Test
-    public void setConfigurationSettingIfETag() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSettingIfETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
@@ -335,8 +360,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
-    @Test
-    public void setConfigurationSettingEmptyKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSettingEmptyKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.setConfigurationSetting("", NO_LABEL, "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
@@ -345,8 +372,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that we can set configuration settings when value is not null or an empty string.
      * Value is not a required property.
      */
-    @Test
-    public void setConfigurationSettingEmptyValue() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setConfigurationSettingEmptyValueRunner((setting) -> {
             StepVerifier.create(client.setConfigurationSetting(setting.getKey(), NO_LABEL, setting.getValue()))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
@@ -361,8 +390,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
-    public void setConfigurationSettingNullKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void setConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(client.setConfigurationSetting(null, NO_LABEL, "A Value"))
             .verifyError(IllegalArgumentException.class);
@@ -373,8 +404,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
-    @Test
-    public void getConfigurationSetting() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) -> StepVerifier
             .create(client.addConfigurationSettingWithResponse(expected)
                 .then(client.getConfigurationSettingWithResponse(expected, null, false)))
@@ -382,16 +415,21 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete());
     }
 
-    @Test
-    public void getConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) -> StepVerifier
             .create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete());
     }
 
-    @Test
-    public void getFeatureFlagConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         getFeatureFlagConfigurationSettingRunner((expected) -> StepVerifier
             .create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
             .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
@@ -399,8 +437,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete());
     }
 
-    @Test
-    public void getSecretReferenceConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         getSecretReferenceConfigurationSettingRunner((expected) -> StepVerifier
             .create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
             .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
@@ -411,8 +452,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
-    @Test
-    public void getConfigurationSettingNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting neverRetrievedConfiguration
             = new ConfigurationSetting().setKey(key).setValue("myNeverRetreivedValue");
@@ -437,8 +480,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
      * configuration never existed.
      */
-    @Test
-    public void deleteConfigurationSetting() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteConfigurationSettingRunner((expected) -> {
             StepVerifier
                 .create(client.addConfigurationSettingWithResponse(expected)
@@ -456,8 +501,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void deleteConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteConfigurationSettingRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -473,8 +521,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void deleteFeatureFlagConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteFeatureFlagConfigurationSettingRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
                 .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
@@ -492,8 +543,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void deleteSecretReferenceConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteSecretReferenceConfigurationSettingRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
                 .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
@@ -514,8 +568,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
-    @Test
-    public void deleteConfigurationSettingNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting neverDeletedConfiguration
             = new ConfigurationSetting().setKey(key).setValue("myNeverDeletedValue");
@@ -548,8 +604,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
      * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
-    @Test
-    public void deleteConfigurationSettingWithETag() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteConfigurationSettingWithETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig
                 = client.addConfigurationSettingWithResponse(initial).block().getValue();
@@ -577,8 +635,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
-    public void deleteConfigurationSettingNullKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.deleteConfigurationSetting(null, null)).verifyError(IllegalArgumentException.class);
         StepVerifier.create(client.deleteConfigurationSettingWithResponse(null, false))
             .verifyError(NullPointerException.class);
@@ -587,8 +647,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
-    @Test
-    public void clearReadOnly() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -619,8 +681,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
-    @Test
-    public void clearReadOnlyWithConfigurationSetting() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -647,8 +712,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void clearReadOnlyWithConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -675,8 +743,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         lockUnlockFeatureFlagRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
@@ -707,8 +778,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void clearReadOnlyWithSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         lockUnlockSecretReferenceRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSetting(expected))
                 .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
@@ -743,8 +817,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
-    @Test
-    public void listWithKeyAndLabel() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String value = "myValue";
         final String key = testResourceNamer.randomName(keyPrefix, 16);
         final String label = testResourceNamer.randomName("lbl", 8);
@@ -768,8 +844,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
      * service when filtering by their keys.
      */
-    @Test
-    public void listWithMultipleKeys() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         String key = getKey();
         String key2 = getKey();
 
@@ -793,8 +871,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void listConfigurationSettingsWithNullSelector() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsWithNullSelector(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
         final String key2 = getKey();
 
@@ -826,8 +907,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
      */
-    @Test
-    public void listWithMultipleLabels() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
@@ -857,8 +940,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    @Test
-    public void listConfigurationSettingsSelectFields() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsSelectFields(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
             for (ConfigurationSetting setting : settings) {
@@ -881,40 +967,55 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a key filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey(), getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey() + "*", getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a label filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel() + "*");
     }
 
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    @Test
-    public void listConfigurationSettingsAcceptDateTime() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated
@@ -953,8 +1054,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
      * specific fields.
      */
-    @Test
-    public void listRevisions() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated
@@ -998,8 +1101,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
-    @Test
-    public void listRevisionsWithMultipleKeys() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         String key = getKey();
         String key2 = getKey();
 
@@ -1036,8 +1141,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
-    @Test
-    public void listRevisionsWithMultipleLabels() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
@@ -1077,8 +1184,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
-    @Test
-    public void listRevisionsAcceptDateTime() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated
@@ -1119,8 +1228,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
-    public void listRevisionsWithPagination() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -1140,8 +1251,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
-    public void listRevisionsWithPaginationAndRepeatStream() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -1167,8 +1281,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
-    public void listRevisionsWithPaginationAndRepeatIterator() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -1195,8 +1312,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
      */
     @Disabled("Error code 403 TOO_MANY_REQUESTS https://github.com/Azure/azure-sdk-for-java/issues/36602")
-    @Test
-    public void listConfigurationSettingsWithPagination() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettingsWithPagination(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -1217,8 +1337,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
      * scenario will return a setting when the ETag provided does not match the one of the current setting.
      */
-    @Test
-    public void getConfigurationSettingWhenValueNotUpdated() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().setKey(key).setValue("myNewValue");
@@ -1242,17 +1365,21 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void deleteAllSettings() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         client.listConfigurationSettings(new SettingSelector().setKeyFilter("*")).flatMap(configurationSetting -> {
-            LOGGER.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(),
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(),
                 configurationSetting.getLabel(), configurationSetting.isReadOnly());
             return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
         }).blockLast();
     }
 
-    @Test
-    public void addHeadersFromContextPolicyTest() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final HttpHeaders headers = getCustomizedHeaders();
         addHeadersFromContextPolicyRunner(expected -> StepVerifier
             .create(client.addConfigurationSettingWithResponse(expected)
@@ -1264,8 +1391,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete());
     }
 
-    @Test
-    public void createSnapshot() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1292,8 +1421,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void getSnapshot() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1340,8 +1471,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void getSnapshotConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1374,8 +1507,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void archiveSnapshot() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1406,8 +1541,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void archiveSnapshotConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void archiveSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1435,8 +1572,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void recoverSnapshot() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1477,8 +1616,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void recoverSnapshotConvenience() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
         addConfigurationSettingRunner(
             (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -1516,8 +1657,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void listSnapshots() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
         client.listSnapshots(new SnapshotSelector().setStatus(ConfigurationSnapshotStatus.READY))
             .flatMap(existSnapshot -> client.archiveSnapshot(existSnapshot.getName()))
@@ -1582,8 +1725,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     }
 
-    @Test
-    public void listSnapshotsWithFields() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSnapshotsWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
         client.listSnapshots(new SnapshotSelector().setStatus(ConfigurationSnapshotStatus.READY))
             .flatMap(existSnapshot -> client.archiveSnapshot(existSnapshot.getName()))
@@ -1658,8 +1803,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void listSettingFromSnapshot() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingFromSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
         // Create a snapshot
         createSnapshotRunner((name, filters) -> {
@@ -1700,8 +1847,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void listSettingFromSnapshotWithFields() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingFromSnapshotWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Create a snapshot
         createSnapshotRunner((name, filters) -> {
             // Prepare 5 settings before creating a snapshot
@@ -1749,8 +1898,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @Test
-    public void listSettingsWithPageETag() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Step 1: Prepare testing data.
         // Clean all existing settings before this test purpose
         client.listConfigurationSettings(null)
@@ -1802,8 +1953,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void listLabels() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Clean all existing settings before this test purpose
         StepVerifier.create(client.listConfigurationSettings(null)
             .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
@@ -1837,8 +1990,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         assertTrue(selected.size() >= 2);
     }
 
-    @Test
-    public void listSettingByTagsFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Clean all existing settings before this test purpose
         StepVerifier.create(client.listConfigurationSettings(null)
             .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
@@ -1868,8 +2023,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void listRevisionsWithTagsFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Create 3 revisions of the same key.
         List<ConfigurationSetting> configurationSettings = listRevisionsWithTagsFilterRunner(setting -> {
             StepVerifier.create(client.setConfigurationSettingWithResponse(setting, false))
@@ -1887,8 +2044,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void createSnapshotWithTagsFilter() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Clean all existing settings before this test purpose
         StepVerifier.create(client.listConfigurationSettings(null)
             .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))

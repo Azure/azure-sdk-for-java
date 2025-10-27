@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,20 +20,16 @@ public class AbstractiveSummarizationTaskParametersBase
     /*
      * It controls the approximate number of sentences in the output summaries.
      */
-    @Generated
     private Integer sentenceCount;
 
     /*
-     * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
-     * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @Generated
     private StringIndexType stringIndexType;
 
     /**
      * Creates an instance of AbstractiveSummarizationTaskParametersBase class.
      */
-    @Generated
     public AbstractiveSummarizationTaskParametersBase() {
     }
 
@@ -43,7 +38,6 @@ public class AbstractiveSummarizationTaskParametersBase
      * 
      * @return the sentenceCount value.
      */
-    @Generated
     public Integer getSentenceCount() {
         return this.sentenceCount;
     }
@@ -54,7 +48,6 @@ public class AbstractiveSummarizationTaskParametersBase
      * @param sentenceCount the sentenceCount value to set.
      * @return the AbstractiveSummarizationTaskParametersBase object itself.
      */
-    @Generated
     public AbstractiveSummarizationTaskParametersBase setSentenceCount(Integer sentenceCount) {
         this.sentenceCount = sentenceCount;
         return this;
@@ -67,7 +60,6 @@ public class AbstractiveSummarizationTaskParametersBase
      * 
      * @return the stringIndexType value.
      */
-    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -80,7 +72,6 @@ public class AbstractiveSummarizationTaskParametersBase
      * @param stringIndexType the stringIndexType value to set.
      * @return the AbstractiveSummarizationTaskParametersBase object itself.
      */
-    @Generated
     public AbstractiveSummarizationTaskParametersBase setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
@@ -89,7 +80,6 @@ public class AbstractiveSummarizationTaskParametersBase
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,7 +97,6 @@ public class AbstractiveSummarizationTaskParametersBase
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationTaskParametersBase.
      */
-    @Generated
     public static AbstractiveSummarizationTaskParametersBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummarizationTaskParametersBase deserializedAbstractiveSummarizationTaskParametersBase

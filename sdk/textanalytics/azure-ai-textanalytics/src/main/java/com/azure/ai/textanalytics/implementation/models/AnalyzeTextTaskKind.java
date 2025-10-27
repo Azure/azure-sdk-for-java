@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,37 +14,31 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
     /**
      * Static value SentimentAnalysis for AnalyzeTextTaskKind.
      */
-    @Generated
     public static final AnalyzeTextTaskKind SENTIMENT_ANALYSIS = fromString("SentimentAnalysis");
 
     /**
      * Static value EntityRecognition for AnalyzeTextTaskKind.
      */
-    @Generated
     public static final AnalyzeTextTaskKind ENTITY_RECOGNITION = fromString("EntityRecognition");
 
     /**
      * Static value PiiEntityRecognition for AnalyzeTextTaskKind.
      */
-    @Generated
     public static final AnalyzeTextTaskKind PII_ENTITY_RECOGNITION = fromString("PiiEntityRecognition");
 
     /**
      * Static value KeyPhraseExtraction for AnalyzeTextTaskKind.
      */
-    @Generated
     public static final AnalyzeTextTaskKind KEY_PHRASE_EXTRACTION = fromString("KeyPhraseExtraction");
 
     /**
      * Static value LanguageDetection for AnalyzeTextTaskKind.
      */
-    @Generated
     public static final AnalyzeTextTaskKind LANGUAGE_DETECTION = fromString("LanguageDetection");
 
     /**
      * Static value EntityLinking for AnalyzeTextTaskKind.
      */
-    @Generated
     public static final AnalyzeTextTaskKind ENTITY_LINKING = fromString("EntityLinking");
 
     /**
@@ -53,7 +46,6 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AnalyzeTextTaskKind() {
     }
@@ -64,7 +56,6 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
      * @param name a name to look for.
      * @return the corresponding AnalyzeTextTaskKind.
      */
-    @Generated
     public static AnalyzeTextTaskKind fromString(String name) {
         return fromString(name, AnalyzeTextTaskKind.class);
     }
@@ -74,7 +65,6 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
      * 
      * @return known AnalyzeTextTaskKind values.
      */
-    @Generated
     public static Collection<AnalyzeTextTaskKind> values() {
         return values(AnalyzeTextTaskKind.class);
     }

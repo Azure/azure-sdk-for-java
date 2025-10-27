@@ -9,8 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.containerservice.models.AgentPoolArtifactStreamingProfile;
-import com.azure.resourcemanager.containerservice.models.AgentPoolBlueGreenUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
@@ -25,8 +23,6 @@ import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
-import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
-import com.azure.resourcemanager.containerservice.models.NodeCustomizationProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -35,7 +31,6 @@ import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
-import com.azure.resourcemanager.containerservice.models.UpgradeStrategy;
 import com.azure.resourcemanager.containerservice.models.VirtualMachineNodes;
 import com.azure.resourcemanager.containerservice.models.VirtualMachinesProfile;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
@@ -109,7 +104,7 @@ public final class AgentPoolInner extends SubResource {
     /**
      * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal eTag convention.
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
      * 
      * @return the etag value.
      */
@@ -430,9 +425,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
-     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
-     * Windows2019 is deprecated.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      * 
      * @return the osSku value.
      */
@@ -441,9 +436,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osSku property: Specifies the OS SKU used by the agent pool. If not specified, the default is Ubuntu if
-     * OSType=Linux or Windows2019 if OSType=Windows. And the default Windows OSSKU will be changed to Windows2022 after
-     * Windows2019 is deprecated.
+     * Set the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      * 
      * @param osSku the osSku value to set.
      * @return the AgentPoolInner object itself.
@@ -602,13 +597,13 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Get the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
-     * &lt;major.minor.patch&gt; and &lt;major.minor&gt; are supported. When &lt;major.minor&gt; is specified, the
-     * latest supported patch version is chosen automatically. Updating the agent pool with the same &lt;major.minor&gt;
-     * once it has been created will not trigger an upgrade, even if a newer patch version is available. As a best
-     * practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool
-     * version must have the same major version as the control plane. The node pool minor version must be within two
-     * minor versions of the control plane version. The node pool version cannot be greater than the control plane
-     * version. For more information see [upgrading a node
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      * 
      * @return the orchestratorVersion value.
@@ -619,13 +614,13 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Set the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
-     * &lt;major.minor.patch&gt; and &lt;major.minor&gt; are supported. When &lt;major.minor&gt; is specified, the
-     * latest supported patch version is chosen automatically. Updating the agent pool with the same &lt;major.minor&gt;
-     * once it has been created will not trigger an upgrade, even if a newer patch version is available. As a best
-     * practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool
-     * version must have the same major version as the control plane. The node pool minor version must be within two
-     * minor versions of the control plane version. The node pool version cannot be greater than the control plane
-     * version. For more information see [upgrading a node
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      * 
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -640,9 +635,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the currentOrchestratorVersion property: The version of Kubernetes running on the Agent Pool. If
-     * orchestratorVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
-     * it. If orchestratorVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
      * version being used.
      * 
      * @return the currentOrchestratorVersion value.
@@ -661,45 +656,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the nodeImageVersion property: The version of node image.
-     * 
-     * @param nodeImageVersion the nodeImageVersion value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withNodeImageVersion(nodeImageVersion);
-        return this;
-    }
-
-    /**
-     * Get the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
-     * 
-     * @return the upgradeStrategy value.
-     */
-    public UpgradeStrategy upgradeStrategy() {
-        return this.innerProperties() == null ? null : this.innerProperties().upgradeStrategy();
-    }
-
-    /**
-     * Set the upgradeStrategy property: Defines the upgrade strategy for the agent pool. The default is Rolling.
-     * 
-     * @param upgradeStrategy the upgradeStrategy value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withUpgradeStrategy(UpgradeStrategy upgradeStrategy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withUpgradeStrategy(upgradeStrategy);
-        return this;
-    }
-
-    /**
-     * Get the upgradeSettings property: Settings for upgrading the agentpool. Applies when upgrade strategy is set to
-     * Rolling.
+     * Get the upgradeSettings property: Settings for upgrading the agentpool.
      * 
      * @return the upgradeSettings value.
      */
@@ -708,8 +665,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the upgradeSettings property: Settings for upgrading the agentpool. Applies when upgrade strategy is set to
-     * Rolling.
+     * Set the upgradeSettings property: Settings for upgrading the agentpool.
      * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the AgentPoolInner object itself.
@@ -719,31 +675,6 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withUpgradeSettings(upgradeSettings);
-        return this;
-    }
-
-    /**
-     * Get the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
-     * strategy is set to BlueGreen.
-     * 
-     * @return the upgradeSettingsBlueGreen value.
-     */
-    public AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen() {
-        return this.innerProperties() == null ? null : this.innerProperties().upgradeSettingsBlueGreen();
-    }
-
-    /**
-     * Set the upgradeSettingsBlueGreen property: Settings for Blue-Green upgrade on the agentpool. Applies when upgrade
-     * strategy is set to BlueGreen.
-     * 
-     * @param upgradeSettingsBlueGreen the upgradeSettingsBlueGreen value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withUpgradeSettingsBlueGreen(AgentPoolBlueGreenUpgradeSettings upgradeSettingsBlueGreen) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withUpgradeSettingsBlueGreen(upgradeSettingsBlueGreen);
         return this;
     }
 
@@ -1023,39 +954,6 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
-     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
-     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
-     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
-     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
-     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
-     * 
-     * @return the nodeInitializationTaints value.
-     */
-    public List<String> nodeInitializationTaints() {
-        return this.innerProperties() == null ? null : this.innerProperties().nodeInitializationTaints();
-    }
-
-    /**
-     * Set the nodeInitializationTaints property: Taints added on the nodes during creation that will not be reconciled
-     * by AKS. These taints will not be reconciled by AKS and can be removed with a kubectl call. This field can be
-     * modified after node pool is created, but nodes will not be recreated with new taints until another operation that
-     * requires recreation (e.g. node image upgrade) happens. These taints allow for required configuration to run
-     * before the node is ready to accept workloads, for example 'key1=value1:NoSchedule' that then can be removed with
-     * `kubectl taint nodes node1 key1=value1:NoSchedule-`.
-     * 
-     * @param nodeInitializationTaints the nodeInitializationTaints value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodeInitializationTaints(List<String> nodeInitializationTaints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withNodeInitializationTaints(nodeInitializationTaints);
-        return this;
-    }
-
-    /**
      * Get the proximityPlacementGroupId property: The ID for Proximity Placement Group.
      * 
      * @return the proximityPlacementGroupId value.
@@ -1308,29 +1206,6 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the windowsProfile property: The Windows agent pool's specific profile.
-     * 
-     * @return the windowsProfile value.
-     */
-    public AgentPoolWindowsProfile windowsProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().windowsProfile();
-    }
-
-    /**
-     * Set the windowsProfile property: The Windows agent pool's specific profile.
-     * 
-     * @param windowsProfile the windowsProfile value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withWindowsProfile(AgentPoolWindowsProfile windowsProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withWindowsProfile(windowsProfile);
-        return this;
-    }
-
-    /**
      * Get the networkProfile property: Network-related settings of an agent pool.
      * 
      * @return the networkProfile value.
@@ -1350,6 +1225,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    /**
+     * Get the windowsProfile property: The Windows agent pool's specific profile.
+     * 
+     * @return the windowsProfile value.
+     */
+    public AgentPoolWindowsProfile windowsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().windowsProfile();
+    }
+
+    /**
+     * Set the windowsProfile property: The Windows agent pool's specific profile.
+     * 
+     * @param windowsProfile the windowsProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withWindowsProfile(AgentPoolWindowsProfile windowsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withWindowsProfile(windowsProfile);
         return this;
     }
 
@@ -1377,7 +1275,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the gpuProfile property: The GPU settings of an agent pool.
+     * Get the gpuProfile property: GPU settings for the Agent Pool.
      * 
      * @return the gpuProfile value.
      */
@@ -1386,7 +1284,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the gpuProfile property: The GPU settings of an agent pool.
+     * Set the gpuProfile property: GPU settings for the Agent Pool.
      * 
      * @param gpuProfile the gpuProfile value to set.
      * @return the AgentPoolInner object itself.
@@ -1400,25 +1298,27 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * Get the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
      * 
-     * @return the artifactStreamingProfile value.
+     * @return the gatewayProfile value.
      */
-    public AgentPoolArtifactStreamingProfile artifactStreamingProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().artifactStreamingProfile();
+    public AgentPoolGatewayProfile gatewayProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayProfile();
     }
 
     /**
-     * Set the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * Set the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
+     * set if agent pool mode is not Gateway.
      * 
-     * @param artifactStreamingProfile the artifactStreamingProfile value to set.
+     * @param gatewayProfile the gatewayProfile value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
+    public AgentPoolInner withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
-        this.innerProperties().withArtifactStreamingProfile(artifactStreamingProfile);
+        this.innerProperties().withGatewayProfile(gatewayProfile);
         return this;
     }
 
@@ -1469,31 +1369,6 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
-     * set if agent pool mode is not Gateway.
-     * 
-     * @return the gatewayProfile value.
-     */
-    public AgentPoolGatewayProfile gatewayProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().gatewayProfile();
-    }
-
-    /**
-     * Set the gatewayProfile property: Profile specific to a managed agent pool in Gateway mode. This field cannot be
-     * set if agent pool mode is not Gateway.
-     * 
-     * @param gatewayProfile the gatewayProfile value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withGatewayProfile(AgentPoolGatewayProfile gatewayProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withGatewayProfile(gatewayProfile);
-        return this;
-    }
-
-    /**
      * Get the status property: Contains read-only information about the Agent Pool.
      * 
      * @return the status value.
@@ -1513,58 +1388,6 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
-     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
-     * aka.ms/aks/localdns.
-     * 
-     * @return the localDnsProfile value.
-     */
-    public LocalDnsProfile localDnsProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().localDnsProfile();
-    }
-
-    /**
-     * Set the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
-     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
-     * aka.ms/aks/localdns.
-     * 
-     * @param localDnsProfile the localDnsProfile value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withLocalDnsProfile(localDnsProfile);
-        return this;
-    }
-
-    /**
-     * Get the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
-     * in a pool.
-     * 
-     * @return the nodeCustomizationProfile value.
-     */
-    public NodeCustomizationProfile nodeCustomizationProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().nodeCustomizationProfile();
-    }
-
-    /**
-     * Set the nodeCustomizationProfile property: Settings to determine the node customization used to provision nodes
-     * in a pool.
-     * 
-     * @param nodeCustomizationProfile the nodeCustomizationProfile value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withNodeCustomizationProfile(nodeCustomizationProfile);
         return this;
     }
 

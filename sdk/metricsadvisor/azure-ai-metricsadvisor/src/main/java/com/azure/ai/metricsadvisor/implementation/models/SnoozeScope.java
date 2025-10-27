@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
     /**
      * Static value Metric for SnoozeScope.
      */
-    @Generated
     public static final SnoozeScope METRIC = fromString("Metric");
 
     /**
      * Static value Series for SnoozeScope.
      */
-    @Generated
     public static final SnoozeScope SERIES = fromString("Series");
 
     /**
@@ -29,7 +26,6 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public SnoozeScope() {
     }
@@ -40,7 +36,6 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
      * @param name a name to look for.
      * @return the corresponding SnoozeScope.
      */
-    @Generated
     public static SnoozeScope fromString(String name) {
         return fromString(name, SnoozeScope.class);
     }
@@ -50,7 +45,6 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
      * 
      * @return known SnoozeScope values.
      */
-    @Generated
     public static Collection<SnoozeScope> values() {
         return values(SnoozeScope.class);
     }

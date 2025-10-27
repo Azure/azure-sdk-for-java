@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
+  <version>1.0.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
 
   <name>Microsoft Azure client library for Schema Registry JSON Schema Serializer</name>
   <description>JSON Schema serializer for Azure Schema Registry client library</description>
@@ -43,8 +43,6 @@
 
       --add-opens com.azure.data.schemaregistry.jsonschema/com.azure.data.schemaregistry.jsonschema=com.fasterxml.jackson.databind,ALL-UNNAMED
     </javaModulesSurefireArgLine>
-
-    <spotbugs.skip>false</spotbugs.skip>
   </properties>
 
   <dependencies>
@@ -56,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.5.9</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -65,6 +63,12 @@
       <artifactId>azure-core-test</artifactId>
       <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -99,4 +103,21 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+          <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>

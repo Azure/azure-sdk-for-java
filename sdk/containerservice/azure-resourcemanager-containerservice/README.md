@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-containerservice</artifactId>
-    <version>2.55.0</version>
+    <version>2.55.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

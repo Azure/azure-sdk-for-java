@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class SQLSourceParameterPatch implements JsonSerializable<SQLSource
     /*
      * The connection string of this database
      */
-    @Generated
     private String connectionString;
 
     /*
      * The script to query this database
      */
-    @Generated
     private String query;
 
     /**
      * Creates an instance of SQLSourceParameterPatch class.
      */
-    @Generated
     public SQLSourceParameterPatch() {
     }
 
@@ -41,7 +37,6 @@ public final class SQLSourceParameterPatch implements JsonSerializable<SQLSource
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -52,7 +47,6 @@ public final class SQLSourceParameterPatch implements JsonSerializable<SQLSource
      * @param connectionString the connectionString value to set.
      * @return the SQLSourceParameterPatch object itself.
      */
-    @Generated
     public SQLSourceParameterPatch setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -63,7 +57,6 @@ public final class SQLSourceParameterPatch implements JsonSerializable<SQLSource
      * 
      * @return the query value.
      */
-    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -74,16 +67,11 @@ public final class SQLSourceParameterPatch implements JsonSerializable<SQLSource
      * @param query the query value to set.
      * @return the SQLSourceParameterPatch object itself.
      */
-    @Generated
     public SQLSourceParameterPatch setQuery(String query) {
         this.query = query;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +88,6 @@ public final class SQLSourceParameterPatch implements JsonSerializable<SQLSource
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SQLSourceParameterPatch.
      */
-    @Generated
     public static SQLSourceParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SQLSourceParameterPatch deserializedSQLSourceParameterPatch = new SQLSourceParameterPatch();

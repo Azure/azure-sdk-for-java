@@ -30,10 +30,10 @@ pr:
       - sdk/keyvault/azure-resourcemanager-keyvault/pom.xml
 
 parameters:
-- name: release_azureresourcemanagerkeyvault
-  displayName: 'azure-resourcemanager-keyvault'
-  type: boolean
-  default: true
+  - name: release_azureresourcemanagerkeyvault
+    displayName: 'azure-resourcemanager-keyvault'
+    type: boolean
+    default: true
 
 
 extends:

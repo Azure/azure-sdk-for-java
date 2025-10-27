@@ -48,13 +48,16 @@ If you want to take dependency on a particular version of the library that is no
 add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-attestation;current})
+
 ```xml
+<!-- Install the Azure Attestation SDK -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-attestation</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.1.37</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
@@ -113,7 +116,7 @@ the certificate issued by the server can be verified using the [oe_verify_attest
 
 Each attestation service instance has a policy applied to it which defines additional criteria which the customer has defined.
 
-For more information on attestation policies, see [Attestation Policy](https://learn.microsoft.com/azure/attestation/author-sign-policy)
+For more information on attestation policies, see [Attestation Policy](https://docs.microsoft.com/azure/attestation/author-sign-policy)
 
 ### Policy Management certificate management
 
@@ -301,11 +304,11 @@ System.out.printf("Removed certificate thumbprint: %s\n", modificationResult.get
 
 ## Troubleshooting
 
-Troubleshooting information for the MAA service can be found [here](https://learn.microsoft.com/azure/attestation/troubleshoot-guide)
+Troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/azure/attestation/troubleshoot-guide)
 
 ## Next steps
 
-For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://learn.microsoft.com/azure/attestation/).
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/).
 
 ## Contributing
 
@@ -316,19 +319,19 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information, see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[style-guide-msft]: https://learn.microsoft.com/style-guide/capitalization
+[style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azure_attestation]: https://learn.microsoft.com/azure/attestation
+[azure_attestation]: https://docs.microsoft.com/azure/attestation
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
-[azure_cli]: https://learn.microsoft.com/cli/azure
-[rest_api]: https://learn.microsoft.com/rest/api/attestation/
-[azure_create_application_in_portal]: https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
+[azure_cli]: https://docs.microsoft.com/cli/azure
+[rest_api]: https://docs.microsoft.com/rest/api/attestation/
+[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fattestation%2Fazure-security-attestation%2FREADME.png)

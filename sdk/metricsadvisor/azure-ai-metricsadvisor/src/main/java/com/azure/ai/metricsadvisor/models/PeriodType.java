@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class PeriodType extends ExpandableStringEnum<PeriodType> {
     /**
      * Static value AutoDetect for PeriodType.
      */
-    @Generated
     public static final PeriodType AUTO_DETECT = fromString("AutoDetect");
 
     /**
      * Static value AssignValue for PeriodType.
      */
-    @Generated
     public static final PeriodType ASSIGN_VALUE = fromString("AssignValue");
 
     /**
@@ -29,7 +26,6 @@ public final class PeriodType extends ExpandableStringEnum<PeriodType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public PeriodType() {
     }
@@ -40,7 +36,6 @@ public final class PeriodType extends ExpandableStringEnum<PeriodType> {
      * @param name a name to look for.
      * @return the corresponding PeriodType.
      */
-    @Generated
     public static PeriodType fromString(String name) {
         return fromString(name, PeriodType.class);
     }
@@ -50,7 +45,6 @@ public final class PeriodType extends ExpandableStringEnum<PeriodType> {
      * 
      * @return known PeriodType values.
      */
-    @Generated
     public static Collection<PeriodType> values() {
         return values(PeriodType.class);
     }

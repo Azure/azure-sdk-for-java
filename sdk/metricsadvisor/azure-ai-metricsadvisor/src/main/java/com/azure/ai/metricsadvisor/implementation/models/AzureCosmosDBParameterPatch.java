@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +19,26 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
     /*
      * The connection string of this Azure CosmosDB
      */
-    @Generated
     private String connectionString;
 
     /*
      * The statement to query this collection
      */
-    @Generated
     private String sqlQuery;
 
     /*
      * A database name in this Azure CosmosDB
      */
-    @Generated
     private String database;
 
     /*
      * A collection id in this database
      */
-    @Generated
     private String collectionId;
 
     /**
      * Creates an instance of AzureCosmosDBParameterPatch class.
      */
-    @Generated
     public AzureCosmosDBParameterPatch() {
     }
 
@@ -53,7 +47,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * 
      * @return the connectionString value.
      */
-    @Generated
     public String getConnectionString() {
         return this.connectionString;
     }
@@ -64,7 +57,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * @param connectionString the connectionString value to set.
      * @return the AzureCosmosDBParameterPatch object itself.
      */
-    @Generated
     public AzureCosmosDBParameterPatch setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -75,7 +67,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * 
      * @return the sqlQuery value.
      */
-    @Generated
     public String getSqlQuery() {
         return this.sqlQuery;
     }
@@ -86,7 +77,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * @param sqlQuery the sqlQuery value to set.
      * @return the AzureCosmosDBParameterPatch object itself.
      */
-    @Generated
     public AzureCosmosDBParameterPatch setSqlQuery(String sqlQuery) {
         this.sqlQuery = sqlQuery;
         return this;
@@ -97,7 +87,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * 
      * @return the database value.
      */
-    @Generated
     public String getDatabase() {
         return this.database;
     }
@@ -108,7 +97,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * @param database the database value to set.
      * @return the AzureCosmosDBParameterPatch object itself.
      */
-    @Generated
     public AzureCosmosDBParameterPatch setDatabase(String database) {
         this.database = database;
         return this;
@@ -119,7 +107,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * 
      * @return the collectionId value.
      */
-    @Generated
     public String getCollectionId() {
         return this.collectionId;
     }
@@ -130,16 +117,11 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * @param collectionId the collectionId value to set.
      * @return the AzureCosmosDBParameterPatch object itself.
      */
-    @Generated
     public AzureCosmosDBParameterPatch setCollectionId(String collectionId) {
         this.collectionId = collectionId;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -158,7 +140,6 @@ public final class AzureCosmosDBParameterPatch implements JsonSerializable<Azure
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureCosmosDBParameterPatch.
      */
-    @Generated
     public static AzureCosmosDBParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureCosmosDBParameterPatch deserializedAzureCosmosDBParameterPatch = new AzureCosmosDBParameterPatch();

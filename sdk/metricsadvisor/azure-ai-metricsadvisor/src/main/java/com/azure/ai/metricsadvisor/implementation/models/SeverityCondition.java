@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
     /*
      * min alert severity
      */
-    @Generated
     private Severity minAlertSeverity;
 
     /*
      * max alert severity
      */
-    @Generated
     private Severity maxAlertSeverity;
 
     /**
      * Creates an instance of SeverityCondition class.
      */
-    @Generated
     public SeverityCondition() {
     }
 
@@ -41,7 +37,6 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
      * 
      * @return the minAlertSeverity value.
      */
-    @Generated
     public Severity getMinAlertSeverity() {
         return this.minAlertSeverity;
     }
@@ -52,7 +47,6 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
      * @param minAlertSeverity the minAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
-    @Generated
     public SeverityCondition setMinAlertSeverity(Severity minAlertSeverity) {
         this.minAlertSeverity = minAlertSeverity;
         return this;
@@ -63,7 +57,6 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
      * 
      * @return the maxAlertSeverity value.
      */
-    @Generated
     public Severity getMaxAlertSeverity() {
         return this.maxAlertSeverity;
     }
@@ -74,16 +67,11 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
      * @param maxAlertSeverity the maxAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
-    @Generated
     public SeverityCondition setMaxAlertSeverity(Severity maxAlertSeverity) {
         this.maxAlertSeverity = maxAlertSeverity;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,7 +91,6 @@ public final class SeverityCondition implements JsonSerializable<SeverityConditi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SeverityCondition.
      */
-    @Generated
     public static SeverityCondition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SeverityCondition deserializedSeverityCondition = new SeverityCondition();

@@ -1,12 +1,14 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.53.5 (2025-10-27)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
+- Upgraded `azure-resourcemanager-storage` from `2.54.1` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-keyvault` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.4 (2025-09-25)
 
@@ -18,6 +20,7 @@
 - Upgraded `azure-resourcemanager-storage` from `2.54.0` to version `2.54.1`.
 - Upgraded `azure-resourcemanager-dns` from `2.53.2` to version `2.53.3`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.3 (2025-09-24)
 

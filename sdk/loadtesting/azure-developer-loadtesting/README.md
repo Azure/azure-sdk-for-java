@@ -27,7 +27,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-developer-loadtesting</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.27</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,7 +44,7 @@ By default, Azure Active Directory token authentication depends on correct confi
 
 In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
 
-With above configuration, clients can be authenticated by following code:
+With above configuration, `azure` client can be authenticated by following code:
 
 ```java java-readme-sample-auth
 // ensure the user, service principal or managed identity used has Loadtesting Contributor role for the resource
@@ -85,13 +85,13 @@ The top-level clients have two sub-clients
 
 - `LoadTestAdministration`
 
-- `LoadTestRun`
+- `TestRun`
 
 These sub-clients are used for managing and using different components of the service.
 
 ### Load Test Administration Client
 
-The `LoadTestAdministration` sub-clients is used to administer and configure the load tests, test profiles, app components and metrics.
+The `LoadTestAdministration` sub-clients is used to administer and configure the load tests, app components and metrics.
 
 #### Test
 
@@ -109,9 +109,9 @@ During a load test, Azure Load Testing collects metrics about the test execution
 
 2. Server-side metrics are available for Azure-hosted applications and provide information about your Azure application components. Metrics can be for the number of database reads, the type of HTTP responses, or container resource consumption.
 
-### Load Test Run Client
+### Test Run Client
 
-The `LoadTestRun` sub-clients is used to start and stop test runs corresponding to a load test. A test run represents one execution of a load test. It collects the logs associated with running the Apache JMeter script, the load test YAML configuration, the list of app components to monitor, and the results of the test.
+The `TestRun` sub-clients is used to start and stop test runs corresponding to a load test. A test run represents one execution of a load test. It collects the logs associated with running the Apache JMeter script, the load test YAML configuration, the list of app components to monitor, and the results of the test.
 
 ### Data-Plane Endpoint
 
@@ -121,11 +121,11 @@ Data-plane of Azure Load Testing resources is addressable using the following UR
 
 The first GUID `00000000-0000-0000-0000-000000000000` is the unique identifier used for accessing the Azure Load Testing resource. This is followed by  `aaa` which is the Azure region of the resource.
 
-The data-plane endpoint is obtained from Control Plane APIs. To obtain the data-plane endpoint for your resource, follow [this documentation][data_plane_uri].
+The data-plane endpoint is obtained from Control Plane APIs.
 
-**Example:** `1234abcd-12ab-12ab-12ab-123456abcdef.eastus.cnt-prod.loadtesting.azure.com`
+**Example:** `1234abcd-12ab-12ab-12ab-123456abcdef.eus.cnt-prod.loadtesting.azure.com`
 
-In the above example, `eastus` represents the Azure region `East US`.
+In the above example, `eus` represents the Azure region `East US`.
 
 ## Examples
 
@@ -137,44 +137,49 @@ LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuild
     .endpoint("<endpoint>")
     .buildClient();
 
-// Create a test object
-LoadTest loadTest = new LoadTest()
-    .setDisplayName("Sample Display Name")
-    .setDescription("Sample Description")
-    .setLoadTestConfiguration(new LoadTestConfiguration() // Load Test Configuration describes the number of test engines to generate load
-        .setEngineInstances(1));
+// construct Test object using nested String:Object Maps
+Map<String, Object> testMap = new HashMap<>();
+testMap.put("displayName", "Sample Display Name");
+testMap.put("description", "Sample Description");
 
-// Environment Variables are plain-text data passed to test engines
-Map<String, String> envVarMap = new HashMap<>();
+// loadTestConfig describes the number of test engines to generate load
+Map<String, Object> loadTestConfigMap = new HashMap<>();
+loadTestConfigMap.put("engineInstances", 1);
+testMap.put("loadTestConfiguration", loadTestConfigMap);
+
+// environmentVariables are plain-text data passed to test engines
+Map<String, Object> envVarMap = new HashMap<>();
 envVarMap.put("a", "b");
 envVarMap.put("x", "y");
-loadTest.setEnvironmentVariables(envVarMap);
+testMap.put("environmentVariables", envVarMap);
 
-// Secrets are secure data sent using Azure Key Vault
-TestSecret testSecrets = new TestSecret()
-    .setType(SecretType.KEY_VAULT_SECRET_URI)
-    .setValue("https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827");
-Map<String, TestSecret> secretsMap = new HashMap<>();
-secretsMap.put("sampleSecret", testSecrets);
-loadTest.setSecrets(secretsMap);
+// secrets are secure data sent using Azure Key Vault
+Map<String, Object> secretMap = new HashMap<>();
+Map<String, Object> sampleSecretMap = new HashMap<>();
+sampleSecretMap.put("value", "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827");
+sampleSecretMap.put("type", "AKV_SECRET_URI");
+secretMap.put("sampleSecret", sampleSecretMap);
+testMap.put("secrets", secretMap);
 
-// PassFailCriteria defines the conditions to conclude the test as success
-Map<String, PassFailMetric> passFailMetrics = new HashMap<>();
-PassFailMetric samplePassFailMetric = new PassFailMetric()
-    .setClientMetric(PfMetrics.RESPONSE_TIME_IN_MILLISECONDS)
-    .setAggregate(PassFailAggregationFunction.AVERAGE)
-    .setCondition(">")
-    .setValue(20D)
-    .setAction(PassFailAction.CONTINUE);
+// passFailCriteria define the conditions to conclude the test as success
+Map<String, Object> passFailMap = new HashMap<>();
+Map<String, Object> passFailMetrics = new HashMap<>();
+Map<String, Object> samplePassFailMetric = new HashMap<>();
+samplePassFailMetric.put("clientmetric", "response_time_ms");
+samplePassFailMetric.put("aggregate", "percentage");
+samplePassFailMetric.put("condition", ">");
+samplePassFailMetric.put("value", "20");
+samplePassFailMetric.put("action", "continue");
 passFailMetrics.put("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe", samplePassFailMetric);
-PassFailCriteria passFailCriteria = new PassFailCriteria()
-    .setPassFailMetrics(passFailMetrics);
-loadTest.setPassFailCriteria(passFailCriteria);
+passFailMap.put("passFailMetrics", passFailMetrics);
+testMap.put("passFailCriteria", passFailMap);
 
-// Now can create the test using the client and receive the response
-LoadTest testResponse = adminClient.createOrUpdateTest("test12345", loadTest);
+// convert the object Map to JSON BinaryData
+BinaryData test = BinaryData.fromObject(testMap);
 
-System.out.println(testResponse.toString());
+// receive response with BinaryData content
+Response<BinaryData> testOutResponse = adminClient.createOrUpdateTestWithResponse("test12345", test, null);
+System.out.println(testOutResponse.getValue().toString());
 ```
 
 ### Uploading .jmx file to a Load Test
@@ -202,55 +207,95 @@ LoadTestRunClient testRunClient = new LoadTestRunClientBuilder()
     .endpoint("<endpoint>")
     .buildClient();
 
-LoadTestRun testRun = new LoadTestRun()
-    .setDisplayName("Sample Test Run Display Name")
-    .setDescription("Sample Test Run Description")
-    .setTestId("test12345");
+// construct Test Run object using nested String:Object Maps
+Map<String, Object> testRunMap = new HashMap<>();
+testRunMap.put("testId", "test12345");
+testRunMap.put("displayName", "SDK-Created-TestRun");
 
-// Now can create the test run using the client and receive response
-SyncPoller<LoadTestRun, LoadTestRun> testRunPoller = testRunClient.beginTestRun("testrun12345", testRun, null);
+// convert the object Map to JSON BinaryData
+BinaryData testRun = BinaryData.fromObject(testRunMap);
 
-System.out.println(testRunPoller.poll().getValue().toString());
+// start test with poller
+SyncPoller<BinaryData, BinaryData> poller = testRunClient.beginTestRun("testrun12345", testRun, null);
+Duration pollInterval = Duration.ofSeconds(5);
+poller = poller.setPollInterval(pollInterval);
 
-// Wait for test to reach terminal state
-// Wait for test to reach terminal state
-PollResponse<LoadTestRun> testRunOut = testRunPoller.poll();
-TestRunStatus testStatus = null;
-String startDateTime = null, endDateTime = null;
+// wait for test to reach terminal state
+Map<String, Object> jsonTree = null;
+String testStatus;
+PollResponse<BinaryData> pollResponse = poller.poll();
+while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+    || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
 
-while (!testRunOut.getStatus().isComplete()) {
-    testRunOut = testRunPoller.poll();
+    try (JsonReader jsonReader = JsonProviders.createReader(pollResponse.getValue().toBytes())) {
+        jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-    // Get the status of the test run
-    testStatus = testRunOut.getValue().getStatus();
-    System.out.println("Test run status: " + testStatus.toString());
+        testStatus = jsonTree.get("status").toString();
+        System.out.println("Test run status: " + testStatus);
+    } catch (IOException e) {
+        System.out.println("Error processing JSON response");
+        // handle error condition
+    }
 
-    // Wait and check test status every 5 seconds
+    // wait and check test status every 5 seconds
     try {
-        Thread.sleep(5 * 1000);
+        Thread.sleep(pollInterval.toMillis());
     } catch (InterruptedException e) {
         // handle interruption
     }
+
+    pollResponse = poller.poll();
 }
 
-LoadTestRun finalResponse = testRunPoller.getFinalResult();
-startDateTime = finalResponse.getStartDateTime().toString();
-endDateTime = finalResponse.getEndDateTime().toString();
+poller.waitForCompletion();
+BinaryData testRunBinary = poller.getFinalResult();
 
-// Get list of all metric namespaces and pick the first one
-MetricNamespaces metricNamespaces = testRunClient.getMetricNamespaces("testrun12345");
+try (JsonReader jsonReader = JsonProviders.createReader(testRunBinary.toBytes())) {
+    jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+    testStatus = jsonTree.get("status").toString();
+    System.out.println("Test run status: " + testStatus);
+} catch (IOException e) {
+    System.out.println("Error processing JSON response");
+    // handle error condition
+}
+
+String startDateTime = jsonTree.get("startDateTime").toString();
+String endDateTime = jsonTree.get("endDateTime").toString();
+OffsetDateTime startOffsetDateTime = OffsetDateTime.parse(startDateTime);
+OffsetDateTime endOffsetDateTime = OffsetDateTime.parse(endDateTime);
+
+// get list of all metric namespaces and pick the first one
+Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
 String metricNamespace = null;
+// parse JSON and read first value
+try (JsonReader jsonReader = JsonProviders.createReader(metricNamespacesOut.getValue().toBytes())) {
+    jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+    List<Object> metricNamespaces = (List<Object>) jsonTree.get("value");
+    Map<String, Object> namespaceMap = (Map<String, Object>) metricNamespaces.get(0);
+    metricNamespace = namespaceMap.get("name").toString();
+} catch (IOException e) {
+    System.out.println("Error processing JSON response");
+    // handle error condition
+}
 
-metricNamespace = metricNamespaces.getValue().get(0).getName();
-
-// Get list of all metric definitions and pick the first one
-MetricDefinitions metricDefinitions = testRunClient.getMetricDefinitions("testrun12345", metricNamespace);
+// get list of all metric definitions and pick the first one
+Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
 String metricName = null;
-metricName = metricDefinitions.getValue().get(0).getName();
+// parse JSON and read first value
+try (JsonReader jsonReader = JsonProviders.createReader(metricDefinitionsOut.getValue().toBytes())) {
+    jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+    List<Object> metricDefinitions = (List<Object>) jsonTree.get("value");
+    Map<String, Object> definitionMap = (Map<String, Object>) metricDefinitions.get(0);
+    Map<String, Object> nameMap = (Map<String, Object>) definitionMap.get("name");
+    metricName = nameMap.get("value").toString();
+} catch (IOException e) {
+    System.out.println("Error processing JSON response");
+    // handle error condition
+}
 
-// Fetch client metrics using metric namespace and metric name
+// fetch client metrics using metric namespace and metric name
 PagedIterable<BinaryData> clientMetricsOut = testRunClient.listMetrics("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
-
 clientMetricsOut.forEach((clientMetric) -> {
     System.out.println(clientMetric.toString());
 });
@@ -280,7 +325,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
 [sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples
-[data_plane_uri]: https://learn.microsoft.com/rest/api/loadtesting/data-plane-uri
 [api_reference_doc]: https://learn.microsoft.com/rest/api/loadtesting/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://learn.microsoft.com/java/azure/jdk/

@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+  <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
 
   <name>Microsoft Azure client library for Digital Twins</name>
   <description>This package contains the Microsoft Azure DigitalTwins client library.</description>
@@ -40,7 +40,9 @@
       --add-opens com.azure.digitaltwins.core/com.azure.digitaltwins.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

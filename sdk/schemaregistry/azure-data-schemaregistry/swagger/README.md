@@ -11,20 +11,24 @@
 ```ps
 cd <swagger-folder>
 mvn install
-autorest
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
 ```yaml
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.24'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/84d7b8f05a60d12922341578434b512540563850/specification/schemaregistry/data-plane/Microsoft.EventHub/stable/2023-07-01/schemaregistry.json
 java: true
 output-folder: ../
 namespace: com.azure.data.schemaregistry
 generate-client-as-impl: true
+service-interface-as-public: true
 enable-sync-stack: true
+generic-response-type: true
 disable-client-builder: true
+stream-style-serialization: true
 license-header: MICROSOFT_MIT_SMALL
+context-client-method-parameter: true
 models-subpackage: implementation.models
 ```
 

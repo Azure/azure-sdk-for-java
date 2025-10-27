@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,28 +20,24 @@ public final class AnomalyResultList implements JsonSerializable<AnomalyResultLi
     /*
      * The @nextLink property.
      */
-    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
-    @Generated
     private List<AnomalyResult> value;
 
     /**
      * Creates an instance of AnomalyResultList class.
      */
-    @Generated
     public AnomalyResultList() {
     }
 
     /**
-     * Get the nextLink property: The &#064;nextLink property.
+     * Get the nextLink property: The @nextLink property.
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -52,7 +47,6 @@ public final class AnomalyResultList implements JsonSerializable<AnomalyResultLi
      * 
      * @return the value value.
      */
-    @Generated
     public List<AnomalyResult> getValue() {
         return this.value;
     }
@@ -63,16 +57,11 @@ public final class AnomalyResultList implements JsonSerializable<AnomalyResultLi
      * @param value the value value to set.
      * @return the AnomalyResultList object itself.
      */
-    @Generated
     public AnomalyResultList setValue(List<AnomalyResult> value) {
         this.value = value;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,7 +78,6 @@ public final class AnomalyResultList implements JsonSerializable<AnomalyResultLi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyResultList.
      */
-    @Generated
     public static AnomalyResultList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyResultList deserializedAnomalyResultList = new AnomalyResultList();
