@@ -69,13 +69,6 @@ public interface ContainerServiceManagementClient {
     ManagedClustersClient getManagedClusters();
 
     /**
-     * Gets the ContainerServiceOperationsClient object to access its operations.
-     * 
-     * @return the ContainerServiceOperationsClient object.
-     */
-    ContainerServiceOperationsClient getContainerServiceOperations();
-
-    /**
      * Gets the MaintenanceConfigurationsClient object to access its operations.
      * 
      * @return the MaintenanceConfigurationsClient object.
@@ -83,25 +76,11 @@ public interface ContainerServiceManagementClient {
     MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
-     * Gets the ManagedNamespacesClient object to access its operations.
-     * 
-     * @return the ManagedNamespacesClient object.
-     */
-    ManagedNamespacesClient getManagedNamespaces();
-
-    /**
      * Gets the AgentPoolsClient object to access its operations.
      * 
      * @return the AgentPoolsClient object.
      */
     AgentPoolsClient getAgentPools();
-
-    /**
-     * Gets the MachinesClient object to access its operations.
-     * 
-     * @return the MachinesClient object.
-     */
-    MachinesClient getMachines();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -125,32 +104,11 @@ public interface ContainerServiceManagementClient {
     ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds();
 
     /**
-     * Gets the OperationStatusResultsClient object to access its operations.
-     * 
-     * @return the OperationStatusResultsClient object.
-     */
-    OperationStatusResultsClient getOperationStatusResults();
-
-    /**
      * Gets the SnapshotsClient object to access its operations.
      * 
      * @return the SnapshotsClient object.
      */
     SnapshotsClient getSnapshots();
-
-    /**
-     * Gets the ManagedClusterSnapshotsClient object to access its operations.
-     * 
-     * @return the ManagedClusterSnapshotsClient object.
-     */
-    ManagedClusterSnapshotsClient getManagedClusterSnapshots();
-
-    /**
-     * Gets the TrustedAccessRolesClient object to access its operations.
-     * 
-     * @return the TrustedAccessRolesClient object.
-     */
-    TrustedAccessRolesClient getTrustedAccessRoles();
 
     /**
      * Gets the TrustedAccessRoleBindingsClient object to access its operations.
@@ -160,30 +118,16 @@ public interface ContainerServiceManagementClient {
     TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings();
 
     /**
-     * Gets the LoadBalancersClient object to access its operations.
+     * Gets the TrustedAccessRolesClient object to access its operations.
      * 
-     * @return the LoadBalancersClient object.
+     * @return the TrustedAccessRolesClient object.
      */
-    LoadBalancersClient getLoadBalancers();
+    TrustedAccessRolesClient getTrustedAccessRoles();
 
     /**
-     * Gets the IdentityBindingsClient object to access its operations.
+     * Gets the MachinesClient object to access its operations.
      * 
-     * @return the IdentityBindingsClient object.
+     * @return the MachinesClient object.
      */
-    IdentityBindingsClient getIdentityBindings();
-
-    /**
-     * Gets the JwtAuthenticatorsClient object to access its operations.
-     * 
-     * @return the JwtAuthenticatorsClient object.
-     */
-    JwtAuthenticatorsClient getJwtAuthenticators();
-
-    /**
-     * Gets the MeshMembershipsClient object to access its operations.
-     * 
-     * @return the MeshMembershipsClient object.
-     */
-    MeshMembershipsClient getMeshMemberships();
+    MachinesClient getMachines();
 }
