@@ -273,7 +273,7 @@ com.azure.resourcemanager:azure-resourcemanager;2.54.0;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.53.4;2.53.5
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.3;2.53.4
-com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.3;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.3;2.53.4
 com.azure.resourcemanager:azure-resourcemanager-compute;2.54.0;2.54.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.4;2.53.5
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.53.3;2.53.4
