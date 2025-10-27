@@ -65,7 +65,7 @@ dependency to your project as follows.
 <dependency>
     <groupId>com.azure.v2</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>5.0.0-beta.1</version>
+    <version>4.8.4</version>
 </dependency>
 ```
 

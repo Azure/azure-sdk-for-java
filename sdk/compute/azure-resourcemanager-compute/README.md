@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-compute</artifactId>
-    <version>2.54.0</version>
+    <version>2.54.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

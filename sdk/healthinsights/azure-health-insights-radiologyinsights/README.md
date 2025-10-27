@@ -25,7 +25,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-health-insights-radiologyinsights</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
 </dependency>
 ```
 

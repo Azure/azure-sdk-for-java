@@ -43,7 +43,7 @@ main [Event Grid SDK][azure-messaging-eventgrid]:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.30.0</version>
+    <version>4.31.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ namespace-specific functionality:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-namespaces</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

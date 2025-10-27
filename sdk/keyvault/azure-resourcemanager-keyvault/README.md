@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-keyvault</artifactId>
-    <version>2.53.3</version>
+    <version>2.53.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

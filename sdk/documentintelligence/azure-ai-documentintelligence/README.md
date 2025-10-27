@@ -29,7 +29,7 @@ It includes the following main features:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-documentintelligence</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
