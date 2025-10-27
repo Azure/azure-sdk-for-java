@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class AssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_Without_DisplayName.json
+     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_Without_DisplayName.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_DisplayName.
@@ -87,7 +87,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
+     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_With_DiscoveredAssetRef.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_DiscoveredAssetRefs.
@@ -154,7 +154,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_Without_ExternalAssetId.json
+     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_Without_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_Without_ExternalAssetId.
@@ -219,7 +219,7 @@ public final class AssetsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_Asset_With_ExternalAssetId.json
+     * x-ms-original-file: 2025-10-01/CreateOrReplace_Asset_With_ExternalAssetId.json
      */
     /**
      * Sample code: CreateOrReplace_Asset_With_ExternalAssetId.

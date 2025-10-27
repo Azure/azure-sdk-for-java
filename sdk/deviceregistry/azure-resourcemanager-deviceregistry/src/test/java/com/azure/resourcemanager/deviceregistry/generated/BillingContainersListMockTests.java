@@ -21,7 +21,7 @@ public final class BillingContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"etag\":\"dosfjbjsvgjrw\",\"id\":\"yvycytdclxgcckn\",\"name\":\"nwm\",\"type\":\"tmvpdvjdhtt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"etag\":\"oqq\",\"id\":\"cyyufmh\",\"name\":\"uncuw\",\"type\":\"qspkcdqzhlctd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
