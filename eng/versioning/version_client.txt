@@ -174,7 +174,7 @@ com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-search-documents;11.8.0;11.9.0-beta.1
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.36;1.1.37
-com.azure:azure-security-confidentialledger;1.0.32;1.1.0-beta.2
+com.azure:azure-security-confidentialledger;1.0.32;1.0.33
 com.azure:azure-security-keyvault-administration;4.7.3;4.8.0-beta.1
 com.azure:azure-security-keyvault-certificates;4.8.3;4.9.0-beta.1
 com.azure:azure-security-keyvault-jca;2.10.1;2.11.0-beta.1
