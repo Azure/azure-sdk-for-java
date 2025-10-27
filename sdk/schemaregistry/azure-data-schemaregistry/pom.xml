@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
   <packaging>jar</packaging>
-  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+  <version>1.5.8</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
 
   <name>Microsoft Azure client library for Schema Registry</name>
   <description>This package contains the Microsoft Azure Schema Registry client library</description>
@@ -47,19 +47,21 @@
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
 
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -72,14 +74,37 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+          <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
