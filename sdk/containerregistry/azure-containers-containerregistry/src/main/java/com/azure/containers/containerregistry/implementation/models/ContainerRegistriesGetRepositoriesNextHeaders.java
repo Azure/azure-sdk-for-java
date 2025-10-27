@@ -5,25 +5,21 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistriesGetRepositoriesNextHeaders model.
- */
+/** The ContainerRegistriesGetRepositoriesNextHeaders model. */
 @Fluent
 public final class ContainerRegistriesGetRepositoriesNextHeaders {
     /*
      * The Link property.
      */
-    @Generated
     private String link;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistriesGetRepositoriesNextHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistriesGetRepositoriesNextHeaders(HttpHeaders rawHeaders) {
@@ -32,21 +28,19 @@ public final class ContainerRegistriesGetRepositoriesNextHeaders {
 
     /**
      * Get the link property: The Link property.
-     * 
+     *
      * @return the link value.
      */
-    @Generated
     public String getLink() {
         return this.link;
     }
 
     /**
      * Set the link property: The Link property.
-     * 
+     *
      * @param link the link value to set.
      * @return the ContainerRegistriesGetRepositoriesNextHeaders object itself.
      */
-    @Generated
     public ContainerRegistriesGetRepositoriesNextHeaders setLink(String link) {
         this.link = link;
         return this;

@@ -1,13 +1,12 @@
-# Azure Container Registry for Java
+# Azure Containers ContainerRegistry APIs for Java
 
 > see https://aka.ms/autorest
 
-This is the AutoRest configuration file for Container Registry.
+This is the template AutoRest configuration file for client SDKs.
 
----
 ## Getting Started
-To build the SDK for Container Registry, simply [Install AutoRest](https://aka.ms/autorest) and
-in this folder, run:
+
+To build the SDK, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
 
 > `autorest`
 
@@ -16,19 +15,48 @@ To see additional help and options, run:
 > `autorest --help`
 
 ### Setup
+
+Fork and clone [autorest.java](https://github.com/Azure/autorest.java) and run the following:
+
 ```ps
-npm install -g autorest
+You need to have the following installed on your machine:
+
+Node.JS LTS
+Java 8+
+Maven 3.x
+You need to have autorest installed through NPM:
+
+npm i -g autorest
 ```
 
 ### Generation
+
+Generating client SDKs from Swagger involves using the `autorest` command installed to the command line above while
+also referencing the Java AutoRest packages, either the local installation performed above or using a released version.
+
+#### Local Installation
+
+Using a local installation of Java AutoRest allows for the most up-to-date code to be used and allows for debugging of
+code generation, see the [autorest.java usage](https://github.com/Azure/autorest.java#usage) for more details.
+
 ```ps
 cd <swagger-folder>
-autorest
+autorest --use=<directory where autorest.java was cloned>
+```
+
+#### Released Version
+
+Using a released build of Java AutoRest ensures that a well-tested and durable implementation is used, as rebuilding
+the local installation of Java AutoRest won't affect code generation as it would above.
+
+```ps
+cd <swagger-folder>
+autorest --java --use:@autorest/java@4.1.*
 ```
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.15'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
@@ -37,11 +65,15 @@ namespace: com.azure.containers.containerregistry
 generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
 sync-methods: none
+context-client-method-parameter: true
+service-interface-as-public: true
 models-subpackage: implementation.models
 custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciDescriptor,OciImageManifest,RepositoryProperties
 custom-types-subpackage: models
 enable-sync-stack: true
+generic-response-type: true
 disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy
