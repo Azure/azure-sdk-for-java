@@ -22,14 +22,14 @@ import java.io.IOException;
 @Fluent
 public final class TaskRunInner extends ProxyResource {
     /*
-     * Identity for the resource.
-     */
-    private IdentityProperties identity;
-
-    /*
      * The properties associated with the task run, i.e., request and result of the run
      */
     private TaskRunPropertiesInner innerProperties;
+
+    /*
+     * Identity for the resource.
+     */
+    private IdentityProperties identity;
 
     /*
      * The location of the resource
@@ -37,7 +37,7 @@ public final class TaskRunInner extends ProxyResource {
     private String location;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -63,6 +63,16 @@ public final class TaskRunInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties associated with the task run, i.e., request and result of the
+     * run.
+     * 
+     * @return the innerProperties value.
+     */
+    private TaskRunPropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the identity property: Identity for the resource.
      * 
      * @return the identity value.
@@ -80,16 +90,6 @@ public final class TaskRunInner extends ProxyResource {
     public TaskRunInner withIdentity(IdentityProperties identity) {
         this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the innerProperties property: The properties associated with the task run, i.e., request and result of the
-     * run.
-     * 
-     * @return the innerProperties value.
-     */
-    private TaskRunPropertiesInner innerProperties() {
-        return this.innerProperties;
     }
 
     /**
@@ -113,7 +113,7 @@ public final class TaskRunInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -223,11 +223,11 @@ public final class TaskRunInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -237,8 +237,8 @@ public final class TaskRunInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
@@ -265,10 +265,10 @@ public final class TaskRunInner extends ProxyResource {
                     deserializedTaskRunInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedTaskRunInner.type = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedTaskRunInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedTaskRunInner.innerProperties = TaskRunPropertiesInner.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTaskRunInner.identity = IdentityProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedTaskRunInner.location = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

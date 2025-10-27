@@ -4,7 +4,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
-import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
+import com.azure.resourcemanager.containerregistry.fluent.RegistryTasksClient;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
@@ -40,7 +40,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     private String resourceGroupName;
     private String registryName;
     private RunInner inner;
-    private RegistriesClient registriesInner;
+    private RegistryTasksClient registriesInner;
     private FileTaskRunRequest fileTaskRunRequest;
     private EncodedTaskRunRequest encodedTaskRunRequest;
     private DockerBuildRequest dockerTaskRunRequest;
@@ -116,7 +116,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
 
     RegistryTaskRunImpl(ContainerRegistryManager registryManager, RunInner runInner) {
         this.registryManager = registryManager;
-        this.registriesInner = registryManager.serviceClient().getRegistries();
+        this.registriesInner = registryManager.taskClient().getRegistryTasks();
         this.platform = new PlatformProperties();
         this.inner = runInner;
 
@@ -365,7 +365,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     @Override
     public Mono<RegistryTaskRun> refreshAsync() {
         final RegistryTaskRunImpl self = this;
-        return registryManager.serviceClient()
+        return registryManager.taskClient()
             .getRuns()
             .getAsync(this.resourceGroupName(), this.registryName(), this.inner.runId())
             .map(runInner -> {
