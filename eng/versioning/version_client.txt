@@ -135,7 +135,7 @@ com.azure:azure-identity-extensions;1.2.5;1.2.6
 com.azure:azure-identity-broker;1.1.18;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-iot-deviceupdate;1.0.30;1.1.0-beta.1
+com.azure:azure-iot-deviceupdate;1.0.30;1.0.31
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-json;1.5.0;1.6.0-beta.1
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
