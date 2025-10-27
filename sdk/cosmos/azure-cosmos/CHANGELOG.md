@@ -46,7 +46,6 @@
 * Changed to use `PartitionKeyRangeCache` to get partition key range during startup and split handling. - [PR 46700](https://github.com/Azure/azure-sdk-for-java/pull/46700)
 * Allow lease in `ChangeFeedProcessor` to be rebalanced if changes for associated partition have not been processed for a while. - [PR 25](https://github.com/jeet1995/azure-sdk-for-java/pull/25)
 * Ensure effective `DirectConnectionConfig#setNetworkRequestTimeout` is set to at least 5 seconds. - [PR 47024](https://github.com/Azure/azure-sdk-for-java/pull/47024)
->>>>>>> main
 
 ### 4.74.0 (2025-09-05)
 
