@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
     /*
      * sensitivity, value range : (0, 100]
      */
-    @Generated
     private Double sensitivity;
 
     /*
      * detection direction
      */
-    @Generated
     private AnomalyDetectorDirection anomalyDetectorDirection;
 
     /*
      * The suppressCondition property.
      */
-    @Generated
     private SuppressConditionPatch suppressCondition;
 
     /**
      * Creates an instance of SmartDetectionConditionPatch class.
      */
-    @Generated
     public SmartDetectionConditionPatch() {
     }
 
@@ -47,7 +42,6 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * 
      * @return the sensitivity value.
      */
-    @Generated
     public Double getSensitivity() {
         return this.sensitivity;
     }
@@ -58,7 +52,6 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * @param sensitivity the sensitivity value to set.
      * @return the SmartDetectionConditionPatch object itself.
      */
-    @Generated
     public SmartDetectionConditionPatch setSensitivity(Double sensitivity) {
         this.sensitivity = sensitivity;
         return this;
@@ -69,7 +62,6 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * 
      * @return the anomalyDetectorDirection value.
      */
-    @Generated
     public AnomalyDetectorDirection getAnomalyDetectorDirection() {
         return this.anomalyDetectorDirection;
     }
@@ -80,7 +72,6 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * @param anomalyDetectorDirection the anomalyDetectorDirection value to set.
      * @return the SmartDetectionConditionPatch object itself.
      */
-    @Generated
     public SmartDetectionConditionPatch setAnomalyDetectorDirection(AnomalyDetectorDirection anomalyDetectorDirection) {
         this.anomalyDetectorDirection = anomalyDetectorDirection;
         return this;
@@ -91,7 +82,6 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * 
      * @return the suppressCondition value.
      */
-    @Generated
     public SuppressConditionPatch getSuppressCondition() {
         return this.suppressCondition;
     }
@@ -102,16 +92,11 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * @param suppressCondition the suppressCondition value to set.
      * @return the SmartDetectionConditionPatch object itself.
      */
-    @Generated
     public SmartDetectionConditionPatch setSuppressCondition(SuppressConditionPatch suppressCondition) {
         this.suppressCondition = suppressCondition;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,7 +115,6 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SmartDetectionConditionPatch.
      */
-    @Generated
     public static SmartDetectionConditionPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SmartDetectionConditionPatch deserializedSmartDetectionConditionPatch = new SmartDetectionConditionPatch();

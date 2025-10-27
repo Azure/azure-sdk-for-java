@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,33 +17,14 @@ import java.util.List;
 @Fluent
 public final class EmailHookInfoPatch extends HookInfoPatch {
     /*
-     * hook type
-     */
-    @Generated
-    private HookType hookType = HookType.EMAIL;
-
-    /*
      * The hookParameter property.
      */
-    @Generated
     private EmailHookParameterPatch hookParameter;
 
     /**
      * Creates an instance of EmailHookInfoPatch class.
      */
-    @Generated
     public EmailHookInfoPatch() {
-    }
-
-    /**
-     * Get the hookType property: hook type.
-     * 
-     * @return the hookType value.
-     */
-    @Generated
-    @Override
-    public HookType getHookType() {
-        return this.hookType;
     }
 
     /**
@@ -52,7 +32,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * 
      * @return the hookParameter value.
      */
-    @Generated
     public EmailHookParameterPatch getHookParameter() {
         return this.hookParameter;
     }
@@ -63,7 +42,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * @param hookParameter the hookParameter value to set.
      * @return the EmailHookInfoPatch object itself.
      */
-    @Generated
     public EmailHookInfoPatch setHookParameter(EmailHookParameterPatch hookParameter) {
         this.hookParameter = hookParameter;
         return this;
@@ -72,7 +50,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EmailHookInfoPatch setHookName(String hookName) {
         super.setHookName(hookName);
@@ -82,7 +59,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EmailHookInfoPatch setDescription(String description) {
         super.setDescription(description);
@@ -92,7 +68,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EmailHookInfoPatch setExternalLink(String externalLink) {
         super.setExternalLink(externalLink);
@@ -102,25 +77,20 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EmailHookInfoPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hookType", HookType.EMAIL == null ? null : HookType.EMAIL.toString());
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
         jsonWriter.writeJsonField("hookParameter", this.hookParameter);
         return jsonWriter.writeEndObject();
     }
@@ -131,9 +101,9 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of EmailHookInfoPatch if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the EmailHookInfoPatch.
      */
-    @Generated
     public static EmailHookInfoPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EmailHookInfoPatch deserializedEmailHookInfoPatch = new EmailHookInfoPatch();
@@ -141,7 +111,14 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("hookName".equals(fieldName)) {
+                if ("hookType".equals(fieldName)) {
+                    String hookType = reader.getString();
+                    if (!"Email".equals(hookType)) {
+                        throw new IllegalStateException(
+                            "'hookType' was expected to be non-null and equal to 'Email'. The found 'hookType' was '"
+                                + hookType + "'.");
+                    }
+                } else if ("hookName".equals(fieldName)) {
                     deserializedEmailHookInfoPatch.setHookName(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedEmailHookInfoPatch.setDescription(reader.getString());
@@ -150,8 +127,6 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
                 } else if ("admins".equals(fieldName)) {
                     List<String> admins = reader.readArray(reader1 -> reader1.getString());
                     deserializedEmailHookInfoPatch.setAdmins(admins);
-                } else if ("hookType".equals(fieldName)) {
-                    deserializedEmailHookInfoPatch.hookType = HookType.fromString(reader.getString());
                 } else if ("hookParameter".equals(fieldName)) {
                     deserializedEmailHookInfoPatch.hookParameter = EmailHookParameterPatch.fromJson(reader);
                 } else {

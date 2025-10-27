@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,33 +16,14 @@ import java.io.IOException;
 @Fluent
 public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredentialPatch {
     /*
-     * Type of data source credential
-     */
-    @Generated
-    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV;
-
-    /*
      * The parameters property.
      */
-    @Generated
     private ServicePrincipalInKVParamPatch parameters;
 
     /**
      * Creates an instance of ServicePrincipalInKVCredentialPatch class.
      */
-    @Generated
     public ServicePrincipalInKVCredentialPatch() {
-    }
-
-    /**
-     * Get the dataSourceCredentialType property: Type of data source credential.
-     * 
-     * @return the dataSourceCredentialType value.
-     */
-    @Generated
-    @Override
-    public DataSourceCredentialType getDataSourceCredentialType() {
-        return this.dataSourceCredentialType;
     }
 
     /**
@@ -51,7 +31,6 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * 
      * @return the parameters value.
      */
-    @Generated
     public ServicePrincipalInKVParamPatch getParameters() {
         return this.parameters;
     }
@@ -62,7 +41,6 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalInKVCredentialPatch object itself.
      */
-    @Generated
     public ServicePrincipalInKVCredentialPatch setParameters(ServicePrincipalInKVParamPatch parameters) {
         this.parameters = parameters;
         return this;
@@ -71,7 +49,6 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ServicePrincipalInKVCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -81,7 +58,6 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ServicePrincipalInKVCredentialPatch
         setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
@@ -89,17 +65,15 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV == null
+                ? null
+                : DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
@@ -110,9 +84,9 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServicePrincipalInKVCredentialPatch if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ServicePrincipalInKVCredentialPatch.
      */
-    @Generated
     public static ServicePrincipalInKVCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalInKVCredentialPatch deserializedServicePrincipalInKVCredentialPatch
@@ -121,14 +95,18 @@ public final class ServicePrincipalInKVCredentialPatch extends DataSourceCredent
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialType".equals(fieldName)) {
+                    String dataSourceCredentialType = reader.getString();
+                    if (!"ServicePrincipalInKV".equals(dataSourceCredentialType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceCredentialType' was expected to be non-null and equal to 'ServicePrincipalInKV'. The found 'dataSourceCredentialType' was '"
+                                + dataSourceCredentialType + "'.");
+                    }
+                } else if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredentialPatch.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredentialPatch
                         .setDataSourceCredentialDescription(reader.getString());
-                } else if ("dataSourceCredentialType".equals(fieldName)) {
-                    deserializedServicePrincipalInKVCredentialPatch.dataSourceCredentialType
-                        = DataSourceCredentialType.fromString(reader.getString());
                 } else if ("parameters".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredentialPatch.parameters
                         = ServicePrincipalInKVParamPatch.fromJson(reader);

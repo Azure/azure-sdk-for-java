@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class EmailHookParameter implements JsonSerializable<EmailHookParam
     /*
      * Email TO: list.
      */
-    @Generated
     private List<String> toList;
 
     /**
      * Creates an instance of EmailHookParameter class.
      */
-    @Generated
     public EmailHookParameter() {
     }
 
@@ -36,7 +33,6 @@ public final class EmailHookParameter implements JsonSerializable<EmailHookParam
      * 
      * @return the toList value.
      */
-    @Generated
     public List<String> getToList() {
         return this.toList;
     }
@@ -47,16 +43,11 @@ public final class EmailHookParameter implements JsonSerializable<EmailHookParam
      * @param toList the toList value to set.
      * @return the EmailHookParameter object itself.
      */
-    @Generated
     public EmailHookParameter setToList(List<String> toList) {
         this.toList = toList;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +64,6 @@ public final class EmailHookParameter implements JsonSerializable<EmailHookParam
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EmailHookParameter.
      */
-    @Generated
     public static EmailHookParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EmailHookParameter deserializedEmailHookParameter = new EmailHookParameter();
