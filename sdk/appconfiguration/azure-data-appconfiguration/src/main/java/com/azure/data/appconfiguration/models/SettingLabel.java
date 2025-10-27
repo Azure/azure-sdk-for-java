@@ -4,7 +4,6 @@
 
 package com.azure.data.appconfiguration.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,13 +19,11 @@ public final class SettingLabel implements JsonSerializable<SettingLabel> {
     /*
      * The name of the label.
      */
-    @Generated
     private String name;
 
     /**
      * Creates an instance of SettingLabel class.
      */
-    @Generated
     public SettingLabel() {
     }
 
@@ -35,7 +32,6 @@ public final class SettingLabel implements JsonSerializable<SettingLabel> {
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -43,7 +39,6 @@ public final class SettingLabel implements JsonSerializable<SettingLabel> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -58,7 +53,6 @@ public final class SettingLabel implements JsonSerializable<SettingLabel> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SettingLabel.
      */
-    @Generated
     public static SettingLabel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SettingLabel deserializedSettingLabel = new SettingLabel();

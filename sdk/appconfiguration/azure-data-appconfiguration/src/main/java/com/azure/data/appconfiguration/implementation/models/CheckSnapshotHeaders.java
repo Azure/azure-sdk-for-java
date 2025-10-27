@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -17,19 +16,16 @@ public final class CheckSnapshotHeaders {
     /*
      * The ETag property.
      */
-    @Generated
     private String eTag;
 
     /*
      * The Sync-Token property.
      */
-    @Generated
     private String syncToken;
 
     /*
      * The Link property.
      */
-    @Generated
     private String link;
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
@@ -51,7 +47,6 @@ public final class CheckSnapshotHeaders {
      * 
      * @return the eTag value.
      */
-    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -62,7 +57,6 @@ public final class CheckSnapshotHeaders {
      * @param eTag the eTag value to set.
      * @return the CheckSnapshotHeaders object itself.
      */
-    @Generated
     public CheckSnapshotHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -73,7 +67,6 @@ public final class CheckSnapshotHeaders {
      * 
      * @return the syncToken value.
      */
-    @Generated
     public String getSyncToken() {
         return this.syncToken;
     }
@@ -84,7 +77,6 @@ public final class CheckSnapshotHeaders {
      * @param syncToken the syncToken value to set.
      * @return the CheckSnapshotHeaders object itself.
      */
-    @Generated
     public CheckSnapshotHeaders setSyncToken(String syncToken) {
         this.syncToken = syncToken;
         return this;
@@ -95,7 +87,6 @@ public final class CheckSnapshotHeaders {
      * 
      * @return the link value.
      */
-    @Generated
     public String getLink() {
         return this.link;
     }
@@ -106,7 +97,6 @@ public final class CheckSnapshotHeaders {
      * @param link the link value to set.
      * @return the CheckSnapshotHeaders object itself.
      */
-    @Generated
     public CheckSnapshotHeaders setLink(String link) {
         this.link = link;
         return this;

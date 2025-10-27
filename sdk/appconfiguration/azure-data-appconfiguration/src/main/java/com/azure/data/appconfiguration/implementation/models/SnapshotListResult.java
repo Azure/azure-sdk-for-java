@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
     /*
      * The collection value.
      */
-    @Generated
     private List<ConfigurationSnapshot> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of SnapshotListResult class.
      */
-    @Generated
     public SnapshotListResult() {
     }
 
@@ -43,7 +39,6 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * 
      * @return the items value.
      */
-    @Generated
     public List<ConfigurationSnapshot> getItems() {
         return this.items;
     }
@@ -54,7 +49,6 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * @param items the items value to set.
      * @return the SnapshotListResult object itself.
      */
-    @Generated
     public SnapshotListResult setItems(List<ConfigurationSnapshot> items) {
         this.items = items;
         return this;
@@ -65,7 +59,6 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -76,7 +69,6 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * @param nextLink the nextLink value to set.
      * @return the SnapshotListResult object itself.
      */
-    @Generated
     public SnapshotListResult setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -85,7 +77,6 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +93,6 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SnapshotListResult.
      */
-    @Generated
     public static SnapshotListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnapshotListResult deserializedSnapshotListResult = new SnapshotListResult();

@@ -4,7 +4,6 @@
 
 package com.azure.data.appconfiguration.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,7 +14,6 @@ public final class SettingLabelFields extends ExpandableStringEnum<SettingLabelF
     /**
      * Static value name for SettingLabelFields.
      */
-    @Generated
     public static final SettingLabelFields NAME = fromString("name");
 
     /**
@@ -23,7 +21,6 @@ public final class SettingLabelFields extends ExpandableStringEnum<SettingLabelF
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public SettingLabelFields() {
     }
@@ -34,7 +31,6 @@ public final class SettingLabelFields extends ExpandableStringEnum<SettingLabelF
      * @param name a name to look for.
      * @return the corresponding SettingLabelFields.
      */
-    @Generated
     public static SettingLabelFields fromString(String name) {
         return fromString(name, SettingLabelFields.class);
     }
@@ -44,7 +40,6 @@ public final class SettingLabelFields extends ExpandableStringEnum<SettingLabelF
      * 
      * @return known SettingLabelFields values.
      */
-    @Generated
     public static Collection<SettingLabelFields> values() {
         return values(SettingLabelFields.class);
     }
