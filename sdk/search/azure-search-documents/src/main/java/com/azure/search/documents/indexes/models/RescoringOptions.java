@@ -24,7 +24,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * the full-precision vectors. This will improve recall at the expense of latency.
      */
     @Generated
-    private Boolean enableRescoring;
+    private Boolean rescoringEnabled;
 
     /*
      * Default oversampling factor. Oversampling retrieves a greater set of potential documents to offset the resolution
@@ -49,28 +49,28 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
     }
 
     /**
-     * Get the enableRescoring property: If set to true, after the initial search on the compressed vectors, the
+     * Get the rescoringEnabled property: If set to true, after the initial search on the compressed vectors, the
      * similarity scores are recalculated using the full-precision vectors. This will improve recall at the expense of
      * latency.
      * 
-     * @return the enableRescoring value.
+     * @return the rescoringEnabled value.
      */
     @Generated
-    public Boolean isEnableRescoring() {
-        return this.enableRescoring;
+    public Boolean isRescoringEnabled() {
+        return this.rescoringEnabled;
     }
 
     /**
-     * Set the enableRescoring property: If set to true, after the initial search on the compressed vectors, the
+     * Set the rescoringEnabled property: If set to true, after the initial search on the compressed vectors, the
      * similarity scores are recalculated using the full-precision vectors. This will improve recall at the expense of
      * latency.
      * 
-     * @param enableRescoring the enableRescoring value to set.
+     * @param rescoringEnabled the rescoringEnabled value to set.
      * @return the RescoringOptions object itself.
      */
     @Generated
-    public RescoringOptions setEnableRescoring(Boolean enableRescoring) {
-        this.enableRescoring = enableRescoring;
+    public RescoringOptions setRescoringEnabled(Boolean rescoringEnabled) {
+        this.rescoringEnabled = rescoringEnabled;
         return this;
     }
 
@@ -133,7 +133,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeBooleanField("enableRescoring", this.enableRescoring);
+        jsonWriter.writeBooleanField("enableRescoring", this.rescoringEnabled);
         jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
         jsonWriter.writeStringField("rescoreStorageMethod",
             this.rescoreStorageMethod == null ? null : this.rescoreStorageMethod.toString());
@@ -157,7 +157,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
                 reader.nextToken();
 
                 if ("enableRescoring".equals(fieldName)) {
-                    deserializedRescoringOptions.enableRescoring = reader.getNullable(JsonReader::getBoolean);
+                    deserializedRescoringOptions.rescoringEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultOversampling".equals(fieldName)) {
                     deserializedRescoringOptions.defaultOversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("rescoreStorageMethod".equals(fieldName)) {

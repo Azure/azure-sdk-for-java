@@ -13,29 +13,31 @@ public final class ExascaleDbStorageVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbStorageVaultProperties model = BinaryData.fromString(
-            "{\"additionalFlashCacheInPercent\":771137006,\"description\":\"igdivbkbxg\",\"displayName\":\"mf\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":2081513021},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1308923921,\"totalSizeInGbs\":1690246024},\"timeZone\":\"daeyygux\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Terminated\",\"lifecycleDetails\":\"hzbezkgi\",\"vmClusterCount\":1082466616,\"ocid\":\"xasicddyvvjskg\",\"ociUrl\":\"ocwah\"}")
+            "{\"additionalFlashCacheInPercent\":36693026,\"description\":\"qbw\",\"displayName\":\"ypq\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1413070711},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1969231562,\"totalSizeInGbs\":1790951604},\"timeZone\":\"slhhxudbxv\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"irudh\",\"vmClusterCount\":593896600,\"ocid\":\"sckdlp\",\"ociUrl\":\"zrcxfailcfxwmdbo\",\"exadataInfrastructureId\":\"fgsftufqob\",\"attachedShapeAttributes\":[\"SMART_STORAGE\",\"BLOCK_STORAGE\"]}")
             .toObject(ExascaleDbStorageVaultProperties.class);
-        Assertions.assertEquals(771137006, model.additionalFlashCacheInPercent());
-        Assertions.assertEquals("igdivbkbxg", model.description());
-        Assertions.assertEquals("mf", model.displayName());
-        Assertions.assertEquals(2081513021, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("daeyygux", model.timeZone());
+        Assertions.assertEquals(36693026, model.additionalFlashCacheInPercent());
+        Assertions.assertEquals("qbw", model.description());
+        Assertions.assertEquals("ypq", model.displayName());
+        Assertions.assertEquals(1413070711, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("slhhxudbxv", model.timeZone());
+        Assertions.assertEquals("fgsftufqob", model.exadataInfrastructureId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExascaleDbStorageVaultProperties model
-            = new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(771137006)
-                .withDescription("igdivbkbxg")
-                .withDisplayName("mf")
-                .withHighCapacityDatabaseStorageInput(
-                    new ExascaleDbStorageInputDetails().withTotalSizeInGbs(2081513021))
-                .withTimeZone("daeyygux");
+        ExascaleDbStorageVaultProperties model = new ExascaleDbStorageVaultProperties()
+            .withAdditionalFlashCacheInPercent(36693026)
+            .withDescription("qbw")
+            .withDisplayName("ypq")
+            .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1413070711))
+            .withTimeZone("slhhxudbxv")
+            .withExadataInfrastructureId("fgsftufqob");
         model = BinaryData.fromObject(model).toObject(ExascaleDbStorageVaultProperties.class);
-        Assertions.assertEquals(771137006, model.additionalFlashCacheInPercent());
-        Assertions.assertEquals("igdivbkbxg", model.description());
-        Assertions.assertEquals("mf", model.displayName());
-        Assertions.assertEquals(2081513021, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("daeyygux", model.timeZone());
+        Assertions.assertEquals(36693026, model.additionalFlashCacheInPercent());
+        Assertions.assertEquals("qbw", model.description());
+        Assertions.assertEquals("ypq", model.displayName());
+        Assertions.assertEquals(1413070711, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("slhhxudbxv", model.timeZone());
+        Assertions.assertEquals("fgsftufqob", model.exadataInfrastructureId());
     }
 }

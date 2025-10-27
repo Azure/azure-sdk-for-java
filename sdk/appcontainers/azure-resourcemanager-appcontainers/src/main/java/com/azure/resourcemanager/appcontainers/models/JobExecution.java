@@ -61,13 +61,6 @@ public interface JobExecution {
     JobExecutionTemplate template();
 
     /**
-     * Gets the detailedStatus property: Detailed status of the job execution.
-     * 
-     * @return the detailedStatus value.
-     */
-    ExecutionStatus detailedStatus();
-
-    /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionInner object.
      * 
      * @return the inner object.

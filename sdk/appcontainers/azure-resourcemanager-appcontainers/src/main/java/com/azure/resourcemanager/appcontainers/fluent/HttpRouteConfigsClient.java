@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.models.HttpRouteConfigInner;
 
 /**
@@ -16,7 +18,7 @@ import com.azure.resourcemanager.appcontainers.fluent.models.HttpRouteConfigInne
  */
 public interface HttpRouteConfigsClient {
     /**
-     * Get the specified Managed Http Route Config.
+     * Get the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -26,14 +28,14 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Http Route Config along with {@link Response}.
+     * @return the specified Http Route Config along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HttpRouteConfigInner> getWithResponse(String resourceGroupName, String environmentName,
         String httpRouteName, Context context);
 
     /**
-     * Get the specified Managed Http Route Config.
+     * Get the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -42,7 +44,7 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Http Route Config.
+     * @return the specified Http Route Config.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HttpRouteConfigInner get(String resourceGroupName, String environmentName, String httpRouteName);
@@ -53,13 +55,13 @@ public interface HttpRouteConfigsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param httpRouteName Name of the Http Route Config Resource.
-     * @param httpRouteConfigEnvelope Http Route config to be created or updated.
+     * @param httpRouteConfigEnvelope Http Route Config to be created or updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advanced Ingress routing for path/header based routing for a Container App Environment along with
+     * @return a set of host names and http request routing rules for a Container App Environment along with
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -76,15 +78,15 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advanced Ingress routing for path/header based routing for a Container App Environment.
+     * @return a set of host names and http request routing rules for a Container App Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HttpRouteConfigInner createOrUpdate(String resourceGroupName, String environmentName, String httpRouteName);
 
     /**
-     * Update tags of a manged http route object
+     * Update tags of a Http Route Config object
      * 
-     * Patches an http route config resource. Only patching of tags is supported.
+     * Patches a Http Route Config resource. Only patching of tags is supported.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -95,7 +97,7 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advanced Ingress routing for path/header based routing for a Container App Environment along with
+     * @return a set of host names and http request routing rules for a Container App Environment along with
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -103,9 +105,9 @@ public interface HttpRouteConfigsClient {
         String httpRouteName, HttpRouteConfigInner httpRouteConfigEnvelope, Context context);
 
     /**
-     * Update tags of a manged http route object
+     * Update tags of a Http Route Config object
      * 
-     * Patches an http route config resource. Only patching of tags is supported.
+     * Patches a Http Route Config resource. Only patching of tags is supported.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -115,45 +117,72 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advanced Ingress routing for path/header based routing for a Container App Environment.
+     * @return a set of host names and http request routing rules for a Container App Environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HttpRouteConfigInner update(String resourceGroupName, String environmentName, String httpRouteName,
         HttpRouteConfigInner httpRouteConfigEnvelope);
 
     /**
-     * Deletes the specified Managed Http Route.
+     * Deletes the specified Http Route Config.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param httpRouteName Name of the Http Route Config Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
+        String httpRouteName);
+
+    /**
+     * Deletes the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param httpRouteName Name of the Http Route Config Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String httpRouteName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
+        String httpRouteName, Context context);
 
     /**
-     * Deletes the specified Managed Http Route.
+     * Deletes the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param httpRouteName Name of the Http Route Config Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String environmentName, String httpRouteName);
 
     /**
-     * Get the Managed Http Routes in a given managed environment.
+     * Deletes the specified Http Route Config.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param httpRouteName Name of the Http Route Config Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String environmentName, String httpRouteName, Context context);
+
+    /**
+     * List the Http Route Configs in a given managed environment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -161,13 +190,13 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Http Routes in a given managed environment as paginated response with {@link PagedIterable}.
+     * @return collection of rule based Http Route Config resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HttpRouteConfigInner> list(String resourceGroupName, String environmentName);
 
     /**
-     * Get the Managed Http Routes in a given managed environment.
+     * List the Http Route Configs in a given managed environment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -176,7 +205,7 @@ public interface HttpRouteConfigsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Http Routes in a given managed environment as paginated response with {@link PagedIterable}.
+     * @return collection of rule based Http Route Config resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HttpRouteConfigInner> list(String resourceGroupName, String environmentName, Context context);

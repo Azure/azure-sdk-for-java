@@ -13,22 +13,21 @@ public final class NetworkInjectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInjection model = BinaryData
-            .fromString(
-                "{\"scenario\":\"agent\",\"subnetArmId\":\"hmuouqfprwzwbn\",\"useMicrosoftManagedNetwork\":true}")
+            .fromString("{\"scenario\":\"none\",\"subnetArmId\":\"cuertu\",\"useMicrosoftManagedNetwork\":true}")
             .toObject(NetworkInjection.class);
-        Assertions.assertEquals(ScenarioType.AGENT, model.scenario());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.subnetArmId());
+        Assertions.assertEquals(ScenarioType.NONE, model.scenario());
+        Assertions.assertEquals("cuertu", model.subnetArmId());
         Assertions.assertTrue(model.useMicrosoftManagedNetwork());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInjection model = new NetworkInjection().withScenario(ScenarioType.AGENT)
-            .withSubnetArmId("hmuouqfprwzwbn")
+        NetworkInjection model = new NetworkInjection().withScenario(ScenarioType.NONE)
+            .withSubnetArmId("cuertu")
             .withUseMicrosoftManagedNetwork(true);
         model = BinaryData.fromObject(model).toObject(NetworkInjection.class);
-        Assertions.assertEquals(ScenarioType.AGENT, model.scenario());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.subnetArmId());
+        Assertions.assertEquals(ScenarioType.NONE, model.scenario());
+        Assertions.assertEquals("cuertu", model.subnetArmId());
         Assertions.assertTrue(model.useMicrosoftManagedNetwork());
     }
 }

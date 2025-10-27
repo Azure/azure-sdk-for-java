@@ -349,7 +349,9 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the radiusServerSecret property: The radius secret property of the VpnServerConfiguration resource for point
-     * to site client connection.
+     * to site client connection. We will no longer return radiusServerSecret in VpnServerConfiguration
+     * Create/Update/Get/List/UpdateTags APIs response. Please use VpnServerConfiguration ListRadiusSecrets API to fetch
+     * radius server secrets.
      * 
      * @return the radiusServerSecret value.
      */
@@ -359,7 +361,9 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the radiusServerSecret property: The radius secret property of the VpnServerConfiguration resource for point
-     * to site client connection.
+     * to site client connection. We will no longer return radiusServerSecret in VpnServerConfiguration
+     * Create/Update/Get/List/UpdateTags APIs response. Please use VpnServerConfiguration ListRadiusSecrets API to fetch
+     * radius server secrets.
      * 
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the VpnServerConfigurationInner object itself.

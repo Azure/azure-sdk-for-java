@@ -35,6 +35,8 @@ import com.azure.resourcemanager.oracledatabase.implementation.CloudVmClustersIm
 import com.azure.resourcemanager.oracledatabase.implementation.DbNodesImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DbServersImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DbSystemShapesImpl;
+import com.azure.resourcemanager.oracledatabase.implementation.DbSystemsImpl;
+import com.azure.resourcemanager.oracledatabase.implementation.DbVersionsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DnsPrivateViewsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DnsPrivateZonesImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.ExadbVmClustersImpl;
@@ -43,9 +45,11 @@ import com.azure.resourcemanager.oracledatabase.implementation.ExascaleDbStorage
 import com.azure.resourcemanager.oracledatabase.implementation.FlexComponentsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.GiMinorVersionsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.GiVersionsImpl;
+import com.azure.resourcemanager.oracledatabase.implementation.NetworkAnchorsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.OperationsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.OracleDatabaseManagementClientBuilder;
 import com.azure.resourcemanager.oracledatabase.implementation.OracleSubscriptionsImpl;
+import com.azure.resourcemanager.oracledatabase.implementation.ResourceAnchorsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.SystemVersionsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.VirtualNetworkAddressesImpl;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackups;
@@ -58,6 +62,8 @@ import com.azure.resourcemanager.oracledatabase.models.CloudVmClusters;
 import com.azure.resourcemanager.oracledatabase.models.DbNodes;
 import com.azure.resourcemanager.oracledatabase.models.DbServers;
 import com.azure.resourcemanager.oracledatabase.models.DbSystemShapes;
+import com.azure.resourcemanager.oracledatabase.models.DbSystems;
+import com.azure.resourcemanager.oracledatabase.models.DbVersions;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateViews;
 import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZones;
 import com.azure.resourcemanager.oracledatabase.models.ExadbVmClusters;
@@ -66,8 +72,10 @@ import com.azure.resourcemanager.oracledatabase.models.ExascaleDbStorageVaults;
 import com.azure.resourcemanager.oracledatabase.models.FlexComponents;
 import com.azure.resourcemanager.oracledatabase.models.GiMinorVersions;
 import com.azure.resourcemanager.oracledatabase.models.GiVersions;
+import com.azure.resourcemanager.oracledatabase.models.NetworkAnchors;
 import com.azure.resourcemanager.oracledatabase.models.Operations;
 import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptions;
+import com.azure.resourcemanager.oracledatabase.models.ResourceAnchors;
 import com.azure.resourcemanager.oracledatabase.models.SystemVersions;
 import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddresses;
 import java.time.Duration;
@@ -125,6 +133,14 @@ public final class OracleDatabaseManager {
     private ExascaleDbNodes exascaleDbNodes;
 
     private ExascaleDbStorageVaults exascaleDbStorageVaults;
+
+    private NetworkAnchors networkAnchors;
+
+    private ResourceAnchors resourceAnchors;
+
+    private DbSystems dbSystems;
+
+    private DbVersions dbVersions;
 
     private final OracleDatabaseManagementClient clientObject;
 
@@ -610,6 +626,54 @@ public final class OracleDatabaseManager {
                 = new ExascaleDbStorageVaultsImpl(clientObject.getExascaleDbStorageVaults(), this);
         }
         return exascaleDbStorageVaults;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkAnchors. It manages NetworkAnchor.
+     * 
+     * @return Resource collection API of NetworkAnchors.
+     */
+    public NetworkAnchors networkAnchors() {
+        if (this.networkAnchors == null) {
+            this.networkAnchors = new NetworkAnchorsImpl(clientObject.getNetworkAnchors(), this);
+        }
+        return networkAnchors;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceAnchors. It manages ResourceAnchor.
+     * 
+     * @return Resource collection API of ResourceAnchors.
+     */
+    public ResourceAnchors resourceAnchors() {
+        if (this.resourceAnchors == null) {
+            this.resourceAnchors = new ResourceAnchorsImpl(clientObject.getResourceAnchors(), this);
+        }
+        return resourceAnchors;
+    }
+
+    /**
+     * Gets the resource collection API of DbSystems. It manages DbSystem.
+     * 
+     * @return Resource collection API of DbSystems.
+     */
+    public DbSystems dbSystems() {
+        if (this.dbSystems == null) {
+            this.dbSystems = new DbSystemsImpl(clientObject.getDbSystems(), this);
+        }
+        return dbSystems;
+    }
+
+    /**
+     * Gets the resource collection API of DbVersions.
+     * 
+     * @return Resource collection API of DbVersions.
+     */
+    public DbVersions dbVersions() {
+        if (this.dbVersions == null) {
+            this.dbVersions = new DbVersionsImpl(clientObject.getDbVersions(), this);
+        }
+        return dbVersions;
     }
 
     /**

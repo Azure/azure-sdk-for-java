@@ -2359,6 +2359,15 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                 }
             };
 
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxUtmostRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isGreaterThanOrEqualTo(1);
+                    assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
         Consumer<CosmosDiagnosticsContext> validateCtxQueryPlan =
             (ctx) -> {
                 assertThat(ctx).isNotNull();
@@ -2428,6 +2437,9 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
         Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
             (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxUtmostTwoRegions =
+            (ctx) -> validateCtxUtmostRegions.accept(ctx, TWO_REGIONS);
 
         Consumer<CosmosDiagnosticsContext> validateCtxFirstRegionFailureSecondRegionSuccessfulSingleFeedResponse = (ctx) -> {
             CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
@@ -3270,7 +3282,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
 
                         // Diagnostics of query attempt in first region not even available yet
-                        assertThat(diagnostics.length).isEqualTo(2);
+                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(2);
 
                         // query plan on first region
                         assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
@@ -3279,13 +3291,13 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                     (ctx) -> {
                         assertThat(ctx.getDiagnostics()).isNotNull();
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
-                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics()).isNotNull();
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[diagnostics.length - 1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
                         ClientSideRequestStatistics[] clientStats =
-                            diagnostics[1]
+                            diagnostics[diagnostics.length - 1]
                                 .getFeedResponseDiagnostics()
                                 .getClientSideRequestStatistics()
                                 .toArray(new ClientSideRequestStatistics[0]);
@@ -3301,17 +3313,17 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                     }
                 ),
                 ArrayUtils.toArray(
-                    validateCtxSingleRegion,
+                    validateCtxUtmostTwoRegions,
                     (ctx) -> {
                         assertThat(ctx.getDiagnostics()).isNotNull();
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
-                        assertThat(diagnostics[0].getContactedRegionNames().size()).isEqualTo(1);
-                        assertThat(diagnostics[0].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-                        assertThat(diagnostics[0].getFeedResponseDiagnostics()).isNotNull();
-                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-                        assertThat(diagnostics[0].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[diagnostics.length - 1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
                         ClientSideRequestStatistics[] clientStats =
-                            diagnostics[0]
+                            diagnostics[diagnostics.length - 1]
                                 .getFeedResponseDiagnostics()
                                 .getClientSideRequestStatistics()
                                 .toArray(new ClientSideRequestStatistics[0]);
@@ -4067,10 +4079,14 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
                     for (int i = start; i < diagnostics.length; i++) {
                         CosmosDiagnostics currentDiagnostics = diagnostics[i];
-                        assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNotNull();
-                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
-                        assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+
+                        if (i != diagnostics.length - 1) {
+                            assertThat(currentDiagnostics.getFeedResponseDiagnostics()).isNull();
+                        } else {
+                            assertThat(currentDiagnostics.getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                            assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                            assertThat(currentDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatistics().size()).isGreaterThanOrEqualTo(1);
+                        }
                     }
                 }
             };
@@ -4579,14 +4595,14 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                         CosmosDiagnostics[] diagnostics = ctx.getDiagnostics().toArray(new CosmosDiagnostics[0]);
 
                         // Diagnostics of query attempt in first region not even available yet
-                        assertThat(diagnostics.length).isEqualTo(2);
-                        assertThat(diagnostics[1].getContactedRegionNames().size()).isEqualTo(1);
-                        assertThat(diagnostics[1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics()).isNotNull();
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
-                        assertThat(diagnostics[1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
+                        assertThat(diagnostics.length).isGreaterThanOrEqualTo(2);
+                        assertThat(diagnostics[diagnostics.length - 1].getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(diagnostics[diagnostics.length - 1].getContactedRegionNames().iterator().next()).isEqualTo(SECOND_REGION_NAME);
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics().getQueryMetricsMap()).isNotNull();
+                        assertThat(diagnostics[diagnostics.length - 1].getFeedResponseDiagnostics().getClientSideRequestStatistics()).isNotNull();
                         ClientSideRequestStatistics[] clientStats =
-                            diagnostics[1]
+                            diagnostics[diagnostics.length - 1]
                                 .getFeedResponseDiagnostics()
                                 .getClientSideRequestStatistics()
                                 .toArray(new ClientSideRequestStatistics[0]);

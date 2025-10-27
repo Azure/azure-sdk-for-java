@@ -11,25 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpRouteTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpRouteTarget model = BinaryData.fromString(
-            "{\"containerApp\":\"ezxlhdjzqdca\",\"revision\":\"vpsozjiihjri\",\"label\":\"mrzoep\",\"weight\":1111684206}")
-            .toObject(HttpRouteTarget.class);
-        Assertions.assertEquals("ezxlhdjzqdca", model.containerApp());
-        Assertions.assertEquals("vpsozjiihjri", model.revision());
-        Assertions.assertEquals("mrzoep", model.label());
-        Assertions.assertEquals(1111684206, model.weight());
+        HttpRouteTarget model
+            = BinaryData.fromString("{\"containerApp\":\"vmtygj\",\"revision\":\"zyos\",\"label\":\"p\"}")
+                .toObject(HttpRouteTarget.class);
+        Assertions.assertEquals("vmtygj", model.containerApp());
+        Assertions.assertEquals("zyos", model.revision());
+        Assertions.assertEquals("p", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRouteTarget model = new HttpRouteTarget().withContainerApp("ezxlhdjzqdca")
-            .withRevision("vpsozjiihjri")
-            .withLabel("mrzoep")
-            .withWeight(1111684206);
+        HttpRouteTarget model = new HttpRouteTarget().withContainerApp("vmtygj").withRevision("zyos").withLabel("p");
         model = BinaryData.fromObject(model).toObject(HttpRouteTarget.class);
-        Assertions.assertEquals("ezxlhdjzqdca", model.containerApp());
-        Assertions.assertEquals("vpsozjiihjri", model.revision());
-        Assertions.assertEquals("mrzoep", model.label());
-        Assertions.assertEquals(1111684206, model.weight());
+        Assertions.assertEquals("vmtygj", model.containerApp());
+        Assertions.assertEquals("zyos", model.revision());
+        Assertions.assertEquals("p", model.label());
     }
 }

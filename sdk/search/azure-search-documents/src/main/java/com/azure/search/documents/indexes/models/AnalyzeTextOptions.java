@@ -40,6 +40,11 @@ public final class AnalyzeTextOptions {
      */
     private List<CharFilterName> charFilters;
 
+    /*
+     * The name of the normalizer to use to normalize the given text.
+     */
+    private LexicalNormalizerName normalizerName;
+
     /**
      * Constructor to {@link AnalyzeTextOptions} which takes analyzerName.
      *
@@ -128,6 +133,26 @@ public final class AnalyzeTextOptions {
      */
     public AnalyzeTextOptions setCharFilters(CharFilterName... charFilters) {
         this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        return this;
+    }
+
+    /**
+     * Get the normalizer property: The name of the normalizer to use to normalize the given text.
+     *
+     * @return the normalizer value.
+     */
+    public LexicalNormalizerName getNormalizerName() {
+        return this.normalizerName;
+    }
+
+    /**
+     * Set the normalizer property: The name of the normalizer to use to normalize the given text.
+     *
+     * @param normalizerName the normalizer value to set.
+     * @return the AnalyzeRequest object itself.
+     */
+    public AnalyzeTextOptions setNormalizerName(LexicalNormalizerName normalizerName) {
+        this.normalizerName = normalizerName;
         return this;
     }
 }

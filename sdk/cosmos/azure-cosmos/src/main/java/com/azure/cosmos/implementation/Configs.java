@@ -360,6 +360,10 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE = "COSMOS_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
@@ -938,14 +942,6 @@ public class Configs {
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
-    public static String isPerPartitionAutomaticFailoverEnabled() {
-        return System.getProperty(
-            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-            firstNonNull(
-                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
-                DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED));
-    }
-
     public static boolean isSessionTokenFalseProgressMergeEnabled() {
         String isSessionTokenFalseProgressMergeDisabledAsString =
             System.getProperty(
@@ -1239,5 +1235,15 @@ public class Configs {
         }
 
         return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+    }
+
+    public static boolean isNonParseableDocumentLoggingEnabled() {
+        String isNonParseableDocumentLoggingEnabledAsString = System.getProperty(
+            IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED)));
+
+        return Boolean.parseBoolean(isNonParseableDocumentLoggingEnabledAsString);
     }
 }

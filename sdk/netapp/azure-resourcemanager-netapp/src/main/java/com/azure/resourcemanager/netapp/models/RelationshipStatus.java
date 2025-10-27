@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Status of the mirror relationship.
+ * The status of the Volume Replication.
  */
 public final class RelationshipStatus extends ExpandableStringEnum<RelationshipStatus> {
     /**
@@ -20,16 +20,6 @@ public final class RelationshipStatus extends ExpandableStringEnum<RelationshipS
      * Static value Transferring for RelationshipStatus.
      */
     public static final RelationshipStatus TRANSFERRING = fromString("Transferring");
-
-    /**
-     * Static value Failed for RelationshipStatus.
-     */
-    public static final RelationshipStatus FAILED = fromString("Failed");
-
-    /**
-     * Static value Unknown for RelationshipStatus.
-     */
-    public static final RelationshipStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of RelationshipStatus value.
