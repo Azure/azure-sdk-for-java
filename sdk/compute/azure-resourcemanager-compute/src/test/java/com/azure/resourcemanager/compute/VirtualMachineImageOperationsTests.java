@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
@@ -20,7 +19,6 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineImageOperationsTests.class);
 
     @Test
-    @DoNotRecord(skipInPlayback = true) // This test took over 1 minute to finish in playback
     public void canListVirtualMachineImages() throws Exception {
         /*
         PagedIterable<VirtualMachineImage> images = computeManager.virtualMachineImages().listByRegion(Region.US_EAST);
