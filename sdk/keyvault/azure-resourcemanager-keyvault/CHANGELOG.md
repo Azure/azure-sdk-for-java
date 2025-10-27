@@ -1,13 +1,5 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ## 2.53.3 (2025-09-25)
 
 ### Other Changes
@@ -18,6 +10,7 @@
 - Upgraded `azure-security-keyvault-keys` from `4.10.2` to version `4.10.3`.
 - Upgraded `azure-security-keyvault-secrets` from `4.10.2` to version `4.10.3`.
 - Upgraded `azure-resourcemanager-authorization` from `2.53.1` to version `2.53.3`.
+
 
 ## 2.53.2 (2025-08-27)
 
