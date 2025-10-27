@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -66,7 +67,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         GatewayServiceConfigurationReader serviceConfigReader,
         ConnectionPolicy connectionPolicy,
         ApiType apiType,
-        BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+        Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;

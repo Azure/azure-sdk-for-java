@@ -345,7 +345,7 @@ public class ConsistencyWriter {
                 //if necessary we would have already refreshed cache by now.
                 request.requestContext.forceRefreshAddressCache = false;
 
-                logger.debug("ConsistencyWriter: globalCommittedLsn {}, lsn {}", globalCommittedLsn, lsn);
+                logger.info("ConsistencyWriter: globalCommittedLsn {}, lsn {}", globalCommittedLsn, lsn);
                 //barrier only if necessary, i.e. when write region completes write, but read regions have not.
 
                 if (globalCommittedLsn.v < lsn.v) {

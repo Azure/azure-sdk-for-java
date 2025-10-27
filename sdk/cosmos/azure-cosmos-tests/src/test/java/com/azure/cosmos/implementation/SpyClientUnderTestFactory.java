@@ -129,7 +129,7 @@ public class SpyClientUnderTestFactory {
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
                                                  ApiType apiType,
-                                                 BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+                                                 Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,

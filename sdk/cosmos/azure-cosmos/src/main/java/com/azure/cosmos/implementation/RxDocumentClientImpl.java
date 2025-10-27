@@ -261,7 +261,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
-    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
     private volatile boolean useMultipleWriteLocations;
 
     // creator of TransportClient is responsible for disposing it.
@@ -776,7 +776,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                      Function<HttpClient, HttpClient> httpClientInterceptor,
-                     BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor,
+                     Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor,
                      BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor) {
         try {
 
@@ -947,7 +947,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
                                              ApiType apiType,
-                                             BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+                                             Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -6331,6 +6331,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+        logger.info("entered getDatabaseAccountFromEndpoint line 6334 RxDocumentClientImpl");
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);

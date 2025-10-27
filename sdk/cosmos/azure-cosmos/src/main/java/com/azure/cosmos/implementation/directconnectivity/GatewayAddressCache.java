@@ -112,7 +112,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    public BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
+    public Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -360,11 +360,12 @@ public class GatewayAddressCache implements IAddressCache {
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
 
-        logger.debug("inside getServerAddressesViaGatewayInternalAsync");
-        logger.debug("httpRequestInterceptor is " + (this.httpRequestInterceptor != null ? "not null" : "null"));
+        logger.info("inside getServerAddressesViaGatewayInternalAsync");
+        logger.info("httpRequestInterceptor is " + (this.httpRequestInterceptor != null ? "not null" : "null"));
         if (this.httpRequestInterceptor != null) {
-            logger.debug("getServerAddressesViaGatewayInternalAsync intercepted");
-            RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request, null);
+            logger.info("getServerAddressesViaGatewayInternalAsync intercepted");
+            logger.info("request operationType: " + request.getOperationType() + ", resourceType: " + request.getResourceType());
+            RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request);
             if (result != null) {
                 return Mono.just(result.getQueryResponse(null, Address.class));
             }

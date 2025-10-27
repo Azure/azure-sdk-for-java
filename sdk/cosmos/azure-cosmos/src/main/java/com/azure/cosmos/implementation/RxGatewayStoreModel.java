@@ -84,7 +84,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -95,7 +95,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         ApiType apiType,
-        BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+        Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
 
         this.clientContext = clientContext;
 
@@ -310,7 +310,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         try {
             if (this.httpRequestInterceptor != null) {
-                RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request, requestUri);
+                RxDocumentServiceResponse result = this.httpRequestInterceptor.apply(request);
                 if (result != null) {
                     return Mono.just(result);
                 }
@@ -699,6 +699,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+        if (this.httpRequestInterceptor != null) {}
+
         Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
 
         return responseObs.onErrorResume(

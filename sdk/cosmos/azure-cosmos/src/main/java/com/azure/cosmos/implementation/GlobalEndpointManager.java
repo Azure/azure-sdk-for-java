@@ -135,6 +135,8 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public static Mono<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
             URI defaultEndpoint, List<String> locations, Function<URI, Mono<DatabaseAccount>> getDatabaseAccountFn) {
+        logger.info("entered getDatabaseAccountFromAnyLocationsAsync with defaultEndpoint: {} and locations: {}",
+            defaultEndpoint, String.join(",", locations));
 
         return getDatabaseAccountFn.apply(defaultEndpoint).onErrorResume(
                 e -> {
@@ -172,12 +174,12 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public void markEndpointUnavailableForRead(URI endpoint) {
-        logger.debug("Marking endpoint {} unavailable for read",endpoint);
+        logger.info("Marking endpoint {} unavailable for read",endpoint);
         this.locationCache.markEndpointUnavailableForRead(endpoint);;
     }
 
     public void markEndpointUnavailableForWrite(URI endpoint) {
-        logger.debug("Marking  endpoint {} unavailable for Write",endpoint);
+        logger.info("Marking  endpoint {} unavailable for Write",endpoint);
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
     }
 
@@ -193,13 +195,13 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.isClosed = true;
         this.perPartitionAutomaticFailoverConfigModifier = null;
         this.scheduler.dispose();
-        logger.debug("GlobalEndpointManager closed.");
+        logger.info("GlobalEndpointManager closed.");
     }
 
     public Mono<Void> refreshLocationAsync(DatabaseAccount databaseAccount, boolean forceRefresh) {
         logger.info("refreshLocationAsync invoked. forceRefresh: {}", forceRefresh);
         return Mono.defer(() -> {
-            logger.debug("refreshLocationAsync() invoked");
+            logger.info("refreshLocationAsync() invoked");
 
             if (forceRefresh) {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
@@ -223,11 +225,11 @@ public class GlobalEndpointManager implements AutoCloseable {
             }
 
             if (!isRefreshing.compareAndSet(false, true)) {
-                logger.debug("in the middle of another refresh. Not invoking a new refresh.");
+                logger.info("in the middle of another refresh. Not invoking a new refresh.");
                 return Mono.empty();
             }
 
-            logger.debug("will refresh");
+            logger.info("will refresh");
             return this.refreshLocationPrivateAsync(databaseAccount).doOnError(e -> this.isRefreshing.set(false));
         });
     }
@@ -251,7 +253,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
         logger.info("inside refreshLocationPrivateAsync");
         return Mono.defer(() -> {
-            logger.debug("refreshLocationPrivateAsync() refreshing locations");
+            logger.info("refreshLocationPrivateAsync() refreshing locations");
 
             if (databaseAccount != null) {
                 this.databaseAccountWriteLock.lock();
@@ -265,10 +267,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
             Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
             if (this.locationCache.shouldRefreshEndpoints(canRefreshInBackground)) {
-                logger.debug("shouldRefreshEndpoints: true");
+                logger.info("shouldRefreshEndpoints: true");
 
                 if (databaseAccount == null && !canRefreshInBackground.v) {
-                    logger.debug("shouldRefreshEndpoints: can't be done in background");
+                    logger.info("shouldRefreshEndpoints: can't be done in background");
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
@@ -303,7 +305,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 this.isRefreshing.set(false);
                 return Mono.empty();
             } else {
-                logger.debug("shouldRefreshEndpoints: false, nothing to do.");
+                logger.info("shouldRefreshEndpoints: false, nothing to do.");
                 this.isRefreshing.set(false);
                 return Mono.empty();
             }
@@ -317,15 +319,19 @@ public class GlobalEndpointManager implements AutoCloseable {
     private Mono<Void> startRefreshLocationTimerAsync(boolean initialization) {
 
         if (this.isClosed) {
-            logger.debug("startRefreshLocationTimerAsync: nothing to do, it is closed");
+            logger.info("startRefreshLocationTimerAsync: nothing to do, it is closed");
             // if client is already closed, nothing to be done, just return.
             return Mono.empty();
         }
 
-        logger.debug("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
+        // TODO: revert after testing done
+        //logger.info("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
+        int testRefreshInterval = 3000;
+        logger.info("registering a refresh in [{}] ms", testRefreshInterval);
         LocalDateTime now = LocalDateTime.now();
 
-        int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
+        //int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
+        int delayInMillis = initialization ? 0: testRefreshInterval;
 
         this.refreshInBackground.set(true);
 
@@ -338,7 +344,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                                 return Mono.empty();
                             }
 
-                            logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
+                            logger.info("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
                             Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions()),
                                     this::getDatabaseAccountAsync);
 
@@ -361,6 +367,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
+        logger.info("entered getDatabaseAccountAsync in GlobalEndpointManager");
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
@@ -395,7 +402,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                     }
                 }
 
-                logger.debug("account retrieved: {}", databaseAccount);
+                logger.info("account retrieved: {}", databaseAccount);
             }).single();
     }
 

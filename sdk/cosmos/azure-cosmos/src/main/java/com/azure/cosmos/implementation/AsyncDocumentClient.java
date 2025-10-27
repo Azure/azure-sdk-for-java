@@ -120,7 +120,7 @@ public interface AsyncDocumentClient {
         private boolean isPerPartitionAutomaticFailoverEnabled;
         private List<CosmosOperationPolicy> operationPolicies;
         private BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor;
-        private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor;
+        private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -298,7 +298,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withHttpRequestInterceptor(BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+        public Builder withHttpRequestInterceptor(Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
             this.httpRequestInterceptor = httpRequestInterceptor;
             return this;
         }

@@ -33,7 +33,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(ClientRetryPolicy.class);
 
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
-    final static int MaxRetryCount = 120;
+    final static int MaxRetryCount = 10; // TODO: Remember to set this back after done testing
     private final static int MaxServiceUnavailableRetryCount = 1;
 
     private final DocumentClientRetryPolicy throttlingRetry;
@@ -275,8 +275,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
+        logger.info("in shouldRetryOnEndpointFailureAsync() Retry count = {}", this.failoverRetryCount);
+
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
-            logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
+            logger.info("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
@@ -321,7 +323,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
         if (canPerformCrossRegionRetryOnGatewayReadTimeout) {
             if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
-                logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
+                logger.info("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
@@ -341,7 +343,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
-            logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
+            logger.info("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh, usePreferredLocations);
@@ -362,14 +364,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         URI gatewayRegionalEndpoint = this.regionalRoutingContext.getGatewayRegionalEndpoint();
 
         if (isReadRequest) {
-            logger.warn("marking the endpoint {} as unavailable for read", gatewayRegionalEndpoint);
+            logger.info("marking the endpoint {} as unavailable for read", gatewayRegionalEndpoint);
             this.globalEndpointManager.markEndpointUnavailableForRead(gatewayRegionalEndpoint);
         } else {
-            logger.warn("marking the endpoint {} as unavailable for write", gatewayRegionalEndpoint);
+            logger.info("marking the endpoint {} as unavailable for write", gatewayRegionalEndpoint);
             this.globalEndpointManager.markEndpointUnavailableForWrite(gatewayRegionalEndpoint);
         }
 
         this.retryContext = new RetryContext(this.failoverRetryCount, usePreferredLocations);
+        logger.info("entering refreshLocationAsync");
         return this.globalEndpointManager.refreshLocationAsync(null, forceRefresh);
     }
 
@@ -414,7 +417,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 nonIdempotentWriteRetriesEnabled,
                 isWebExceptionRetriable,
                 cosmosException)) {
-            logger.warn(
+            logger.info(
                 "shouldRetryOnBackendServiceUnavailableAsync() Not retrying" +
                     " on write with non retriable exception and non server returned service unavailable. Retry count = {}",
                 this.serviceUnavailableRetryCount);
@@ -422,7 +425,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         if (this.serviceUnavailableRetryCount++ > MaxServiceUnavailableRetryCount) {
-            logger.warn("shouldRetryOnBackendServiceUnavailableAsync() Not retrying. Retry count = {}", this.serviceUnavailableRetryCount);
+            logger.info("shouldRetryOnBackendServiceUnavailableAsync() Not retrying. Retry count = {}", this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
@@ -436,7 +439,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         int availablePreferredLocations = this.globalEndpointManager.getPreferredLocationCount();
         if (availablePreferredLocations <= 1) {
-            logger.warn("shouldRetryOnServiceUnavailable() Not retrying. No other regions available for the request. AvailablePreferredLocations = {}", availablePreferredLocations);
+            logger.info("shouldRetryOnServiceUnavailable() Not retrying. No other regions available for the request. AvailablePreferredLocations = {}", availablePreferredLocations);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 

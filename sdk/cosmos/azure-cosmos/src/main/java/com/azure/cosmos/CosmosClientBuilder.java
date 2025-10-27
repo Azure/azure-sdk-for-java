@@ -160,7 +160,7 @@ public class CosmosClientBuilder implements
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
     private BiFunction<RxDocumentServiceRequest, StoreResponse, StoreResponse> storeResponseInterceptor = null;
-    private BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor = null;
+    private Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -176,12 +176,12 @@ public class CosmosClientBuilder implements
         this.requestPolicies = new LinkedList<>();
     }
 
-    CosmosClientBuilder httpRequestInterceptor(BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> httpRequestInterceptor) {
+    CosmosClientBuilder httpRequestInterceptor(Function<RxDocumentServiceRequest, RxDocumentServiceResponse> httpRequestInterceptor) {
         this.httpRequestInterceptor = httpRequestInterceptor;
         return this;
     }
 
-    BiFunction<RxDocumentServiceRequest, URI, RxDocumentServiceResponse> getHttpRequestInterceptor() {
+    Function<RxDocumentServiceRequest, RxDocumentServiceResponse> getHttpRequestInterceptor() {
         return this.httpRequestInterceptor;
     }
 
