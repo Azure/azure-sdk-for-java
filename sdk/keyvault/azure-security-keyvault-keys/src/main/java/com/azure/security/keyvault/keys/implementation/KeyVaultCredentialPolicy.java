@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.AuthenticateChallenge;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
@@ -24,6 +23,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +41,7 @@ import static com.azure.core.http.HttpHeaderName.WWW_AUTHENTICATE;
  */
 public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCredentialPolicy.class);
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultCredentialPolicyStashedBody";
     private static final String KEY_VAULT_STASHED_CONTENT_LENGTH_KEY = "KeyVaultCredentialPolicyStashedContentLength";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
@@ -50,6 +52,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * Creates a {@link KeyVaultCredentialPolicy}.
      *
      * @param credential The token credential to authenticate the request.
+     * @param disableChallengeResourceVerification A boolean indicating whether to disable the challenge resource
+     * verification.
      */
     public KeyVaultCredentialPolicy(TokenCredential credential, boolean disableChallengeResourceVerification) {
         super(credential);
@@ -61,20 +65,40 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * Extracts attributes off the bearer challenge in the authentication header.
      *
      * @param authenticateHeader The authentication header containing the challenge.
+     * @param authChallengePrefix The authentication challenge name.
+     *
      * @return A challenge attributes map.
      */
-    private static Map<String, String> extractChallengeAttributes(String authenticateHeader) {
-        AuthenticateChallenge bearerChallenge = CoreUtils.parseAuthenticateHeader(authenticateHeader)
-            .stream()
-            .filter(challenge -> "Bearer".equalsIgnoreCase(challenge.getScheme()))
-            .findFirst()
-            .orElse(null);
-
-        if (bearerChallenge == null) {
+    private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
+        String authChallengePrefix) {
+        if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
             return Collections.emptyMap();
         }
 
-        return bearerChallenge.getParameters();
+        String[] attributes = authenticateHeader.replace("\"", "").substring(authChallengePrefix.length()).split(",");
+        Map<String, String> attributeMap = new HashMap<>();
+
+        for (String pair : attributes) {
+            // Using trim is ugly, but we need it here because currently the 'claims' attribute comes after two spaces.
+            String[] keyValue = pair.trim().split("=", 2);
+
+            attributeMap.put(keyValue[0], keyValue[1]);
+        }
+
+        return attributeMap;
+    }
+
+    /**
+     * Verifies whether a challenge is bearer or not.
+     *
+     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authChallengePrefix The authentication challenge name.
+     *
+     * @return A boolean indicating if the challenge is a bearer challenge or not.
+     */
+    private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
+        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 
     @Override
@@ -132,7 +156,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             String authority = getRequestAuthority(request);
             Map<String, String> challengeAttributes
-                = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
+                = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
             String scope = challengeAttributes.get("resource");
 
             if (scope != null) {
@@ -249,7 +273,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         String authority = getRequestAuthority(request);
-        Map<String, String> challengeAttributes = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -413,7 +438,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
     private boolean isClaimsPresent(HttpResponse httpResponse) {
         Map<String, String> challengeAttributes
-            = extractChallengeAttributes(httpResponse.getHeaderValue(WWW_AUTHENTICATE));
+            = extractChallengeAttributes(httpResponse.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
 
         String error = challengeAttributes.get("error");
 
@@ -494,10 +519,10 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 new RuntimeException(String.format("The challenge resource '%s' is not a valid URI.", scope), e));
         }
 
-        String host = request.getUrl().getHost();
-        String toEndWith = "." + scopeUri.getHost();
-
         // Returns false if the host specified in the scope does not match the requested domain.
-        return host.regionMatches(true, host.length() - toEndWith.length(), toEndWith, 0, toEndWith.length());
+        return request.getUrl()
+            .getHost()
+            .toLowerCase(Locale.ROOT)
+            .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
     }
 }
