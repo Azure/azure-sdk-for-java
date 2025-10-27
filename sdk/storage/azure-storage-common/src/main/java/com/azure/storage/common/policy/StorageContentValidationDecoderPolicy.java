@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.DownloadContentValidationOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageDecodingStream;
+import com.azure.storage.common.implementation.structuredmessage.StatefulStructuredMessageDecoder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -51,8 +52,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             Long contentLength = getContentLength(httpResponse.getHeaders());
 
             if (contentLength != null && contentLength > 0 && validationOptions != null) {
-                Flux<ByteBuffer> decodedStream = StructuredMessageDecodingStream.wrapStreamIfNeeded(
-                    httpResponse.getBody(), contentLength, validationOptions);
+                // Get or create stateful decoder
+                StatefulStructuredMessageDecoder decoder = getOrCreateDecoder(context, contentLength);
+                
+                // Decode using the stateful decoder
+                Flux<ByteBuffer> decodedStream = decoder.decode(httpResponse.getBody());
+                
                 return new DecodedResponse(httpResponse, decodedStream);
             }
 
@@ -101,6 +106,20 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             }
         }
         return null;
+    }
+
+    /**
+     * Gets or creates a stateful decoder from context.
+     *
+     * @param context The pipeline call context.
+     * @param contentLength The content length.
+     * @return The stateful decoder.
+     */
+    private StatefulStructuredMessageDecoder getOrCreateDecoder(HttpPipelineCallContext context, Long contentLength) {
+        return context.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+            .filter(value -> value instanceof StatefulStructuredMessageDecoder)
+            .map(value -> (StatefulStructuredMessageDecoder) value)
+            .orElseGet(() -> new StatefulStructuredMessageDecoder(contentLength));
     }
 
     /**
