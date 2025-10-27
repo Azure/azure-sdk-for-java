@@ -1,13 +1,5 @@
 # Release History
 
-## 1.22.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ## 1.21.1 (2025-09-25)
 
 ### Other Changes
@@ -16,6 +8,7 @@
 
 - Upgraded `azure-messaging-eventhubs` from `5.21.0` to version `5.21.1`.
 - Upgraded `azure-storage-blob` from `12.31.1` to version `12.31.2`.
+
 
 ## 1.21.0 (2025-08-11)
 
@@ -131,6 +124,7 @@
 - Experimental checkpointing metrics are no longer reported by this package. They've been moved to `azure-messaging-eventhubs` package.
   ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
 
+
 ### Other Changes
 
 #### Dependency Updates
@@ -201,6 +195,7 @@
 - Upgraded `azure-messaging-eventhubs` from `5.18.1` to version `5.18.2`.
 - Upgraded `azure-storage-blob` from `12.25.1` to version `12.25.2`.
 
+
 ## 1.19.1 (2024-02-16)
 
 ### Other Changes
@@ -268,6 +263,7 @@
 
 - Upgraded `azure-messaging-eventhubs` from `5.15.6` to version `5.15.7`.
 - Upgraded `azure-storage-blob` from `12.22.3` to version `12.23.0`.
+
 
 ## 1.16.7 (2023-06-21)
 
@@ -606,4 +602,5 @@ store checkpoints and balance partition load among all instances of Event Proces
 
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
+
 
