@@ -63,7 +63,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.6.0-beta.1</version>
+    <version>5.5.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -142,16 +142,21 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.1</version>
+    <version>1.13.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 * [Register a new Azure Active Directory application][register_AAD_application]
 * [Grant access][grant_access] to Language service by assigning the `"Cognitive Services User"` role to your service principal.
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
-We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
-Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use. 
+As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET. 
+
+Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
+running environment. For more information about using Azure Active Directory authorization with Language service, please
+refer to [the associated documentation][aad_authorization].
 
 ```java readme-sample-createTextAnalyticsAsyncClientWithAAD
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
@@ -423,12 +428,12 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[aad_authorization]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[aad_credential]: https://learn.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
-[authentication]: https://learn.microsoft.com/azure/cognitive-services/authentication
+[authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli_doc]: https://learn.microsoft.com/cli/azure/
-[azure_cli_endpoint]: https://learn.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
+[azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
@@ -438,35 +443,35 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[create_new_resource_in_azure_portal]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[create_new_resource_in_azure_portal]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
 [create_new_resource_in_azure_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
-[custom_entities_recognition_overview]: https://learn.microsoft.com/azure/cognitive-services/language-service/custom-named-entity-recognition/overview
-[custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[custom_text_classification_overview]: https://learn.microsoft.com/azure/cognitive-services/language-service/custom-text-classification/overview
-[grant_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[healthcare]: https://learn.microsoft.com/azure/cognitive-services/language-service/text-analytics-for-health/overview?tabs=ner
-[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[key]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[key_phrase_extraction]: https://learn.microsoft.com/azure/cognitive-services/language-service/key-phrase-extraction/overview
-[language_detection]: https://learn.microsoft.com/azure/cognitive-services/language-service/language-detection/overview
-[language_regional_support]: https://learn.microsoft.com/azure/cognitive-services/language-service/language-detection/language-support
-[named_entity_recognition]: https://learn.microsoft.com/azure/cognitive-services/language-service/named-entity-recognition/overview
-[named_entities_categories]: https://learn.microsoft.com/azure/cognitive-services/language-service/named-entity-recognition/concepts/named-entity-categories
-[entity_linking]: https://learn.microsoft.com/azure/cognitive-services/language-service/entity-linking/overview
-[pii_entity_recognition]: https://learn.microsoft.com/azure/cognitive-services/language-service/personally-identifiable-information/overview
+[custom_entities_recognition_overview]: https://docs.microsoft.com/azure/cognitive-services/language-service/custom-named-entity-recognition/overview
+[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[custom_text_classification_overview]: https://docs.microsoft.com/azure/cognitive-services/language-service/custom-text-classification/overview
+[grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[healthcare]: https://docs.microsoft.com/azure/cognitive-services/language-service/text-analytics-for-health/overview?tabs=ner
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
+[key_phrase_extraction]: https://docs.microsoft.com/azure/cognitive-services/language-service/key-phrase-extraction/overview
+[language_detection]: https://docs.microsoft.com/azure/cognitive-services/language-service/language-detection/overview
+[language_regional_support]: https://docs.microsoft.com/azure/cognitive-services/language-service/language-detection/language-support
+[named_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/language-service/named-entity-recognition/overview
+[named_entities_categories]: https://docs.microsoft.com/azure/cognitive-services/language-service/named-entity-recognition/concepts/named-entity-categories
+[entity_linking]: https://docs.microsoft.com/azure/cognitive-services/language-service/entity-linking/overview
+[pii_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/language-service/personally-identifiable-information/overview
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-textanalytics
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[product_documentation]: https://learn.microsoft.com/azure/cognitive-services/language-service/overview
-[register_AAD_application]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[service_access]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[service_input_limitation]: https://learn.microsoft.com/azure/cognitive-services/language-service/overview#data-limits
-[sentiment_analysis]: https://learn.microsoft.com/azure/cognitive-services/language-service/sentiment-opinion-mining/overview
+[product_documentation]: https://docs.microsoft.com/azure/cognitive-services/language-service/overview
+[register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[service_input_limitation]: https://docs.microsoft.com/azure/cognitive-services/language-service/overview#data-limits
+[sentiment_analysis]: https://docs.microsoft.com/azure/cognitive-services/language-service/sentiment-opinion-mining/overview
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/textanalytics/azure-ai-textanalytics/src
-[language_service_account]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
+[language_service_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [text_analytics_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
 [text_analytics_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
+[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
 [abstractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AbstractiveSummarization.java
@@ -483,5 +488,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_healthcare_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeHealthcareEntities.java
 [recognize_custom_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
 [single_label_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/SingleLabelClassifyDocument.java
-[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

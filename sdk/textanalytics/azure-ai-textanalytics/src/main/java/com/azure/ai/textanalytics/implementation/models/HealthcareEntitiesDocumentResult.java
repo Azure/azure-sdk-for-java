@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,19 +19,16 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     /*
      * Healthcare entities.
      */
-    @Generated
     private List<HealthcareEntity> entities;
 
     /*
      * Healthcare entity relations.
      */
-    @Generated
     private List<HealthcareRelation> relations;
 
     /**
      * Creates an instance of HealthcareEntitiesDocumentResult class.
      */
-    @Generated
     public HealthcareEntitiesDocumentResult() {
     }
 
@@ -41,7 +37,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * 
      * @return the entities value.
      */
-    @Generated
     public List<HealthcareEntity> getEntities() {
         return this.entities;
     }
@@ -52,7 +47,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * @param entities the entities value to set.
      * @return the HealthcareEntitiesDocumentResult object itself.
      */
-    @Generated
     public HealthcareEntitiesDocumentResult setEntities(List<HealthcareEntity> entities) {
         this.entities = entities;
         return this;
@@ -63,7 +57,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * 
      * @return the relations value.
      */
-    @Generated
     public List<HealthcareRelation> getRelations() {
         return this.relations;
     }
@@ -74,7 +67,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * @param relations the relations value to set.
      * @return the HealthcareEntitiesDocumentResult object itself.
      */
-    @Generated
     public HealthcareEntitiesDocumentResult setRelations(List<HealthcareRelation> relations) {
         this.relations = relations;
         return this;
@@ -83,7 +75,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public HealthcareEntitiesDocumentResult setId(String id) {
         super.setId(id);
@@ -93,7 +84,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public HealthcareEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -103,7 +93,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public HealthcareEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -113,7 +102,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -134,7 +122,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareEntitiesDocumentResult.
      */
-    @Generated
     public static HealthcareEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareEntitiesDocumentResult deserializedHealthcareEntitiesDocumentResult

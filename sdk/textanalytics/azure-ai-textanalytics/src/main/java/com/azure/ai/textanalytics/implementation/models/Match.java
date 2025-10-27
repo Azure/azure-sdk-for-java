@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,34 +17,28 @@ import java.io.IOException;
 @Fluent
 public final class Match implements JsonSerializable<Match> {
     /*
-     * If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be
-     * returned.
+     * If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be returned.
      */
-    @Generated
     private double confidenceScore;
 
     /*
      * Entity text as appears in the request.
      */
-    @Generated
     private String text;
 
     /*
      * Start position for the entity match text.
      */
-    @Generated
     private int offset;
 
     /*
      * Length for the entity match text.
      */
-    @Generated
     private int length;
 
     /**
      * Creates an instance of Match class.
      */
-    @Generated
     public Match() {
     }
 
@@ -55,7 +48,6 @@ public final class Match implements JsonSerializable<Match> {
      * 
      * @return the confidenceScore value.
      */
-    @Generated
     public double getConfidenceScore() {
         return this.confidenceScore;
     }
@@ -67,7 +59,6 @@ public final class Match implements JsonSerializable<Match> {
      * @param confidenceScore the confidenceScore value to set.
      * @return the Match object itself.
      */
-    @Generated
     public Match setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
@@ -78,7 +69,6 @@ public final class Match implements JsonSerializable<Match> {
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -89,7 +79,6 @@ public final class Match implements JsonSerializable<Match> {
      * @param text the text value to set.
      * @return the Match object itself.
      */
-    @Generated
     public Match setText(String text) {
         this.text = text;
         return this;
@@ -100,7 +89,6 @@ public final class Match implements JsonSerializable<Match> {
      * 
      * @return the offset value.
      */
-    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -111,7 +99,6 @@ public final class Match implements JsonSerializable<Match> {
      * @param offset the offset value to set.
      * @return the Match object itself.
      */
-    @Generated
     public Match setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -122,7 +109,6 @@ public final class Match implements JsonSerializable<Match> {
      * 
      * @return the length value.
      */
-    @Generated
     public int getLength() {
         return this.length;
     }
@@ -133,7 +119,6 @@ public final class Match implements JsonSerializable<Match> {
      * @param length the length value to set.
      * @return the Match object itself.
      */
-    @Generated
     public Match setLength(int length) {
         this.length = length;
         return this;
@@ -142,7 +127,6 @@ public final class Match implements JsonSerializable<Match> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,7 +146,6 @@ public final class Match implements JsonSerializable<Match> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Match.
      */
-    @Generated
     public static Match fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Match deserializedMatch = new Match();
