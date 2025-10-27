@@ -1,5 +1,13 @@
 # Release History
 
+## 2.54.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+
+
 ## 2.54.0 (2025-10-13)
 
 ### Bugs Fixed
