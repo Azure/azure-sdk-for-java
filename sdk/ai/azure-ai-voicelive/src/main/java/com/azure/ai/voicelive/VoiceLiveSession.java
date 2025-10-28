@@ -85,6 +85,7 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     // WebSocket configuration constants
     private static final String WEBSOCKET_PROTOCOL = "realtime";
     private static final int MAX_FRAME_SIZE_BYTES = 10 * 1024 * 1024; // 10MB for large audio messages
+    private static final int FRAME_AGGREGATION_SIZE_BYTES = 10 * 1024 * 1024; // 10MB for frame aggregation
     private static final int INBOUND_BUFFER_CAPACITY = 1024;
 
     private static final WebsocketClientSpec WEBSOCKET_CLIENT_SPEC = WebsocketClientSpec.builder()
@@ -179,9 +180,9 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
 
                         LOGGER.info("WebSocket connection established");
 
-                        // CRITICAL FIX: Set frame aggregation to 10MB to handle large audio delta messages
+                        // CRITICAL FIX: Set frame aggregation to handle large audio delta messages
                         // Without this, Netty's default 64KB limit causes "content length exceeded 65536 bytes" errors
-                        inbound.aggregateFrames(10 * 1024 * 1024);
+                        inbound.aggregateFrames(FRAME_AGGREGATION_SIZE_BYTES);
                         Flux<BinaryData> receiveFlux = inbound.receive()
                             .retain()
                             .doOnSubscribe(s -> LOGGER.info("Receive flux subscribed"))
@@ -416,10 +417,8 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     /**
      * Parses raw BinaryData into a SessionUpdate object.
      * <p>
-     * Now that the bufferObject() bug is fixed in the generated code (using JsonReaderHelper),
-     * we can simply call SessionUpdate.fromJson() directly. The generated code now reads the
-     * entire JSON object as a string first, then creates fresh JsonReaders for polymorphic
-     * deserialization, avoiding all bufferObject() issues.
+     * The generated code now uses JsonReaderHelper to avoid bufferObject() issues.
+     * This method simply delegates to SessionUpdate.fromJson() for polymorphic deserialization.
      * </p>
      *
      * @param data The raw binary data from the service.
@@ -430,10 +429,10 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
             try {
                 return SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(data.toString()));
             } catch (IOException e) {
-                LOGGER.warning("Failed to parse SessionUpdate: {}", e.getMessage());
+                LOGGER.atError().addKeyValue("error", e.getMessage()).log("Failed to parse SessionUpdate");
                 return null;
             }
-        }).filter(update -> update != null).subscribeOn(Schedulers.boundedElastic());
+        }).filter(Objects::nonNull).subscribeOn(Schedulers.boundedElastic());
     }
 
     // ============================================================================

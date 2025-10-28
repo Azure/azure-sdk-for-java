@@ -45,17 +45,27 @@ import java.util.concurrent.atomic.AtomicReference;
  * The sample requires a working microphone and speakers/headphones.
  * Audio format is 24kHz, 16-bit PCM, mono as required by the VoiceLive service.
  */
-public class VoiceAssistantSample {
+public final class VoiceAssistantSample {
 
     // Service configuration constants
     private static final String DEFAULT_API_VERSION = "2025-10-01";
     private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
 
+    // Environment variable names
+    private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
+    private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
+
     // Audio format constants (VoiceLive requirements)
-    private static final int SAMPLE_RATE = 24000;      // 24kHz as required by VoiceLive
-    private static final int CHANNELS = 1;             // Mono
-    private static final int SAMPLE_SIZE_BITS = 16;    // 16-bit PCM
-    private static final int CHUNK_SIZE = 1200;        // 50ms chunks (24000 * 0.05)
+    private static final int SAMPLE_RATE = 24000;          // 24kHz as required by VoiceLive
+    private static final int CHANNELS = 1;                 // Mono
+    private static final int SAMPLE_SIZE_BITS = 16;        // 16-bit PCM
+    private static final int CHUNK_SIZE = 1200;            // 50ms chunks (24000 * 0.05)
+    private static final int AUDIO_BUFFER_SIZE_MULTIPLIER = 4;
+
+    // Private constructor to prevent instantiation
+    private VoiceAssistantSample() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     /**
      * Audio packet for playback queue management.
@@ -126,13 +136,13 @@ public class VoiceAssistantSample {
                 }
 
                 microphone = (TargetDataLine) AudioSystem.getLine(micInfo);
-                microphone.open(audioFormat, CHUNK_SIZE * 4); // Buffer size
+                microphone.open(audioFormat, CHUNK_SIZE * AUDIO_BUFFER_SIZE_MULTIPLIER);
                 microphone.start();
 
                 isCapturing.set(true);
 
                 // Start capture thread
-                Thread captureThread = new Thread(this::captureAudioLoop, "AudioCapture");
+                Thread captureThread = new Thread(this::captureAudioLoop, "VoiceLive-AudioCapture");
                 captureThread.setDaemon(true);
                 captureThread.start();
 
@@ -140,12 +150,12 @@ public class VoiceAssistantSample {
 
             } catch (LineUnavailableException e) {
                 System.err.println("❌ Failed to start microphone: " + e.getMessage());
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to initialize microphone", e);
             }
         }
 
         /**
-         * Start audio playback system
+         * Starts audio playback system.
          */
         void startPlayback() {
             if (isPlaying.get()) {
@@ -160,13 +170,13 @@ public class VoiceAssistantSample {
                 }
 
                 speaker = (SourceDataLine) AudioSystem.getLine(speakerInfo);
-                speaker.open(audioFormat, CHUNK_SIZE * 4); // Buffer size
+                speaker.open(audioFormat, CHUNK_SIZE * AUDIO_BUFFER_SIZE_MULTIPLIER);
                 speaker.start();
 
                 isPlaying.set(true);
 
                 // Start playback thread
-                Thread playbackThread = new Thread(this::playbackAudioLoop, "AudioPlayback");
+                Thread playbackThread = new Thread(this::playbackAudioLoop, "VoiceLive-AudioPlayback");
                 playbackThread.setDaemon(true);
                 playbackThread.start();
 
@@ -174,7 +184,7 @@ public class VoiceAssistantSample {
 
             } catch (LineUnavailableException e) {
                 System.err.println("❌ Failed to start speaker: " + e.getMessage());
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to initialize speaker", e);
             }
         }
 
@@ -299,11 +309,13 @@ public class VoiceAssistantSample {
 
     /**
      * Main method to run the voice assistant sample.
+     *
+     * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
         // Validate environment variables
-        String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
+        String endpoint = System.getenv(ENV_ENDPOINT);
+        String apiKey = System.getenv(ENV_API_KEY);
 
         if (endpoint == null || apiKey == null) {
             printUsage();
@@ -358,13 +370,13 @@ public class VoiceAssistantSample {
     }
 
     /**
-     * Print usage instructions
+     * Prints usage instructions for setting up environment variables.
      */
     private static void printUsage() {
-        System.err.println("Please set AZURE_VOICELIVE_ENDPOINT and AZURE_VOICELIVE_API_KEY environment variables");
+        System.err.println("Please set " + ENV_ENDPOINT + " and " + ENV_API_KEY + " environment variables");
         System.err.println("\nExample:");
-        System.err.println("  export AZURE_VOICELIVE_ENDPOINT=https://your-resource.cognitiveservices.azure.com/");
-        System.err.println("  export AZURE_VOICELIVE_API_KEY=your-api-key");
+        System.err.println("  export " + ENV_ENDPOINT + "=https://your-resource.openai.azure.com/");
+        System.err.println("  export " + ENV_API_KEY + "=your-api-key");
     }
 
     /**
