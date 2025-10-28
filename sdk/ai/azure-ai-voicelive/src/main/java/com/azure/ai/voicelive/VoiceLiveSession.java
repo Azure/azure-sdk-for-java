@@ -65,8 +65,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * simultaneously sending and receiving WebSocket messages.
  * </p>
  * <p>
- * Users can obtain a VoiceLiveSession instance from {@link VoiceLiveAsyncClient#startSession(String)} or
- * {@link VoiceLiveAsyncClient#startSession(VoiceLiveSessionOptions)} and work directly with it for optimal performance.
+ * Users can obtain a VoiceLiveSession instance from {@link VoiceLiveAsyncClient#startSession(String)} and work directly with it for optimal performance.
  * Alternatively, users can use the convenience methods on {@link VoiceLiveAsyncClient} which delegate to
  * the internal session.
  * </p>

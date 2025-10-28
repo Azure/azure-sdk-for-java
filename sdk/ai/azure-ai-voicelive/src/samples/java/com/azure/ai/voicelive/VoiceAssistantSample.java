@@ -3,7 +3,24 @@
 
 package com.azure.ai.voicelive;
 
-import com.azure.ai.voicelive.models.*;
+import com.azure.ai.voicelive.models.AudioEchoCancellation;
+import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
+import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
+import com.azure.ai.voicelive.models.AudioNoiseReduction;
+import com.azure.ai.voicelive.models.AudioNoiseReductionType;
+import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
+import com.azure.ai.voicelive.models.InputAudioFormat;
+import com.azure.ai.voicelive.models.InteractionModality;
+import com.azure.ai.voicelive.models.OpenAIVoice;
+import com.azure.ai.voicelive.models.OpenAIVoiceName;
+import com.azure.ai.voicelive.models.OutputAudioFormat;
+import com.azure.ai.voicelive.models.ServerEventType;
+import com.azure.ai.voicelive.models.ServerVadTurnDetection;
+import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionUpdateError;
+import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
+import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
