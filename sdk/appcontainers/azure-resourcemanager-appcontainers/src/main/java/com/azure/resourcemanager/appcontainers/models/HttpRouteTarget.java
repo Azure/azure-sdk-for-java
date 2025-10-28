@@ -28,14 +28,9 @@ public final class HttpRouteTarget implements JsonSerializable<HttpRouteTarget> 
     private String revision;
 
     /*
-     * Label/Revision to route requests to
+     * Label to route requests to
      */
     private String label;
-
-    /*
-     * Weighted routing
-     */
-    private Integer weight;
 
     /**
      * Creates an instance of HttpRouteTarget class.
@@ -84,7 +79,7 @@ public final class HttpRouteTarget implements JsonSerializable<HttpRouteTarget> 
     }
 
     /**
-     * Get the label property: Label/Revision to route requests to.
+     * Get the label property: Label to route requests to.
      * 
      * @return the label value.
      */
@@ -93,33 +88,13 @@ public final class HttpRouteTarget implements JsonSerializable<HttpRouteTarget> 
     }
 
     /**
-     * Set the label property: Label/Revision to route requests to.
+     * Set the label property: Label to route requests to.
      * 
      * @param label the label value to set.
      * @return the HttpRouteTarget object itself.
      */
     public HttpRouteTarget withLabel(String label) {
         this.label = label;
-        return this;
-    }
-
-    /**
-     * Get the weight property: Weighted routing.
-     * 
-     * @return the weight value.
-     */
-    public Integer weight() {
-        return this.weight;
-    }
-
-    /**
-     * Set the weight property: Weighted routing.
-     * 
-     * @param weight the weight value to set.
-     * @return the HttpRouteTarget object itself.
-     */
-    public HttpRouteTarget withWeight(Integer weight) {
-        this.weight = weight;
         return this;
     }
 
@@ -146,7 +121,6 @@ public final class HttpRouteTarget implements JsonSerializable<HttpRouteTarget> 
         jsonWriter.writeStringField("containerApp", this.containerApp);
         jsonWriter.writeStringField("revision", this.revision);
         jsonWriter.writeStringField("label", this.label);
-        jsonWriter.writeNumberField("weight", this.weight);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,8 +146,6 @@ public final class HttpRouteTarget implements JsonSerializable<HttpRouteTarget> 
                     deserializedHttpRouteTarget.revision = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     deserializedHttpRouteTarget.label = reader.getString();
-                } else if ("weight".equals(fieldName)) {
-                    deserializedHttpRouteTarget.weight = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

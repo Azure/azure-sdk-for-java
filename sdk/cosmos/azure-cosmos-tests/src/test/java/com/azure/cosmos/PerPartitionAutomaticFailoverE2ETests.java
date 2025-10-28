@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
@@ -40,6 +41,7 @@ import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -49,6 +51,17 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
@@ -64,6 +77,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -79,10 +93,123 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * End-to-end test suite validating Per-Partition Automatic Failover (PPAF) behavior in the Azure Cosmos DB Java SDK.
+ *
+ * <p>This suite exercises and verifies:
+ * <ul>
+ *   <li>Automatic failover and hedged routing at the granularity of a single physical partition (PK range).</li>
+ *   <li>Dynamic enablement and disablement of PPAF at runtime by reflecting and overriding
+ *       {@code GlobalEndpointManager}'s {@code DatabaseAccountManagerInternal} owner to toggle
+ *       {@code DatabaseAccount#isPerPartitionFailoverBehaviorEnabled}.</li>
+ *   <li>Write operation failover (Create, Replace, Upsert, Delete, Patch, Batch) under multiple failover‑eligible
+ *       status/sub-status combinations (410/21005, 503/21008, 403/3, 408/*, gateway read timeouts).</li>
+ *   <li>Non-write hedging behavior (point Read and Query variants) under region-scoped transient faults:
+ *       <ul>
+ *         <li>DIRECT mode: simulated server-generated 410 (sub-status 21005) scoped to a specific partition key range.</li>
+ *         <li>GATEWAY mode: injected RESPONSE_DELAY faults via fault injection rules (query plan + query + read item).</li>
+ *       </ul>
+ *   </li>
+ *   <li>Interaction with end-to-end latency policies (E2E timeout) as a gating mechanism for enabling failover logic.</li>
+ * </ul>
+ *
+ * <p><strong>Connection Modes Covered</strong>:
+ * <ul>
+ *   <li>DIRECT: Uses a mocked {@code TransportClient} to selectively throw {@code CosmosException} for a targeted
+ *       (region + PK range) while returning success for others.</li>
+ *   <li>GATEWAY: Uses a mocked {@code HttpClient} (or fault injection framework) to simulate service errors, network
+ *       timeouts (socket/read), regional delays, or success responses.</li>
+ * </ul>
+ *
+ * <p><strong>Phased Validation Patterns</strong>:
+ * <ul>
+ *   <li><em>Pre-failover / Hedging Window</em>: Verifies retries or region hedging (multi-region contacts) before
+ *       PPCB-enforced failover, optionally repeated to satisfy E2E timeout activation thresholds.</li>
+ *   <li><em>Post-failover / Stabilized</em>: Ensures subsequent operations route directly to a healthy region
+ *       (single-region contact, zero retries) unless query semantics (e.g., query plan retrieval) require multi-region access.</li>
+ *   <li><em>Dynamic Enablement Toggle</em>: For selected 503 scenarios, validates behavior transitions
+ *       Disabled → Enabled → Disabled, confirming routing and diagnostics adapt immediately after
+ *       {@code refreshLocationAsync(true)}.</li>
+ * </ul>
+ *
+ * <p><strong>Diagnostics Assertions</strong>:
+ * Each test inspects {@code CosmosDiagnostics} to assert:
+ * <ul>
+ *   <li>Contacted region count (hedged vs stabilized).</li>
+ *   <li>Retry count bounds (min/max) aligned with scenario expectations.</li>
+ *   <li>Final HTTP status classification (success vs expected failure when failover gated).</li>
+ *   <li>Consistency across response types (item, batch, feed, or exception paths).</li>
+ * </ul>
+ *
+ * <p><strong>Key Internal Mechanisms</strong>:
+ * <ul>
+ *   <li>Reflection-based access to internal SDK components (e.g., {@code RxDocumentClientImpl},
+ *       {@code StoreReader}, {@code ConsistencyWriter}) to inject mocked transport layers.</li>
+ *   <li>Custom delegating {@code DatabaseAccountManagerInternal} wrapper that conditionally sets
+ *       the per-partition failover flag on retrieved {@code DatabaseAccount} snapshots.</li>
+ *   <li>Fault injection rules in GATEWAY mode to apply controlled latency (RESPONSE_DELAY) per region and operation type.</li>
+ *   <li>Reusable operation dispatch via a functional resolver mapping {@code OperationType} to execution lambdas
+ *       returning a uniform {@code ResponseWrapper} abstraction.</li>
+ * </ul>
+ *
+ * <p><strong>Query Variants (QueryFlavor)</strong>:
+ * <ul>
+ *   <li>{@code NONE}: Point read (readItem).</li>
+ *   <li>{@code READ_ALL}: {@code readAllItems} over a single partition key.</li>
+ *   <li>{@code READ_MANY}: {@code readMany} with one or more item identities.</li>
+ *   <li>{@code QUERY_ITEMS}: Standard SQL query; may still contact original region for query plan acquisition even
+ *       after stabilization (thus dual-region diagnostics may persist).</li>
+ * </ul>
+ *
+ * <p><strong>End-to-End Latency Policy Integration</strong>:
+ * Tests optionally apply a short-circuit latency policy to:
+ * <ul>
+ *   <li>Simulate threshold-based activation (e.g., property {@code COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF}).</li>
+ *   <li>Differentiate pre-threshold (no failover) vs post-threshold (failover enabled) diagnostics for the same fault.</li>
+ * </ul>
+ *
+ * <p><strong>Batch Operation Coverage</strong>:
+ * Batch scenarios ensure that failover and diagnostics behaviors remain consistent with single-item operations,
+ * including mock batch response materialization and hedging logic validation.</p>
+ *
+ * <p><strong>Safety & Cleanup</strong>:
+ * Each scenario ensures:
+ * <ul>
+ *   <li>System properties used to gate PPAF or E2E behaviors are cleared in {@code finally} blocks.</li>
+ *   <li>Clients are safely disposed to avoid cross-test interference.</li>
+ * </ul>
+ *
+ * <p><strong>Usage Notes</strong>:
+ * This suite relies on internal APIs and reflection hooks not intended for production use. It is crafted specifically
+ * for validation of resilience, routing, and diagnostics fidelity across complex multi-region and transient-fault
+ * conditions. Adjustments to internal SDK contracts may require corresponding test maintenance.</p>
+ *
+ * <p><strong>Failure Interpretation</strong>:
+ * A test failure typically indicates one of:
+ * <ul>
+ *   <li>Unexpected retry amplification or suppression.</li>
+ *   <li>Incorrect region routing (e.g., failover not triggered or not stabilized).</li>
+ *   <li>Diagnostics context regression (missing region names, status codes, or retry metrics).</li>
+ *   <li>Latency policy mis-integration (threshold not honored).</li>
+ * </ul>
+ *
+ * <p><strong>Extensibility</strong>:
+ * Additional scenarios (e.g., new fault types, new operation categories, multi-partition batch coverage, or read feed streaming)
+ * can be added by:
+ * <ol>
+ *   <li>Extending the appropriate {@code @DataProvider} with new parameter rows.</li>
+ *   <li>Enhancing {@code resolveDataPlaneOperation} for new operation abstractions.</li>
+ *   <li>Adding new fault injection builders or transport client predicates.</li>
+ * </ol>
+ *
+ * <p>All validations aim to ensure that PPAF delivers predictable, minimal-latency routing under regional fault pressure
+ * while preserving observability through {@code CosmosDiagnostics}.</p>
+ */
 public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     private CosmosAsyncDatabase sharedDatabase;
@@ -153,6 +280,184 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public PerPartitionAutomaticFailoverE2ETests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
+    }
+
+    // Non-write dynamic enablement scenarios: READ and QUERY (with flavors) under SERVER_GENERATED_GONE and RESPONSE_DELAY
+    @DataProvider(name = "ppafNonWriteDynamicEnablementScenarios")
+    public Object[][] ppafNonWriteDynamicEnablementScenarios() {
+
+        Set<ConnectionMode> onlyDirect = new HashSet<>();
+        onlyDirect.add(ConnectionMode.DIRECT);
+
+        Set<ConnectionMode> onlyGateway = new HashSet<>();
+        onlyGateway.add(ConnectionMode.GATEWAY);
+
+        return new Object[][]{
+            // GONE (DIRECT only)
+            {
+                "Dynamic non-write: READ with SERVER_GENERATED_GONE (DIRECT)",
+                OperationType.Read,
+                QueryFlavor.NONE,
+                FaultKind.SERVER_GENERATED_GONE,
+                HttpConstants.StatusCodes.OK,
+                onlyDirect
+            },
+            {
+                "Dynamic non-write: QUERY (readAll) with SERVER_GENERATED_GONE (DIRECT)",
+                OperationType.Query,
+                QueryFlavor.READ_ALL,
+                FaultKind.SERVER_GENERATED_GONE,
+                HttpConstants.StatusCodes.OK,
+                onlyDirect
+            },
+            {
+                "Dynamic non-write: QUERY (readMany) with SERVER_GENERATED_GONE (DIRECT)",
+                OperationType.Query,
+                QueryFlavor.READ_MANY,
+                FaultKind.SERVER_GENERATED_GONE,
+                HttpConstants.StatusCodes.OK,
+                onlyDirect
+            },
+            {
+                "Dynamic non-write: QUERY (queryItems) with SERVER_GENERATED_GONE (DIRECT)",
+                OperationType.Query,
+                QueryFlavor.QUERY_ITEMS,
+                FaultKind.SERVER_GENERATED_GONE,
+                HttpConstants.StatusCodes.OK,
+                onlyDirect
+            },
+
+            // RESPONSE_DELAY (GATEWAY only)
+            {
+                "Dynamic non-write: READ with RESPONSE_DELAY (GATEWAY)",
+                OperationType.Read,
+                QueryFlavor.NONE,
+                FaultKind.RESPONSE_DELAY,
+                HttpConstants.StatusCodes.OK,
+                onlyGateway
+            },
+            {
+                "Dynamic non-write: QUERY (readAll) with RESPONSE_DELAY (GATEWAY)",
+                OperationType.Query,
+                QueryFlavor.READ_ALL,
+                FaultKind.RESPONSE_DELAY,
+                HttpConstants.StatusCodes.OK,
+                onlyGateway
+            },
+            {
+                "Dynamic non-write: QUERY (readMany) with RESPONSE_DELAY (GATEWAY)",
+                OperationType.Query,
+                QueryFlavor.READ_MANY,
+                FaultKind.RESPONSE_DELAY,
+                HttpConstants.StatusCodes.OK,
+                onlyGateway
+            },
+            {
+                "Dynamic non-write: QUERY (queryItems) with RESPONSE_DELAY (GATEWAY)",
+                OperationType.Query,
+                QueryFlavor.QUERY_ITEMS,
+                FaultKind.RESPONSE_DELAY,
+                HttpConstants.StatusCodes.OK,
+                onlyGateway
+            }
+        };
+    }
+
+    @DataProvider(name = "ppafDynamicEnablement503Only")
+    public Object[][] ppafDynamicEnablement503Only() {
+
+        // When PPAF is disabled -> expect no success, single region contacted (no failover)
+        ExpectedResponseCharacteristics expectedWhenDisabled = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
+
+        // When PPAF is enabled -> expect success, single region contacted (directly routed to healthy)
+        ExpectedResponseCharacteristics expectedWhenEnabled = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        return new Object[][]{
+            {
+                "Dynamic enablement: CREATE with SERVICE_UNAVAILABLE/503",
+                OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.CREATED,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: REPLACE with SERVICE_UNAVAILABLE/503",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: UPSERT with SERVICE_UNAVAILABLE/503",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: DELETE with SERVICE_UNAVAILABLE/503",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: PATCH with SERVICE_UNAVAILABLE/503",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            },
+            {
+                "Dynamic enablement: BATCH with SERVICE_UNAVAILABLE/503",
+                OperationType.Batch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedWhenDisabled,
+                expectedWhenEnabled,
+                false,
+                false,
+                false,
+                ALL_CONNECTION_MODES
+            }
+        };
     }
 
     @BeforeClass(groups = {"multi-region"})
@@ -915,17 +1220,33 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         };
     }
 
-    // testPpafWithWriteFailoverWithEligibleErrorStatusCodes does the following:
-    // for DIRECT connection mode,
-    //  an availability failure (410, 503, 408) or write forbidden failure (403/3) is injected
-    //  for a given partitionKeyRange and region through mocking
-    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s & 408s (not e2e timeout hit) are retried and e2e time out hit (408:20008) just see the operation fail)
-    //  the second operation execution should see the request go straight away to the failed over region - caveat is when e2e timeout is hit, only after x failures does a failover happen
-    // for GATEWAY connection mode,
-    //  an availability failure (503, 408), write forbidden failure (403/3) and I/O failures are injected
-    //  for a given region through mocking
-    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s & 408s (not e2e timeout hit) are retried and e2e time out hit (408:20008) just see the operation fail)
-    //  the second operation execution should see the request go straight away to the failed over region - caveat is when e2e timeout is hit, only after x failures does a failover happen
+    /**
+     * End-to-end validation of Per-Partition Automatic Failover (PPAF) for write operations
+     * (Create, Replace, Upsert, Delete, Patch, Batch) when a failover-eligible fault is injected
+     * for one partition key range in the first preferred region.
+     *
+     * <p>Phases:</p>
+     * <ul>
+     *   <li>Pre-failover: injected error surfaces; request retries and/or hedges (unless gated by E2E timeout threshold).</li>
+     *   <li>Post-failover: subsequent request routes directly to healthy region (single region, zero retries) unless
+     *       E2E timeout gating still accumulating threshold.</li>
+     * </ul>
+     *
+     * <p>Mechanics:</p>
+     * <ul>
+     *   <li>DIRECT: TransportClient mocked; targeted (region + PK range) throws configured CosmosException.</li>
+     *   <li>GATEWAY: HttpClient mocked; targeted region URI throws CosmosException or network exception (read/socket timeout) or delayed fault.</li>
+     *   <li>GlobalEndpointManager owner replaced with delegating manager to surface dynamic PPAF enablement flag.</li>
+     *   <li>E2E latency policy optionally applied; threshold (COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF) controls activation.</li>
+     * </ul>
+     *
+     * <p>Assertions:</p>
+     * <ul>
+     *   <li>Regions contacted count (before vs after failover).</li>
+     *   <li>Retry count bounds.</li>
+     *   <li>Success vs failure based on phase and configuration.</li>
+     * </ul>
+     */
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
@@ -959,8 +1280,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 if (shouldUseE2ETimeout) {
                     System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
                 }
-
-                System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
 
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
 
@@ -1014,6 +1333,17 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     regionalRoutingContextWithIssues,
                     cosmosException);
 
+                // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+                globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
+
                 TestObject testItem = TestObject.create();
 
                 Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
@@ -1060,8 +1390,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "2");
                 }
 
-                System.setProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
-
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
 
                 // todo: evaluate whether Batch operation needs op-level e2e timeout and availability strategy
@@ -1085,6 +1413,16 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
                 DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+                // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+                globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
 
                 assertThat(preferredRegions).isNotNull();
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
@@ -1142,6 +1480,631 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 System.clearProperty("COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED");
                 safeClose(cosmosAsyncClientValueHolder.v);
             }
+        }
+    }
+
+    /**
+     * Verifies per-partition automatic failover (PPAF) dynamic enablement by toggling
+     * DatabaseAccount#isPerPartitionFailoverBehaviorEnabled at runtime via a reflected override
+     * of GlobalEndpointManager.owner (DatabaseAccountManagerInternal).
+     *
+     * <p><strong>Test strategy</strong></p>
+     * <ul>
+     *   <li>Build a CosmosAsyncClient from the provided builder.</li>
+     *   <li>Use ReflectionUtils to obtain GlobalEndpointManager from the underlying RxDocumentClient.</li>
+     *   <li>Replace its private owner with a delegating DatabaseAccountManagerInternal that injects
+     *       DatabaseAccount#setIsPerPartitionFailoverBehaviorEnabled(enabledRef.get()).</li>
+     *   <li>Mock transport (DIRECT) or HttpClient (GATEWAY) to simulate a 503 on the primary region
+     *       and success elsewhere, mirroring the base PPAF test.</li>
+     *   <li>Run in phases:</li>
+     * </ul>
+     * <ol>
+     *   <li>PPAF disabled — expect failure characteristics (no success).</li>
+     *   <li>PPAF enabled — expect success characteristics (routes to healthy).</li>
+     *   <li>PPAF disabled again — expect failure again (toggle verified).</li>
+     * </ol>
+     *
+     * <p>After each toggle, call refreshLocationAsync(forceRefresh=true) so GlobalEndpointManager
+     * observes the updated DatabaseAccount flags immediately.</p>
+     *
+     * <p>Expectations are provided by the data provider: when disabled, the request should not succeed;
+     * when enabled, it should succeed. Works for both DIRECT and GATEWAY connection modes.</p>
+     */
+    @Test(groups = {"multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
+    public void testPpafWithWriteFailoverWithEligibleErrorStatusCodesWithPpafDynamicEnablement(
+        String testType,
+        OperationType operationType,
+        int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int successStatusCode,
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsWhenPpafIsDisabled,
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsWhenPpafIsEnabled,
+        boolean shouldThrowNetworkError,
+        boolean shouldThrowReadTimeoutExceptionWhenNetworkError,
+        boolean shouldUseE2ETimeout,
+        Set<ConnectionMode> allowedConnectionModes) {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (!allowedConnectionModes.contains(connectionMode)) {
+            throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // DIRECT flow: swap transport client, inject error for primary region/PK range, and verify phase-by-phase
+        if (connectionMode == ConnectionMode.DIRECT) {
+            TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+            try {
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
+
+                if (operationType.equals(OperationType.Batch) && shouldUseE2ETimeout) {
+                    cosmosClientBuilder.endToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY);
+                }
+
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
+
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+                // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.FALSE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+                ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+                ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+                StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+
+                ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+                Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                    = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+                assertThat(partitionKeyRangesForContainer).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+
+                PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+                String regionWithIssues = preferredRegions.get(0);
+                RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
+
+                // Redirect all store calls through our mocked transport client
+                ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+                ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+                setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
+
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                    errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+                setupTransportClientToThrowCosmosException(
+                    transportClientMock,
+                    partitionKeyRangeWithIssues,
+                    regionalRoutingContextWithIssues,
+                    cosmosException);
+
+                TestObject testItem = TestObject.create();
+
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                operationInvocationParamsWrapper.createdTestItem = testItem;
+                operationInvocationParamsWrapper.itemRequestOptions = shouldUseE2ETimeout ? new CosmosItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosItemRequestOptions();
+                operationInvocationParamsWrapper.patchItemRequestOptions = shouldUseE2ETimeout ? new CosmosPatchItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosPatchItemRequestOptions();
+
+                // Phase 1: PPAF disabled -> expect characteristics provided for DISABLED
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+
+                // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
+                ppafEnabledRef.set(Boolean.TRUE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+
+                // Phase 3: PPAF disabled again -> confirm behavior reverts
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
+        }
+
+        // GATEWAY flow: swap RxGatewayStoreModel HttpClient, inject 503 on primary region and verify phases
+        if (connectionMode == ConnectionMode.GATEWAY) {
+            HttpClient mockedHttpClient = Mockito.mock(HttpClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+            try {
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
+
+                if (operationType.equals(OperationType.Batch) && shouldUseE2ETimeout) {
+                    cosmosClientBuilder.endToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY);
+                }
+
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
+
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                // Populate collection and PK range caches to ensure routing is initialized
+                asyncContainer.getFeedRanges().block();
+
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+                RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
+
+                // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.FALSE);
+                DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                DatabaseAccount databaseAccountForResponses = globalEndpointManager.getLatestDatabaseAccount();
+                if (databaseAccountForResponses == null) {
+                    // Ensure we have an initial snapshot
+                    globalEndpointManager.refreshLocationAsync(null, true).block();
+                    databaseAccountForResponses = globalEndpointManager.getLatestDatabaseAccount();
+                }
+
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+                String regionWithIssues = preferredRegions.get(0);
+                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+
+                // Redirect gateway calls through our mocked HttpClient
+                ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccountForResponses, successStatusCode);
+
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                    errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+                setupHttpClientToThrowCosmosException(
+                    mockedHttpClient,
+                    locationEndpointWithIssues,
+                    cosmosException,
+                    shouldThrowNetworkError,
+                    shouldThrowReadTimeoutExceptionWhenNetworkError,
+                    shouldUseE2ETimeout);
+
+                TestObject testItem = TestObject.create();
+
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                operationInvocationParamsWrapper.createdTestItem = testItem;
+                operationInvocationParamsWrapper.itemRequestOptions = shouldUseE2ETimeout ? new CosmosItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosItemRequestOptions();
+                operationInvocationParamsWrapper.patchItemRequestOptions = shouldUseE2ETimeout ? new CosmosPatchItemRequestOptions().setCosmosEndToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY) : new CosmosPatchItemRequestOptions();
+
+                // Phase 1: PPAF disabled -> expect characteristics provided for DISABLED
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+
+                // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
+                ppafEnabledRef.set(Boolean.TRUE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+
+                // Phase 3: PPAF disabled again -> confirm behavior reverts
+                ppafEnabledRef.set(Boolean.FALSE);
+                globalEndpointManager.refreshLocationAsync(null, true).block();
+                responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
+        }
+    }
+
+    /**
+     * Validates dynamic Per-Partition Automatic Failover (PPAF) hedging behavior for non-write operations
+     * (point Read and Query variants).
+     *
+     * <p>Fault models:</p>
+     * <ul>
+     *   <li>DIRECT: SERVER_GENERATED_GONE (HTTP 410 / substatus 21005) for a targeted partition key range
+     *       in the first preferred region.</li>
+     *   <li>GATEWAY: RESPONSE_DELAY injected (via fault injection rules) for the first preferred region
+     *       (applied to read item, query plan, and query operations).</li>
+     * </ul>
+     *
+     * <p>QueryFlavor mapping:</p>
+     * <ul>
+     *   <li>NONE: point read (readItem).</li>
+     *   <li>READ_ALL: readAllItems.</li>
+     *   <li>READ_MANY: readMany with supplied identities.</li>
+     *   <li>QUERY_ITEMS: queryItems (requires query plan; may still contact original region post-stabilization).</li>
+     * </ul>
+     *
+     * <p>Phases asserted:</p>
+     * <ol>
+     *   <li>Hedging window (multiple consecutive injected faults):
+     *       <ul>
+     *         <li>DIRECT (410): expect >=1 retry and 2 contacted regions.</li>
+     *         <li>GATEWAY (delay): expect 0 retries and 2 contacted regions (hedged).</li>
+     *       </ul>
+     *   </li>
+     *   <li>Post-window stabilization:
+     *       <ul>
+     *         <li>Routes directly to healthy region (1 contacted region) except QUERY_ITEMS
+     *             which may still require original region for query plan (thus 2).</li>
+     *         <li>Expect 0 retries.</li>
+     *       </ul>
+     *   </li>
+     * </ol>
+     *
+     * <p>Behavior is parameterized by the ppafNonWriteDynamicEnablementScenarios data provider:
+     * test type description, operationType (Read/Query), queryFlavor, faultKind, expected success
+     * status code, and allowed connection modes.</p>
+     *
+     * <p>Dynamic enablement is achieved by overriding GlobalEndpointManager's owner to
+     * inject the PPAF flag into DatabaseAccount snapshots.</p>
+     */
+    @Test(groups = {"multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
+    public void testFailoverBehaviorForNonWriteOperationsWithPpafDynamicEnablement(
+        String testType,
+        OperationType operationType,
+        QueryFlavor queryFlavor,
+        FaultKind faultKind,
+        int successStatusCode,
+        Set<ConnectionMode> allowedConnectionModes) {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (!allowedConnectionModes.contains(connectionMode)) {
+            throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        final int consecutiveFaults = 10;
+
+        // ===================== DIRECT MODE PATH =====================
+        if (connectionMode == ConnectionMode.DIRECT) {
+
+            // Build expectations (hedging window vs stabilized post-window)
+            ExpectedResponseCharacteristics expectedDuringWindow = new ExpectedResponseCharacteristics()
+                .setExpectedMinRetryCount(1)                 // At least one retry due to first region failure
+                .setShouldFinalResponseHaveSuccess(true)
+                .setExpectedRegionsContactedCount(2);        // Hedging to healthy region
+
+            ExpectedResponseCharacteristics expectedAfterWindow = new ExpectedResponseCharacteristics()
+                .setExpectedMinRetryCount(0)                 // Stable routing
+                .setExpectedMaxRetryCount(0)
+                .setShouldFinalResponseHaveSuccess(true)
+                // QUERY_ITEMS still requires query plan from original region -> 2 regions contacted
+                .setExpectedRegionsContactedCount(queryFlavor.equals(QueryFlavor.QUERY_ITEMS) ? 2 : 1);
+
+            TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+            try {
+                // Build client and container
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
+
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                // Reflection plumbing for internal components
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                Mockito.when(transportClientMock.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
+
+                // Enable dynamic PPAF via delegating owner
+                DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+                DatabaseAccountManagerInternal overridingOwner =
+                    new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                // Internal store clients
+                StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+                ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+                ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+                StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+                ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+
+                // Identify a PK range + first preferred region to fault
+                Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer =
+                    getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+                assertThat(partitionKeyRangesForContainer).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+                PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+                String regionWithIssues = preferredRegions.get(0);
+                RegionalRoutingContext regionalRoutingContextWithIssues =
+                    new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
+
+                // Wire mock transport client into reader + writer paths
+                ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+                ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+                // Success response when routed to healthy region
+                setupTransportClientToReturnSuccessResponse(
+                    transportClientMock,
+                    constructStoreResponse(operationType, successStatusCode));
+
+                if (faultKind != FaultKind.SERVER_GENERATED_GONE) {
+                    throw new SkipException("DIRECT path only supports SERVER_GENERATED_GONE for this test.");
+                }
+
+                // Inject 410/21005 for unhealthy region
+                CosmosException cosmosException = createCosmosException(
+                    HttpConstants.StatusCodes.GONE,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+
+                setupTransportClientToThrowCosmosException(
+                    transportClientMock,
+                    partitionKeyRangeWithIssues,
+                    regionalRoutingContextWithIssues,
+                    cosmosException);
+
+                // Prepare operation invocation
+                TestObject testItem = TestObject.create();
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation =
+                    resolveDataPlaneOperation(operationType);
+
+                OperationInvocationParamsWrapper params = new OperationInvocationParamsWrapper();
+                params.asyncContainer = asyncContainer;
+                params.createdTestItem = testItem;
+                applyQueryFlavor(params, queryFlavor, testItem);
+
+                // Force initial refresh so DatabaseAccount is loaded with PPAF flag
+                DatabaseAccount dbAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+                if (dbAccountSnapshot == null) {
+                    globalEndpointManager.refreshLocationAsync(null, true).block();
+                } else {
+                    globalEndpointManager.refreshLocationAsync(dbAccountSnapshot, true).block();
+                }
+
+                // Execute hedging + stabilization phases
+                runHedgingPhasesForNonWrite(
+                    consecutiveFaults,
+                    dataPlaneOperation,
+                    params,
+                    expectedDuringWindow,
+                    expectedAfterWindow);
+
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
+        }
+
+        // ===================== GATEWAY MODE PATH =====================
+        if (connectionMode == ConnectionMode.GATEWAY) {
+
+            ExpectedResponseCharacteristics expectedDuringWindow = new ExpectedResponseCharacteristics()
+                .setExpectedMinRetryCount(0)     // Delay fault causes hedging without retries
+                .setExpectedMaxRetryCount(0)
+                .setShouldFinalResponseHaveSuccess(true)
+                .setExpectedRegionsContactedCount(2);
+
+            ExpectedResponseCharacteristics expectedAfterWindow = new ExpectedResponseCharacteristics()
+                .setExpectedMinRetryCount(0)
+                .setExpectedMaxRetryCount(0)
+                .setShouldFinalResponseHaveSuccess(true)
+                .setExpectedRegionsContactedCount(queryFlavor.equals(QueryFlavor.QUERY_ITEMS) ? 2 : 1);
+
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+            try {
+                // Build client + container
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
+
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
+                // Warm caches
+                asyncContainer.getFeedRanges().block();
+
+                RxDocumentClientImpl rxDocumentClient =
+                    (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+                GlobalEndpointManager globalEndpointManager =
+                    ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+                // Enable PPAF dynamically
+                DatabaseAccountManagerInternal originalOwner =
+                    ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+                AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+                DatabaseAccountManagerInternal overridingOwner =
+                    new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+                ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+                String regionWithIssues = preferredRegions.get(0);
+
+                // Refresh DB account snapshot
+                DatabaseAccount dbAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+                if (dbAccountSnapshot == null) {
+                    globalEndpointManager.refreshLocationAsync(null, true).block();
+                } else {
+                    globalEndpointManager.refreshLocationAsync(dbAccountSnapshot, true).block();
+                }
+
+                if (faultKind != FaultKind.RESPONSE_DELAY) {
+                    throw new SkipException("GATEWAY path only supports RESPONSE_DELAY for this test.");
+                }
+
+                // Inject RESPONSE_DELAY faults using FIR (read item + query + query plan)
+                FeedRange fullRange = FeedRange.forFullRange();
+
+                FaultInjectionServerErrorResult responseDelayError = FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(10))          // long enough to trigger hedging
+                    .suppressServiceRequests(false)
+                    .build();
+
+                FaultInjectionCondition conditionForReadItem = new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .endpoints(new FaultInjectionEndpointBuilder(fullRange).build())
+                    .operationType(FaultInjectionOperationType.READ_ITEM)
+                    .region(regionWithIssues)
+                    .build();
+
+                FaultInjectionCondition conditionForQueryPlan = new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .endpoints(new FaultInjectionEndpointBuilder(fullRange).build())
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN)
+                    .region(regionWithIssues)
+                    .build();
+
+                FaultInjectionCondition conditionForQuery = new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .endpoints(new FaultInjectionEndpointBuilder(fullRange).build())
+                    .operationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .region(regionWithIssues)
+                    .build();
+
+                String ruleId = String.format("response-delay-%s", UUID.randomUUID());
+
+                FaultInjectionRule queryPlanResponseDelayFIRule = new FaultInjectionRuleBuilder(ruleId + "-qp")
+                    .condition(conditionForQueryPlan)
+                    .result(responseDelayError)
+                    .build();
+
+                FaultInjectionRule queryResponseDelayFIRule = new FaultInjectionRuleBuilder(ruleId + "-q")
+                    .condition(conditionForQuery)
+                    .result(responseDelayError)
+                    .build();
+
+                FaultInjectionRule readItemResponseDelayFIRule = new FaultInjectionRuleBuilder(ruleId + "-r")
+                    .condition(conditionForReadItem)
+                    .result(responseDelayError)
+                    .build();
+
+                CosmosFaultInjectionHelper
+                    .configureFaultInjectionRules(
+                        asyncContainer,
+                        Arrays.asList(queryPlanResponseDelayFIRule, queryResponseDelayFIRule, readItemResponseDelayFIRule))
+                    .block();
+
+                // Seed item for read/readMany scenarios
+                TestObject testItem = TestObject.create();
+                asyncContainer.createItem(testItem).block();
+
+                // Prepare params + operation
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation =
+                    resolveDataPlaneOperation(operationType);
+                OperationInvocationParamsWrapper params = new OperationInvocationParamsWrapper();
+                params.asyncContainer = asyncContainer;
+                params.createdTestItem = testItem;
+                applyQueryFlavor(params, queryFlavor, testItem);
+
+                // Execute hedging + stabilization phases
+                runHedgingPhasesForNonWrite(
+                    consecutiveFaults,
+                    dataPlaneOperation,
+                    params,
+                    expectedDuringWindow,
+                    expectedAfterWindow);
+
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
+        }
+    }
+
+    /**
+     * Helper: Executes the hedging window (multiple consecutive fault attempts) followed by a single post-window verification.
+     */
+    private void runHedgingPhasesForNonWrite(
+        int consecutiveFaults,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation,
+        OperationInvocationParamsWrapper params,
+        ExpectedResponseCharacteristics expectedDuringWindow,
+        ExpectedResponseCharacteristics expectedAfterWindow) {
+
+        // Hedging window iterations
+        for (int i = 0; i < consecutiveFaults; i++) {
+            ResponseWrapper<?> response = dataPlaneOperation.apply(params);
+            this.validateExpectedResponseCharacteristics.accept(response, expectedDuringWindow);
+        }
+
+        // Stabilized post-window request
+        ResponseWrapper<?> postWindow = dataPlaneOperation.apply(params);
+        this.validateExpectedResponseCharacteristics.accept(postWindow, expectedAfterWindow);
+    }
+
+    private static class DelegatingDatabaseAccountManagerInternal implements DatabaseAccountManagerInternal {
+        private final DatabaseAccountManagerInternal delegate;
+        private final AtomicReference<Boolean> ppafEnabledRef;
+
+        DelegatingDatabaseAccountManagerInternal(DatabaseAccountManagerInternal delegate, AtomicReference<Boolean> ppafEnabledRef) {
+            this.delegate = delegate;
+            this.ppafEnabledRef = ppafEnabledRef;
+        }
+
+        @Override
+        public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+            return delegate.getDatabaseAccountFromEndpoint(endpoint)
+                .map(dbAccount -> {
+                    Boolean enabled = ppafEnabledRef.get();
+                    dbAccount.setIsPerPartitionFailoverBehaviorEnabled(enabled);
+                    return dbAccount;
+                });
+        }
+
+        @Override
+        public ConnectionPolicy getConnectionPolicy() {
+            return delegate.getConnectionPolicy();
+        }
+
+        @Override
+        public URI getServiceEndpoint() {
+            return delegate.getServiceEndpoint();
         }
     }
 
@@ -1329,9 +2292,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
 
     private static class AccountLevelLocationContext {
-        private final List<String> serviceOrderedReadableRegions;
-        private final List<String> serviceOrderedWriteableRegions;
-        private final Map<String, String> regionNameToEndpoint;
+    private final List<String> serviceOrderedReadableRegions;
+    @SuppressWarnings("unused")
+    private final List<String> serviceOrderedWriteableRegions;
+    private final Map<String, String> regionNameToEndpoint;
 
         public AccountLevelLocationContext(
             List<String> serviceOrderedReadableRegions,
@@ -1384,7 +2348,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                         CosmosItemResponse<TestObject> readItemResponse = asyncContainer.readItem(
                                 createdTestObject.getId(),
-                                new PartitionKey(createdTestObject.getId()),
+                                new PartitionKey(createdTestObject.getMypk()),
                                 itemRequestOptions,
                                 TestObject.class)
                             .block();
@@ -1411,7 +2375,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                         CosmosItemResponse<TestObject> upsertItemResponse = asyncContainer.upsertItem(
                                 createdTestObject,
-                                new PartitionKey(createdTestObject.getId()),
+                                new PartitionKey(createdTestObject.getMypk()),
                                 itemRequestOptions)
                             .block();
 
@@ -1437,7 +2401,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                         CosmosItemResponse<TestObject> createItemResponse = asyncContainer.createItem(
                                 createdTestObject,
-                                new PartitionKey(createdTestObject.getId()),
+                                new PartitionKey(createdTestObject.getMypk()),
                                 itemRequestOptions)
                             .block();
 
@@ -1491,7 +2455,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                         CosmosItemResponse<TestObject> patchItemResponse = asyncContainer.patchItem(
                                 createdTestObject.getId(),
-                                new PartitionKey(createdTestObject.getId()),
+                                new PartitionKey(createdTestObject.getMypk()),
                                 patchOperations,
                                 patchItemRequestOptions,
                                 TestObject.class)
@@ -1514,13 +2478,28 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
                     CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions == null ? new CosmosQueryRequestOptions() : paramsWrapper.queryRequestOptions;
                     queryRequestOptions = paramsWrapper.feedRangeForQuery == null ? queryRequestOptions.setFeedRange(FeedRange.forFullRange()) : queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery);
+                    String sql = paramsWrapper.querySql != null ? paramsWrapper.querySql : "SELECT * FROM c";
 
                     try {
+                        // If applyQueryFlavor requested readAllItems or readMany, use those operations instead of query
+                        if (paramsWrapper.readAllPartitionKey != null) {
+                            FeedResponse<TestObject> readAllResponse = asyncContainer
+                                .readAllItems(paramsWrapper.readAllPartitionKey, TestObject.class)
+                                .byPage()
+                                .blockLast();
+                            return new ResponseWrapper<>(readAllResponse);
+                        }
 
-                        FeedResponse<TestObject> queryItemResponse = asyncContainer.queryItems(
-                                "SELECT * FROM C",
-                                queryRequestOptions,
-                                TestObject.class)
+                        if (paramsWrapper.readManyIdentities != null && !paramsWrapper.readManyIdentities.isEmpty()) {
+                            FeedResponse<TestObject> readManyResponse = asyncContainer
+                                .readMany(paramsWrapper.readManyIdentities, TestObject.class)
+                                .block();
+                            return new ResponseWrapper<>(readManyResponse);
+                        }
+
+                        // Fallback: regular queryItems
+                        FeedResponse<TestObject> queryItemResponse = asyncContainer
+                            .queryItems(sql, queryRequestOptions, TestObject.class)
                             .byPage()
                             .blockLast();
 
@@ -1656,6 +2635,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         public CosmosItemRequestOptions patchItemRequestOptions;
         public FeedRange feedRangeToDrainForChangeFeed;
         public FeedRange feedRangeForQuery;
+        public String querySql;
+        // For QueryFlavor.READ_ALL
+        public PartitionKey readAllPartitionKey;
+        // For QueryFlavor.READ_MANY
+        public List<CosmosItemIdentity> readManyIdentities;
     }
 
     private static class ExpectedResponseCharacteristics {
@@ -1703,7 +2687,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         private String retryAfterMilliseconds;
 
-        public int getStatusCode() {
+    @SuppressWarnings("unused")
+    public int getStatusCode() {
             return statusCode;
         }
 
@@ -1712,7 +2697,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public int getSubStatusCode() {
+    @SuppressWarnings("unused")
+    public int getSubStatusCode() {
             return subStatusCode;
         }
 
@@ -1721,7 +2707,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public double getRequestCharge() {
+    @SuppressWarnings("unused")
+    public double getRequestCharge() {
             return requestCharge;
         }
 
@@ -1730,7 +2717,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public String geteTag() {
+    @SuppressWarnings("unused")
+    public String geteTag() {
             return eTag;
         }
 
@@ -1739,7 +2727,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public Object getResourceBody() {
+    @SuppressWarnings("unused")
+    public Object getResourceBody() {
             return resourceBody;
         }
 
@@ -1748,13 +2737,68 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             return this;
         }
 
-        public String getRetryAfterMilliseconds() {
+    @SuppressWarnings("unused")
+    public String getRetryAfterMilliseconds() {
             return retryAfterMilliseconds;
         }
 
         public FakeBatchResponse setRetryAfterMilliseconds(String retryAfterMilliseconds) {
             this.retryAfterMilliseconds = retryAfterMilliseconds;
             return this;
+        }
+    }
+
+    private enum FaultKind {
+        SERVER_GENERATED_GONE,
+        RESPONSE_DELAY
+    }
+
+    private enum QueryFlavor {
+        NONE,        // Not a query
+        READ_ALL,    // SELECT * FROM c
+        READ_MANY,   // Simulate with IN clause
+        QUERY_ITEMS  // Arbitrary filter
+    }
+
+    private void applyQueryFlavor(OperationInvocationParamsWrapper params, QueryFlavor flavor, TestObject seed) {
+        if (flavor == QueryFlavor.NONE) {
+            // Do not set CosmosQueryRequestOptions explicitly
+            params.querySql = null;
+            params.readAllPartitionKey = null;
+            params.readManyIdentities = null;
+            return;
+        }
+
+        // Do not set CosmosQueryRequestOptions explicitly; default behavior will be used
+
+        switch (flavor) {
+            case READ_ALL:
+                // Map to readAllItems on the container using the seed's partition key
+                String pkReadAll = seed != null ? seed.getMypk() : UUID.randomUUID().toString();
+                params.readAllPartitionKey = new PartitionKey(pkReadAll);
+                params.querySql = null;
+                params.readManyIdentities = null;
+                break;
+            case READ_MANY:
+                // Map to readMany with one or more identities using the seed
+                String id = seed != null ? seed.getId() : UUID.randomUUID().toString();
+                String pkReadMany = seed != null ? seed.getMypk() : UUID.randomUUID().toString();
+                PartitionKey pkValue = new PartitionKey(pkReadMany);
+                List<CosmosItemIdentity> identities = new ArrayList<>();
+                identities.add(new CosmosItemIdentity(pkValue, id));
+                params.readManyIdentities = identities;
+                params.readAllPartitionKey = null;
+                params.querySql = null;
+                break;
+            case QUERY_ITEMS:
+                params.querySql = "SELECT * FROM c WHERE IS_DEFINED(c.mypk)";
+                params.readAllPartitionKey = null;
+                params.readManyIdentities = null;
+                break;
+            default:
+                params.querySql = "SELECT * FROM c";
+                params.readAllPartitionKey = null;
+                params.readManyIdentities = null;
         }
     }
 

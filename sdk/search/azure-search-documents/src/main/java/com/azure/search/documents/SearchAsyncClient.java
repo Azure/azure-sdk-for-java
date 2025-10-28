@@ -1277,9 +1277,6 @@ public final class SearchAsyncClient {
 
     private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
         SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
-        }
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
@@ -1288,13 +1285,7 @@ public final class SearchAsyncClient {
             .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
-                SearchDocumentsResult result = response.getValue();
-
-                SearchPagedResponse page
-                    = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                        createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                        result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                        result.getSemanticPartialResponseType());
+                SearchPagedResponse page = mapToSearchPagedResponse(response, serializer, serviceVersion);
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1312,6 +1303,16 @@ public final class SearchAsyncClient {
     static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
+    }
+
+    static SearchPagedResponse mapToSearchPagedResponse(Response<SearchDocumentsResult> response,
+        JsonSerializer serializer, SearchServiceVersion serviceVersion) {
+        SearchDocumentsResult result = response.getValue();
+        return new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
+            createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+            result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+            result.getSemanticPartialResponseType(), result.getDebugInfo(),
+            result.getSemanticQueryRewritesResultType());
     }
 
     /**

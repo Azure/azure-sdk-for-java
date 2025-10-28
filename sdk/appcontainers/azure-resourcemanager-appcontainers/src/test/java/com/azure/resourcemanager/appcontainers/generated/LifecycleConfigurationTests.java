@@ -13,21 +13,21 @@ public final class LifecycleConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LifecycleConfiguration model = BinaryData.fromString(
-            "{\"lifecycleType\":\"OnContainerExit\",\"cooldownPeriodInSeconds\":359501737,\"maxAlivePeriodInSeconds\":1060431401}")
+            "{\"lifecycleType\":\"OnContainerExit\",\"cooldownPeriodInSeconds\":627294033,\"maxAlivePeriodInSeconds\":939102144}")
             .toObject(LifecycleConfiguration.class);
         Assertions.assertEquals(LifecycleType.ON_CONTAINER_EXIT, model.lifecycleType());
-        Assertions.assertEquals(359501737, model.cooldownPeriodInSeconds());
-        Assertions.assertEquals(1060431401, model.maxAlivePeriodInSeconds());
+        Assertions.assertEquals(627294033, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(939102144, model.maxAlivePeriodInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LifecycleConfiguration model = new LifecycleConfiguration().withLifecycleType(LifecycleType.ON_CONTAINER_EXIT)
-            .withCooldownPeriodInSeconds(359501737)
-            .withMaxAlivePeriodInSeconds(1060431401);
+            .withCooldownPeriodInSeconds(627294033)
+            .withMaxAlivePeriodInSeconds(939102144);
         model = BinaryData.fromObject(model).toObject(LifecycleConfiguration.class);
         Assertions.assertEquals(LifecycleType.ON_CONTAINER_EXIT, model.lifecycleType());
-        Assertions.assertEquals(359501737, model.cooldownPeriodInSeconds());
-        Assertions.assertEquals(1060431401, model.maxAlivePeriodInSeconds());
+        Assertions.assertEquals(627294033, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(939102144, model.maxAlivePeriodInSeconds());
     }
 }

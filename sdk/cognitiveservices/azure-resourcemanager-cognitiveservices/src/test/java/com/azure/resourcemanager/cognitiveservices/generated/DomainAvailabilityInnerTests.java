@@ -12,27 +12,27 @@ public final class DomainAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DomainAvailabilityInner model = BinaryData.fromString(
-            "{\"isSubdomainAvailable\":false,\"reason\":\"ze\",\"subdomainName\":\"kdltfzxmhhvhg\",\"type\":\"eodkwobda\",\"kind\":\"tibqdxbxwakb\"}")
+            "{\"isSubdomainAvailable\":true,\"reason\":\"zrpzb\",\"subdomainName\":\"ckqqzqioxiysui\",\"type\":\"ynkedyatrwyhqmib\",\"kind\":\"hwit\"}")
             .toObject(DomainAvailabilityInner.class);
-        Assertions.assertFalse(model.isSubdomainAvailable());
-        Assertions.assertEquals("ze", model.reason());
-        Assertions.assertEquals("kdltfzxmhhvhg", model.subdomainName());
-        Assertions.assertEquals("eodkwobda", model.type());
-        Assertions.assertEquals("tibqdxbxwakb", model.kind());
+        Assertions.assertTrue(model.isSubdomainAvailable());
+        Assertions.assertEquals("zrpzb", model.reason());
+        Assertions.assertEquals("ckqqzqioxiysui", model.subdomainName());
+        Assertions.assertEquals("ynkedyatrwyhqmib", model.type());
+        Assertions.assertEquals("hwit", model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DomainAvailabilityInner model = new DomainAvailabilityInner().withIsSubdomainAvailable(false)
-            .withReason("ze")
-            .withSubdomainName("kdltfzxmhhvhg")
-            .withType("eodkwobda")
-            .withKind("tibqdxbxwakb");
+        DomainAvailabilityInner model = new DomainAvailabilityInner().withIsSubdomainAvailable(true)
+            .withReason("zrpzb")
+            .withSubdomainName("ckqqzqioxiysui")
+            .withType("ynkedyatrwyhqmib")
+            .withKind("hwit");
         model = BinaryData.fromObject(model).toObject(DomainAvailabilityInner.class);
-        Assertions.assertFalse(model.isSubdomainAvailable());
-        Assertions.assertEquals("ze", model.reason());
-        Assertions.assertEquals("kdltfzxmhhvhg", model.subdomainName());
-        Assertions.assertEquals("eodkwobda", model.type());
-        Assertions.assertEquals("tibqdxbxwakb", model.kind());
+        Assertions.assertTrue(model.isSubdomainAvailable());
+        Assertions.assertEquals("zrpzb", model.reason());
+        Assertions.assertEquals("ckqqzqioxiysui", model.subdomainName());
+        Assertions.assertEquals("ynkedyatrwyhqmib", model.type());
+        Assertions.assertEquals("hwit", model.kind());
     }
 }

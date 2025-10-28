@@ -12,7 +12,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerApp;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppAuthToken;
-import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppRunningStatus;
 import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
@@ -83,10 +82,6 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this.innerModel().runningStatus();
     }
 
-    public String deploymentErrors() {
-        return this.innerModel().deploymentErrors();
-    }
-
     public String managedEnvironmentId() {
         return this.innerModel().managedEnvironmentId();
     }
@@ -97,10 +92,6 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public String workloadProfileName() {
         return this.innerModel().workloadProfileName();
-    }
-
-    public ContainerAppPropertiesPatchingConfiguration patchingConfiguration() {
-        return this.innerModel().patchingConfiguration();
     }
 
     public String latestRevisionName() {
@@ -320,12 +311,6 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public ContainerAppImpl withWorkloadProfileName(String workloadProfileName) {
         this.innerModel().withWorkloadProfileName(workloadProfileName);
-        return this;
-    }
-
-    public ContainerAppImpl
-        withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration) {
-        this.innerModel().withPatchingConfiguration(patchingConfiguration);
         return this;
     }
 

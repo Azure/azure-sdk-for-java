@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class HttpRouteConfigGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
-     * HttpRouteConfig_Get.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/HttpRouteConfig_Get.
+     * json
      */
     /**
      * Sample code: Get HttpRoute.

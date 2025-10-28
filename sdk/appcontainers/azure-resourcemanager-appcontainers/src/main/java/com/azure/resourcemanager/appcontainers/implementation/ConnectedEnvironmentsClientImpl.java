@@ -1128,7 +1128,10 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             return Mono.error(
                 new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
-        if (environmentEnvelope != null) {
+        if (environmentEnvelope == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentEnvelope is required and cannot be null."));
+        } else {
             environmentEnvelope.validate();
         }
         final String accept = "application/json";
@@ -1146,6 +1149,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
+     * @param environmentEnvelope Configuration details of the connectedEnvironment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1153,8 +1157,8 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectedEnvironmentInner> updateAsync(String resourceGroupName, String connectedEnvironmentName) {
-        final ConnectedEnvironmentPatchResource environmentEnvelope = null;
+    private Mono<ConnectedEnvironmentInner> updateAsync(String resourceGroupName, String connectedEnvironmentName,
+        ConnectedEnvironmentPatchResource environmentEnvelope) {
         return updateWithResponseAsync(resourceGroupName, connectedEnvironmentName, environmentEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1196,7 +1200,10 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
                 .log(
                     new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
-        if (environmentEnvelope != null) {
+        if (environmentEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentEnvelope is required and cannot be null."));
+        } else {
             environmentEnvelope.validate();
         }
         final String accept = "application/json";
@@ -1211,14 +1218,15 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connectedEnvironment.
+     * @param environmentEnvelope Configuration details of the connectedEnvironment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedEnvironmentInner update(String resourceGroupName, String connectedEnvironmentName) {
-        final ConnectedEnvironmentPatchResource environmentEnvelope = null;
+    public ConnectedEnvironmentInner update(String resourceGroupName, String connectedEnvironmentName,
+        ConnectedEnvironmentPatchResource environmentEnvelope) {
         return updateWithResponse(resourceGroupName, connectedEnvironmentName, environmentEnvelope, Context.NONE)
             .getValue();
     }

@@ -152,6 +152,13 @@ public interface NetAppManagementClient {
     BackupsClient getBackups();
 
     /**
+     * Gets the NetAppResourceQuotaLimitsAccountsClient object to access its operations.
+     * 
+     * @return the NetAppResourceQuotaLimitsAccountsClient object.
+     */
+    NetAppResourceQuotaLimitsAccountsClient getNetAppResourceQuotaLimitsAccounts();
+
+    /**
      * Gets the BackupVaultsClient object to access its operations.
      * 
      * @return the BackupVaultsClient object.
@@ -178,4 +185,11 @@ public interface NetAppManagementClient {
      * @return the BackupsUnderAccountsClient object.
      */
     BackupsUnderAccountsClient getBackupsUnderAccounts();
+
+    /**
+     * Gets the BucketsClient object to access its operations.
+     * 
+     * @return the BucketsClient object.
+     */
+    BucketsClient getBuckets();
 }

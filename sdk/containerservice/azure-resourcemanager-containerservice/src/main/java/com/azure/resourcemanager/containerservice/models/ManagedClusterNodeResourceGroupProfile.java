@@ -18,8 +18,7 @@ import java.io.IOException;
 public final class ManagedClusterNodeResourceGroupProfile
     implements JsonSerializable<ManagedClusterNodeResourceGroupProfile> {
     /*
-     * The restriction level applied to the cluster's node resource group. If not specified, the default is
-     * 'Unrestricted'
+     * The restriction level applied to the cluster's node resource group
      */
     private RestrictionLevel restrictionLevel;
 
@@ -30,8 +29,7 @@ public final class ManagedClusterNodeResourceGroupProfile
     }
 
     /**
-     * Get the restrictionLevel property: The restriction level applied to the cluster's node resource group. If not
-     * specified, the default is 'Unrestricted'.
+     * Get the restrictionLevel property: The restriction level applied to the cluster's node resource group.
      * 
      * @return the restrictionLevel value.
      */
@@ -40,8 +38,7 @@ public final class ManagedClusterNodeResourceGroupProfile
     }
 
     /**
-     * Set the restrictionLevel property: The restriction level applied to the cluster's node resource group. If not
-     * specified, the default is 'Unrestricted'.
+     * Set the restrictionLevel property: The restriction level applied to the cluster's node resource group.
      * 
      * @param restrictionLevel the restrictionLevel value to set.
      * @return the ManagedClusterNodeResourceGroupProfile object itself.

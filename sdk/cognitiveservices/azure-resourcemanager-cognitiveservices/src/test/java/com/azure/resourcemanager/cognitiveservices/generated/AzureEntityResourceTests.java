@@ -10,8 +10,8 @@ import com.azure.resourcemanager.cognitiveservices.models.AzureEntityResource;
 public final class AzureEntityResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureEntityResource model = BinaryData.fromString(
-            "{\"etag\":\"kvwrwjfeu\",\"id\":\"nhutjeltmrldhugj\",\"name\":\"zdatqxhocdg\",\"type\":\"ablgphuticndvk\"}")
+        AzureEntityResource model = BinaryData
+            .fromString("{\"etag\":\"kvwrwjfeu\",\"id\":\"hutje\",\"name\":\"tmrldhugjzzdatq\",\"type\":\"hocdgeab\"}")
             .toObject(AzureEntityResource.class);
     }
 

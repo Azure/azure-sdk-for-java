@@ -10,7 +10,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
 import com.azure.resourcemanager.netapp.models.ReplicationStatus;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class VolumesReplicationStatusWithResponseMockTests {
     @Test
     public void testReplicationStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"healthy\":false,\"relationshipStatus\":\"Failed\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"lrigjkskyri\",\"errorMessage\":\"vzidsxwaab\"}";
+            = "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"igorqjbttzhragl\",\"errorMessage\":\"fhonqjujeickpzvc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +32,13 @@ public final class VolumesReplicationStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicationStatus response = manager.volumes()
-            .replicationStatusWithResponse("glcfhmlrqryxyn", "nzrdpsovwxz", "ptgoeiybbabp", "hv",
+            .replicationStatusWithResponse("zkzobgopxlhslnel", "ieixynllxe", "wcrojphslhcaw", "u",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.healthy());
-        Assertions.assertEquals(RelationshipStatus.FAILED, response.relationshipStatus());
-        Assertions.assertEquals(MirrorState.MIRRORED, response.mirrorState());
-        Assertions.assertEquals("lrigjkskyri", response.totalProgress());
-        Assertions.assertEquals("vzidsxwaab", response.errorMessage());
+        Assertions.assertTrue(response.healthy());
+        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, response.relationshipStatus());
+        Assertions.assertEquals("igorqjbttzhragl", response.totalProgress());
+        Assertions.assertEquals("fhonqjujeickpzvc", response.errorMessage());
     }
 }

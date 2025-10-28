@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RegionScopedSessionContainer;
@@ -20,6 +21,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -261,6 +263,53 @@ public class CosmosClientBuilderTest {
         } catch (CosmosException cosmosException) {
             assertThat(cosmosException.getStatusCode()).isEqualTo(404);
             assertThat(cosmosException.getSubStatusCode()).isEqualTo(1003);
+        }
+    }
+
+    // Test to validate that the default value of TCP NRTO (5s) is not overridden to a lower value
+    // when the user sets a lower value in DirectConnectionConfig (which is not allowed).
+    // The user can only override the TCP NRTO to a higher value.
+    // This is to ensure that the TCP NRTO is not set to a very low value which can cause
+    // operations such as queries, change feed reads, stored procedure executions to fail
+    // due to the BELatency taking > 5s in some cases for the aforementioned operation types
+    @Test(groups = "emulator")
+    public void validateTcpNrtoOverride() {
+
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        directConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(1));
+
+        try (CosmosClient cosmosClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode(directConnectionConfig)
+            .buildClient()) {
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+            ConnectionPolicy connectionPolicy = rxDocumentClient.getConnectionPolicy();
+
+            assertThat(connectionPolicy).isNotNull();
+            assertThat(connectionPolicy.getTcpNetworkRequestTimeout().toMillis()).isEqualTo(5_000L);
+            assertThat(connectionPolicy.getHttpNetworkRequestTimeout().toMillis()).isEqualTo(60_000L);
+        } catch (Exception e) {
+            fail("CosmosClientBuilder should implement AutoCloseable");
+        }
+
+        directConnectionConfig = new DirectConnectionConfig();
+        directConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(7));
+
+        try (CosmosClient cosmosClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode(directConnectionConfig)
+            .buildClient()) {
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+            ConnectionPolicy connectionPolicy = rxDocumentClient.getConnectionPolicy();
+
+            assertThat(connectionPolicy).isNotNull();
+            assertThat(connectionPolicy.getTcpNetworkRequestTimeout().toMillis()).isEqualTo(7_000L);
+        } catch (Exception e) {
+            fail("CosmosClientBuilder should implement AutoCloseable");
         }
     }
 

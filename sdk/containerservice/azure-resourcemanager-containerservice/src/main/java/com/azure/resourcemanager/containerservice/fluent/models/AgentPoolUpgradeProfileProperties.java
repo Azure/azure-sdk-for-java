@@ -10,7 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolRecentlyUsedVersion;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeProfilePropertiesUpgradesItem;
+import com.azure.resourcemanager.containerservice.models.ComponentsByRelease;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +36,16 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
      * List of orchestrator types and versions available for upgrade.
      */
     private List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades;
+
+    /*
+     * List of components grouped by kubernetes major.minor version.
+     */
+    private List<ComponentsByRelease> componentsByReleases;
+
+    /*
+     * List of historical good versions for rollback operations.
+     */
+    private List<AgentPoolRecentlyUsedVersion> recentlyUsedVersions;
 
     /*
      * The latest AKS supported node image version.
@@ -108,6 +120,35 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
     }
 
     /**
+     * Get the componentsByReleases property: List of components grouped by kubernetes major.minor version.
+     * 
+     * @return the componentsByReleases value.
+     */
+    public List<ComponentsByRelease> componentsByReleases() {
+        return this.componentsByReleases;
+    }
+
+    /**
+     * Set the componentsByReleases property: List of components grouped by kubernetes major.minor version.
+     * 
+     * @param componentsByReleases the componentsByReleases value to set.
+     * @return the AgentPoolUpgradeProfileProperties object itself.
+     */
+    public AgentPoolUpgradeProfileProperties withComponentsByReleases(List<ComponentsByRelease> componentsByReleases) {
+        this.componentsByReleases = componentsByReleases;
+        return this;
+    }
+
+    /**
+     * Get the recentlyUsedVersions property: List of historical good versions for rollback operations.
+     * 
+     * @return the recentlyUsedVersions value.
+     */
+    public List<AgentPoolRecentlyUsedVersion> recentlyUsedVersions() {
+        return this.recentlyUsedVersions;
+    }
+
+    /**
      * Get the latestNodeImageVersion property: The latest AKS supported node image version.
      * 
      * @return the latestNodeImageVersion value.
@@ -146,6 +187,12 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
         }
+        if (componentsByReleases() != null) {
+            componentsByReleases().forEach(e -> e.validate());
+        }
+        if (recentlyUsedVersions() != null) {
+            recentlyUsedVersions().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
@@ -159,6 +206,8 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
         jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
         jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
         jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("componentsByReleases", this.componentsByReleases,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("latestNodeImageVersion", this.latestNodeImageVersion);
         return jsonWriter.writeEndObject();
     }
@@ -188,6 +237,14 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
                     List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades
                         = reader.readArray(reader1 -> AgentPoolUpgradeProfilePropertiesUpgradesItem.fromJson(reader1));
                     deserializedAgentPoolUpgradeProfileProperties.upgrades = upgrades;
+                } else if ("componentsByReleases".equals(fieldName)) {
+                    List<ComponentsByRelease> componentsByReleases
+                        = reader.readArray(reader1 -> ComponentsByRelease.fromJson(reader1));
+                    deserializedAgentPoolUpgradeProfileProperties.componentsByReleases = componentsByReleases;
+                } else if ("recentlyUsedVersions".equals(fieldName)) {
+                    List<AgentPoolRecentlyUsedVersion> recentlyUsedVersions
+                        = reader.readArray(reader1 -> AgentPoolRecentlyUsedVersion.fromJson(reader1));
+                    deserializedAgentPoolUpgradeProfileProperties.recentlyUsedVersions = recentlyUsedVersions;
                 } else if ("latestNodeImageVersion".equals(fieldName)) {
                     deserializedAgentPoolUpgradeProfileProperties.latestNodeImageVersion = reader.getString();
                 } else {

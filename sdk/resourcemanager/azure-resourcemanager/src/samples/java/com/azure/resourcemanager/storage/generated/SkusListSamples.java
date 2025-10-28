@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storage.generated;
 public final class SkusListSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/SKUListWithLocationInfo.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/SKUListWithLocationInfo.json
      */
     /**
      * Sample code: SKUListWithLocationInfo.
@@ -23,7 +23,7 @@ public final class SkusListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-01-01/examples/SKUList.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2025-06-01/examples/SKUList.json
      */
     /**
      * Sample code: SkuList.

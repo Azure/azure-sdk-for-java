@@ -26,11 +26,6 @@ public final class DeploymentInner extends ProxyResource {
     private Sku sku;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource Etag.
      */
     private String etag;
@@ -44,6 +39,11 @@ public final class DeploymentInner extends ProxyResource {
      * Properties of Cognitive Services account deployment.
      */
     private DeploymentProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -84,15 +84,6 @@ public final class DeploymentInner extends ProxyResource {
     public DeploymentInner withSku(Sku sku) {
         this.sku = sku;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -142,6 +133,15 @@ public final class DeploymentInner extends ProxyResource {
     public DeploymentInner withProperties(DeploymentProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -224,8 +224,6 @@ public final class DeploymentInner extends ProxyResource {
                     deserializedDeploymentInner.type = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedDeploymentInner.sku = Sku.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedDeploymentInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedDeploymentInner.etag = reader.getString();
                 } else if ("tags".equals(fieldName)) {
@@ -233,6 +231,8 @@ public final class DeploymentInner extends ProxyResource {
                     deserializedDeploymentInner.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeploymentInner.properties = DeploymentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDeploymentInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
