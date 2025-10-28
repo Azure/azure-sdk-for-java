@@ -2568,4 +2568,20 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void fileSystemNameEncodingOnGetFileSystemUrl() {
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        assertTrue(fileSystemClient.getFileSystemUrl().contains(expectedName));
+    }
+
+    @Test
+    public void fileSystemNameEncodingOnGetPathUrl() {
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        DataLakeDirectoryAsyncClient directoryClient = fileSystemClient.getDirectoryAsyncClient(generatePathName());
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
 }

@@ -1970,6 +1970,16 @@ public class ContainerApiTests extends BlobTestBase {
         assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
     }
 
+    // Tests that the container name is URL encoded. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void getBlobContainerUrlEncodesContainerName() {
+        String containerName = generateContainerName() + "enc!";
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName);
+
+        assertTrue(containerClient.getBlobContainerUrl().contains(Utility.urlEncode(containerName)));
+    }
+
     // TODO: Reintroduce these tests once service starts supporting it.
 
     //    public void Rename() {

@@ -4401,4 +4401,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(fc.getSystemProperties()).expectNextCount(1).verifyComplete();
     }
 
+    @Test
+    public void fileNameEncodingOnGetPathUrl() {
+        DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.getFileAsyncClient("my file");
+        String expectedName = "my%20file";
+        assertTrue(fileClient.getPathUrl().contains(expectedName));
+    }
 }

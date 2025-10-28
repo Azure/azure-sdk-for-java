@@ -3616,4 +3616,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertNotNull(dc.getSystemProperties());
     }
 
+    @Test
+    public void directoryNameEncodingOnGetPathUrl() {
+        DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("my directory");
+        String expectedName = "my%20directory";
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
 }

@@ -50,6 +50,7 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -220,7 +221,7 @@ public final class BlobContainerAsyncClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl() + "/" + containerName;
+        return azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName);
     }
 
     /**

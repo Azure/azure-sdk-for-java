@@ -3617,4 +3617,11 @@ public class FileApiTest extends DataLakeTestBase {
     public void pathGetSystemPropertiesFileMin() {
         assertNotNull(fc.getSystemProperties());
     }
+
+    @Test
+    public void fileNameEncodingOnGetPathUrl() {
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("my file");
+        String expectedName = "my%20file";
+        assertTrue(fileClient.getPathUrl().contains(expectedName));
+    }
 }
