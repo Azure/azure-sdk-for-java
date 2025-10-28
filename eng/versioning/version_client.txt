@@ -112,6 +112,7 @@ com.azure:azure-cosmos-test;1.0.0-beta.15;1.0.0-beta.16
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.41.0;4.42.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.41.0;4.42.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.41.0;4.42.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.41.0;4.42.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.8.4;1.9.0-beta.1

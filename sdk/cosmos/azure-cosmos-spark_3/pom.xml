@@ -38,7 +38,20 @@
     <maven.main.skip>${cosmos.spark.skip}</maven.main.skip>
     <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
 
-    <cosmos-spark-version>3.1</cosmos-spark-version>
+    <cosmos-spark-version>3.3</cosmos-spark-version>
+    <!-- Default values - same as scala 2.12 -->
+    <scala.binary.version>2.12</scala.binary.version>
+    <scala.version>2.12.19</scala.version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+    <spark33.version>3.3.0</spark33.version> <!-- {x-version-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <spark34.version>3.4.0</spark34.version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <spark35.version>3.5.0</spark35.version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <scala-java8-compat.version>0.9.1</scala-java8-compat.version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+    <reactor-scala-extensions.version>0.8.0</reactor-scala-extensions.version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+    <scalatest.version>3.2.2</scalatest.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+    <scalatest-flatspec.version>3.2.3</scalatest-flatspec.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+    <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
+    <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+    <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
   </properties>
 
   <developers>
@@ -78,13 +91,13 @@
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
-      <artifactId>scala-java8-compat_2.12</artifactId>
-      <version>0.8.0</version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+      <artifactId>scala-java8-compat_${scala.binary.version}</artifactId>
+      <version>${scala-java8-compat.version}</version>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-scala-extensions_2.12</artifactId>
-      <version>0.8.0</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+      <artifactId>reactor-scala-extensions_${scala.binary.version}</artifactId>
+      <version>${reactor-scala-extensions.version}</version>
       <exclusions>
         <exclusion>
           <groupId>io.projectreactor</groupId>
@@ -176,26 +189,26 @@
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.12</artifactId>
-      <version>3.2.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+      <artifactId>scalatest_${scala.binary.version}</artifactId>
+      <version>${scalatest.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest-flatspec_2.12</artifactId>
-      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+      <artifactId>scalatest-flatspec_${scala.binary.version}</artifactId>
+      <version>${scalatest-flatspec.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalactic</groupId>
-      <artifactId>scalactic_2.12</artifactId>
-      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
+      <artifactId>scalactic_${scala.binary.version}</artifactId>
+      <version>${scalactic.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalamock</groupId>
-      <artifactId>scalamock_2.12</artifactId>
-      <version>5.0.0</version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+      <artifactId>scalamock_${scala.binary.version}</artifactId>
+      <version>${scalamock.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -285,21 +298,21 @@
               <includes>
                 <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.5.0]</include> <!-- {x-include-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark33.version}]</include>
+                <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark34.version}]</include>
+                <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark35.version}]</include>
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
-                <include>org.scala-lang:scala-library:[2.12.19]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
-                <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
-                <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
-                <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+                <include>org.scala-lang:scala-library:[${scala.version}]</include>
+                <include>org.scala-lang.modules:scala-java8-compat_${scala.binary.version}:[${scala-java8-compat.version}]</include>
+                <include>io.projectreactor:reactor-scala-extensions_${scala.binary.version}:[${reactor-scala-extensions.version}]</include>
+                <include>org.scalatest:scalatest_${scala.binary.version}:[${scalatest.version}]</include>
                 <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.8.1]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-scala_${scala.binary.version}:[${scala-jackson.version}]</include>
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-core;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
@@ -388,7 +401,7 @@
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
-              <scalaVersion>2.12.19</scalaVersion>
+              <scalaVersion>${scala.version}</scalaVersion>
             </configuration>
             <executions>
               <execution>

@@ -10,16 +10,16 @@
     <relativePath>../azure-cosmos-spark_3-5</relativePath>
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
-  <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-  <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+  <artifactId>azure-cosmos-spark_3-5_2-13</artifactId>
+  <version>4.42.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;current} -->
   <packaging>jar</packaging>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-5_2-12</url>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-5_2-13</url>
   <name>OLTP Spark 3.5 Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark 3.5 Connector for Azure Cosmos DB SQL API</description>
   <scm>
-    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_3-5_2-12</connection>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_3-5_2-13</connection>
     <developerConnection></developerConnection>
-    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-12</url>
+    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-5_2-13</url>
   </scm>
   <organization>
     <name>Microsoft Corporation</name>
@@ -40,18 +40,18 @@
   </developers>
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
-    <scala.binary.version>2.12</scala.binary.version>
-    <scala.version>2.12.19</scala.version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
-    <spark33.version>3.3.0</spark33.version> <!-- {x-version-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
-    <spark34.version>3.4.0</spark34.version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
-    <spark35.version>3.5.0</spark35.version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
-    <scala-java8-compat.version>0.9.1</scala-java8-compat.version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
-    <reactor-scala-extensions.version>0.8.0</reactor-scala-extensions.version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
-    <scalatest.version>3.2.2</scalatest.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
-    <scalatest-flatspec.version>3.2.3</scalatest-flatspec.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
-    <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
-    <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
-    <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+    <scala.binary.version>2.13</scala.binary.version>
+    <scala.version>2.13.17</scala.version> <!-- {x-version-update;cosmos-scala213_org.scala-lang:scala-library;external_dependency} -->
+    <spark33.version>3.3.0</spark33.version> <!-- {x-version-update;cosmos-scala213-spark_3-3_org.apache.spark:spark-sql_2.13;external_dependency} -->
+    <spark34.version>3.4.0</spark34.version> <!-- {x-version-update;cosmos-scala213-spark_3-4_org.apache.spark:spark-sql_2.13;external_dependency} -->
+    <spark35.version>3.5.0</spark35.version> <!-- {x-version-update;cosmos-scala213-spark_3-5_org.apache.spark:spark-sql_2.13;external_dependency} -->
+    <scala-java8-compat.version>0.9.1</scala-java8-compat.version> <!-- {x-version-update;cosmos-scala213_org.scala-lang.modules:scala-java8-compat_2.13;external_dependency} -->
+    <reactor-scala-extensions.version>0.8.0</reactor-scala-extensions.version> <!-- {x-version-update;cosmos-scala213_io.projectreactor:reactor-scala-extensions_2.13;external_dependency} -->
+    <scalatest.version>3.2.2</scalatest.version> <!-- {x-version-update;cosmos-scala213_org.scalatest:scalatest_2.13;external_dependency} -->
+    <scalatest-flatspec.version>3.2.3</scalatest-flatspec.version> <!-- {x-version-update;cosmos-scala213_org.scalatest:scalatest-flatspec_2.13;external_dependency} -->
+    <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos-scala213_org.scalactic:scalactic_2.13;external_dependency} -->
+    <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos-scala213_org.scalamock:scalamock_2.13;external_dependency} -->
+    <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;cosmos-scala213_com.fasterxml.jackson.module:jackson-module-scala_2.13;external_dependency} -->
   </properties>
   <build>
     <plugins>
