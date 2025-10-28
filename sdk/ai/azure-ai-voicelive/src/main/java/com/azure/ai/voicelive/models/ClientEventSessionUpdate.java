@@ -38,7 +38,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
 
     /**
      * Creates an instance of ClientEventSessionUpdate class.
-     * 
+     *
      * @param session the session value to set.
      */
     @Generated
@@ -48,7 +48,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
 
     /**
      * Get the type property: The type of event.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -59,7 +59,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
 
     /**
      * Get the session property: The session property.
-     * 
+     *
      * @return the session value.
      */
     @Generated
@@ -92,7 +92,7 @@ public final class ClientEventSessionUpdate extends ClientEvent {
 
     /**
      * Reads an instance of ClientEventSessionUpdate from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClientEventSessionUpdate if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.

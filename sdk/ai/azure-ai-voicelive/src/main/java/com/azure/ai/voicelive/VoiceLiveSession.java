@@ -4,16 +4,32 @@
 package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.ClientEvent;
+import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
+import com.azure.ai.voicelive.models.ClientEventConversationItemDelete;
+import com.azure.ai.voicelive.models.ClientEventConversationItemRetrieve;
+import com.azure.ai.voicelive.models.ClientEventConversationItemTruncate;
 import com.azure.ai.voicelive.models.ClientEventInputAudioBufferAppend;
+import com.azure.ai.voicelive.models.ClientEventInputAudioBufferClear;
+import com.azure.ai.voicelive.models.ClientEventInputAudioBufferCommit;
+import com.azure.ai.voicelive.models.ClientEventInputAudioClear;
+import com.azure.ai.voicelive.models.ClientEventInputAudioTurnAppend;
+import com.azure.ai.voicelive.models.ClientEventInputAudioTurnCancel;
+import com.azure.ai.voicelive.models.ClientEventInputAudioTurnEnd;
+import com.azure.ai.voicelive.models.ClientEventInputAudioTurnStart;
+import com.azure.ai.voicelive.models.ClientEventResponseCancel;
+import com.azure.ai.voicelive.models.ClientEventResponseCreate;
+import com.azure.ai.voicelive.models.ClientEventSessionAvatarConnect;
+import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
+import com.azure.ai.voicelive.models.ConversationRequestItem;
 import com.azure.ai.voicelive.models.SessionUpdate;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -23,18 +39,21 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import reactor.core.Disposable;
+import reactor.core.publisher.BufferOverflowStrategy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.client.WebsocketClientSpec;
 import reactor.netty.http.websocket.WebsocketInbound;
 import reactor.netty.http.websocket.WebsocketOutbound;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.Base64;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,11 +71,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * the internal session.
  * </p>
  */
-public final class VoiceLiveSession implements AutoCloseable {
+public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveSession.class);
-    private static final int AUDIO_BUFFER_SIZE = 16 * 1024; // 16KB chunks
     private static final String COGNITIVE_SERVICES_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
+    private static final HttpHeaderName OPENAI_BETA_HEADER = HttpHeaderName.fromString("OpenAI-Beta");
+    private static final String OPENAI_BETA_VALUE = "assistants=v2";
+    private static final WebsocketClientSpec WEBSOCKET_CLIENT_SPEC
+        = WebsocketClientSpec.builder().protocols("realtime").build();
+
     private final URI endpoint;
     private final AzureKeyCredential keyCredential;
     private final TokenCredential tokenCredential;
@@ -70,11 +93,18 @@ public final class VoiceLiveSession implements AutoCloseable {
     private final Sinks.Many<BinaryData> receiveSink = Sinks.many().multicast().onBackpressureBuffer();
 
     // Sink for sending messages
-    private final Sinks.Many<WebSocketFrame> sendSink = Sinks.many().unicast().onBackpressureBuffer();
+    private final Sinks.Many<WebSocketFrame> sendSink = Sinks.many().multicast().onBackpressureBuffer();
 
     // WebSocket references
     private final AtomicReference<WebsocketInbound> inboundRef = new AtomicReference<>();
     private final AtomicReference<WebsocketOutbound> outboundRef = new AtomicReference<>();
+    private final AtomicReference<Sinks.One<Void>> connectionCloseSignalRef = new AtomicReference<>();
+    private final AtomicReference<Disposable> receiveSubscriptionRef = new AtomicReference<>();
+    private final AtomicReference<Disposable> sendSubscriptionRef = new AtomicReference<>();
+    private final AtomicReference<Disposable> closeStatusSubscriptionRef = new AtomicReference<>();
+    private final AtomicReference<Disposable> connectionLifecycleSubscriptionRef = new AtomicReference<>();
+
+    private static final int INBOUND_BUFFER_CAPACITY = 1024;
 
     /**
      * Creates a new VoiceLiveSession with API key authentication.
@@ -113,101 +143,187 @@ public final class VoiceLiveSession implements AutoCloseable {
             return Mono.error(new IllegalStateException("Session is already connected"));
         }
 
-        return getAuthorizationHeaders().flatMap(authHeaders -> {
-            HttpClient httpClient = HttpClient.create().followRedirect(true);
+        if (isClosed.get()) {
+            return Mono.error(new IllegalStateException("Session has already been closed"));
+        }
 
-            return httpClient.headers(headers -> {
-                // Add authentication headers
-                authHeaders.forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (connectionCloseSignalRef.get() != null) {
+            return Mono.error(new IllegalStateException("Session lifecycle already active"));
+        }
 
-                // Add additional headers
-                if (additionalHeaders != null) {
-                    additionalHeaders.forEach(header -> headers.set(header.getName(), header.getValue()));
-                }
+        Sinks.One<Void> readySink = Sinks.one();
+        Sinks.One<Void> closeSignal = Sinks.one();
+        connectionCloseSignalRef.set(closeSignal);
 
-                // Add User-Agent
-                headers.set("User-Agent", "Azure-VoiceLive-SDK/Java");
-            }).websocket().uri(endpoint.toString()).handle((inbound, outbound) -> {
-                inboundRef.set(inbound);
-                outboundRef.set(outbound);
-                isConnected.set(true);
+        LOGGER.info("Connecting to VoiceLive WebSocket endpoint: {}", endpoint);
 
-                LOGGER.info("WebSocket connection established");
+        Mono<Void> connectionMono
+            = getAuthorizationHeaders().map(authHeaders -> buildConnectionHeaders(authHeaders, additionalHeaders))
+                .flatMap(requestHeaders -> {
+                    logConnectionDetails(requestHeaders);
+                    return HttpClient.create().followRedirect(true).headers(nettyHeaders -> {
+                        for (HttpHeader header : requestHeaders) {
+                            nettyHeaders.set(header.getName(), header.getValue());
+                        }
+                    }).websocket(WEBSOCKET_CLIENT_SPEC).uri(endpoint.toString()).handle((inbound, outbound) -> {
+                        inboundRef.set(inbound);
+                        outboundRef.set(outbound);
+                        isConnected.set(true);
 
-                // Setup receive stream - receive and convert ByteBuf to BinaryData
-                Flux<BinaryData> receiveFlux = inbound.receive()
-                    .retain() // Retain to prevent premature release
-                    .map(this::byteBufToBinaryData)
-                    .doOnNext(data -> {
-                        LOGGER.verbose("Received message: {} bytes", data.toBytes().length);
-                        receiveSink.tryEmitNext(data);
-                    })
-                    .doOnError(error -> {
-                        LOGGER.error("Error receiving message", error);
-                        receiveSink.tryEmitError(error);
-                    })
-                    .doFinally(signal -> {
-                        LOGGER.info("WebSocket receive stream completed: {}", signal);
-                        isConnected.set(false);
-                        receiveSink.tryEmitComplete();
-                    });
+                        LOGGER.info("WebSocket connection established");
+                        LOGGER.info("Inbound aggregator: {}", inbound.aggregateFrames());
+                        LOGGER.info("Outbound: {}", outbound);
 
-                // Setup send stream from sink
-                Flux<WebSocketFrame> sendFlux = sendSink.asFlux()
-                    .doOnNext(frame -> LOGGER.verbose("Sending WebSocket frame"))
-                    .doOnError(error -> LOGGER.error("Error in send sink", error));
+                        Flux<BinaryData> receiveFlux = inbound.receive()
+                            .retain()
+                            .doOnSubscribe(s -> LOGGER.info("Receive flux subscribed"))
+                            .doOnNext(byteBuf -> LOGGER.info("Received ByteBuf: {} bytes, refCnt={}",
+                                byteBuf.readableBytes(), byteBuf.refCnt()))
+                            .map(this::byteBufToBinaryData)
+                            .doOnNext(data -> {
+                                receiveSink.tryEmitNext(data);
+                            })
+                            .doOnError(error -> {
+                                LOGGER.error("Error receiving message", error);
+                                receiveSink.tryEmitError(error);
+                                closeSignal.tryEmitError(error);
+                            })
+                            .doOnComplete(() -> {
+                                LOGGER.info("Receive flux completed normally");
+                            })
+                            .doOnCancel(() -> {
+                                LOGGER.info("Receive flux cancelled");
+                            })
+                            .doFinally(signalType -> {
+                                LOGGER.info("WebSocket receive stream completed: {}", signalType);
+                                isConnected.set(false);
+                                receiveSink.tryEmitComplete();
+                                closeSignal.tryEmitEmpty();
+                            });
 
-                // Keep connection alive and send/receive simultaneously
-                return Mono.zip(outbound.sendObject(sendFlux).then(), receiveFlux.then()).then();
-            }).doOnError(error -> {
-                LOGGER.error("WebSocket connection error", error);
-                isConnected.set(false);
-            }).then();
-        }).doOnSuccess(v -> LOGGER.info("WebSocket session ready")).doOnError(error -> {
-            LOGGER.error("Failed to establish WebSocket connection", error);
+                        Disposable receiveSubscription = receiveFlux.subscribe();
+                        receiveSubscriptionRef.set(receiveSubscription);
+
+                        Disposable closeStatusSubscription = inbound.receiveCloseStatus()
+                            .subscribe(
+                                status -> LOGGER.info("WebSocket close status received: code={} reason={}",
+                                    status.code(), status.reasonText()),
+                                error -> LOGGER.warning("Failed to read WebSocket close status", error));
+                        closeStatusSubscriptionRef.set(closeStatusSubscription);
+
+                        Flux<WebSocketFrame> sendFlux = sendSink.asFlux()
+                            .doOnSubscribe(subscription -> LOGGER.info("Send stream subscribed"))
+                            .doOnCancel(() -> LOGGER.info("Send stream cancelled"))
+                            .doOnComplete(() -> LOGGER.info("Send stream completed"))
+                            .doOnError(error -> LOGGER.error("Error in send stream", error))
+                            .concatWith(Mono.never());  // Keep flux alive - never complete until cancelled
+
+                        // Send frames without completing when the flux completes
+                        // The connection stays open until closeSignal triggers
+                        outbound.sendObject(sendFlux).then().subscribe();
+
+                        readySink.tryEmitEmpty();
+
+                        return closeSignal.asMono().doFinally(signalType -> {
+                            LOGGER.info("WebSocket handler closing: {}", signalType);
+                            Disposable send = sendSubscriptionRef.getAndSet(null);
+                            if (send != null && !send.isDisposed()) {
+                                send.dispose();
+                            }
+                            Disposable receive = receiveSubscriptionRef.getAndSet(null);
+                            if (receive != null && !receive.isDisposed()) {
+                                receive.dispose();
+                            }
+                            Disposable closeStatus = closeStatusSubscriptionRef.getAndSet(null);
+                            if (closeStatus != null && !closeStatus.isDisposed()) {
+                                closeStatus.dispose();
+                            }
+                            connectionCloseSignalRef.compareAndSet(closeSignal, null);
+                        });
+                    }).then();
+                });
+
+        Disposable lifecycle = connectionMono.subscribe(unused -> {
+        }, error -> {
+            LOGGER.error("WebSocket connection error", error);
             isConnected.set(false);
+            receiveSink.tryEmitError(error);
+            readySink.tryEmitError(error);
+            connectionCloseSignalRef.compareAndSet(closeSignal, null);
+            disposeLifecycleSubscription();
+        }, () -> {
+            LOGGER.info("WebSocket handler completed");
+            connectionCloseSignalRef.compareAndSet(closeSignal, null);
+            disposeLifecycleSubscription();
         });
+
+        connectionLifecycleSubscriptionRef.set(lifecycle);
+
+        return readySink.asMono()
+            .doOnSuccess(v -> LOGGER.info("WebSocket session ready"))
+            .doOnError(error -> LOGGER.error("Failed to establish WebSocket connection", error));
+        // Note: removed doFinally handler that was incorrectly closing connection on cancel
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
+        if (isClosed.compareAndSet(false, true)) {
+            LOGGER.info("Closing VoiceLive session");
+            sendSink.tryEmitComplete();
+
+            Sinks.One<Void> closeSignal = connectionCloseSignalRef.getAndSet(null);
+            if (closeSignal != null) {
+                closeSignal.tryEmitEmpty();
+            }
+
+            Disposable send = sendSubscriptionRef.getAndSet(null);
+            if (send != null && !send.isDisposed()) {
+                send.dispose();
+            }
+
+            Disposable receive = receiveSubscriptionRef.getAndSet(null);
+            if (receive != null && !receive.isDisposed()) {
+                receive.dispose();
+            }
+
+            Disposable closeStatus = closeStatusSubscriptionRef.getAndSet(null);
+            if (closeStatus != null && !closeStatus.isDisposed()) {
+                closeStatus.dispose();
+            }
+
+            disposeLifecycleSubscription();
+
+            WebsocketOutbound outbound = outboundRef.get();
+            if (outbound != null) {
+                return outbound.sendClose().doOnSuccess(v -> {
+                    isConnected.set(false);
+                    receiveSink.tryEmitComplete();
+                    LOGGER.info("WebSocket connection closed");
+                })
+                    .doOnError(error -> LOGGER.error("Error closing WebSocket", error))
+                    .onErrorResume(e -> Mono.empty())
+                    .then();
+            }
+            isConnected.set(false);
+            receiveSink.tryEmitComplete();
+        }
+
+        return Mono.empty();
+    }
+
+    @Override
+    public void close() {
+        LOGGER.info("Closing VoiceLive session");
+        this.closeAsync().block();
     }
 
     /**
-     * Sends audio from a stream to the service.
+     * Checks if the session is currently connected.
      *
-     * @param audioStream The audio input stream.
-     * @return A Mono that completes when all audio has been sent.
+     * @return true if connected, false otherwise.
      */
-    public Mono<Void> sendAudio(InputStream audioStream) {
-        Objects.requireNonNull(audioStream, "'audioStream' cannot be null");
-        throwIfNotConnected();
-
-        if (!isSendingAudioStream.compareAndSet(false, true)) {
-            return Mono.error(new IllegalStateException("Only one stream of audio may be sent at once"));
-        }
-
-        return Flux.create(sink -> {
-            try {
-                byte[] buffer = new byte[AUDIO_BUFFER_SIZE];
-                int bytesRead;
-
-                while ((bytesRead = audioStream.read(buffer)) != -1) {
-                    if (isClosed.get()) {
-                        sink.complete();
-                        return;
-                    }
-
-                    byte[] audioChunk = new byte[bytesRead];
-                    System.arraycopy(buffer, 0, audioChunk, 0, bytesRead);
-                    String base64Audio = Base64.getEncoder().encodeToString(audioChunk);
-
-                    ClientEventInputAudioBufferAppend appendCommand
-                        = new ClientEventInputAudioBufferAppend(base64Audio);
-
-                    sink.next(appendCommand);
-                }
-                sink.complete();
-            } catch (IOException e) {
-                sink.error(e);
-            }
-        }).flatMap(event -> sendEvent((ClientEvent) event)).then().doFinally(signal -> isSendingAudioStream.set(false));
+    public boolean isConnected() {
+        return isConnected.get();
     }
 
     /**
@@ -269,7 +385,11 @@ public final class VoiceLiveSession implements AutoCloseable {
      */
     public Flux<SessionUpdate> receiveEvents() {
         throwIfNotConnected();
-        return receive().flatMap(this::parseToSessionUpdate)
+        return receive()
+            .onBackpressureBuffer(INBOUND_BUFFER_CAPACITY,
+                dropped -> LOGGER.error("Inbound buffer overflow; dropped {} bytes", dropped.toBytes().length),
+                BufferOverflowStrategy.ERROR)
+            .flatMap(this::parseToSessionUpdate)
             .doOnError(error -> LOGGER.error("Failed to parse session update", error))
             .onErrorResume(error -> {
                 LOGGER.warning("Skipping unparseable event due to error: {}", error.getMessage());
@@ -295,57 +415,468 @@ public final class VoiceLiveSession implements AutoCloseable {
      */
     private Mono<SessionUpdate> parseToSessionUpdate(BinaryData data) {
         return Mono.fromCallable(() -> {
+            String jsonString = data.toString();
+
+            // Try to parse as SessionUpdate using the standard fromJson
+            // Note: This may fail due to TypeSpec code generator bufferObject() bug with nested polymorphic types
             try {
-                String jsonString = data.toString();
-                LOGGER.verbose("Parsing session update: {}", jsonString);
-
-                // Use the existing SessionUpdate.fromJson method for polymorphic deserialization
-                try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
-                    return SessionUpdate.fromJson(jsonReader);
-                }
+                return SessionUpdate.fromJson(com.azure.json.JsonProviders.createReader(jsonString));
             } catch (Exception e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse SessionUpdate", e));
+                LOGGER.warning("Failed to parse SessionUpdate: {}", e.getMessage());
+                return null;
             }
-        }).subscribeOn(Schedulers.boundedElastic());
+        })
+            .filter(update -> update != null) // Filter out nulls
+            .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    // ============================================================================
+    // Audio Data Transmission
+    // ============================================================================
+
+    /**
+     * Transmits audio data from a byte array.
+     *
+     * @param audio The audio data to transmit.
+     * @return A Mono that completes when the audio is sent.
+     * @throws IllegalStateException if another audio stream is already being sent.
+     */
+    public Mono<Void> sendInputAudio(byte[] audio) {
+        Objects.requireNonNull(audio, "'audio' cannot be null");
+        throwIfNotConnected();
+
+        if (!isSendingAudioStream.compareAndSet(false, true)) {
+            return Mono.error(new IllegalStateException(
+                "Cannot send a standalone audio chunk while a stream is already in progress."));
+        }
+
+        String base64Audio = Base64.getEncoder().encodeToString(audio);
+        ClientEventInputAudioBufferAppend appendCommand = new ClientEventInputAudioBufferAppend(base64Audio);
+
+        return sendEvent(appendCommand).doFinally(signal -> isSendingAudioStream.set(false));
     }
 
     /**
-     * Checks if the session is currently connected.
+     * Transmits audio data from BinaryData.
      *
-     * @return true if connected, false otherwise.
+     * @param audio The audio data to transmit.
+     * @return A Mono that completes when the audio is sent.
+     * @throws IllegalStateException if another audio stream is already being sent.
      */
-    public boolean isConnected() {
-        return isConnected.get();
+    public Mono<Void> sendInputAudio(BinaryData audio) {
+        Objects.requireNonNull(audio, "'audio' cannot be null");
+        return sendInputAudio(audio.toBytes());
     }
 
     /**
-     * Closes the session gracefully.
+     * Clears the input audio buffer.
      *
-     * @return A Mono that completes when the connection is closed.
+     * @return A Mono that completes when the buffer is cleared.
      */
-    public Mono<Void> closeAsync() {
-        if (isClosed.compareAndSet(false, true)) {
-            sendSink.tryEmitComplete();
+    public Mono<Void> clearInputAudio() {
+        throwIfNotConnected();
+        ClientEventInputAudioBufferClear clearCommand = new ClientEventInputAudioBufferClear();
+        return sendEvent(clearCommand);
+    }
 
-            WebsocketOutbound outbound = outboundRef.get();
-            if (outbound != null) {
-                return outbound.sendClose().doOnSuccess(v -> {
-                    isConnected.set(false);
-                    receiveSink.tryEmitComplete();
-                    LOGGER.info("WebSocket connection closed");
-                })
-                    .doOnError(error -> LOGGER.error("Error closing WebSocket", error))
-                    .onErrorResume(e -> Mono.empty())
-                    .then();
+    /**
+     * Commits the input audio buffer.
+     *
+     * @return A Mono that completes when the buffer is committed.
+     */
+    public Mono<Void> commitInputAudio() {
+        throwIfNotConnected();
+        ClientEventInputAudioBufferCommit commitCommand = new ClientEventInputAudioBufferCommit();
+        return sendEvent(commitCommand);
+    }
+
+    /**
+     * Clears all input audio currently being streamed.
+     *
+     * @return A Mono that completes when the streaming audio is cleared.
+     */
+    public Mono<Void> clearStreamingAudio() {
+        throwIfNotConnected();
+        ClientEventInputAudioClear clearCommand = new ClientEventInputAudioClear();
+        return sendEvent(clearCommand);
+    }
+
+    // ============================================================================
+    // Audio Turn Management
+    // ============================================================================
+
+    /**
+     * Starts a new audio input turn.
+     *
+     * @param turnId Unique identifier for the input audio turn.
+     * @return A Mono that completes when the turn is started.
+     * @throws IllegalArgumentException if turnId is null or empty.
+     */
+    public Mono<Void> startAudioTurn(String turnId) {
+        if (turnId == null || turnId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'turnId' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventInputAudioTurnStart startCommand = new ClientEventInputAudioTurnStart(turnId);
+        return sendEvent(startCommand);
+    }
+
+    /**
+     * Appends audio data to an ongoing input turn.
+     *
+     * @param turnId The ID of the turn this audio is part of.
+     * @param audio The audio data to append.
+     * @return A Mono that completes when the audio is appended.
+     * @throws IllegalArgumentException if turnId is null or empty, or audio is null.
+     */
+    public Mono<Void> appendAudioToTurn(String turnId, byte[] audio) {
+        if (turnId == null || turnId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'turnId' cannot be null or empty"));
+        }
+        Objects.requireNonNull(audio, "'audio' cannot be null");
+        throwIfNotConnected();
+
+        String base64Audio = Base64.getEncoder().encodeToString(audio);
+        ClientEventInputAudioTurnAppend appendCommand = new ClientEventInputAudioTurnAppend(turnId, base64Audio);
+        return sendEvent(appendCommand);
+    }
+
+    /**
+     * Appends audio data to an ongoing input turn.
+     *
+     * @param turnId The ID of the turn this audio is part of.
+     * @param audio The audio data to append.
+     * @return A Mono that completes when the audio is appended.
+     * @throws IllegalArgumentException if turnId is null or empty, or audio is null.
+     */
+    public Mono<Void> appendAudioToTurn(String turnId, BinaryData audio) {
+        Objects.requireNonNull(audio, "'audio' cannot be null");
+        return appendAudioToTurn(turnId, audio.toBytes());
+    }
+
+    /**
+     * Marks the end of an audio input turn.
+     *
+     * @param turnId The ID of the audio turn being ended.
+     * @return A Mono that completes when the turn is ended.
+     * @throws IllegalArgumentException if turnId is null or empty.
+     */
+    public Mono<Void> endAudioTurn(String turnId) {
+        if (turnId == null || turnId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'turnId' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventInputAudioTurnEnd endCommand = new ClientEventInputAudioTurnEnd(turnId);
+        return sendEvent(endCommand);
+    }
+
+    /**
+     * Cancels an in-progress input audio turn.
+     *
+     * @param turnId The ID of the turn to cancel.
+     * @return A Mono that completes when the turn is cancelled.
+     * @throws IllegalArgumentException if turnId is null or empty.
+     */
+    public Mono<Void> cancelAudioTurn(String turnId) {
+        if (turnId == null || turnId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'turnId' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventInputAudioTurnCancel cancelCommand = new ClientEventInputAudioTurnCancel(turnId);
+        return sendEvent(cancelCommand);
+    }
+
+    // ============================================================================
+    // Session Configuration
+    // ============================================================================
+
+    /**
+     * Updates the session configuration.
+     *
+     * @param sessionOptions The session configuration options.
+     * @return A Mono that completes when the configuration is updated.
+     */
+    public Mono<Void> configureSession(VoiceLiveSessionOptions sessionOptions) {
+        Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null");
+        throwIfNotConnected();
+
+        ClientEventSessionUpdate updateCommand = new ClientEventSessionUpdate(sessionOptions);
+        return sendEvent(updateCommand);
+    }
+
+    // ============================================================================
+    // Item Management
+    // ============================================================================
+
+    /**
+     * Adds an item to the conversation.
+     *
+     * @param item The item to add to the conversation.
+     * @return A Mono that completes when the item is added.
+     */
+    public Mono<Void> addItem(ConversationRequestItem item) {
+        return addItem(item, null);
+    }
+
+    /**
+     * Adds an item to the conversation at a specific position.
+     *
+     * @param item The item to add to the conversation.
+     * @param previousItemId The ID of the item after which to insert the new item.
+     * @return A Mono that completes when the item is added.
+     */
+    public Mono<Void> addItem(ConversationRequestItem item, String previousItemId) {
+        Objects.requireNonNull(item, "'item' cannot be null");
+        throwIfNotConnected();
+
+        ClientEventConversationItemCreate itemCreate
+            = new ClientEventConversationItemCreate().setItem(item).setPreviousItemId(previousItemId);
+        return sendEvent(itemCreate);
+    }
+
+    /**
+     * Retrieves an item from the conversation.
+     *
+     * @param itemId The ID of the item to retrieve.
+     * @return A Mono that completes when the retrieval request is sent.
+     * @throws IllegalArgumentException if itemId is null or empty.
+     */
+    public Mono<Void> requestItemRetrieval(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'itemId' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventConversationItemRetrieve retrieveCommand = new ClientEventConversationItemRetrieve(itemId);
+        return sendEvent(retrieveCommand);
+    }
+
+    /**
+     * Deletes an item from the conversation.
+     *
+     * @param itemId The ID of the item to delete.
+     * @return A Mono that completes when the item is deleted.
+     * @throws IllegalArgumentException if itemId is null or empty.
+     */
+    public Mono<Void> deleteItem(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'itemId' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventConversationItemDelete deleteCommand = new ClientEventConversationItemDelete(itemId);
+        return sendEvent(deleteCommand);
+    }
+
+    /**
+     * Truncates the conversation history.
+     *
+     * @param itemId The ID of the item up to which to truncate the conversation.
+     * @param contentIndex The content index within the item to truncate to.
+     * @param audioEndMilliseconds Inclusive duration up to which audio is truncated (in milliseconds).
+     * @return A Mono that completes when the conversation is truncated.
+     * @throws IllegalArgumentException if itemId is null or empty.
+     */
+    public Mono<Void> truncateConversation(String itemId, int contentIndex, int audioEndMilliseconds) {
+        if (itemId == null || itemId.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'itemId' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventConversationItemTruncate truncateEvent
+            = new ClientEventConversationItemTruncate(itemId, contentIndex, audioEndMilliseconds);
+        return sendEvent(truncateEvent);
+    }
+
+    /**
+     * Truncates the conversation history.
+     *
+     * @param itemId The ID of the item up to which to truncate the conversation.
+     * @param contentIndex The content index within the item to truncate to.
+     * @return A Mono that completes when the conversation is truncated.
+     * @throws IllegalArgumentException if itemId is null or empty.
+     */
+    public Mono<Void> truncateConversation(String itemId, int contentIndex) {
+        return truncateConversation(itemId, contentIndex, 0);
+    }
+
+    // ============================================================================
+    // Response Management
+    // ============================================================================
+
+    /**
+     * Starts a new response generation.
+     *
+     * @return A Mono that completes when the response generation starts.
+     */
+    public Mono<Void> startResponse() {
+        return startResponse((VoiceLiveSessionOptions) null);
+    }
+
+    /**
+     * Starts a new response generation with specific options.
+     *
+     * @param responseOptions The options for response generation.
+     * @return A Mono that completes when the response generation starts.
+     */
+    public Mono<Void> startResponse(VoiceLiveSessionOptions responseOptions) {
+        throwIfNotConnected();
+
+        ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
+        if (responseOptions != null && responseOptions.getInstructions() != null) {
+            responseEvent.setAdditionalInstructions(responseOptions.getInstructions());
+        }
+
+        return sendEvent(responseEvent);
+    }
+
+    /**
+     * Starts a new response generation with additional instructions.
+     *
+     * @param additionalInstructions Additional instructions for this response.
+     * @return A Mono that completes when the response generation starts.
+     */
+    public Mono<Void> startResponse(String additionalInstructions) {
+        Objects.requireNonNull(additionalInstructions, "'additionalInstructions' cannot be null");
+        throwIfNotConnected();
+
+        ClientEventResponseCreate response = new ClientEventResponseCreate();
+        response.setAdditionalInstructions(additionalInstructions);
+
+        return sendEvent(response);
+    }
+
+    /**
+     * Cancels the current response generation.
+     *
+     * @return A Mono that completes when the response is cancelled.
+     */
+    public Mono<Void> cancelResponse() {
+        throwIfNotConnected();
+
+        ClientEventResponseCancel cancelCommand = new ClientEventResponseCancel();
+        return sendEvent(cancelCommand);
+    }
+
+    // ============================================================================
+    // Avatar Management
+    // ============================================================================
+
+    /**
+     * Connects and provides the client's SDP (Session Description Protocol) for avatar-related media negotiation.
+     *
+     * @param clientSdp The client's SDP offer.
+     * @return A Mono that completes when the avatar connection is established.
+     * @throws IllegalArgumentException if clientSdp is null or empty.
+     */
+    public Mono<Void> connectAvatar(String clientSdp) {
+        if (clientSdp == null || clientSdp.isEmpty()) {
+            return Mono.error(new IllegalArgumentException("'clientSdp' cannot be null or empty"));
+        }
+        throwIfNotConnected();
+
+        ClientEventSessionAvatarConnect avatarConnectCommand = new ClientEventSessionAvatarConnect(clientSdp);
+        return sendEvent(avatarConnectCommand);
+    }
+
+    // ============================================================================
+    // Helper Methods
+    // ============================================================================
+
+    private void logConnectionDetails(HttpHeaders headers) {
+        if (headers == null || !headers.iterator().hasNext()) {
+            LOGGER.info("WebSocket connection parameters -> endpoint: {}", endpoint);
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (HttpHeader header : headers) {
+            if (builder.length() > 0) {
+                builder.append(", ");
+            }
+            HttpHeaderName headerName = HttpHeaderName.fromString(header.getName());
+            builder.append(headerName).append('=').append(sanitizeHeaderValue(headerName, header.getValue()));
+        }
+
+        LOGGER.info("WebSocket connection parameters -> endpoint: {} headers: {}", endpoint, builder);
+    }
+
+    private String sanitizeHeaderValue(HttpHeaderName headerName, String value) {
+        if (value == null || value.isEmpty()) {
+            return "";
+        }
+
+        String normalized = headerName.toString().toLowerCase(Locale.ROOT);
+        if ("api-key".equals(normalized)) {
+            return maskValue(value);
+        }
+        if ("authorization".equals(normalized)) {
+            int spaceIndex = value.indexOf(' ');
+            if (spaceIndex > 0 && spaceIndex + 1 < value.length()) {
+                return value.substring(0, spaceIndex + 1) + maskValue(value.substring(spaceIndex + 1));
+            }
+            return maskValue(value);
+        }
+
+        return value;
+    }
+
+    private String maskValue(String value) {
+        if (value == null || value.isEmpty()) {
+            return "";
+        }
+        if (value.length() <= 8) {
+            return "****";
+        }
+        return value.substring(0, 4) + "..." + value.substring(value.length() - 4);
+    }
+
+    private HttpHeaders buildConnectionHeaders(HttpHeaders authHeaders, HttpHeaders additionalHeaders) {
+        HttpHeaders requestHeaders = new HttpHeaders();
+
+        if (authHeaders != null) {
+            for (HttpHeader header : authHeaders) {
+                HttpHeaderName headerName = HttpHeaderName.fromString(header.getName());
+                requestHeaders.set(headerName, header.getValue());
             }
         }
 
-        return Mono.empty();
+        if (additionalHeaders != null) {
+            for (HttpHeader header : additionalHeaders) {
+                HttpHeaderName headerName = HttpHeaderName.fromString(header.getName());
+                requestHeaders.set(headerName, header.getValue());
+            }
+        }
+
+        // VoiceLive service doesn't need OpenAI-Beta header
+        // Only add it if explicitly provided in additionalHeaders
+
+        return requestHeaders;
     }
 
-    @Override
-    public void close() {
-        this.closeAsync().block();
+    private boolean containsHeaderIgnoreCase(HttpHeaders headers, HttpHeaderName headerName) {
+        if (headers == null) {
+            return false;
+        }
+
+        String targetName = headerName.toString();
+
+        for (HttpHeader header : headers) {
+            if (header.getName().equalsIgnoreCase(targetName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void disposeLifecycleSubscription() {
+        Disposable lifecycle = connectionLifecycleSubscriptionRef.getAndSet(null);
+        if (lifecycle != null && !lifecycle.isDisposed()) {
+            lifecycle.dispose();
+        }
     }
 
     /**
@@ -361,9 +892,8 @@ public final class VoiceLiveSession implements AutoCloseable {
             return Mono.just(headers);
         } else if (tokenCredential != null) {
             TokenRequestContext tokenRequest = new TokenRequestContext().addScopes(COGNITIVE_SERVICES_SCOPE);
-
-            return Mono.fromCallable(() -> tokenCredential.getTokenSync(tokenRequest)).map(token -> {
-                headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + token.getToken());
+            return tokenCredential.getToken(tokenRequest).map(at -> {
+                headers.set(HttpHeaderName.AUTHORIZATION, "Bearer " + at.getToken());
                 return headers;
             });
         }

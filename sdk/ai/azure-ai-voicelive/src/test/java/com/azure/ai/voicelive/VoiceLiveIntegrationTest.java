@@ -60,7 +60,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         // Act & Assert
-        StepVerifier.create(client.startSession(options)).assertNext(session -> {
+        StepVerifier.create(client.startSession(options.getModel())).assertNext(session -> {
             assertNotNull(session);
             // Additional session validation can be added here
         }).verifyComplete();
@@ -84,7 +84,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         // Act & Assert
-        StepVerifier.create(client.startSession(options)).assertNext(session -> {
+        StepVerifier.create(client.startSession(options.getModel())).assertNext(session -> {
             assertNotNull(session);
             // Test that we can receive events
             AtomicBoolean receivedEvent = new AtomicBoolean(false);
@@ -118,7 +118,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
 
         // Act & Assert
         if (getTestMode() == TestMode.LIVE) {
-            StepVerifier.create(invalidClient.startSession(options))
+            StepVerifier.create(invalidClient.startSession(options.getModel()))
                 .expectErrorMatches(throwable -> throwable.getMessage().contains("401")
                     || throwable.getMessage().contains("Unauthorized")
                     || throwable.getMessage().contains("Invalid"))
@@ -141,7 +141,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         // Act & Assert
-        StepVerifier.create(client.startSession(options)).assertNext(session -> {
+        StepVerifier.create(client.startSession(options.getModel())).assertNext(session -> {
             assertNotNull(session);
         }).verifyComplete();
     }
@@ -160,7 +160,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
         AtomicReference<String> firstEventType = new AtomicReference<>();
 
         // Act & Assert
-        StepVerifier.create(client.startSession(options)).assertNext(session -> {
+        StepVerifier.create(client.startSession(options.getModel())).assertNext(session -> {
             assertNotNull(session);
 
             // Subscribe to events and capture the first one
@@ -198,7 +198,7 @@ class VoiceLiveIntegrationCorrectTest extends TestBase {
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO));
 
         // Act & Assert
-        StepVerifier.create(client.startSession(options)).assertNext(session -> {
+        StepVerifier.create(client.startSession(options.getModel())).assertNext(session -> {
             assertNotNull(session);
         }).verifyComplete();
     }

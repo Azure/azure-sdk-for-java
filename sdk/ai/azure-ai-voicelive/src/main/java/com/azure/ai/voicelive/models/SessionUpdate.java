@@ -38,7 +38,7 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
 
     /**
      * Get the type property: The type of event.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -48,7 +48,7 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
 
     /**
      * Get the eventId property: The event_id property.
-     * 
+     *
      * @return the eventId value.
      */
     @Generated
@@ -58,7 +58,7 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
 
     /**
      * Set the eventId property: The event_id property.
-     * 
+     *
      * @param eventId the eventId value to set.
      * @return the SessionUpdate object itself.
      */
@@ -82,7 +82,7 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
 
     /**
      * Reads an instance of SessionUpdate from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SessionUpdate if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -91,93 +91,99 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
     @Generated
     public static SessionUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            // TEMPORARY FIX: Read discriminator without bufferObject() to avoid TypeSpec bug
+            // This will be overwritten when code is regenerated from TypeSpec
             String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("type".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("error".equals(discriminatorValue)) {
-                    return SessionUpdateError.fromJson(readerToUse.reset());
-                } else if ("session.created".equals(discriminatorValue)) {
-                    return SessionUpdateSessionCreated.fromJson(readerToUse.reset());
-                } else if ("session.updated".equals(discriminatorValue)) {
-                    return SessionUpdateSessionUpdated.fromJson(readerToUse.reset());
-                } else if ("session.avatar.connecting".equals(discriminatorValue)) {
-                    return SessionUpdateAvatarConnecting.fromJson(readerToUse.reset());
-                } else if ("input_audio_buffer.committed".equals(discriminatorValue)) {
-                    return SessionUpdateInputAudioBufferCommitted.fromJson(readerToUse.reset());
-                } else if ("input_audio_buffer.cleared".equals(discriminatorValue)) {
-                    return SessionUpdateInputAudioBufferCleared.fromJson(readerToUse.reset());
-                } else if ("input_audio_buffer.speech_started".equals(discriminatorValue)) {
-                    return SessionUpdateInputAudioBufferSpeechStarted.fromJson(readerToUse.reset());
-                } else if ("input_audio_buffer.speech_stopped".equals(discriminatorValue)) {
-                    return SessionUpdateInputAudioBufferSpeechStopped.fromJson(readerToUse.reset());
-                } else if ("conversation.item.created".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemCreated.fromJson(readerToUse.reset());
-                } else if ("conversation.item.input_audio_transcription.completed".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemInputAudioTranscriptionCompleted.fromJson(readerToUse.reset());
-                } else if ("conversation.item.input_audio_transcription.failed".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemInputAudioTranscriptionFailed.fromJson(readerToUse.reset());
-                } else if ("conversation.item.truncated".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemTruncated.fromJson(readerToUse.reset());
-                } else if ("conversation.item.deleted".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemDeleted.fromJson(readerToUse.reset());
-                } else if ("response.created".equals(discriminatorValue)) {
-                    return SessionUpdateResponseCreated.fromJson(readerToUse.reset());
-                } else if ("response.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseDone.fromJson(readerToUse.reset());
-                } else if ("response.output_item.added".equals(discriminatorValue)) {
-                    return SessionUpdateResponseOutputItemAdded.fromJson(readerToUse.reset());
-                } else if ("response.output_item.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseOutputItemDone.fromJson(readerToUse.reset());
-                } else if ("response.content_part.added".equals(discriminatorValue)) {
-                    return SessionUpdateResponseContentPartAdded.fromJson(readerToUse.reset());
-                } else if ("response.content_part.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseContentPartDone.fromJson(readerToUse.reset());
-                } else if ("response.text.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseTextDelta.fromJson(readerToUse.reset());
-                } else if ("response.text.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseTextDone.fromJson(readerToUse.reset());
-                } else if ("response.audio_transcript.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAudioTranscriptDelta.fromJson(readerToUse.reset());
-                } else if ("response.audio_transcript.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAudioTranscriptDone.fromJson(readerToUse.reset());
-                } else if ("response.audio.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAudioDelta.fromJson(readerToUse.reset());
-                } else if ("response.audio.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAudioDone.fromJson(readerToUse.reset());
-                } else if ("response.animation_blendshapes.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAnimationBlendshapeDelta.fromJson(readerToUse.reset());
-                } else if ("response.animation_blendshapes.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAnimationBlendshapeDone.fromJson(readerToUse.reset());
-                } else if ("response.audio_timestamp.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAudioTimestampDelta.fromJson(readerToUse.reset());
-                } else if ("response.audio_timestamp.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAudioTimestampDone.fromJson(readerToUse.reset());
-                } else if ("response.animation_viseme.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAnimationVisemeDelta.fromJson(readerToUse.reset());
-                } else if ("response.animation_viseme.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseAnimationVisemeDone.fromJson(readerToUse.reset());
-                } else if ("conversation.item.input_audio_transcription.delta".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemInputAudioTranscriptionDelta.fromJson(readerToUse.reset());
-                } else if ("conversation.item.retrieved".equals(discriminatorValue)) {
-                    return SessionUpdateConversationItemRetrieved.fromJson(readerToUse.reset());
-                } else if ("response.function_call_arguments.delta".equals(discriminatorValue)) {
-                    return SessionUpdateResponseFunctionCallArgumentsDelta.fromJson(readerToUse.reset());
-                } else if ("response.function_call_arguments.done".equals(discriminatorValue)) {
-                    return SessionUpdateResponseFunctionCallArgumentsDone.fromJson(readerToUse.reset());
+            JsonReader readerToUse = reader.bufferObject();
+
+            // Read through to find the discriminator
+            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = readerToUse.getFieldName();
+                readerToUse.nextToken();
+                if ("type".equals(fieldName)) {
+                    discriminatorValue = readerToUse.getString();
+                    break;
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    readerToUse.skipChildren();
                 }
+            }
+
+            // Reset to beginning of buffered object for subtype deserialization
+            readerToUse = readerToUse.reset();
+
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("error".equals(discriminatorValue)) {
+                return SessionUpdateError.fromJson(readerToUse);
+            } else if ("session.created".equals(discriminatorValue)) {
+                return SessionUpdateSessionCreated.fromJson(readerToUse);
+            } else if ("session.updated".equals(discriminatorValue)) {
+                return SessionUpdateSessionUpdated.fromJson(readerToUse);
+            } else if ("session.avatar.connecting".equals(discriminatorValue)) {
+                return SessionUpdateAvatarConnecting.fromJson(readerToUse);
+            } else if ("input_audio_buffer.committed".equals(discriminatorValue)) {
+                return SessionUpdateInputAudioBufferCommitted.fromJson(readerToUse);
+            } else if ("input_audio_buffer.cleared".equals(discriminatorValue)) {
+                return SessionUpdateInputAudioBufferCleared.fromJson(readerToUse);
+            } else if ("input_audio_buffer.speech_started".equals(discriminatorValue)) {
+                return SessionUpdateInputAudioBufferSpeechStarted.fromJson(readerToUse);
+            } else if ("input_audio_buffer.speech_stopped".equals(discriminatorValue)) {
+                return SessionUpdateInputAudioBufferSpeechStopped.fromJson(readerToUse);
+            } else if ("conversation.item.created".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemCreated.fromJson(readerToUse);
+            } else if ("conversation.item.input_audio_transcription.completed".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemInputAudioTranscriptionCompleted.fromJson(readerToUse);
+            } else if ("conversation.item.input_audio_transcription.failed".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemInputAudioTranscriptionFailed.fromJson(readerToUse);
+            } else if ("conversation.item.truncated".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemTruncated.fromJson(readerToUse);
+            } else if ("conversation.item.deleted".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemDeleted.fromJson(readerToUse);
+            } else if ("response.created".equals(discriminatorValue)) {
+                return SessionUpdateResponseCreated.fromJson(readerToUse);
+            } else if ("response.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseDone.fromJson(readerToUse);
+            } else if ("response.output_item.added".equals(discriminatorValue)) {
+                return SessionUpdateResponseOutputItemAdded.fromJson(readerToUse);
+            } else if ("response.output_item.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseOutputItemDone.fromJson(readerToUse);
+            } else if ("response.content_part.added".equals(discriminatorValue)) {
+                return SessionUpdateResponseContentPartAdded.fromJson(readerToUse);
+            } else if ("response.content_part.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseContentPartDone.fromJson(readerToUse);
+            } else if ("response.text.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseTextDelta.fromJson(readerToUse);
+            } else if ("response.text.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseTextDone.fromJson(readerToUse);
+            } else if ("response.audio_transcript.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseAudioTranscriptDelta.fromJson(readerToUse);
+            } else if ("response.audio_transcript.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseAudioTranscriptDone.fromJson(readerToUse);
+            } else if ("response.audio.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseAudioDelta.fromJson(readerToUse);
+            } else if ("response.audio.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseAudioDone.fromJson(readerToUse);
+            } else if ("response.animation_blendshapes.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseAnimationBlendshapeDelta.fromJson(readerToUse);
+            } else if ("response.animation_blendshapes.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseAnimationBlendshapeDone.fromJson(readerToUse);
+            } else if ("response.audio_timestamp.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseAudioTimestampDelta.fromJson(readerToUse);
+            } else if ("response.audio_timestamp.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseAudioTimestampDone.fromJson(readerToUse);
+            } else if ("response.animation_viseme.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseAnimationVisemeDelta.fromJson(readerToUse);
+            } else if ("response.animation_viseme.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseAnimationVisemeDone.fromJson(readerToUse);
+            } else if ("conversation.item.input_audio_transcription.delta".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemInputAudioTranscriptionDelta.fromJson(readerToUse);
+            } else if ("conversation.item.retrieved".equals(discriminatorValue)) {
+                return SessionUpdateConversationItemRetrieved.fromJson(readerToUse);
+            } else if ("response.function_call_arguments.delta".equals(discriminatorValue)) {
+                return SessionUpdateResponseFunctionCallArgumentsDelta.fromJson(readerToUse);
+            } else if ("response.function_call_arguments.done".equals(discriminatorValue)) {
+                return SessionUpdateResponseFunctionCallArgumentsDone.fromJson(readerToUse);
+            } else {
+                return fromJsonKnownDiscriminator(readerToUse);
             }
         });
     }

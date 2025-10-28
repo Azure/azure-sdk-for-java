@@ -20,7 +20,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { VoiceLiveAsyncClient.class })
 public final class VoiceLiveClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveClientBuilder.class);
-    private static final String DEFAULT_API_VERSION = "2024-10-01-preview";
+    private static final String DEFAULT_API_VERSION = "2025-10-01";
 
     private URI endpoint;
     private AzureKeyCredential keyCredential;

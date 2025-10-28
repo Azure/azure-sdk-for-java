@@ -3,8 +3,6 @@
 
 package com.azure.ai.voicelive;
 
-import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
-import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -81,22 +79,6 @@ public final class VoiceLiveAsyncClient {
                 session = new VoiceLiveSession(wsEndpoint, tokenCredential);
             }
             return session.connect(additionalHeaders).thenReturn(session);
-        });
-    }
-
-    /**
-     * Starts a new VoiceLiveSession with specified session configuration.
-     *
-     * @param sessionOptions The configuration for the session.
-     * @return A Mono containing the connected VoiceLiveSession.
-     */
-    public Mono<VoiceLiveSession> startSession(VoiceLiveSessionOptions sessionOptions) {
-        Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null");
-        Objects.requireNonNull(sessionOptions.getModel(), "'model' in sessionOptions cannot be null");
-
-        return startSession(sessionOptions.getModel()).flatMap(session -> {
-            ClientEventSessionUpdate sessionUpdateEvent = new ClientEventSessionUpdate(sessionOptions);
-            return session.sendEvent(sessionUpdateEvent).thenReturn(session);
         });
     }
 

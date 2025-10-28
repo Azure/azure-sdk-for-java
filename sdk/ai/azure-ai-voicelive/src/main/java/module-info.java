@@ -8,6 +8,7 @@ module com.azure.ai.voicelive {
     requires reactor.netty.core;
     requires io.netty.buffer;
     requires io.netty.codec.http;
+    requires java.desktop;
 
     exports com.azure.ai.voicelive;
     exports com.azure.ai.voicelive.models;
