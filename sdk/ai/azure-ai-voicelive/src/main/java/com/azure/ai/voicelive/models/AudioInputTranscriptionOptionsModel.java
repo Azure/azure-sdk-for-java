@@ -40,7 +40,7 @@ public final class AudioInputTranscriptionOptionsModel
 
     /**
      * Creates a new instance of AudioInputTranscriptionOptionsModel value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -50,7 +50,7 @@ public final class AudioInputTranscriptionOptionsModel
 
     /**
      * Creates or finds a AudioInputTranscriptionOptionsModel from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding AudioInputTranscriptionOptionsModel.
      */
@@ -61,7 +61,7 @@ public final class AudioInputTranscriptionOptionsModel
 
     /**
      * Gets known AudioInputTranscriptionOptionsModel values.
-     * 
+     *
      * @return known AudioInputTranscriptionOptionsModel values.
      */
     @Generated

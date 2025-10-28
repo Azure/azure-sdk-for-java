@@ -185,8 +185,6 @@ public final class VoiceLiveSession implements AsyncCloseable, AutoCloseable {
                         Flux<BinaryData> receiveFlux = inbound.receive()
                             .retain()
                             .doOnSubscribe(s -> LOGGER.info("Receive flux subscribed"))
-                            .doOnNext(byteBuf -> LOGGER.info("Received ByteBuf: {} bytes, refCnt={}",
-                                byteBuf.readableBytes(), byteBuf.refCnt()))
                             .map(this::byteBufToBinaryData)
                             .doOnNext(data -> {
                                 receiveSink.tryEmitNext(data);

@@ -108,8 +108,6 @@ public class VoiceAssistantSample {
                 SAMPLE_RATE,
                 false // bigEndian
             );
-
-            System.out.println("✓ AudioProcessor initialized (24kHz PCM16 mono)");
         }
 
         /**
@@ -375,7 +373,6 @@ public class VoiceAssistantSample {
     private static void runVoiceAssistant(String endpoint, String apiKey) {
         System.out.println("🔧 Initializing VoiceLive client:");
         System.out.println("   Endpoint: " + endpoint);
-        System.out.println("   API Key: " + (apiKey.length() > 10 ? apiKey.substring(0, 10) + "..." : "***"));
 
         // Create the VoiceLive client
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
@@ -402,9 +399,6 @@ public class VoiceAssistantSample {
                 // Subscribe to receive server events asynchronously
                 session.receiveEvents()
                     .doOnSubscribe(subscription -> System.out.println("🔗 Subscribed to event stream"))
-                    .doOnNext(event -> {
-                        System.out.println("📨 Received event: " + event.getType());
-                    })
                     .doOnComplete(() -> System.out.println("⚠️ Event stream completed (this might indicate a connection issue)"))
                     .doOnError(error -> System.out.println("❌ Event stream error: " + error.getMessage()))
                     .subscribe(
@@ -428,11 +422,16 @@ public class VoiceAssistantSample {
                 System.out.println("Start speaking to begin conversation");
                 System.out.println("Press Ctrl+C to exit");
 
-                // Don't send audio buffer immediately - wait for session.created from server first
-                // The server needs to establish the session before accepting audio
+                // Install shutdown hook for graceful cleanup
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.out.println("\n🛑 Shutting down gracefully...");
+                    audioProcessor.shutdown();
+                }));
 
-                // Keep the session open - return a Mono that never completes
-                // This allows the event stream to continue running until interrupted
+                // Keep the reactive chain alive to continue processing events
+                // Mono.never() prevents the chain from completing, allowing the event stream to run
+                // The shutdown hook above handles cleanup when the JVM exits (Ctrl+C)
+                // Note: In production, use a proper signal mechanism (e.g., CountDownLatch, CompletableFuture)
                 return Mono.never();
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
@@ -451,8 +450,6 @@ public class VoiceAssistantSample {
      */
     private static VoiceLiveSessionOptions createVoiceSessionOptions() {
         System.out.println("🔧 Creating session configuration:");
-        System.out.println("   Model: " + DEFAULT_MODEL);
-        System.out.println("   API Version: " + DEFAULT_API_VERSION);
 
         // Create server VAD configuration similar to Python sample
         ServerVadTurnDetection turnDetection = new ServerVadTurnDetection()
@@ -463,6 +460,9 @@ public class VoiceAssistantSample {
             .setAutoTruncate(true)
             .setCreateResponse(true);
 
+        // Create audio input transcription configuration
+        AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1);
+
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful AI voice assistant. Respond naturally and conversationally. Keep your responses concise but engaging. Speak as if having a real conversation.")
             .setVoice(new OpenAIVoice(OpenAIVoiceName.ALLOY))
@@ -472,6 +472,7 @@ public class VoiceAssistantSample {
             .setInputAudioSamplingRate(SAMPLE_RATE)
             .setInputAudioNoiseReduction(new AudioNoiseReduction(AudioNoiseReductionType.NEAR_FIELD))
             .setInputAudioEchoCancellation(new AudioEchoCancellation())
+            .setInputAudioTranscription(transcriptionOptions)
             .setTurnDetection(turnDetection);
 
 
@@ -484,12 +485,10 @@ public class VoiceAssistantSample {
      */
     private static void handleServerEvent(SessionUpdate event, AudioProcessor audioProcessor) {
         ServerEventType eventType = event.getType();
-        System.out.printf("📨 Event: %s%n", eventType);
 
         try {
             if (eventType == ServerEventType.SESSION_CREATED) {
                 System.out.println("✓ Session created - initializing...");
-
             } else if (eventType == ServerEventType.SESSION_UPDATED) {
                 System.out.println("✓ Session updated - starting microphone");
 
@@ -501,13 +500,6 @@ public class VoiceAssistantSample {
                     System.out.println("📄 Session Updated Event (Full JSON):");
                     String eventJson = BinaryData.fromObject(sessionUpdated).toString();
                     System.out.println(eventJson);
-
-                    // Also print specific fields for convenience
-                    VoiceLiveSessionResponse session = sessionUpdated.getSession();
-                    System.out.println("\n📋 Session Details:");
-                    System.out.println("  Session ID: " + session.getId());
-                    System.out.println("  Model: " + session.getModel());
-                    System.out.println("  Voice: " + (session.getVoice() != null ? session.getVoice() : "N/A"));
                 }
 
                 audioProcessor.startCapture();
