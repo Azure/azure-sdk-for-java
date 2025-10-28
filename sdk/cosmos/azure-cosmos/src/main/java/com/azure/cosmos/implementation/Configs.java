@@ -401,7 +401,8 @@ public class Configs {
                         )
                     );
             }
-            return sslContextBuilder.build();
+
+            return sslContextBuilder.endpointIdentificationAlgorithm("HTTPS").build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
